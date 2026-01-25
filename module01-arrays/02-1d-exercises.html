@@ -1,0 +1,2175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 1 Exercises: Arrays & Reference Variables | CPCS203</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #7c3aed;
+            --success-color: #059669;
+            --warning-color: #d97706;
+            --danger-color: #dc2626;
+            --dark-color: #1f2937;
+            --light-color: #f3f4f6;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.8;
+            color: var(--dark-color);
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--success-color), #047857);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+
+        .header .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .score-display {
+            margin-top: 20px;
+            padding: 15px 30px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 30px;
+            display: inline-block;
+        }
+
+        .score-display span {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        /* Content */
+        .content {
+            padding: 40px;
+        }
+
+        /* Instructions */
+        .instructions {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border-left: 5px solid var(--warning-color);
+            padding: 20px 25px;
+            margin-bottom: 30px;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .instructions h3 {
+            color: var(--warning-color);
+            margin-bottom: 10px;
+        }
+
+        /* Question Card */
+        .question-card {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .question-card.correct {
+            border-color: var(--success-color);
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+        }
+
+        .question-card.incorrect {
+            border-color: var(--danger-color);
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+        }
+
+        .question-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .question-number {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .question-type {
+            background: var(--primary-color);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .question-text {
+            font-size: 1.1rem;
+            color: var(--dark-color);
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        /* Code Block - IDE Style */
+        .code-block {
+            background: #1e1e1e;
+            border-radius: 10px;
+            margin: 15px 0;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .code-header {
+            background: #323233;
+            padding: 8px 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .code-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .code-dot.red { background: #ff5f56; }
+        .code-dot.yellow { background: #ffbd2e; }
+        .code-dot.green { background: #27ca40; }
+
+        .code-title {
+            color: #9ca3af;
+            font-size: 0.85rem;
+            margin-left: 10px;
+        }
+
+        .code-content {
+            padding: 20px;
+            overflow-x: auto;
+        }
+
+        .code-content pre {
+            margin: 0;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #d4d4d4;
+        }
+
+        .code-content .line {
+            display: block;
+        }
+
+        .code-content .line-number {
+            display: inline-block;
+            width: 30px;
+            color: #6b7280;
+            text-align: right;
+            margin-right: 20px;
+            user-select: none;
+        }
+
+        /* Syntax Highlighting */
+        .keyword { color: #569cd6; }
+        .type { color: #4ec9b0; }
+        .string { color: #ce9178; }
+        .number { color: #b5cea8; }
+        .comment { color: #6a9955; font-style: italic; }
+        .variable { color: #9cdcfe; }
+        .method { color: #dcdcaa; }
+        .class-name { color: #4ec9b0; }
+        .bracket { color: #ffd700; }
+        .operator { color: #d4d4d4; }
+
+        /* Options */
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px 20px;
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .option:hover {
+            border-color: var(--primary-color);
+            background: #f0f9ff;
+        }
+
+        .option.selected {
+            border-color: var(--primary-color);
+            background: #dbeafe;
+        }
+
+        .option.correct-answer {
+            border-color: var(--success-color);
+            background: #d1fae5;
+        }
+
+        .option.wrong-answer {
+            border-color: var(--danger-color);
+            background: #fee2e2;
+        }
+
+        .option input[type="radio"],
+        .option input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .option label {
+            cursor: pointer;
+            flex: 1;
+            font-size: 1rem;
+        }
+
+        .option code {
+            background: #e5e7eb;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: 'Consolas', monospace;
+            font-size: 0.9rem;
+        }
+
+        /* True/False Options */
+        .tf-options {
+            display: flex;
+            gap: 20px;
+        }
+
+        .tf-option {
+            flex: 1;
+            padding: 20px;
+            text-align: center;
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .tf-option:hover {
+            transform: translateY(-2px);
+        }
+
+        .tf-option.true:hover,
+        .tf-option.true.selected {
+            border-color: var(--success-color);
+            background: #d1fae5;
+            color: var(--success-color);
+        }
+
+        .tf-option.false:hover,
+        .tf-option.false.selected {
+            border-color: var(--danger-color);
+            background: #fee2e2;
+            color: var(--danger-color);
+        }
+
+        .tf-option.correct-answer {
+            border-color: var(--success-color) !important;
+            background: #d1fae5 !important;
+            color: var(--success-color) !important;
+        }
+
+        .tf-option.wrong-answer {
+            border-color: var(--danger-color) !important;
+            background: #fee2e2 !important;
+        }
+
+        /* Fill in the blank */
+        .fill-blank {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .fill-blank input {
+            padding: 10px 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: 'Consolas', monospace;
+            width: 120px;
+            text-align: center;
+            transition: border-color 0.2s;
+        }
+
+        .fill-blank input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .fill-blank input.correct {
+            border-color: var(--success-color);
+            background: #d1fae5;
+        }
+
+        .fill-blank input.incorrect {
+            border-color: var(--danger-color);
+            background: #fee2e2;
+        }
+
+        /* Feedback */
+        .feedback {
+            margin-top: 15px;
+            padding: 15px 20px;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .feedback.show {
+            display: block;
+        }
+
+        .feedback.correct {
+            background: #d1fae5;
+            border-left: 4px solid var(--success-color);
+            color: var(--success-color);
+        }
+
+        .feedback.incorrect {
+            background: #fee2e2;
+            border-left: 4px solid var(--danger-color);
+            color: var(--danger-color);
+        }
+
+        .feedback-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        /* Check Button */
+        .check-btn {
+            margin-top: 15px;
+            padding: 12px 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .check-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.4);
+        }
+
+        .check-btn:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Memory Visualization in Questions */
+        .memory-visual {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+            text-align: center;
+        }
+
+        .memory-boxes {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        .mem-box {
+            border: 3px solid var(--primary-color);
+            border-radius: 10px;
+            padding: 15px 25px;
+            background: #dbeafe;
+            min-width: 100px;
+            text-align: center;
+        }
+
+        .mem-name {
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 8px;
+        }
+
+        .mem-value {
+            background: white;
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-family: monospace;
+        }
+
+        .arrow-right {
+            display: flex;
+            align-items: center;
+            color: var(--secondary-color);
+            font-size: 1.5rem;
+        }
+
+        .array-visual {
+            display: inline-flex;
+            margin-top: 10px;
+        }
+
+        .arr-cell {
+            border: 2px solid var(--success-color);
+            padding: 10px 15px;
+            background: #d1fae5;
+            text-align: center;
+            min-width: 50px;
+        }
+
+        .arr-cell:first-child {
+            border-radius: 8px 0 0 8px;
+        }
+
+        .arr-cell:last-child {
+            border-radius: 0 8px 8px 0;
+        }
+
+        .arr-index {
+            font-size: 0.7rem;
+            color: #6b7280;
+        }
+
+        .arr-value {
+            font-weight: bold;
+        }
+
+        /* Results Section */
+        .results-section {
+            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 30px;
+            text-align: center;
+            display: none;
+        }
+
+        .results-section.show {
+            display: block;
+        }
+
+        .results-title {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+
+        .results-score {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--success-color);
+        }
+
+        .results-message {
+            font-size: 1.2rem;
+            margin-top: 15px;
+            color: var(--dark-color);
+        }
+
+        .results-breakdown {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .breakdown-item {
+            padding: 15px 25px;
+            border-radius: 10px;
+        }
+
+        .breakdown-item.correct {
+            background: #d1fae5;
+            color: var(--success-color);
+        }
+
+        .breakdown-item.incorrect {
+            background: #fee2e2;
+            color: var(--danger-color);
+        }
+
+        /* Submit All Button */
+        .submit-all-btn {
+            display: block;
+            width: 100%;
+            max-width: 400px;
+            margin: 30px auto;
+            padding: 20px 40px;
+            background: linear-gradient(135deg, var(--success-color), #047857);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .submit-all-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(5, 150, 105, 0.4);
+        }
+
+        /* Reset Button */
+        .reset-btn {
+            display: block;
+            margin: 20px auto;
+            padding: 15px 40px;
+            background: var(--dark-color);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .reset-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--dark-color);
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.6rem;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .tf-options {
+                flex-direction: column;
+            }
+
+            .memory-boxes {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .arrow-right {
+                transform: rotate(90deg);
+            }
+        }
+
+        /* Section Divider */
+        .section-divider {
+            text-align: center;
+            margin: 40px 0;
+            position: relative;
+        }
+
+        .section-divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #e2e8f0;
+        }
+
+        .section-divider span {
+            background: white;
+            padding: 10px 30px;
+            position: relative;
+            font-weight: bold;
+            color: var(--primary-color);
+            font-size: 1.2rem;
+        }
+
+        /* Visual Explanation Styles */
+        .visual-explanation {
+            display: none;
+            margin-top: 20px;
+            padding: 25px;
+            background: white;
+            border-radius: 15px;
+            border: 2px solid #e2e8f0;
+        }
+
+        .visual-explanation.show {
+            display: block;
+        }
+
+        .visual-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .visual-subtitle {
+            text-align: center;
+            color: #4b5563;
+            margin-bottom: 25px;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .visual-subtitle code {
+            background: #e5e7eb;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Consolas', monospace;
+        }
+
+        /* Dual Memory Visual (for Question 6 - different references) */
+        .dual-memory-visual,
+        .single-memory-visual {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+
+        .memory-column {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .memory-label-top {
+            font-weight: bold;
+            color: var(--dark-color);
+            padding: 8px 20px;
+            background: #f3f4f6;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        /* Reference Box */
+        .ref-box {
+            border: 3px solid var(--primary-color);
+            border-radius: 12px;
+            padding: 12px 25px;
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            text-align: center;
+            min-width: 110px;
+        }
+
+        .ref-box.arr1-box {
+            border-color: #2563eb;
+        }
+
+        .ref-box.arr2-box {
+            border-color: #dc2626;
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+        }
+
+        .ref-box.shared-box {
+            border-color: #059669;
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+        }
+
+        .ref-name {
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: var(--dark-color);
+        }
+
+        .ref-value {
+            font-family: 'Consolas', monospace;
+            font-size: 0.9rem;
+            color: #6b7280;
+            margin-top: 5px;
+            padding: 5px 10px;
+            background: white;
+            border-radius: 5px;
+        }
+
+        .ref-value.same {
+            color: #059669;
+            font-weight: bold;
+        }
+
+        /* Arrows Column */
+        .arrows-column {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            gap: 115px;
+            padding-top: 55px;
+        }
+
+        .arrows-column.converge {
+            padding-top: 25px;
+        }
+
+        .arrow-container {
+            display: flex;
+            align-items: center;
+        }
+
+        /* Heap Array */
+        .heap-array {
+            border: 3px solid #059669;
+            border-radius: 12px;
+            padding: 15px;
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+            text-align: center;
+        }
+
+        .heap-array.arr1-heap {
+            border-color: #2563eb;
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+        }
+
+        .heap-array.arr2-heap {
+            border-color: #dc2626;
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+        }
+
+        .heap-array.shared-heap {
+            border-color: #059669;
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+        }
+
+        .heap-address {
+            font-family: 'Consolas', monospace;
+            font-size: 0.85rem;
+            color: #6b7280;
+            margin-bottom: 10px;
+        }
+
+        .heap-address.success {
+            color: #059669;
+            font-weight: bold;
+        }
+
+        .heap-cells {
+            display: flex;
+            gap: 0;
+        }
+
+        .heap-cell {
+            border: 2px solid currentColor;
+            padding: 8px 15px;
+            text-align: center;
+            min-width: 50px;
+            background: white;
+        }
+
+        .heap-cell:first-child {
+            border-radius: 8px 0 0 8px;
+        }
+
+        .heap-cell:last-child {
+            border-radius: 0 8px 8px 0;
+        }
+
+        .arr1-heap .heap-cell {
+            border-color: #2563eb;
+        }
+
+        .arr2-heap .heap-cell {
+            border-color: #dc2626;
+        }
+
+        .heap-cell.success {
+            border-color: #059669;
+        }
+
+        .heap-cell .idx {
+            display: block;
+            font-size: 0.7rem;
+            color: #9ca3af;
+        }
+
+        .heap-cell .val {
+            display: block;
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: var(--dark-color);
+        }
+
+        .shared-label {
+            margin-top: 10px;
+            font-weight: bold;
+            color: #059669;
+            font-size: 0.9rem;
+        }
+
+        /* Comparison Box */
+        .comparison-box {
+            border: 3px dashed #6b7280;
+            border-radius: 12px;
+            padding: 15px 20px;
+            background: #f9fafb;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .comparison-box.success {
+            border-color: #059669;
+            background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+        }
+
+        .comparison-label {
+            font-family: 'Consolas', monospace;
+            font-size: 1rem;
+            color: var(--dark-color);
+            margin-bottom: 8px;
+        }
+
+        .comparison-result {
+            font-family: 'Consolas', monospace;
+            font-size: 0.9rem;
+            padding: 5px 10px;
+            border-radius: 5px;
+            display: inline-block;
+        }
+
+        .comparison-result.false {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .comparison-result.true {
+            background: #d1fae5;
+            color: #059669;
+        }
+
+        .comparison-verdict {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #dc2626;
+            margin-top: 8px;
+        }
+
+        .comparison-verdict.success {
+            color: #059669;
+        }
+
+        /* Key Insight */
+        .key-insight {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border-left: 5px solid var(--warning-color);
+            padding: 20px;
+            border-radius: 0 12px 12px 0;
+            margin-top: 20px;
+        }
+
+        .key-insight.success {
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+            border-left-color: #059669;
+        }
+
+        .insight-icon {
+            font-size: 1.5rem;
+        }
+
+        .insight-text {
+            flex: 1;
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+
+        .insight-text code {
+            background: rgba(255,255,255,0.7);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Consolas', monospace;
+        }
+
+        /* Tip Box */
+        .tip-box {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            border-left: 5px solid var(--primary-color);
+            padding: 15px 20px;
+            border-radius: 0 12px 12px 0;
+            margin-top: 15px;
+            color: var(--dark-color);
+        }
+
+        .tip-box code {
+            background: rgba(255,255,255,0.7);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Consolas', monospace;
+            color: var(--primary-color);
+        }
+
+        /* Warning Box */
+        .warning-box {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border-left: 5px solid var(--warning-color);
+            padding: 15px 20px;
+            border-radius: 0 12px 12px 0;
+            margin-top: 15px;
+            color: var(--dark-color);
+        }
+
+        .warning-box code {
+            background: rgba(255,255,255,0.7);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Consolas', monospace;
+        }
+
+        /* Responsive for visual explanations */
+        @media (max-width: 768px) {
+            .dual-memory-visual,
+            .single-memory-visual {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .arrows-column {
+                transform: rotate(90deg);
+            }
+
+            .arrows-column.converge svg {
+                transform: rotate(90deg);
+            }
+        }
+
+        /* Navigation */
+        .nav-breadcrumb {
+            background: linear-gradient(135deg, #1e3a5f, #2d5a87);
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: white;
+            font-size: 0.9rem;
+        }
+
+        .breadcrumb a {
+            color: #93c5fd;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .breadcrumb a:hover {
+            color: white;
+        }
+
+        .breadcrumb .separator {
+            color: #64748b;
+        }
+
+        .breadcrumb .current {
+            color: #fbbf24;
+        }
+
+        .lesson-nav {
+            display: flex;
+            gap: 10px;
+        }
+
+        .lesson-nav a {
+            padding: 8px 16px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            text-decoration: none;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .lesson-nav a:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            display: flex;
+            justify-content: space-between;
+            padding: 30px 40px;
+            background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .bottom-nav a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px 25px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .bottom-nav a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(37, 99, 235, 0.3);
+        }
+
+        .bottom-nav .prev-lesson {
+            background: linear-gradient(135deg, #64748b, #475569);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Navigation Breadcrumb -->
+        <nav class="nav-breadcrumb">
+            <div class="breadcrumb">
+                <a href="../index.html">CPCS203</a>
+                <span class="separator">›</span>
+                <a href="index.html">Module 1: Arrays</a>
+                <span class="separator">›</span>
+                <span class="current">1D Exercises</span>
+            </div>
+            <div class="lesson-nav">
+                <a href="01-1d-arrays.html">‹ Previous</a>
+                <a href="03-2d-3d-arrays.html">Next: 2D/3D Arrays ›</a>
+            </div>
+        </nav>
+
+        <!-- Header -->
+        <div class="header">
+            <h1>1D Array Exercises</h1>
+            <p class="subtitle">Test Your Understanding: Primitive vs Reference Variables</p>
+            <div class="score-display">
+                Score: <span id="current-score">0</span> / <span id="total-score">15</span>
+            </div>
+        </div>
+
+        <div class="content">
+            <!-- Instructions -->
+            <div class="instructions">
+                <h3>Instructions</h3>
+                <p>Answer all questions to test your understanding of arrays and the difference between primitive and reference variables. Click "Check Answer" after each question or "Submit All Answers" at the end.</p>
+            </div>
+
+            <!-- SECTION 1: Primitive vs Reference Basics -->
+            <div class="section-divider">
+                <span>Part 1: Basic Concepts</span>
+            </div>
+
+            <!-- Question 1: True/False -->
+            <div class="question-card" id="q1">
+                <div class="question-header">
+                    <div class="question-number">1</div>
+                    <span class="question-type">True / False</span>
+                </div>
+                <div class="question-text">
+                    A primitive variable stores the actual value directly in memory.
+                </div>
+                <div class="tf-options">
+                    <div class="tf-option true" onclick="selectTF(1, 'true')">TRUE</div>
+                    <div class="tf-option false" onclick="selectTF(1, 'false')">FALSE</div>
+                </div>
+                <input type="hidden" id="answer1" value="">
+                <div class="feedback" id="feedback1">
+                    <div class="feedback-title"></div>
+                    <div class="feedback-text"></div>
+                </div>
+                <button class="check-btn" onclick="checkAnswer(1)">Check Answer</button>
+            </div>
+
+            <!-- Question 2: True/False -->
+            <div class="question-card" id="q2">
+                <div class="question-header">
+                    <div class="question-number">2</div>
+                    <span class="question-type">True / False</span>
+                </div>
+                <div class="question-text">
+                    A reference variable (like an array variable) stores the actual data of the array directly.
+                </div>
+                <div class="tf-options">
+                    <div class="tf-option true" onclick="selectTF(2, 'true')">TRUE</div>
+                    <div class="tf-option false" onclick="selectTF(2, 'false')">FALSE</div>
+                </div>
+                <input type="hidden" id="answer2" value="">
+                <div class="feedback" id="feedback2">
+                    <div class="feedback-title"></div>
+                    <div class="feedback-text"></div>
+                </div>
+                <button class="check-btn" onclick="checkAnswer(2)">Check Answer</button>
+            </div>
+
+            <!-- Question 3: Multiple Choice -->
+            <div class="question-card" id="q3">
+                <div class="question-header">
+                    <div class="question-number">3</div>
+                    <span class="question-type">Multiple Choice</span>
+                </div>
+                <div class="question-text">
+                    What does a reference variable store?
+                </div>
+                <div class="options">
+                    <div class="option" onclick="selectOption(3, 'a')">
+                        <input type="radio" name="q3" id="q3a">
+                        <label for="q3a">The actual data values</label>
+                    </div>
+                    <div class="option" onclick="selectOption(3, 'b')">
+                        <input type="radio" name="q3" id="q3b">
+                        <label for="q3b">The memory address (reference) pointing to the actual data</label>
+                    </div>
+                    <div class="option" onclick="selectOption(3, 'c')">
+                        <input type="radio" name="q3" id="q3c">
+                        <label for="q3c">A copy of the data</label>
+                    </div>
+                    <div class="option" onclick="selectOption(3, 'd')">
+                        <input type="radio" name="q3" id="q3d">
+                        <label for="q3d">Nothing until initialized</label>
+                    </div>
+                </div>
+                <input type="hidden" id="answer3" value="">
+                <div class="feedback" id="feedback3">
+                    <div class="feedback-title"></div>
+                    <div class="feedback-text"></div>
+                </div>
+                <button class="check-btn" onclick="checkAnswer(3)">Check Answer</button>
+            </div>
+
+            <!-- Question 4: Multiple Choice -->
+            <div class="question-card" id="q4">
+                <div class="question-header">
+                    <div class="question-number">4</div>
+                    <span class="question-type">Multiple Choice</span>
+                </div>
+                <div class="question-text">
+                    Which of the following is NOT a primitive data type in Java?
+                </div>
+                <div class="options">
+                    <div class="option" onclick="selectOption(4, 'a')">
+                        <input type="radio" name="q4" id="q4a">
+                        <label for="q4a"><code>int</code></label>
+                    </div>
+                    <div class="option" onclick="selectOption(4, 'b')">
+                        <input type="radio" name="q4" id="q4b">
+                        <label for="q4b"><code>String</code></label>
+                    </div>
+                    <div class="option" onclick="selectOption(4, 'c')">
+                        <input type="radio" name="q4" id="q4c">
+                        <label for="q4c"><code>boolean</code></label>
+                    </div>
+                    <div class="option" onclick="selectOption(4, 'd')">
+                        <input type="radio" name="q4" id="q4d">
+                        <label for="q4d"><code>double</code></label>
+                    </div>
+                </div>
+                <input type="hidden" id="answer4" value="">
+                <div class="feedback" id="feedback4">
+                    <div class="feedback-title"></div>
+                    <div class="feedback-text"></div>
+                </div>
+                <button class="check-btn" onclick="checkAnswer(4)">Check Answer</button>
+            </div>
+
+            <!-- SECTION 2: Comparing Variables -->
+            <div class="section-divider">
+                <span>Part 2: Comparing Variables</span>
+            </div>
+
+            <!-- Question 5: Code Tracing - Primitives -->
+            <div class="question-card" id="q5">
+                <div class="question-header">
+                    <div class="question-number">5</div>
+                    <span class="question-type">Code Tracing</span>
+                </div>
+                <div class="question-text">
+                    What is the output of the following code?
+                </div>
+                <div class="code-block">
+                    <div class="code-header">
+                        <div class="code-dot red"></div>
+                        <div class="code-dot yellow"></div>
+                        <div class="code-dot green"></div>
+                        <span class="code-title">ComparePrimitives.java</span>
+                    </div>
+                    <div class="code-content">
+<pre><span class="line"><span class="line-number">1</span><span class="keyword">int</span> <span class="variable">a</span> <span class="operator">=</span> <span class="number">10</span>;</span>
+<span class="line"><span class="line-number">2</span><span class="keyword">int</span> <span class="variable">b</span> <span class="operator">=</span> <span class="number">10</span>;</span>
+<span class="line"><span class="line-number">3</span></span>
+<span class="line"><span class="line-number">4</span><span class="keyword">if</span> <span class="bracket">(</span><span class="variable">a</span> <span class="operator">==</span> <span class="variable">b</span><span class="bracket">)</span> <span class="bracket">{</span></span>
+<span class="line"><span class="line-number">5</span>    <span class="class-name">System</span>.<span class="variable">out</span>.<span class="method">println</span><span class="bracket">(</span><span class="string">"Equal"</span><span class="bracket">)</span>;</span>
+<span class="line"><span class="line-number">6</span><span class="bracket">}</span> <span class="keyword">else</span> <span class="bracket">{</span></span>
+<span class="line"><span class="line-number">7</span>    <span class="class-name">System</span>.<span class="variable">out</span>.<span class="method">println</span><span class="bracket">(</span><span class="string">"Not Equal"</span><span class="bracket">)</span>;</span>
+<span class="line"><span class="line-number">8</span><span class="bracket">}</span></span></pre>
+                    </div>
+                </div>
+                <div class="options">
+                    <div class="option" onclick="selectOption(5, 'a')">
+                        <input type="radio" name="q5" id="q5a">
+                        <label for="q5a"><code>Equal</code></label>
+                    </div>
+                    <div class="option" onclick="selectOption(5, 'b')">
+                        <input type="radio" name="q5" id="q5b">
+                        <label for="q5b"><code>Not Equal</code></label>
+                    </div>
+                    <div class="option" onclick="selectOption(5, 'c')">
+                        <input type="radio" name="q5" id="q5c">
+                        <label for="q5c">Compilation Error</label>
+                    </div>
+                    <div class="option" onclick="selectOption(5, 'd')">
+                        <input type="radio" name="q5" id="q5d">
+                        <label for="q5d">Runtime Error</label>
+                    </div>
+                </div>
+                <input type="hidden" id="answer5" value="">
+                <div class="feedback" id="feedback5">
+                    <div class="feedback-title"></div>
+                    <div class="feedback-text"></div>
+                </div>
+                <button class="check-btn" onclick="checkAnswer(5)">Check Answer</button>
+            </div>
+
+            <!-- Question 6: Code Tracing - Arrays Comparison -->
+            <div class="question-card" id="q6">
+                <div class="question-header">
+                    <div class="question-number">6</div>
+                    <span class="question-type">Code Tracing</span>
+                </div>
+                <div class="question-text">
+                    What is the output of the following code?
+                </div>
+                <div class="code-block">
+                    <div class="code-header">
+                        <div class="code-dot red"></div>
+                        <div class="code-dot yellow"></div>
+                        <div class="code-dot green"></div>
+                        <span class="code-title">CompareArrays.java</span>
+                    </div>
+                    <div class="code-content">
+<pre><span class="line"><span class="line-number">1</span><span class="keyword">int</span><span class="bracket">[]</span> <span class="variable">arr1</span> <span class="operator">=</span> <span class="bracket">{</span><span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span><span class="bracket">}</span>;</span>
+<span class="line"><span class="line-number">2</span><span class="keyword">int</span><span class="bracket">[]</span> <span class="variable">arr2</span> <span class="operator">=</span> <span class="bracket">{</span><span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span><span class="bracket">}</span>;</span>
+<span class="line"><span class="line-number">3</span></span>
+<span class="line"><span class="line-number">4</span><span class="keyword">if</span> <span class="bracket">(</span><span class="variable">arr1</span> <span class="operator">==</span> <span class="variable">arr2</span><span class="bracket">)</span> <span class="bracket">{</span></span>
+<span class="line"><span class="line-number">5</span>    <span class="class-name">System</span>.<span class="variable">out</span>.<span class="method">println</span><span class="bracket">(</span><span class="string">"Equal"</span><span class="bracket">)</span>;</span>
+<span class="line"><span class="line-number">6</span><span class="bracket">}</span> <span class="keyword">else</span> <span class="bracket">{</span></span>
+<span class="line"><span class="line-number">7</span>    <span class="class-name">System</span>.<span class="variable">out</span>.<span class="method">println</span><span class="bracket">(</span><span class="string">"Not Equal"</span><span class="bracket">)</span>;</span>
+<span class="line"><span class="line-number">8</span><span class="bracket">}</span></span></pre>
+                    </div>
+                </div>
+                <div class="options">
+                    <div class="option" onclick="selectOption(6, 'a')">
+                        <input type="radio" name="q6" id="q6a">
+                        <label for="q6a"><code>Equal</code></label>
+                    </div>
+                    <div class="option" onclick="selectOption(6, 'b')">
+                        <input type="radio" name="q6" id="q6b">
+                        <label for="q6b"><code>Not Equal</code></label>
+                    </div>
+                    <div class="option" onclick="selectOption(6, 'c')">
+                        <input type="radio" name="q6" id="q6c">
+                        <label for="q6c">Compilation Error</label>
+                    </div>
+                    <div class="option" onclick="selectOption(6, 'd')">
+                        <input type="radio" name="q6" id="q6d">
+                        <label for="q6d">Runtime Error</label>
+                    </div>
+                </div>
+                <input type="hidden" id="answer6" value="">
+                <div class="feedback" id="feedback6">
+                    <div class="feedback-title"></div>
+                    <div class="feedback-text"></div>
+                    <!-- Visual Explanation - Shows after answer -->
+                    <div class="visual-explanation" id="visual6">
+                        <div class="visual-title">Why are they NOT equal? Let's visualize!</div>
+                        <div class="visual-subtitle">Even though both arrays contain {1, 2, 3}, they are stored in <strong>different locations</strong> in memory:</div>
+                        <div class="dual-memory-visual">
+                            <div class="memory-column">
+                                <div class="memory-label-top">Stack Memory</div>
+                                <div class="ref-box arr1-box">
+                                    <div class="ref-name">arr1</div>
+                                    <div class="ref-value">0x1A2B</div>
+                                </div>
+                                <div class="ref-box arr2-box">
+                                    <div class="ref-name">arr2</div>
+                                    <div class="ref-value">0x5C7D</div>
+                                </div>
+                                <div class="comparison-box">
+                                    <div class="comparison-label">arr1 == arr2</div>
+                                    <div class="comparison-result false">0x1A2B ≠ 0x5C7D</div>
+                                    <div class="comparison-verdict">FALSE!</div>
+                                </div>
+                            </div>
+                            <div class="arrows-column">
+                                <div class="arrow-container arr1-arrow">
+                                    <svg width="80" height="40" viewBox="0 0 80 40">
+                                        <defs>
+                                            <marker id="arrowhead1" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                                                <polygon points="0 0, 10 3.5, 0 7" fill="#2563eb"/>
+                                            </marker>
+                                        </defs>
+                                        <line x1="0" y1="20" x2="65" y2="20" stroke="#2563eb" stroke-width="3" marker-end="url(#arrowhead1)"/>
+                                    </svg>
+                                </div>
+                                <div class="arrow-container arr2-arrow">
+                                    <svg width="80" height="40" viewBox="0 0 80 40">
+                                        <defs>
+                                            <marker id="arrowhead2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                                                <polygon points="0 0, 10 3.5, 0 7" fill="#dc2626"/>
+                                            </marker>
+                                        </defs>
+                                        <line x1="0" y1="20" x2="65" y2="20" stroke="#dc2626" stroke-width="3" marker-end="url(#arrowhead2)"/>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="memory-column">
+                                <div class="memory-label-top">Heap Memory</div>
+                                <div class="heap-array arr1-heap">
+                                    <div class="heap-address">Address: 0x1A2B</div>
+                                    <div class="heap-cells">
+                                        <div class="heap-cell"><span class="idx">[0]</span><span class="val">1</span></div>
+                                        <div class="heap-cell"><span class="idx">[1]</span><span class="val">2</span></div>
+                                        <div class="heap-cell"><span class="idx">[2]</span><span class="val">3</span></div>
+                                    </div>
+                                </div>
+                                <div class="heap-array arr2-heap">
+                                    <div class="heap-address">Address: 0x5C7D</div>
+                                    <div class="heap-cells">
+                                        <div class="heap-cell"><span class="idx">[0]</span><span class="val">1</span></div>
+                                        <div class="heap-cell"><span class="idx">[1]</span><span class="val">2</span></div>
+                                        <div class="heap-cell"><span class="idx">[2]</span><span class="val">3</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="key-insight">
+                            <div class="insight-icon">💡</div>
+                            <div class="insight-text">
+                                <strong>Key Insight:</strong> The <code>==</code> operator compares the <strong>memory addresses (references)</strong>, NOT the values inside the arrays! Since arr1 and arr2 point to different locations (0x1A2B vs 0x5C7D), they are NOT equal.
+                            </div>
+                        </div>
+                        <div class="tip-box">
+                            <strong>To compare array contents:</strong> Use <code>Arrays.equals(arr1, arr2)</code> which returns <code>true</code> because the values are the same.
+                        </div>
+                    </div>
+                </div>
+                <button class="check-btn" onclick="checkAnswer(6)">Check Answer</button>
+            </div>
+
+            <!-- Question 7: Code Tracing - Same Reference -->
+            <div class="question-card" id="q7">
+                <div class="question-header">
+                    <div class="question-number">7</div>
+                    <span class="question-type">Code Tracing</span>
+                </div>
+                <div class="question-text">
+                    What is the output of the following code?
+                </div>
+                <div class="code-block">
+                    <div class="code-header">
+                        <div class="code-dot red"></div>
+                        <div class="code-dot yellow"></div>
+                        <div class="code-dot green"></div>
+                        <span class="code-title">SameReference.java</span>
+                    </div>
+                    <div class="code-content">
+<pre><span class="line"><span class="line-number">1</span><span class="keyword">int</span><span class="bracket">[]</span> <span class="variable">arr1</span> <span class="operator">=</span> <span class="bracket">{</span><span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span><span class="bracket">}</span>;</span>
+<span class="line"><span class="line-number">2</span><span class="keyword">int</span><span class="bracket">[]</span> <span class="variable">arr2</span> <span class="operator">=</span> <span class="variable">arr1</span>;  <span class="comment">// arr2 points to same array as arr1</span></span>
+<span class="line"><span class="line-number">3</span></span>
+<span class="line"><span class="line-number">4</span><span class="keyword">if</span> <span class="bracket">(</span><span class="variable">arr1</span> <span class="operator">==</span> <span class="variable">arr2</span><span class="bracket">)</span> <span class="bracket">{</span></span>
+<span class="line"><span class="line-number">5</span>    <span class="class-name">System</span>.<span class="variable">out</span>.<span class="method">println</span><span class="bracket">(</span><span class="string">"Equal"</span><span class="bracket">)</span>;</span>
+<span class="line"><span class="line-number">6</span><span class="bracket">}</span> <span class="keyword">else</span> <span class="bracket">{</span></span>
+<span class="line"><span class="line-number">7</span>    <span class="class-name">System</span>.<span class="variable">out</span>.<span class="method">println</span><span class="bracket">(</span><span class="string">"Not Equal"</span><span class="bracket">)</span>;</span>
+<span class="line"><span class="line-number">8</span><span class="bracket">}</span></span></pre>
+                    </div>
+                </div>
+                <div class="options">
+                    <div class="option" onclick="selectOption(7, 'a')">
+                        <input type="radio" name="q7" id="q7a">
+                        <label for="q7a"><code>Equal</code></label>
+                    </div>
+                    <div class="option" onclick="selectOption(7, 'b')">
+                        <input type="radio" name="q7" id="q7b">
+                        <label for="q7b"><code>Not Equal</code></label>
+                    </div>
+                    <div class="option" onclick="selectOption(7, 'c')">
+                        <input type="radio" name="q7" id="q7c">
+                        <label for="q7c">Compilation Error</label>
+                    </div>
+                    <div class="option" onclick="selectOption(7, 'd')">
+                        <input type="radio" name="q7" id="q7d">
+                        <label for="q7d">Runtime Error</label>
+                    </div>
+                </div>
+                <input type="hidden" id="answer7" value="">
+                <div class="feedback" id="feedback7">
+                    <div class="feedback-title"></div>
+                    <div class="feedback-text"></div>
+                    <!-- Visual Explanation - Shows after answer -->
+                    <div class="visual-explanation" id="visual7">
+                        <div class="visual-title">Why ARE they equal? Let's visualize!</div>
+                        <div class="visual-subtitle">When we write <code>arr2 = arr1</code>, we copy the <strong>reference (address)</strong>, not the array. Both now point to the <strong>SAME</strong> array:</div>
+                        <div class="single-memory-visual">
+                            <div class="memory-column">
+                                <div class="memory-label-top">Stack Memory</div>
+                                <div class="ref-box shared-box">
+                                    <div class="ref-name">arr1</div>
+                                    <div class="ref-value same">0x1A2B</div>
+                                </div>
+                                <div class="ref-box shared-box">
+                                    <div class="ref-name">arr2</div>
+                                    <div class="ref-value same">0x1A2B</div>
+                                </div>
+                                <div class="comparison-box success">
+                                    <div class="comparison-label">arr1 == arr2</div>
+                                    <div class="comparison-result true">0x1A2B = 0x1A2B</div>
+                                    <div class="comparison-verdict success">TRUE!</div>
+                                </div>
+                            </div>
+                            <div class="arrows-column converge">
+                                <svg width="100" height="180" viewBox="0 0 100 180">
+                                    <defs>
+                                        <marker id="arrowhead3" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                                            <polygon points="0 0, 10 3.5, 0 7" fill="#059669"/>
+                                        </marker>
+                                    </defs>
+                                    <!-- Arrow from arr1 -->
+                                    <path d="M 0 35 Q 50 35, 60 90 L 85 90" stroke="#059669" stroke-width="3" fill="none" marker-end="url(#arrowhead3)"/>
+                                    <!-- Arrow from arr2 -->
+                                    <path d="M 0 120 Q 50 120, 60 90 L 85 90" stroke="#059669" stroke-width="3" fill="none"/>
+                                </svg>
+                            </div>
+                            <div class="memory-column">
+                                <div class="memory-label-top">Heap Memory</div>
+                                <div class="heap-array shared-heap">
+                                    <div class="heap-address success">Address: 0x1A2B (SAME!)</div>
+                                    <div class="heap-cells">
+                                        <div class="heap-cell success"><span class="idx">[0]</span><span class="val">1</span></div>
+                                        <div class="heap-cell success"><span class="idx">[1]</span><span class="val">2</span></div>
+                                        <div class="heap-cell success"><span class="idx">[2]</span><span class="val">3</span></div>
+                                    </div>
+                                    <div class="shared-label">Only ONE array exists!</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="key-insight success">
+                            <div class="insight-icon">💡</div>
+                            <div class="insight-text">
+                                <strong>Key Insight:</strong> Both <code>arr1</code> and <code>arr2</code> hold the <strong>same address</strong> (0x1A2B). The <code>==</code> operator compares these addresses, and since they are identical, the result is <code>true</code>!
+                            </div>
+                        </div>
+                        <div class="warning-box">
+                            <strong>Important:</strong> Since both variables point to the same array, changing <code>arr2[0]</code> will also change <code>arr1[0]</code>! They share the same data.
+                        </div>
+                    </div>
+                </div>
+                <button class="check-btn" onclick="checkAnswer(7)">Check Answer</button>
+            </div>
+
+            <!-- SECTION 3: Pass by Value vs Reference -->
+            <div class="section-divider">
+                <span>Part 3: Pass by Value vs Reference</span>
+            </div>
+
+            <!-- Question 8: Pass by Value -->
+            <div class="question-card" id="q8">
+                <div class="question-header">
+                    <div class="question-number">8</div>
+                    <span class="question-type">Code Tracing</span>
+                </div>
+                <div class="question-text">
+                    What is the value of <code>x</code> after calling the method?
+                </div>
+                <div class="code-block">
+                    <div class="code-header">
+                        <div class="code-dot red"></div>
+                        <div class="code-dot yellow"></div>
+                        <div class="code-dot green"></div>
+                        <span class="code-title">PassByValue.java</span>
+                    </div>
+                    <div class="code-content">
+<pre><span class="line"><span class="line-number"> 1</span><span class="keyword">public static void</span> <span class="method">changeValue</span><span class="bracket">(</span><span class="keyword">int</span> <span class="variable">num</span><span class="bracket">)</span> <span class="bracket">{</span></span>
+<span class="line"><span class="line-number"> 2</span>    <span class="variable">num</span> <span class="operator">=</span> <span class="number">100</span>;</span>
+<span class="line"><span class="line-number"> 3</span><span class="bracket">}</span></span>
+<span class="line"><span class="line-number"> 4</span></span>
+<span class="line"><span class="line-number"> 5</span><span class="keyword">public static void</span> <span class="method">main</span><span class="bracket">(</span><span class="class-name">String</span><span class="bracket">[]</span> <span class="variable">args</span><span class="bracket">)</span> <span class="bracket">{</span></span>
+<span class="line"><span class="line-number"> 6</span>    <span class="keyword">int</span> <span class="variable">x</span> <span class="operator">=</span> <span class="number">5</span>;</span>
+<span class="line"><span class="line-number"> 7</span>    <span class="method">changeValue</span><span class="bracket">(</span><span class="variable">x</span><span class="bracket">)</span>;</span>
+<span class="line"><span class="line-number"> 8</span>    <span class="class-name">System</span>.<span class="variable">out</span>.<span class="method">println</span><span class="bracket">(</span><span class="variable">x</span><span class="bracket">)</span>;  <span class="comment">// What is printed?</span></span>
+<span class="line"><span class="line-number"> 9</span><span class="bracket">}</span></span></pre>
+                    </div>
+                </div>
+                <div class="options">
+                    <div class="option" onclick="selectOption(8, 'a')">
+                        <input type="radio" name="q8" id="q8a">
+                        <label for="q8a"><code>5</code></label>
+                    </div>
+                    <div class="option" onclick="selectOption(8, 'b')">
+                        <input type="radio" name="q8" id="q8b">
+                        <label for="q8b"><code>100</code></label>
+                    </div>
+                    <div class="option" onclick="selectOption(8, 'c')">
+                        <input type="radio" name="q8" id="q8c">
+                        <label for="q8c"><code>0</code></label>
+                    </div>
+                    <div class="option" onclick="selectOption(8, 'd')">
+                        <input type="radio" name="q8" id="q8d">
+                        <label for="q8d">Compilation Error</label>
+                    </div>
+                </div>
+                <input type="hidden" id="answer8" value="">
+                <div class="feedback" id="feedback8">
+                    <div class="feedback-title"></div>
+                    <div class="feedback-text"></div>
+                </div>
+                <button class="check-btn" onclick="checkAnswer(8)">Check Answer</button>
+            </div>
+
+            <!-- Question 9: Pass by Reference -->
+            <div class="question-card" id="q9">
+                <div class="question-header">
+                    <div class="question-number">9</div>
+                    <span class="question-type">Code Tracing</span>
+                </div>
+                <div class="question-text">
+                    What is the value of <code>arr[0]</code> after calling the method?
+                </div>
+                <div class="code-block">
+                    <div class="code-header">
+                        <div class="code-dot red"></div>
+                        <div class="code-dot yellow"></div>
+                        <div class="code-dot green"></div>
+                        <span class="code-title">PassByReference.java</span>
+                    </div>
+                    <div class="code-content">
+<pre><span class="line"><span class="line-number"> 1</span><span class="keyword">public static void</span> <span class="method">changeArray</span><span class="bracket">(</span><span class="keyword">int</span><span class="bracket">[]</span> <span class="variable">nums</span><span class="bracket">)</span> <span class="bracket">{</span></span>
+<span class="line"><span class="line-number"> 2</span>    <span class="variable">nums</span><span class="bracket">[</span><span class="number">0</span><span class="bracket">]</span> <span class="operator">=</span> <span class="number">100</span>;</span>
+<span class="line"><span class="line-number"> 3</span><span class="bracket">}</span></span>
+<span class="line"><span class="line-number"> 4</span></span>
+<span class="line"><span class="line-number"> 5</span><span class="keyword">public static void</span> <span class="method">main</span><span class="bracket">(</span><span class="class-name">String</span><span class="bracket">[]</span> <span class="variable">args</span><span class="bracket">)</span> <span class="bracket">{</span></span>
+<span class="line"><span class="line-number"> 6</span>    <span class="keyword">int</span><span class="bracket">[]</span> <span class="variable">arr</span> <span class="operator">=</span> <span class="bracket">{</span><span class="number">5</span>, <span class="number">10</span>, <span class="number">15</span><span class="bracket">}</span>;</span>
+<span class="line"><span class="line-number"> 7</span>    <span class="method">changeArray</span><span class="bracket">(</span><span class="variable">arr</span><span class="bracket">)</span>;</span>
+<span class="line"><span class="line-number"> 8</span>    <span class="class-name">System</span>.<span class="variable">out</span>.<span class="method">println</span><span class="bracket">(</span><span class="variable">arr</span><span class="bracket">[</span><span class="number">0</span><span class="bracket">]</span><span class="bracket">)</span>;  <span class="comment">// What is printed?</span></span>
+<span class="line"><span class="line-number"> 9</span><span class="bracket">}</span></span></pre>
+                    </div>
+                </div>
+                <div class="options">
+                    <div class="option" onclick="selectOption(9, 'a')">
+                        <input type="radio" name="q9" id="q9a">
+                        <label for="q9a"><code>5</code></label>
+                    </div>
+                    <div class="option" onclick="selectOption(9, 'b')">
+                        <input type="radio" name="q9" id="q9b">
+                        <label for="q9b"><code>100</code></label>
+                    </div>
+                    <div class="option" onclick="selectOption(9, 'c')">
+                        <input type="radio" name="q9" id="q9c">
+                        <label for="q9c"><code>0</code></label>
+                    </div>
+                    <div class="option" onclick="selectOption(9, 'd')">
+                        <input type="radio" name="q9" id="q9d">
+                        <label for="q9d">Compilation Error</label>
+                    </div>
+                </div>
+                <input type="hidden" id="answer9" value="">
+                <div class="feedback" id="feedback9">
+                    <div class="feedback-title"></div>
+                    <div class="feedback-text"></div>
+                </div>
+                <button class="check-btn" onclick="checkAnswer(9)">Check Answer</button>
+            </div>
+
+            <!-- Question 10: Understanding Why -->
+            <div class="question-card" id="q10">
+                <div class="question-header">
+                    <div class="question-number">10</div>
+                    <span class="question-type">Multiple Choice</span>
+                </div>
+                <div class="question-text">
+                    In Question 8, the value of <code>x</code> remained <code>5</code>. In Question 9, the value of <code>arr[0]</code> changed to <code>100</code>. Why is this?
+                </div>
+                <div class="options">
+                    <div class="option" onclick="selectOption(10, 'a')">
+                        <input type="radio" name="q10" id="q10a">
+                        <label for="q10a">Arrays are mutable, primitives are not</label>
+                    </div>
+                    <div class="option" onclick="selectOption(10, 'b')">
+                        <input type="radio" name="q10" id="q10b">
+                        <label for="q10b">Primitives pass a copy of the value; arrays pass a copy of the reference (address) pointing to the same data</label>
+                    </div>
+                    <div class="option" onclick="selectOption(10, 'c')">
+                        <input type="radio" name="q10" id="q10c">
+                        <label for="q10c">The method names are different</label>
+                    </div>
+                    <div class="option" onclick="selectOption(10, 'd')">
+                        <input type="radio" name="q10" id="q10d">
+                        <label for="q10d">Java has a bug with primitive types</label>
+                    </div>
+                </div>
+                <input type="hidden" id="answer10" value="">
+                <div class="feedback" id="feedback10">
+                    <div class="feedback-title"></div>
+                    <div class="feedback-text"></div>
+                </div>
+                <button class="check-btn" onclick="checkAnswer(10)">Check Answer</button>
+            </div>
+
+            <!-- SECTION 4: Array Manipulation -->
+            <div class="section-divider">
+                <span>Part 4: Array Manipulation</span>
+            </div>
+
+            <!-- Question 11: Shared Reference -->
+            <div class="question-card" id="q11">
+                <div class="question-header">
+                    <div class="question-number">11</div>
+                    <span class="question-type">Code Tracing</span>
+                </div>
+                <div class="question-text">
+                    What are the values of <code>a[0]</code> and <code>b[0]</code> after running this code?
+                </div>
+                <div class="code-block">
+                    <div class="code-header">
+                        <div class="code-dot red"></div>
+                        <div class="code-dot yellow"></div>
+                        <div class="code-dot green"></div>
+                        <span class="code-title">SharedReference.java</span>
+                    </div>
+                    <div class="code-content">
+<pre><span class="line"><span class="line-number">1</span><span class="keyword">int</span><span class="bracket">[]</span> <span class="variable">a</span> <span class="operator">=</span> <span class="bracket">{</span><span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span><span class="bracket">}</span>;</span>
+<span class="line"><span class="line-number">2</span><span class="keyword">int</span><span class="bracket">[]</span> <span class="variable">b</span> <span class="operator">=</span> <span class="variable">a</span>;</span>
+<span class="line"><span class="line-number">3</span></span>
+<span class="line"><span class="line-number">4</span><span class="variable">b</span><span class="bracket">[</span><span class="number">0</span><span class="bracket">]</span> <span class="operator">=</span> <span class="number">99</span>;</span>
+<span class="line"><span class="line-number">5</span></span>
+<span class="line"><span class="line-number">6</span><span class="class-name">System</span>.<span class="variable">out</span>.<span class="method">println</span><span class="bracket">(</span><span class="variable">a</span><span class="bracket">[</span><span class="number">0</span><span class="bracket">]</span> <span class="operator">+</span> <span class="string">" "</span> <span class="operator">+</span> <span class="variable">b</span><span class="bracket">[</span><span class="number">0</span><span class="bracket">]</span><span class="bracket">)</span>;</span></pre>
+                    </div>
+                </div>
+                <div class="options">
+                    <div class="option" onclick="selectOption(11, 'a')">
+                        <input type="radio" name="q11" id="q11a">
+                        <label for="q11a"><code>1 99</code></label>
+                    </div>
+                    <div class="option" onclick="selectOption(11, 'b')">
+                        <input type="radio" name="q11" id="q11b">
+                        <label for="q11b"><code>99 99</code></label>
+                    </div>
+                    <div class="option" onclick="selectOption(11, 'c')">
+                        <input type="radio" name="q11" id="q11c">
+                        <label for="q11c"><code>99 1</code></label>
+                    </div>
+                    <div class="option" onclick="selectOption(11, 'd')">
+                        <input type="radio" name="q11" id="q11d">
+                        <label for="q11d"><code>1 1</code></label>
+                    </div>
+                </div>
+                <input type="hidden" id="answer11" value="">
+                <div class="feedback" id="feedback11">
+                    <div class="feedback-title"></div>
+                    <div class="feedback-text"></div>
+                </div>
+                <button class="check-btn" onclick="checkAnswer(11)">Check Answer</button>
+            </div>
+
+            <!-- Question 12: Fill in the Blank -->
+            <div class="question-card" id="q12">
+                <div class="question-header">
+                    <div class="question-number">12</div>
+                    <span class="question-type">Fill in the Blank</span>
+                </div>
+                <div class="question-text">
+                    After running this code, what is the value printed?
+                </div>
+                <div class="code-block">
+                    <div class="code-header">
+                        <div class="code-dot red"></div>
+                        <div class="code-dot yellow"></div>
+                        <div class="code-dot green"></div>
+                        <span class="code-title">DefaultValues.java</span>
+                    </div>
+                    <div class="code-content">
+<pre><span class="line"><span class="line-number">1</span><span class="keyword">int</span><span class="bracket">[]</span> <span class="variable">numbers</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="keyword">int</span><span class="bracket">[</span><span class="number">5</span><span class="bracket">]</span>;</span>
+<span class="line"><span class="line-number">2</span></span>
+<span class="line"><span class="line-number">3</span><span class="class-name">System</span>.<span class="variable">out</span>.<span class="method">println</span><span class="bracket">(</span><span class="variable">numbers</span><span class="bracket">[</span><span class="number">2</span><span class="bracket">]</span><span class="bracket">)</span>;</span></pre>
+                    </div>
+                </div>
+                <div class="fill-blank">
+                    <span>The output is:</span>
+                    <input type="text" id="fillAnswer12" placeholder="?">
+                </div>
+                <div class="feedback" id="feedback12">
+                    <div class="feedback-title"></div>
+                    <div class="feedback-text"></div>
+                </div>
+                <button class="check-btn" onclick="checkAnswer(12)">Check Answer</button>
+            </div>
+
+            <!-- Question 13: Declaration vs Creation -->
+            <div class="question-card" id="q13">
+                <div class="question-header">
+                    <div class="question-number">13</div>
+                    <span class="question-type">True / False</span>
+                </div>
+                <div class="question-text">
+                    The following code creates an array in memory:
+                </div>
+                <div class="code-block">
+                    <div class="code-header">
+                        <div class="code-dot red"></div>
+                        <div class="code-dot yellow"></div>
+                        <div class="code-dot green"></div>
+                        <span class="code-title">Declaration.java</span>
+                    </div>
+                    <div class="code-content">
+<pre><span class="line"><span class="line-number">1</span><span class="keyword">int</span><span class="bracket">[]</span> <span class="variable">arr</span>;  <span class="comment">// Only this line</span></span></pre>
+                    </div>
+                </div>
+                <div class="tf-options">
+                    <div class="tf-option true" onclick="selectTF(13, 'true')">TRUE</div>
+                    <div class="tf-option false" onclick="selectTF(13, 'false')">FALSE</div>
+                </div>
+                <input type="hidden" id="answer13" value="">
+                <div class="feedback" id="feedback13">
+                    <div class="feedback-title"></div>
+                    <div class="feedback-text"></div>
+                </div>
+                <button class="check-btn" onclick="checkAnswer(13)">Check Answer</button>
+            </div>
+
+            <!-- Question 14: Memory Understanding -->
+            <div class="question-card" id="q14">
+                <div class="question-header">
+                    <div class="question-number">14</div>
+                    <span class="question-type">Multiple Choice</span>
+                </div>
+                <div class="question-text">
+                    Look at this memory diagram. What does this represent?
+                </div>
+                <div class="memory-visual">
+                    <div class="memory-boxes">
+                        <div>
+                            <div style="font-size: 0.85rem; color: #6b7280; margin-bottom: 10px;">Stack Memory</div>
+                            <div class="mem-box">
+                                <div class="mem-name">arr</div>
+                                <div class="mem-value">0x1A2B</div>
+                            </div>
+                        </div>
+                        <div class="arrow-right">→</div>
+                        <div>
+                            <div style="font-size: 0.85rem; color: #6b7280; margin-bottom: 10px;">Heap Memory (0x1A2B)</div>
+                            <div class="array-visual">
+                                <div class="arr-cell">
+                                    <div class="arr-index">[0]</div>
+                                    <div class="arr-value">10</div>
+                                </div>
+                                <div class="arr-cell">
+                                    <div class="arr-index">[1]</div>
+                                    <div class="arr-value">20</div>
+                                </div>
+                                <div class="arr-cell">
+                                    <div class="arr-index">[2]</div>
+                                    <div class="arr-value">30</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="options">
+                    <div class="option" onclick="selectOption(14, 'a')">
+                        <input type="radio" name="q14" id="q14a">
+                        <label for="q14a">The array data is stored in the variable <code>arr</code></label>
+                    </div>
+                    <div class="option" onclick="selectOption(14, 'b')">
+                        <input type="radio" name="q14" id="q14b">
+                        <label for="q14b">The variable <code>arr</code> holds the address <code>0x1A2B</code> which points to the actual array in heap memory</label>
+                    </div>
+                    <div class="option" onclick="selectOption(14, 'c')">
+                        <input type="radio" name="q14" id="q14c">
+                        <label for="q14c">The array is stored in two different locations</label>
+                    </div>
+                    <div class="option" onclick="selectOption(14, 'd')">
+                        <input type="radio" name="q14" id="q14d">
+                        <label for="q14d">This is a 2D array</label>
+                    </div>
+                </div>
+                <input type="hidden" id="answer14" value="">
+                <div class="feedback" id="feedback14">
+                    <div class="feedback-title"></div>
+                    <div class="feedback-text"></div>
+                </div>
+                <button class="check-btn" onclick="checkAnswer(14)">Check Answer</button>
+            </div>
+
+            <!-- Question 15: Complex Scenario -->
+            <div class="question-card" id="q15">
+                <div class="question-header">
+                    <div class="question-number">15</div>
+                    <span class="question-type">Code Tracing</span>
+                </div>
+                <div class="question-text">
+                    What is the final output of this code?
+                </div>
+                <div class="code-block">
+                    <div class="code-header">
+                        <div class="code-dot red"></div>
+                        <div class="code-dot yellow"></div>
+                        <div class="code-dot green"></div>
+                        <span class="code-title">ComplexExample.java</span>
+                    </div>
+                    <div class="code-content">
+<pre><span class="line"><span class="line-number">1</span><span class="keyword">int</span><span class="bracket">[]</span> <span class="variable">x</span> <span class="operator">=</span> <span class="bracket">{</span><span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span><span class="bracket">}</span>;</span>
+<span class="line"><span class="line-number">2</span><span class="keyword">int</span><span class="bracket">[]</span> <span class="variable">y</span> <span class="operator">=</span> <span class="variable">x</span>;</span>
+<span class="line"><span class="line-number">3</span><span class="keyword">int</span><span class="bracket">[]</span> <span class="variable">z</span> <span class="operator">=</span> <span class="bracket">{</span><span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span><span class="bracket">}</span>;</span>
+<span class="line"><span class="line-number">4</span></span>
+<span class="line"><span class="line-number">5</span><span class="variable">y</span><span class="bracket">[</span><span class="number">1</span><span class="bracket">]</span> <span class="operator">=</span> <span class="number">50</span>;</span>
+<span class="line"><span class="line-number">6</span></span>
+<span class="line"><span class="line-number">7</span><span class="class-name">System</span>.<span class="variable">out</span>.<span class="method">println</span><span class="bracket">(</span><span class="variable">x</span><span class="bracket">[</span><span class="number">1</span><span class="bracket">]</span> <span class="operator">+</span> <span class="string">" "</span> <span class="operator">+</span> <span class="variable">y</span><span class="bracket">[</span><span class="number">1</span><span class="bracket">]</span> <span class="operator">+</span> <span class="string">" "</span> <span class="operator">+</span> <span class="variable">z</span><span class="bracket">[</span><span class="number">1</span><span class="bracket">]</span><span class="bracket">)</span>;</span></pre>
+                    </div>
+                </div>
+                <div class="options">
+                    <div class="option" onclick="selectOption(15, 'a')">
+                        <input type="radio" name="q15" id="q15a">
+                        <label for="q15a"><code>2 50 2</code></label>
+                    </div>
+                    <div class="option" onclick="selectOption(15, 'b')">
+                        <input type="radio" name="q15" id="q15b">
+                        <label for="q15b"><code>50 50 50</code></label>
+                    </div>
+                    <div class="option" onclick="selectOption(15, 'c')">
+                        <input type="radio" name="q15" id="q15c">
+                        <label for="q15c"><code>50 50 2</code></label>
+                    </div>
+                    <div class="option" onclick="selectOption(15, 'd')">
+                        <input type="radio" name="q15" id="q15d">
+                        <label for="q15d"><code>2 50 50</code></label>
+                    </div>
+                </div>
+                <input type="hidden" id="answer15" value="">
+                <div class="feedback" id="feedback15">
+                    <div class="feedback-title"></div>
+                    <div class="feedback-text"></div>
+                </div>
+                <button class="check-btn" onclick="checkAnswer(15)">Check Answer</button>
+            </div>
+
+            <!-- Submit All Button -->
+            <button class="submit-all-btn" onclick="submitAll()">Submit All Answers</button>
+
+            <!-- Results Section -->
+            <div class="results-section" id="results">
+                <div class="results-title">Your Results</div>
+                <div class="results-score" id="final-score">0%</div>
+                <div class="results-message" id="results-message"></div>
+                <div class="results-breakdown">
+                    <div class="breakdown-item correct">
+                        <strong id="correct-count">0</strong> Correct
+                    </div>
+                    <div class="breakdown-item incorrect">
+                        <strong id="incorrect-count">0</strong> Incorrect
+                    </div>
+                </div>
+            </div>
+
+            <button class="reset-btn" onclick="resetQuiz()">Reset Quiz</button>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <a href="01-1d-arrays.html" class="prev-lesson">‹ Previous: 1D Arrays</a>
+            <a href="03-2d-3d-arrays.html">Next: 2D & 3D Arrays ›</a>
+        </nav>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p><strong>CPCS203</strong> - Object-Oriented Programming</p>
+            <p>Module 1: Arrays - 1D Exercises</p>
+        </div>
+    </div>
+
+    <script>
+        // Correct answers
+        const answers = {
+            1: { correct: 'true', explanation: 'Correct! Primitive variables (int, double, boolean, etc.) store the actual value directly in memory.' },
+            2: { correct: 'false', explanation: 'Correct! A reference variable does NOT store the actual data. It stores the memory ADDRESS (reference) pointing to where the data is stored in heap memory.' },
+            3: { correct: 'b', explanation: 'Correct! A reference variable stores the memory address (reference) that points to where the actual data is located in heap memory.' },
+            4: { correct: 'b', explanation: 'Correct! String is NOT a primitive data type. It is a reference type (a class). The 8 primitive types are: byte, short, int, long, float, double, char, boolean.' },
+            5: { correct: 'a', explanation: 'Correct! For primitives, the == operator compares the actual values. Since both a and b have the value 10, they are equal.' },
+            6: { correct: 'b', explanation: 'Correct! Even though arr1 and arr2 contain the same values {1,2,3}, they are TWO DIFFERENT arrays in memory. The == operator compares their memory addresses (references), which are different!' },
+            7: { correct: 'a', explanation: 'Correct! When we write arr2 = arr1, we copy the reference (address). Now both variables point to the SAME array in memory. So arr1 == arr2 is true because they have the same address.' },
+            8: { correct: 'a', explanation: 'Correct! With primitives, Java passes a COPY of the value. The method receives a copy (num = 5), changes the copy to 100, but the original x remains 5. This is called "pass by value".' },
+            9: { correct: 'b', explanation: 'Correct! With arrays, Java passes a copy of the REFERENCE (address). Both arr and nums point to the SAME array in memory. When the method changes nums[0], it changes the actual array, so arr[0] becomes 100.' },
+            10: { correct: 'b', explanation: 'Correct! This is the key concept: Primitives pass a copy of the value (changes don\'t affect original). Arrays/Objects pass a copy of the reference - both the original and the copy point to the SAME data in memory!' },
+            11: { correct: 'b', explanation: 'Correct! Since b = a copies the reference, both a and b point to the SAME array. When we change b[0] to 99, we\'re changing the shared array. So both a[0] and b[0] are 99.' },
+            12: { correct: '0', explanation: 'Correct! When you create an array with new int[5], all elements are automatically initialized to the default value for int, which is 0.' },
+            13: { correct: 'false', explanation: 'Correct! The line "int[] arr;" only DECLARES a reference variable. It does NOT create an array in memory. The variable arr holds null at this point. You need "new int[size]" to actually create the array.' },
+            14: { correct: 'b', explanation: 'Correct! This diagram shows how reference variables work: The variable arr in stack memory holds an address (0x1A2B), and this address points to where the actual array data is stored in heap memory.' },
+            15: { correct: 'c', explanation: 'Correct! x and y share the SAME array (y = x copies the reference). z is a DIFFERENT array (created with new values). When y[1] = 50 changes the shared array, x[1] also becomes 50. But z[1] remains 2 because z is a separate array.' }
+        };
+
+        let score = 0;
+        let answered = {};
+
+        // Select option for multiple choice
+        function selectOption(qNum, option) {
+            if (answered[qNum]) return; // Already answered
+
+            // Remove previous selection
+            document.querySelectorAll(`#q${qNum} .option`).forEach(opt => {
+                opt.classList.remove('selected');
+            });
+
+            // Add selection
+            event.currentTarget.classList.add('selected');
+            document.getElementById(`answer${qNum}`).value = option;
+        }
+
+        // Select True/False
+        function selectTF(qNum, value) {
+            if (answered[qNum]) return; // Already answered
+
+            // Remove previous selection
+            document.querySelectorAll(`#q${qNum} .tf-option`).forEach(opt => {
+                opt.classList.remove('selected');
+            });
+
+            // Add selection
+            event.currentTarget.classList.add('selected');
+            document.getElementById(`answer${qNum}`).value = value;
+        }
+
+        // Check individual answer
+        function checkAnswer(qNum) {
+            if (answered[qNum]) return; // Already answered
+
+            let userAnswer;
+            if (qNum === 12) {
+                userAnswer = document.getElementById('fillAnswer12').value.trim();
+            } else {
+                userAnswer = document.getElementById(`answer${qNum}`).value;
+            }
+
+            if (!userAnswer) {
+                alert('Please select an answer first!');
+                return;
+            }
+
+            answered[qNum] = true;
+            const correct = answers[qNum].correct;
+            const isCorrect = userAnswer.toLowerCase() === correct.toLowerCase();
+
+            // Update UI
+            const card = document.getElementById(`q${qNum}`);
+            const feedback = document.getElementById(`feedback${qNum}`);
+            const feedbackTitle = feedback.querySelector('.feedback-title');
+            const feedbackText = feedback.querySelector('.feedback-text');
+
+            if (isCorrect) {
+                card.classList.add('correct');
+                feedback.classList.add('correct', 'show');
+                feedbackTitle.textContent = '✓ Correct!';
+                score++;
+            } else {
+                card.classList.add('incorrect');
+                feedback.classList.add('incorrect', 'show');
+                feedbackTitle.textContent = '✗ Incorrect';
+            }
+
+            feedbackText.textContent = answers[qNum].explanation;
+
+            // Show visual explanation for questions 6 and 7
+            if (qNum === 6 || qNum === 7) {
+                const visual = document.getElementById(`visual${qNum}`);
+                if (visual) {
+                    visual.classList.add('show');
+                }
+            }
+
+            // Show correct/wrong for options
+            if (qNum === 12) {
+                const input = document.getElementById('fillAnswer12');
+                input.classList.add(isCorrect ? 'correct' : 'incorrect');
+                input.disabled = true;
+            } else if ([1, 2, 13].includes(qNum)) {
+                // True/False questions
+                document.querySelectorAll(`#q${qNum} .tf-option`).forEach(opt => {
+                    if (opt.classList.contains(correct)) {
+                        opt.classList.add('correct-answer');
+                    } else if (opt.classList.contains('selected') && !isCorrect) {
+                        opt.classList.add('wrong-answer');
+                    }
+                });
+            } else {
+                // Multiple choice
+                document.querySelectorAll(`#q${qNum} .option`).forEach((opt, idx) => {
+                    const optLetter = String.fromCharCode(97 + idx); // a, b, c, d
+                    if (optLetter === correct) {
+                        opt.classList.add('correct-answer');
+                    } else if (opt.classList.contains('selected') && !isCorrect) {
+                        opt.classList.add('wrong-answer');
+                    }
+                });
+            }
+
+            // Disable button
+            card.querySelector('.check-btn').disabled = true;
+
+            // Update score display
+            document.getElementById('current-score').textContent = score;
+        }
+
+        // Submit all answers
+        function submitAll() {
+            for (let i = 1; i <= 15; i++) {
+                if (!answered[i]) {
+                    checkAnswer(i);
+                }
+            }
+
+            // Show results
+            const resultsSection = document.getElementById('results');
+            const percentage = Math.round((score / 15) * 100);
+
+            document.getElementById('final-score').textContent = percentage + '%';
+            document.getElementById('correct-count').textContent = score;
+            document.getElementById('incorrect-count').textContent = 15 - score;
+
+            let message = '';
+            if (percentage >= 90) {
+                message = 'Excellent! You have a strong understanding of reference vs primitive variables!';
+            } else if (percentage >= 70) {
+                message = 'Good job! Review the questions you missed to strengthen your understanding.';
+            } else if (percentage >= 50) {
+                message = 'Keep practicing! Focus on understanding how references work differently from primitives.';
+            } else {
+                message = 'Please review the lecture material on primitive vs reference variables and try again.';
+            }
+
+            document.getElementById('results-message').textContent = message;
+            resultsSection.classList.add('show');
+            resultsSection.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Reset quiz
+        function resetQuiz() {
+            score = 0;
+            answered = {};
+
+            // Reset all question cards
+            document.querySelectorAll('.question-card').forEach(card => {
+                card.classList.remove('correct', 'incorrect');
+            });
+
+            // Reset all options
+            document.querySelectorAll('.option, .tf-option').forEach(opt => {
+                opt.classList.remove('selected', 'correct-answer', 'wrong-answer');
+            });
+
+            // Reset all answers
+            for (let i = 1; i <= 15; i++) {
+                const answerInput = document.getElementById(`answer${i}`);
+                if (answerInput) answerInput.value = '';
+            }
+
+            // Reset fill-in-the-blank
+            const fillInput = document.getElementById('fillAnswer12');
+            if (fillInput) {
+                fillInput.value = '';
+                fillInput.disabled = false;
+                fillInput.classList.remove('correct', 'incorrect');
+            }
+
+            // Reset all radios
+            document.querySelectorAll('input[type="radio"]').forEach(radio => {
+                radio.checked = false;
+            });
+
+            // Reset feedback
+            document.querySelectorAll('.feedback').forEach(fb => {
+                fb.classList.remove('show', 'correct', 'incorrect');
+            });
+
+            // Reset visual explanations
+            document.querySelectorAll('.visual-explanation').forEach(visual => {
+                visual.classList.remove('show');
+            });
+
+            // Enable all buttons
+            document.querySelectorAll('.check-btn').forEach(btn => {
+                btn.disabled = false;
+            });
+
+            // Hide results
+            document.getElementById('results').classList.remove('show');
+
+            // Update score
+            document.getElementById('current-score').textContent = '0';
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
