@@ -164,6 +164,7 @@
             font-family: 'Consolas', 'Monaco', monospace;
             font-size: 0.95rem;
             line-height: 1.6;
+            white-space: pre-wrap;
         }
 
         .code-block .keyword {
@@ -843,10 +844,18 @@
 
                 <div class="code-block">
 <span class="comment">// Examples of primitive data types</span>
-<span class="keyword">int</span> <span class="variable">age</span> = <span class="number">20</span>;              <span class="comment">// Stores: 20</span>
-<span class="keyword">double</span> <span class="variable">gpa</span> = <span class="number">3.75</span>;          <span class="comment">// Stores: 3.75</span>
-<span class="keyword">char</span> <span class="variable">grade</span> = <span class="string">'A'</span>;           <span class="comment">// Stores: 'A'</span>
-<span class="keyword">boolean</span> <span class="variable">isPassed</span> = <span class="keyword">true</span>;   <span class="comment">// Stores: true</span>
+
+<span class="keyword">int</span> <span class="variable">age</span> = <span class="number">20</span>;
+<span class="comment">// Stores: 20</span>
+
+<span class="keyword">double</span> <span class="variable">gpa</span> = <span class="number">3.75</span>;
+<span class="comment">// Stores: 3.75</span>
+
+<span class="keyword">char</span> <span class="variable">grade</span> = <span class="string">'A'</span>;
+<span class="comment">// Stores: 'A'</span>
+
+<span class="keyword">boolean</span> <span class="variable">isPassed</span> = <span class="keyword">true</span>;
+<span class="comment">// Stores: true</span>
                 </div>
 
                 <div class="info-box">
@@ -886,7 +895,9 @@
                     <div class="comparison-box good">
                         <div class="comparison-title">With Arrays</div>
                         <div class="code-block" style="text-align: left; font-size: 0.85rem;">
-<span class="keyword">int</span>[] <span class="variable">ages</span> = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">100</span>];
+<span class="keyword">int</span>[] <span class="variable">ages</span>;
+
+<span class="variable">ages</span> = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">100</span>];
 
 <span class="comment">// One variable to manage</span>
 <span class="comment">// all 100 ages!</span>
@@ -999,7 +1010,8 @@
                         <div class="step-title">Declaration</div>
                         <p>Creating a <strong>reference variable</strong> that will hold the address of the array.</p>
                         <div class="code-block">
-<span class="keyword">int</span>[] <span class="variable">ages</span>;    <span class="comment">// Declares a reference variable</span>
+<span class="keyword">int</span>[] <span class="variable">ages</span>;
+<span class="comment">// Declares a reference variable</span>
                         </div>
                     </div>
                 </div>
@@ -1036,7 +1048,8 @@
                         <div class="step-title">Creation (Instantiation)</div>
                         <p>Allocating memory for the actual array using the <code class="code-inline">new</code> keyword.</p>
                         <div class="code-block">
-<span class="variable">ages</span> = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">5</span>];    <span class="comment">// Creates array of 5 integers</span>
+<span class="variable">ages</span> = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">5</span>];
+<span class="comment">// Creates array of 5 integers</span>
                         </div>
                     </div>
                 </div>
@@ -1158,10 +1171,22 @@
 
                 <div class="code-block">
 <span class="comment">// Method 1: Declaration + Creation + Initialization</span>
-<span class="keyword">int</span>[] <span class="variable">ages</span> = <span class="keyword">new</span> <span class="keyword">int</span>[] {<span class="number">20</span>, <span class="number">21</span>, <span class="number">19</span>, <span class="number">22</span>, <span class="number">20</span>};
+<span class="keyword">int</span>[] <span class="variable">ages</span> = <span class="keyword">new</span> <span class="keyword">int</span>[] {
+    <span class="number">20</span>,
+    <span class="number">21</span>,
+    <span class="number">19</span>,
+    <span class="number">22</span>,
+    <span class="number">20</span>
+};
 
 <span class="comment">// Method 2: Even shorter (array literal)</span>
-<span class="keyword">int</span>[] <span class="variable">ages</span> = {<span class="number">20</span>, <span class="number">21</span>, <span class="number">19</span>, <span class="number">22</span>, <span class="number">20</span>};
+<span class="keyword">int</span>[] <span class="variable">ages</span> = {
+    <span class="number">20</span>,
+    <span class="number">21</span>,
+    <span class="number">19</span>,
+    <span class="number">22</span>,
+    <span class="number">20</span>
+};
                 </div>
             </div>
 
@@ -1180,8 +1205,14 @@
                 <p>Let's see what happens when we assign one array variable to another:</p>
 
                 <div class="code-block">
-<span class="keyword">int</span>[] <span class="variable">ages</span> = {<span class="number">20</span>, <span class="number">21</span>, <span class="number">19</span>};
-<span class="keyword">int</span>[] <span class="variable">scores</span> = <span class="variable">ages</span>;    <span class="comment">// What happens here?</span>
+<span class="keyword">int</span>[] <span class="variable">ages</span> = {
+    <span class="number">20</span>,
+    <span class="number">21</span>,
+    <span class="number">19</span>
+};
+
+<span class="keyword">int</span>[] <span class="variable">scores</span> = <span class="variable">ages</span>;
+<span class="comment">// What happens here?</span>
                 </div>
 
                 <div class="memory-visualization">
@@ -1231,8 +1262,11 @@
                 <div class="code-block">
 <span class="variable">scores</span>[<span class="number">0</span>] = <span class="number">100</span>;
 
-System.out.println(<span class="variable">ages</span>[<span class="number">0</span>]);    <span class="comment">// Output: 100 (not 20!)</span>
-System.out.println(<span class="variable">scores</span>[<span class="number">0</span>]);  <span class="comment">// Output: 100</span>
+System.out.println(<span class="variable">ages</span>[<span class="number">0</span>]);
+<span class="comment">// Output: 100 (not 20!)</span>
+
+System.out.println(<span class="variable">scores</span>[<span class="number">0</span>]);
+<span class="comment">// Output: 100</span>
                 </div>
             </div>
 
@@ -1251,13 +1285,19 @@ System.out.println(<span class="variable">scores</span>[<span class="number">0</
                         <div class="pass-title">Pass by Value (Primitives)</div>
 
                         <div class="code-block" style="font-size: 0.8rem;">
-<span class="keyword">void</span> <span class="variable">changeAge</span>(<span class="keyword">int</span> <span class="variable">x</span>) {
-    <span class="variable">x</span> = <span class="number">100</span>;
-}
+<span class="keyword">public class</span> <span class="type">Test</span> {
 
-<span class="keyword">int</span> <span class="variable">age</span> = <span class="number">20</span>;
-<span class="variable">changeAge</span>(<span class="variable">age</span>);
-<span class="comment">// age is still 20!</span>
+    <span class="keyword">public static void</span> <span class="variable">changeAge</span>(<span class="keyword">int</span> <span class="variable">x</span>) {
+        <span class="variable">x</span> = <span class="number">100</span>;
+    }
+
+    <span class="keyword">public static void</span> <span class="variable">main</span>(<span class="type">String</span>[] <span class="variable">args</span>) {
+        <span class="keyword">int</span> <span class="variable">age</span> = <span class="number">20</span>;
+        <span class="variable">changeAge</span>(<span class="variable">age</span>);
+        System.out.println(<span class="variable">age</span>);
+        <span class="comment">// Output: 20</span>
+    }
+}
                         </div>
 
                         <div class="memory-row">
@@ -1279,13 +1319,19 @@ System.out.println(<span class="variable">scores</span>[<span class="number">0</
                         <div class="pass-title">Pass by Reference (Arrays)</div>
 
                         <div class="code-block" style="font-size: 0.8rem;">
-<span class="keyword">void</span> <span class="variable">changeArray</span>(<span class="keyword">int</span>[] <span class="variable">arr</span>) {
-    <span class="variable">arr</span>[<span class="number">0</span>] = <span class="number">100</span>;
-}
+<span class="keyword">public class</span> <span class="type">Test</span> {
 
-<span class="keyword">int</span>[] <span class="variable">ages</span> = {<span class="number">20</span>, <span class="number">21</span>};
-<span class="variable">changeArray</span>(<span class="variable">ages</span>);
-<span class="comment">// ages[0] is now 100!</span>
+    <span class="keyword">public static void</span> <span class="variable">changeArray</span>(<span class="keyword">int</span>[] <span class="variable">arr</span>) {
+        <span class="variable">arr</span>[<span class="number">0</span>] = <span class="number">100</span>;
+    }
+
+    <span class="keyword">public static void</span> <span class="variable">main</span>(<span class="type">String</span>[] <span class="variable">args</span>) {
+        <span class="keyword">int</span>[] <span class="variable">ages</span> = {<span class="number">20</span>, <span class="number">21</span>};
+        <span class="variable">changeArray</span>(<span class="variable">ages</span>);
+        System.out.println(<span class="variable">ages</span>[<span class="number">0</span>]);
+        <span class="comment">// Output: 100</span>
+    }
+}
                         </div>
 
                         <div class="memory-row">
@@ -1367,6 +1413,7 @@ System.out.println(<span class="variable">scores</span>[<span class="number">0</
         <div class="footer">
             <p><strong>CPCS203</strong> - Object-Oriented Programming</p>
             <p>Module 1: Arrays</p>
+            <p>Prepared by Dr. Almalawi</p>
         </div>
     </div>
 </body>

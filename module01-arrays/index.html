@@ -216,6 +216,12 @@
             border: 2px solid var(--success-color);
         }
 
+        .lesson-number.practical {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            color: var(--warning-color);
+            border: 2px solid var(--warning-color);
+        }
+
         .lesson-content {
             flex: 1;
         }
@@ -233,6 +239,10 @@
 
         .lesson-type.exercise {
             color: var(--success-color);
+        }
+
+        .lesson-type.practical {
+            color: var(--warning-color);
         }
 
         .lesson-title {
@@ -416,7 +426,7 @@
         <div class="progress-section">
             <div class="progress-header">
                 <span>Module Progress</span>
-                <span>5 Lessons</span>
+                <span>7 Lessons</span>
             </div>
             <div class="progress-bar">
                 <div class="progress-fill" style="width: 100%;"></div>
@@ -430,7 +440,7 @@
         <div class="learning-path">
             <div class="path-header">
                 <div class="path-title">Learning Path</div>
-                <div class="path-count">5 Lessons</div>
+                <div class="path-count">7 Lessons</div>
             </div>
 
             <div class="lessons-list">
@@ -516,6 +526,40 @@
                         <span class="lesson-arrow">&#8594;</span>
                     </div>
                 </a>
+
+                <!-- Lesson 6: Reading 2D Ragged Arrays from File -->
+                <a href="06-ragged-array-file-reading.html" class="lesson-card">
+                    <div class="lesson-number practical">6</div>
+                    <div class="lesson-content">
+                        <div class="lesson-type practical">Practical</div>
+                        <div class="lesson-title">Reading 2D Ragged Arrays from File</div>
+                        <div class="lesson-description">
+                            Learn to read variable-length student marks from a text file using nextLine() and split(). Includes downloadable Java code and data file.
+                        </div>
+                    </div>
+                    <div class="lesson-meta">
+                        <span class="lesson-tag">File I/O</span>
+                        <span class="lesson-tag">Downloadable</span>
+                        <span class="lesson-arrow">&#8594;</span>
+                    </div>
+                </a>
+
+                <!-- Lesson 7: Reading 3D Ragged Arrays from File -->
+                <a href="07-3d-ragged-array-file-reading.html" class="lesson-card">
+                    <div class="lesson-number practical">7</div>
+                    <div class="lesson-content">
+                        <div class="lesson-type practical">Practical</div>
+                        <div class="lesson-title">Reading 3D Ragged Arrays from File</div>
+                        <div class="lesson-description">
+                            Build on 2D skills to read a Department → Students → Courses structure (CS, IT, IS) from file. Complete line-by-line explanation.
+                        </div>
+                    </div>
+                    <div class="lesson-meta">
+                        <span class="lesson-tag">3D Arrays</span>
+                        <span class="lesson-tag">Downloadable</span>
+                        <span class="lesson-arrow">&#8594;</span>
+                    </div>
+                </a>
             </div>
         </div>
 
@@ -546,6 +590,11 @@
                     <div class="concept-title">Ragged Arrays</div>
                     <div class="concept-description">Create flexible arrays where each row can have different sizes.</div>
                 </div>
+                <div class="concept-card">
+                    <div class="concept-icon">&#128196;</div>
+                    <div class="concept-title">Reading from Files</div>
+                    <div class="concept-description">Load ragged arrays from text files using Scanner, nextLine(), and split().</div>
+                </div>
             </div>
         </section>
 
@@ -566,6 +615,7 @@
     <footer class="footer">
         <p><strong>CPCS203</strong> - Object-Oriented Programming</p>
         <p>Module 1: Multidimensional Arrays</p>
+        <p>Prepared by Dr. Almalawi</p>
     </footer>
 </body>
 </html>
