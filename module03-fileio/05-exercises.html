@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 5: File I/O Exercises | CPCS203</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #d97706;
+            --primary-light: #f59e0b;
+            --primary-dark: #b45309;
+            --success-color: #059669;
+            --danger-color: #dc2626;
+            --dark-color: #1f2937;
+            --light-color: #f3f4f6;
+            --gray-color: #6b7280;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.8;
+            color: var(--dark-color);
+            background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+        }
+
+        /* Navigation Breadcrumb */
+        .nav-breadcrumb {
+            background: linear-gradient(135deg, #92400e, #b45309);
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: white;
+            font-size: 0.9rem;
+        }
+
+        .breadcrumb a {
+            color: #fde68a;
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            color: white;
+        }
+
+        .breadcrumb .separator {
+            color: #d97706;
+        }
+
+        .breadcrumb .current {
+            color: #fef3c7;
+        }
+
+        .lesson-nav a {
+            padding: 8px 16px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            text-decoration: none;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+        }
+
+        .lesson-nav a:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--success-color), #047857);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .header .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .header .course-info {
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 30px;
+            display: inline-block;
+        }
+
+        /* Progress Bar */
+        .progress-section {
+            background: #f8fafc;
+            padding: 20px 40px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+            color: var(--gray-color);
+        }
+
+        .progress-bar {
+            background: #e5e7eb;
+            border-radius: 10px;
+            height: 12px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, var(--success-color), #34d399);
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.5s ease;
+            width: 0%;
+        }
+
+        /* Content */
+        .content {
+            padding: 40px;
+        }
+
+        /* Question Card */
+        .question-card {
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            overflow: hidden;
+            transition: border-color 0.3s;
+        }
+
+        .question-card.correct {
+            border-color: var(--success-color);
+        }
+
+        .question-card.incorrect {
+            border-color: var(--danger-color);
+        }
+
+        .question-header {
+            background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+            padding: 20px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .question-number {
+            background: var(--primary-color);
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .question-type {
+            background: #fef3c7;
+            color: var(--primary-dark);
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .question-body {
+            padding: 25px;
+        }
+
+        .question-text {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            color: var(--dark-color);
+        }
+
+        /* Code in Questions */
+        .code-block {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+        }
+
+        .code-block .keyword {
+            color: #569cd6;
+        }
+
+        .code-block .type {
+            color: #4ec9b0;
+        }
+
+        .code-block .string {
+            color: #ce9178;
+        }
+
+        .code-block .comment {
+            color: #6a9955;
+        }
+
+        .code-block .variable {
+            color: #9cdcfe;
+        }
+
+        .code-inline {
+            background: #f3f4f6;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9rem;
+            color: var(--primary-dark);
+        }
+
+        /* Options */
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .option:hover {
+            border-color: var(--primary-color);
+            background: #fef3c7;
+        }
+
+        .option.selected {
+            border-color: var(--primary-color);
+            background: #fef3c7;
+        }
+
+        .option.correct {
+            border-color: var(--success-color);
+            background: #d1fae5;
+        }
+
+        .option.incorrect {
+            border-color: var(--danger-color);
+            background: #fee2e2;
+        }
+
+        .option-radio {
+            width: 22px;
+            height: 22px;
+            border: 2px solid #d1d5db;
+            border-radius: 50%;
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .option.selected .option-radio {
+            border-color: var(--primary-color);
+        }
+
+        .option.selected .option-radio::after {
+            content: '';
+            width: 12px;
+            height: 12px;
+            background: var(--primary-color);
+            border-radius: 50%;
+        }
+
+        .option.correct .option-radio {
+            border-color: var(--success-color);
+            background: var(--success-color);
+        }
+
+        .option.correct .option-radio::after {
+            content: '✓';
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .option.incorrect .option-radio {
+            border-color: var(--danger-color);
+            background: var(--danger-color);
+        }
+
+        .option.incorrect .option-radio::after {
+            content: '✗';
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .option-text {
+            flex: 1;
+        }
+
+        /* Feedback */
+        .feedback {
+            margin-top: 20px;
+            padding: 15px 20px;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .feedback.correct {
+            background: #d1fae5;
+            border-left: 4px solid var(--success-color);
+            display: block;
+        }
+
+        .feedback.incorrect {
+            background: #fee2e2;
+            border-left: 4px solid var(--danger-color);
+            display: block;
+        }
+
+        .feedback-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .feedback.correct .feedback-title {
+            color: var(--success-color);
+        }
+
+        .feedback.incorrect .feedback-title {
+            color: var(--danger-color);
+        }
+
+        /* Submit Button */
+        .submit-btn {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(217, 119, 6, 0.3);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Results Section */
+        .results-section {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 30px;
+            text-align: center;
+            display: none;
+        }
+
+        .results-section.show {
+            display: block;
+        }
+
+        .results-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-dark);
+            margin-bottom: 15px;
+        }
+
+        .results-score {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .results-message {
+            color: var(--gray-color);
+            margin-bottom: 20px;
+        }
+
+        .retry-btn {
+            background: linear-gradient(135deg, var(--success-color), #047857);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .retry-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            display: flex;
+            justify-content: space-between;
+            padding: 30px 40px;
+            background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .bottom-nav a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px 25px;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .bottom-nav a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(217, 119, 6, 0.3);
+        }
+
+        .bottom-nav .prev-lesson {
+            background: linear-gradient(135deg, #64748b, #475569);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--dark-color);
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .nav-breadcrumb {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .bottom-nav {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Navigation Breadcrumb -->
+        <nav class="nav-breadcrumb">
+            <div class="breadcrumb">
+                <a href="../index.html">CPCS203</a>
+                <span class="separator">&#8250;</span>
+                <a href="index.html">Module 3: File I/O</a>
+                <span class="separator">&#8250;</span>
+                <span class="current">Exercises</span>
+            </div>
+            <div class="lesson-nav">
+                <a href="04-writing-printwriter.html">&#8249; Previous</a>
+            </div>
+        </nav>
+
+        <!-- Header -->
+        <div class="header">
+            <h1>File I/O Exercises</h1>
+            <p class="subtitle">Test Your Understanding</p>
+            <div class="course-info">
+                <strong>Module 3</strong> &bull; Lesson 5 of 5
+            </div>
+        </div>
+
+        <!-- Progress -->
+        <div class="progress-section">
+            <div class="progress-header">
+                <span>Progress</span>
+                <span id="progress-text">0 / 10 Questions</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+        </div>
+
+        <div class="content">
+            <!-- Question 1 -->
+            <div class="question-card" id="q1">
+                <div class="question-header">
+                    <div class="question-number">1</div>
+                    <div class="question-type">Concept</div>
+                </div>
+                <div class="question-body">
+                    <div class="question-text">
+                        What is the main difference between storing data in <strong>RAM</strong> vs storing data in a <strong>file</strong>?
+                    </div>
+                    <div class="options">
+                        <div class="option" data-answer="a">
+                            <div class="option-radio"></div>
+                            <div class="option-text">RAM is faster but files are more secure</div>
+                        </div>
+                        <div class="option" data-answer="b">
+                            <div class="option-radio"></div>
+                            <div class="option-text">RAM data is temporary (lost when program ends), file data is permanent</div>
+                        </div>
+                        <div class="option" data-answer="c">
+                            <div class="option-radio"></div>
+                            <div class="option-text">Files can only store text, RAM can store any data type</div>
+                        </div>
+                        <div class="option" data-answer="d">
+                            <div class="option-radio"></div>
+                            <div class="option-text">There is no difference, they are the same</div>
+                        </div>
+                    </div>
+                    <div class="feedback"></div>
+                    <button class="submit-btn" onclick="checkAnswer(1, 'b', 'RAM (memory) is temporary - data is lost when the program terminates. Files provide permanent storage on disk that persists even after the program ends.')">Check Answer</button>
+                </div>
+            </div>
+
+            <!-- Question 2 -->
+            <div class="question-card" id="q2">
+                <div class="question-header">
+                    <div class="question-number">2</div>
+                    <div class="question-type">File Types</div>
+                </div>
+                <div class="question-body">
+                    <div class="question-text">
+                        Which of the following is a <strong>text-based</strong> (human readable) file?
+                    </div>
+                    <div class="options">
+                        <div class="option" data-answer="a">
+                            <div class="option-radio"></div>
+                            <div class="option-text">.exe (executable program)</div>
+                        </div>
+                        <div class="option" data-answer="b">
+                            <div class="option-radio"></div>
+                            <div class="option-text">.png (image file)</div>
+                        </div>
+                        <div class="option" data-answer="c">
+                            <div class="option-radio"></div>
+                            <div class="option-text">.java (Java source code)</div>
+                        </div>
+                        <div class="option" data-answer="d">
+                            <div class="option-radio"></div>
+                            <div class="option-text">.mp3 (audio file)</div>
+                        </div>
+                    </div>
+                    <div class="feedback"></div>
+                    <button class="submit-btn" onclick="checkAnswer(2, 'c', 'Java source files (.java) are text files - you can open them in Notepad and read the code. Files like .exe, .png, and .mp3 are binary files.')">Check Answer</button>
+                </div>
+            </div>
+
+            <!-- Question 3 -->
+            <div class="question-card" id="q3">
+                <div class="question-header">
+                    <div class="question-number">3</div>
+                    <div class="question-type">File Class</div>
+                </div>
+                <div class="question-body">
+                    <div class="question-text">
+                        What does this code do?
+                    </div>
+                    <div class="code-block">
+<span class="type">File</span> <span class="variable">myFile</span> = <span class="keyword">new</span> <span class="type">File</span>(
+    <span class="string">"data.txt"</span>
+);
+                    </div>
+                    <div class="options">
+                        <div class="option" data-answer="a">
+                            <div class="option-radio"></div>
+                            <div class="option-text">Creates a new file called "data.txt" on the disk</div>
+                        </div>
+                        <div class="option" data-answer="b">
+                            <div class="option-radio"></div>
+                            <div class="option-text">Opens and reads the contents of "data.txt"</div>
+                        </div>
+                        <div class="option" data-answer="c">
+                            <div class="option-radio"></div>
+                            <div class="option-text">Creates a File object that represents the path "data.txt" (file may or may not exist)</div>
+                        </div>
+                        <div class="option" data-answer="d">
+                            <div class="option-radio"></div>
+                            <div class="option-text">Deletes the file "data.txt" if it exists</div>
+                        </div>
+                    </div>
+                    <div class="feedback"></div>
+                    <button class="submit-btn" onclick="checkAnswer(3, 'c', 'Creating a File object does NOT create the actual file - it just creates a Java object representing that path. The file may or may not exist on disk.')">Check Answer</button>
+                </div>
+            </div>
+
+            <!-- Question 4 -->
+            <div class="question-card" id="q4">
+                <div class="question-header">
+                    <div class="question-number">4</div>
+                    <div class="question-type">Paths</div>
+                </div>
+                <div class="question-body">
+                    <div class="question-text">
+                        Which is an example of a <strong>relative path</strong>?
+                    </div>
+                    <div class="options">
+                        <div class="option" data-answer="a">
+                            <div class="option-radio"></div>
+                            <div class="option-text">C:/Users/Ahmed/Documents/data.txt</div>
+                        </div>
+                        <div class="option" data-answer="b">
+                            <div class="option-radio"></div>
+                            <div class="option-text">/home/ahmed/projects/data.txt</div>
+                        </div>
+                        <div class="option" data-answer="c">
+                            <div class="option-radio"></div>
+                            <div class="option-text">resources/data.txt</div>
+                        </div>
+                        <div class="option" data-answer="d">
+                            <div class="option-radio"></div>
+                            <div class="option-text">D:/MyProject/src/Main.java</div>
+                        </div>
+                    </div>
+                    <div class="feedback"></div>
+                    <button class="submit-btn" onclick="checkAnswer(4, 'c', 'A relative path is relative to your project folder and doesn\\'t start with a drive letter (C:/) or root (/). \"resources/data.txt\" is relative to where your program runs.')">Check Answer</button>
+                </div>
+            </div>
+
+            <!-- Question 5 -->
+            <div class="question-card" id="q5">
+                <div class="question-header">
+                    <div class="question-number">5</div>
+                    <div class="question-type">File Methods</div>
+                </div>
+                <div class="question-body">
+                    <div class="question-text">
+                        Which method checks if a file exists on disk?
+                    </div>
+                    <div class="options">
+                        <div class="option" data-answer="a">
+                            <div class="option-radio"></div>
+                            <div class="option-text">myFile.isFile()</div>
+                        </div>
+                        <div class="option" data-answer="b">
+                            <div class="option-radio"></div>
+                            <div class="option-text">myFile.exists()</div>
+                        </div>
+                        <div class="option" data-answer="c">
+                            <div class="option-radio"></div>
+                            <div class="option-text">myFile.canRead()</div>
+                        </div>
+                        <div class="option" data-answer="d">
+                            <div class="option-radio"></div>
+                            <div class="option-text">myFile.length()</div>
+                        </div>
+                    </div>
+                    <div class="feedback"></div>
+                    <button class="submit-btn" onclick="checkAnswer(5, 'b', 'The exists() method returns true if the file or directory exists on disk. isFile() checks if it\\'s a file (not directory), canRead() checks permissions, length() returns file size.')">Check Answer</button>
+                </div>
+            </div>
+
+            <!-- Question 6 -->
+            <div class="question-card" id="q6">
+                <div class="question-header">
+                    <div class="question-number">6</div>
+                    <div class="question-type">Scanner</div>
+                </div>
+                <div class="question-body">
+                    <div class="question-text">
+                        What exception must be handled when creating a Scanner with a File?
+                    </div>
+                    <div class="options">
+                        <div class="option" data-answer="a">
+                            <div class="option-radio"></div>
+                            <div class="option-text">IOException</div>
+                        </div>
+                        <div class="option" data-answer="b">
+                            <div class="option-radio"></div>
+                            <div class="option-text">FileNotFoundException</div>
+                        </div>
+                        <div class="option" data-answer="c">
+                            <div class="option-radio"></div>
+                            <div class="option-text">NullPointerException</div>
+                        </div>
+                        <div class="option" data-answer="d">
+                            <div class="option-radio"></div>
+                            <div class="option-text">No exception needs to be handled</div>
+                        </div>
+                    </div>
+                    <div class="feedback"></div>
+                    <button class="submit-btn" onclick="checkAnswer(6, 'b', 'FileNotFoundException is a checked exception that must be handled when creating a Scanner with a File. The file might not exist when you try to read it.')">Check Answer</button>
+                </div>
+            </div>
+
+            <!-- Question 7 -->
+            <div class="question-card" id="q7">
+                <div class="question-header">
+                    <div class="question-number">7</div>
+                    <div class="question-type">Scanner Methods</div>
+                </div>
+                <div class="question-body">
+                    <div class="question-text">
+                        What is the difference between <code class="code-inline">next()</code> and <code class="code-inline">nextLine()</code>?
+                    </div>
+                    <div class="options">
+                        <div class="option" data-answer="a">
+                            <div class="option-radio"></div>
+                            <div class="option-text">next() reads a word (token), nextLine() reads the entire line</div>
+                        </div>
+                        <div class="option" data-answer="b">
+                            <div class="option-radio"></div>
+                            <div class="option-text">next() reads a line, nextLine() reads a word</div>
+                        </div>
+                        <div class="option" data-answer="c">
+                            <div class="option-radio"></div>
+                            <div class="option-text">They are the same, just different names</div>
+                        </div>
+                        <div class="option" data-answer="d">
+                            <div class="option-radio"></div>
+                            <div class="option-text">next() reads integers, nextLine() reads strings</div>
+                        </div>
+                    </div>
+                    <div class="feedback"></div>
+                    <button class="submit-btn" onclick="checkAnswer(7, 'a', 'next() reads the next token (word) stopping at whitespace. nextLine() reads everything until the end of the line (including spaces).')">Check Answer</button>
+                </div>
+            </div>
+
+            <!-- Question 8 -->
+            <div class="question-card" id="q8">
+                <div class="question-header">
+                    <div class="question-number">8</div>
+                    <div class="question-type">PrintWriter</div>
+                </div>
+                <div class="question-body">
+                    <div class="question-text">
+                        What happens if you create a PrintWriter for a file that already exists?
+                    </div>
+                    <div class="options">
+                        <div class="option" data-answer="a">
+                            <div class="option-radio"></div>
+                            <div class="option-text">An error is thrown</div>
+                        </div>
+                        <div class="option" data-answer="b">
+                            <div class="option-radio"></div>
+                            <div class="option-text">New content is appended to the end of the file</div>
+                        </div>
+                        <div class="option" data-answer="c">
+                            <div class="option-radio"></div>
+                            <div class="option-text">The existing file is overwritten (old content is erased)</div>
+                        </div>
+                        <div class="option" data-answer="d">
+                            <div class="option-radio"></div>
+                            <div class="option-text">A new file with a different name is created</div>
+                        </div>
+                    </div>
+                    <div class="feedback"></div>
+                    <button class="submit-btn" onclick="checkAnswer(8, 'c', 'PrintWriter overwrites existing files by default. The old content is erased and replaced with new content. Be careful not to accidentally lose data!')">Check Answer</button>
+                </div>
+            </div>
+
+            <!-- Question 9 -->
+            <div class="question-card" id="q9">
+                <div class="question-header">
+                    <div class="question-number">9</div>
+                    <div class="question-type">Buffers</div>
+                </div>
+                <div class="question-body">
+                    <div class="question-text">
+                        Why is it important to call <code class="code-inline">close()</code> on a PrintWriter?
+                    </div>
+                    <div class="options">
+                        <div class="option" data-answer="a">
+                            <div class="option-radio"></div>
+                            <div class="option-text">To delete the file from memory</div>
+                        </div>
+                        <div class="option" data-answer="b">
+                            <div class="option-radio"></div>
+                            <div class="option-text">To ensure buffered data is written to the file on disk</div>
+                        </div>
+                        <div class="option" data-answer="c">
+                            <div class="option-radio"></div>
+                            <div class="option-text">To encrypt the file for security</div>
+                        </div>
+                        <div class="option" data-answer="d">
+                            <div class="option-radio"></div>
+                            <div class="option-text">It's not important, just a good habit</div>
+                        </div>
+                    </div>
+                    <div class="feedback"></div>
+                    <button class="submit-btn" onclick="checkAnswer(9, 'b', 'Data is buffered in memory for efficiency. Calling close() (or flush()) ensures all buffered data is actually written to the disk. Without it, your file might be empty or incomplete!')">Check Answer</button>
+                </div>
+            </div>
+
+            <!-- Question 10 -->
+            <div class="question-card" id="q10">
+                <div class="question-header">
+                    <div class="question-number">10</div>
+                    <div class="question-type">Code Analysis</div>
+                </div>
+                <div class="question-body">
+                    <div class="question-text">
+                        What will be in output.txt after this code runs?
+                    </div>
+                    <div class="code-block">
+<span class="type">PrintWriter</span> <span class="variable">writer</span> = <span class="keyword">new</span> <span class="type">PrintWriter</span>(
+    <span class="string">"output.txt"</span>
+);
+
+<span class="variable">writer</span>.print(<span class="string">"Hello"</span>);
+<span class="variable">writer</span>.println(<span class="string">" World"</span>);
+<span class="variable">writer</span>.print(<span class="string">"Java"</span>);
+
+<span class="variable">writer</span>.close();
+                    </div>
+                    <div class="options">
+                        <div class="option" data-answer="a">
+                            <div class="option-radio"></div>
+                            <div class="option-text">Hello World Java (all on one line)</div>
+                        </div>
+                        <div class="option" data-answer="b">
+                            <div class="option-radio"></div>
+                            <div class="option-text">Hello World (line 1), Java (line 2)</div>
+                        </div>
+                        <div class="option" data-answer="c">
+                            <div class="option-radio"></div>
+                            <div class="option-text">Hello (line 1), World (line 2), Java (line 3)</div>
+                        </div>
+                        <div class="option" data-answer="d">
+                            <div class="option-radio"></div>
+                            <div class="option-text">The file will be empty because print doesn't save</div>
+                        </div>
+                    </div>
+                    <div class="feedback"></div>
+                    <button class="submit-btn" onclick="checkAnswer(10, 'b', 'print(\"Hello\") writes Hello (no newline), println(\" World\") writes \" World\" then newline, print(\"Java\") writes Java. Result: \"Hello World\" on line 1, \"Java\" on line 2.')">Check Answer</button>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div class="results-section" id="results">
+                <div class="results-title">Quiz Complete!</div>
+                <div class="results-score" id="score">0/10</div>
+                <div class="results-message" id="message">Great effort! Review the explanations above.</div>
+                <button class="retry-btn" onclick="resetQuiz()">Try Again</button>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <a href="04-writing-printwriter.html" class="prev-lesson">&#8249; Previous: PrintWriter</a>
+            <a href="index.html">Back to Module &#8250;</a>
+        </nav>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p><strong>CPCS203</strong> - Object-Oriented Programming</p>
+            <p>Module 3: File I/O &bull; Exercises</p>
+            <p>Prepared by Dr. Almalawi</p>
+        </div>
+    </div>
+
+    <script>
+        let answered = 0;
+        let correct = 0;
+        const total = 10;
+
+        function checkAnswer(questionNum, correctAnswer, explanation) {
+            const card = document.getElementById('q' + questionNum);
+            const options = card.querySelectorAll('.option');
+            const feedback = card.querySelector('.feedback');
+            const btn = card.querySelector('.submit-btn');
+
+            let selectedOption = null;
+            options.forEach(opt => {
+                if (opt.classList.contains('selected')) {
+                    selectedOption = opt;
+                }
+            });
+
+            if (!selectedOption) {
+                alert('Please select an answer first!');
+                return;
+            }
+
+            const selectedAnswer = selectedOption.getAttribute('data-answer');
+            const isCorrect = selectedAnswer === correctAnswer;
+
+            // Disable further selection
+            options.forEach(opt => {
+                opt.style.pointerEvents = 'none';
+                if (opt.getAttribute('data-answer') === correctAnswer) {
+                    opt.classList.add('correct');
+                }
+            });
+
+            if (isCorrect) {
+                selectedOption.classList.add('correct');
+                card.classList.add('correct');
+                feedback.className = 'feedback correct';
+                feedback.innerHTML = '<div class="feedback-title">Correct!</div>' + explanation;
+                correct++;
+            } else {
+                selectedOption.classList.add('incorrect');
+                card.classList.add('incorrect');
+                feedback.className = 'feedback incorrect';
+                feedback.innerHTML = '<div class="feedback-title">Incorrect</div>' + explanation;
+            }
+
+            btn.disabled = true;
+            answered++;
+            updateProgress();
+
+            if (answered === total) {
+                showResults();
+            }
+        }
+
+        function updateProgress() {
+            const percent = (answered / total) * 100;
+            document.getElementById('progress-fill').style.width = percent + '%';
+            document.getElementById('progress-text').textContent = answered + ' / ' + total + ' Questions';
+        }
+
+        function showResults() {
+            const results = document.getElementById('results');
+            const scoreEl = document.getElementById('score');
+            const messageEl = document.getElementById('message');
+
+            scoreEl.textContent = correct + '/' + total;
+
+            if (correct === total) {
+                messageEl.textContent = 'Perfect score! You\'ve mastered File I/O!';
+            } else if (correct >= 8) {
+                messageEl.textContent = 'Excellent work! You understand File I/O well!';
+            } else if (correct >= 6) {
+                messageEl.textContent = 'Good job! Review the topics you missed.';
+            } else {
+                messageEl.textContent = 'Keep practicing! Review the lessons and try again.';
+            }
+
+            results.classList.add('show');
+        }
+
+        function resetQuiz() {
+            answered = 0;
+            correct = 0;
+
+            document.querySelectorAll('.question-card').forEach(card => {
+                card.classList.remove('correct', 'incorrect');
+                card.querySelectorAll('.option').forEach(opt => {
+                    opt.classList.remove('selected', 'correct', 'incorrect');
+                    opt.style.pointerEvents = 'auto';
+                });
+                card.querySelector('.feedback').className = 'feedback';
+                card.querySelector('.submit-btn').disabled = false;
+            });
+
+            document.getElementById('results').classList.remove('show');
+            updateProgress();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Option selection
+        document.querySelectorAll('.option').forEach(option => {
+            option.addEventListener('click', function() {
+                const card = this.closest('.question-card');
+                card.querySelectorAll('.option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                this.classList.add('selected');
+            });
+        });
+    </script>
+</body>
+</html>

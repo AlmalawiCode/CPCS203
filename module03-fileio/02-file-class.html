@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 2: The File Class | CPCS203</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #d97706;
+            --primary-light: #f59e0b;
+            --primary-dark: #b45309;
+            --secondary-color: #ea580c;
+            --success-color: #059669;
+            --warning-color: #d97706;
+            --danger-color: #dc2626;
+            --dark-color: #1f2937;
+            --light-color: #f3f4f6;
+            --gray-color: #6b7280;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.8;
+            color: var(--dark-color);
+            background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+        }
+
+        .nav-breadcrumb {
+            background: linear-gradient(135deg, #92400e, #b45309);
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: white;
+            font-size: 0.9rem;
+        }
+
+        .breadcrumb a {
+            color: #fde68a;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .breadcrumb a:hover { color: white; }
+        .breadcrumb .separator { color: #d97706; }
+        .breadcrumb .current { color: #fef3c7; }
+
+        .lesson-nav {
+            display: flex;
+            gap: 10px;
+        }
+
+        .lesson-nav a {
+            padding: 8px 16px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            text-decoration: none;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+        }
+
+        .lesson-nav a:hover { background: rgba(255,255,255,0.2); }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .header .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .header .course-info {
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 30px;
+            display: inline-block;
+        }
+
+        .content { padding: 40px; }
+
+        .section { margin-bottom: 50px; }
+
+        .section-title {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--primary-color);
+            padding-bottom: 10px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-number {
+            background: var(--primary-color);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .story-box {
+            background: linear-gradient(135deg, #fefce8, #fef9c3);
+            border-left: 5px solid var(--primary-color);
+            padding: 25px 30px;
+            margin: 20px 0;
+            border-radius: 0 15px 15px 0;
+            font-style: italic;
+        }
+
+        .story-character {
+            font-weight: bold;
+            color: var(--primary-dark);
+        }
+
+        .key-concept {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border-left: 5px solid var(--primary-color);
+            padding: 20px 25px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .key-concept-title {
+            font-weight: bold;
+            color: var(--primary-dark);
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .warning-box {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            border-left: 5px solid var(--danger-color);
+            padding: 20px 25px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .warning-title {
+            font-weight: bold;
+            color: var(--danger-color);
+            margin-bottom: 10px;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            border-left: 5px solid #2563eb;
+            padding: 20px 25px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .info-box-title {
+            font-weight: bold;
+            color: #1d4ed8;
+            margin-bottom: 10px;
+        }
+
+        .success-box {
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+            border-left: 5px solid var(--success-color);
+            padding: 20px 25px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .success-title {
+            font-weight: bold;
+            color: var(--success-color);
+            margin-bottom: 10px;
+        }
+
+        .code-block {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+        }
+
+        .code-block .keyword { color: #569cd6; }
+        .code-block .type { color: #4ec9b0; }
+        .code-block .string { color: #ce9178; }
+        .code-block .comment { color: #6a9955; }
+        .code-block .variable { color: #9cdcfe; }
+        .code-block .number { color: #b5cea8; }
+
+        .code-inline {
+            background: #fef3c7;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9rem;
+            color: var(--primary-dark);
+        }
+
+        .comparison-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin: 25px 0;
+        }
+
+        .comparison-box {
+            border-radius: 15px;
+            padding: 25px;
+        }
+
+        .comparison-box.absolute {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border: 2px solid var(--primary-color);
+        }
+
+        .comparison-box.relative {
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+            border: 2px solid var(--success-color);
+        }
+
+        .comparison-title {
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .comparison-box.absolute .comparison-title { color: var(--primary-dark); }
+        .comparison-box.relative .comparison-title { color: var(--success-color); }
+
+        .path-visual {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+        }
+
+        .path-title {
+            font-weight: bold;
+            color: var(--dark-color);
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .folder-structure {
+            font-family: 'Consolas', monospace;
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 10px;
+            line-height: 1.8;
+        }
+
+        .folder { color: #dcdcaa; }
+        .file { color: #9cdcfe; }
+        .highlight {
+            background: rgba(217, 119, 6, 0.3);
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+
+        .methods-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .methods-table th {
+            background: var(--primary-color);
+            color: white;
+            padding: 15px;
+            text-align: left;
+        }
+
+        .methods-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .methods-table tr:last-child td { border-bottom: none; }
+        .methods-table tr:hover { background: #fef3c7; }
+
+        .methods-table code {
+            background: #f3f4f6;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: 'Consolas', monospace;
+            color: var(--primary-dark);
+        }
+
+        .summary-box {
+            background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+            border: 2px solid var(--success-color);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+        }
+
+        .summary-title {
+            font-weight: bold;
+            color: var(--success-color);
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+        }
+
+        .summary-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .summary-list li {
+            padding: 8px 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .summary-list .check {
+            color: var(--success-color);
+            font-size: 1.2rem;
+        }
+
+        .bottom-nav {
+            display: flex;
+            justify-content: space-between;
+            padding: 30px 40px;
+            background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .bottom-nav a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px 25px;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .bottom-nav a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(217, 119, 6, 0.3);
+        }
+
+        .bottom-nav .prev-lesson {
+            background: linear-gradient(135deg, #64748b, #475569);
+        }
+
+        .footer {
+            background: var(--dark-color);
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.8rem; }
+            .content { padding: 20px; }
+            .comparison-container { grid-template-columns: 1fr; }
+            .nav-breadcrumb { flex-direction: column; text-align: center; }
+            .bottom-nav { flex-direction: column; gap: 15px; }
+            .methods-table { font-size: 0.85rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav class="nav-breadcrumb">
+            <div class="breadcrumb">
+                <a href="../index.html">CPCS203</a>
+                <span class="separator">&#8250;</span>
+                <a href="index.html">Module 3: File I/O</a>
+                <span class="separator">&#8250;</span>
+                <span class="current">The File Class</span>
+            </div>
+            <div class="lesson-nav">
+                <a href="01-intro-files.html">&#8249; Previous</a>
+                <a href="03-reading-scanner.html">Next &#8250;</a>
+            </div>
+        </nav>
+
+        <div class="header">
+            <h1>The File Class</h1>
+            <p class="subtitle">Opening Files and Understanding Paths</p>
+            <div class="course-info">
+                <strong>Module 3</strong> &bull; Lesson 2 of 5
+            </div>
+        </div>
+
+        <div class="content">
+            <!-- Section 1 -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">1</span>
+                    Opening a File with the File Class
+                </h2>
+
+                <div class="story-box">
+                    <p><span class="story-character">The teacher</span> demonstrated how to access a text file in Java.</p>
+                    <p>"First," they said, "we create a <strong>File object</strong> that points to where our file is stored."</p>
+                </div>
+
+                <div class="key-concept">
+                    <div class="key-concept-title">What is the File Class?</div>
+                    <p>The <code class="code-inline">File</code> class in Java represents a file or directory path. It doesn't actually contain the file's data - it's like a <strong>pointer</strong> or <strong>handle</strong> to the file's location.</p>
+                </div>
+
+                <div class="code-block">
+<span class="comment">// Import the File class</span>
+<span class="keyword">import</span> java.io.File;
+
+<span class="comment">// Create a File object pointing to "data.txt"</span>
+<span class="type">File</span> <span class="variable">myFile</span> = <span class="keyword">new</span> <span class="type">File</span>(<span class="string">"data.txt"</span>);
+                </div>
+
+                <div class="info-box">
+                    <div class="info-box-title">Important to Understand</div>
+                    <p>Creating a <code class="code-inline">File</code> object does <strong>NOT</strong> create the actual file on disk! It simply creates a Java object that <strong>represents</strong> the file path. The file may or may not exist.</p>
+                </div>
+            </div>
+
+            <!-- Section 2 -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">2</span>
+                    Absolute vs Relative Paths
+                </h2>
+
+                <p>When specifying a file location, you have two options:</p>
+
+                <div class="comparison-container">
+                    <div class="comparison-box absolute">
+                        <div class="comparison-title">
+                            <span>&#128194;</span> Absolute Path
+                        </div>
+                        <p><strong>Complete location</strong> from the root of the file system.</p>
+                        <div class="code-block" style="font-size: 0.85rem;">
+<span class="comment">// Windows</span>
+<span class="type">File</span> <span class="variable">f</span> = <span class="keyword">new</span> <span class="type">File</span>(<span class="string">"C:/Users/Student/data.txt"</span>);
+
+<span class="comment">// Linux/Mac</span>
+<span class="type">File</span> <span class="variable">f</span> = <span class="keyword">new</span> <span class="type">File</span>(<span class="string">"/home/student/data.txt"</span>);
+                        </div>
+                    </div>
+                    <div class="comparison-box relative">
+                        <div class="comparison-title">
+                            <span>&#128193;</span> Relative Path
+                        </div>
+                        <p><strong>Location relative</strong> to your project folder.</p>
+                        <div class="code-block" style="font-size: 0.85rem;">
+<span class="comment">// Same folder as code</span>
+<span class="type">File</span> <span class="variable">f</span> = <span class="keyword">new</span> <span class="type">File</span>(<span class="string">"data.txt"</span>);
+
+<span class="comment">// In subfolder "resources"</span>
+<span class="type">File</span> <span class="variable">f</span> = <span class="keyword">new</span> <span class="type">File</span>(<span class="string">"resources/data.txt"</span>);
+                        </div>
+                    </div>
+                </div>
+
+                <div class="path-visual">
+                    <div class="path-title">Project Folder Structure Example</div>
+                    <div class="folder-structure">
+<span class="folder">MyProject/</span>
+    ├── <span class="folder">src/</span>
+    │   └── <span class="file">Main.java</span>        <span class="comment">← Your code runs here</span>
+    ├── <span class="folder">resources/</span>
+    │   └── <span class="file highlight">data.txt</span>       <span class="comment">← File("resources/data.txt")</span>
+    └── <span class="file highlight">notes.txt</span>            <span class="comment">← File("notes.txt")</span>
+                    </div>
+                </div>
+
+                <div class="warning-box">
+                    <div class="warning-title">Problem with Absolute Paths</div>
+                    <p>If you use <code class="code-inline">"C:/Users/Ahmed/Documents/data.txt"</code> and then share your code with a friend, it won't work on their computer because they don't have the same folder structure!</p>
+                </div>
+
+                <div class="success-box">
+                    <div class="success-title">Advantage of Relative Paths</div>
+                    <p>Relative paths are <strong>portable</strong> - they work on any computer as long as the project folder structure remains the same. <strong>Always prefer relative paths!</strong></p>
+                </div>
+            </div>
+
+            <!-- Section 3 -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">3</span>
+                    Checking If a File Exists
+                </h2>
+
+                <p>Before reading from a file, it's a good practice to check if it actually exists:</p>
+
+                <div class="code-block">
+<span class="type">File</span> <span class="variable">myFile</span> = <span class="keyword">new</span> <span class="type">File</span>(<span class="string">"data.txt"</span>);
+
+<span class="keyword">if</span> (<span class="variable">myFile</span>.exists()) {
+    System.out.println(<span class="string">"File found!"</span>);
+} <span class="keyword">else</span> {
+    System.out.println(<span class="string">"File not found. Please check the path!"</span>);
+}
+                </div>
+
+                <div class="story-box">
+                    <p><span class="story-character">The teacher explained,</span> "Think of it like how Windows Explorer checks files on your computer. The File class lets us do similar things - explore file properties, check if they exist, see their size, and more."</p>
+                </div>
+            </div>
+
+            <!-- Section 4 -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">4</span>
+                    Useful File Class Methods
+                </h2>
+
+                <p>The File class provides many helpful methods:</p>
+
+                <table class="methods-table">
+                    <thead>
+                        <tr>
+                            <th>Method</th>
+                            <th>Returns</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>exists()</code></td>
+                            <td>boolean</td>
+                            <td>Returns true if file/folder exists</td>
+                        </tr>
+                        <tr>
+                            <td><code>canRead()</code></td>
+                            <td>boolean</td>
+                            <td>Returns true if file is readable</td>
+                        </tr>
+                        <tr>
+                            <td><code>canWrite()</code></td>
+                            <td>boolean</td>
+                            <td>Returns true if file is writable</td>
+                        </tr>
+                        <tr>
+                            <td><code>isDirectory()</code></td>
+                            <td>boolean</td>
+                            <td>Returns true if it's a folder</td>
+                        </tr>
+                        <tr>
+                            <td><code>isFile()</code></td>
+                            <td>boolean</td>
+                            <td>Returns true if it's a file</td>
+                        </tr>
+                        <tr>
+                            <td><code>getName()</code></td>
+                            <td>String</td>
+                            <td>Returns the file name</td>
+                        </tr>
+                        <tr>
+                            <td><code>getAbsolutePath()</code></td>
+                            <td>String</td>
+                            <td>Returns the full path</td>
+                        </tr>
+                        <tr>
+                            <td><code>length()</code></td>
+                            <td>long</td>
+                            <td>Returns file size in bytes</td>
+                        </tr>
+                        <tr>
+                            <td><code>delete()</code></td>
+                            <td>boolean</td>
+                            <td>Deletes the file</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3 style="color: var(--primary-color); margin-top: 30px;">Example: Exploring File Properties</h3>
+
+                <div class="code-block">
+<span class="keyword">import</span> java.io.File;
+
+<span class="keyword">public class</span> <span class="type">FileExplorer</span> {
+    <span class="keyword">public static void</span> main(<span class="type">String</span>[] args) {
+
+        <span class="type">File</span> <span class="variable">myFile</span> = <span class="keyword">new</span> <span class="type">File</span>(<span class="string">"data.txt"</span>);
+
+        System.out.println(<span class="string">"File name: "</span> + <span class="variable">myFile</span>.getName());
+        System.out.println(<span class="string">"Exists: "</span> + <span class="variable">myFile</span>.exists());
+        System.out.println(<span class="string">"Full path: "</span> + <span class="variable">myFile</span>.getAbsolutePath());
+        System.out.println(<span class="string">"Is file: "</span> + <span class="variable">myFile</span>.isFile());
+        System.out.println(<span class="string">"Is directory: "</span> + <span class="variable">myFile</span>.isDirectory());
+        System.out.println(<span class="string">"Can read: "</span> + <span class="variable">myFile</span>.canRead());
+        System.out.println(<span class="string">"Size (bytes): "</span> + <span class="variable">myFile</span>.length());
+    }
+}
+                </div>
+
+                <div class="info-box">
+                    <div class="info-box-title">Sample Output (if file exists)</div>
+                    <div class="code-block" style="background: #f8fafc; color: var(--dark-color);">
+File name: data.txt
+Exists: true
+Full path: C:\Users\Student\MyProject\data.txt
+Is file: true
+Is directory: false
+Can read: true
+Size (bytes): 156
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 5 -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">5</span>
+                    Creating Files and Directories
+                </h2>
+
+                <p>You can also create new files and folders using the File class:</p>
+
+                <div class="code-block">
+<span class="keyword">import</span> java.io.File;
+<span class="keyword">import</span> java.io.IOException;
+
+<span class="keyword">public class</span> <span class="type">CreateFiles</span> {
+    <span class="keyword">public static void</span> main(<span class="type">String</span>[] args) {
+
+        <span class="comment">// Create a new file</span>
+        <span class="type">File</span> <span class="variable">newFile</span> = <span class="keyword">new</span> <span class="type">File</span>(<span class="string">"newfile.txt"</span>);
+
+        <span class="keyword">try</span> {
+            <span class="keyword">if</span> (<span class="variable">newFile</span>.createNewFile()) {
+                System.out.println(<span class="string">"File created!"</span>);
+            } <span class="keyword">else</span> {
+                System.out.println(<span class="string">"File already exists."</span>);
+            }
+        } <span class="keyword">catch</span> (<span class="type">IOException</span> e) {
+            System.out.println(<span class="string">"Error creating file."</span>);
+        }
+
+        <span class="comment">// Create a new directory</span>
+        <span class="type">File</span> <span class="variable">newDir</span> = <span class="keyword">new</span> <span class="type">File</span>(<span class="string">"myFolder"</span>);
+
+        <span class="keyword">if</span> (<span class="variable">newDir</span>.mkdir()) {
+            System.out.println(<span class="string">"Directory created!"</span>);
+        }
+    }
+}
+                </div>
+
+                <div class="key-concept">
+                    <div class="key-concept-title">Note About Exceptions</div>
+                    <p>The <code class="code-inline">createNewFile()</code> method can throw an <code class="code-inline">IOException</code>, which we must handle with try-catch. We'll learn more about exceptions in a later module!</p>
+                </div>
+            </div>
+
+            <!-- Section 6 -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">6</span>
+                    Summary
+                </h2>
+
+                <div class="summary-box">
+                    <div class="summary-title">Key Takeaways</div>
+                    <ul class="summary-list">
+                        <li>
+                            <span class="check">&#10003;</span>
+                            <span>The <strong>File class</strong> represents a file or directory path (not the actual content).</span>
+                        </li>
+                        <li>
+                            <span class="check">&#10003;</span>
+                            <span><strong>Absolute paths</strong> give the complete location from root (less portable).</span>
+                        </li>
+                        <li>
+                            <span class="check">&#10003;</span>
+                            <span><strong>Relative paths</strong> are relative to your project folder (more portable).</span>
+                        </li>
+                        <li>
+                            <span class="check">&#10003;</span>
+                            <span>Always check if a file <strong>exists()</strong> before trying to read it.</span>
+                        </li>
+                        <li>
+                            <span class="check">&#10003;</span>
+                            <span>File class provides methods to explore file properties and create files/folders.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="story-box">
+                    <p><span class="story-character">The student asked,</span> "Now I can find and check files, but how do I actually read what's inside them?"</p>
+                    <p><span class="story-character">The teacher smiled,</span> "That's exactly what we'll learn in the next lesson - using Scanner to read from files!"</p>
+                </div>
+            </div>
+        </div>
+
+        <nav class="bottom-nav">
+            <a href="01-intro-files.html" class="prev-lesson">&#8249; Previous: Introduction</a>
+            <a href="03-reading-scanner.html">Next: Reading with Scanner &#8250;</a>
+        </nav>
+
+        <div class="footer">
+            <p><strong>CPCS203</strong> - Object-Oriented Programming</p>
+            <p>Module 3: File I/O &bull; Lesson 2</p>
+            <p>Prepared by Dr. Almalawi</p>
+        </div>
+    </div>
+</body>
+</html>
