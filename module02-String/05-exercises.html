@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>String Exercises | CPCS203</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #059669;
+            --primary-light: #10b981;
+            --primary-dark: #047857;
+            --success-color: #059669;
+            --warning-color: #d97706;
+            --danger-color: #dc2626;
+            --dark-color: #1f2937;
+            --light-color: #f3f4f6;
+            --gray-color: #6b7280;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.8;
+            color: var(--dark-color);
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+        }
+
+        /* Navigation */
+        .nav-breadcrumb {
+            background: linear-gradient(135deg, #065f46, #047857);
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: white;
+            font-size: 0.9rem;
+        }
+
+        .breadcrumb a {
+            color: #a7f3d0;
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            color: white;
+        }
+
+        .breadcrumb .separator {
+            color: #6ee7b7;
+        }
+
+        .breadcrumb .current {
+            color: #fbbf24;
+        }
+
+        .lesson-nav a {
+            padding: 8px 16px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            text-decoration: none;
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--warning-color), #b45309);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .header .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        /* Content */
+        .content {
+            padding: 40px;
+        }
+
+        /* Exercise Card */
+        .exercise {
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .exercise-header {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            padding: 20px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .exercise-number {
+            background: var(--warning-color);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .exercise-title {
+            flex: 1;
+            margin-left: 15px;
+            font-weight: bold;
+            color: var(--dark-color);
+        }
+
+        .exercise-tag {
+            background: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: var(--warning-color);
+            font-weight: bold;
+        }
+
+        .exercise-body {
+            padding: 25px;
+        }
+
+        .question {
+            font-size: 1.05rem;
+            margin-bottom: 20px;
+        }
+
+        /* Code Block */
+        .code-block {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-family: 'Consolas', monospace;
+            font-size: 0.95rem;
+            overflow-x: auto;
+            line-height: 1.6;
+            white-space: pre-wrap;
+        }
+
+        .code-block .keyword { color: #569cd6; }
+        .code-block .type { color: #4ec9b0; }
+        .code-block .string { color: #ce9178; }
+        .code-block .number { color: #b5cea8; }
+        .code-block .comment { color: #6a9955; }
+        .code-block .variable { color: #9cdcfe; }
+        .code-block .method { color: #dcdcaa; }
+
+        .code-inline {
+            background: #e5e7eb;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.9rem;
+            color: var(--danger-color);
+        }
+
+        /* Options */
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option {
+            padding: 15px 20px;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .option:hover {
+            border-color: var(--primary-color);
+            background: #f0fdf4;
+        }
+
+        .option.selected {
+            border-color: var(--primary-color);
+            background: #d1fae5;
+        }
+
+        .option.correct {
+            border-color: var(--success-color);
+            background: #d1fae5;
+        }
+
+        .option.incorrect {
+            border-color: var(--danger-color);
+            background: #fee2e2;
+        }
+
+        .option-letter {
+            width: 30px;
+            height: 30px;
+            border: 2px solid #9ca3af;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .option.correct .option-letter {
+            background: var(--success-color);
+            border-color: var(--success-color);
+            color: white;
+        }
+
+        .option.incorrect .option-letter {
+            background: var(--danger-color);
+            border-color: var(--danger-color);
+            color: white;
+        }
+
+        .option-text {
+            flex: 1;
+        }
+
+        /* Buttons */
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-check {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-check:hover {
+            background: var(--primary-dark);
+        }
+
+        .btn-show {
+            background: #64748b;
+            color: white;
+        }
+
+        .btn-show:hover {
+            background: #475569;
+        }
+
+        /* Explanation */
+        .explanation {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            border-left: 5px solid #2563eb;
+        }
+
+        .explanation.show {
+            display: block;
+        }
+
+        .explanation-title {
+            font-weight: bold;
+            color: #2563eb;
+            margin-bottom: 10px;
+        }
+
+        /* Score */
+        .score-section {
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+            border: 2px solid var(--success-color);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .score-title {
+            font-size: 1.5rem;
+            color: var(--success-color);
+            margin-bottom: 15px;
+        }
+
+        .score-value {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--primary-dark);
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            display: flex;
+            justify-content: space-between;
+            padding: 30px 40px;
+            background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .bottom-nav a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px 25px;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+        }
+
+        .bottom-nav .prev-lesson {
+            background: linear-gradient(135deg, #64748b, #475569);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--dark-color);
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.8rem; }
+            .content { padding: 20px; }
+            .bottom-nav { flex-direction: column; gap: 15px; }
+            .nav-breadcrumb { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Navigation -->
+        <nav class="nav-breadcrumb">
+            <div class="breadcrumb">
+                <a href="../index.html">CPCS203</a>
+                <span class="separator">›</span>
+                <a href="index.html">Module 2: Strings</a>
+                <span class="separator">›</span>
+                <span class="current">Exercises</span>
+            </div>
+            <div class="lesson-nav">
+                <a href="04-stringbuilder-buffer.html">‹ Previous</a>
+            </div>
+        </nav>
+
+        <!-- Header -->
+        <div class="header">
+            <h1>String Exercises</h1>
+            <p class="subtitle">Test Your Understanding of Strings in Java</p>
+        </div>
+
+        <div class="content">
+            <!-- Score Section -->
+            <div class="score-section" id="scoreSection" style="display: none;">
+                <div class="score-title">Your Score</div>
+                <div class="score-value" id="scoreValue">0/10</div>
+            </div>
+
+            <!-- Exercise 1 -->
+            <div class="exercise" data-correct="B">
+                <div class="exercise-header">
+                    <div class="exercise-number">1</div>
+                    <div class="exercise-title">String Immutability</div>
+                    <span class="exercise-tag">Immutability</span>
+                </div>
+                <div class="exercise-body">
+                    <div class="question">What is the output of this code?</div>
+                    <div class="code-block"><span class="type">String</span> <span class="variable">s</span> = <span class="string">"Hello"</span>;
+<span class="variable">s</span>.<span class="method">toUpperCase</span>();
+System.out.println(<span class="variable">s</span>);</div>
+                    <div class="options">
+                        <div class="option" data-value="A">
+                            <span class="option-letter">A</span>
+                            <span class="option-text">HELLO</span>
+                        </div>
+                        <div class="option" data-value="B">
+                            <span class="option-letter">B</span>
+                            <span class="option-text">Hello</span>
+                        </div>
+                        <div class="option" data-value="C">
+                            <span class="option-letter">C</span>
+                            <span class="option-text">hello</span>
+                        </div>
+                        <div class="option" data-value="D">
+                            <span class="option-letter">D</span>
+                            <span class="option-text">Compilation error</span>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-check" onclick="checkAnswer(this)">Check Answer</button>
+                        <button class="btn btn-show" onclick="showExplanation(this)">Show Explanation</button>
+                    </div>
+                    <div class="explanation">
+                        <div class="explanation-title">Explanation</div>
+                        <p><code class="code-inline">toUpperCase()</code> returns a <strong>new String</strong> but doesn't modify the original. Since we don't assign the result to anything, the original String <code class="code-inline">s</code> remains unchanged. This demonstrates String <strong>immutability</strong>.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Exercise 2 -->
+            <div class="exercise" data-correct="A">
+                <div class="exercise-header">
+                    <div class="exercise-number">2</div>
+                    <div class="exercise-title">String Pool</div>
+                    <span class="exercise-tag">Interning</span>
+                </div>
+                <div class="exercise-body">
+                    <div class="question">What is the output?</div>
+                    <div class="code-block"><span class="type">String</span> <span class="variable">s1</span> = <span class="string">"Java"</span>;
+<span class="type">String</span> <span class="variable">s2</span> = <span class="string">"Java"</span>;
+System.out.println(<span class="variable">s1</span> == <span class="variable">s2</span>);</div>
+                    <div class="options">
+                        <div class="option" data-value="A">
+                            <span class="option-letter">A</span>
+                            <span class="option-text">true</span>
+                        </div>
+                        <div class="option" data-value="B">
+                            <span class="option-letter">B</span>
+                            <span class="option-text">false</span>
+                        </div>
+                        <div class="option" data-value="C">
+                            <span class="option-letter">C</span>
+                            <span class="option-text">Compilation error</span>
+                        </div>
+                        <div class="option" data-value="D">
+                            <span class="option-letter">D</span>
+                            <span class="option-text">Runtime error</span>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-check" onclick="checkAnswer(this)">Check Answer</button>
+                        <button class="btn btn-show" onclick="showExplanation(this)">Show Explanation</button>
+                    </div>
+                    <div class="explanation">
+                        <div class="explanation-title">Explanation</div>
+                        <p>String literals are automatically <strong>interned</strong> in the String Pool. Both <code class="code-inline">s1</code> and <code class="code-inline">s2</code> point to the <strong>same object</strong> in the pool, so <code class="code-inline">==</code> returns <code class="code-inline">true</code>.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Exercise 3 -->
+            <div class="exercise" data-correct="B">
+                <div class="exercise-header">
+                    <div class="exercise-number">3</div>
+                    <div class="exercise-title">new String()</div>
+                    <span class="exercise-tag">Interning</span>
+                </div>
+                <div class="exercise-body">
+                    <div class="question">What is the output?</div>
+                    <div class="code-block"><span class="type">String</span> <span class="variable">s1</span> = <span class="string">"Java"</span>;
+<span class="type">String</span> <span class="variable">s2</span> = <span class="keyword">new</span> <span class="type">String</span>(<span class="string">"Java"</span>);
+System.out.println(<span class="variable">s1</span> == <span class="variable">s2</span>);</div>
+                    <div class="options">
+                        <div class="option" data-value="A">
+                            <span class="option-letter">A</span>
+                            <span class="option-text">true</span>
+                        </div>
+                        <div class="option" data-value="B">
+                            <span class="option-letter">B</span>
+                            <span class="option-text">false</span>
+                        </div>
+                        <div class="option" data-value="C">
+                            <span class="option-letter">C</span>
+                            <span class="option-text">Compilation error</span>
+                        </div>
+                        <div class="option" data-value="D">
+                            <span class="option-letter">D</span>
+                            <span class="option-text">Runtime error</span>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-check" onclick="checkAnswer(this)">Check Answer</button>
+                        <button class="btn btn-show" onclick="showExplanation(this)">Show Explanation</button>
+                    </div>
+                    <div class="explanation">
+                        <div class="explanation-title">Explanation</div>
+                        <p><code class="code-inline">new String()</code> always creates a <strong>new object in the heap</strong>, not in the String Pool. So <code class="code-inline">s1</code> and <code class="code-inline">s2</code> are different objects with different addresses, making <code class="code-inline">==</code> return <code class="code-inline">false</code>.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Exercise 4 -->
+            <div class="exercise" data-correct="C">
+                <div class="exercise-header">
+                    <div class="exercise-number">4</div>
+                    <div class="exercise-title">equals() Method</div>
+                    <span class="exercise-tag">Comparison</span>
+                </div>
+                <div class="exercise-body">
+                    <div class="question">What is the output?</div>
+                    <div class="code-block"><span class="type">String</span> <span class="variable">s1</span> = <span class="string">"Java"</span>;
+<span class="type">String</span> <span class="variable">s2</span> = <span class="keyword">new</span> <span class="type">String</span>(<span class="string">"Java"</span>);
+System.out.println(<span class="variable">s1</span>.<span class="method">equals</span>(<span class="variable">s2</span>));</div>
+                    <div class="options">
+                        <div class="option" data-value="A">
+                            <span class="option-letter">A</span>
+                            <span class="option-text">false</span>
+                        </div>
+                        <div class="option" data-value="B">
+                            <span class="option-letter">B</span>
+                            <span class="option-text">Compilation error</span>
+                        </div>
+                        <div class="option" data-value="C">
+                            <span class="option-letter">C</span>
+                            <span class="option-text">true</span>
+                        </div>
+                        <div class="option" data-value="D">
+                            <span class="option-letter">D</span>
+                            <span class="option-text">Runtime error</span>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-check" onclick="checkAnswer(this)">Check Answer</button>
+                        <button class="btn btn-show" onclick="showExplanation(this)">Show Explanation</button>
+                    </div>
+                    <div class="explanation">
+                        <div class="explanation-title">Explanation</div>
+                        <p><code class="code-inline">.equals()</code> compares the <strong>content</strong> of the Strings, not the addresses. Both contain "Java", so it returns <code class="code-inline">true</code>. Always use <code class="code-inline">.equals()</code> for String content comparison!</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Exercise 5 -->
+            <div class="exercise" data-correct="B">
+                <div class="exercise-header">
+                    <div class="exercise-number">5</div>
+                    <div class="exercise-title">substring()</div>
+                    <span class="exercise-tag">Methods</span>
+                </div>
+                <div class="exercise-body">
+                    <div class="question">What is the output?</div>
+                    <div class="code-block"><span class="type">String</span> <span class="variable">s</span> = <span class="string">"Hello World"</span>;
+System.out.println(<span class="variable">s</span>.<span class="method">substring</span>(<span class="number">0</span>, <span class="number">5</span>));</div>
+                    <div class="options">
+                        <div class="option" data-value="A">
+                            <span class="option-letter">A</span>
+                            <span class="option-text">Hello  (with space)</span>
+                        </div>
+                        <div class="option" data-value="B">
+                            <span class="option-letter">B</span>
+                            <span class="option-text">Hello</span>
+                        </div>
+                        <div class="option" data-value="C">
+                            <span class="option-letter">C</span>
+                            <span class="option-text">ello</span>
+                        </div>
+                        <div class="option" data-value="D">
+                            <span class="option-letter">D</span>
+                            <span class="option-text">World</span>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-check" onclick="checkAnswer(this)">Check Answer</button>
+                        <button class="btn btn-show" onclick="showExplanation(this)">Show Explanation</button>
+                    </div>
+                    <div class="explanation">
+                        <div class="explanation-title">Explanation</div>
+                        <p><code class="code-inline">substring(0, 5)</code> returns characters from index 0 to index 4 (5 is exclusive). That's "Hello" (indices 0,1,2,3,4). The space is at index 5 and is not included.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Exercise 6 -->
+            <div class="exercise" data-correct="A">
+                <div class="exercise-header">
+                    <div class="exercise-number">6</div>
+                    <div class="exercise-title">indexOf()</div>
+                    <span class="exercise-tag">Methods</span>
+                </div>
+                <div class="exercise-body">
+                    <div class="question">What is the output?</div>
+                    <div class="code-block"><span class="type">String</span> <span class="variable">s</span> = <span class="string">"programming"</span>;
+System.out.println(<span class="variable">s</span>.<span class="method">indexOf</span>(<span class="string">'g'</span>));</div>
+                    <div class="options">
+                        <div class="option" data-value="A">
+                            <span class="option-letter">A</span>
+                            <span class="option-text">3</span>
+                        </div>
+                        <div class="option" data-value="B">
+                            <span class="option-letter">B</span>
+                            <span class="option-text">10</span>
+                        </div>
+                        <div class="option" data-value="C">
+                            <span class="option-letter">C</span>
+                            <span class="option-text">4</span>
+                        </div>
+                        <div class="option" data-value="D">
+                            <span class="option-letter">D</span>
+                            <span class="option-text">-1</span>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-check" onclick="checkAnswer(this)">Check Answer</button>
+                        <button class="btn btn-show" onclick="showExplanation(this)">Show Explanation</button>
+                    </div>
+                    <div class="explanation">
+                        <div class="explanation-title">Explanation</div>
+                        <p><code class="code-inline">indexOf()</code> returns the index of the <strong>first occurrence</strong>. In "programming": p(0), r(1), o(2), g(3)... The first 'g' is at index 3.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Exercise 7 -->
+            <div class="exercise" data-correct="C">
+                <div class="exercise-header">
+                    <div class="exercise-number">7</div>
+                    <div class="exercise-title">StringBuilder vs String</div>
+                    <span class="exercise-tag">StringBuilder</span>
+                </div>
+                <div class="exercise-body">
+                    <div class="question">Which class should you use for frequent String modifications in a single-threaded application?</div>
+                    <div class="options">
+                        <div class="option" data-value="A">
+                            <span class="option-letter">A</span>
+                            <span class="option-text">String</span>
+                        </div>
+                        <div class="option" data-value="B">
+                            <span class="option-letter">B</span>
+                            <span class="option-text">StringBuffer</span>
+                        </div>
+                        <div class="option" data-value="C">
+                            <span class="option-letter">C</span>
+                            <span class="option-text">StringBuilder</span>
+                        </div>
+                        <div class="option" data-value="D">
+                            <span class="option-letter">D</span>
+                            <span class="option-text">CharSequence</span>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-check" onclick="checkAnswer(this)">Check Answer</button>
+                        <button class="btn btn-show" onclick="showExplanation(this)">Show Explanation</button>
+                    </div>
+                    <div class="explanation">
+                        <div class="explanation-title">Explanation</div>
+                        <p><strong>StringBuilder</strong> is the best choice for frequent modifications in a single-threaded application. It's mutable (no new objects) and faster than StringBuffer (no synchronization overhead).</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Exercise 8 -->
+            <div class="exercise" data-correct="B">
+                <div class="exercise-header">
+                    <div class="exercise-number">8</div>
+                    <div class="exercise-title">Thread Safety</div>
+                    <span class="exercise-tag">StringBuffer</span>
+                </div>
+                <div class="exercise-body">
+                    <div class="question">Which statement is TRUE about StringBuffer?</div>
+                    <div class="options">
+                        <div class="option" data-value="A">
+                            <span class="option-letter">A</span>
+                            <span class="option-text">StringBuffer is immutable</span>
+                        </div>
+                        <div class="option" data-value="B">
+                            <span class="option-letter">B</span>
+                            <span class="option-text">StringBuffer is thread-safe (synchronized)</span>
+                        </div>
+                        <div class="option" data-value="C">
+                            <span class="option-letter">C</span>
+                            <span class="option-text">StringBuffer is faster than StringBuilder</span>
+                        </div>
+                        <div class="option" data-value="D">
+                            <span class="option-letter">D</span>
+                            <span class="option-text">StringBuffer stores strings in the String Pool</span>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-check" onclick="checkAnswer(this)">Check Answer</button>
+                        <button class="btn btn-show" onclick="showExplanation(this)">Show Explanation</button>
+                    </div>
+                    <div class="explanation">
+                        <div class="explanation-title">Explanation</div>
+                        <p>StringBuffer is <strong>thread-safe</strong> because its methods are synchronized. This means only one thread can access it at a time, preventing data corruption. However, this makes it slightly slower than StringBuilder.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Exercise 9 -->
+            <div class="exercise" data-correct="D">
+                <div class="exercise-header">
+                    <div class="exercise-number">9</div>
+                    <div class="exercise-title">StringBuilder Methods</div>
+                    <span class="exercise-tag">StringBuilder</span>
+                </div>
+                <div class="exercise-body">
+                    <div class="question">What is the output?</div>
+                    <div class="code-block"><span class="type">StringBuilder</span> <span class="variable">sb</span> = <span class="keyword">new</span> <span class="type">StringBuilder</span>(<span class="string">"Hello"</span>);
+<span class="variable">sb</span>.<span class="method">append</span>(<span class="string">" World"</span>);
+<span class="variable">sb</span>.<span class="method">reverse</span>();
+System.out.println(<span class="variable">sb</span>);</div>
+                    <div class="options">
+                        <div class="option" data-value="A">
+                            <span class="option-letter">A</span>
+                            <span class="option-text">Hello World</span>
+                        </div>
+                        <div class="option" data-value="B">
+                            <span class="option-letter">B</span>
+                            <span class="option-text">olleH</span>
+                        </div>
+                        <div class="option" data-value="C">
+                            <span class="option-letter">C</span>
+                            <span class="option-text">World Hello</span>
+                        </div>
+                        <div class="option" data-value="D">
+                            <span class="option-letter">D</span>
+                            <span class="option-text">dlroW olleH</span>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-check" onclick="checkAnswer(this)">Check Answer</button>
+                        <button class="btn btn-show" onclick="showExplanation(this)">Show Explanation</button>
+                    </div>
+                    <div class="explanation">
+                        <div class="explanation-title">Explanation</div>
+                        <p>First, <code class="code-inline">append(" World")</code> makes it "Hello World". Then <code class="code-inline">reverse()</code> reverses the entire string to "dlroW olleH". StringBuilder modifies in place!</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Exercise 10 -->
+            <div class="exercise" data-correct="C">
+                <div class="exercise-header">
+                    <div class="exercise-number">10</div>
+                    <div class="exercise-title">Loop Concatenation</div>
+                    <span class="exercise-tag">Performance</span>
+                </div>
+                <div class="exercise-body">
+                    <div class="question">Why is this code inefficient?</div>
+                    <div class="code-block"><span class="type">String</span> <span class="variable">result</span> = <span class="string">""</span>;
+<span class="keyword">for</span> (<span class="keyword">int</span> <span class="variable">i</span> = <span class="number">0</span>; <span class="variable">i</span> &lt; <span class="number">1000</span>; <span class="variable">i</span>++) {
+    <span class="variable">result</span> = <span class="variable">result</span> + <span class="variable">i</span>;
+}</div>
+                    <div class="options">
+                        <div class="option" data-value="A">
+                            <span class="option-letter">A</span>
+                            <span class="option-text">The loop runs too many times</span>
+                        </div>
+                        <div class="option" data-value="B">
+                            <span class="option-letter">B</span>
+                            <span class="option-text">Integer addition is slow</span>
+                        </div>
+                        <div class="option" data-value="C">
+                            <span class="option-letter">C</span>
+                            <span class="option-text">Each concatenation creates a new String object</span>
+                        </div>
+                        <div class="option" data-value="D">
+                            <span class="option-letter">D</span>
+                            <span class="option-text">The initial String is empty</span>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-check" onclick="checkAnswer(this)">Check Answer</button>
+                        <button class="btn btn-show" onclick="showExplanation(this)">Show Explanation</button>
+                    </div>
+                    <div class="explanation">
+                        <div class="explanation-title">Explanation</div>
+                        <p>Because String is <strong>immutable</strong>, each <code class="code-inline">+</code> operation creates a <strong>new String object</strong>. With 1000 iterations, that's ~1000 new objects created and discarded! Use <code class="code-inline">StringBuilder</code> instead for much better performance.</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <a href="04-stringbuilder-buffer.html" class="prev-lesson">‹ Previous: StringBuilder</a>
+            <a href="index.html">Back to Module Index ›</a>
+        </nav>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p><strong>CPCS203</strong> - Object-Oriented Programming</p>
+            <p>Module 2: Strings | Exercises</p>
+            <p>Prepared by Dr. Almalawi</p>
+        </div>
+    </div>
+
+    <script>
+        let score = 0;
+        let answered = 0;
+        const total = 10;
+
+        // Add click handlers to options
+        document.querySelectorAll('.option').forEach(option => {
+            option.addEventListener('click', function() {
+                const exercise = this.closest('.exercise');
+                if (exercise.classList.contains('answered')) return;
+
+                exercise.querySelectorAll('.option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                this.classList.add('selected');
+            });
+        });
+
+        function checkAnswer(btn) {
+            const exercise = btn.closest('.exercise');
+            if (exercise.classList.contains('answered')) return;
+
+            const selected = exercise.querySelector('.option.selected');
+            if (!selected) {
+                alert('Please select an answer first!');
+                return;
+            }
+
+            const correctAnswer = exercise.dataset.correct;
+            const selectedValue = selected.dataset.value;
+
+            exercise.classList.add('answered');
+            answered++;
+
+            if (selectedValue === correctAnswer) {
+                selected.classList.add('correct');
+                score++;
+            } else {
+                selected.classList.add('incorrect');
+                exercise.querySelector(`.option[data-value="${correctAnswer}"]`).classList.add('correct');
+            }
+
+            updateScore();
+        }
+
+        function showExplanation(btn) {
+            const explanation = btn.closest('.exercise-body').querySelector('.explanation');
+            explanation.classList.toggle('show');
+            btn.textContent = explanation.classList.contains('show') ? 'Hide Explanation' : 'Show Explanation';
+        }
+
+        function updateScore() {
+            const scoreSection = document.getElementById('scoreSection');
+            const scoreValue = document.getElementById('scoreValue');
+            scoreSection.style.display = 'block';
+            scoreValue.textContent = `${score}/${answered}`;
+        }
+    </script>
+</body>
+</html>
