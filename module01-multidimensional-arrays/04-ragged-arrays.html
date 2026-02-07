@@ -1,0 +1,1296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 1: Ragged Arrays in Java | CPCS203</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #7c3aed;
+            --secondary-color: #2563eb;
+            --success-color: #059669;
+            --warning-color: #d97706;
+            --danger-color: #dc2626;
+            --dark-color: #1f2937;
+            --light-color: #f3f4f6;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.8;
+            color: var(--dark-color);
+            background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--warning-color), #b45309);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .header .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .header .course-info {
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 30px;
+            display: inline-block;
+        }
+
+        /* Content */
+        .content {
+            padding: 40px;
+        }
+
+        /* Sections */
+        .section {
+            margin-bottom: 50px;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            color: var(--warning-color);
+            border-bottom: 3px solid var(--warning-color);
+            padding-bottom: 10px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-number {
+            background: var(--warning-color);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        /* Story Box */
+        .story-box {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border: 2px solid var(--warning-color);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 25px 0;
+        }
+
+        .story-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--warning-color);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .story-icon {
+            font-size: 1.5rem;
+        }
+
+        /* Key Concept Box */
+        .key-concept {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            border-left: 5px solid var(--secondary-color);
+            padding: 20px 25px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .key-concept-title {
+            font-weight: bold;
+            color: var(--secondary-color);
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        /* Important Box */
+        .important-box {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            border-left: 5px solid var(--danger-color);
+            padding: 20px 25px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .important-box-title {
+            font-weight: bold;
+            color: var(--danger-color);
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        /* Success Box */
+        .success-box {
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+            border-left: 5px solid var(--success-color);
+            padding: 20px 25px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .success-box-title {
+            font-weight: bold;
+            color: var(--success-color);
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        /* Code Block - IDE Style */
+        .code-block {
+            background: #1e1e1e;
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .code-header {
+            background: #323233;
+            padding: 8px 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .code-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .code-dot.red { background: #ff5f56; }
+        .code-dot.yellow { background: #ffbd2e; }
+        .code-dot.green { background: #27ca40; }
+
+        .code-title {
+            color: #9ca3af;
+            font-size: 0.85rem;
+            margin-left: 10px;
+        }
+
+        .code-content {
+            padding: 20px;
+            overflow-x: auto;
+        }
+
+        .code-content pre {
+            margin: 0;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #d4d4d4;
+        }
+
+        .code-content .line {
+            display: block;
+        }
+
+        .code-content .line-number {
+            display: inline-block;
+            width: 30px;
+            color: #6b7280;
+            text-align: right;
+            margin-right: 20px;
+            user-select: none;
+        }
+
+        /* Syntax Highlighting */
+        .keyword { color: #569cd6; }
+        .type { color: #4ec9b0; }
+        .string { color: #ce9178; }
+        .number { color: #b5cea8; }
+        .comment { color: #6a9955; font-style: italic; }
+        .variable { color: #9cdcfe; }
+        .method { color: #dcdcaa; }
+        .class-name { color: #4ec9b0; }
+        .bracket { color: #ffd700; }
+        .operator { color: #d4d4d4; }
+
+        .code-inline {
+            background: #e5e7eb;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9rem;
+            color: var(--danger-color);
+        }
+
+        /* Visualization Container */
+        .visual-container {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+            overflow-x: auto;
+        }
+
+        .visual-title {
+            text-align: center;
+            font-weight: bold;
+            color: var(--dark-color);
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+
+        /* Comparison Layout */
+        .comparison-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 25px 0;
+        }
+
+        .comparison-box {
+            background: #f8fafc;
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .comparison-box.bad {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            border: 2px solid var(--danger-color);
+        }
+
+        .comparison-box.good {
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+            border: 2px solid var(--success-color);
+        }
+
+        .comparison-title {
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+        }
+
+        .comparison-box.bad .comparison-title { color: var(--danger-color); }
+        .comparison-box.good .comparison-title { color: var(--success-color); }
+
+        @media (max-width: 768px) {
+            .comparison-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Student Cards */
+        .students-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .student-card {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .student-name {
+            font-weight: bold;
+            min-width: 100px;
+            color: var(--dark-color);
+        }
+
+        .student-courses {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .course-badge {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            border: 1px solid var(--secondary-color);
+            border-radius: 20px;
+            padding: 5px 15px;
+            font-size: 0.85rem;
+            color: var(--secondary-color);
+        }
+
+        .course-badge.empty {
+            background: #f3f4f6;
+            border: 2px dashed #d1d5db;
+            color: #9ca3af;
+        }
+
+        /* Wasted Space Visual */
+        .wasted-cell {
+            background: repeating-linear-gradient(
+                45deg,
+                #fee2e2,
+                #fee2e2 5px,
+                #fecaca 5px,
+                #fecaca 10px
+            );
+            border: 2px dashed var(--danger-color);
+        }
+
+        /* Lists */
+        ul, ol {
+            margin: 15px 0 15px 25px;
+        }
+
+        li {
+            margin: 8px 0;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--dark-color);
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .student-card {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+        /* Step boxes */
+        .step-container {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+        }
+
+        .step-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .step-number-big {
+            background: linear-gradient(135deg, var(--warning-color), #b45309);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .step-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--warning-color);
+        }
+
+        /* Navigation */
+        .nav-breadcrumb {
+            background: linear-gradient(135deg, #1e3a5f, #2d5a87);
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: white;
+            font-size: 0.9rem;
+        }
+
+        .breadcrumb a {
+            color: #93c5fd;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .breadcrumb a:hover {
+            color: white;
+        }
+
+        .breadcrumb .separator {
+            color: #64748b;
+        }
+
+        .breadcrumb .current {
+            color: #fbbf24;
+        }
+
+        .lesson-nav {
+            display: flex;
+            gap: 10px;
+        }
+
+        .lesson-nav a {
+            padding: 8px 16px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            text-decoration: none;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .lesson-nav a:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            display: flex;
+            justify-content: space-between;
+            padding: 30px 40px;
+            background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .bottom-nav a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px 25px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .bottom-nav a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(37, 99, 235, 0.3);
+        }
+
+        .bottom-nav .prev-lesson {
+            background: linear-gradient(135deg, #64748b, #475569);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Navigation Breadcrumb -->
+        <nav class="nav-breadcrumb">
+            <div class="breadcrumb">
+                <a href="../index.html">CPCS203</a>
+                <span class="separator">›</span>
+                <a href="index.html">Module 1: Arrays</a>
+                <span class="separator">›</span>
+                <span class="current">Ragged Arrays</span>
+            </div>
+            <div class="lesson-nav">
+                <a href="03-2d-3d-arrays.html">‹ Previous</a>
+                <a href="05-2d-3d-exercises.html">Next: 2D/3D Exercises ›</a>
+            </div>
+        </nav>
+
+        <!-- Header -->
+        <div class="header">
+            <h1>Ragged (Jagged) Arrays in Java</h1>
+            <p class="subtitle">When Arrays Don't Have to Be Rectangular!</p>
+            <div class="course-info">
+                <strong>CPCS203</strong> - Object-Oriented Programming | Week 1
+            </div>
+        </div>
+
+        <div class="content">
+            <!-- Section 1: The Story -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">1</span>
+                    The Story: A University Registration Problem
+                </h2>
+
+                <div class="story-box">
+                    <div class="story-title">
+                        <span class="story-icon">&#127891;</span>
+                        The Scenario
+                    </div>
+                    <p>You are building a registration system for King Abdulaziz University. You need to store the courses each student is enrolled in. Here's the challenge:</p>
+                    <ul style="margin-top: 15px;">
+                        <li><strong>Ahmed</strong> is a full-time student taking <strong>5 courses</strong></li>
+                        <li><strong>Sara</strong> is working part-time and taking only <strong>2 courses</strong></li>
+                        <li><strong>Mohammed</strong> is in his final semester with just <strong>3 courses</strong></li>
+                        <li><strong>Fatima</strong> is an ambitious student taking <strong>6 courses</strong></li>
+                    </ul>
+                    <p style="margin-top: 15px;"><strong>How do you store this data efficiently?</strong></p>
+                </div>
+
+                <h3 style="color: var(--danger-color); margin-top: 30px;">Approach 1: Using a Regular 2D Array</h3>
+
+                <p>Your first thought might be: "I'll create a 2D array with enough columns for the maximum number of courses!"</p>
+
+                <div class="code-block">
+                    <div class="code-header">
+                        <div class="code-dot red"></div>
+                        <div class="code-dot yellow"></div>
+                        <div class="code-dot green"></div>
+                        <span class="code-title">RegularArray.java</span>
+                    </div>
+                    <div class="code-content">
+<pre><span class="line"><span class="line-number">1</span><span class="comment">// 4 students, maximum 6 courses each</span></span>
+<span class="line"><span class="line-number">2</span><span class="type">String</span><span class="bracket">[][]</span> <span class="variable">courses</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="type">String</span><span class="bracket">[</span><span class="number">4</span><span class="bracket">][</span><span class="number">6</span><span class="bracket">]</span>;</span>
+<span class="line"><span class="line-number">3</span></span>
+<span class="line"><span class="line-number">4</span><span class="comment">// Ahmed's 5 courses</span></span>
+<span class="line"><span class="line-number">5</span><span class="variable">courses</span><span class="bracket">[</span><span class="number">0</span><span class="bracket">][</span><span class="number">0</span><span class="bracket">]</span> <span class="operator">=</span> <span class="string">"CPCS203"</span>; <span class="variable">courses</span><span class="bracket">[</span><span class="number">0</span><span class="bracket">][</span><span class="number">1</span><span class="bracket">]</span> <span class="operator">=</span> <span class="string">"CPCS204"</span>;</span>
+<span class="line"><span class="line-number">6</span><span class="variable">courses</span><span class="bracket">[</span><span class="number">0</span><span class="bracket">][</span><span class="number">2</span><span class="bracket">]</span> <span class="operator">=</span> <span class="string">"MATH201"</span>; <span class="variable">courses</span><span class="bracket">[</span><span class="number">0</span><span class="bracket">][</span><span class="number">3</span><span class="bracket">]</span> <span class="operator">=</span> <span class="string">"PHYS101"</span>;</span>
+<span class="line"><span class="line-number">7</span><span class="variable">courses</span><span class="bracket">[</span><span class="number">0</span><span class="bracket">][</span><span class="number">4</span><span class="bracket">]</span> <span class="operator">=</span> <span class="string">"ENGL101"</span>;</span>
+<span class="line"><span class="line-number">8</span><span class="comment">// courses[0][5] is null - WASTED!</span></span>
+<span class="line"><span class="line-number">9</span></span>
+<span class="line"><span class="line-number">10</span><span class="comment">// Sara's 2 courses</span></span>
+<span class="line"><span class="line-number">11</span><span class="variable">courses</span><span class="bracket">[</span><span class="number">1</span><span class="bracket">][</span><span class="number">0</span><span class="bracket">]</span> <span class="operator">=</span> <span class="string">"CPCS203"</span>; <span class="variable">courses</span><span class="bracket">[</span><span class="number">1</span><span class="bracket">][</span><span class="number">1</span><span class="bracket">]</span> <span class="operator">=</span> <span class="string">"MATH201"</span>;</span>
+<span class="line"><span class="line-number">12</span><span class="comment">// courses[1][2] to courses[1][5] are null - 4 WASTED!</span></span></pre>
+                    </div>
+                </div>
+
+                <div class="visual-container">
+                    <div class="visual-title">Regular 2D Array: Lots of Wasted Space!</div>
+                    <svg width="100%" height="280" viewBox="0 0 700 280">
+                        <!-- Column headers -->
+                        <text x="140" y="30" text-anchor="middle" font-size="11" fill="#6b7280">[0]</text>
+                        <text x="210" y="30" text-anchor="middle" font-size="11" fill="#6b7280">[1]</text>
+                        <text x="280" y="30" text-anchor="middle" font-size="11" fill="#6b7280">[2]</text>
+                        <text x="350" y="30" text-anchor="middle" font-size="11" fill="#6b7280">[3]</text>
+                        <text x="420" y="30" text-anchor="middle" font-size="11" fill="#6b7280">[4]</text>
+                        <text x="490" y="30" text-anchor="middle" font-size="11" fill="#6b7280">[5]</text>
+
+                        <!-- Ahmed (5 courses, 1 wasted) -->
+                        <text x="50" y="65" font-weight="bold" font-size="12" fill="#1f2937">Ahmed [0]</text>
+                        <rect x="100" y="40" width="65" height="40" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+                        <text x="132" y="65" text-anchor="middle" font-size="9" fill="#1e40af">CPCS203</text>
+                        <rect x="170" y="40" width="65" height="40" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+                        <text x="202" y="65" text-anchor="middle" font-size="9" fill="#1e40af">CPCS204</text>
+                        <rect x="240" y="40" width="65" height="40" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+                        <text x="272" y="65" text-anchor="middle" font-size="9" fill="#1e40af">MATH201</text>
+                        <rect x="310" y="40" width="65" height="40" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+                        <text x="342" y="65" text-anchor="middle" font-size="9" fill="#1e40af">PHYS101</text>
+                        <rect x="380" y="40" width="65" height="40" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+                        <text x="412" y="65" text-anchor="middle" font-size="9" fill="#1e40af">ENGL101</text>
+                        <rect x="450" y="40" width="65" height="40" fill="#fee2e2" stroke="#dc2626" stroke-width="2" stroke-dasharray="5,3"/>
+                        <text x="482" y="65" text-anchor="middle" font-size="10" fill="#dc2626">null</text>
+
+                        <!-- Sara (2 courses, 4 wasted) -->
+                        <text x="50" y="120" font-weight="bold" font-size="12" fill="#1f2937">Sara [1]</text>
+                        <rect x="100" y="95" width="65" height="40" fill="#d1fae5" stroke="#059669" stroke-width="2"/>
+                        <text x="132" y="120" text-anchor="middle" font-size="9" fill="#047857">CPCS203</text>
+                        <rect x="170" y="95" width="65" height="40" fill="#d1fae5" stroke="#059669" stroke-width="2"/>
+                        <text x="202" y="120" text-anchor="middle" font-size="9" fill="#047857">MATH201</text>
+                        <rect x="240" y="95" width="65" height="40" fill="#fee2e2" stroke="#dc2626" stroke-width="2" stroke-dasharray="5,3"/>
+                        <text x="272" y="120" text-anchor="middle" font-size="10" fill="#dc2626">null</text>
+                        <rect x="310" y="95" width="65" height="40" fill="#fee2e2" stroke="#dc2626" stroke-width="2" stroke-dasharray="5,3"/>
+                        <text x="342" y="120" text-anchor="middle" font-size="10" fill="#dc2626">null</text>
+                        <rect x="380" y="95" width="65" height="40" fill="#fee2e2" stroke="#dc2626" stroke-width="2" stroke-dasharray="5,3"/>
+                        <text x="412" y="120" text-anchor="middle" font-size="10" fill="#dc2626">null</text>
+                        <rect x="450" y="95" width="65" height="40" fill="#fee2e2" stroke="#dc2626" stroke-width="2" stroke-dasharray="5,3"/>
+                        <text x="482" y="120" text-anchor="middle" font-size="10" fill="#dc2626">null</text>
+
+                        <!-- Mohammed (3 courses, 3 wasted) -->
+                        <text x="50" y="175" font-weight="bold" font-size="12" fill="#1f2937">Mohammed [2]</text>
+                        <rect x="100" y="150" width="65" height="40" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/>
+                        <text x="132" y="175" text-anchor="middle" font-size="9" fill="#5b21b6">CPCS301</text>
+                        <rect x="170" y="150" width="65" height="40" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/>
+                        <text x="202" y="175" text-anchor="middle" font-size="9" fill="#5b21b6">CPCS302</text>
+                        <rect x="240" y="150" width="65" height="40" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/>
+                        <text x="272" y="175" text-anchor="middle" font-size="9" fill="#5b21b6">CPCS399</text>
+                        <rect x="310" y="150" width="65" height="40" fill="#fee2e2" stroke="#dc2626" stroke-width="2" stroke-dasharray="5,3"/>
+                        <text x="342" y="175" text-anchor="middle" font-size="10" fill="#dc2626">null</text>
+                        <rect x="380" y="150" width="65" height="40" fill="#fee2e2" stroke="#dc2626" stroke-width="2" stroke-dasharray="5,3"/>
+                        <text x="412" y="175" text-anchor="middle" font-size="10" fill="#dc2626">null</text>
+                        <rect x="450" y="150" width="65" height="40" fill="#fee2e2" stroke="#dc2626" stroke-width="2" stroke-dasharray="5,3"/>
+                        <text x="482" y="175" text-anchor="middle" font-size="10" fill="#dc2626">null</text>
+
+                        <!-- Fatima (6 courses, 0 wasted) -->
+                        <text x="50" y="230" font-weight="bold" font-size="12" fill="#1f2937">Fatima [3]</text>
+                        <rect x="100" y="205" width="65" height="40" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+                        <text x="132" y="230" text-anchor="middle" font-size="9" fill="#92400e">CPCS203</text>
+                        <rect x="170" y="205" width="65" height="40" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+                        <text x="202" y="230" text-anchor="middle" font-size="9" fill="#92400e">CPCS204</text>
+                        <rect x="240" y="205" width="65" height="40" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+                        <text x="272" y="230" text-anchor="middle" font-size="9" fill="#92400e">MATH201</text>
+                        <rect x="310" y="205" width="65" height="40" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+                        <text x="342" y="230" text-anchor="middle" font-size="9" fill="#92400e">PHYS101</text>
+                        <rect x="380" y="205" width="65" height="40" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+                        <text x="412" y="230" text-anchor="middle" font-size="9" fill="#92400e">CHEM101</text>
+                        <rect x="450" y="205" width="65" height="40" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+                        <text x="482" y="230" text-anchor="middle" font-size="9" fill="#92400e">ENGL102</text>
+
+                        <!-- Wasted count -->
+                        <text x="560" y="65" font-size="11" fill="#dc2626">1 wasted</text>
+                        <text x="560" y="120" font-size="11" fill="#dc2626" font-weight="bold">4 wasted!</text>
+                        <text x="560" y="175" font-size="11" fill="#dc2626">3 wasted</text>
+                        <text x="560" y="230" font-size="11" fill="#059669">0 wasted</text>
+
+                        <!-- Total -->
+                        <rect x="540" y="250" width="140" height="25" rx="5" fill="#fee2e2" stroke="#dc2626" stroke-width="2"/>
+                        <text x="610" y="268" text-anchor="middle" font-weight="bold" font-size="12" fill="#dc2626">Total: 8 wasted!</text>
+                    </svg>
+                </div>
+
+                <div class="important-box">
+                    <div class="important-box-title">The Problem with Regular 2D Arrays</div>
+                    <ul>
+                        <li><strong>Memory waste:</strong> We allocated 24 cells (4×6) but only used 16. That's <strong>33% wasted memory!</strong></li>
+                        <li><strong>Confusion:</strong> How do we know which cells are "real" data and which are just empty?</li>
+                        <li><strong>Scalability:</strong> What if one student takes 10 courses? We'd need to make ALL rows have 10 columns!</li>
+                    </ul>
+                </div>
+
+                <h3 style="color: var(--success-color); margin-top: 30px;">The Solution: Ragged Arrays!</h3>
+
+                <div class="success-box">
+                    <div class="success-box-title">Remember: 2D Array = Array of Arrays!</div>
+                    <p>Since a 2D array is actually an <strong>array of references</strong>, where each reference points to a <strong>separate 1D array</strong>, we can make each 1D array a <strong>different size!</strong></p>
+                    <p style="margin-top: 10px;">This is called a <strong>Ragged Array</strong> (or Jagged Array) - the "edges" are not straight like a rectangle!</p>
+                </div>
+            </div>
+
+            <!-- Section 2: What is a Ragged Array -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">2</span>
+                    Understanding Ragged Arrays
+                </h2>
+
+                <div class="key-concept">
+                    <div class="key-concept-title">Definition</div>
+                    <p>A <strong>Ragged Array</strong> is a 2D array where each row can have a <strong>different number of columns</strong>. This is possible because in Java, a 2D array is an array of independent 1D arrays - each can be created with its own size!</p>
+                </div>
+
+                <div class="visual-container">
+                    <div class="visual-title">Ragged Array: Each Student Has Exactly the Courses They Need!</div>
+                    <svg width="100%" height="350" viewBox="0 0 750 350">
+                        <!-- Definitions -->
+                        <defs>
+                            <marker id="arrowRagged" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                                <polygon points="0 0, 10 3.5, 0 7" fill="#7c3aed"/>
+                            </marker>
+                            <marker id="arrowBlue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                                <polygon points="0 0, 10 3.5, 0 7" fill="#2563eb"/>
+                            </marker>
+                            <marker id="arrowGreen" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                                <polygon points="0 0, 10 3.5, 0 7" fill="#059669"/>
+                            </marker>
+                            <marker id="arrowPurple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                                <polygon points="0 0, 10 3.5, 0 7" fill="#7c3aed"/>
+                            </marker>
+                            <marker id="arrowOrange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                                <polygon points="0 0, 10 3.5, 0 7" fill="#d97706"/>
+                            </marker>
+                        </defs>
+
+                        <!-- STACK -->
+                        <rect x="10" y="120" width="85" height="80" rx="8" fill="#fee2e2" stroke="#dc2626" stroke-width="2"/>
+                        <text x="52" y="108" text-anchor="middle" font-weight="bold" font-size="11" fill="#dc2626">STACK</text>
+                        <text x="52" y="145" text-anchor="middle" font-weight="bold" font-size="11" fill="#1f2937">courses</text>
+                        <rect x="20" y="155" width="65" height="35" rx="5" fill="#fecaca" stroke="#dc2626" stroke-width="2"/>
+                        <text x="52" y="178" text-anchor="middle" font-family="Consolas, monospace" font-size="10" fill="#dc2626">0x10</text>
+
+                        <!-- Arrow to reference array -->
+                        <line x1="85" y1="172" x2="125" y2="172" stroke="#7c3aed" stroke-width="2" marker-end="url(#arrowRagged)"/>
+
+                        <!-- HEAP -->
+                        <rect x="120" y="20" width="610" height="320" rx="10" fill="#ecfdf5" stroke="#059669" stroke-width="2"/>
+                        <text x="425" y="15" text-anchor="middle" font-weight="bold" font-size="12" fill="#059669">HEAP</text>
+
+                        <!-- Reference Array -->
+                        <text x="170" y="55" text-anchor="middle" font-size="10" fill="#7c3aed" font-weight="bold">0x10</text>
+                        <rect x="135" y="65" width="70" height="40" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/>
+                        <text x="170" y="82" text-anchor="middle" font-size="9" fill="#6b7280">[0] Ahmed</text>
+                        <text x="170" y="98" text-anchor="middle" font-family="Consolas, monospace" font-size="9" fill="#2563eb">0x100</text>
+
+                        <rect x="135" y="105" width="70" height="40" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/>
+                        <text x="170" y="122" text-anchor="middle" font-size="9" fill="#6b7280">[1] Sara</text>
+                        <text x="170" y="138" text-anchor="middle" font-family="Consolas, monospace" font-size="9" fill="#059669">0x200</text>
+
+                        <rect x="135" y="145" width="70" height="40" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/>
+                        <text x="170" y="162" text-anchor="middle" font-size="9" fill="#6b7280">[2] Mohammed</text>
+                        <text x="170" y="178" text-anchor="middle" font-family="Consolas, monospace" font-size="9" fill="#7c3aed">0x300</text>
+
+                        <rect x="135" y="185" width="70" height="40" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/>
+                        <text x="170" y="202" text-anchor="middle" font-size="9" fill="#6b7280">[3] Fatima</text>
+                        <text x="170" y="218" text-anchor="middle" font-family="Consolas, monospace" font-size="9" fill="#d97706">0x400</text>
+
+                        <!-- Arrows to data arrays -->
+                        <line x1="205" y1="85" x2="270" y2="85" stroke="#2563eb" stroke-width="2" marker-end="url(#arrowBlue)"/>
+                        <line x1="205" y1="125" x2="270" y2="145" stroke="#059669" stroke-width="2" marker-end="url(#arrowGreen)"/>
+                        <line x1="205" y1="165" x2="270" y2="210" stroke="#7c3aed" stroke-width="2" marker-end="url(#arrowPurple)"/>
+                        <line x1="205" y1="205" x2="270" y2="275" stroke="#d97706" stroke-width="2" marker-end="url(#arrowOrange)"/>
+
+                        <!-- Ahmed's array (5 courses) -->
+                        <text x="420" y="55" text-anchor="middle" font-size="10" fill="#2563eb" font-weight="bold">0x100 - Ahmed (5 courses)</text>
+                        <rect x="280" y="65" width="60" height="38" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+                        <text x="310" y="88" text-anchor="middle" font-size="8" fill="#1e40af">CPCS203</text>
+                        <rect x="340" y="65" width="60" height="38" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+                        <text x="370" y="88" text-anchor="middle" font-size="8" fill="#1e40af">CPCS204</text>
+                        <rect x="400" y="65" width="60" height="38" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+                        <text x="430" y="88" text-anchor="middle" font-size="8" fill="#1e40af">MATH201</text>
+                        <rect x="460" y="65" width="60" height="38" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+                        <text x="490" y="88" text-anchor="middle" font-size="8" fill="#1e40af">PHYS101</text>
+                        <rect x="520" y="65" width="60" height="38" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+                        <text x="550" y="88" text-anchor="middle" font-size="8" fill="#1e40af">ENGL101</text>
+
+                        <!-- Sara's array (2 courses) -->
+                        <text x="340" y="130" text-anchor="middle" font-size="10" fill="#059669" font-weight="bold">0x200 - Sara (2 courses)</text>
+                        <rect x="280" y="138" width="60" height="38" fill="#d1fae5" stroke="#059669" stroke-width="2"/>
+                        <text x="310" y="161" text-anchor="middle" font-size="8" fill="#047857">CPCS203</text>
+                        <rect x="340" y="138" width="60" height="38" fill="#d1fae5" stroke="#059669" stroke-width="2"/>
+                        <text x="370" y="161" text-anchor="middle" font-size="8" fill="#047857">MATH201</text>
+
+                        <!-- Mohammed's array (3 courses) -->
+                        <text x="370" y="198" text-anchor="middle" font-size="10" fill="#7c3aed" font-weight="bold">0x300 - Mohammed (3 courses)</text>
+                        <rect x="280" y="205" width="60" height="38" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/>
+                        <text x="310" y="228" text-anchor="middle" font-size="8" fill="#5b21b6">CPCS301</text>
+                        <rect x="340" y="205" width="60" height="38" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/>
+                        <text x="370" y="228" text-anchor="middle" font-size="8" fill="#5b21b6">CPCS302</text>
+                        <rect x="400" y="205" width="60" height="38" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/>
+                        <text x="430" y="228" text-anchor="middle" font-size="8" fill="#5b21b6">CPCS399</text>
+
+                        <!-- Fatima's array (6 courses) -->
+                        <text x="435" y="262" text-anchor="middle" font-size="10" fill="#d97706" font-weight="bold">0x400 - Fatima (6 courses)</text>
+                        <rect x="280" y="270" width="55" height="38" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+                        <text x="307" y="293" text-anchor="middle" font-size="7" fill="#92400e">CPCS203</text>
+                        <rect x="335" y="270" width="55" height="38" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+                        <text x="362" y="293" text-anchor="middle" font-size="7" fill="#92400e">CPCS204</text>
+                        <rect x="390" y="270" width="55" height="38" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+                        <text x="417" y="293" text-anchor="middle" font-size="7" fill="#92400e">MATH201</text>
+                        <rect x="445" y="270" width="55" height="38" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+                        <text x="472" y="293" text-anchor="middle" font-size="7" fill="#92400e">PHYS101</text>
+                        <rect x="500" y="270" width="55" height="38" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+                        <text x="527" y="293" text-anchor="middle" font-size="7" fill="#92400e">CHEM101</text>
+                        <rect x="555" y="270" width="55" height="38" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+                        <text x="582" y="293" text-anchor="middle" font-size="7" fill="#92400e">ENGL102</text>
+
+                        <!-- Summary box -->
+                        <rect x="620" y="115" width="100" height="80" rx="8" fill="#d1fae5" stroke="#059669" stroke-width="2"/>
+                        <text x="670" y="140" text-anchor="middle" font-weight="bold" font-size="11" fill="#047857">Perfect!</text>
+                        <text x="670" y="160" text-anchor="middle" font-size="10" fill="#047857">16 cells used</text>
+                        <text x="670" y="178" text-anchor="middle" font-size="10" fill="#047857">0 wasted!</text>
+                    </svg>
+                </div>
+
+                <div class="comparison-container">
+                    <div class="comparison-box bad">
+                        <div class="comparison-title">Regular 2D Array</div>
+                        <p>4 × 6 = <strong>24 cells</strong> allocated</p>
+                        <p>Only 16 used</p>
+                        <p style="font-size: 1.5rem; margin-top: 10px;"><strong>8 cells wasted (33%)</strong></p>
+                    </div>
+                    <div class="comparison-box good">
+                        <div class="comparison-title">Ragged Array</div>
+                        <p>5 + 2 + 3 + 6 = <strong>16 cells</strong> allocated</p>
+                        <p>All 16 used</p>
+                        <p style="font-size: 1.5rem; margin-top: 10px;"><strong>0 cells wasted (0%)</strong></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 3: Creating Ragged Arrays -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">3</span>
+                    Creating 2D Ragged Arrays
+                </h2>
+
+                <p>There are two ways to create ragged arrays:</p>
+
+                <h3 style="color: var(--warning-color); margin-top: 25px;">Method 1: Step by Step (Most Clear)</h3>
+
+                <div class="step-container">
+                    <div class="step-header">
+                        <div class="step-number-big">1</div>
+                        <div class="step-title">Create the Array of References Only</div>
+                    </div>
+                    <div class="code-block">
+                        <div class="code-header">
+                            <div class="code-dot red"></div>
+                            <div class="code-dot yellow"></div>
+                            <div class="code-dot green"></div>
+                            <span class="code-title">Step1.java</span>
+                        </div>
+                        <div class="code-content">
+<pre><span class="line"><span class="line-number">1</span><span class="comment">// Create array of 4 references (no second dimension yet!)</span></span>
+<span class="line"><span class="line-number">2</span><span class="type">String</span><span class="bracket">[][]</span> <span class="variable">courses</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="type">String</span><span class="bracket">[</span><span class="number">4</span><span class="bracket">][]</span>;  <span class="comment">// Note: no second dimension!</span></span>
+<span class="line"><span class="line-number">3</span></span>
+<span class="line"><span class="line-number">4</span><span class="comment">// At this point:</span></span>
+<span class="line"><span class="line-number">5</span><span class="comment">// courses[0] = null</span></span>
+<span class="line"><span class="line-number">6</span><span class="comment">// courses[1] = null</span></span>
+<span class="line"><span class="line-number">7</span><span class="comment">// courses[2] = null</span></span>
+<span class="line"><span class="line-number">8</span><span class="comment">// courses[3] = null</span></span></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step-container">
+                    <div class="step-header">
+                        <div class="step-number-big">2</div>
+                        <div class="step-title">Create Each Row with Different Sizes</div>
+                    </div>
+                    <div class="code-block">
+                        <div class="code-header">
+                            <div class="code-dot red"></div>
+                            <div class="code-dot yellow"></div>
+                            <div class="code-dot green"></div>
+                            <span class="code-title">Step2.java</span>
+                        </div>
+                        <div class="code-content">
+<pre><span class="line"><span class="line-number">1</span><span class="comment">// Ahmed takes 5 courses</span></span>
+<span class="line"><span class="line-number">2</span><span class="variable">courses</span><span class="bracket">[</span><span class="number">0</span><span class="bracket">]</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="type">String</span><span class="bracket">[</span><span class="number">5</span><span class="bracket">]</span>;</span>
+<span class="line"><span class="line-number">3</span></span>
+<span class="line"><span class="line-number">4</span><span class="comment">// Sara takes 2 courses</span></span>
+<span class="line"><span class="line-number">5</span><span class="variable">courses</span><span class="bracket">[</span><span class="number">1</span><span class="bracket">]</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="type">String</span><span class="bracket">[</span><span class="number">2</span><span class="bracket">]</span>;</span>
+<span class="line"><span class="line-number">6</span></span>
+<span class="line"><span class="line-number">7</span><span class="comment">// Mohammed takes 3 courses</span></span>
+<span class="line"><span class="line-number">8</span><span class="variable">courses</span><span class="bracket">[</span><span class="number">2</span><span class="bracket">]</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="type">String</span><span class="bracket">[</span><span class="number">3</span><span class="bracket">]</span>;</span>
+<span class="line"><span class="line-number">9</span></span>
+<span class="line"><span class="line-number">10</span><span class="comment">// Fatima takes 6 courses</span></span>
+<span class="line"><span class="line-number">11</span><span class="variable">courses</span><span class="bracket">[</span><span class="number">3</span><span class="bracket">]</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="type">String</span><span class="bracket">[</span><span class="number">6</span><span class="bracket">]</span>;</span></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step-container">
+                    <div class="step-header">
+                        <div class="step-number-big">3</div>
+                        <div class="step-title">Fill in the Data</div>
+                    </div>
+                    <div class="code-block">
+                        <div class="code-header">
+                            <div class="code-dot red"></div>
+                            <div class="code-dot yellow"></div>
+                            <div class="code-dot green"></div>
+                            <span class="code-title">Step3.java</span>
+                        </div>
+                        <div class="code-content">
+<pre><span class="line"><span class="line-number">1</span><span class="comment">// Fill Ahmed's courses</span></span>
+<span class="line"><span class="line-number">2</span><span class="variable">courses</span><span class="bracket">[</span><span class="number">0</span><span class="bracket">][</span><span class="number">0</span><span class="bracket">]</span> <span class="operator">=</span> <span class="string">"CPCS203"</span>;</span>
+<span class="line"><span class="line-number">3</span><span class="variable">courses</span><span class="bracket">[</span><span class="number">0</span><span class="bracket">][</span><span class="number">1</span><span class="bracket">]</span> <span class="operator">=</span> <span class="string">"CPCS204"</span>;</span>
+<span class="line"><span class="line-number">4</span><span class="variable">courses</span><span class="bracket">[</span><span class="number">0</span><span class="bracket">][</span><span class="number">2</span><span class="bracket">]</span> <span class="operator">=</span> <span class="string">"MATH201"</span>;</span>
+<span class="line"><span class="line-number">5</span><span class="variable">courses</span><span class="bracket">[</span><span class="number">0</span><span class="bracket">][</span><span class="number">3</span><span class="bracket">]</span> <span class="operator">=</span> <span class="string">"PHYS101"</span>;</span>
+<span class="line"><span class="line-number">6</span><span class="variable">courses</span><span class="bracket">[</span><span class="number">0</span><span class="bracket">][</span><span class="number">4</span><span class="bracket">]</span> <span class="operator">=</span> <span class="string">"ENGL101"</span>;</span>
+<span class="line"><span class="line-number">7</span></span>
+<span class="line"><span class="line-number">8</span><span class="comment">// Fill Sara's courses</span></span>
+<span class="line"><span class="line-number">9</span><span class="variable">courses</span><span class="bracket">[</span><span class="number">1</span><span class="bracket">][</span><span class="number">0</span><span class="bracket">]</span> <span class="operator">=</span> <span class="string">"CPCS203"</span>;</span>
+<span class="line"><span class="line-number">10</span><span class="variable">courses</span><span class="bracket">[</span><span class="number">1</span><span class="bracket">][</span><span class="number">1</span><span class="bracket">]</span> <span class="operator">=</span> <span class="string">"MATH201"</span>;</span>
+<span class="line"><span class="line-number">11</span></span>
+<span class="line"><span class="line-number">12</span><span class="comment">// ... and so on</span></span></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 style="color: var(--warning-color); margin-top: 35px;">Method 2: Direct Initialization (Shorthand)</h3>
+
+                <div class="code-block">
+                    <div class="code-header">
+                        <div class="code-dot red"></div>
+                        <div class="code-dot yellow"></div>
+                        <div class="code-dot green"></div>
+                        <span class="code-title">DirectInitialization.java</span>
+                    </div>
+                    <div class="code-content">
+<pre><span class="line"><span class="line-number">1</span><span class="type">String</span><span class="bracket">[][]</span> <span class="variable">courses</span> <span class="operator">=</span> <span class="bracket">{</span></span>
+<span class="line"><span class="line-number">2</span>    <span class="bracket">{</span><span class="string">"CPCS203"</span>, <span class="string">"CPCS204"</span>, <span class="string">"MATH201"</span>, <span class="string">"PHYS101"</span>, <span class="string">"ENGL101"</span><span class="bracket">}</span>,  <span class="comment">// Ahmed: 5</span></span>
+<span class="line"><span class="line-number">3</span>    <span class="bracket">{</span><span class="string">"CPCS203"</span>, <span class="string">"MATH201"</span><span class="bracket">}</span>,                                      <span class="comment">// Sara: 2</span></span>
+<span class="line"><span class="line-number">4</span>    <span class="bracket">{</span><span class="string">"CPCS301"</span>, <span class="string">"CPCS302"</span>, <span class="string">"CPCS399"</span><span class="bracket">}</span>,                          <span class="comment">// Mohammed: 3</span></span>
+<span class="line"><span class="line-number">5</span>    <span class="bracket">{</span><span class="string">"CPCS203"</span>, <span class="string">"CPCS204"</span>, <span class="string">"MATH201"</span>, <span class="string">"PHYS101"</span>, <span class="string">"CHEM101"</span>, <span class="string">"ENGL102"</span><span class="bracket">}</span>  <span class="comment">// Fatima: 6</span></span>
+<span class="line"><span class="line-number">6</span><span class="bracket">}</span>;</span></pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 4: Working with Ragged Arrays -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">4</span>
+                    Working with Ragged Arrays
+                </h2>
+
+                <div class="key-concept">
+                    <div class="key-concept-title">Important: Each Row Has Different Length!</div>
+                    <p>When iterating through a ragged array, you must use <code class="code-inline">array[i].length</code> for each row, NOT a fixed column size!</p>
+                </div>
+
+                <div class="code-block">
+                    <div class="code-header">
+                        <div class="code-dot red"></div>
+                        <div class="code-dot yellow"></div>
+                        <div class="code-dot green"></div>
+                        <span class="code-title">IteratingRagged.java</span>
+                    </div>
+                    <div class="code-content">
+<pre><span class="line"><span class="line-number"> 1</span><span class="type">String</span><span class="bracket">[][]</span> <span class="variable">courses</span> <span class="operator">=</span> <span class="bracket">{</span></span>
+<span class="line"><span class="line-number"> 2</span>    <span class="bracket">{</span><span class="string">"CPCS203"</span>, <span class="string">"CPCS204"</span>, <span class="string">"MATH201"</span>, <span class="string">"PHYS101"</span>, <span class="string">"ENGL101"</span><span class="bracket">}</span>,</span>
+<span class="line"><span class="line-number"> 3</span>    <span class="bracket">{</span><span class="string">"CPCS203"</span>, <span class="string">"MATH201"</span><span class="bracket">}</span>,</span>
+<span class="line"><span class="line-number"> 4</span>    <span class="bracket">{</span><span class="string">"CPCS301"</span>, <span class="string">"CPCS302"</span>, <span class="string">"CPCS399"</span><span class="bracket">}</span>,</span>
+<span class="line"><span class="line-number"> 5</span>    <span class="bracket">{</span><span class="string">"CPCS203"</span>, <span class="string">"CPCS204"</span>, <span class="string">"MATH201"</span>, <span class="string">"PHYS101"</span>, <span class="string">"CHEM101"</span>, <span class="string">"ENGL102"</span><span class="bracket">}</span></span>
+<span class="line"><span class="line-number"> 6</span><span class="bracket">}</span>;</span>
+<span class="line"><span class="line-number"> 7</span></span>
+<span class="line"><span class="line-number"> 8</span><span class="type">String</span><span class="bracket">[]</span> <span class="variable">names</span> <span class="operator">=</span> <span class="bracket">{</span><span class="string">"Ahmed"</span>, <span class="string">"Sara"</span>, <span class="string">"Mohammed"</span>, <span class="string">"Fatima"</span><span class="bracket">}</span>;</span>
+<span class="line"><span class="line-number"> 9</span></span>
+<span class="line"><span class="line-number">10</span><span class="comment">// Print all students and their courses</span></span>
+<span class="line"><span class="line-number">11</span><span class="keyword">for</span> <span class="bracket">(</span><span class="keyword">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; <span class="variable">i</span> <span class="operator">&lt;</span> <span class="variable">courses</span>.<span class="variable">length</span>; <span class="variable">i</span><span class="operator">++</span><span class="bracket">)</span> <span class="bracket">{</span></span>
+<span class="line"><span class="line-number">12</span>    <span class="class-name">System</span>.<span class="variable">out</span>.<span class="method">println</span><span class="bracket">(</span><span class="variable">names</span><span class="bracket">[</span><span class="variable">i</span><span class="bracket">]</span> <span class="operator">+</span> <span class="string">" is taking "</span> <span class="operator">+</span> <span class="variable">courses</span><span class="bracket">[</span><span class="variable">i</span><span class="bracket">]</span>.<span class="variable">length</span> <span class="operator">+</span> <span class="string">" courses:"</span><span class="bracket">)</span>;</span>
+<span class="line"><span class="line-number">13</span>    </span>
+<span class="line"><span class="line-number">14</span>    <span class="comment">// IMPORTANT: Use courses[i].length, NOT a fixed number!</span></span>
+<span class="line"><span class="line-number">15</span>    <span class="keyword">for</span> <span class="bracket">(</span><span class="keyword">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>; <span class="variable">j</span> <span class="operator">&lt;</span> <span class="variable">courses</span><span class="bracket">[</span><span class="variable">i</span><span class="bracket">]</span>.<span class="variable">length</span>; <span class="variable">j</span><span class="operator">++</span><span class="bracket">)</span> <span class="bracket">{</span></span>
+<span class="line"><span class="line-number">16</span>        <span class="class-name">System</span>.<span class="variable">out</span>.<span class="method">println</span><span class="bracket">(</span><span class="string">"  - "</span> <span class="operator">+</span> <span class="variable">courses</span><span class="bracket">[</span><span class="variable">i</span><span class="bracket">][</span><span class="variable">j</span><span class="bracket">]</span><span class="bracket">)</span>;</span>
+<span class="line"><span class="line-number">17</span>    <span class="bracket">}</span></span>
+<span class="line"><span class="line-number">18</span>    <span class="class-name">System</span>.<span class="variable">out</span>.<span class="method">println</span><span class="bracket">()</span>;</span>
+<span class="line"><span class="line-number">19</span><span class="bracket">}</span></span></pre>
+                    </div>
+                </div>
+
+                <div class="visual-container">
+                    <div class="visual-title">Output</div>
+                    <div style="background: #1e1e1e; color: #d4d4d4; padding: 20px; border-radius: 8px; font-family: Consolas, monospace; font-size: 0.9rem;">
+                        Ahmed is taking 5 courses:<br>
+                        &nbsp;&nbsp;- CPCS203<br>
+                        &nbsp;&nbsp;- CPCS204<br>
+                        &nbsp;&nbsp;- MATH201<br>
+                        &nbsp;&nbsp;- PHYS101<br>
+                        &nbsp;&nbsp;- ENGL101<br><br>
+                        Sara is taking 2 courses:<br>
+                        &nbsp;&nbsp;- CPCS203<br>
+                        &nbsp;&nbsp;- MATH201<br><br>
+                        Mohammed is taking 3 courses:<br>
+                        &nbsp;&nbsp;- CPCS301<br>
+                        &nbsp;&nbsp;- CPCS302<br>
+                        &nbsp;&nbsp;- CPCS399<br><br>
+                        Fatima is taking 6 courses:<br>
+                        &nbsp;&nbsp;- CPCS203<br>
+                        &nbsp;&nbsp;- CPCS204<br>
+                        &nbsp;&nbsp;- MATH201<br>
+                        &nbsp;&nbsp;- PHYS101<br>
+                        &nbsp;&nbsp;- CHEM101<br>
+                        &nbsp;&nbsp;- ENGL102
+                    </div>
+                </div>
+
+                <div class="important-box">
+                    <div class="important-box-title">Common Mistake!</div>
+                    <p>If you try to access an index that doesn't exist (e.g., <code class="code-inline">courses[1][4]</code> when Sara only has 2 courses), you will get an <strong>ArrayIndexOutOfBoundsException</strong>!</p>
+                </div>
+            </div>
+
+            <!-- Section 5: 3D Ragged Arrays -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">5</span>
+                    3D Ragged Arrays
+                </h2>
+
+                <div class="story-box">
+                    <div class="story-title">
+                        <span class="story-icon">&#127979;</span>
+                        Extended Scenario: Multiple Departments
+                    </div>
+                    <p>Now imagine the university has <strong>multiple departments</strong>, each with a <strong>different number of students</strong>, and each student takes a <strong>different number of courses</strong>:</p>
+                    <ul style="margin-top: 15px;">
+                        <li><strong>Computer Science Department:</strong> 2 students (Ahmed: 3 courses, Sara: 2 courses)</li>
+                        <li><strong>Mathematics Department:</strong> 3 students (Ali: 4 courses, Nora: 2 courses, Omar: 3 courses)</li>
+                    </ul>
+                </div>
+
+                <p>A 3D ragged array can handle this perfectly - each dimension can have different sizes!</p>
+
+                <div class="code-block">
+                    <div class="code-header">
+                        <div class="code-dot red"></div>
+                        <div class="code-dot yellow"></div>
+                        <div class="code-dot green"></div>
+                        <span class="code-title">Ragged3D.java</span>
+                    </div>
+                    <div class="code-content">
+<pre><span class="line"><span class="line-number"> 1</span><span class="comment">// 3D Ragged Array: Departments → Students → Courses</span></span>
+<span class="line"><span class="line-number"> 2</span><span class="type">String</span><span class="bracket">[][][]</span> <span class="variable">university</span> <span class="operator">=</span> <span class="bracket">{</span></span>
+<span class="line"><span class="line-number"> 3</span>    <span class="comment">// Computer Science Department (2 students)</span></span>
+<span class="line"><span class="line-number"> 4</span>    <span class="bracket">{</span></span>
+<span class="line"><span class="line-number"> 5</span>        <span class="bracket">{</span><span class="string">"CPCS203"</span>, <span class="string">"CPCS204"</span>, <span class="string">"CPCS301"</span><span class="bracket">}</span>,    <span class="comment">// Ahmed: 3 courses</span></span>
+<span class="line"><span class="line-number"> 6</span>        <span class="bracket">{</span><span class="string">"CPCS203"</span>, <span class="string">"CPCS205"</span><span class="bracket">}</span>                 <span class="comment">// Sara: 2 courses</span></span>
+<span class="line"><span class="line-number"> 7</span>    <span class="bracket">}</span>,</span>
+<span class="line"><span class="line-number"> 8</span>    <span class="comment">// Mathematics Department (3 students)</span></span>
+<span class="line"><span class="line-number"> 9</span>    <span class="bracket">{</span></span>
+<span class="line"><span class="line-number">10</span>        <span class="bracket">{</span><span class="string">"MATH201"</span>, <span class="string">"MATH202"</span>, <span class="string">"MATH301"</span>, <span class="string">"MATH302"</span><span class="bracket">}</span>,  <span class="comment">// Ali: 4 courses</span></span>
+<span class="line"><span class="line-number">11</span>        <span class="bracket">{</span><span class="string">"MATH201"</span>, <span class="string">"STAT201"</span><span class="bracket">}</span>,                          <span class="comment">// Nora: 2 courses</span></span>
+<span class="line"><span class="line-number">12</span>        <span class="bracket">{</span><span class="string">"MATH101"</span>, <span class="string">"MATH102"</span>, <span class="string">"MATH201"</span><span class="bracket">}</span>               <span class="comment">// Omar: 3 courses</span></span>
+<span class="line"><span class="line-number">13</span>    <span class="bracket">}</span></span>
+<span class="line"><span class="line-number">14</span><span class="bracket">}</span>;</span></pre>
+                    </div>
+                </div>
+
+                <div class="visual-container">
+                    <div class="visual-title">3D Ragged Array: university[2][?][?] - Each Level Has Different Sizes!</div>
+                    <svg width="100%" height="450" viewBox="0 0 850 450">
+                        <defs>
+                            <marker id="arr3r" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+                                <polygon points="0 0, 8 3, 0 6" fill="#7c3aed"/>
+                            </marker>
+                            <marker id="arr3rBlue" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+                                <polygon points="0 0, 8 3, 0 6" fill="#2563eb"/>
+                            </marker>
+                            <marker id="arr3rOrange" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+                                <polygon points="0 0, 8 3, 0 6" fill="#d97706"/>
+                            </marker>
+                            <marker id="arr3rGreen" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+                                <polygon points="0 0, 8 3, 0 6" fill="#059669"/>
+                            </marker>
+                        </defs>
+
+                        <!-- STACK -->
+                        <rect x="10" y="170" width="80" height="70" rx="6" fill="#fee2e2" stroke="#dc2626" stroke-width="2"/>
+                        <text x="50" y="160" text-anchor="middle" font-weight="bold" font-size="10" fill="#dc2626">STACK</text>
+                        <text x="50" y="195" text-anchor="middle" font-weight="bold" font-size="10" fill="#1f2937">university</text>
+                        <rect x="18" y="205" width="64" height="28" rx="4" fill="#fecaca" stroke="#dc2626" stroke-width="2"/>
+                        <text x="50" y="224" text-anchor="middle" font-family="Consolas, monospace" font-size="9" fill="#dc2626">0x10</text>
+
+                        <line x1="82" y1="219" x2="115" y2="219" stroke="#7c3aed" stroke-width="2" marker-end="url(#arr3r)"/>
+
+                        <!-- HEAP -->
+                        <rect x="110" y="15" width="730" height="425" rx="8" fill="#ecfdf5" stroke="#059669" stroke-width="2"/>
+                        <text x="475" y="10" text-anchor="middle" font-weight="bold" font-size="11" fill="#059669">HEAP</text>
+
+                        <!-- Department references (0x10) -->
+                        <text x="155" y="140" text-anchor="middle" font-size="9" fill="#7c3aed" font-weight="bold">0x10 (Depts)</text>
+                        <rect x="125" y="150" width="60" height="50" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/>
+                        <text x="155" y="170" text-anchor="middle" font-size="8" fill="#6b7280">[0] CS</text>
+                        <text x="155" y="190" text-anchor="middle" font-family="Consolas, monospace" font-size="8" fill="#2563eb">0x100</text>
+
+                        <rect x="125" y="200" width="60" height="50" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/>
+                        <text x="155" y="220" text-anchor="middle" font-size="8" fill="#6b7280">[1] Math</text>
+                        <text x="155" y="240" text-anchor="middle" font-family="Consolas, monospace" font-size="8" fill="#d97706">0x200</text>
+
+                        <!-- Arrows to department arrays -->
+                        <path d="M 185 175 Q 210 175 210 90 L 250 90" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arr3rBlue)"/>
+                        <path d="M 185 225 Q 210 225 210 320 L 250 320" fill="none" stroke="#d97706" stroke-width="2" marker-end="url(#arr3rOrange)"/>
+
+                        <!-- CS Department (0x100) - 2 students -->
+                        <rect x="250" y="30" width="280" height="145" rx="6" fill="#dbeafe" stroke="#2563eb" stroke-width="2" fill-opacity="0.3"/>
+                        <text x="390" y="50" text-anchor="middle" font-weight="bold" font-size="10" fill="#2563eb">CS Dept (0x100) - 2 students</text>
+
+                        <rect x="265" y="60" width="55" height="40" fill="#bfdbfe" stroke="#2563eb" stroke-width="2"/>
+                        <text x="292" y="77" text-anchor="middle" font-size="8" fill="#6b7280">[0] Ahmed</text>
+                        <text x="292" y="93" text-anchor="middle" font-family="Consolas, monospace" font-size="7" fill="#059669">0x1A</text>
+
+                        <rect x="265" y="100" width="55" height="40" fill="#bfdbfe" stroke="#2563eb" stroke-width="2"/>
+                        <text x="292" y="117" text-anchor="middle" font-size="8" fill="#6b7280">[1] Sara</text>
+                        <text x="292" y="133" text-anchor="middle" font-family="Consolas, monospace" font-size="7" fill="#059669">0x1B</text>
+
+                        <!-- Arrows to CS student courses -->
+                        <line x1="320" y1="80" x2="365" y2="80" stroke="#059669" stroke-width="2" marker-end="url(#arr3rGreen)"/>
+                        <line x1="320" y1="120" x2="365" y2="120" stroke="#059669" stroke-width="2" marker-end="url(#arr3rGreen)"/>
+
+                        <!-- Ahmed's courses (3) -->
+                        <text x="450" y="60" text-anchor="middle" font-size="8" fill="#059669">0x1A (3 courses)</text>
+                        <rect x="370" y="65" width="50" height="30" fill="#d1fae5" stroke="#059669" stroke-width="1"/>
+                        <text x="395" y="84" text-anchor="middle" font-size="7" fill="#047857">CPCS203</text>
+                        <rect x="420" y="65" width="50" height="30" fill="#d1fae5" stroke="#059669" stroke-width="1"/>
+                        <text x="445" y="84" text-anchor="middle" font-size="7" fill="#047857">CPCS204</text>
+                        <rect x="470" y="65" width="50" height="30" fill="#d1fae5" stroke="#059669" stroke-width="1"/>
+                        <text x="495" y="84" text-anchor="middle" font-size="7" fill="#047857">CPCS301</text>
+
+                        <!-- Sara's courses (2) -->
+                        <text x="420" y="108" text-anchor="middle" font-size="8" fill="#059669">0x1B (2 courses)</text>
+                        <rect x="370" y="113" width="50" height="30" fill="#d1fae5" stroke="#059669" stroke-width="1"/>
+                        <text x="395" y="132" text-anchor="middle" font-size="7" fill="#047857">CPCS203</text>
+                        <rect x="420" y="113" width="50" height="30" fill="#d1fae5" stroke="#059669" stroke-width="1"/>
+                        <text x="445" y="132" text-anchor="middle" font-size="7" fill="#047857">CPCS205</text>
+
+                        <!-- Math Department (0x200) - 3 students -->
+                        <rect x="250" y="255" width="350" height="175" rx="6" fill="#fef3c7" stroke="#d97706" stroke-width="2" fill-opacity="0.3"/>
+                        <text x="425" y="275" text-anchor="middle" font-weight="bold" font-size="10" fill="#d97706">Math Dept (0x200) - 3 students</text>
+
+                        <rect x="265" y="285" width="55" height="38" fill="#fde68a" stroke="#d97706" stroke-width="2"/>
+                        <text x="292" y="300" text-anchor="middle" font-size="8" fill="#6b7280">[0] Ali</text>
+                        <text x="292" y="316" text-anchor="middle" font-family="Consolas, monospace" font-size="7" fill="#059669">0x2A</text>
+
+                        <rect x="265" y="323" width="55" height="38" fill="#fde68a" stroke="#d97706" stroke-width="2"/>
+                        <text x="292" y="338" text-anchor="middle" font-size="8" fill="#6b7280">[1] Nora</text>
+                        <text x="292" y="354" text-anchor="middle" font-family="Consolas, monospace" font-size="7" fill="#059669">0x2B</text>
+
+                        <rect x="265" y="361" width="55" height="38" fill="#fde68a" stroke="#d97706" stroke-width="2"/>
+                        <text x="292" y="376" text-anchor="middle" font-size="8" fill="#6b7280">[2] Omar</text>
+                        <text x="292" y="392" text-anchor="middle" font-family="Consolas, monospace" font-size="7" fill="#059669">0x2C</text>
+
+                        <!-- Arrows to Math student courses -->
+                        <line x1="320" y1="304" x2="365" y2="304" stroke="#059669" stroke-width="2" marker-end="url(#arr3rGreen)"/>
+                        <line x1="320" y1="342" x2="365" y2="342" stroke="#059669" stroke-width="2" marker-end="url(#arr3rGreen)"/>
+                        <line x1="320" y1="380" x2="365" y2="380" stroke="#059669" stroke-width="2" marker-end="url(#arr3rGreen)"/>
+
+                        <!-- Ali's courses (4) -->
+                        <text x="480" y="287" text-anchor="middle" font-size="8" fill="#059669">0x2A (4 courses)</text>
+                        <rect x="370" y="292" width="50" height="28" fill="#d1fae5" stroke="#059669" stroke-width="1"/>
+                        <text x="395" y="310" text-anchor="middle" font-size="7" fill="#047857">MATH201</text>
+                        <rect x="420" y="292" width="50" height="28" fill="#d1fae5" stroke="#059669" stroke-width="1"/>
+                        <text x="445" y="310" text-anchor="middle" font-size="7" fill="#047857">MATH202</text>
+                        <rect x="470" y="292" width="50" height="28" fill="#d1fae5" stroke="#059669" stroke-width="1"/>
+                        <text x="495" y="310" text-anchor="middle" font-size="7" fill="#047857">MATH301</text>
+                        <rect x="520" y="292" width="50" height="28" fill="#d1fae5" stroke="#059669" stroke-width="1"/>
+                        <text x="545" y="310" text-anchor="middle" font-size="7" fill="#047857">MATH302</text>
+
+                        <!-- Nora's courses (2) -->
+                        <text x="420" y="330" text-anchor="middle" font-size="8" fill="#059669">0x2B (2 courses)</text>
+                        <rect x="370" y="335" width="50" height="28" fill="#d1fae5" stroke="#059669" stroke-width="1"/>
+                        <text x="395" y="353" text-anchor="middle" font-size="7" fill="#047857">MATH201</text>
+                        <rect x="420" y="335" width="50" height="28" fill="#d1fae5" stroke="#059669" stroke-width="1"/>
+                        <text x="445" y="353" text-anchor="middle" font-size="7" fill="#047857">STAT201</text>
+
+                        <!-- Omar's courses (3) -->
+                        <text x="450" y="368" text-anchor="middle" font-size="8" fill="#059669">0x2C (3 courses)</text>
+                        <rect x="370" y="373" width="50" height="28" fill="#d1fae5" stroke="#059669" stroke-width="1"/>
+                        <text x="395" y="391" text-anchor="middle" font-size="7" fill="#047857">MATH101</text>
+                        <rect x="420" y="373" width="50" height="28" fill="#d1fae5" stroke="#059669" stroke-width="1"/>
+                        <text x="445" y="391" text-anchor="middle" font-size="7" fill="#047857">MATH102</text>
+                        <rect x="470" y="373" width="50" height="28" fill="#d1fae5" stroke="#059669" stroke-width="1"/>
+                        <text x="495" y="391" text-anchor="middle" font-size="7" fill="#047857">MATH201</text>
+
+                        <!-- Legend -->
+                        <rect x="630" y="35" width="195" height="170" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+                        <text x="727" y="58" text-anchor="middle" font-weight="bold" font-size="11" fill="#1f2937">Structure Summary</text>
+
+                        <text x="645" y="80" font-size="9" fill="#1f2937">university.length = 2 depts</text>
+                        <text x="645" y="100" font-size="9" fill="#1f2937">university[0].length = 2 students</text>
+                        <text x="645" y="120" font-size="9" fill="#1f2937">university[1].length = 3 students</text>
+                        <text x="645" y="145" font-size="9" fill="#1f2937">university[0][0].length = 3 courses</text>
+                        <text x="645" y="165" font-size="9" fill="#1f2937">university[0][1].length = 2 courses</text>
+                        <text x="645" y="185" font-size="9" fill="#d97706" font-weight="bold">Every level is different!</text>
+                    </svg>
+                </div>
+
+                <div class="code-block">
+                    <div class="code-header">
+                        <div class="code-dot red"></div>
+                        <div class="code-dot yellow"></div>
+                        <div class="code-dot green"></div>
+                        <span class="code-title">Iterating3DRagged.java</span>
+                    </div>
+                    <div class="code-content">
+<pre><span class="line"><span class="line-number"> 1</span><span class="type">String</span><span class="bracket">[]</span> <span class="variable">deptNames</span> <span class="operator">=</span> <span class="bracket">{</span><span class="string">"Computer Science"</span>, <span class="string">"Mathematics"</span><span class="bracket">}</span>;</span>
+<span class="line"><span class="line-number"> 2</span></span>
+<span class="line"><span class="line-number"> 3</span><span class="comment">// Iterate through all departments</span></span>
+<span class="line"><span class="line-number"> 4</span><span class="keyword">for</span> <span class="bracket">(</span><span class="keyword">int</span> <span class="variable">d</span> <span class="operator">=</span> <span class="number">0</span>; <span class="variable">d</span> <span class="operator">&lt;</span> <span class="variable">university</span>.<span class="variable">length</span>; <span class="variable">d</span><span class="operator">++</span><span class="bracket">)</span> <span class="bracket">{</span></span>
+<span class="line"><span class="line-number"> 5</span>    <span class="class-name">System</span>.<span class="variable">out</span>.<span class="method">println</span><span class="bracket">(</span><span class="variable">deptNames</span><span class="bracket">[</span><span class="variable">d</span><span class="bracket">]</span> <span class="operator">+</span> <span class="string">" Department:"</span><span class="bracket">)</span>;</span>
+<span class="line"><span class="line-number"> 6</span>    </span>
+<span class="line"><span class="line-number"> 7</span>    <span class="comment">// Iterate through students in this department</span></span>
+<span class="line"><span class="line-number"> 8</span>    <span class="keyword">for</span> <span class="bracket">(</span><span class="keyword">int</span> <span class="variable">s</span> <span class="operator">=</span> <span class="number">0</span>; <span class="variable">s</span> <span class="operator">&lt;</span> <span class="variable">university</span><span class="bracket">[</span><span class="variable">d</span><span class="bracket">]</span>.<span class="variable">length</span>; <span class="variable">s</span><span class="operator">++</span><span class="bracket">)</span> <span class="bracket">{</span></span>
+<span class="line"><span class="line-number"> 9</span>        <span class="class-name">System</span>.<span class="variable">out</span>.<span class="method">print</span><span class="bracket">(</span><span class="string">"  Student "</span> <span class="operator">+</span> <span class="variable">s</span> <span class="operator">+</span> <span class="string">": "</span><span class="bracket">)</span>;</span>
+<span class="line"><span class="line-number">10</span>        </span>
+<span class="line"><span class="line-number">11</span>        <span class="comment">// Iterate through courses for this student</span></span>
+<span class="line"><span class="line-number">12</span>        <span class="keyword">for</span> <span class="bracket">(</span><span class="keyword">int</span> <span class="variable">c</span> <span class="operator">=</span> <span class="number">0</span>; <span class="variable">c</span> <span class="operator">&lt;</span> <span class="variable">university</span><span class="bracket">[</span><span class="variable">d</span><span class="bracket">][</span><span class="variable">s</span><span class="bracket">]</span>.<span class="variable">length</span>; <span class="variable">c</span><span class="operator">++</span><span class="bracket">)</span> <span class="bracket">{</span></span>
+<span class="line"><span class="line-number">13</span>            <span class="class-name">System</span>.<span class="variable">out</span>.<span class="method">print</span><span class="bracket">(</span><span class="variable">university</span><span class="bracket">[</span><span class="variable">d</span><span class="bracket">][</span><span class="variable">s</span><span class="bracket">][</span><span class="variable">c</span><span class="bracket">]</span> <span class="operator">+</span> <span class="string">" "</span><span class="bracket">)</span>;</span>
+<span class="line"><span class="line-number">14</span>        <span class="bracket">}</span></span>
+<span class="line"><span class="line-number">15</span>        <span class="class-name">System</span>.<span class="variable">out</span>.<span class="method">println</span><span class="bracket">()</span>;</span>
+<span class="line"><span class="line-number">16</span>    <span class="bracket">}</span></span>
+<span class="line"><span class="line-number">17</span>    <span class="class-name">System</span>.<span class="variable">out</span>.<span class="method">println</span><span class="bracket">()</span>;</span>
+<span class="line"><span class="line-number">18</span><span class="bracket">}</span></span></pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 6: Summary -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">6</span>
+                    Summary
+                </h2>
+
+                <div class="key-concept">
+                    <div class="key-concept-title">Key Takeaways</div>
+                    <ol>
+                        <li><strong>Ragged arrays save memory</strong> by only allocating the space that's actually needed</li>
+                        <li><strong>Ragged arrays are possible</strong> because multi-dimensional arrays in Java are "arrays of arrays" - each inner array is independent</li>
+                        <li><strong>Always use <code class="code-inline">array[i].length</code></strong> when iterating - each row can have different size!</li>
+                        <li><strong>Create ragged arrays step-by-step:</strong> First create the array of references, then create each row with its own size</li>
+                        <li><strong>3D ragged arrays</strong> allow even more flexibility - every dimension can have different sizes</li>
+                    </ol>
+                </div>
+
+                <div class="success-box">
+                    <div class="success-box-title">Real-World Applications</div>
+                    <ul>
+                        <li><strong>Student registration systems</strong> - different students, different courses</li>
+                        <li><strong>Social media</strong> - different users have different numbers of friends/followers</li>
+                        <li><strong>E-commerce</strong> - different orders have different numbers of items</li>
+                        <li><strong>Game development</strong> - different levels have different map sizes</li>
+                        <li><strong>Text processing</strong> - different paragraphs have different numbers of words</li>
+                    </ul>
+                </div>
+
+                <div class="important-box">
+                    <div class="important-box-title">Connection to Data Structures</div>
+                    <p>Understanding ragged arrays is excellent preparation for <strong>linked lists</strong> and <strong>graphs</strong> in Data Structures! These structures also use the concept of nodes connected by references, where each node can have a different number of connections.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <a href="03-2d-3d-arrays.html" class="prev-lesson">‹ Previous: 2D & 3D Arrays</a>
+            <a href="05-2d-3d-exercises.html">Next: 2D/3D Exercises ›</a>
+        </nav>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p><strong>CPCS203</strong> - Object-Oriented Programming</p>
+            <p>Module 1: Ragged Arrays</p>
+            <p>Prepared by Dr. Almalawi</p>
+        </div>
+    </div>
+</body>
+</html>

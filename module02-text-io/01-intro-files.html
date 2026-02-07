@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 1: Introduction to Files | CPCS203</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #d97706;
+            --primary-light: #f59e0b;
+            --primary-dark: #b45309;
+            --secondary-color: #ea580c;
+            --success-color: #059669;
+            --warning-color: #d97706;
+            --danger-color: #dc2626;
+            --dark-color: #1f2937;
+            --light-color: #f3f4f6;
+            --gray-color: #6b7280;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.8;
+            color: var(--dark-color);
+            background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+        }
+
+        /* Navigation Breadcrumb */
+        .nav-breadcrumb {
+            background: linear-gradient(135deg, #92400e, #b45309);
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: white;
+            font-size: 0.9rem;
+        }
+
+        .breadcrumb a {
+            color: #fde68a;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .breadcrumb a:hover {
+            color: white;
+        }
+
+        .breadcrumb .separator {
+            color: #d97706;
+        }
+
+        .breadcrumb .current {
+            color: #fef3c7;
+        }
+
+        .lesson-nav {
+            display: flex;
+            gap: 10px;
+        }
+
+        .lesson-nav a {
+            padding: 8px 16px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            text-decoration: none;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .lesson-nav a:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .lesson-nav a.disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .header .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .header .course-info {
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 30px;
+            display: inline-block;
+        }
+
+        /* Content */
+        .content {
+            padding: 40px;
+        }
+
+        /* Sections */
+        .section {
+            margin-bottom: 50px;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--primary-color);
+            padding-bottom: 10px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-number {
+            background: var(--primary-color);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        /* Story Box */
+        .story-box {
+            background: linear-gradient(135deg, #fefce8, #fef9c3);
+            border-left: 5px solid var(--primary-color);
+            padding: 25px 30px;
+            margin: 20px 0;
+            border-radius: 0 15px 15px 0;
+            font-style: italic;
+            position: relative;
+        }
+
+        .story-box::before {
+            content: '"';
+            font-size: 4rem;
+            color: var(--primary-color);
+            opacity: 0.3;
+            position: absolute;
+            top: -10px;
+            left: 15px;
+            font-family: Georgia, serif;
+        }
+
+        .story-box p {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+
+        .story-character {
+            font-weight: bold;
+            color: var(--primary-dark);
+        }
+
+        /* Key Concept Box */
+        .key-concept {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border-left: 5px solid var(--primary-color);
+            padding: 20px 25px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .key-concept-title {
+            font-weight: bold;
+            color: var(--primary-dark);
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Info Box */
+        .info-box {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            border-left: 5px solid #2563eb;
+            padding: 20px 25px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .info-box-title {
+            font-weight: bold;
+            color: #1d4ed8;
+            margin-bottom: 10px;
+        }
+
+        /* Comparison Container */
+        .comparison-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin: 25px 0;
+        }
+
+        .comparison-box {
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .comparison-box.text-file {
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+            border: 2px solid var(--success-color);
+        }
+
+        .comparison-box.binary-file {
+            background: linear-gradient(135deg, #e0e7ff, #c7d2fe);
+            border: 2px solid #6366f1;
+        }
+
+        .comparison-title {
+            font-weight: bold;
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .comparison-box.text-file .comparison-title {
+            color: var(--success-color);
+        }
+
+        .comparison-box.binary-file .comparison-title {
+            color: #6366f1;
+        }
+
+        .comparison-icon {
+            font-size: 2rem;
+        }
+
+        .comparison-list {
+            text-align: left;
+            list-style: none;
+            padding: 0;
+        }
+
+        .comparison-list li {
+            padding: 8px 0;
+            border-bottom: 1px dashed rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .comparison-list li:last-child {
+            border-bottom: none;
+        }
+
+        .comparison-list .icon {
+            font-size: 1.2rem;
+        }
+
+        /* Memory Visualization */
+        .memory-visualization {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 25px 0;
+        }
+
+        .memory-title {
+            text-align: center;
+            font-weight: bold;
+            color: var(--dark-color);
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+
+        .memory-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .memory-box {
+            border: 3px solid var(--primary-color);
+            border-radius: 15px;
+            padding: 20px 30px;
+            text-align: center;
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            min-width: 150px;
+        }
+
+        .memory-box-title {
+            font-weight: bold;
+            color: var(--primary-dark);
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+
+        .memory-box-content {
+            color: var(--gray-color);
+            font-size: 0.9rem;
+        }
+
+        .arrow-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--primary-color);
+        }
+
+        .arrow-text {
+            font-size: 0.8rem;
+            margin-bottom: 5px;
+        }
+
+        .arrow {
+            font-size: 2rem;
+        }
+
+        /* File Examples */
+        .file-examples {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .file-example {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .file-example:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .file-example.text {
+            border-color: var(--success-color);
+        }
+
+        .file-example.binary {
+            border-color: #6366f1;
+        }
+
+        .file-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .file-ext {
+            font-family: monospace;
+            font-weight: bold;
+            color: var(--dark-color);
+        }
+
+        .file-desc {
+            font-size: 0.8rem;
+            color: var(--gray-color);
+            margin-top: 5px;
+        }
+
+        /* Code Blocks */
+        .code-block {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+        }
+
+        .code-block .keyword {
+            color: #569cd6;
+        }
+
+        .code-block .type {
+            color: #4ec9b0;
+        }
+
+        .code-block .string {
+            color: #ce9178;
+        }
+
+        .code-block .number {
+            color: #b5cea8;
+        }
+
+        .code-block .comment {
+            color: #6a9955;
+        }
+
+        .code-block .variable {
+            color: #9cdcfe;
+        }
+
+        .code-inline {
+            background: #fef3c7;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9rem;
+            color: var(--primary-dark);
+        }
+
+        /* Summary Box */
+        .summary-box {
+            background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+            border: 2px solid var(--success-color);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+        }
+
+        .summary-title {
+            font-weight: bold;
+            color: var(--success-color);
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .summary-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .summary-list li {
+            padding: 8px 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .summary-list .check {
+            color: var(--success-color);
+            font-size: 1.2rem;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            display: flex;
+            justify-content: space-between;
+            padding: 30px 40px;
+            background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .bottom-nav a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px 25px;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .bottom-nav a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(217, 119, 6, 0.3);
+        }
+
+        .bottom-nav a.disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .bottom-nav .prev-lesson {
+            background: linear-gradient(135deg, #64748b, #475569);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--dark-color);
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .comparison-container {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-breadcrumb {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .bottom-nav {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .bottom-nav a {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Navigation Breadcrumb -->
+        <nav class="nav-breadcrumb">
+            <div class="breadcrumb">
+                <a href="../index.html">CPCS203</a>
+                <span class="separator">&#8250;</span>
+                <a href="index.html">Module 3: File I/O</a>
+                <span class="separator">&#8250;</span>
+                <span class="current">Introduction to Files</span>
+            </div>
+            <div class="lesson-nav">
+                <a href="index.html" class="disabled">&#8249; Previous</a>
+                <a href="02-file-class.html">Next: File Class &#8250;</a>
+            </div>
+        </nav>
+
+        <!-- Header -->
+        <div class="header">
+            <h1>Introduction to Files</h1>
+            <p class="subtitle">Understanding Why and What Files Are</p>
+            <div class="course-info">
+                <strong>Module 3</strong> &bull; Lesson 1 of 5
+            </div>
+        </div>
+
+        <div class="content">
+            <!-- The Story Begins -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">1</span>
+                    A Little Tale About Files
+                </h2>
+
+                <div class="story-box">
+                    <p><span class="story-character">Once upon a time,</span> there was a curious student who wanted to store and retrieve information from the computer.</p>
+                    <p>They asked their wise teacher, <span class="story-character">"Teacher, how do I keep my data in something that lasts even after my program stops running?"</span></p>
+                    <p>The teacher smiled and replied, <span class="story-character">"My dear student, that 'something' is called a file."</span></p>
+                </div>
+
+                <p>This simple question leads us to one of the most important concepts in programming: <strong>persistent storage</strong>.</p>
+            </div>
+
+            <!-- What is a File -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">2</span>
+                    What Is a File?
+                </h2>
+
+                <div class="key-concept">
+                    <div class="key-concept-title">
+                        <span>&#128161;</span> Definition
+                    </div>
+                    <p>A <strong>file</strong> is a place where we store data <strong>permanently</strong> (on a disk or other storage). Unlike program memory (RAM) - which is temporary - files hold onto data even after the program stops running.</p>
+                </div>
+
+                <div class="memory-visualization">
+                    <div class="memory-title">Memory vs File Storage</div>
+                    <div class="memory-container">
+                        <div class="memory-box" style="background: linear-gradient(135deg, #fee2e2, #fecaca); border-color: #dc2626;">
+                            <div class="memory-box-title" style="color: #dc2626;">RAM (Memory)</div>
+                            <div class="memory-box-content">
+                                <p><strong>Temporary</strong></p>
+                                <p>Lost when program ends</p>
+                                <p>Fast access</p>
+                            </div>
+                        </div>
+                        <div class="arrow-container">
+                            <div class="arrow-text">vs</div>
+                            <div class="arrow">&#8596;</div>
+                        </div>
+                        <div class="memory-box" style="background: linear-gradient(135deg, #d1fae5, #a7f3d0); border-color: #059669;">
+                            <div class="memory-box-title" style="color: #059669;">File (Disk)</div>
+                            <div class="memory-box-content">
+                                <p><strong>Permanent</strong></p>
+                                <p>Survives program end</p>
+                                <p>Slower access</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <div class="info-box-title">Why Do We Need Files?</div>
+                    <ul>
+                        <li><strong>Save user data:</strong> Game saves, user preferences, documents</li>
+                        <li><strong>Store configurations:</strong> Application settings that persist</li>
+                        <li><strong>Process large data:</strong> Data too big to fit in memory</li>
+                        <li><strong>Share information:</strong> Exchange data between programs</li>
+                        <li><strong>Logging:</strong> Record program activity for debugging</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Types of Files -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">3</span>
+                    Types of Files
+                </h2>
+
+                <p>Files can be categorized into two main types based on how they store data:</p>
+
+                <div class="comparison-container">
+                    <div class="comparison-box text-file">
+                        <div class="comparison-title">
+                            <span class="comparison-icon">&#128196;</span>
+                            Text-Based Files
+                        </div>
+                        <p style="margin-bottom: 15px;"><strong>Human Readable</strong></p>
+                        <ul class="comparison-list">
+                            <li><span class="icon">&#9989;</span> Can open in Notepad</li>
+                            <li><span class="icon">&#9989;</span> See readable characters</li>
+                            <li><span class="icon">&#9989;</span> Easy to edit manually</li>
+                            <li><span class="icon">&#9989;</span> Stores data as text</li>
+                        </ul>
+                    </div>
+                    <div class="comparison-box binary-file">
+                        <div class="comparison-title">
+                            <span class="comparison-icon">&#128187;</span>
+                            Binary Files
+                        </div>
+                        <p style="margin-bottom: 15px;"><strong>Computer Readable</strong></p>
+                        <ul class="comparison-list">
+                            <li><span class="icon">&#128300;</span> Raw bytes and bits</li>
+                            <li><span class="icon">&#128300;</span> Not human readable</li>
+                            <li><span class="icon">&#128300;</span> Smaller file size</li>
+                            <li><span class="icon">&#128300;</span> Faster to process</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3 style="color: var(--primary-color); margin-top: 30px;">Examples of Text Files</h3>
+                <div class="file-examples">
+                    <div class="file-example text">
+                        <div class="file-icon">&#128196;</div>
+                        <div class="file-ext">.txt</div>
+                        <div class="file-desc">Plain text</div>
+                    </div>
+                    <div class="file-example text">
+                        <div class="file-icon">&#128187;</div>
+                        <div class="file-ext">.java</div>
+                        <div class="file-desc">Java source code</div>
+                    </div>
+                    <div class="file-example text">
+                        <div class="file-icon">&#127760;</div>
+                        <div class="file-ext">.html</div>
+                        <div class="file-desc">Web pages</div>
+                    </div>
+                    <div class="file-example text">
+                        <div class="file-icon">&#128203;</div>
+                        <div class="file-ext">.csv</div>
+                        <div class="file-desc">Data tables</div>
+                    </div>
+                    <div class="file-example text">
+                        <div class="file-icon">&#128221;</div>
+                        <div class="file-ext">.xml</div>
+                        <div class="file-desc">Structured data</div>
+                    </div>
+                </div>
+
+                <h3 style="color: #6366f1; margin-top: 30px;">Examples of Binary Files</h3>
+                <div class="file-examples">
+                    <div class="file-example binary">
+                        <div class="file-icon">&#9881;</div>
+                        <div class="file-ext">.exe</div>
+                        <div class="file-desc">Programs</div>
+                    </div>
+                    <div class="file-example binary">
+                        <div class="file-icon">&#127912;</div>
+                        <div class="file-ext">.png/.jpg</div>
+                        <div class="file-desc">Images</div>
+                    </div>
+                    <div class="file-example binary">
+                        <div class="file-icon">&#127909;</div>
+                        <div class="file-ext">.mp4</div>
+                        <div class="file-desc">Videos</div>
+                    </div>
+                    <div class="file-example binary">
+                        <div class="file-icon">&#127925;</div>
+                        <div class="file-ext">.mp3</div>
+                        <div class="file-desc">Audio</div>
+                    </div>
+                    <div class="file-example binary">
+                        <div class="file-icon">&#128230;</div>
+                        <div class="file-ext">.class</div>
+                        <div class="file-desc">Java bytecode</div>
+                    </div>
+                </div>
+
+                <div class="key-concept" style="margin-top: 30px;">
+                    <div class="key-concept-title">
+                        <span>&#128218;</span> In This Module
+                    </div>
+                    <p><strong>We will focus on handling text-based files.</strong> Binary file handling requires different techniques that are beyond the scope of this course.</p>
+                </div>
+            </div>
+
+            <!-- How Text Files Work -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">4</span>
+                    How Text Files Store Data
+                </h2>
+
+                <p>Text files store data as a sequence of characters. Each character is encoded using a standard like ASCII or UTF-8.</p>
+
+                <div class="memory-visualization">
+                    <div class="memory-title">Example: What's Inside a Text File?</div>
+                    <div style="text-align: center;">
+                        <p style="margin-bottom: 15px;">If a file contains: <code class="code-inline">Hello</code></p>
+                        <div style="display: flex; justify-content: center; gap: 5px; flex-wrap: wrap;">
+                            <div style="border: 2px solid var(--primary-color); padding: 15px; border-radius: 8px; background: #fef3c7; text-align: center; min-width: 60px;">
+                                <div style="font-weight: bold; font-size: 1.5rem;">H</div>
+                                <div style="font-size: 0.75rem; color: var(--gray-color);">72</div>
+                            </div>
+                            <div style="border: 2px solid var(--primary-color); padding: 15px; border-radius: 8px; background: #fef3c7; text-align: center; min-width: 60px;">
+                                <div style="font-weight: bold; font-size: 1.5rem;">e</div>
+                                <div style="font-size: 0.75rem; color: var(--gray-color);">101</div>
+                            </div>
+                            <div style="border: 2px solid var(--primary-color); padding: 15px; border-radius: 8px; background: #fef3c7; text-align: center; min-width: 60px;">
+                                <div style="font-weight: bold; font-size: 1.5rem;">l</div>
+                                <div style="font-size: 0.75rem; color: var(--gray-color);">108</div>
+                            </div>
+                            <div style="border: 2px solid var(--primary-color); padding: 15px; border-radius: 8px; background: #fef3c7; text-align: center; min-width: 60px;">
+                                <div style="font-weight: bold; font-size: 1.5rem;">l</div>
+                                <div style="font-size: 0.75rem; color: var(--gray-color);">108</div>
+                            </div>
+                            <div style="border: 2px solid var(--primary-color); padding: 15px; border-radius: 8px; background: #fef3c7; text-align: center; min-width: 60px;">
+                                <div style="font-weight: bold; font-size: 1.5rem;">o</div>
+                                <div style="font-size: 0.75rem; color: var(--gray-color);">111</div>
+                            </div>
+                        </div>
+                        <p style="margin-top: 15px; color: var(--gray-color); font-size: 0.9rem;">Each character is stored as its ASCII code number</p>
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <div class="info-box-title">Fun Fact</div>
+                    <p>Even though text files store numbers (ASCII codes), we call them "text files" because they're designed to represent human-readable text. When you open them in Notepad, the computer converts these codes back to characters!</p>
+                </div>
+            </div>
+
+            <!-- Summary -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">5</span>
+                    Summary
+                </h2>
+
+                <div class="summary-box">
+                    <div class="summary-title">
+                        <span>&#9989;</span> Key Takeaways
+                    </div>
+                    <ul class="summary-list">
+                        <li>
+                            <span class="check">&#10003;</span>
+                            <span><strong>Files</strong> store data permanently on disk, surviving program termination.</span>
+                        </li>
+                        <li>
+                            <span class="check">&#10003;</span>
+                            <span><strong>RAM</strong> is temporary; <strong>files</strong> are permanent storage.</span>
+                        </li>
+                        <li>
+                            <span class="check">&#10003;</span>
+                            <span><strong>Text files</strong> are human-readable (.txt, .java, .html, .csv).</span>
+                        </li>
+                        <li>
+                            <span class="check">&#10003;</span>
+                            <span><strong>Binary files</strong> are computer-readable (.exe, .png, .mp4).</span>
+                        </li>
+                        <li>
+                            <span class="check">&#10003;</span>
+                            <span>In this module, we focus on <strong>text-based file handling</strong> in Java.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="story-box">
+                    <p><span class="story-character">The teacher concluded,</span> "Now that you understand what files are and why we need them, let's learn how to work with them in Java!"</p>
+                    <p><span class="story-character">The student nodded eagerly,</span> ready for the next lesson...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <a href="index.html" class="prev-lesson">&#8249; Back to Module</a>
+            <a href="02-file-class.html">Next: The File Class &#8250;</a>
+        </nav>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p><strong>CPCS203</strong> - Object-Oriented Programming</p>
+            <p>Module 3: File I/O &bull; Lesson 1</p>
+            <p>Prepared by Dr. Almalawi</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,1420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 1: Introduction to Arrays in Java | CPCS203</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #7c3aed;
+            --success-color: #059669;
+            --warning-color: #d97706;
+            --danger-color: #dc2626;
+            --dark-color: #1f2937;
+            --light-color: #f3f4f6;
+            --memory-color: #fef3c7;
+            --reference-color: #dbeafe;
+            --heap-color: #d1fae5;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.8;
+            color: var(--dark-color);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .header .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .header .course-info {
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 30px;
+            display: inline-block;
+        }
+
+        /* Content */
+        .content {
+            padding: 40px;
+        }
+
+        /* Sections */
+        .section {
+            margin-bottom: 50px;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--primary-color);
+            padding-bottom: 10px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-number {
+            background: var(--primary-color);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        /* Key Concept Box */
+        .key-concept {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border-left: 5px solid var(--warning-color);
+            padding: 20px 25px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .key-concept-title {
+            font-weight: bold;
+            color: var(--warning-color);
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        /* Important Box */
+        .important-box {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            border-left: 5px solid var(--danger-color);
+            padding: 20px 25px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .important-box-title {
+            font-weight: bold;
+            color: var(--danger-color);
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        /* Info Box */
+        .info-box {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            border-left: 5px solid var(--primary-color);
+            padding: 20px 25px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        /* Success Box */
+        .success-box {
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+            border-left: 5px solid var(--success-color);
+            padding: 20px 25px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        /* Code Blocks */
+        .code-block {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+        }
+
+        .code-block .keyword {
+            color: #569cd6;
+        }
+
+        .code-block .type {
+            color: #4ec9b0;
+        }
+
+        .code-block .string {
+            color: #ce9178;
+        }
+
+        .code-block .number {
+            color: #b5cea8;
+        }
+
+        .code-block .comment {
+            color: #6a9955;
+        }
+
+        .code-block .variable {
+            color: #9cdcfe;
+        }
+
+        .code-inline {
+            background: #e5e7eb;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9rem;
+            color: var(--danger-color);
+        }
+
+        /* Memory Visualization */
+        .memory-visualization {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 25px 0;
+        }
+
+        .memory-title {
+            text-align: center;
+            font-weight: bold;
+            color: var(--dark-color);
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+
+        .memory-container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 60px;
+            flex-wrap: wrap;
+        }
+
+        .memory-section {
+            text-align: center;
+        }
+
+        .memory-section-title {
+            background: var(--dark-color);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+        }
+
+        /* Variable Box */
+        .variable-box {
+            border: 3px solid var(--primary-color);
+            border-radius: 10px;
+            padding: 15px 25px;
+            background: var(--reference-color);
+            min-width: 120px;
+        }
+
+        .variable-name {
+            font-weight: bold;
+            color: var(--primary-color);
+            font-size: 1.1rem;
+        }
+
+        .variable-value {
+            margin-top: 8px;
+            padding: 8px;
+            background: white;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+
+        .variable-type {
+            font-size: 0.8rem;
+            color: #6b7280;
+            margin-top: 5px;
+        }
+
+        /* Array Visualization */
+        .array-visual {
+            display: flex;
+            gap: 0;
+        }
+
+        .array-cell {
+            border: 2px solid var(--success-color);
+            padding: 15px 20px;
+            background: var(--heap-color);
+            text-align: center;
+            min-width: 60px;
+        }
+
+        .array-cell:first-child {
+            border-radius: 10px 0 0 10px;
+        }
+
+        .array-cell:last-child {
+            border-radius: 0 10px 10px 0;
+        }
+
+        .array-index {
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-bottom: 5px;
+        }
+
+        .array-value {
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: var(--dark-color);
+        }
+
+        /* Arrow */
+        .arrow {
+            display: flex;
+            align-items: center;
+            color: var(--secondary-color);
+            font-size: 2rem;
+        }
+
+        .arrow-line {
+            width: 80px;
+            height: 4px;
+            background: var(--secondary-color);
+            position: relative;
+        }
+
+        .arrow-line::after {
+            content: '';
+            position: absolute;
+            right: -10px;
+            top: -8px;
+            border: 10px solid transparent;
+            border-left: 15px solid var(--secondary-color);
+        }
+
+        /* Primitive Types Grid */
+        .types-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .type-card {
+            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+            border: 2px solid var(--primary-color);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .type-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .type-name {
+            font-weight: bold;
+            color: var(--primary-color);
+            font-size: 1.1rem;
+        }
+
+        .type-size {
+            font-size: 0.85rem;
+            color: #6b7280;
+            margin-top: 5px;
+        }
+
+        .type-example {
+            font-family: monospace;
+            font-size: 0.85rem;
+            color: var(--success-color);
+            margin-top: 5px;
+        }
+
+        /* Comparison Table */
+        .comparison-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .comparison-box {
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .comparison-box.bad {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            border: 2px solid var(--danger-color);
+        }
+
+        .comparison-box.good {
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+            border: 2px solid var(--success-color);
+        }
+
+        .comparison-title {
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+        }
+
+        .comparison-box.bad .comparison-title {
+            color: var(--danger-color);
+        }
+
+        .comparison-box.good .comparison-title {
+            color: var(--success-color);
+        }
+
+        /* Steps */
+        .steps-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .step {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 15px;
+            border: 2px solid #e2e8f0;
+        }
+
+        .step-number {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-title {
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        /* Pass by Value/Reference Visualization */
+        .pass-comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 20px 0;
+        }
+
+        .pass-box {
+            background: #f8fafc;
+            border-radius: 15px;
+            padding: 25px;
+            border: 2px solid #e2e8f0;
+        }
+
+        .pass-title {
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            padding: 10px;
+            border-radius: 10px;
+        }
+
+        .pass-box.value .pass-title {
+            background: var(--memory-color);
+            color: var(--warning-color);
+        }
+
+        .pass-box.reference .pass-title {
+            background: var(--reference-color);
+            color: var(--primary-color);
+        }
+
+        .memory-row {
+            display: flex;
+            justify-content: space-around;
+            margin: 15px 0;
+            gap: 20px;
+        }
+
+        .memory-block {
+            text-align: center;
+        }
+
+        .memory-label {
+            font-size: 0.85rem;
+            color: #6b7280;
+            margin-bottom: 8px;
+        }
+
+        .memory-cell {
+            border: 2px solid var(--dark-color);
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-weight: bold;
+        }
+
+        .memory-cell.original {
+            background: #fef3c7;
+        }
+
+        .memory-cell.copy {
+            background: #e0f2fe;
+        }
+
+        .memory-cell.shared {
+            background: #d1fae5;
+        }
+
+        /* Lists */
+        ul, ol {
+            margin: 15px 0 15px 25px;
+        }
+
+        li {
+            margin: 8px 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .types-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .comparison-container,
+            .pass-comparison {
+                grid-template-columns: 1fr;
+            }
+
+            .memory-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .arrow {
+                transform: rotate(90deg);
+            }
+        }
+
+        /* Preview Section */
+        .preview-section {
+            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 30px;
+        }
+
+        .preview-title {
+            font-weight: bold;
+            color: var(--primary-color);
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+        }
+
+        .preview-items {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .preview-item {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid var(--secondary-color);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--dark-color);
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        /* Animation for emphasis */
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .emphasis {
+            animation: pulse 2s infinite;
+        }
+
+        /* Null visualization */
+        .null-value {
+            color: var(--danger-color);
+            font-style: italic;
+        }
+
+        /* Address visualization */
+        .address-value {
+            color: var(--secondary-color);
+            font-family: monospace;
+            font-size: 0.85rem;
+        }
+
+        /* Navigation */
+        .nav-breadcrumb {
+            background: linear-gradient(135deg, #1e3a5f, #2d5a87);
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: white;
+            font-size: 0.9rem;
+        }
+
+        .breadcrumb a {
+            color: #93c5fd;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .breadcrumb a:hover {
+            color: white;
+        }
+
+        .breadcrumb .separator {
+            color: #64748b;
+        }
+
+        .breadcrumb .current {
+            color: #fbbf24;
+        }
+
+        .lesson-nav {
+            display: flex;
+            gap: 10px;
+        }
+
+        .lesson-nav a {
+            padding: 8px 16px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            text-decoration: none;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .lesson-nav a:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .lesson-nav a.disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            display: flex;
+            justify-content: space-between;
+            padding: 30px 40px;
+            background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .bottom-nav a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px 25px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .bottom-nav a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(37, 99, 235, 0.3);
+        }
+
+        .bottom-nav a.disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .bottom-nav .prev-lesson {
+            background: linear-gradient(135deg, #64748b, #475569);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Navigation Breadcrumb -->
+        <nav class="nav-breadcrumb">
+            <div class="breadcrumb">
+                <a href="../index.html">CPCS203</a>
+                <span class="separator">›</span>
+                <a href="index.html">Module 1: Arrays</a>
+                <span class="separator">›</span>
+                <span class="current">1D Arrays</span>
+            </div>
+            <div class="lesson-nav">
+                <a href="#" class="disabled">‹ Previous</a>
+                <a href="02-1d-exercises.html">Next: 1D Exercises ›</a>
+            </div>
+        </nav>
+
+        <!-- Header -->
+        <div class="header">
+            <h1>Introduction to Arrays in Java</h1>
+            <p class="subtitle">Understanding Memory, Data Types, and Array Fundamentals</p>
+            <div class="course-info">
+                <strong>CPCS203</strong> - Object-Oriented Programming | Week 1
+            </div>
+        </div>
+
+        <div class="content">
+            <!-- Section 1: What is a Program -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">1</span>
+                    What is a Program?
+                </h2>
+
+                <p>Before we learn about arrays, we must understand the fundamentals. A program consists of two essential components:</p>
+
+                <div class="memory-visualization">
+                    <div class="memory-title">Components of a Program</div>
+                    <div class="memory-container">
+                        <div class="variable-box" style="background: linear-gradient(135deg, #fef3c7, #fde68a); border-color: var(--warning-color);">
+                            <div class="variable-name" style="color: var(--warning-color);">Instructions</div>
+                            <div class="variable-type">What to do (Code)</div>
+                        </div>
+                        <div style="font-size: 2rem; color: var(--dark-color); display: flex; align-items: center;">+</div>
+                        <div class="variable-box" style="background: linear-gradient(135deg, #d1fae5, #a7f3d0); border-color: var(--success-color);">
+                            <div class="variable-name" style="color: var(--success-color);">Data</div>
+                            <div class="variable-type">What to work with</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="key-concept">
+                    <div class="key-concept-title">Key Question: Where is Data Stored?</div>
+                    <p>Data is stored in the <strong>memory (RAM)</strong>. But how exactly is it stored? This leads us to understanding <strong>data types</strong>.</p>
+                </div>
+            </div>
+
+            <!-- Section 2: Data Types -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">2</span>
+                    Data Types in Java
+                </h2>
+
+                <p>In Java, data can be stored in two categories of data types:</p>
+
+                <div class="comparison-container">
+                    <div class="comparison-box good">
+                        <div class="comparison-title">Primitive Data Types</div>
+                        <p>Store the <strong>actual value</strong> directly in memory</p>
+                        <p style="margin-top: 10px;"><em>8 types in Java</em></p>
+                    </div>
+                    <div class="comparison-box" style="background: linear-gradient(135deg, #dbeafe, #bfdbfe); border: 2px solid var(--primary-color);">
+                        <div class="comparison-title" style="color: var(--primary-color);">Reference Data Types</div>
+                        <p>Store the <strong>address (reference)</strong> to the actual data</p>
+                        <p style="margin-top: 10px;"><em>Arrays, Strings, Objects</em></p>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 30px; color: var(--primary-color);">The 8 Primitive Data Types</h3>
+
+                <div class="types-grid">
+                    <div class="type-card">
+                        <div class="type-name">byte</div>
+                        <div class="type-size">1 byte (8 bits)</div>
+                        <div class="type-example">-128 to 127</div>
+                    </div>
+                    <div class="type-card">
+                        <div class="type-name">short</div>
+                        <div class="type-size">2 bytes (16 bits)</div>
+                        <div class="type-example">-32,768 to 32,767</div>
+                    </div>
+                    <div class="type-card">
+                        <div class="type-name">int</div>
+                        <div class="type-size">4 bytes (32 bits)</div>
+                        <div class="type-example">-2.1B to 2.1B</div>
+                    </div>
+                    <div class="type-card">
+                        <div class="type-name">long</div>
+                        <div class="type-size">8 bytes (64 bits)</div>
+                        <div class="type-example">Very large numbers</div>
+                    </div>
+                    <div class="type-card">
+                        <div class="type-name">float</div>
+                        <div class="type-size">4 bytes (32 bits)</div>
+                        <div class="type-example">3.14f</div>
+                    </div>
+                    <div class="type-card">
+                        <div class="type-name">double</div>
+                        <div class="type-size">8 bytes (64 bits)</div>
+                        <div class="type-example">3.14159265359</div>
+                    </div>
+                    <div class="type-card">
+                        <div class="type-name">char</div>
+                        <div class="type-size">2 bytes (16 bits)</div>
+                        <div class="type-example">'A', 'B', '1'</div>
+                    </div>
+                    <div class="type-card">
+                        <div class="type-name">boolean</div>
+                        <div class="type-size">1 bit</div>
+                        <div class="type-example">true / false</div>
+                    </div>
+                </div>
+
+                <div class="code-block">
+<span class="comment">// Examples of primitive data types</span>
+
+<span class="keyword">int</span> <span class="variable">age</span> = <span class="number">20</span>;
+<span class="comment">// Stores: 20</span>
+
+<span class="keyword">double</span> <span class="variable">gpa</span> = <span class="number">3.75</span>;
+<span class="comment">// Stores: 3.75</span>
+
+<span class="keyword">char</span> <span class="variable">grade</span> = <span class="string">'A'</span>;
+<span class="comment">// Stores: 'A'</span>
+
+<span class="keyword">boolean</span> <span class="variable">isPassed</span> = <span class="keyword">true</span>;
+<span class="comment">// Stores: true</span>
+                </div>
+
+                <div class="info-box">
+                    <p><strong>What about String?</strong></p>
+                    <p><span class="code-inline">String</span> is <strong>NOT</strong> a primitive data type! It is a <strong>reference type</strong>.</p>
+                    <p style="margin-top: 10px;"><em>We will discuss this in detail in the coming weeks.</em></p>
+                </div>
+            </div>
+
+            <!-- Section 3: Why We Need Arrays -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">3</span>
+                    Why Do We Need Arrays?
+                </h2>
+
+                <p>Let's consider a real scenario:</p>
+
+                <div class="key-concept">
+                    <div class="key-concept-title">Scenario: Store Student Ages</div>
+                    <p>You need to store the ages of <strong>100 students</strong> in your program. How would you do it?</p>
+                </div>
+
+                <div class="comparison-container">
+                    <div class="comparison-box bad">
+                        <div class="comparison-title">Without Arrays</div>
+                        <div class="code-block" style="text-align: left; font-size: 0.85rem;">
+<span class="keyword">int</span> <span class="variable">age1</span> = <span class="number">20</span>;
+<span class="keyword">int</span> <span class="variable">age2</span> = <span class="number">21</span>;
+<span class="keyword">int</span> <span class="variable">age3</span> = <span class="number">19</span>;
+<span class="keyword">int</span> <span class="variable">age4</span> = <span class="number">22</span>;
+<span class="comment">// ... 96 more lines!</span>
+<span class="keyword">int</span> <span class="variable">age100</span> = <span class="number">20</span>;
+                        </div>
+                        <p style="margin-top: 10px; color: var(--danger-color);">100 variables! Hard to manage!</p>
+                    </div>
+                    <div class="comparison-box good">
+                        <div class="comparison-title">With Arrays</div>
+                        <div class="code-block" style="text-align: left; font-size: 0.85rem;">
+<span class="keyword">int</span>[] <span class="variable">ages</span>;
+
+<span class="variable">ages</span> = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">100</span>];
+
+<span class="comment">// One variable to manage</span>
+<span class="comment">// all 100 ages!</span>
+                        </div>
+                        <p style="margin-top: 10px; color: var(--success-color);">One handle for 100 values!</p>
+                    </div>
+                </div>
+
+                <div class="success-box">
+                    <p><strong>Solution: Arrays!</strong></p>
+                    <p>An array is a <strong>single variable</strong> that can store <strong>multiple values</strong> of the same type in <strong>contiguous memory locations</strong>.</p>
+                </div>
+            </div>
+
+            <!-- Section 4: What is an Array -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">4</span>
+                    What is an Array?
+                </h2>
+
+                <div class="memory-visualization">
+                    <div class="memory-title">Array: A Series of Contiguous Memory Locations</div>
+                    <div style="text-align: center;">
+                        <div class="array-visual" style="display: inline-flex;">
+                            <div class="array-cell">
+                                <div class="array-index">[0]</div>
+                                <div class="array-value">20</div>
+                            </div>
+                            <div class="array-cell">
+                                <div class="array-index">[1]</div>
+                                <div class="array-value">21</div>
+                            </div>
+                            <div class="array-cell">
+                                <div class="array-index">[2]</div>
+                                <div class="array-value">19</div>
+                            </div>
+                            <div class="array-cell">
+                                <div class="array-index">[3]</div>
+                                <div class="array-value">22</div>
+                            </div>
+                            <div class="array-cell">
+                                <div class="array-index">[4]</div>
+                                <div class="array-value">20</div>
+                            </div>
+                        </div>
+                        <p style="margin-top: 15px; color: #6b7280;">Memory addresses are consecutive (contiguous)</p>
+                    </div>
+                </div>
+
+                <h3 style="color: var(--primary-color); margin-top: 30px;">Characteristics of Arrays</h3>
+
+                <div class="steps-container">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <div class="step-title">Homogeneous (Same Type)</div>
+                            <p>An array can only store elements of <strong>ONE data type</strong>. You cannot mix integers and strings in the same array.</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <div class="step-title">Fixed Size</div>
+                            <p>Once an array is created, its <strong>size cannot be changed</strong>. You must know the size before creating it.</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <div class="step-title">Contiguous Memory</div>
+                            <p>Elements are stored in <strong>adjacent memory locations</strong>, making access very <strong>efficient</strong> (using offset calculation).</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <div class="step-title">Zero-Based Indexing</div>
+                            <p>The first element is at index <strong>0</strong>, not 1. An array of size 5 has indices 0, 1, 2, 3, 4.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-box" style="margin-top: 20px;">
+                    <p><strong>Why is contiguous memory efficient?</strong></p>
+                    <p>When you access <code class="code-inline">ages[3]</code>, the computer calculates:</p>
+                    <p style="text-align: center; margin-top: 10px; font-family: monospace;">
+                        address = base_address + (index × size_of_element)
+                    </p>
+                    <p style="margin-top: 10px;"><em>You will learn more about this in Operating Systems (Memory Management).</em></p>
+                </div>
+            </div>
+
+            <!-- Section 5: Declaration, Creation, Initialization -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">5</span>
+                    The Three Essential Steps
+                </h2>
+
+                <div class="important-box">
+                    <div class="important-box-title">Critical Understanding</div>
+                    <p>Many students confuse these three steps. Understanding them is <strong>essential for Data Structures</strong>!</p>
+                </div>
+
+                <!-- Step 1: Declaration -->
+                <div class="step" style="margin-top: 25px;">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <div class="step-title">Declaration</div>
+                        <p>Creating a <strong>reference variable</strong> that will hold the address of the array.</p>
+                        <div class="code-block">
+<span class="keyword">int</span>[] <span class="variable">ages</span>;
+<span class="comment">// Declares a reference variable</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="memory-visualization">
+                    <div class="memory-title">After Declaration: Reference Variable Created</div>
+                    <div class="memory-container">
+                        <div class="memory-section">
+                            <div class="memory-section-title">Stack Memory</div>
+                            <div class="variable-box">
+                                <div class="variable-name">ages</div>
+                                <div class="variable-value"><span class="null-value">null</span></div>
+                                <div class="variable-type">int[] (reference)</div>
+                            </div>
+                        </div>
+                        <div class="memory-section">
+                            <div class="memory-section-title">Heap Memory</div>
+                            <div style="padding: 30px; color: #9ca3af; border: 2px dashed #d1d5db; border-radius: 10px;">
+                                No array created yet
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="important-box">
+                    <div class="important-box-title">Important!</div>
+                    <p>The reference variable <code class="code-inline">ages</code> does <strong>NOT</strong> contain the array data! It only holds the <strong>address (reference)</strong> to where the array will be stored. Currently, it holds <code class="code-inline">null</code> (nothing).</p>
+                </div>
+
+                <!-- Step 2: Creation -->
+                <div class="step" style="margin-top: 25px;">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <div class="step-title">Creation (Instantiation)</div>
+                        <p>Allocating memory for the actual array using the <code class="code-inline">new</code> keyword.</p>
+                        <div class="code-block">
+<span class="variable">ages</span> = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">5</span>];
+<span class="comment">// Creates array of 5 integers</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="memory-visualization">
+                    <div class="memory-title">After Creation: Array Allocated in Heap Memory</div>
+                    <div class="memory-container">
+                        <div class="memory-section">
+                            <div class="memory-section-title">Stack Memory</div>
+                            <div class="variable-box">
+                                <div class="variable-name">ages</div>
+                                <div class="variable-value"><span class="address-value">0x7A3F</span></div>
+                                <div class="variable-type">int[] (reference)</div>
+                            </div>
+                        </div>
+                        <div class="arrow">
+                            <div class="arrow-line"></div>
+                        </div>
+                        <div class="memory-section">
+                            <div class="memory-section-title">Heap Memory (Address: 0x7A3F)</div>
+                            <div class="array-visual">
+                                <div class="array-cell">
+                                    <div class="array-index">[0]</div>
+                                    <div class="array-value">0</div>
+                                </div>
+                                <div class="array-cell">
+                                    <div class="array-index">[1]</div>
+                                    <div class="array-value">0</div>
+                                </div>
+                                <div class="array-cell">
+                                    <div class="array-index">[2]</div>
+                                    <div class="array-value">0</div>
+                                </div>
+                                <div class="array-cell">
+                                    <div class="array-index">[3]</div>
+                                    <div class="array-value">0</div>
+                                </div>
+                                <div class="array-cell">
+                                    <div class="array-index">[4]</div>
+                                    <div class="array-value">0</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <p><strong>Default Values:</strong> When an array is created, all elements are initialized to default values:</p>
+                    <ul>
+                        <li><code class="code-inline">int</code>, <code class="code-inline">short</code>, <code class="code-inline">byte</code>, <code class="code-inline">long</code> → <strong>0</strong></li>
+                        <li><code class="code-inline">float</code>, <code class="code-inline">double</code> → <strong>0.0</strong></li>
+                        <li><code class="code-inline">boolean</code> → <strong>false</strong></li>
+                        <li><code class="code-inline">char</code> → <strong>'\u0000'</strong> (null character)</li>
+                        <li>Reference types → <strong>null</strong></li>
+                    </ul>
+                </div>
+
+                <!-- Step 3: Initialization -->
+                <div class="step" style="margin-top: 25px;">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <div class="step-title">Initialization</div>
+                        <p>Assigning actual values to the array elements.</p>
+                        <div class="code-block">
+<span class="variable">ages</span>[<span class="number">0</span>] = <span class="number">20</span>;
+<span class="variable">ages</span>[<span class="number">1</span>] = <span class="number">21</span>;
+<span class="variable">ages</span>[<span class="number">2</span>] = <span class="number">19</span>;
+<span class="variable">ages</span>[<span class="number">3</span>] = <span class="number">22</span>;
+<span class="variable">ages</span>[<span class="number">4</span>] = <span class="number">20</span>;
+                        </div>
+                    </div>
+                </div>
+
+                <div class="memory-visualization">
+                    <div class="memory-title">After Initialization: Array Contains Our Values</div>
+                    <div class="memory-container">
+                        <div class="memory-section">
+                            <div class="memory-section-title">Stack Memory</div>
+                            <div class="variable-box">
+                                <div class="variable-name">ages</div>
+                                <div class="variable-value"><span class="address-value">0x7A3F</span></div>
+                                <div class="variable-type">int[] (reference)</div>
+                            </div>
+                        </div>
+                        <div class="arrow">
+                            <div class="arrow-line"></div>
+                        </div>
+                        <div class="memory-section">
+                            <div class="memory-section-title">Heap Memory (Address: 0x7A3F)</div>
+                            <div class="array-visual">
+                                <div class="array-cell">
+                                    <div class="array-index">[0]</div>
+                                    <div class="array-value">20</div>
+                                </div>
+                                <div class="array-cell">
+                                    <div class="array-index">[1]</div>
+                                    <div class="array-value">21</div>
+                                </div>
+                                <div class="array-cell">
+                                    <div class="array-index">[2]</div>
+                                    <div class="array-value">19</div>
+                                </div>
+                                <div class="array-cell">
+                                    <div class="array-index">[3]</div>
+                                    <div class="array-value">22</div>
+                                </div>
+                                <div class="array-cell">
+                                    <div class="array-index">[4]</div>
+                                    <div class="array-value">20</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Shorthand Syntax -->
+                <h3 style="color: var(--primary-color); margin-top: 30px;">Shorthand Syntax</h3>
+                <p>You can combine all three steps in one line:</p>
+
+                <div class="code-block">
+<span class="comment">// Method 1: Declaration + Creation + Initialization</span>
+<span class="keyword">int</span>[] <span class="variable">ages</span> = <span class="keyword">new</span> <span class="keyword">int</span>[] {
+    <span class="number">20</span>,
+    <span class="number">21</span>,
+    <span class="number">19</span>,
+    <span class="number">22</span>,
+    <span class="number">20</span>
+};
+
+<span class="comment">// Method 2: Even shorter (array literal)</span>
+<span class="keyword">int</span>[] <span class="variable">ages</span> = {
+    <span class="number">20</span>,
+    <span class="number">21</span>,
+    <span class="number">19</span>,
+    <span class="number">22</span>,
+    <span class="number">20</span>
+};
+                </div>
+            </div>
+
+            <!-- Section 6: Understanding Reference Variables -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">6</span>
+                    Understanding Reference Variables
+                </h2>
+
+                <div class="important-box">
+                    <div class="important-box-title">Critical for Data Structures!</div>
+                    <p>Understanding reference variables is <strong>absolutely essential</strong> for your Data Structures course. Pay close attention to this section!</p>
+                </div>
+
+                <p>Let's see what happens when we assign one array variable to another:</p>
+
+                <div class="code-block">
+<span class="keyword">int</span>[] <span class="variable">ages</span> = {
+    <span class="number">20</span>,
+    <span class="number">21</span>,
+    <span class="number">19</span>
+};
+
+<span class="keyword">int</span>[] <span class="variable">scores</span> = <span class="variable">ages</span>;
+<span class="comment">// What happens here?</span>
+                </div>
+
+                <div class="memory-visualization">
+                    <div class="memory-title">Two References, ONE Array!</div>
+                    <div class="memory-container">
+                        <div class="memory-section">
+                            <div class="memory-section-title">Stack Memory</div>
+                            <div style="display: flex; flex-direction: column; gap: 15px;">
+                                <div class="variable-box">
+                                    <div class="variable-name">ages</div>
+                                    <div class="variable-value"><span class="address-value">0x7A3F</span></div>
+                                </div>
+                                <div class="variable-box">
+                                    <div class="variable-name">scores</div>
+                                    <div class="variable-value"><span class="address-value">0x7A3F</span></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="arrow">
+                            <div class="arrow-line"></div>
+                        </div>
+                        <div class="memory-section">
+                            <div class="memory-section-title">Heap Memory (0x7A3F)</div>
+                            <div class="array-visual">
+                                <div class="array-cell">
+                                    <div class="array-index">[0]</div>
+                                    <div class="array-value">20</div>
+                                </div>
+                                <div class="array-cell">
+                                    <div class="array-index">[1]</div>
+                                    <div class="array-value">21</div>
+                                </div>
+                                <div class="array-cell">
+                                    <div class="array-index">[2]</div>
+                                    <div class="array-value">19</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="key-concept">
+                    <div class="key-concept-title">Key Understanding</div>
+                    <p>Both <code class="code-inline">ages</code> and <code class="code-inline">scores</code> point to the <strong>SAME</strong> array in memory! If you change <code class="code-inline">scores[0]</code>, the value of <code class="code-inline">ages[0]</code> also changes because they reference the same data.</p>
+                </div>
+
+                <div class="code-block">
+<span class="variable">scores</span>[<span class="number">0</span>] = <span class="number">100</span>;
+
+System.out.println(<span class="variable">ages</span>[<span class="number">0</span>]);
+<span class="comment">// Output: 100 (not 20!)</span>
+
+System.out.println(<span class="variable">scores</span>[<span class="number">0</span>]);
+<span class="comment">// Output: 100</span>
+                </div>
+            </div>
+
+            <!-- Section 7: Pass by Value vs Pass by Reference -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">7</span>
+                    Pass by Value vs Pass by Reference
+                </h2>
+
+                <p>Understanding how data is passed to methods is crucial for writing correct programs.</p>
+
+                <div class="pass-comparison">
+                    <!-- Pass by Value -->
+                    <div class="pass-box value">
+                        <div class="pass-title">Pass by Value (Primitives)</div>
+
+                        <div class="code-block" style="font-size: 0.8rem;">
+<span class="keyword">public class</span> <span class="type">Test</span> {
+
+    <span class="keyword">public static void</span> <span class="variable">changeAge</span>(<span class="keyword">int</span> <span class="variable">x</span>) {
+        <span class="variable">x</span> = <span class="number">100</span>;
+    }
+
+    <span class="keyword">public static void</span> <span class="variable">main</span>(<span class="type">String</span>[] <span class="variable">args</span>) {
+        <span class="keyword">int</span> <span class="variable">age</span> = <span class="number">20</span>;
+        <span class="variable">changeAge</span>(<span class="variable">age</span>);
+        System.out.println(<span class="variable">age</span>);
+        <span class="comment">// Output: 20</span>
+    }
+}
+                        </div>
+
+                        <div class="memory-row">
+                            <div class="memory-block">
+                                <div class="memory-label">Original</div>
+                                <div class="memory-cell original">age = 20</div>
+                            </div>
+                            <div class="memory-block">
+                                <div class="memory-label">Copy (in method)</div>
+                                <div class="memory-cell copy">x = 20 → 100</div>
+                            </div>
+                        </div>
+
+                        <p style="margin-top: 15px; font-size: 0.9rem;">A <strong>copy</strong> of the value is passed. Changes to the copy don't affect the original.</p>
+                    </div>
+
+                    <!-- Pass by Reference -->
+                    <div class="pass-box reference">
+                        <div class="pass-title">Pass by Reference (Arrays)</div>
+
+                        <div class="code-block" style="font-size: 0.8rem;">
+<span class="keyword">public class</span> <span class="type">Test</span> {
+
+    <span class="keyword">public static void</span> <span class="variable">changeArray</span>(<span class="keyword">int</span>[] <span class="variable">arr</span>) {
+        <span class="variable">arr</span>[<span class="number">0</span>] = <span class="number">100</span>;
+    }
+
+    <span class="keyword">public static void</span> <span class="variable">main</span>(<span class="type">String</span>[] <span class="variable">args</span>) {
+        <span class="keyword">int</span>[] <span class="variable">ages</span> = {<span class="number">20</span>, <span class="number">21</span>};
+        <span class="variable">changeArray</span>(<span class="variable">ages</span>);
+        System.out.println(<span class="variable">ages</span>[<span class="number">0</span>]);
+        <span class="comment">// Output: 100</span>
+    }
+}
+                        </div>
+
+                        <div class="memory-row">
+                            <div class="memory-block">
+                                <div class="memory-label">ages (reference)</div>
+                                <div class="memory-cell original">0x7A3F</div>
+                            </div>
+                            <div class="memory-block">
+                                <div class="memory-label">arr (copy of ref)</div>
+                                <div class="memory-cell copy">0x7A3F</div>
+                            </div>
+                        </div>
+                        <div style="text-align: center; margin: 10px 0;">↓ Both point to ↓</div>
+                        <div class="memory-cell shared" style="text-align: center;">[100, 21]</div>
+
+                        <p style="margin-top: 15px; font-size: 0.9rem;">The <strong>reference (address)</strong> is copied. Both point to the <strong>same</strong> array!</p>
+                    </div>
+                </div>
+
+                <div class="success-box">
+                    <p><strong>Key Takeaway:</strong></p>
+                    <ul>
+                        <li><strong>Primitives:</strong> The actual value is copied. Original is safe.</li>
+                        <li><strong>Arrays/Objects:</strong> The reference is copied. Both variables access the same data!</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Section 8: Summary and Preview -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">8</span>
+                    Summary & What's Next
+                </h2>
+
+                <div class="key-concept">
+                    <div class="key-concept-title">Key Takeaways from Today</div>
+                    <ol>
+                        <li>Programs consist of <strong>instructions</strong> and <strong>data</strong></li>
+                        <li>Data types: <strong>Primitive</strong> (8 types) vs <strong>Reference</strong> (arrays, objects)</li>
+                        <li>Arrays store <strong>multiple values</strong> of the <strong>same type</strong> in <strong>contiguous memory</strong></li>
+                        <li>Three steps: <strong>Declaration</strong> → <strong>Creation</strong> → <strong>Initialization</strong></li>
+                        <li>Reference variables hold <strong>addresses</strong>, not actual data</li>
+                        <li><strong>Pass by Value</strong> copies values; <strong>Pass by Reference</strong> shares the same data</li>
+                    </ol>
+                </div>
+
+                <div class="preview-section">
+                    <div class="preview-title">Coming Next: Multi-Dimensional Arrays</div>
+                    <div class="preview-items">
+                        <div class="preview-item">
+                            <strong>2D Arrays</strong>
+                            <p>Arrays of arrays (like a table/matrix)</p>
+                        </div>
+                        <div class="preview-item">
+                            <strong>3D Arrays</strong>
+                            <p>Arrays of 2D arrays (like a cube)</p>
+                        </div>
+                        <div class="preview-item">
+                            <strong>Ragged 2D Arrays</strong>
+                            <p>Rows with different lengths</p>
+                        </div>
+                        <div class="preview-item">
+                            <strong>Ragged 3D Arrays</strong>
+                            <p>Irregular multi-dimensional structures</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <a href="#" class="prev-lesson disabled">‹ Previous Lesson</a>
+            <a href="02-1d-exercises.html">Next: 1D Array Exercises ›</a>
+        </nav>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p><strong>CPCS203</strong> - Object-Oriented Programming</p>
+            <p>Module 1: Arrays</p>
+            <p>Prepared by Dr. Almalawi</p>
+        </div>
+    </div>
+</body>
+</html>

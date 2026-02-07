@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 1: Multidimensional Arrays | CPCS203</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #7c3aed;
+            --primary-light: #a78bfa;
+            --primary-dark: #5b21b6;
+            --secondary-color: #2563eb;
+            --success-color: #059669;
+            --warning-color: #d97706;
+            --danger-color: #dc2626;
+            --dark-color: #1f2937;
+            --light-color: #f3f4f6;
+            --gray-color: #6b7280;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--dark-color);
+            background: linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%);
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+        }
+
+        .breadcrumb a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .breadcrumb a:hover {
+            color: white;
+        }
+
+        .breadcrumb span {
+            opacity: 0.6;
+        }
+
+        .header-title {
+            color: white;
+            font-weight: bold;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 50px 20px;
+            color: white;
+        }
+
+        .module-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .hero .chapter {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+
+        .hero .description {
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 0 auto;
+            opacity: 0.95;
+        }
+
+        /* Progress Bar */
+        .progress-section {
+            max-width: 600px;
+            margin: 30px auto 0;
+            padding: 0 20px;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+
+        .progress-bar {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            height: 12px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #10b981, #34d399);
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px 60px;
+        }
+
+        /* Learning Path */
+        .learning-path {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .path-header {
+            background: var(--dark-color);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .path-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+        }
+
+        .path-count {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        /* Lesson Cards */
+        .lessons-list {
+            padding: 10px 0;
+        }
+
+        .lesson-card {
+            display: flex;
+            align-items: center;
+            padding: 20px 30px;
+            text-decoration: none;
+            color: inherit;
+            border-bottom: 1px solid #e5e7eb;
+            transition: background 0.3s;
+        }
+
+        .lesson-card:last-child {
+            border-bottom: none;
+        }
+
+        .lesson-card:hover {
+            background: #f9fafb;
+        }
+
+        .lesson-number {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-right: 20px;
+            flex-shrink: 0;
+        }
+
+        .lesson-number.tutorial {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            color: var(--secondary-color);
+            border: 2px solid var(--secondary-color);
+        }
+
+        .lesson-number.exercise {
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+            color: var(--success-color);
+            border: 2px solid var(--success-color);
+        }
+
+        .lesson-number.practical {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            color: var(--warning-color);
+            border: 2px solid var(--warning-color);
+        }
+
+        .lesson-content {
+            flex: 1;
+        }
+
+        .lesson-type {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            font-weight: bold;
+            margin-bottom: 3px;
+        }
+
+        .lesson-type.tutorial {
+            color: var(--secondary-color);
+        }
+
+        .lesson-type.exercise {
+            color: var(--success-color);
+        }
+
+        .lesson-type.practical {
+            color: var(--warning-color);
+        }
+
+        .lesson-title {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--dark-color);
+            margin-bottom: 5px;
+        }
+
+        .lesson-description {
+            font-size: 0.9rem;
+            color: var(--gray-color);
+        }
+
+        .lesson-meta {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-left: 20px;
+        }
+
+        .lesson-tag {
+            background: #f3f4f6;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            color: var(--gray-color);
+        }
+
+        .lesson-arrow {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+        }
+
+        /* Key Concepts Section */
+        .concepts-section {
+            margin-top: 40px;
+        }
+
+        .section-title {
+            color: white;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .concepts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .concept-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .concept-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .concept-title {
+            font-weight: bold;
+            color: var(--dark-color);
+            margin-bottom: 8px;
+        }
+
+        .concept-description {
+            font-size: 0.85rem;
+            color: var(--gray-color);
+        }
+
+        /* Navigation */
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 40px;
+            padding: 0 10px;
+        }
+
+        .nav-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px 25px;
+            background: white;
+            color: var(--dark-color);
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 500;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-btn.disabled {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .nav-btn .arrow {
+            font-size: 1.3rem;
+        }
+
+        /* Footer */
+        .footer {
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+            text-align: center;
+            padding: 25px 20px;
+            margin-top: 40px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 10px;
+                padding: 15px 20px;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .lesson-card {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+
+            .lesson-number {
+                margin-right: 0;
+            }
+
+            .lesson-meta {
+                margin-left: 0;
+                justify-content: center;
+            }
+
+            .navigation {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="breadcrumb">
+            <a href="../index.html">CPCS203</a>
+            <span>&#8250;</span>
+            <span>Module 1</span>
+        </nav>
+        <div class="header-title">Multidimensional Arrays</div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="module-badge">Module 1 &bull; Chapter 8</div>
+        <h1>Multidimensional Arrays</h1>
+        <p class="chapter">Understanding Arrays as "Array of Arrays"</p>
+        <p class="description">
+            Learn how the computer truly understands arrays - from 1D arrays and references,
+            to 2D, 3D, and ragged arrays. Master the foundation for Data Structures!
+        </p>
+
+        <!-- Progress -->
+        <div class="progress-section">
+            <div class="progress-header">
+                <span>Module Progress</span>
+                <span>7 Lessons</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 100%;"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Learning Path -->
+        <div class="learning-path">
+            <div class="path-header">
+                <div class="path-title">Learning Path</div>
+                <div class="path-count">7 Lessons</div>
+            </div>
+
+            <div class="lessons-list">
+                <!-- Lesson 1: 1D Arrays Introduction -->
+                <a href="01-1d-arrays.html" class="lesson-card">
+                    <div class="lesson-number tutorial">1</div>
+                    <div class="lesson-content">
+                        <div class="lesson-type tutorial">Tutorial</div>
+                        <div class="lesson-title">Introduction to Arrays</div>
+                        <div class="lesson-description">
+                            What is a program? Primitive vs Reference types. Why we need arrays. Declaration, creation, and initialization.
+                        </div>
+                    </div>
+                    <div class="lesson-meta">
+                        <span class="lesson-tag">1D Arrays</span>
+                        <span class="lesson-tag">References</span>
+                        <span class="lesson-arrow">&#8594;</span>
+                    </div>
+                </a>
+
+                <!-- Lesson 2: 1D Exercises -->
+                <a href="02-1d-exercises.html" class="lesson-card">
+                    <div class="lesson-number exercise">2</div>
+                    <div class="lesson-content">
+                        <div class="lesson-type exercise">Exercises</div>
+                        <div class="lesson-title">1D Arrays Exercises</div>
+                        <div class="lesson-description">
+                            15 interactive questions testing your understanding of primitive vs reference variables, array manipulation, and pass by value/reference.
+                        </div>
+                    </div>
+                    <div class="lesson-meta">
+                        <span class="lesson-tag">15 Questions</span>
+                        <span class="lesson-arrow">&#8594;</span>
+                    </div>
+                </a>
+
+                <!-- Lesson 3: 2D and 3D Arrays -->
+                <a href="03-2d-3d-arrays.html" class="lesson-card">
+                    <div class="lesson-number tutorial">3</div>
+                    <div class="lesson-content">
+                        <div class="lesson-type tutorial">Tutorial</div>
+                        <div class="lesson-title">2D and 3D Arrays</div>
+                        <div class="lesson-description">
+                            The computer only understands 1D arrays! Learn how 2D arrays are "array of arrays" and 3D arrays are "array of 2D arrays".
+                        </div>
+                    </div>
+                    <div class="lesson-meta">
+                        <span class="lesson-tag">Array of Arrays</span>
+                        <span class="lesson-tag">Memory</span>
+                        <span class="lesson-arrow">&#8594;</span>
+                    </div>
+                </a>
+
+                <!-- Lesson 4: Ragged Arrays -->
+                <a href="04-ragged-arrays.html" class="lesson-card">
+                    <div class="lesson-number tutorial">4</div>
+                    <div class="lesson-content">
+                        <div class="lesson-type tutorial">Tutorial</div>
+                        <div class="lesson-title">Ragged (Jagged) Arrays</div>
+                        <div class="lesson-description">
+                            Why ragged arrays exist and when to use them. Creating arrays where each row has different number of columns.
+                        </div>
+                    </div>
+                    <div class="lesson-meta">
+                        <span class="lesson-tag">Ragged Arrays</span>
+                        <span class="lesson-tag">Memory Efficiency</span>
+                        <span class="lesson-arrow">&#8594;</span>
+                    </div>
+                </a>
+
+                <!-- Lesson 5: 2D/3D Exercises -->
+                <a href="05-2d-3d-exercises.html" class="lesson-card">
+                    <div class="lesson-number exercise">5</div>
+                    <div class="lesson-content">
+                        <div class="lesson-type exercise">Exercises</div>
+                        <div class="lesson-title">2D and 3D Arrays Exercises</div>
+                        <div class="lesson-description">
+                            15 interactive questions covering 2D arrays, 3D arrays, ragged arrays, and the array of arrays concept.
+                        </div>
+                    </div>
+                    <div class="lesson-meta">
+                        <span class="lesson-tag">15 Questions</span>
+                        <span class="lesson-arrow">&#8594;</span>
+                    </div>
+                </a>
+
+                <!-- Lesson 6: Reading 2D Ragged Arrays from File -->
+                <a href="06-ragged-array-file-reading.html" class="lesson-card">
+                    <div class="lesson-number practical">6</div>
+                    <div class="lesson-content">
+                        <div class="lesson-type practical">Practical</div>
+                        <div class="lesson-title">Reading 2D Ragged Arrays from File</div>
+                        <div class="lesson-description">
+                            Learn to read variable-length student marks from a text file using nextLine() and split(). Includes downloadable Java code and data file.
+                        </div>
+                    </div>
+                    <div class="lesson-meta">
+                        <span class="lesson-tag">File I/O</span>
+                        <span class="lesson-tag">Downloadable</span>
+                        <span class="lesson-arrow">&#8594;</span>
+                    </div>
+                </a>
+
+                <!-- Lesson 7: Reading 3D Ragged Arrays from File -->
+                <a href="07-3d-ragged-array-file-reading.html" class="lesson-card">
+                    <div class="lesson-number practical">7</div>
+                    <div class="lesson-content">
+                        <div class="lesson-type practical">Practical</div>
+                        <div class="lesson-title">Reading 3D Ragged Arrays from File</div>
+                        <div class="lesson-description">
+                            Build on 2D skills to read a Department → Students → Courses structure (CS, IT, IS) from file. Complete line-by-line explanation.
+                        </div>
+                    </div>
+                    <div class="lesson-meta">
+                        <span class="lesson-tag">3D Arrays</span>
+                        <span class="lesson-tag">Downloadable</span>
+                        <span class="lesson-arrow">&#8594;</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Key Concepts -->
+        <section class="concepts-section">
+            <h2 class="section-title">
+                <span>&#128218;</span>
+                Key Concepts You'll Learn
+            </h2>
+            <div class="concepts-grid">
+                <div class="concept-card">
+                    <div class="concept-icon">&#128204;</div>
+                    <div class="concept-title">Reference Variables</div>
+                    <div class="concept-description">Understand how arrays are stored via references, not directly in variables.</div>
+                </div>
+                <div class="concept-card">
+                    <div class="concept-icon">&#128202;</div>
+                    <div class="concept-title">Array of Arrays</div>
+                    <div class="concept-description">2D and 3D arrays are NOT tables - they're arrays pointing to other arrays!</div>
+                </div>
+                <div class="concept-card">
+                    <div class="concept-icon">&#128200;</div>
+                    <div class="concept-title">Memory Layout</div>
+                    <div class="concept-description">Visualize how arrays are stored in Stack and Heap memory.</div>
+                </div>
+                <div class="concept-card">
+                    <div class="concept-icon">&#9986;</div>
+                    <div class="concept-title">Ragged Arrays</div>
+                    <div class="concept-description">Create flexible arrays where each row can have different sizes.</div>
+                </div>
+                <div class="concept-card">
+                    <div class="concept-icon">&#128196;</div>
+                    <div class="concept-title">Reading from Files</div>
+                    <div class="concept-description">Load ragged arrays from text files using Scanner, nextLine(), and split().</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Navigation -->
+        <nav class="navigation">
+            <a href="../index.html" class="nav-btn">
+                <span class="arrow">&#8592;</span>
+                <span>Back to Course</span>
+            </a>
+            <a href="01-1d-arrays.html" class="nav-btn">
+                <span>Start Learning</span>
+                <span class="arrow">&#8594;</span>
+            </a>
+        </nav>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p><strong>CPCS203</strong> - Object-Oriented Programming</p>
+        <p>Module 1: Multidimensional Arrays</p>
+        <p>Prepared by Dr. Almalawi</p>
+    </footer>
+</body>
+</html>

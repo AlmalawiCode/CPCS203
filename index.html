@@ -216,18 +216,16 @@
         }
 
         .module-header.arrays { background: linear-gradient(135deg, #7c3aed, #5b21b6); }
-        .module-header.strings { background: linear-gradient(135deg, #059669, #047857); }
         .module-header.textio { background: linear-gradient(135deg, #d97706, #b45309); }
-        .module-header.objects1 { background: linear-gradient(135deg, #2563eb, #1d4ed8); }
-        .module-header.objects2 { background: linear-gradient(135deg, #3b82f6, #2563eb); }
-        .module-header.oothinking1 { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
-        .module-header.oothinking2 { background: linear-gradient(135deg, #a78bfa, #8b5cf6); }
-        .module-header.inheritance1 { background: linear-gradient(135deg, #ec4899, #db2777); }
-        .module-header.inheritance2 { background: linear-gradient(135deg, #f472b6, #ec4899); }
-        .module-header.abstract1 { background: linear-gradient(135deg, #14b8a6, #0d9488); }
-        .module-header.abstract2 { background: linear-gradient(135deg, #2dd4bf, #14b8a6); }
-        .module-header.generics { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        .module-header.strings { background: linear-gradient(135deg, #059669, #047857); }
+        .module-header.objects { background: linear-gradient(135deg, #2563eb, #1d4ed8); }
+        .module-header.oothinking { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+        .module-header.inheritance { background: linear-gradient(135deg, #ec4899, #db2777); }
+        .module-header.polymorphism { background: linear-gradient(135deg, #f472b6, #ec4899); }
+        .module-header.abstract { background: linear-gradient(135deg, #14b8a6, #0d9488); }
+        .module-header.interfaces { background: linear-gradient(135deg, #06b6d4, #0891b2); }
         .module-header.exceptions { background: linear-gradient(135deg, #ef4444, #dc2626); }
+        .module-header.generics { background: linear-gradient(135deg, #f59e0b, #d97706); }
 
         .module-number {
             position: absolute;
@@ -274,7 +272,7 @@
         }
 
         .module-topics li::before {
-            content: "•";
+            content: "\2022";
             color: var(--primary-light);
             font-weight: bold;
         }
@@ -382,7 +380,7 @@
         <nav class="header-links">
             <a href="#fundamentals">Fundamentals</a>
             <a href="#objects">Objects & Classes</a>
-            <a href="#inheritance">Inheritance</a>
+            <a href="#inheritance">Inheritance & Polymorphism</a>
             <a href="#advanced">Advanced</a>
         </nav>
     </header>
@@ -407,8 +405,8 @@
                 <h2 class="part-title">Fundamentals</h2>
             </div>
             <div class="modules-grid">
-                <!-- Module 1: Arrays -->
-                <a href="module01-arrays/index.html" class="module-card">
+                <!-- Module 1: Multidimensional Arrays -->
+                <a href="module01-multidimensional-arrays/index.html" class="module-card">
                     <div class="module-header arrays">
                         <span class="module-number">Module 1</span>
                         <div class="module-icon">&#128202;</div>
@@ -432,19 +430,20 @@
                     </div>
                 </a>
 
-                <!-- Module 2: Strings -->
-                <a href="module02-String/index.html" class="module-card">
-                    <div class="module-header strings">
+                <!-- Module 2: Text I/O -->
+                <a href="module02-text-io/index.html" class="module-card">
+                    <div class="module-header textio">
                         <span class="module-number">Module 2</span>
-                        <div class="module-icon">&#128221;</div>
-                        <div class="module-title">Strings</div>
-                        <div class="module-chapter">Chapter 10</div>
+                        <div class="module-icon">&#128196;</div>
+                        <div class="module-title">Text I/O</div>
+                        <div class="module-chapter">Chapter 12</div>
                     </div>
                     <div class="module-body">
                         <ul class="module-topics">
-                            <li>String Class (Immutable)</li>
-                            <li>StringBuilder & StringBuffer</li>
-                            <li>String Methods</li>
+                            <li>File Class & Paths</li>
+                            <li>Scanner (Reading Files)</li>
+                            <li>PrintWriter (Writing Files)</li>
+                            <li>Buffers & Flushing</li>
                         </ul>
                         <div class="module-footer">
                             <span class="module-status ready">
@@ -456,20 +455,20 @@
                     </div>
                 </a>
 
-                <!-- Module 3: Text I/O -->
-                <a href="module03-fileio/index.html" class="module-card">
-                    <div class="module-header textio">
+                <!-- Module 3: String -->
+                <a href="module03-string/index.html" class="module-card">
+                    <div class="module-header strings">
                         <span class="module-number">Module 3</span>
-                        <div class="module-icon">&#128196;</div>
-                        <div class="module-title">File I/O</div>
-                        <div class="module-chapter">Chapter 12</div>
+                        <div class="module-icon">&#128221;</div>
+                        <div class="module-title">String</div>
+                        <div class="module-chapter">Chapter 10</div>
                     </div>
                     <div class="module-body">
                         <ul class="module-topics">
-                            <li>File Class & Paths</li>
-                            <li>Scanner (Reading Files)</li>
-                            <li>PrintWriter (Writing Files)</li>
-                            <li>Buffers & Flushing</li>
+                            <li>String Class (Immutable)</li>
+                            <li>String Interning</li>
+                            <li>StringBuilder & StringBuffer</li>
+                            <li>String Methods</li>
                         </ul>
                         <div class="module-footer">
                             <span class="module-status ready">
@@ -490,62 +489,37 @@
                 <h2 class="part-title">Objects & Classes</h2>
             </div>
             <div class="modules-grid">
-                <!-- Module 4: Objects & Classes 1 -->
-                <div class="module-card disabled">
-                    <div class="module-header objects1">
+                <!-- Module 4: Objects & Classes -->
+                <a href="module04-objects-and-classes/01-intro-to-oop.html" class="module-card">
+                    <div class="module-header objects">
                         <span class="module-number">Module 4</span>
                         <div class="module-icon">&#128230;</div>
-                        <div class="module-title">Objects & Classes (1)</div>
+                        <div class="module-title">Objects & Classes</div>
                         <div class="module-chapter">Chapter 9</div>
                     </div>
                     <div class="module-body">
                         <ul class="module-topics">
-                            <li>Objects and Classes</li>
-                            <li>UML Notation</li>
-                            <li>Defining Classes</li>
-                            <li>Constructors</li>
+                            <li>Introduction to OOP</li>
+                            <li>Objects, Properties & Behaviors</li>
+                            <li>UML Class Diagrams</li>
+                            <li>Defining Classes & Constructors</li>
                         </ul>
                         <div class="module-footer">
-                            <span class="module-status coming">
-                                <span class="status-dot coming"></span>
-                                Coming Soon
+                            <span class="module-status ready">
+                                <span class="status-dot ready"></span>
+                                Ready
                             </span>
                             <span class="module-arrow">&#8594;</span>
                         </div>
                     </div>
-                </div>
+                </a>
 
-                <!-- Module 5: Objects & Classes 2 -->
+                <!-- Module 5: OO Thinking -->
                 <div class="module-card disabled">
-                    <div class="module-header objects2">
+                    <div class="module-header oothinking">
                         <span class="module-number">Module 5</span>
-                        <div class="module-icon">&#128269;</div>
-                        <div class="module-title">Objects & Classes (2)</div>
-                        <div class="module-chapter">Chapter 9</div>
-                    </div>
-                    <div class="module-body">
-                        <ul class="module-topics">
-                            <li>Reference Variables</li>
-                            <li>Instance vs Static</li>
-                            <li>Encapsulation</li>
-                            <li>Arrays of Objects</li>
-                        </ul>
-                        <div class="module-footer">
-                            <span class="module-status coming">
-                                <span class="status-dot coming"></span>
-                                Coming Soon
-                            </span>
-                            <span class="module-arrow">&#8594;</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Module 6: OO Thinking 1 -->
-                <div class="module-card disabled">
-                    <div class="module-header oothinking1">
-                        <span class="module-number">Module 6</span>
                         <div class="module-icon">&#128161;</div>
-                        <div class="module-title">OO Thinking (1)</div>
+                        <div class="module-title">Object-Oriented Thinking</div>
                         <div class="module-chapter">Chapter 10</div>
                     </div>
                     <div class="module-body">
@@ -554,30 +528,6 @@
                             <li>this Keyword</li>
                             <li>Class Abstraction</li>
                             <li>Class Relationships</li>
-                        </ul>
-                        <div class="module-footer">
-                            <span class="module-status coming">
-                                <span class="status-dot coming"></span>
-                                Coming Soon
-                            </span>
-                            <span class="module-arrow">&#8594;</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Module 7: OO Thinking 2 -->
-                <div class="module-card disabled">
-                    <div class="module-header oothinking2">
-                        <span class="module-number">Module 7</span>
-                        <div class="module-icon">&#127873;</div>
-                        <div class="module-title">OO Thinking (2)</div>
-                        <div class="module-chapter">Chapter 10</div>
-                    </div>
-                    <div class="module-body">
-                        <ul class="module-topics">
-                            <li>Wrapper Classes</li>
-                            <li>Autoboxing/Unboxing</li>
-                            <li>BigInteger & BigDecimal</li>
                         </ul>
                         <div class="module-footer">
                             <span class="module-status coming">
@@ -598,12 +548,12 @@
                 <h2 class="part-title">Inheritance & Polymorphism</h2>
             </div>
             <div class="modules-grid">
-                <!-- Module 8: Inheritance 1 -->
+                <!-- Module 6: Inheritance -->
                 <div class="module-card disabled">
-                    <div class="module-header inheritance1">
-                        <span class="module-number">Module 8</span>
+                    <div class="module-header inheritance">
+                        <span class="module-number">Module 6</span>
                         <div class="module-icon">&#128106;</div>
-                        <div class="module-title">Inheritance (1)</div>
+                        <div class="module-title">Inheritance</div>
                         <div class="module-chapter">Chapter 11</div>
                     </div>
                     <div class="module-body">
@@ -611,7 +561,7 @@
                             <li>Subclass & Superclass</li>
                             <li>super Keyword</li>
                             <li>Method Overriding</li>
-                            <li>Polymorphism</li>
+                            <li>Constructor Chaining</li>
                         </ul>
                         <div class="module-footer">
                             <span class="module-status coming">
@@ -623,19 +573,20 @@
                     </div>
                 </div>
 
-                <!-- Module 9: Inheritance 2 -->
+                <!-- Module 7: Polymorphism -->
                 <div class="module-card disabled">
-                    <div class="module-header inheritance2">
-                        <span class="module-number">Module 9</span>
-                        <div class="module-icon">&#128203;</div>
-                        <div class="module-title">Inheritance (2)</div>
+                    <div class="module-header polymorphism">
+                        <span class="module-number">Module 7</span>
+                        <div class="module-icon">&#128260;</div>
+                        <div class="module-title">Polymorphism</div>
                         <div class="module-chapter">Chapter 11</div>
                     </div>
                     <div class="module-body">
                         <ul class="module-topics">
+                            <li>Dynamic Binding</li>
+                            <li>Casting Objects</li>
                             <li>equals() Method</li>
                             <li>ArrayList</li>
-                            <li>protected & final</li>
                         </ul>
                         <div class="module-footer">
                             <span class="module-status coming">
@@ -656,19 +607,19 @@
                 <h2 class="part-title">Advanced OOP</h2>
             </div>
             <div class="modules-grid">
-                <!-- Module 10: Abstract & Interfaces 1 -->
+                <!-- Module 8: Abstract Classes -->
                 <div class="module-card disabled">
-                    <div class="module-header abstract1">
-                        <span class="module-number">Module 10</span>
+                    <div class="module-header abstract">
+                        <span class="module-number">Module 8</span>
                         <div class="module-icon">&#128736;</div>
-                        <div class="module-title">Abstract & Interfaces (1)</div>
+                        <div class="module-title">Abstract Classes</div>
                         <div class="module-chapter">Chapter 13</div>
                     </div>
                     <div class="module-body">
                         <ul class="module-topics">
-                            <li>Abstract Classes</li>
+                            <li>Abstract Classes & Methods</li>
                             <li>Number Class</li>
-                            <li>Defining Interfaces</li>
+                            <li>Design Principles</li>
                         </ul>
                         <div class="module-footer">
                             <span class="module-status coming">
@@ -680,16 +631,17 @@
                     </div>
                 </div>
 
-                <!-- Module 11: Abstract & Interfaces 2 -->
+                <!-- Module 9: Interfaces -->
                 <div class="module-card disabled">
-                    <div class="module-header abstract2">
-                        <span class="module-number">Module 11</span>
+                    <div class="module-header interfaces">
+                        <span class="module-number">Module 9</span>
                         <div class="module-icon">&#128279;</div>
-                        <div class="module-title">Abstract & Interfaces (2)</div>
+                        <div class="module-title">Interfaces</div>
                         <div class="module-chapter">Chapter 13</div>
                     </div>
                     <div class="module-body">
                         <ul class="module-topics">
+                            <li>Defining Interfaces</li>
                             <li>Comparable Interface</li>
                             <li>Class Comparisons</li>
                             <li>Design Guidelines</li>
@@ -704,19 +656,20 @@
                     </div>
                 </div>
 
-                <!-- Module 12: Generics -->
+                <!-- Module 10: Exception Handling -->
                 <div class="module-card disabled">
-                    <div class="module-header generics">
-                        <span class="module-number">Module 12</span>
-                        <div class="module-icon">&#128300;</div>
-                        <div class="module-title">Generics</div>
-                        <div class="module-chapter">Chapter 19</div>
+                    <div class="module-header exceptions">
+                        <span class="module-number">Module 10</span>
+                        <div class="module-icon">&#9888;</div>
+                        <div class="module-title">Exception Handling</div>
+                        <div class="module-chapter">Chapter 12</div>
                     </div>
                     <div class="module-body">
                         <ul class="module-topics">
-                            <li>Benefits of Generics</li>
-                            <li>Generic Classes</li>
-                            <li>Generic Interfaces</li>
+                            <li>try-catch-finally</li>
+                            <li>Exception Types</li>
+                            <li>Throwing Exceptions</li>
+                            <li>Best Practices</li>
                         </ul>
                         <div class="module-footer">
                             <span class="module-status coming">
@@ -728,20 +681,19 @@
                     </div>
                 </div>
 
-                <!-- Module 13: Exceptions -->
+                <!-- Module 11: Generics -->
                 <div class="module-card disabled">
-                    <div class="module-header exceptions">
-                        <span class="module-number">Module 13</span>
-                        <div class="module-icon">&#9888;</div>
-                        <div class="module-title">Exception Handling</div>
-                        <div class="module-chapter">Chapter 12</div>
+                    <div class="module-header generics">
+                        <span class="module-number">Module 11</span>
+                        <div class="module-icon">&#128300;</div>
+                        <div class="module-title">Generics</div>
+                        <div class="module-chapter">Chapter 19</div>
                     </div>
                     <div class="module-body">
                         <ul class="module-topics">
-                            <li>try-catch-finally</li>
-                            <li>Exception Types</li>
-                            <li>Throwing Exceptions</li>
-                            <li>Best Practices</li>
+                            <li>Benefits of Generics</li>
+                            <li>Generic Classes</li>
+                            <li>Generic Interfaces</li>
                         </ul>
                         <div class="module-footer">
                             <span class="module-status coming">

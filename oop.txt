@@ -1,0 +1,1054 @@
+0:04
+[Music]
+0:13
+one of my most successful videos on this
+0:16
+channel so far Compares functional and
+0:19
+objectoriented programming this is an
+0:21
+interesting topic and clearly not just
+0:23
+to me but there's more to this debate
+0:26
+than we discussed in that episode this
+0:28
+is one of those debates that to be
+0:30
+honest seems a little weird to me my
+0:33
+stance is not that I hate functional
+0:35
+programming in love o or vice versa but
+0:38
+rather that I think of each of these
+0:40
+approaches as tools rather than things
+0:43
+to go to war about so what are the
+0:46
+arguments for and against o and
+0:53
+[Music]
+0:57
+FP hi I'm Da Farley of continuous to
+1:00
+welcome to my channel and if you haven't
+1:02
+been here before please do hit subscribe
+1:05
+and if you enjoy the content today hit
+1:06
+like as well there is no o is best or FP
+1:11
+is best for me there are times when
+1:13
+functional programming is the best
+1:15
+choice for some things and times when
+1:17
+object orientation is best for others
+1:21
+most of the systems that I can remember
+1:23
+building had some as aspects of both
+1:26
+approaches despite the fact that I
+1:28
+mostly still think of my myself as
+1:30
+primarily an oo programmer this is not
+1:33
+because of language support but because
+1:35
+oo ideas or functional ideas made most
+1:38
+sense in the context of the code that we
+1:40
+were writing at that time I was an oo
+1:43
+programmer in C for a long time and some
+1:46
+of my C code was passing around pointers
+1:49
+to functions that I could call
+1:51
+polymorphically um and using immutable
+1:54
+data structure so my C code was both o
+1:57
+and functional the difference between o
+2:00
+and FP is one of those debates though
+2:03
+that seems to polarize people we can end
+2:06
+up trying to score points in an argument
+2:09
+rather than just shedding much light if
+2:11
+we're not careful the first thing to say
+2:14
+may be obvious but general purpose
+2:16
+programming languages are general
+2:19
+purpose in that you can write any system
+2:22
+in any
+2:24
+language there is nothing that you can
+2:26
+do in an oo language that you can't do
+2:29
+in a functional language and vice versa
+2:31
+that's really what general and in
+2:33
+general purpose
+2:34
+means there's a difference between a
+2:37
+general purpose language and a domain
+2:40
+specific language domain specific
+2:42
+languages have by design a narrower
+2:45
+focus on whatever it is that their
+2:47
+domain is for example SQL is a good
+2:50
+example of a DSL and it's great at
+2:54
+finding a collection of Records in a set
+2:56
+but it' be a rather poor choice for
+2:58
+writing Space Invaders
+3:00
+this doesn't mean that every general
+3:02
+purpose language is always an equally
+3:04
+good choice for any problem but it does
+3:07
+mean that any general purpose language
+3:10
+could be used to solve any problem in
+3:14
+computer science this is the idea of
+3:16
+curing completeness which describes the
+3:18
+universality of computation it may be a
+3:22
+bad idea to write an operating system in
+3:24
+Python but we could so while it may be
+3:27
+easier to write immutable code past
+3:30
+functions as arguments in hasore we can
+3:32
+write code that has the same effect in C
+3:35
+Java or any other general purpose
+3:37
+language
+3:38
+too while it may be more difficult to
+3:41
+write code with side effects in closure
+3:43
+or hcll we can still do that if we try
+3:46
+hard enough so the real difference
+3:48
+between these different paradigms is not
+3:51
+that they what they allow us to do but
+3:53
+how easy they make it to do the things
+3:56
+that we want to do this is about syntax
+3:58
+more than capability
+4:00
+but syntax matters it can change how we
+4:03
+think about the problem that we're
+4:04
+trying to solve different languages in
+4:08
+and different paradigms make some ideas
+4:10
+easier to express that's it really let's
+4:13
+look at a really simple example a
+4:16
+popular idea from functional programming
+4:18
+is the idea of mapping as in map and
+4:21
+reduce in this context a map is a higher
+4:24
+order function that means apply some
+4:27
+function to each element in a collection
+4:30
+this is often seen as one of the
+4:32
+preferred ways to process lists one way
+4:35
+in which map is deemed to be better is
+4:38
+in terms of performance now the real
+4:41
+answer to whether Maps process lists
+4:43
+faster than Loops is it
+4:46
+depends and it depends on a lot of
+4:49
+things one of the common advantages
+4:52
+cited for functional programming is that
+4:54
+it makes concurrency easier this is true
+4:57
+writing immutable pure functions me
+4:59
+means that we can automatically
+5:01
+parallelize them but why is that a good
+5:04
+idea the naive assumption is that
+5:07
+parallelizing like this means that we'll
+5:09
+get the results faster but this is
+5:11
+almost never the case if you measure it
+5:14
+the problem here is that concurrency is
+5:16
+fine but it only improves performance
+5:20
+when we don't need to join the results
+5:21
+back together again as soon as we need
+5:24
+to rejoin the results the costs of locks
+5:28
+semaphor cash missing is and even the
+5:30
+most efficient mechanism of all to
+5:32
+manage that kind of concurrent join
+5:34
+compare and swap operations dominates
+5:37
+performance compare and swap is often
+5:40
+hundreds of times slower than a single
+5:42
+thread for example so you need a 100
+5:45
+threads to get the same performance as a
+5:49
+single thread and then your concurrency
+5:51
+problems would be worse so map can be
+5:54
+great for splitting problems into
+5:56
+parallel processes but will always be
+5:58
+much slower if you need to rejoin the
+5:59
+data again to look at it so if you don't
+6:02
+gain in performance what are the other
+6:05
+benefits is the solution simpler or
+6:08
+easier to read I think this is a matter
+6:10
+of taste but I confess I don't really
+6:13
+care very much I see no real advantage
+6:17
+in either representation here as an old
+6:19
+school programmer I'd probably prefer
+6:22
+the explicit nature of the loops a
+6:24
+little bit but it really doesn't really
+6:26
+make that much difference to me the
+6:28
+verbos nature of java in this example
+6:31
+certainly doesn't show the map in its
+6:33
+best light here as a result of that I
+6:36
+thought I'd write it in Python instead
+6:38
+and I have to show you this little Quirk
+6:41
+because it's funny you can't call print
+6:43
+from a Lambda in Pyon so you end up
+6:46
+doing this instead which is certainly
+6:48
+worse than the loop more technically
+6:51
+though functional programmers and O prog
+6:53
+programmers talk about the value of
+6:55
+different ideas each picked to show off
+6:57
+the advantages of their preferred
+6:59
+approach usually o programmers talk
+7:01
+about the value of modeling the problem
+7:04
+I value the high level navigability of
+7:06
+the problem that I get from oo that's
+7:08
+true but this modeling isn't only the
+7:10
+province of object
+7:12
+orientation there's a good presentation
+7:15
+from Marco emrich about a functional
+7:18
+approach to domain driven design that I
+7:19
+particularly enjoyed I liked Marco's
+7:22
+idea that the core domain of the system
+7:25
+is functional and the iio at the edges
+7:27
+is always not because it has side
+7:30
+effects after I've stored something in a
+7:33
+file or a database which is shared
+7:35
+mutable State I really want the state to
+7:37
+have changed this is an interesting
+7:40
+insight and certainly Bears some
+7:41
+relationship to how I usually Design
+7:44
+Systems even though as I've said before
+7:47
+I think of my Approach as more
+7:48
+objectoriented than functional
+7:51
+definitions of oo usually include
+7:53
+abstraction which allows us to hide
+7:56
+unnecessary details inheritance defining
+7:59
+one type type of thing in terms of
+8:00
+another polymorphism being able to
+8:03
+access things of different types through
+8:06
+the same interface and encapsulation
+8:08
+which allows us to hide on interesting
+8:10
+detail I think that most functional
+8:13
+programmers would agree that all of
+8:14
+these are good things perhaps with the
+8:17
+exception of inheritance in fact all of
+8:19
+these are principles that also underpin
+8:22
+functional programming it's just that we
+8:25
+describe those things in somewhat
+8:27
+different terms fun programmers talk
+8:30
+about declarative programming which is
+8:32
+really a form of abstraction and
+8:34
+information hiding and the use of types
+8:36
+which is based on the idea of
+8:38
+polymorphism inheritance though is
+8:41
+tricky because while it is clearly true
+8:44
+that it has some strong benefits it's
+8:46
+also often been misused and can have
+8:48
+some serious drawbacks if you create a
+8:51
+new window or button on your display
+8:54
+it's through inheritance that you can
+8:56
+resize or click it object orientation
+8:59
+was the technical step that really
+9:01
+liberated code sharing and it's no
+9:04
+surprise that o and the GUI came from
+9:08
+the same place Xerox Park the GUI is
+9:11
+deeply an object-oriented inspired
+9:14
+idea when non oo programmers poke fun at
+9:17
+oo though they're often poking fun
+9:20
+primarily inheritance that's because you
+9:22
+can make horrible messes with
+9:24
+inheritance to the extent that people
+9:27
+who prefer simple binary answers to
+9:29
+things will'll often say inheritance is
+9:31
+bad of course inheritance isn't bad but
+9:34
+bad inheritance is certainly bad the big
+9:37
+mistake in inheritance and I'd probably
+9:39
+say programming in general is not to
+9:41
+model the problem that you're trying to
+9:43
+solve well enough tactical programming
+9:46
+is often at risk of being tactical crap
+9:50
+for example in Java a set inherits from
+9:53
+a vector and properties inherit from
+9:56
+hash tables this is tactical crap as set
+9:59
+isn't a vector properties are not hash
+10:02
+tables this was a lazy choice because it
+10:05
+made implementing sets and properties
+10:07
+easier but it is nonsense really a set
+10:11
+is not a vector and results in all sorts
+10:14
+of features of sets in Java that make no
+10:17
+sense at all what does index of an entry
+10:22
+mean for a set or why would I ever wish
+10:25
+to rehash my
+10:27
+properties this isn't the fault of
+10:29
+inheritance per se this is just poor
+10:32
+tactical design choice and we can
+10:34
+certainly make poor design choices in
+10:36
+any language even functional
+10:38
+languages I think that the key decisions
+10:41
+in software are outside the technical
+10:44
+detail of individual languages largely
+10:46
+or programming language paradigms for
+10:48
+that matter if you'd like to see what I
+10:50
+mean take a look at my training course
+10:53
+better software faster it describes what
+10:55
+it takes to build high quality software
+10:57
+and why that matters there's a link in
+11:00
+the description
+11:02
+below in Marco's presentation he quotes
+11:05
+functional programmers saying functional
+11:07
+programming is great because it has
+11:09
+immutable data structures a stateless
+11:11
+programming model pure functions and no
+11:14
+Loops these thing make it easier to
+11:16
+reason about your code they say well in
+11:20
+most oo languages I can easily make
+11:23
+immutable data structures program
+11:25
+stateless code create pure functions and
+11:28
+avoid loops if I choose to even before
+11:32
+choosing to use the functional features
+11:34
+that have been added to most modern oo
+11:36
+languages these days the real value in a
+11:40
+more functional approach to programming
+11:42
+as I perceive it is really in three
+11:44
+areas treating functions as variables
+11:48
+immutability and declarative programming
+11:51
+functions as variables is a significant
+11:54
+step once again you don't need a
+11:56
+functional language to do this though I
+11:58
+used to do versions of this in assembler
+12:00
+C C++ Java and python but having direct
+12:04
+language support certainly makes it
+12:05
+nicer to use this allows us to pass one
+12:08
+function as an argument to another which
+12:11
+can then call that
+12:12
+function if you have ever come across
+12:15
+two very similar bits of code but that
+12:17
+are just slightly different like this
+12:20
+then this ability to pass a function as
+12:22
+an argument is a really nice tool to use
+12:25
+to simplify and generalize the code this
+12:27
+is also the idea behind things like
+12:30
+event handlers oh hang on isn't that an
+12:33
+no idea immutability is an important
+12:36
+tool but it's never the only tool at
+12:39
+some point you want to change things
+12:41
+because otherwise what's the point of
+12:43
+your code this is one reason why I liked
+12:47
+Marco's point that IO at the edges of
+12:49
+your system always has side effects
+12:52
+because if it didn't your code isn't
+12:53
+doing anything I agree that minimizing
+12:56
+side effects in code can make things
+12:58
+easier to re about but it's also never
+13:01
+the whole answer at least in the purest
+13:04
+sense of no mutable State at the level
+13:07
+of whole systems there are very few
+13:10
+Corner cases where genuinely stateless
+13:12
+systems make any sense and then only in
+13:15
+very narrow contexts where code is
+13:18
+acting as some kind of pipe that changes
+13:20
+the data in some way this idea is
+13:22
+extremely valuable as part of a system a
+13:25
+simplifying step but in whole systems
+13:28
+there's always State changing somewhere
+13:32
+so the idea of stateless systems is
+13:34
+never an absolute it is much more about
+13:37
+where you deal with the state changes
+13:39
+rather than eliminating them all
+13:40
+together minimizing side effects is
+13:43
+great in the right place and has been
+13:45
+with hindsight an important aspect of my
+13:48
+own approach to object-oriented design
+13:50
+for a very long time as Michael feathers
+13:52
+said to me in our chat a few months ago
+13:56
+object-oriented programming looks a lot
+13:58
+like functional program when it's done
+13:59
+right but whether you are developing in
+14:02
+objectoriented fashion or functional
+14:05
+there are times when you want side
+14:08
+effects we've already talked about the
+14:10
+obvious times when you're doing IO of
+14:12
+some kind if you want to write it to a
+14:14
+file the state that the file is in
+14:17
+matters sure you can clone an immutable
+14:20
+snapshot of a picture of that file but
+14:23
+immediately you do that it is at least
+14:26
+potentially out of date because the real
+14:29
+file on the dis is
+14:30
+shared maybe someone else changed the
+14:33
+file or the operating system deleted it
+14:35
+while you were in the process of dealing
+14:37
+with your copy now your immutable
+14:40
+snapshot copy of the file is wrong the
+14:43
+change in the file or in the database is
+14:45
+always a side effect for another reason
+14:47
+too it's a side effect of working with
+14:50
+computers that forget things when we
+14:51
+turn them off if I change the balance in
+14:55
+my account the fact that I need to store
+14:57
+that change somewhere isn't my goal the
+15:00
+change in the balance is my goal so the
+15:03
+storage is just a side effect functional
+15:06
+programming languages of course support
+15:09
+this kind of thing and some support
+15:11
+ideas like monads that allow us to break
+15:14
+the pure functions rule in of functional
+15:17
+programming by adding side effects but
+15:19
+I'd argue that this is only a special
+15:22
+case of a more general idea one of my
+15:25
+favorite architectural approaches is to
+15:27
+build message-based reactive systems
+15:29
+these things are like state for actors
+15:32
+communicating only via asynchronous
+15:35
+messages one reason that I like these
+15:37
+systems quite so much is that they allow
+15:40
+me to separate The Accidental complexity
+15:42
+and the essential complexity in my
+15:44
+system let's imagine I have a bank
+15:47
+account of some kind and I want to
+15:49
+credit it if in my favorite actor-based
+15:52
+approach I may send a credit message
+15:55
+with the value that I want to add my
+15:58
+infrastructure will manage the io it
+16:00
+will save the message on its way to my
+16:02
+service and only if the message is
+16:04
+safely stored or clustered or whatever
+16:06
+else will it forward it then to my
+16:09
+service at this point my service will
+16:12
+update the value of the account that it
+16:15
+holds to its to to create a new total
+16:18
+balance is this mutable state or not is
+16:22
+this o or not I'd say that this is a
+16:25
+very oo way of thinking and working my
+16:28
+my actors embody which state for domain
+16:31
+models of the problem I'm solving but
+16:35
+here my side effects the storage are
+16:37
+isolated more isolated perhaps than in
+16:40
+some functional systems and the change
+16:42
+in state an important one that must be
+16:45
+represented somewhere is clearly
+16:48
+expressed and easy to understand and
+16:51
+can't happen without the side effects
+16:53
+that matter having taken place after all
+16:57
+I don't want my1 EUR to appear and I
+16:59
+want to know that my total is even after
+17:02
+a crash or a
+17:03
+restart if I want to know what the
+17:05
+balance is for my account I can query
+17:07
+this state for copy but I can also
+17:10
+discard this copy and recreate it into
+17:12
+exactly the same state as before by
+17:14
+repaying the message messages that I
+17:18
+stored but I can also discard this copy
+17:20
+and recreate it in exactly the same
+17:22
+state as before by replaying the message
+17:24
+that I stored earlier so once again is
+17:28
+this state here mutable or not actually
+17:32
+I think it's kind of both my point here
+17:34
+is not to sing the Praises of reactive
+17:37
+systems well maybe just a bit but to
+17:40
+point out that the line between object
+17:42
+orientation and functional programming
+17:45
+and maybe even actors is all a bit more
+17:47
+blurry than the culture wars would
+17:50
+sometimes suggest yes it is sensible to
+17:54
+minimize side effects in your code
+17:56
+whatever the nature of your code but is
+17:58
+there really really a big difference
+18:00
+between having a function that takes two
+18:03
+arguments one of them supplied by
+18:05
+another function that defines its value
+18:07
+and an object with a private member
+18:10
+variable that is used instead of the
+18:13
+function supplied variable sure the oo
+18:17
+code here is more verbose but that's a
+18:19
+different question really all that's
+18:22
+really going on here is how we decide to
+18:25
+represent the sequencing of the function
+18:27
+calls
+18:29
+we could debate which one's easier to
+18:31
+read and there are arguments on both
+18:33
+sides but I do believe that if we're
+18:35
+optimizing only to minimize typing we're
+18:39
+already looking in the wrong place there
+18:41
+isn't an awful lot of typing in
+18:43
+assembler programs after
+18:45
+all optimizing for thinking is much more
+18:48
+important my point here is not to
+18:51
+rubbish functional programming my point
+18:54
+is that I think that the debate should
+18:56
+be a lot more nuanced than oh bad
+18:59
+functional programming good or vice
+19:01
+versa there are certainly times when
+19:03
+functional programming is more tur and
+19:06
+tur can be good but it can also be bad
+19:09
+ultimately depending on how easy the
+19:11
+code is to read and understand the last
+19:14
+of the ideas that functional programmers
+19:16
+often site as the real value of
+19:18
+functional programming is the advantage
+19:20
+of declarative over imperative
+19:23
+programming I've spoken about this
+19:25
+before there are certainly significant
+19:27
+advantages to EXP expressing some ideas
+19:30
+declaratively my approach to test driven
+19:32
+development is all is to always aim to
+19:35
+declare in my test what I want the
+19:37
+system to do without attempting to test
+19:40
+how it does it or say how it does it
+19:43
+this means that my tests are a lot more
+19:45
+durable to change than tests that
+19:47
+attempt to assert the implementation
+19:49
+detail in the code this is the same idea
+19:52
+as declarative
+19:53
+programming if we can clearly Express
+19:56
+the outcome that we'd like to achieve we
+19:58
+without worrying about how the outcome
+20:00
+is achieved then great I see lots of
+20:03
+example of this in examples of
+20:05
+functional code but to be honest it's
+20:08
+less obvious in people's real code as
+20:11
+far as I can see to be fair my exposure
+20:14
+to reading other people's functional
+20:16
+code is somewhat limited I don't read
+20:18
+lots of it so this may be down to the
+20:20
+limits of my experience but if this is
+20:24
+the case if the levels of abstraction
+20:26
+that functional languages give to us are
+20:28
+are genuinely as advantageous as
+20:31
+functional programmers tell us that they
+20:32
+are then shouldn't functional Pro
+20:35
+projects prove to be a lot faster to
+20:37
+develop and produce fewer bugs than
+20:40
+nonfunctional this is the claim that
+20:42
+functional programmers sometimes make
+20:45
+but I have looked and I don't find much
+20:47
+evidence to support this claim
+20:50
+functional programming does appear to
+20:52
+produce fewer bugs but the research that
+20:55
+I've read says that this is at or close
+20:59
+to the level of statistical noise
+21:01
+resulting in about a 1% fewer bug fix
+21:04
+commits than imperative languages when
+21:08
+measured by comparing the ratio of
+21:10
+commits that that are for new things
+21:13
+versus commits that are intended to fix
+21:15
+bugs to put this into context the data
+21:18
+for unit testing says that you get
+21:20
+somewhere around 58% reduction in
+21:23
+production defects overall though
+21:25
+measured in a completely different way
+21:27
+so it may not be fair of me to make this
+21:29
+comparison but the difference if any in
+21:32
+the quality of the code produced by
+21:34
+functional programming versus
+21:35
+object-oriented programming languages
+21:37
+seems to be
+21:38
+tiny I think that both functional
+21:40
+programming and object orientation are
+21:43
+valuable tools but I also think that
+21:46
+there are some extravagant claims made
+21:48
+for functional programming in particular
+21:50
+that to me at least don't seem to stand
+21:52
+up to
+21:53
+scrutiny my conclusion is that it pays
+21:57
+to understand both function programming
+21:59
+and objectoriented programming the idea
+22:02
+that functional programming is a Step
+22:03
+Beyond object orientation in the
+22:06
+evolution of programming languages seems
+22:08
+just a complete
+22:10
+misinterpretation of the history and of
+22:13
+what's going on in reality o and FP are
+22:16
+both valuable tools for building complex
+22:18
+systems use them in the right context
+22:21
+and each will help you to build better
+22:24
+systems but neither is the deciding
+22:27
+factor than thank you very much for
+22:29
+watching
+22:32
+[Music]

@@ -1,0 +1,1488 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مقدمة في البرمجة كائنية التوجه | CPCS203</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #2563eb;
+            --primary-light: #3b82f6;
+            --primary-dark: #1d4ed8;
+            --secondary-color: #7c3aed;
+            --success-color: #059669;
+            --warning-color: #d97706;
+            --danger-color: #dc2626;
+            --dark-color: #1f2937;
+            --light-color: #f3f4f6;
+            --gray-color: #6b7280;
+            --oop-color: #2563eb;
+            --fp-color: #7c3aed;
+            --proc-color: #d97706;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.8;
+            color: var(--dark-color);
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #7c3aed 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+        }
+
+        /* Language Switch Button */
+        .lang-switch {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-size: 0.95rem;
+        }
+        .lang-switch:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .header .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .header .course-info {
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 30px;
+            display: inline-block;
+        }
+
+        /* Content */
+        .content {
+            padding: 40px;
+        }
+
+        /* Sections */
+        .section {
+            margin-bottom: 50px;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--primary-color);
+            padding-bottom: 10px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-number {
+            background: var(--primary-color);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        /* Narrative Block */
+        .narrative {
+            background: linear-gradient(135deg, #f0f4ff, #e8ecff);
+            border-right: 5px solid var(--primary-color);
+            padding: 25px 30px;
+            margin: 20px 0;
+            border-radius: 15px 0 0 15px;
+            font-size: 1.05rem;
+            line-height: 2;
+        }
+
+        .narrative p {
+            margin-bottom: 12px;
+        }
+
+        .narrative p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Key Concept Box */
+        .key-concept {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border-right: 5px solid var(--warning-color);
+            padding: 20px 25px;
+            margin: 20px 0;
+            border-radius: 10px 0 0 10px;
+        }
+
+        .key-concept-title {
+            font-weight: bold;
+            color: var(--warning-color);
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        /* Important Box */
+        .important-box {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            border-right: 5px solid var(--danger-color);
+            padding: 20px 25px;
+            margin: 20px 0;
+            border-radius: 10px 0 0 10px;
+        }
+
+        .important-box-title {
+            font-weight: bold;
+            color: var(--danger-color);
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        /* Info Box */
+        .info-box {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            border-right: 5px solid var(--primary-color);
+            padding: 20px 25px;
+            margin: 20px 0;
+            border-radius: 10px 0 0 10px;
+        }
+
+        .info-box-title {
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        /* Success Box */
+        .success-box {
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+            border-right: 5px solid var(--success-color);
+            padding: 20px 25px;
+            margin: 20px 0;
+            border-radius: 10px 0 0 10px;
+        }
+
+        .success-box-title {
+            font-weight: bold;
+            color: var(--success-color);
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        /* Quote Box */
+        .quote-box {
+            background: linear-gradient(135deg, #faf5ff, #f3e8ff);
+            border-right: 5px solid var(--secondary-color);
+            padding: 20px 25px;
+            margin: 20px 0;
+            border-radius: 10px 0 0 10px;
+            font-style: italic;
+        }
+
+        .quote-box .quote-author {
+            font-style: normal;
+            font-weight: bold;
+            color: var(--secondary-color);
+            margin-top: 10px;
+            text-align: left;
+        }
+
+        /* Code Blocks */
+        .code-block {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            direction: ltr;
+            text-align: left;
+        }
+
+        .code-block .keyword { color: #569cd6; }
+        .code-block .type { color: #4ec9b0; }
+        .code-block .string { color: #ce9178; }
+        .code-block .number { color: #b5cea8; }
+        .code-block .comment { color: #6a9955; }
+        .code-block .method { color: #dcdcaa; }
+        .code-block .annotation { color: #c586c0; }
+
+        .code-label {
+            background: #2d2d2d;
+            color: #9cdcfe;
+            padding: 8px 15px;
+            border-radius: 10px 10px 0 0;
+            font-family: 'Consolas', monospace;
+            font-size: 0.85rem;
+            display: inline-block;
+            margin-bottom: -1px;
+        }
+
+        .code-inline {
+            background: #e5e7eb;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9rem;
+            color: var(--danger-color);
+            direction: ltr;
+            display: inline-block;
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding: 20px 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            right: 30px;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(to bottom, var(--proc-color), var(--fp-color), var(--oop-color));
+            border-radius: 2px;
+        }
+
+        .timeline-item {
+            position: relative;
+            padding: 20px 75px 20px 20px;
+            margin-bottom: 20px;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            right: 18px;
+            top: 25px;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 0.8rem;
+            z-index: 1;
+        }
+
+        .timeline-content {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 20px 25px;
+            border: 2px solid #e2e8f0;
+        }
+
+        .timeline-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .timeline-date {
+            font-size: 0.85rem;
+            color: var(--gray-color);
+            margin-bottom: 8px;
+        }
+
+        /* Comparison Grid */
+        .paradigm-comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin: 25px 0;
+        }
+
+        .paradigm-box {
+            border-radius: 15px;
+            padding: 25px;
+            border: 3px solid;
+        }
+
+        .paradigm-box.procedural {
+            background: linear-gradient(135deg, #fff7ed, #ffedd5);
+            border-color: var(--proc-color);
+        }
+
+        .paradigm-box.oop {
+            background: linear-gradient(135deg, #eff6ff, #dbeafe);
+            border-color: var(--oop-color);
+        }
+
+        .paradigm-box.functional {
+            background: linear-gradient(135deg, #faf5ff, #f3e8ff);
+            border-color: var(--fp-color);
+        }
+
+        .paradigm-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .paradigm-box.procedural .paradigm-title { color: var(--proc-color); }
+        .paradigm-box.oop .paradigm-title { color: var(--oop-color); }
+        .paradigm-box.functional .paradigm-title { color: var(--fp-color); }
+
+        .paradigm-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .paradigm-list li {
+            padding: 6px 0;
+            padding-right: 20px;
+            position: relative;
+        }
+
+        .paradigm-list li::before {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 14px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .paradigm-box.procedural .paradigm-list li::before { background: var(--proc-color); }
+        .paradigm-box.oop .paradigm-list li::before { background: var(--oop-color); }
+        .paradigm-box.functional .paradigm-list li::before { background: var(--fp-color); }
+
+        /* Full-width paradigm box */
+        .paradigm-full {
+            margin: 25px 0;
+        }
+
+        /* Object Visualization */
+        .object-visual {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            margin: 25px 0;
+        }
+
+        .object-card {
+            background: white;
+            border-radius: 15px;
+            border: 3px solid var(--primary-color);
+            overflow: hidden;
+            min-width: 220px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .object-card-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            padding: 12px 20px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .object-card-section {
+            padding: 15px 20px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .object-card-section:last-child {
+            border-bottom: none;
+        }
+
+        .object-card-label {
+            font-size: 0.8rem;
+            color: var(--gray-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .object-card-item {
+            font-family: 'Consolas', monospace;
+            font-size: 0.9rem;
+            padding: 3px 0;
+            color: var(--dark-color);
+            direction: ltr;
+            text-align: left;
+        }
+
+        /* UML Diagram */
+        .uml-diagram {
+            display: flex;
+            justify-content: center;
+            margin: 25px 0;
+        }
+
+        .uml-class {
+            border: 3px solid var(--dark-color);
+            border-radius: 8px;
+            min-width: 300px;
+            background: white;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .uml-name {
+            background: var(--dark-color);
+            color: white;
+            padding: 12px 20px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.15rem;
+        }
+
+        .uml-section {
+            padding: 12px 20px;
+            border-bottom: 2px solid var(--dark-color);
+            font-family: 'Consolas', monospace;
+            font-size: 0.9rem;
+            direction: ltr;
+            text-align: left;
+        }
+
+        .uml-section:last-child {
+            border-bottom: none;
+        }
+
+        .uml-item {
+            padding: 4px 0;
+        }
+
+        .uml-private { color: var(--danger-color); }
+        .uml-public { color: var(--success-color); }
+
+        /* Pillars */
+        .pillars-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin: 25px 0;
+        }
+
+        .pillar-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            border: 2px solid #e2e8f0;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .pillar-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .pillar-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .pillar-name {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .pillar-card:nth-child(1) .pillar-name { color: #2563eb; }
+        .pillar-card:nth-child(2) .pillar-name { color: #7c3aed; }
+        .pillar-card:nth-child(3) .pillar-name { color: #059669; }
+        .pillar-card:nth-child(4) .pillar-name { color: #d97706; }
+
+        .pillar-card:nth-child(1) { border-top: 4px solid #2563eb; }
+        .pillar-card:nth-child(2) { border-top: 4px solid #7c3aed; }
+        .pillar-card:nth-child(3) { border-top: 4px solid #059669; }
+        .pillar-card:nth-child(4) { border-top: 4px solid #d97706; }
+
+        .pillar-desc {
+            color: var(--gray-color);
+            font-size: 0.95rem;
+        }
+
+        /* Steps */
+        .steps-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .step {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 15px;
+            border: 2px solid #e2e8f0;
+        }
+
+        .step-number {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .step-content { flex: 1; }
+
+        .step-title {
+            font-weight: bold;
+            font-size: 1.15rem;
+            color: var(--primary-color);
+            margin-bottom: 8px;
+        }
+
+        /* Analogy Box */
+        .analogy-box {
+            background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+            border: 2px dashed var(--success-color);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+        }
+
+        .analogy-title {
+            font-weight: bold;
+            color: var(--success-color);
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+
+        /* Comparison Table */
+        .comparison-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin: 20px 0;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+
+        .comparison-table thead th {
+            background: var(--dark-color);
+            color: white;
+            padding: 14px 20px;
+            text-align: right;
+            font-size: 1rem;
+        }
+
+        .comparison-table tbody td {
+            padding: 12px 20px;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 0.95rem;
+        }
+
+        .comparison-table tbody tr:nth-child(even) {
+            background: #f9fafb;
+        }
+
+        .comparison-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .comparison-table tbody tr:hover {
+            background: #eff6ff;
+        }
+
+        /* Navigation */
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            padding: 30px 40px;
+            background: var(--light-color);
+            border-top: 2px solid #e5e7eb;
+        }
+
+        .nav-btn {
+            padding: 12px 25px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .nav-btn.prev {
+            background: white;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+
+        .nav-btn.next {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .content { padding: 20px; }
+            .header h1 { font-size: 1.8rem; }
+            .paradigm-comparison { grid-template-columns: 1fr; }
+            .pillars-grid { grid-template-columns: 1fr; }
+            .object-visual { flex-direction: column; align-items: center; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Language Switch -->
+    <a href="01-intro-to-oop.html" class="lang-switch">English &#127468;&#127463;</a>
+
+    <div class="container">
+
+        <!-- Header -->
+        <div class="header">
+            <h1>مقدمة في البرمجة كائنية التوجه</h1>
+            <p class="subtitle">من التفكير بالخطوات إلى التفكير بالكائنات</p>
+            <div class="course-info">CPCS203 - الوحدة 04: الكائنات والأصناف</div>
+        </div>
+
+        <div class="content">
+
+            <!-- ============================================================ -->
+            <!-- القسم 1: القصة -->
+            <!-- ============================================================ -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">1</span>
+                    القصة: كيف وصلنا إلى هنا
+                </h2>
+
+                <div class="narrative">
+                    <p>تخيّل أنك تبني منزلًا. في بدايات تاريخ البناء، كان البنّاؤون يكتفون برصّ الحجارة فوق بعضها. لم تكن هناك مخططات، ولا هندسة معمارية، ولا فصل بين المهام. إذا أردت منزلًا أكبر، فما عليك سوى رصّ المزيد من الحجارة. كان ذلك ناجحًا &mdash; لكن فقط إلى حدٍّ معين.</p>
+                    <p>مع ازدياد تعقيد المنازل &mdash; غرف متعددة، وسباكة، وكهرباء &mdash; انهار نهج "مجرد رصّ الحجارة" تحت ثقله. احتاج البنّاؤون إلى شيء أفضل: <strong>الهندسة المعمارية</strong>. احتاجوا إلى طريقة للتفكير في المنزل كمجموعة من <em>المكونات</em> التي تعمل معًا، لكلٍّ منها مسؤوليته الخاصة.</p>
+                    <p>تطوير البرمجيات سلك المسار نفسه تمامًا.</p>
+                </div>
+
+                <p>في العقود الأولى من علم الحاسوب، كُتبت معظم البرامج كـ<strong>تسلسل من التعليمات</strong>. تقول للحاسوب: "نفّذ الخطوة 1، ثم الخطوة 2، ثم الخطوة 3." هذا ما يُسمى <strong>البرمجة الإجرائية (Procedural Programming)</strong>، وهي تعمل بشكل ممتاز للبرامج الصغيرة.</p>
+
+                <p>لكن أنظمة البرمجيات نمت. أصبحت آلاف، ثم ملايين الأسطر من الكود. وظلّ المطورون يصطدمون بنفس المشاكل مرارًا وتكرارًا:</p>
+
+                <div class="important-box">
+                    <div class="important-box-title">آلام نمو البرمجيات</div>
+                    <ul style="margin-top:8px; padding-right:20px;">
+                        <li><strong>إعادة الاستخدام (Reusability):</strong> كتابة نفس المنطق مرارًا وتكرارًا في أجزاء مختلفة من النظام.</li>
+                        <li><strong>قابلية التوسع (Scalability):</strong> إضافة ميزة جديدة تعني إعادة كتابة نصف البرنامج.</li>
+                        <li><strong>قابلية الصيانة (Maintainability):</strong> إصلاح خطأ واحد يُنتج ثلاثة أخطاء جديدة.</li>
+                        <li><strong>النمطية (Modularity):</strong> كل شيء متشابك &mdash; غيّر شيئًا واحدًا، وينكسر كل شيء آخر.</li>
+                    </ul>
+                </div>
+
+                <p>هذه المشاكل أشعلت البحث عن طرق أفضل لتنظيم الكود. وفي النهاية، ظهرت فكرة قوية: <em>ماذا لو توقفنا عن التفكير في البرامج كتسلسلات من التعليمات، وبدأنا التفكير فيها كمجموعات من <strong>الكائنات (Objects)</strong> التي تتفاعل مع بعضها البعض؟</em></p>
+
+                <p>هذه الفكرة أصبحت تُعرف بـ <strong>البرمجة كائنية التوجه (Object-Oriented Programming - OOP)</strong>.</p>
+
+                <!-- الخط الزمني -->
+                <h3 style="margin: 30px 0 15px; color: var(--primary-color); font-size: 1.3rem;">نبذة تاريخية</h3>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-dot" style="background: var(--proc-color);">1</div>
+                        <div class="timeline-content">
+                            <div class="timeline-title" style="color: var(--proc-color);">البرمجة الإجرائية (Procedural Programming)</div>
+                            <div class="timeline-date">الخمسينيات&ndash;السبعينيات &mdash; C, Fortran, COBOL</div>
+                            <p>تُنظَّم البرامج كتسلسلات من التعليمات مُجمَّعة في <strong>دوال/إجراءات</strong>. البيانات والدوال منفصلة. ممتازة للبرامج الصغيرة، لكن الأنظمة الكبيرة تصبح صعبة الإدارة.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot" style="background: var(--fp-color);">2</div>
+                        <div class="timeline-content">
+                            <div class="timeline-title" style="color: var(--fp-color);">البرمجة الوظيفية (Functional Programming)</div>
+                            <div class="timeline-date">الخمسينيات&ndash;الآن &mdash; Lisp, Haskell, Clojure</div>
+                            <p>تُبنى البرامج من <strong>دوال نقية (Pure Functions)</strong> بدون آثار جانبية و<strong>بيانات غير قابلة للتغيير (Immutable)</strong>. ممتازة للحسابات الرياضية وتحويلات البيانات والتزامن. الدوال مواطنات من الدرجة الأولى يمكن تمريرها كقيم.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot" style="background: var(--oop-color);">3</div>
+                        <div class="timeline-content">
+                            <div class="timeline-title" style="color: var(--oop-color);">البرمجة كائنية التوجه (Object-Oriented Programming)</div>
+                            <div class="timeline-date">الستينيات&ndash;الآن &mdash; Simula, Smalltalk, Java, C++, Python</div>
+                            <p>تُنظَّم البرامج حول <strong>كائنات</strong> &mdash; وحدات تجمع البيانات والسلوك معًا. وُلدت في مركز أبحاث زيروكس بارك (Xerox PARC) &mdash; نفس المكان الذي أعطانا واجهة المستخدم الرسومية &mdash; وغيّرت طريقة بناء الأنظمة المعقدة الكبيرة.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ============================================================ -->
+            <!-- القسم 2: البرمجة كائنية التوجه مقابل الوظيفية مقابل الإجرائية -->
+            <!-- ============================================================ -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">2</span>
+                    النقاش الكبير: البرمجة كائنية التوجه مقابل الوظيفية مقابل الإجرائية
+                </h2>
+
+                <div class="narrative">
+                    <p>قبل أن نتعمق في البرمجة كائنية التوجه، دعونا نتناول شيئًا مهمًّا. قد تسمع أشخاصًا يتجادلون بحماس: "البرمجة كائنية التوجه هي الأفضل!" أو "البرمجة الوظيفية أفضل!" الحقيقة أكثر دقة من ذلك.</p>
+                    <p>كما يقول مهندس البرمجيات الشهير <strong>ديف فارلي (Dave Farley)</strong>: هذه النماذج البرمجية هي <strong>أدوات وليست أديان</strong>. أنت لا تخوض حربًا حول ما إذا كان المطرقة أفضل من المفك. أنت تختار الأداة المناسبة للمهمة.</p>
+                </div>
+
+                <div class="quote-box">
+                    <p>"موقفي ليس أنني أكره البرمجة الوظيفية وأحب البرمجة كائنية التوجه، أو العكس، بل إنني أعتبر كلًّا من هذه المنهجيات أدوات وليست أشياء نخوض حروبًا بسببها."</p>
+                    <div class="quote-author">&mdash; ديف فارلي (Dave Farley)، <em>"OOP vs Functional Programming"</em>، قناة Continuous Delivery على YouTube</div>
+                    <p style="font-style: normal; font-size: 0.85rem; color: var(--gray-color); margin-top: 8px;">ديف فارلي هو رائد في هندسة البرمجيات، والمؤلف المشارك للكتاب الحائز على جوائز <em>"Continuous Delivery"</em>، ومؤسس قناة Continuous Delivery على YouTube. لديه أكثر من 40 عامًا من الخبرة في بناء أنظمة برمجية واسعة النطاق.</p>
+                </div>
+
+                <p>دعونا نفهم ما يجعل كل نموذج برمجي فريدًا:</p>
+
+                <div class="paradigm-comparison">
+                    <div class="paradigm-box procedural">
+                        <div class="paradigm-title">البرمجة الإجرائية</div>
+                        <ul class="paradigm-list">
+                            <li>تنظم الكود في <strong>دوال/إجراءات</strong></li>
+                            <li>البيانات والدوال <strong>منفصلة</strong></li>
+                            <li>تنفذ التعليمات <strong>خطوة بخطوة</strong></li>
+                            <li>فكّر: <em>"افعل هذا، ثم افعل ذلك"</em></li>
+                        </ul>
+                    </div>
+                    <div class="paradigm-box oop">
+                        <div class="paradigm-title">البرمجة كائنية التوجه</div>
+                        <ul class="paradigm-list">
+                            <li>تنظم الكود في <strong>كائنات</strong></li>
+                            <li>البيانات والسلوك <strong>مجمّعان معًا</strong></li>
+                            <li>الكائنات <strong>تتفاعل</strong> عبر الرسائل (استدعاءات الدوال)</li>
+                            <li>فكّر: <em>"ما هي الأشياء، وماذا يمكنها أن تفعل؟"</em></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="paradigm-full">
+                    <div class="paradigm-box functional" style="margin-top: 0;">
+                        <div class="paradigm-title">البرمجة الوظيفية</div>
+                        <ul class="paradigm-list">
+                            <li>تنظم الكود في <strong>دوال نقية</strong> (بدون آثار جانبية)</li>
+                            <li>تُركز على <strong>البيانات غير القابلة للتغيير</strong> (البيانات لا تتغير)</li>
+                            <li>الدوال يمكن تمريرها كمعاملات وإرجاعها كقيم</li>
+                            <li>فكّر: <em>"ما هو التحويل من المدخلات إلى المخرجات؟"</em></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3 style="margin: 25px 0 15px; color: var(--primary-color); font-size: 1.2rem;">مثال عملي: حساب مساحات الدوائر</h3>
+                <p>لنرَ كيف تبدو نفس المشكلة في كل نموذج برمجي:</p>
+
+                <div class="code-label">المنهج الإجرائي</div>
+                <div class="code-block"><span class="comment">// البيانات منفصلة عن الدوال</span>
+<span class="keyword">double</span> radius1 = <span class="number">5.0</span>;
+<span class="keyword">double</span> radius2 = <span class="number">10.0</span>;
+
+<span class="comment">// الدوال تعمل على بيانات خارجية</span>
+<span class="keyword">static</span> <span class="keyword">double</span> <span class="method">computeArea</span>(<span class="keyword">double</span> radius) {
+    <span class="keyword">return</span> Math.PI * radius * radius;
+}
+
+System.out.<span class="method">println</span>(<span class="method">computeArea</span>(radius1));  <span class="comment">// 78.54</span>
+System.out.<span class="method">println</span>(<span class="method">computeArea</span>(radius2));  <span class="comment">// 314.16</span></div>
+
+                <div class="code-label">المنهج الوظيفي</div>
+                <div class="code-block"><span class="comment">// الدوال كقيم، بيانات غير قابلة للتغيير، بدون آثار جانبية</span>
+<span class="type">Function</span>&lt;<span class="type">Double</span>, <span class="type">Double</span>&gt; computeArea = radius -&gt; Math.PI * radius * radius;
+
+<span class="comment">// تطبيق الدالة على القيم</span>
+<span class="type">List</span>&lt;<span class="type">Double</span>&gt; radii = <span class="type">List</span>.<span class="method">of</span>(<span class="number">5.0</span>, <span class="number">10.0</span>);
+radii.<span class="method">stream</span>()
+     .<span class="method">map</span>(computeArea)
+     .<span class="method">forEach</span>(System.out::println);  <span class="comment">// 78.54, 314.16</span></div>
+
+                <div class="code-label">المنهج كائني التوجه</div>
+                <div class="code-block"><span class="comment">// البيانات والسلوك مجمّعان داخل الكائن</span>
+<span class="type">Circle</span> c1 = <span class="keyword">new</span> <span class="type">Circle</span>(<span class="number">5.0</span>);
+<span class="type">Circle</span> c2 = <span class="keyword">new</span> <span class="type">Circle</span>(<span class="number">10.0</span>);
+
+<span class="comment">// كل كائن يعرف كيف يحسب مساحته</span>
+System.out.<span class="method">println</span>(c1.<span class="method">computeArea</span>());  <span class="comment">// 78.54</span>
+System.out.<span class="method">println</span>(c2.<span class="method">computeArea</span>());  <span class="comment">// 314.16</span></div>
+
+                <div class="key-concept">
+                    <div class="key-concept-title">الفكرة الجوهرية: الفرق الحقيقي</div>
+                    <p>الفرق الحقيقي بين هذه النماذج البرمجية ليس <strong>ما تسمح لنا بفعله</strong> &mdash; أي لغة عامة الأغراض يمكنها حل أي مشكلة (هذا هو مفهوم <strong>اكتمال تورنغ - Turing Completeness</strong>). الفرق هو <strong>مدى سهولة التعبير</strong> عن أفكار معينة.</p>
+                    <p style="margin-top:10px;">قد يكون من الأسهل كتابة كود غير قابل للتغيير وخالٍ من الآثار الجانبية في Haskell. وقد يكون من الأسهل نمذجة الكيانات الحقيقية في Java. لكن يمكنك فعل <em>كليهما</em> في كلتا اللغتين. النموذج البرمجي يُشكّل طريقة <strong>تفكيرك</strong> في المشكلة.</p>
+                </div>
+
+                <h3 style="margin: 25px 0 15px; color: var(--primary-color); font-size: 1.2rem;">لماذا البرمجة كائنية التوجه في هذا المقرر؟</h3>
+
+                <p>تتفوق البرمجة كائنية التوجه في <strong>نمذجة الأنظمة المعقدة</strong> المكونة من كيانات متفاعلة. عندما تبني نظام إدارة جامعة، أو تطبيق بنكي، أو لعبة فيديو، فأنت تفكر بشكل طبيعي بالكائنات: <em>طلاب، حسابات، شخصيات</em>. البرمجة كائنية التوجه تجعل الكود يعكس هذه الطريقة الطبيعية في التفكير.</p>
+
+                <div class="quote-box">
+                    <p>"البرمجة كائنية التوجه تبدو كثيرًا مثل البرمجة الوظيفية عندما تُنفَّذ بالشكل الصحيح."</p>
+                    <div class="quote-author">&mdash; مايكل فيذرز (Michael Feathers)</div>
+                </div>
+
+                <p>أفضل المبرمجين يفهمون <em>كلا</em> النموذجين ويستخدمون كلًّا منهما حيث يناسب. في هذا المقرر، نركز على البرمجة كائنية التوجه لأنها توفر الأساس المعماري لبناء تطبيقات Java كبيرة وقابلة للصيانة &mdash; وستغيّر طريقة تفكيرك في حل المشكلات.</p>
+
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>الجانب</th>
+                            <th>الإجرائية</th>
+                            <th>الوظيفية</th>
+                            <th>كائنية التوجه</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>الوحدة الأساسية</strong></td>
+                            <td>دالة / إجراء</td>
+                            <td>دالة نقية</td>
+                            <td>كائن (بيانات + سلوك)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>البيانات</strong></td>
+                            <td>منفصلة عن الدوال</td>
+                            <td>غير قابلة للتغيير، يتم تحويلها</td>
+                            <td>مغلّفة داخل الكائنات</td>
+                        </tr>
+                        <tr>
+                            <td><strong>الحالة</strong></td>
+                            <td>عامة أو يتم تمريرها</td>
+                            <td>يتم تجنبها (بدون آثار جانبية)</td>
+                            <td>تُدار لكل كائن</td>
+                        </tr>
+                        <tr>
+                            <td><strong>إعادة الاستخدام</strong></td>
+                            <td>نسخ ولصق أو مكتبات دوال</td>
+                            <td>دوال عليا، تركيب</td>
+                            <td>الوراثة، تعدد الأشكال</td>
+                        </tr>
+                        <tr>
+                            <td><strong>الأفضل لـ</strong></td>
+                            <td>البرامج الصغيرة، كود مستوى النظام</td>
+                            <td>خطوط معالجة البيانات، التزامن</td>
+                            <td>الأنظمة الكبيرة، الواجهات الرسومية، النمذجة</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- ============================================================ -->
+            <!-- القسم 3: ما هو الكائن؟ -->
+            <!-- ============================================================ -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">3</span>
+                    ما هو الكائن؟
+                </h2>
+
+                <div class="narrative">
+                    <p>انظر حولك الآن. كل شيء تراه هو كائن: هاتفك، مكتبك، كوب قهوتك، حتى <em>أنت</em>. كل واحد من هذه الأشياء له <strong>خصائص (Properties)</strong> تصفه و<strong>سلوكيات (Behaviors)</strong> &mdash; أشياء يمكنه فعلها أو يمكن فعلها به.</p>
+                </div>
+
+                <p>في البرمجة كائنية التوجه، <strong>الكائن (Object)</strong> هو كيان برمجي يعكس هذه الفكرة:</p>
+
+                <div class="key-concept">
+                    <div class="key-concept-title">تعريف الكائن</div>
+                    <p><strong>الكائن (Object)</strong> هو كيان يمتلك:</p>
+                    <ul style="margin-top:8px; padding-right:20px;">
+                        <li><strong>خصائص (Properties/Attributes):</strong> صفات تصف الكائن (مثلًا: اللون، الحجم، الحالة).</li>
+                        <li><strong>سلوكيات (Methods/Behaviors):</strong> أفعال أو عمليات يستطيع الكائن تنفيذها (مثلًا: المشي، الحساب، العرض).</li>
+                    </ul>
+                </div>
+
+                <div class="analogy-box">
+                    <div class="analogy-title">تشبيه من الواقع: أنت كائن!</div>
+                    <p>فكّر في نفسك ككائن:</p>
+                    <ul style="margin-top:8px; padding-right:20px;">
+                        <li><strong>خصائصك:</strong> الاسم، العمر، الطول، لون العيون، الرقم الجامعي</li>
+                        <li><strong>سلوكياتك:</strong> <span class="code-inline">()speak</span>، <span class="code-inline">()walk</span>، <span class="code-inline">()study</span>، <span class="code-inline">()sleep</span>، <span class="code-inline">()eat</span></li>
+                    </ul>
+                    <p style="margin-top:10px;">صديقك كائن <em>مختلف</em>، لكن من نفس <em>النوع</em> (Human). كلاكما لديكما نفس أنواع الخصائص والسلوكيات، لكن بقيم مختلفة. اسمك مختلف، طولك مختلف، لكن كلاكما يستطيع المشي والتحدث.</p>
+                </div>
+
+                <p>في البرمجيات، ننمذج هذا بنفس الطريقة. إليك بعض الكائنات وخصائصها وسلوكياتها:</p>
+
+                <div class="object-visual">
+                    <div class="object-card">
+                        <div class="object-card-header">Circle</div>
+                        <div class="object-card-section">
+                            <div class="object-card-label">الخصائص</div>
+                            <div class="object-card-item">radius: double</div>
+                            <div class="object-card-item">color: String</div>
+                        </div>
+                        <div class="object-card-section">
+                            <div class="object-card-label">السلوكيات</div>
+                            <div class="object-card-item">computeArea()</div>
+                            <div class="object-card-item">computePerimeter()</div>
+                            <div class="object-card-item">draw()</div>
+                        </div>
+                    </div>
+
+                    <div class="object-card">
+                        <div class="object-card-header" style="background: linear-gradient(135deg, #059669, #047857);">Student</div>
+                        <div class="object-card-section">
+                            <div class="object-card-label">الخصائص</div>
+                            <div class="object-card-item">name: String</div>
+                            <div class="object-card-item">id: int</div>
+                            <div class="object-card-item">gpa: double</div>
+                        </div>
+                        <div class="object-card-section">
+                            <div class="object-card-label">السلوكيات</div>
+                            <div class="object-card-item">enroll()</div>
+                            <div class="object-card-item">getTranscript()</div>
+                            <div class="object-card-item">calculateGPA()</div>
+                        </div>
+                    </div>
+
+                    <div class="object-card">
+                        <div class="object-card-header" style="background: linear-gradient(135deg, #d97706, #b45309);">BankAccount</div>
+                        <div class="object-card-section">
+                            <div class="object-card-label">الخصائص</div>
+                            <div class="object-card-item">owner: String</div>
+                            <div class="object-card-item">balance: double</div>
+                            <div class="object-card-item">accountNo: String</div>
+                        </div>
+                        <div class="object-card-section">
+                            <div class="object-card-label">السلوكيات</div>
+                            <div class="object-card-item">deposit()</div>
+                            <div class="object-card-item">withdraw()</div>
+                            <div class="object-card-item">getBalance()</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ============================================================ -->
+            <!-- القسم 4: عقلية جديدة -->
+            <!-- ============================================================ -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">4</span>
+                    عقلية جديدة: التفكير بالكائنات
+                </h2>
+
+                <div class="narrative">
+                    <p>الآن بعد أن فهمنا الفلسفة وراء البرمجة كائنية التوجه، لنطبقها عمليًّا. لنفترض أننا نريد كتابة برنامج يحسب مساحة دائرة. بسيط بما فيه الكفاية، أليس كذلك؟ لكن إليك النقطة الجوهرية: <strong>عقليتنا الآن مختلفة</strong>.</p>
+                    <p>بالطريقة الإجرائية القديمة، كنا سنقفز مباشرة لكتابة دالة: <code class="code-inline">computeArea(radius)</code>. انتهى. لكن مع البرمجة كائنية التوجه، لا نبدأ بالتفكير في <em>الدوال</em>. نبدأ بالتفكير في <em>الكائنات</em> &mdash; لأننا <strong>موجَّهون بالكائنات</strong>. الكائنات هي ما <em>يوجّه</em> و<em>يقود</em> عملية تفكيرنا بالكامل.</p>
+                </div>
+
+                <p>إذن كيف يتعامل مبرمج البرمجة كائنية التوجه مع هذه المشكلة؟ باتباع ثلاث خطوات واضحة:</p>
+
+                <div class="steps-container">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <div class="step-title">الخطوة 1: تحديد الكائنات</div>
+                            <p>أول سؤال نطرحه هو: <strong>كم عدد الكائنات المشاركة في هذا البرنامج؟</strong> نحن <em>موجَّهون</em> بالكائنات، لذا تحديدها هو دائمًا نقطة البداية. لمشكلة مساحة الدائرة، الإجابة واضحة: يوجد كائن واحد &mdash; <code class="code-inline">Circle</code> (الدائرة).</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <div class="step-title">الخطوة 2: تحديد الخصائص والسلوكيات</div>
+                            <p>بمجرد تحديد الكائنات، نسأل: <strong>ما هي خصائص وسلوكيات كل كائن؟</strong> لدائرتنا:</p>
+                            <ul style="margin-top:8px; padding-right:20px;">
+                                <li><strong>الخصائص:</strong> <code class="code-inline">radius</code> (نصف القطر &mdash; ما يصف الدائرة)</li>
+                                <li><strong>السلوكيات:</strong> <code class="code-inline">computeArea()</code> (ما يمكن للدائرة فعله)</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <div class="step-title">الخطوة 3: تحديد العلاقات</div>
+                            <p>إذا كان لدينا <strong>أكثر من كائن</strong>، يجب أيضًا تحديد <strong>العلاقات</strong> بينها. في حالتنا، لدينا كائن واحد فقط (Circle)، لذا لا توجد علاقات نحتاج لتعريفها. لكن في نظام أكبر &mdash; مثل نظام مكتبة فيه <code class="code-inline">Book</code> و<code class="code-inline">Member</code> و<code class="code-inline">Librarian</code> و<code class="code-inline">Loan</code> &mdash; سنحتاج لتعريف كيف تتصل وتتفاعل هذه الكائنات.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="key-concept">
+                    <div class="key-concept-title">عملية التفكير في البرمجة كائنية التوجه (ملخص)</div>
+                    <p>في كل مرة تواجه مشكلة جديدة في البرمجة كائنية التوجه، اطرح هذه الأسئلة الثلاثة بالترتيب:</p>
+                    <ol style="margin-top:8px; padding-right:20px;">
+                        <li><strong>ما الكائنات</strong> المشاركة؟</li>
+                        <li><strong>ما الخصائص والسلوكيات</strong> لكل كائن؟</li>
+                        <li><strong>ما العلاقات</strong> الموجودة بين الكائنات؟</li>
+                    </ol>
+                    <p style="margin-top:10px;">هذا يختلف جذريًّا عن التفكير الإجرائي، حيث نسأل: "ما الدوال التي أحتاجها؟" في البرمجة كائنية التوجه، <em>الكائنات</em> تأتي أولًا. كل شيء آخر يتبعها.</p>
+                </div>
+
+                <p>عمل التصميم هذا &mdash; تحديد الكائنات وخصائصها وسلوكياتها وعلاقاتها &mdash; هو عادةً مسؤولية <strong>مهندس البرمجيات (المصمم)</strong>. لكن الآن يظهر سؤال: بعد أن حددنا كل هذا، <strong>كيف نصفه؟</strong> ما اللغة التي نستخدمها لتوصيل هذا التصميم؟</p>
+            </div>
+
+            <!-- ============================================================ -->
+            <!-- القسم 5: UML: لغة التصميم -->
+            <!-- ============================================================ -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">5</span>
+                    UML: لغة التصميم
+                </h2>
+
+                <div class="narrative">
+                    <p>لقد حددنا كائننا (Circle)، وخصائصه (radius)، وسلوكياته (computeArea()). لكننا نحتاج طريقة <strong>لوصف وتوصيل</strong> هذا التصميم &mdash; لغة معيارية يستطيع مهندس البرمجيات استخدامها للتعبير عن التصميم، ويستطيع المبرمج قراءتها وفهمها.</p>
+                    <p>هذه اللغة تُسمى <strong>لغة النمذجة الموحدة (UML - Unified Modeling Language)</strong>.</p>
+                </div>
+
+                <p>UML هي <strong>ترميز رسومي</strong> &mdash; لغة بصرية من المخططات والرموز. أحد أهم مخططاتها هو <strong>مخطط الأصناف (Class Diagram)</strong>، الذي يصف خصائص وسلوكيات وعلاقات الكائنات. يحتوي على ثلاثة أقسام:</p>
+
+                <div class="info-box">
+                    <div class="info-box-title">هيكل مخطط الأصناف في UML</div>
+                    <ol style="margin-top:8px; padding-right:20px;">
+                        <li><strong>الأعلى:</strong> اسم الصنف (نوع الكائن)</li>
+                        <li><strong>الوسط:</strong> الخصائص (السمات) مع أنواعها</li>
+                        <li><strong>الأسفل:</strong> السلوكيات (الدوال) مع أنواع القيم المُعادة</li>
+                    </ol>
+                    <p style="margin-top:10px;">علامات الرؤية: <code class="code-inline">-</code> تعني <strong>خاص (private)</strong>، <code class="code-inline">+</code> تعني <strong>عام (public)</strong>.</p>
+                </div>
+
+                <p>إليك مخطط الأصناف في UML لدائرتنا <code class="code-inline">Circle</code>:</p>
+
+                <div class="uml-diagram">
+                    <div class="uml-class">
+                        <div class="uml-name">Circle</div>
+                        <div class="uml-section">
+                            <div class="uml-item"><span class="uml-private">-</span> radius: double</div>
+                        </div>
+                        <div class="uml-section">
+                            <div class="uml-item"><span class="uml-public">+</span> Circle(radius: double)</div>
+                            <div class="uml-item"><span class="uml-public">+</span> computeArea(): double</div>
+                            <div class="uml-item"><span class="uml-public">+</span> getRadius(): double</div>
+                            <div class="uml-item"><span class="uml-public">+</span> setRadius(radius: double): void</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="analogy-box">
+                    <div class="analogy-title">UML مثل المخطط المعماري تمامًا</div>
+                    <p>فكّر في UML كـ<strong>مخطط هندسي</strong> لمبنى. عندما يصمم المهندس المعماري منزلًا، يصف المخطط الغرف والأبواب والنوافذ وكيف يتصل كل شيء. لكن إليك النقطة الجوهرية: <strong>المخطط لا يحدد أي نوع من الأسمنت أو الحديد سيُستخدم</strong>. في المملكة العربية السعودية، يمكنك استخدام أسمنت اليمامة أو أسمنت الجنوب للخرسانة، والمخطط لا يحدد ما إذا كان الحديد من حديد الراجحي أو سابك. هذا القرار يُترك للبنّاء.</p>
+                    <p style="margin-top:10px;">هندسة البرمجيات تعمل بنفس الطريقة تمامًا. عندما يرسم مهندس البرمجيات مخطط UML، <strong>فهو لا يحدد أي لغة برمجة ستُستخدم</strong>. لا يهمه إذا كان المبرمج سيستخدم Java أو C++ أو Python أو أي لغة أخرى. UML تتعلق بـ<em>ماذا</em> يبدو عليه النظام &mdash; وليس <em>كيف</em> سيُبنى. اختيار اللغة هو قرار المبرمج، تمامًا كما اختيار نوع الأسمنت والحديد هو قرار البنّاء.</p>
+                </div>
+
+                <div class="info-box">
+                    <div class="info-box-title">دوران، لغة واحدة</div>
+                    <p>في تطوير البرمجيات، هناك فصل بين الأدوار:</p>
+                    <ul style="margin-top:8px; padding-right:20px;">
+                        <li><strong>مهندس البرمجيات (المصمم):</strong> يحدد الكائنات وخصائصها وسلوكياتها وعلاقاتها. يعبّر عن التصميم باستخدام <strong>UML</strong>. <em>لا</em> يهتم بأي لغة برمجة ستُستخدم.</li>
+                        <li><strong>المبرمج (المنفذ):</strong> يقرأ UML، يفهم الترميز الرسومي، و<strong>يحوّله إلى كود</strong> باستخدام لغة برمجة محددة مثل Java أو C++.</li>
+                    </ul>
+                    <p style="margin-top:10px;">UML هي <strong>الجسر</strong> بين هذين الدورين &mdash; لغة رسومية عالمية يستطيع كلاهما فهمها، بغض النظر عن لغة البرمجة التي ستُستخدم في النهاية.</p>
+                </div>
+
+                <p>الآن لدينا مخطط UML. مهمة مهندس البرمجيات انتهت. السؤال التالي هو: <strong>كيف يحوّل المبرمج مخطط UML هذا إلى كود عامل فعلي؟</strong></p>
+            </div>
+
+            <!-- ============================================================ -->
+            <!-- القسم 6: من UML إلى الكود: الصنف -->
+            <!-- ============================================================ -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">6</span>
+                    من UML إلى الكود: الصنف (Class)
+                </h2>
+
+                <div class="narrative">
+                    <p>المبرمج الآن يأخذ مخطط UML ويحتاج لتحويله إلى لغة برمجة. لكن مخطط UML يصف خصائص وسلوكيات <em>كائن</em>. فيصبح السؤال: <strong>في Java، ما هو البناء البرمجي الذي يتيح لنا وصف خصائص وسلوكيات الكائن؟</strong></p>
+                    <p>الجواب هو <strong>الصنف (Class)</strong>.</p>
+                </div>
+
+                <div class="key-concept">
+                    <div class="key-concept-title">ما هو الصنف (Class)؟</div>
+                    <p><strong>الصنف (Class)</strong> هو البناء البرمجي &mdash; <em>القالب</em> &mdash; الذي يصف خصائص وسلوكيات الكائن. إنه المكافئ البرمجي لمخطط الأصناف في UML. كل لغة برمجة لها صياغتها الخاصة لكتابة الأصناف (Java لها صياغتها، C++ لها صياغتها، Python لها صياغتها)، لكن المفهوم واحد:</p>
+                    <ul style="margin-top:8px; padding-right:20px;">
+                        <li><strong>الصنف (Class)</strong> هو <em>قالب/مخطط</em> يُحدد الخصائص والسلوكيات التي سيمتلكها الكائن.</li>
+                        <li><strong>الكائن (Object)</strong> &mdash; ويُسمى أيضًا <em>نسخة (Instance)</em> &mdash; هو <em>تجسيد حقيقي</em> يُنشأ من ذلك الصنف، بقيم محددة لخصائصه.</li>
+                    </ul>
+                </div>
+
+                <div class="analogy-box">
+                    <div class="analogy-title">الصنف والكائن: قالب البسكويت والبسكويت</div>
+                    <p><strong>الصنف</strong> مثل قالب البسكويت &mdash; يُحدد <em>الشكل</em>. كل <strong>كائن</strong> هو بسكويتة مصنوعة من ذلك القالب. يمكنك صنع بسكويت شوكولاتة وبسكويت فانيلا وبسكويت فراولة &mdash; كلها من نفس القالب. جميعها لها نفس الشكل (الهيكل)، لكن بنكهات مختلفة (قيم). قالب واحد، بسكويت كثير. صنف واحد، كائنات كثيرة.</p>
+                </div>
+
+                <p>لنحوّل الآن مخطط UML إلى كود Java. هنا يأخذ المبرمج التصميم ويحوّله إلى واقع:</p>
+
+                <div class="code-label">Circle.java &mdash; الصنف (المخطط)</div>
+                <div class="code-block"><span class="keyword">public class</span> <span class="type">Circle</span> {
+
+    <span class="comment">// الخاصية (السمة) — private تعني أن هذا الصنف فقط يمكنه الوصول إليها مباشرة</span>
+    <span class="keyword">private</span> <span class="keyword">double</span> radius;
+
+    <span class="comment">// المُنشئ — يُستدعى عند إنشاء كائن Circle جديد</span>
+    <span class="keyword">public</span> <span class="method">Circle</span>(<span class="keyword">double</span> radius) {
+        <span class="keyword">this</span>.radius = radius;
+    }
+
+    <span class="comment">// السلوك — يحسب مساحة هذه الدائرة</span>
+    <span class="keyword">public</span> <span class="keyword">double</span> <span class="method">computeArea</span>() {
+        <span class="keyword">return</span> Math.PI * radius * radius;
+    }
+
+    <span class="comment">// جالب (Getter) — يسمح للكود الخارجي بقراءة نصف القطر</span>
+    <span class="keyword">public</span> <span class="keyword">double</span> <span class="method">getRadius</span>() {
+        <span class="keyword">return</span> radius;
+    }
+
+    <span class="comment">// ضابط (Setter) — يسمح للكود الخارجي بتغيير نصف القطر</span>
+    <span class="keyword">public</span> <span class="keyword">void</span> <span class="method">setRadius</span>(<span class="keyword">double</span> radius) {
+        <span class="keyword">this</span>.radius = radius;
+    }
+}</div>
+
+                <p>لنستخدم الآن هذا الصنف بإنشاء كائنات منه:</p>
+
+                <div class="code-label">Main.java &mdash; إنشاء واستخدام الكائنات</div>
+                <div class="code-block"><span class="keyword">public class</span> <span class="type">Main</span> {
+    <span class="keyword">public static void</span> <span class="method">main</span>(<span class="type">String</span>[] args) {
+
+        <span class="comment">// إنشاء كائنات (نُسخ) من صنف Circle</span>
+        <span class="type">Circle</span> c1 = <span class="keyword">new</span> <span class="type">Circle</span>(<span class="number">5.0</span>);
+        <span class="type">Circle</span> c2 = <span class="keyword">new</span> <span class="type">Circle</span>(<span class="number">10.0</span>);
+
+        <span class="comment">// كل كائن له نصف قطره الخاص، حالته الخاصة</span>
+        System.out.<span class="method">println</span>(<span class="string">"c1 radius: "</span> + c1.<span class="method">getRadius</span>());   <span class="comment">// 5.0</span>
+        System.out.<span class="method">println</span>(<span class="string">"c2 radius: "</span> + c2.<span class="method">getRadius</span>());   <span class="comment">// 10.0</span>
+
+        <span class="comment">// كل كائن يحسب مساحته بنفسه</span>
+        System.out.<span class="method">println</span>(<span class="string">"Area of c1: "</span> + c1.<span class="method">computeArea</span>()); <span class="comment">// 78.54</span>
+        System.out.<span class="method">println</span>(<span class="string">"Area of c2: "</span> + c2.<span class="method">computeArea</span>()); <span class="comment">// 314.16</span>
+
+        <span class="comment">// تغيير الحالة عبر الضابط</span>
+        c1.<span class="method">setRadius</span>(<span class="number">7.5</span>);
+        System.out.<span class="method">println</span>(<span class="string">"New area of c1: "</span> + c1.<span class="method">computeArea</span>()); <span class="comment">// 176.71</span>
+    }
+}</div>
+
+                <div class="success-box">
+                    <div class="success-box-title">ماذا حدث للتو؟</div>
+                    <ul style="margin-top:8px; padding-right:20px;">
+                        <li><code class="code-inline">Circle c1 = new Circle(5.0);</code> &mdash; أنشأنا <strong>كائنًا</strong> (نسخة) من صنف Circle بنصف قطر 5.0.</li>
+                        <li><code class="code-inline">c1.computeArea()</code> &mdash; طلبنا من الكائن تنفيذ أحد <strong>سلوكياته</strong>. الكائن يعرف نصف قطره ويحسب مساحته بنفسه.</li>
+                        <li><code class="code-inline">c1.setRadius(7.5)</code> &mdash; غيّرنا <strong>حالة</strong> الكائن عبر دالة ضابط مُتحكّم بها.</li>
+                    </ul>
+                    <p style="margin-top:10px;">ملاحظة: <code class="code-inline">c1</code> و <code class="code-inline">c2</code> هما <strong>كائنان مستقلان</strong>. تغيير نصف قطر c1 لا يؤثر على c2. كل كائن يحتفظ بحالته الخاصة.</p>
+                </div>
+            </div>
+
+            <!-- ============================================================ -->
+            <!-- القسم 7: الأركان الأربعة للبرمجة كائنية التوجه -->
+            <!-- ============================================================ -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">7</span>
+                    الأركان الأربعة للبرمجة كائنية التوجه
+                </h2>
+
+                <div class="narrative">
+                    <p>البرمجة كائنية التوجه مبنية على أربعة مبادئ أساسية &mdash; تُسمى غالبًا <strong>الأركان الأربعة</strong>. معًا، تمنح البرمجة كائنية التوجه قوتها. أزِل أي واحد منها، وسيضعف الهيكل بأكمله. سنستكشف كلًّا منها بعمق في الوحدات القادمة، لكن إليك خارطة الطريق.</p>
+                </div>
+
+                <div class="pillars-grid">
+                    <div class="pillar-card">
+                        <div class="pillar-icon">&#128274;</div>
+                        <div class="pillar-name">التغليف (Encapsulation)</div>
+                        <div class="pillar-desc">تجميع البيانات والدوال معًا في صنف واحد، و<strong>التحكم بالوصول</strong> إلى الحالة الداخلية. مثل كبسولة تحمي محتوياتها &mdash; تتفاعل مع الخارج، لا الداخل.</div>
+                    </div>
+                    <div class="pillar-card">
+                        <div class="pillar-icon">&#127912;</div>
+                        <div class="pillar-name">التجريد (Abstraction)</div>
+                        <div class="pillar-desc">إخفاء التعقيد غير الضروري وإظهار <strong>ما يهم فقط</strong>. مثل قيادة السيارة &mdash; تستخدم المقود والدواسات دون معرفة كيف يعمل المحرك داخليًّا.</div>
+                    </div>
+                    <div class="pillar-card">
+                        <div class="pillar-icon">&#128106;</div>
+                        <div class="pillar-name">الوراثة (Inheritance)</div>
+                        <div class="pillar-desc">إنشاء أصناف جديدة <strong>مبنية على أصناف موجودة</strong>، مع إعادة استخدام وتوسيع خصائصها وسلوكياتها. سيارة <code class="code-inline">SportsCar</code> ترث من <code class="code-inline">Car</code> وتضيف التوربو.</div>
+                    </div>
+                    <div class="pillar-card">
+                        <div class="pillar-icon">&#128260;</div>
+                        <div class="pillar-name">تعدد الأشكال (Polymorphism)</div>
+                        <div class="pillar-desc">كائنات من أنواع مختلفة تستجيب <strong>لنفس الرسالة بشكل مختلف</strong>. استدعِ <code class="code-inline">()draw</code> على دائرة أو مربع أو مثلث &mdash; كل منها يرسم نفسه بطريقته الخاصة.</div>
+                    </div>
+                </div>
+
+                <h3 style="margin: 25px 0 15px; color: var(--primary-color); font-size: 1.2rem;">التغليف عمليًّا (مثال الدائرة)</h3>
+
+                <p>لاحظ أنه في صنف <code class="code-inline">Circle</code> الخاص بنا، الحقل <code class="code-inline">radius</code> مُعلن بصفة <code class="code-inline">private</code>. هذا يعني أنه لا يمكن لأي كود خارج الصنف فعل هذا:</p>
+
+                <div class="code-block"><span class="comment">// هذا لن يُترجم — radius خاص!</span>
+c1.radius = <span class="number">-50</span>;  <span class="comment">// ERROR: radius has private access in Circle</span></div>
+
+                <p>بدلًا من ذلك، يجب على العالم الخارجي استخدام دوال <strong>الجالب</strong> و<strong>الضابط</strong>. هذا يمنح الصنف التحكم:</p>
+
+                <div class="code-block"><span class="comment">// يمكننا إضافة التحقق داخل الضابط:</span>
+<span class="keyword">public void</span> <span class="method">setRadius</span>(<span class="keyword">double</span> radius) {
+    <span class="keyword">if</span> (radius &gt; <span class="number">0</span>) {
+        <span class="keyword">this</span>.radius = radius;
+    } <span class="keyword">else</span> {
+        System.out.<span class="method">println</span>(<span class="string">"Error: radius must be positive!"</span>);
+    }
+}</div>
+
+                <div class="key-concept">
+                    <div class="key-concept-title">لماذا التغليف مهم</div>
+                    <p><strong>التغليف (Encapsulation)</strong> يحمي الحالة الداخلية للكائن من التغييرات غير الصالحة أو غير المقصودة. كما يعني أنه يمكنك تغيير التنفيذ الداخلي دون كسر الكود الذي يستخدم الصنف. العالم الخارجي يعتمد فقط على <em>الواجهة العامة</em> (الدوال)، وليس التفاصيل الداخلية.</p>
+                </div>
+
+                <h3 style="margin: 25px 0 15px; color: var(--primary-color); font-size: 1.2rem;">التجريد عمليًّا</h3>
+
+                <p>عندما تستدعي <code class="code-inline">c1.computeArea()</code>، لا تحتاج لمعرفة <em>كيف</em> تُحسب المساحة. لا يهمك ما إذا كانت تستخدم <code class="code-inline">Math.PI * r * r</code> أو صيغة أخرى داخليًّا. تستدعي الدالة وتحصل على النتيجة. التعقيد <strong>مُجرَّد</strong> (مخفي).</p>
+
+                <div class="analogy-box">
+                    <div class="analogy-title">التجريد في الحياة اليومية</div>
+                    <p>عندما ترسل رسالة على هاتفك، تضغط "إرسال". لا تفكر في ترددات الراديو، أو توجيه أبراج الاتصال، أو حزم TCP/IP، أو معالجة الخادم. كل هذا التعقيد <strong>مُجرَّد</strong> خلف زر واحد. البرمجة كائنية التوجه تطبق نفس المبدأ على الكود.</p>
+                </div>
+            </div>
+
+            <!-- ============================================================ -->
+            <!-- القسم 8: مثال كامل: صنف الطالب -->
+            <!-- ============================================================ -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">8</span>
+                    مثال كامل: صنف الطالب (Student)
+                </h2>
+
+                <p>لنبنِ شيئًا أكثر واقعية. سنصمم صنف <code class="code-inline">Student</code> من الصفر، متبعين عملية البرمجة كائنية التوجه كاملة.</p>
+
+                <h3 style="margin: 20px 0 15px; color: var(--primary-color); font-size: 1.15rem;">الخطوة 1: تحديد الكائن والخصائص والسلوكيات</h3>
+
+                <div class="uml-diagram">
+                    <div class="uml-class" style="min-width: 350px;">
+                        <div class="uml-name" style="background: #059669;">Student</div>
+                        <div class="uml-section" style="border-color: #059669;">
+                            <div class="uml-item"><span class="uml-private">-</span> name: String</div>
+                            <div class="uml-item"><span class="uml-private">-</span> id: int</div>
+                            <div class="uml-item"><span class="uml-private">-</span> gpa: double</div>
+                        </div>
+                        <div class="uml-section" style="border-color: #059669;">
+                            <div class="uml-item"><span class="uml-public">+</span> Student(name: String, id: int)</div>
+                            <div class="uml-item"><span class="uml-public">+</span> getName(): String</div>
+                            <div class="uml-item"><span class="uml-public">+</span> getId(): int</div>
+                            <div class="uml-item"><span class="uml-public">+</span> getGpa(): double</div>
+                            <div class="uml-item"><span class="uml-public">+</span> setGpa(gpa: double): void</div>
+                            <div class="uml-item"><span class="uml-public">+</span> isHonorStudent(): boolean</div>
+                            <div class="uml-item"><span class="uml-public">+</span> toString(): String</div>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 style="margin: 25px 0 15px; color: var(--primary-color); font-size: 1.15rem;">الخطوة 2: كتابة الصنف</h3>
+
+                <div class="code-label">Student.java</div>
+                <div class="code-block"><span class="keyword">public class</span> <span class="type">Student</span> {
+
+    <span class="comment">// الخصائص (خاصة — مغلّفة)</span>
+    <span class="keyword">private</span> <span class="type">String</span> name;
+    <span class="keyword">private</span> <span class="keyword">int</span> id;
+    <span class="keyword">private</span> <span class="keyword">double</span> gpa;
+
+    <span class="comment">// المُنشئ</span>
+    <span class="keyword">public</span> <span class="method">Student</span>(<span class="type">String</span> name, <span class="keyword">int</span> id) {
+        <span class="keyword">this</span>.name = name;
+        <span class="keyword">this</span>.id = id;
+        <span class="keyword">this</span>.gpa = <span class="number">0.0</span>;  <span class="comment">// المعدل التراكمي الافتراضي</span>
+    }
+
+    <span class="comment">// الجوالب</span>
+    <span class="keyword">public</span> <span class="type">String</span> <span class="method">getName</span>()  { <span class="keyword">return</span> name; }
+    <span class="keyword">public</span> <span class="keyword">int</span>    <span class="method">getId</span>()    { <span class="keyword">return</span> id; }
+    <span class="keyword">public</span> <span class="keyword">double</span> <span class="method">getGpa</span>()   { <span class="keyword">return</span> gpa; }
+
+    <span class="comment">// ضابط مع التحقق</span>
+    <span class="keyword">public void</span> <span class="method">setGpa</span>(<span class="keyword">double</span> gpa) {
+        <span class="keyword">if</span> (gpa &gt;= <span class="number">0.0</span> &amp;&amp; gpa &lt;= <span class="number">4.0</span>) {
+            <span class="keyword">this</span>.gpa = gpa;
+        } <span class="keyword">else</span> {
+            System.out.<span class="method">println</span>(<span class="string">"Error: GPA must be between 0.0 and 4.0"</span>);
+        }
+    }
+
+    <span class="comment">// السلوك: التحقق مما إذا كان الطالب متفوقًا</span>
+    <span class="keyword">public boolean</span> <span class="method">isHonorStudent</span>() {
+        <span class="keyword">return</span> gpa &gt;= <span class="number">3.5</span>;
+    }
+
+    <span class="comment">// التمثيل النصي للكائن</span>
+    <span class="keyword">public</span> <span class="type">String</span> <span class="method">toString</span>() {
+        <span class="keyword">return</span> <span class="string">"Student{"</span> + <span class="string">"name='"</span> + name + <span class="string">"', id="</span> + id + <span class="string">", gpa="</span> + gpa + <span class="string">"}"</span>;
+    }
+}</div>
+
+                <h3 style="margin: 25px 0 15px; color: var(--primary-color); font-size: 1.15rem;">الخطوة 3: إنشاء الكائنات واستخدامها</h3>
+
+                <div class="code-label">Main.java</div>
+                <div class="code-block"><span class="keyword">public class</span> <span class="type">Main</span> {
+    <span class="keyword">public static void</span> <span class="method">main</span>(<span class="type">String</span>[] args) {
+
+        <span class="comment">// إنشاء كائنات طلاب</span>
+        <span class="type">Student</span> s1 = <span class="keyword">new</span> <span class="type">Student</span>(<span class="string">"Ahmed"</span>, <span class="number">1001</span>);
+        <span class="type">Student</span> s2 = <span class="keyword">new</span> <span class="type">Student</span>(<span class="string">"Sara"</span>, <span class="number">1002</span>);
+
+        <span class="comment">// تعيين المعدلات التراكمية</span>
+        s1.<span class="method">setGpa</span>(<span class="number">3.8</span>);
+        s2.<span class="method">setGpa</span>(<span class="number">3.2</span>);
+
+        <span class="comment">// عرض معلومات الطالب</span>
+        System.out.<span class="method">println</span>(s1);  <span class="comment">// Student{name='Ahmed', id=1001, gpa=3.8}</span>
+        System.out.<span class="method">println</span>(s2);  <span class="comment">// Student{name='Sara', id=1002, gpa=3.2}</span>
+
+        <span class="comment">// التحقق من حالة التفوق</span>
+        System.out.<span class="method">println</span>(s1.<span class="method">getName</span>() + <span class="string">" honor student? "</span> + s1.<span class="method">isHonorStudent</span>());  <span class="comment">// true</span>
+        System.out.<span class="method">println</span>(s2.<span class="method">getName</span>() + <span class="string">" honor student? "</span> + s2.<span class="method">isHonorStudent</span>());  <span class="comment">// false</span>
+
+        <span class="comment">// محاولة معدل تراكمي غير صالح</span>
+        s1.<span class="method">setGpa</span>(<span class="number">5.0</span>);  <span class="comment">// Error: GPA must be between 0.0 and 4.0</span>
+        System.out.<span class="method">println</span>(s1.<span class="method">getGpa</span>());  <span class="comment">// Still 3.8 — encapsulation protected the data!</span>
+    }
+}</div>
+
+                <div class="success-box">
+                    <div class="success-box-title">التغليف عمليًّا</div>
+                    <p>لاحظ ما حدث عندما حاولنا <code class="code-inline">s1.setGpa(5.0)</code> &mdash; الكائن <strong>رفض</strong> القيمة غير الصالحة وبقي المعدل التراكمي دون تغيير عند 3.8. هذا هو التغليف في العمل: الكائن يحمي سلامته الخاصة. بدون التغليف (لو كان <code class="code-inline">gpa</code> عامًّا)، يمكن لأي شخص كتابة <code class="code-inline">s1.gpa = 5.0</code> وإفساد البيانات بصمت.</p>
+                </div>
+            </div>
+
+            <!-- ============================================================ -->
+            <!-- القسم 9: لماذا البرمجة كائنية التوجه مهمة -->
+            <!-- ============================================================ -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">9</span>
+                    لماذا البرمجة كائنية التوجه مهمة: الصورة الكبرى
+                </h2>
+
+                <div class="narrative">
+                    <p>قد تفكر: "كان بإمكاني فعل كل هذا بدوال بسيطة. لماذا أتعب نفسي بالأصناف والكائنات؟" الجواب يتضح مع نمو الأنظمة. برنامج من 100 سطر لا يحتاج البرمجة كائنية التوجه. نظام من 100,000 سطر يحتاجها بشدة.</p>
+                </div>
+
+                <p>البرمجة كائنية التوجه تمنحنا أربع قوى خارقة تعالج المشاكل التي حددناها في البداية مباشرة:</p>
+
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>المشكلة</th>
+                            <th>حل البرمجة كائنية التوجه</th>
+                            <th>كيف</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>إعادة الاستخدام</strong></td>
+                            <td>الأصناف يمكن استخدامها عبر المشاريع</td>
+                            <td>اكتب صنف <code class="code-inline">Student</code> مرة واحدة، واستخدمه في أي تطبيق يتعامل مع الطلاب</td>
+                        </tr>
+                        <tr>
+                            <td><strong>قابلية التوسع</strong></td>
+                            <td>الأصناف الجديدة تمتد من الموجودة</td>
+                            <td>تحتاج <code class="code-inline">GraduateStudent</code>؟ وسّع <code class="code-inline">Student</code> دون تغييره (الوراثة)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>قابلية الصيانة</strong></td>
+                            <td>التغييرات محصورة محليًّا</td>
+                            <td>غيّر كيفية حساب المعدل داخل <code class="code-inline">Student</code> دون لمس أي كود يستخدمه (التغليف)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>النمطية</strong></td>
+                            <td>كل صنف وحدة مستقلة</td>
+                            <td>أعضاء فريق مختلفون يعملون على <code class="code-inline">Student</code> و <code class="code-inline">Course</code> و <code class="code-inline">Enrollment</code> بشكل مستقل</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="quote-box">
+                    <p>"القرارات الرئيسية في البرمجيات تقع خارج التفاصيل التقنية للغات الفردية. من المجدي فهم كلٍّ من البرمجة الوظيفية والبرمجة كائنية التوجه. كلتاهما أدوات قيّمة لبناء أنظمة معقدة. استخدمهما في السياق المناسب، وكل منهما سيساعدك على بناء أنظمة أفضل."</p>
+                    <div class="quote-author">&mdash; ديف فارلي (Dave Farley)، <em>"OOP vs Functional Programming"</em>، قناة Continuous Delivery على YouTube</div>
+                </div>
+            </div>
+
+            <!-- ============================================================ -->
+            <!-- القسم 10: الملخص -->
+            <!-- ============================================================ -->
+            <div class="section" style="margin-bottom:20px;">
+                <h2 class="section-title">
+                    <span class="section-number">10</span>
+                    الملخص
+                </h2>
+
+                <div class="key-concept">
+                    <div class="key-concept-title">ما تعلمناه</div>
+                    <ul style="margin-top:8px; padding-right:20px; line-height: 2.2;">
+                        <li>النماذج البرمجية (الإجرائية، الوظيفية، كائنية التوجه) هي <strong>أدوات</strong> وليست أديان &mdash; لكل منها نقاط قوة.</li>
+                        <li>البرمجة كائنية التوجه تنظم الكود حول <strong>كائنات</strong> تجمع البيانات (الخصائص) والسلوك (الدوال).</li>
+                        <li><strong>الصنف (Class)</strong> مخطط هندسي؛ <strong>الكائن (Object)</strong> نسخة من ذلك المخطط.</li>
+                        <li>عملية البرمجة كائنية التوجه: تحديد الكائنات &rarr; تحديد الخصائص والسلوكيات &rarr; تحديد العلاقات.</li>
+                        <li>مخططات أصناف <strong>UML</strong> تمثل الأصناف بصريًّا قبل كتابة الكود.</li>
+                        <li><strong>الأركان الأربعة</strong> للبرمجة كائنية التوجه: التغليف، التجريد، الوراثة، وتعدد الأشكال.</li>
+                        <li><strong>التغليف</strong> يحمي الحالة الداخلية باستخدام حقول <code class="code-inline">private</code> وجوالب/ضوابط عامة.</li>
+                        <li><strong>التجريد</strong> يخفي التعقيد &mdash; المستخدمون يستدعون الدوال دون معرفة التفاصيل الداخلية.</li>
+                        <li>البرمجة كائنية التوجه تتألق في بناء أنظمة كبيرة ومعقدة تحتاج لأن تكون قابلة لإعادة الاستخدام والتوسع والصيانة.</li>
+                    </ul>
+                </div>
+
+                <div class="info-box">
+                    <div class="info-box-title">ما التالي؟</div>
+                    <p>في الدرس القادم، سنتعمق أكثر في <strong>المُنشئات (Constructors)</strong>، وكلمة <code class="code-inline">this</code>، والفرق بين <strong>أعضاء النسخة والأعضاء الثابتة (Instance vs. Static)</strong>، وكيفية العمل مع <strong>مصفوفات الكائنات</strong>. سنستكشف أيضًا تصاميم أصناف أكثر تعقيدًا مع كائنات متعددة متفاعلة.</p>
+                </div>
+            </div>
+
+        </div><!-- end .content -->
+
+        <!-- التنقل -->
+        <div class="nav-buttons">
+            <a href="../index.html" class="nav-btn prev">العودة للمقرر &larr;</a>
+            <a href="02-constructors-and-this.html" class="nav-btn next">&rarr; التالي: المُنشئات وكلمة this</a>
+        </div>
+
+    </div><!-- end .container -->
+</body>
+</html>

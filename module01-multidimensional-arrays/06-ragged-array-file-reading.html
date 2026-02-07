@@ -1,0 +1,1199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reading Ragged Arrays from a File in Java | CPCS203</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #7c3aed;
+            --secondary-color: #2563eb;
+            --success-color: #059669;
+            --warning-color: #d97706;
+            --danger-color: #dc2626;
+            --dark-color: #1f2937;
+            --light-color: #f3f4f6;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.8;
+            color: var(--dark-color);
+            background: linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary-color), #5b21b6);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .header .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .header .course-info {
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 30px;
+            display: inline-block;
+        }
+
+        /* Content */
+        .content {
+            padding: 40px;
+        }
+
+        /* Sections */
+        .section {
+            margin-bottom: 50px;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--primary-color);
+            padding-bottom: 10px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-number {
+            background: var(--primary-color);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        /* Key Concept Box */
+        .key-concept {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border-left: 5px solid var(--warning-color);
+            padding: 20px 25px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .key-concept-title {
+            font-weight: bold;
+            color: var(--warning-color);
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        /* Info Box */
+        .info-box {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            border-left: 5px solid var(--secondary-color);
+            padding: 20px 25px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .info-box-title {
+            font-weight: bold;
+            color: var(--secondary-color);
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        /* Success Box */
+        .success-box {
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+            border-left: 5px solid var(--success-color);
+            padding: 20px 25px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .success-box-title {
+            font-weight: bold;
+            color: var(--success-color);
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        /* Code Block - IDE Style */
+        .code-block {
+            background: #1e1e1e;
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .code-header {
+            background: #323233;
+            padding: 8px 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .code-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .code-dot.red { background: #ff5f56; }
+        .code-dot.yellow { background: #ffbd2e; }
+        .code-dot.green { background: #27ca40; }
+
+        .code-title {
+            color: #9ca3af;
+            font-size: 0.85rem;
+            margin-left: 10px;
+        }
+
+        .code-content {
+            padding: 20px;
+            overflow-x: auto;
+        }
+
+        .code-content pre {
+            margin: 0;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #d4d4d4;
+        }
+
+        .code-content .line {
+            display: block;
+        }
+
+        .code-content .line-number {
+            display: inline-block;
+            width: 30px;
+            color: #6b7280;
+            text-align: right;
+            margin-right: 20px;
+            user-select: none;
+        }
+
+        /* Syntax Highlighting */
+        .keyword { color: #569cd6; }
+        .type { color: #4ec9b0; }
+        .string { color: #ce9178; }
+        .number { color: #b5cea8; }
+        .comment { color: #6a9955; font-style: italic; }
+        .variable { color: #9cdcfe; }
+        .method { color: #dcdcaa; }
+        .class-name { color: #4ec9b0; }
+        .bracket { color: #ffd700; }
+        .operator { color: #d4d4d4; }
+
+        .code-inline {
+            background: #e5e7eb;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9rem;
+            color: var(--danger-color);
+        }
+
+        /* File Format Box */
+        .file-format-box {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+        }
+
+        .file-format-title {
+            font-weight: bold;
+            color: var(--dark-color);
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .file-content {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 1rem;
+            line-height: 1.8;
+        }
+
+        .file-line {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .file-line-content {
+            min-width: 150px;
+        }
+
+        .file-line-explanation {
+            color: #6a9955;
+            font-style: italic;
+            font-size: 0.9rem;
+        }
+
+        /* Step List */
+        .step-list {
+            counter-reset: step-counter;
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+        }
+
+        .step-list li {
+            counter-increment: step-counter;
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            margin-bottom: 15px;
+            padding: 15px;
+            background: #f8fafc;
+            border-radius: 10px;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .step-list li::before {
+            content: counter(step-counter);
+            background: var(--primary-color);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-content ul {
+            margin-top: 10px;
+            margin-left: 20px;
+        }
+
+        .step-content ul li {
+            padding: 5px 10px;
+            margin-bottom: 5px;
+            background: transparent;
+            border-left: none;
+        }
+
+        .step-content ul li::before {
+            content: "•";
+            background: transparent;
+            color: var(--secondary-color);
+            width: auto;
+            height: auto;
+            font-size: 1.2rem;
+        }
+
+        /* Download Buttons */
+        .download-section {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin: 30px 0;
+        }
+
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px 25px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+        }
+
+        .download-btn.java {
+            background: linear-gradient(135deg, #d97706, #f59e0b);
+            color: white;
+        }
+
+        .download-btn.java:hover {
+            background: linear-gradient(135deg, #b45309, #d97706);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(217, 119, 6, 0.4);
+        }
+
+        .download-btn.txt {
+            background: linear-gradient(135deg, var(--secondary-color), #3b82f6);
+            color: white;
+        }
+
+        .download-btn.txt:hover {
+            background: linear-gradient(135deg, #1d4ed8, var(--secondary-color));
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+        }
+
+        .download-icon {
+            font-size: 1.2rem;
+        }
+
+        /* Ragged Array Visualization */
+        .ragged-visual {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 25px 0;
+        }
+
+        .ragged-title {
+            text-align: center;
+            font-weight: bold;
+            color: var(--dark-color);
+            margin-bottom: 25px;
+            font-size: 1.1rem;
+        }
+
+        .ragged-row {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+
+        .ragged-label {
+            width: 100px;
+            font-family: 'Consolas', monospace;
+            font-weight: bold;
+            color: var(--dark-color);
+            font-size: 0.9rem;
+        }
+
+        .ragged-cells {
+            display: flex;
+            gap: 0;
+        }
+
+        .ragged-cell {
+            width: 50px;
+            height: 40px;
+            border: 2px solid var(--secondary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            font-size: 0.95rem;
+        }
+
+        .ragged-cell:first-child {
+            border-radius: 6px 0 0 6px;
+        }
+
+        .ragged-cell:last-child {
+            border-radius: 0 6px 6px 0;
+        }
+
+        .ragged-row:nth-child(2) .ragged-cell {
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+            border-color: var(--success-color);
+        }
+
+        .ragged-row:nth-child(3) .ragged-cell {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border-color: var(--warning-color);
+        }
+
+        .ragged-row:nth-child(4) .ragged-cell {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            border-color: var(--danger-color);
+        }
+
+        .ragged-row:nth-child(5) .ragged-cell {
+            background: linear-gradient(135deg, #ede9fe, #ddd6fe);
+            border-color: var(--primary-color);
+        }
+
+        /* Highlight Box */
+        .highlight-box {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border: 2px solid var(--warning-color);
+            border-radius: 10px;
+            padding: 15px 20px;
+            margin: 15px 0;
+            display: inline-block;
+        }
+
+        /* Navigation */
+        .bottom-nav {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px 40px;
+            background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+            border-top: 2px solid #e2e8f0;
+        }
+
+        .bottom-nav a {
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .bottom-nav .back-link {
+            background: linear-gradient(135deg, var(--primary-color), #5b21b6);
+            color: white;
+        }
+
+        .bottom-nav .back-link:hover {
+            transform: translateX(-5px);
+            box-shadow: 0 4px 12px rgba(124, 58, 237, 0.4);
+        }
+
+        .bottom-nav .next-link {
+            background: linear-gradient(135deg, var(--warning-color), #f59e0b);
+            color: white;
+        }
+
+        .bottom-nav .next-link:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 12px rgba(217, 119, 6, 0.4);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--dark-color);
+            color: white;
+            text-align: center;
+            padding: 20px;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .download-section {
+                flex-direction: column;
+            }
+
+            .ragged-visual {
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>Reading Ragged Arrays from a File</h1>
+            <p class="subtitle">Working with Variable-Length Data in Java</p>
+            <div class="course-info">CPCS203 - Data Structures</div>
+        </div>
+
+        <!-- Content -->
+        <div class="content">
+            <!-- Section 1: Introduction -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">1</span>
+                    What is a Ragged Array?
+                </h2>
+
+                <div class="key-concept">
+                    <div class="key-concept-title">Ragged Array Definition</div>
+                    <p>A <strong>ragged array</strong> (also called a <strong>jagged array</strong>) is a 2D array where each row can have a <strong>different number of columns</strong>. This is perfect for real-world data like student marks where different students may have taken different numbers of courses!</p>
+                </div>
+
+                <p>In this tutorial, we'll learn how to read a ragged array of student marks from a text file. Each student may have a different number of marks, making this a perfect use case for ragged arrays.</p>
+
+                <div class="ragged-visual">
+                    <div class="ragged-title">Example: Ragged Array of Student Marks</div>
+                    <div class="ragged-row">
+                        <div class="ragged-label">Student 0:</div>
+                        <div class="ragged-cells">
+                            <div class="ragged-cell">10</div>
+                            <div class="ragged-cell">20</div>
+                        </div>
+                    </div>
+                    <div class="ragged-row">
+                        <div class="ragged-label">Student 1:</div>
+                        <div class="ragged-cells">
+                            <div class="ragged-cell">9</div>
+                            <div class="ragged-cell">18</div>
+                            <div class="ragged-cell">30</div>
+                            <div class="ragged-cell">20</div>
+                            <div class="ragged-cell">10</div>
+                        </div>
+                    </div>
+                    <div class="ragged-row">
+                        <div class="ragged-label">Student 2:</div>
+                        <div class="ragged-cells">
+                            <div class="ragged-cell">10</div>
+                            <div class="ragged-cell">15</div>
+                        </div>
+                    </div>
+                    <div class="ragged-row">
+                        <div class="ragged-label">Student 3:</div>
+                        <div class="ragged-cells">
+                            <div class="ragged-cell">5</div>
+                            <div class="ragged-cell">20</div>
+                            <div class="ragged-cell">26</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <div class="info-box-title">Why Ragged Arrays?</div>
+                    <p>Notice how each student has a different number of marks. Student 1 has 5 marks while Students 0 and 2 have only 2. A regular 2D array would waste memory by allocating the same size for all rows!</p>
+                </div>
+            </div>
+
+            <!-- Section 2: File Format -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">2</span>
+                    File Format Overview
+                </h2>
+
+                <p>Our input file <code class="code-inline">marks.txt</code> has a simple structure:</p>
+
+                <div class="file-format-box">
+                    <div class="file-format-title">marks.txt</div>
+                    <div class="file-content">
+                        <div class="file-line">
+                            <span class="file-line-content">4</span>
+                            <span class="file-line-explanation">// Number of students</span>
+                        </div>
+                        <div class="file-line">
+                            <span class="file-line-content">10 20</span>
+                            <span class="file-line-explanation">// Student 0: 2 marks</span>
+                        </div>
+                        <div class="file-line">
+                            <span class="file-line-content">9 18 30 20 10</span>
+                            <span class="file-line-explanation">// Student 1: 5 marks</span>
+                        </div>
+                        <div class="file-line">
+                            <span class="file-line-content">10 15</span>
+                            <span class="file-line-explanation">// Student 2: 2 marks</span>
+                        </div>
+                        <div class="file-line">
+                            <span class="file-line-content">5 20 26</span>
+                            <span class="file-line-explanation">// Student 3: 3 marks</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="key-concept">
+                    <div class="key-concept-title">File Structure Explained</div>
+                    <ul style="margin-top: 10px; margin-left: 20px;">
+                        <li>The <strong>first line</strong> contains the number of students (<code class="code-inline">4</code>)</li>
+                        <li>Each <strong>subsequent line</strong> contains a <em>variable</em> number of marks for that student</li>
+                        <li>Marks on each line are separated by <strong>spaces</strong></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Section 3: Reading Algorithm -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">3</span>
+                    Reading Algorithm: Step by Step
+                </h2>
+
+                <p>We'll use <code class="code-inline">nextLine()</code> and <code class="code-inline">split()</code> to read and parse the file:</p>
+
+                <ol class="step-list">
+                    <li>
+                        <div class="step-content">
+                            <strong>Read the first line</strong> to get the number of students (<code class="code-inline">numStudents</code>).
+                        </div>
+                    </li>
+                    <li>
+                        <div class="step-content">
+                            <strong>Create a 2D array</strong> of size <code class="code-inline">[numStudents][]</code>.
+                            <div class="highlight-box" style="margin-top: 10px;">
+                                Notice the empty second bracket <code class="code-inline">[]</code> - we don't know the column size yet!
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="step-content">
+                            <strong>For each remaining line:</strong>
+                            <ul>
+                                <li>Read the entire line as a string</li>
+                                <li>Split on whitespace using <code class="code-inline">split("\\s+")</code></li>
+                                <li>Convert each token to <code class="code-inline">int</code></li>
+                                <li>Assign the resulting 1D array to <code class="code-inline">studentMarks[i]</code></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ol>
+
+                <div class="info-box">
+                    <div class="info-box-title">What is <code class="code-inline">\\s+</code>?</div>
+                    <p>The pattern <code class="code-inline">\\s+</code> is a <strong>regular expression</strong> that matches one or more whitespace characters (spaces, tabs, etc.). This handles cases where numbers might be separated by multiple spaces.</p>
+                </div>
+            </div>
+
+            <!-- Section 4: Download Files -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">4</span>
+                    Download Files
+                </h2>
+
+                <p>Download both files to run the example. Place them in the <strong>same folder</strong>!</p>
+
+                <div class="download-section">
+                    <button class="download-btn java" onclick="downloadJavaFile()">
+                        <span class="download-icon">&#9997;</span>
+                        Download RaggedArrayReader.java
+                    </button>
+                    <button class="download-btn txt" onclick="downloadTextFile()">
+                        <span class="download-icon">&#128196;</span>
+                        Download marks.txt
+                    </button>
+                </div>
+
+                <div class="success-box">
+                    <div class="success-box-title">How to Run</div>
+                    <ol style="margin-left: 20px; margin-top: 10px;">
+                        <li>Download both files to the same folder</li>
+                        <li>Open a terminal/command prompt in that folder</li>
+                        <li>Compile: <code class="code-inline">javac RaggedArrayReader.java</code></li>
+                        <li>Run: <code class="code-inline">java RaggedArrayReader</code></li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- Section 5: Java Code -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">5</span>
+                    Complete Java Code
+                </h2>
+
+                <div class="code-block">
+                    <div class="code-header">
+                        <div class="code-dot red"></div>
+                        <div class="code-dot yellow"></div>
+                        <div class="code-dot green"></div>
+                        <span class="code-title">RaggedArrayReader.java</span>
+                    </div>
+                    <div class="code-content">
+<pre><span class="line"><span class="line-number"> 1</span><span class="comment">// RaggedArrayReader.java</span></span>
+<span class="line"><span class="line-number"> 2</span><span class="keyword">import</span> java.io.File;</span>
+<span class="line"><span class="line-number"> 3</span><span class="keyword">import</span> java.io.FileNotFoundException;</span>
+<span class="line"><span class="line-number"> 4</span><span class="keyword">import</span> java.util.Scanner;</span>
+<span class="line"><span class="line-number"> 5</span></span>
+<span class="line"><span class="line-number"> 6</span><span class="keyword">public class</span> <span class="class-name">RaggedArrayReader</span> <span class="bracket">{</span></span>
+<span class="line"><span class="line-number"> 7</span>    <span class="keyword">public static void</span> <span class="method">main</span><span class="bracket">(</span><span class="class-name">String</span><span class="bracket">[]</span> <span class="variable">args</span><span class="bracket">)</span> <span class="bracket">{</span></span>
+<span class="line"><span class="line-number"> 8</span>        <span class="keyword">try</span> <span class="bracket">{</span></span>
+<span class="line"><span class="line-number"> 9</span>            <span class="comment">// Create Scanner to read from file</span></span>
+<span class="line"><span class="line-number">10</span>            <span class="class-name">Scanner</span> <span class="variable">fileReader</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="class-name">Scanner</span><span class="bracket">(</span><span class="keyword">new</span> <span class="class-name">File</span><span class="bracket">(</span><span class="string">"marks.txt"</span><span class="bracket">))</span>;</span>
+<span class="line"><span class="line-number">11</span></span>
+<span class="line"><span class="line-number">12</span>            <span class="comment">// Step 1: Read number of students from the first line</span></span>
+<span class="line"><span class="line-number">13</span>            <span class="keyword">int</span> <span class="variable">numStudents</span> <span class="operator">=</span> <span class="class-name">Integer</span>.<span class="method">parseInt</span><span class="bracket">(</span><span class="variable">fileReader</span>.<span class="method">nextLine</span><span class="bracket">())</span>;</span>
+<span class="line"><span class="line-number">14</span></span>
+<span class="line"><span class="line-number">15</span>            <span class="comment">// Step 2: Create a ragged array (only first dimension specified!)</span></span>
+<span class="line"><span class="line-number">16</span>            <span class="keyword">int</span><span class="bracket">[][]</span> <span class="variable">studentMarks</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="keyword">int</span><span class="bracket">[</span><span class="variable">numStudents</span><span class="bracket">][]</span>;</span>
+<span class="line"><span class="line-number">17</span></span>
+<span class="line"><span class="line-number">18</span>            <span class="comment">// Step 3: For each student, read their line of marks</span></span>
+<span class="line"><span class="line-number">19</span>            <span class="keyword">for</span> <span class="bracket">(</span><span class="keyword">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; <span class="variable">i</span> <span class="operator">&lt;</span> <span class="variable">numStudents</span>; <span class="variable">i</span><span class="operator">++</span><span class="bracket">)</span> <span class="bracket">{</span></span>
+<span class="line"><span class="line-number">20</span>                <span class="comment">// Check if there's another line to read</span></span>
+<span class="line"><span class="line-number">21</span>                <span class="keyword">if</span> <span class="bracket">(</span><span class="operator">!</span><span class="variable">fileReader</span>.<span class="method">hasNextLine</span><span class="bracket">())</span> <span class="bracket">{</span></span>
+<span class="line"><span class="line-number">22</span>                    <span class="class-name">System</span>.<span class="variable">err</span>.<span class="method">println</span><span class="bracket">(</span><span class="string">"Not enough lines for "</span> <span class="operator">+</span> <span class="variable">numStudents</span> <span class="operator">+</span> <span class="string">" students!"</span><span class="bracket">)</span>;</span>
+<span class="line"><span class="line-number">23</span>                    <span class="keyword">break</span>;</span>
+<span class="line"><span class="line-number">24</span>                <span class="bracket">}</span></span>
+<span class="line"><span class="line-number">25</span></span>
+<span class="line"><span class="line-number">26</span>                <span class="comment">// Read the entire line of marks</span></span>
+<span class="line"><span class="line-number">27</span>                <span class="class-name">String</span> <span class="variable">line</span> <span class="operator">=</span> <span class="variable">fileReader</span>.<span class="method">nextLine</span><span class="bracket">()</span>.<span class="method">trim</span><span class="bracket">()</span>;</span>
+<span class="line"><span class="line-number">28</span></span>
+<span class="line"><span class="line-number">29</span>                <span class="comment">// Split by one or more spaces (regex: \s+)</span></span>
+<span class="line"><span class="line-number">30</span>                <span class="class-name">String</span><span class="bracket">[]</span> <span class="variable">tokens</span> <span class="operator">=</span> <span class="variable">line</span>.<span class="method">split</span><span class="bracket">(</span><span class="string">"\\s+"</span><span class="bracket">)</span>;</span>
+<span class="line"><span class="line-number">31</span></span>
+<span class="line"><span class="line-number">32</span>                <span class="comment">// Convert string tokens to integers</span></span>
+<span class="line"><span class="line-number">33</span>                <span class="keyword">int</span><span class="bracket">[]</span> <span class="variable">marks</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="keyword">int</span><span class="bracket">[</span><span class="variable">tokens</span>.<span class="variable">length</span><span class="bracket">]</span>;</span>
+<span class="line"><span class="line-number">34</span>                <span class="keyword">for</span> <span class="bracket">(</span><span class="keyword">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>; <span class="variable">j</span> <span class="operator">&lt;</span> <span class="variable">tokens</span>.<span class="variable">length</span>; <span class="variable">j</span><span class="operator">++</span><span class="bracket">)</span> <span class="bracket">{</span></span>
+<span class="line"><span class="line-number">35</span>                    <span class="variable">marks</span><span class="bracket">[</span><span class="variable">j</span><span class="bracket">]</span> <span class="operator">=</span> <span class="class-name">Integer</span>.<span class="method">parseInt</span><span class="bracket">(</span><span class="variable">tokens</span><span class="bracket">[</span><span class="variable">j</span><span class="bracket">])</span>;</span>
+<span class="line"><span class="line-number">36</span>                <span class="bracket">}</span></span>
+<span class="line"><span class="line-number">37</span></span>
+<span class="line"><span class="line-number">38</span>                <span class="comment">// Assign this 1D array to the ragged array</span></span>
+<span class="line"><span class="line-number">39</span>                <span class="variable">studentMarks</span><span class="bracket">[</span><span class="variable">i</span><span class="bracket">]</span> <span class="operator">=</span> <span class="variable">marks</span>;</span>
+<span class="line"><span class="line-number">40</span>            <span class="bracket">}</span></span>
+<span class="line"><span class="line-number">41</span></span>
+<span class="line"><span class="line-number">42</span>            <span class="comment">// Close the file</span></span>
+<span class="line"><span class="line-number">43</span>            <span class="variable">fileReader</span>.<span class="method">close</span><span class="bracket">()</span>;</span>
+<span class="line"><span class="line-number">44</span></span>
+<span class="line"><span class="line-number">45</span>            <span class="comment">// Print the ragged array to verify</span></span>
+<span class="line"><span class="line-number">46</span>            <span class="class-name">System</span>.<span class="variable">out</span>.<span class="method">println</span><span class="bracket">(</span><span class="string">"Ragged array of student marks:"</span><span class="bracket">)</span>;</span>
+<span class="line"><span class="line-number">47</span>            <span class="keyword">for</span> <span class="bracket">(</span><span class="keyword">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; <span class="variable">i</span> <span class="operator">&lt;</span> <span class="variable">studentMarks</span>.<span class="variable">length</span>; <span class="variable">i</span><span class="operator">++</span><span class="bracket">)</span> <span class="bracket">{</span></span>
+<span class="line"><span class="line-number">48</span>                <span class="class-name">System</span>.<span class="variable">out</span>.<span class="method">print</span><span class="bracket">(</span><span class="string">"Student "</span> <span class="operator">+</span> <span class="bracket">(</span><span class="variable">i</span> <span class="operator">+</span> <span class="number">1</span><span class="bracket">)</span> <span class="operator">+</span> <span class="string">": "</span><span class="bracket">)</span>;</span>
+<span class="line"><span class="line-number">49</span>                <span class="keyword">for</span> <span class="bracket">(</span><span class="keyword">int</span> <span class="variable">mark</span> : <span class="variable">studentMarks</span><span class="bracket">[</span><span class="variable">i</span><span class="bracket">])</span> <span class="bracket">{</span></span>
+<span class="line"><span class="line-number">50</span>                    <span class="class-name">System</span>.<span class="variable">out</span>.<span class="method">print</span><span class="bracket">(</span><span class="variable">mark</span> <span class="operator">+</span> <span class="string">" "</span><span class="bracket">)</span>;</span>
+<span class="line"><span class="line-number">51</span>                <span class="bracket">}</span></span>
+<span class="line"><span class="line-number">52</span>                <span class="class-name">System</span>.<span class="variable">out</span>.<span class="method">println</span><span class="bracket">()</span>;</span>
+<span class="line"><span class="line-number">53</span>            <span class="bracket">}</span></span>
+<span class="line"><span class="line-number">54</span></span>
+<span class="line"><span class="line-number">55</span>        <span class="bracket">}</span> <span class="keyword">catch</span> <span class="bracket">(</span><span class="class-name">FileNotFoundException</span> <span class="variable">e</span><span class="bracket">)</span> <span class="bracket">{</span></span>
+<span class="line"><span class="line-number">56</span>            <span class="class-name">System</span>.<span class="variable">err</span>.<span class="method">println</span><span class="bracket">(</span><span class="string">"File not found: "</span> <span class="operator">+</span> <span class="variable">e</span>.<span class="method">getMessage</span><span class="bracket">())</span>;</span>
+<span class="line"><span class="line-number">57</span>        <span class="bracket">}</span></span>
+<span class="line"><span class="line-number">58</span>    <span class="bracket">}</span></span>
+<span class="line"><span class="line-number">59</span><span class="bracket">}</span></span></pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 6: Code Explanation - Line by Line -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">6</span>
+                    Code Explanation - Line by Line
+                </h2>
+
+                <p>Let's go through every line of the code so you understand exactly how to write it yourself!</p>
+
+                <!-- Part 1: Imports -->
+                <h3 style="color: var(--primary-color); margin-top: 30px; margin-bottom: 15px;">Part 1: Import Statements (Lines 2-4)</h3>
+
+                <div class="info-box">
+                    <div class="info-box-title">Line 2: <code class="code-inline">import java.io.File;</code></div>
+                    <p><strong>What it does:</strong> Imports the <code class="code-inline">File</code> class from Java's I/O library.</p>
+                    <p style="margin-top: 10px;"><strong>Why we need it:</strong> The <code class="code-inline">File</code> class represents a file on your computer. We use it to tell the Scanner which file to read.</p>
+                </div>
+
+                <div class="info-box">
+                    <div class="info-box-title">Line 3: <code class="code-inline">import java.io.FileNotFoundException;</code></div>
+                    <p><strong>What it does:</strong> Imports the <code class="code-inline">FileNotFoundException</code> exception class.</p>
+                    <p style="margin-top: 10px;"><strong>Why we need it:</strong> When we try to open a file, it might not exist! Java forces us to handle this possibility using try-catch.</p>
+                </div>
+
+                <div class="info-box">
+                    <div class="info-box-title">Line 4: <code class="code-inline">import java.util.Scanner;</code></div>
+                    <p><strong>What it does:</strong> Imports the <code class="code-inline">Scanner</code> class.</p>
+                    <p style="margin-top: 10px;"><strong>Why we need it:</strong> Scanner is our tool for reading data. We've used it with <code class="code-inline">System.in</code> for keyboard input - now we'll use it with a <code class="code-inline">File</code> to read from a file!</p>
+                </div>
+
+                <!-- Part 2: Opening the File -->
+                <h3 style="color: var(--primary-color); margin-top: 30px; margin-bottom: 15px;">Part 2: Opening the File (Lines 8-10)</h3>
+
+                <div class="info-box">
+                    <div class="info-box-title">Line 8: <code class="code-inline">try {</code></div>
+                    <p><strong>What it does:</strong> Starts a try block for exception handling.</p>
+                    <p style="margin-top: 10px;"><strong>Why we need it:</strong> File operations can fail (file doesn't exist, no permission, etc.). The try block lets us attempt the operation and handle errors gracefully.</p>
+                </div>
+
+                <div class="key-concept">
+                    <div class="key-concept-title">Line 10: <code class="code-inline">Scanner fileReader = new Scanner(new File("marks.txt"));</code></div>
+                    <p><strong>This line does TWO things:</strong></p>
+                    <ol style="margin-top: 10px; margin-left: 20px;">
+                        <li><code class="code-inline">new File("marks.txt")</code> - Creates a File object pointing to "marks.txt" in the current folder</li>
+                        <li><code class="code-inline">new Scanner(...)</code> - Creates a Scanner that reads from that File</li>
+                    </ol>
+                    <p style="margin-top: 10px;"><strong>Think of it like:</strong> "Open the file marks.txt and give me a Scanner to read it"</p>
+                </div>
+
+                <!-- Part 3: Reading Number of Students -->
+                <h3 style="color: var(--primary-color); margin-top: 30px; margin-bottom: 15px;">Part 3: Reading Number of Students (Line 13)</h3>
+
+                <div class="key-concept">
+                    <div class="key-concept-title">Line 13: <code class="code-inline">int numStudents = Integer.parseInt(fileReader.nextLine());</code></div>
+                    <p><strong>This line does THREE things (read from inside out):</strong></p>
+                    <ol style="margin-top: 10px; margin-left: 20px;">
+                        <li><code class="code-inline">fileReader.nextLine()</code> - Reads the entire first line as a String (e.g., <code class="code-inline">"4"</code>)</li>
+                        <li><code class="code-inline">Integer.parseInt(...)</code> - Converts the String <code class="code-inline">"4"</code> to the integer <code class="code-inline">4</code></li>
+                        <li><code class="code-inline">int numStudents = ...</code> - Stores the result in variable <code class="code-inline">numStudents</code></li>
+                    </ol>
+                    <div class="highlight-box" style="margin-top: 15px;">
+                        <strong>After this line:</strong> <code class="code-inline">numStudents = 4</code> (we have 4 students)
+                    </div>
+                </div>
+
+                <!-- Part 4: Creating the Ragged Array -->
+                <h3 style="color: var(--primary-color); margin-top: 30px; margin-bottom: 15px;">Part 4: Creating the Ragged Array (Line 16)</h3>
+
+                <div class="key-concept">
+                    <div class="key-concept-title">Line 16: <code class="code-inline">int[][] studentMarks = new int[numStudents][];</code></div>
+                    <p><strong>What it does:</strong> Creates a 2D array with only the FIRST dimension specified!</p>
+                    <p style="margin-top: 10px;"><strong>Breaking it down:</strong></p>
+                    <ul style="margin-top: 10px; margin-left: 20px;">
+                        <li><code class="code-inline">int[][]</code> - Declares a 2D array of integers</li>
+                        <li><code class="code-inline">new int[numStudents][]</code> - Creates an array of 4 rows, but each row is <code class="code-inline">null</code> (no columns yet!)</li>
+                    </ul>
+                    <div class="highlight-box" style="margin-top: 15px;">
+                        <strong>Memory visualization after this line:</strong><br>
+                        <code class="code-inline">studentMarks[0] = null</code><br>
+                        <code class="code-inline">studentMarks[1] = null</code><br>
+                        <code class="code-inline">studentMarks[2] = null</code><br>
+                        <code class="code-inline">studentMarks[3] = null</code>
+                    </div>
+                    <p style="margin-top: 15px;"><strong>Why empty second dimension?</strong> Because we don't know yet how many marks each student has! We'll fill in each row when we read it.</p>
+                </div>
+
+                <!-- Part 5: The Main Loop -->
+                <h3 style="color: var(--primary-color); margin-top: 30px; margin-bottom: 15px;">Part 5: The Main Loop (Lines 19-40)</h3>
+
+                <div class="info-box">
+                    <div class="info-box-title">Line 19: <code class="code-inline">for (int i = 0; i &lt; numStudents; i++) {</code></div>
+                    <p><strong>What it does:</strong> Loops through each student (0, 1, 2, 3).</p>
+                    <p style="margin-top: 10px;"><strong>Each iteration:</strong> Reads one line from the file and creates one row in our ragged array.</p>
+                </div>
+
+                <div class="info-box">
+                    <div class="info-box-title">Lines 21-24: Error Checking</div>
+                    <p><code class="code-inline">if (!fileReader.hasNextLine()) { ... break; }</code></p>
+                    <p style="margin-top: 10px;"><strong>What it does:</strong> Checks if there's another line to read.</p>
+                    <p style="margin-top: 10px;"><strong>Why we need it:</strong> Safety check! If the file has fewer lines than expected, we stop gracefully instead of crashing.</p>
+                </div>
+
+                <div class="key-concept">
+                    <div class="key-concept-title">Line 27: <code class="code-inline">String line = fileReader.nextLine().trim();</code></div>
+                    <p><strong>This line does TWO things:</strong></p>
+                    <ol style="margin-top: 10px; margin-left: 20px;">
+                        <li><code class="code-inline">fileReader.nextLine()</code> - Reads the entire next line (e.g., <code class="code-inline">"10 20"</code>)</li>
+                        <li><code class="code-inline">.trim()</code> - Removes spaces at the beginning and end</li>
+                    </ol>
+                    <div class="highlight-box" style="margin-top: 15px;">
+                        <strong>Example (first iteration i=0):</strong><br>
+                        File line: <code class="code-inline">"10 20"</code><br>
+                        After trim: <code class="code-inline">"10 20"</code> (stored in <code class="code-inline">line</code>)
+                    </div>
+                </div>
+
+                <div class="key-concept">
+                    <div class="key-concept-title">Line 30: <code class="code-inline">String[] tokens = line.split("\\s+");</code></div>
+                    <p><strong>What it does:</strong> Splits the string by whitespace into an array of strings.</p>
+                    <p style="margin-top: 10px;"><strong>The regex <code class="code-inline">\\s+</code> means:</strong></p>
+                    <ul style="margin-top: 10px; margin-left: 20px;">
+                        <li><code class="code-inline">\\s</code> - Any whitespace character (space, tab, etc.)</li>
+                        <li><code class="code-inline">+</code> - One or more of them</li>
+                    </ul>
+                    <div class="highlight-box" style="margin-top: 15px;">
+                        <strong>Example:</strong><br>
+                        Input: <code class="code-inline">"10 20"</code><br>
+                        Result: <code class="code-inline">tokens[0] = "10"</code>, <code class="code-inline">tokens[1] = "20"</code><br>
+                        <code class="code-inline">tokens.length = 2</code>
+                    </div>
+                </div>
+
+                <div class="key-concept">
+                    <div class="key-concept-title">Line 33: <code class="code-inline">int[] marks = new int[tokens.length];</code></div>
+                    <p><strong>What it does:</strong> Creates a new 1D integer array with the EXACT size needed.</p>
+                    <p style="margin-top: 10px;"><strong>Why <code class="code-inline">tokens.length</code>?</strong> The number of tokens tells us how many marks this student has!</p>
+                    <div class="highlight-box" style="margin-top: 15px;">
+                        <strong>Example:</strong><br>
+                        If <code class="code-inline">tokens.length = 2</code>, creates <code class="code-inline">marks = new int[2]</code><br>
+                        If <code class="code-inline">tokens.length = 5</code>, creates <code class="code-inline">marks = new int[5]</code>
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <div class="info-box-title">Lines 34-36: Converting Strings to Integers</div>
+                    <p><code class="code-inline">for (int j = 0; j &lt; tokens.length; j++) {</code><br>
+                    <code class="code-inline">&nbsp;&nbsp;&nbsp;&nbsp;marks[j] = Integer.parseInt(tokens[j]);</code><br>
+                    <code class="code-inline">}</code></p>
+                    <p style="margin-top: 10px;"><strong>What it does:</strong> Loops through each token string and converts it to an integer.</p>
+                    <div class="highlight-box" style="margin-top: 15px;">
+                        <strong>Example:</strong><br>
+                        <code class="code-inline">tokens[0] = "10"</code> → <code class="code-inline">marks[0] = 10</code><br>
+                        <code class="code-inline">tokens[1] = "20"</code> → <code class="code-inline">marks[1] = 20</code>
+                    </div>
+                </div>
+
+                <div class="key-concept">
+                    <div class="key-concept-title">Line 39: <code class="code-inline">studentMarks[i] = marks;</code></div>
+                    <p><strong>What it does:</strong> Assigns our newly created 1D array to row <code class="code-inline">i</code> of the ragged array.</p>
+                    <p style="margin-top: 10px;"><strong>This is the KEY step!</strong> We're replacing <code class="code-inline">null</code> with an actual array.</p>
+                    <div class="highlight-box" style="margin-top: 15px;">
+                        <strong>After first iteration (i=0):</strong><br>
+                        <code class="code-inline">studentMarks[0] = {10, 20}</code> ← Now has data!<br>
+                        <code class="code-inline">studentMarks[1] = null</code><br>
+                        <code class="code-inline">studentMarks[2] = null</code><br>
+                        <code class="code-inline">studentMarks[3] = null</code>
+                    </div>
+                </div>
+
+                <!-- Part 6: Closing the File -->
+                <h3 style="color: var(--primary-color); margin-top: 30px; margin-bottom: 15px;">Part 6: Closing the File (Line 43)</h3>
+
+                <div class="info-box">
+                    <div class="info-box-title">Line 43: <code class="code-inline">fileReader.close();</code></div>
+                    <p><strong>What it does:</strong> Closes the file and releases system resources.</p>
+                    <p style="margin-top: 10px;"><strong>Why important:</strong> Always close files when done! Leaving files open can cause memory leaks and prevent other programs from accessing the file.</p>
+                </div>
+
+                <!-- Part 7: Printing the Results -->
+                <h3 style="color: var(--primary-color); margin-top: 30px; margin-bottom: 15px;">Part 7: Printing the Results (Lines 46-53)</h3>
+
+                <div class="info-box">
+                    <div class="info-box-title">Line 47: <code class="code-inline">for (int i = 0; i &lt; studentMarks.length; i++) {</code></div>
+                    <p><strong>What it does:</strong> Loops through each student (each row).</p>
+                    <p style="margin-top: 10px;"><code class="code-inline">studentMarks.length</code> gives us the number of rows (students).</p>
+                </div>
+
+                <div class="info-box">
+                    <div class="info-box-title">Line 49: <code class="code-inline">for (int mark : studentMarks[i]) {</code></div>
+                    <p><strong>What it does:</strong> Enhanced for-loop that iterates through each mark in student <code class="code-inline">i</code>'s array.</p>
+                    <p style="margin-top: 10px;"><strong>Why enhanced for-loop?</strong> Each row has different length! The enhanced for-loop automatically handles this.</p>
+                    <div class="highlight-box" style="margin-top: 15px;">
+                        <strong>For studentMarks[0] = {10, 20}:</strong> loops twice<br>
+                        <strong>For studentMarks[1] = {9, 18, 30, 20, 10}:</strong> loops five times
+                    </div>
+                </div>
+
+                <!-- Part 8: Exception Handling -->
+                <h3 style="color: var(--primary-color); margin-top: 30px; margin-bottom: 15px;">Part 8: Exception Handling (Lines 55-57)</h3>
+
+                <div class="info-box">
+                    <div class="info-box-title">Lines 55-57: <code class="code-inline">catch (FileNotFoundException e) { ... }</code></div>
+                    <p><strong>What it does:</strong> Catches the exception if the file doesn't exist.</p>
+                    <p style="margin-top: 10px;"><strong>What happens:</strong> If "marks.txt" is not found, the program prints an error message instead of crashing.</p>
+                    <p style="margin-top: 10px;"><code class="code-inline">e.getMessage()</code> gives details about what went wrong.</p>
+                </div>
+
+                <!-- Summary Table -->
+                <h3 style="color: var(--primary-color); margin-top: 30px; margin-bottom: 15px;">Complete Execution Trace</h3>
+
+                <div class="success-box">
+                    <div class="success-box-title">Step-by-Step Execution with marks.txt</div>
+                    <table style="width: 100%; border-collapse: collapse; margin-top: 15px;">
+                        <tr style="background: rgba(255,255,255,0.5);">
+                            <th style="padding: 10px; border: 1px solid #059669; text-align: left;">Step</th>
+                            <th style="padding: 10px; border: 1px solid #059669; text-align: left;">Action</th>
+                            <th style="padding: 10px; border: 1px solid #059669; text-align: left;">Result</th>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #059669;">1</td>
+                            <td style="padding: 10px; border: 1px solid #059669;">Read "4"</td>
+                            <td style="padding: 10px; border: 1px solid #059669;"><code class="code-inline">numStudents = 4</code></td>
+                        </tr>
+                        <tr style="background: rgba(255,255,255,0.3);">
+                            <td style="padding: 10px; border: 1px solid #059669;">2</td>
+                            <td style="padding: 10px; border: 1px solid #059669;">Create array</td>
+                            <td style="padding: 10px; border: 1px solid #059669;"><code class="code-inline">studentMarks = [null, null, null, null]</code></td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #059669;">3</td>
+                            <td style="padding: 10px; border: 1px solid #059669;">i=0: Read "10 20"</td>
+                            <td style="padding: 10px; border: 1px solid #059669;"><code class="code-inline">studentMarks[0] = {10, 20}</code></td>
+                        </tr>
+                        <tr style="background: rgba(255,255,255,0.3);">
+                            <td style="padding: 10px; border: 1px solid #059669;">4</td>
+                            <td style="padding: 10px; border: 1px solid #059669;">i=1: Read "9 18 30 20 10"</td>
+                            <td style="padding: 10px; border: 1px solid #059669;"><code class="code-inline">studentMarks[1] = {9, 18, 30, 20, 10}</code></td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #059669;">5</td>
+                            <td style="padding: 10px; border: 1px solid #059669;">i=2: Read "10 15"</td>
+                            <td style="padding: 10px; border: 1px solid #059669;"><code class="code-inline">studentMarks[2] = {10, 15}</code></td>
+                        </tr>
+                        <tr style="background: rgba(255,255,255,0.3);">
+                            <td style="padding: 10px; border: 1px solid #059669;">6</td>
+                            <td style="padding: 10px; border: 1px solid #059669;">i=3: Read "5 20 26"</td>
+                            <td style="padding: 10px; border: 1px solid #059669;"><code class="code-inline">studentMarks[3] = {5, 20, 26}</code></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Section 7: Expected Output -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">7</span>
+                    Expected Output
+                </h2>
+
+                <div class="code-block">
+                    <div class="code-header">
+                        <div class="code-dot red"></div>
+                        <div class="code-dot yellow"></div>
+                        <div class="code-dot green"></div>
+                        <span class="code-title">Console Output</span>
+                    </div>
+                    <div class="code-content">
+<pre>Ragged array of student marks:
+Student 1: 10 20
+Student 2: 9 18 30 20 10
+Student 3: 10 15
+Student 4: 5 20 26</pre>
+                    </div>
+                </div>
+
+                <div class="success-box">
+                    <div class="success-box-title">Success!</div>
+                    <p>Each student's marks are stored in a separate 1D array with exactly the right size. No wasted memory!</p>
+                </div>
+            </div>
+
+            <!-- Section 8: Key Takeaways -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">8</span>
+                    Key Takeaways
+                </h2>
+
+                <div class="key-concept">
+                    <div class="key-concept-title">Summary</div>
+                    <ul style="margin-left: 20px; margin-top: 10px;">
+                        <li><strong>Ragged arrays</strong> allow different row sizes - perfect for variable-length data</li>
+                        <li>Use <code class="code-inline">new int[n][]</code> to create an array with only the first dimension specified</li>
+                        <li><code class="code-inline">nextLine()</code> reads an entire line as a string</li>
+                        <li><code class="code-inline">split("\\s+")</code> breaks a string by whitespace into an array</li>
+                        <li><code class="code-inline">Integer.parseInt()</code> converts a string to an integer</li>
+                        <li>Assign each row individually: <code class="code-inline">array[i] = new int[size]</code></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <a href="03-2d-3d-arrays.html" class="back-link">‹ Back to 2D & 3D Arrays</a>
+            <a href="07-3d-ragged-array-file-reading.html" class="next-link">Next: 3D Ragged Arrays ›</a>
+        </nav>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>CPCS203 - Data Structures | King Abdulaziz University</p>
+        </div>
+    </div>
+
+    <!-- JavaScript for Download Functionality -->
+    <script>
+        function downloadJavaFile() {
+            const javaCode = `// RaggedArrayReader.java
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
+public class RaggedArrayReader {
+    public static void main(String[] args) {
+        try {
+            // Create Scanner to read from file
+            Scanner fileReader = new Scanner(new File("marks.txt"));
+
+            // Step 1: Read number of students from the first line
+            int numStudents = Integer.parseInt(fileReader.nextLine());
+
+            // Step 2: Create a ragged array (only first dimension specified!)
+            int[][] studentMarks = new int[numStudents][];
+
+            // Step 3: For each student, read their line of marks
+            for (int i = 0; i < numStudents; i++) {
+                // Check if there's another line to read
+                if (!fileReader.hasNextLine()) {
+                    System.err.println("Not enough lines for " + numStudents + " students!");
+                    break;
+                }
+
+                // Read the entire line of marks
+                String line = fileReader.nextLine().trim();
+
+                // Split by one or more spaces (regex: \\s+)
+                String[] tokens = line.split("\\\\s+");
+
+                // Convert string tokens to integers
+                int[] marks = new int[tokens.length];
+                for (int j = 0; j < tokens.length; j++) {
+                    marks[j] = Integer.parseInt(tokens[j]);
+                }
+
+                // Assign this 1D array to the ragged array
+                studentMarks[i] = marks;
+            }
+
+            // Close the file
+            fileReader.close();
+
+            // Print the ragged array to verify
+            System.out.println("Ragged array of student marks:");
+            for (int i = 0; i < studentMarks.length; i++) {
+                System.out.print("Student " + (i + 1) + ": ");
+                for (int mark : studentMarks[i]) {
+                    System.out.print(mark + " ");
+                }
+                System.out.println();
+            }
+
+        } catch (FileNotFoundException e) {
+            System.err.println("File not found: " + e.getMessage());
+        }
+    }
+}`;
+
+            downloadFile('RaggedArrayReader.java', javaCode);
+        }
+
+        function downloadTextFile() {
+            const textContent = `4
+10 20
+9 18 30 20 10
+10 15
+5 20 26`;
+
+            downloadFile('marks.txt', textContent);
+        }
+
+        function downloadFile(filename, content) {
+            const blob = new Blob([content], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+    </script>
+</body>
+</html>

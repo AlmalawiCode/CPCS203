@@ -1,0 +1,1479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Introduction to Object-Oriented Programming | CPCS203</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #2563eb;
+            --primary-light: #3b82f6;
+            --primary-dark: #1d4ed8;
+            --secondary-color: #7c3aed;
+            --success-color: #059669;
+            --warning-color: #d97706;
+            --danger-color: #dc2626;
+            --dark-color: #1f2937;
+            --light-color: #f3f4f6;
+            --gray-color: #6b7280;
+            --oop-color: #2563eb;
+            --fp-color: #7c3aed;
+            --proc-color: #d97706;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.8;
+            color: var(--dark-color);
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #7c3aed 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .header .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .header .course-info {
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 30px;
+            display: inline-block;
+        }
+
+        /* Content */
+        .content {
+            padding: 40px;
+        }
+
+        /* Sections */
+        .section {
+            margin-bottom: 50px;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--primary-color);
+            padding-bottom: 10px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-number {
+            background: var(--primary-color);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        /* Narrative Block */
+        .narrative {
+            background: linear-gradient(135deg, #f0f4ff, #e8ecff);
+            border-left: 5px solid var(--primary-color);
+            padding: 25px 30px;
+            margin: 20px 0;
+            border-radius: 0 15px 15px 0;
+            font-size: 1.05rem;
+            line-height: 2;
+        }
+
+        .narrative p {
+            margin-bottom: 12px;
+        }
+
+        .narrative p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Key Concept Box */
+        .key-concept {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border-left: 5px solid var(--warning-color);
+            padding: 20px 25px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .key-concept-title {
+            font-weight: bold;
+            color: var(--warning-color);
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        /* Important Box */
+        .important-box {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            border-left: 5px solid var(--danger-color);
+            padding: 20px 25px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .important-box-title {
+            font-weight: bold;
+            color: var(--danger-color);
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        /* Info Box */
+        .info-box {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            border-left: 5px solid var(--primary-color);
+            padding: 20px 25px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .info-box-title {
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        /* Success Box */
+        .success-box {
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+            border-left: 5px solid var(--success-color);
+            padding: 20px 25px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .success-box-title {
+            font-weight: bold;
+            color: var(--success-color);
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        /* Quote Box */
+        .quote-box {
+            background: linear-gradient(135deg, #faf5ff, #f3e8ff);
+            border-left: 5px solid var(--secondary-color);
+            padding: 20px 25px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+            font-style: italic;
+        }
+
+        .quote-box .quote-author {
+            font-style: normal;
+            font-weight: bold;
+            color: var(--secondary-color);
+            margin-top: 10px;
+            text-align: right;
+        }
+
+        /* Code Blocks */
+        .code-block {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+        }
+
+        .code-block .keyword { color: #569cd6; }
+        .code-block .type { color: #4ec9b0; }
+        .code-block .string { color: #ce9178; }
+        .code-block .number { color: #b5cea8; }
+        .code-block .comment { color: #6a9955; }
+        .code-block .method { color: #dcdcaa; }
+        .code-block .annotation { color: #c586c0; }
+
+        .code-label {
+            background: #2d2d2d;
+            color: #9cdcfe;
+            padding: 8px 15px;
+            border-radius: 10px 10px 0 0;
+            font-family: 'Consolas', monospace;
+            font-size: 0.85rem;
+            display: inline-block;
+            margin-bottom: -1px;
+        }
+
+        .code-inline {
+            background: #e5e7eb;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9rem;
+            color: var(--danger-color);
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding: 20px 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 30px;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(to bottom, var(--proc-color), var(--fp-color), var(--oop-color));
+            border-radius: 2px;
+        }
+
+        .timeline-item {
+            position: relative;
+            padding: 20px 20px 20px 75px;
+            margin-bottom: 20px;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: 18px;
+            top: 25px;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 0.8rem;
+            z-index: 1;
+        }
+
+        .timeline-content {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 20px 25px;
+            border: 2px solid #e2e8f0;
+        }
+
+        .timeline-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .timeline-date {
+            font-size: 0.85rem;
+            color: var(--gray-color);
+            margin-bottom: 8px;
+        }
+
+        /* Comparison Grid */
+        .paradigm-comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin: 25px 0;
+        }
+
+        .paradigm-box {
+            border-radius: 15px;
+            padding: 25px;
+            border: 3px solid;
+        }
+
+        .paradigm-box.procedural {
+            background: linear-gradient(135deg, #fff7ed, #ffedd5);
+            border-color: var(--proc-color);
+        }
+
+        .paradigm-box.oop {
+            background: linear-gradient(135deg, #eff6ff, #dbeafe);
+            border-color: var(--oop-color);
+        }
+
+        .paradigm-box.functional {
+            background: linear-gradient(135deg, #faf5ff, #f3e8ff);
+            border-color: var(--fp-color);
+        }
+
+        .paradigm-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .paradigm-box.procedural .paradigm-title { color: var(--proc-color); }
+        .paradigm-box.oop .paradigm-title { color: var(--oop-color); }
+        .paradigm-box.functional .paradigm-title { color: var(--fp-color); }
+
+        .paradigm-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .paradigm-list li {
+            padding: 6px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .paradigm-list li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 14px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .paradigm-box.procedural .paradigm-list li::before { background: var(--proc-color); }
+        .paradigm-box.oop .paradigm-list li::before { background: var(--oop-color); }
+        .paradigm-box.functional .paradigm-list li::before { background: var(--fp-color); }
+
+        /* Full-width paradigm box */
+        .paradigm-full {
+            margin: 25px 0;
+        }
+
+        /* Object Visualization */
+        .object-visual {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            margin: 25px 0;
+        }
+
+        .object-card {
+            background: white;
+            border-radius: 15px;
+            border: 3px solid var(--primary-color);
+            overflow: hidden;
+            min-width: 220px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .object-card-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            padding: 12px 20px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .object-card-section {
+            padding: 15px 20px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .object-card-section:last-child {
+            border-bottom: none;
+        }
+
+        .object-card-label {
+            font-size: 0.8rem;
+            color: var(--gray-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .object-card-item {
+            font-family: 'Consolas', monospace;
+            font-size: 0.9rem;
+            padding: 3px 0;
+            color: var(--dark-color);
+        }
+
+        /* UML Diagram */
+        .uml-diagram {
+            display: flex;
+            justify-content: center;
+            margin: 25px 0;
+        }
+
+        .uml-class {
+            border: 3px solid var(--dark-color);
+            border-radius: 8px;
+            min-width: 300px;
+            background: white;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .uml-name {
+            background: var(--dark-color);
+            color: white;
+            padding: 12px 20px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.15rem;
+        }
+
+        .uml-section {
+            padding: 12px 20px;
+            border-bottom: 2px solid var(--dark-color);
+            font-family: 'Consolas', monospace;
+            font-size: 0.9rem;
+        }
+
+        .uml-section:last-child {
+            border-bottom: none;
+        }
+
+        .uml-item {
+            padding: 4px 0;
+        }
+
+        .uml-private { color: var(--danger-color); }
+        .uml-public { color: var(--success-color); }
+
+        /* Pillars */
+        .pillars-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin: 25px 0;
+        }
+
+        .pillar-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            border: 2px solid #e2e8f0;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .pillar-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .pillar-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .pillar-name {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .pillar-card:nth-child(1) .pillar-name { color: #2563eb; }
+        .pillar-card:nth-child(2) .pillar-name { color: #7c3aed; }
+        .pillar-card:nth-child(3) .pillar-name { color: #059669; }
+        .pillar-card:nth-child(4) .pillar-name { color: #d97706; }
+
+        .pillar-card:nth-child(1) { border-top: 4px solid #2563eb; }
+        .pillar-card:nth-child(2) { border-top: 4px solid #7c3aed; }
+        .pillar-card:nth-child(3) { border-top: 4px solid #059669; }
+        .pillar-card:nth-child(4) { border-top: 4px solid #d97706; }
+
+        .pillar-desc {
+            color: var(--gray-color);
+            font-size: 0.95rem;
+        }
+
+        /* Steps */
+        .steps-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .step {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 15px;
+            border: 2px solid #e2e8f0;
+        }
+
+        .step-number {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .step-content { flex: 1; }
+
+        .step-title {
+            font-weight: bold;
+            font-size: 1.15rem;
+            color: var(--primary-color);
+            margin-bottom: 8px;
+        }
+
+        /* Analogy Box */
+        .analogy-box {
+            background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+            border: 2px dashed var(--success-color);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+        }
+
+        .analogy-title {
+            font-weight: bold;
+            color: var(--success-color);
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+
+        /* Comparison Table */
+        .comparison-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin: 20px 0;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+
+        .comparison-table thead th {
+            background: var(--dark-color);
+            color: white;
+            padding: 14px 20px;
+            text-align: left;
+            font-size: 1rem;
+        }
+
+        .comparison-table tbody td {
+            padding: 12px 20px;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 0.95rem;
+        }
+
+        .comparison-table tbody tr:nth-child(even) {
+            background: #f9fafb;
+        }
+
+        .comparison-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .comparison-table tbody tr:hover {
+            background: #eff6ff;
+        }
+
+        /* Navigation */
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            padding: 30px 40px;
+            background: var(--light-color);
+            border-top: 2px solid #e5e7eb;
+        }
+
+        .nav-btn {
+            padding: 12px 25px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .nav-btn.prev {
+            background: white;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+
+        .nav-btn.next {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+        }
+
+        /* Language Switch */
+        .lang-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-size: 0.95rem;
+        }
+
+        .lang-switch:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .content { padding: 20px; }
+            .header h1 { font-size: 1.8rem; }
+            .paradigm-comparison { grid-template-columns: 1fr; }
+            .pillars-grid { grid-template-columns: 1fr; }
+            .object-visual { flex-direction: column; align-items: center; }
+        }
+    </style>
+</head>
+<body>
+    <a href="01-intro-to-oop-ar.html" class="lang-switch">&#127480;&#127462; العربية</a>
+    <div class="container">
+
+        <!-- Header -->
+        <div class="header">
+            <h1>Introduction to Object-Oriented Programming</h1>
+            <p class="subtitle">From Thinking in Steps to Thinking in Objects</p>
+            <div class="course-info">CPCS203 - Module 04: Objects and Classes</div>
+        </div>
+
+        <div class="content">
+
+            <!-- ============================================================ -->
+            <!-- SECTION 1: THE STORY -->
+            <!-- ============================================================ -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">1</span>
+                    The Story: How We Got Here
+                </h2>
+
+                <div class="narrative">
+                    <p>Imagine you are building a house. In the very beginning of construction history, builders would simply stack stones one on top of another. There was no blueprint, no architecture, no separation of concerns. If you wanted a bigger house, you just stacked more stones. It worked &mdash; but only up to a point.</p>
+                    <p>As houses grew more complex &mdash; multiple rooms, plumbing, electricity &mdash; the "just stack stones" approach collapsed under its own weight. Builders needed something better: <strong>architecture</strong>. They needed a way to think about the house as a collection of <em>components</em> that work together, each with its own responsibility.</p>
+                    <p>Software development followed exactly the same path.</p>
+                </div>
+
+                <p>In the early decades of computer science, most programs were written as a <strong>sequence of instructions</strong>. You told the computer: "Do step 1, then step 2, then step 3." This is called <strong>procedural programming</strong>, and it works beautifully for small programs.</p>
+
+                <p>But software systems grew. They became thousands, then millions of lines of code. And developers kept running into the same problems over and over again:</p>
+
+                <div class="important-box">
+                    <div class="important-box-title">The Growing Pains of Software</div>
+                    <ul style="margin-top:8px; padding-left:20px;">
+                        <li><strong>Reusability:</strong> Writing the same logic again and again in different parts of the system.</li>
+                        <li><strong>Scalability:</strong> Adding a new feature meant rewriting half the program.</li>
+                        <li><strong>Maintainability:</strong> Fixing one bug introduced three new ones.</li>
+                        <li><strong>Modularity:</strong> Everything was tangled together &mdash; change one thing, and everything else breaks.</li>
+                    </ul>
+                </div>
+
+                <p>These problems sparked a search for better ways to organize code. And eventually, a powerful idea emerged: <em>What if we stop thinking about programs as sequences of instructions, and start thinking about them as collections of <strong>objects</strong> that interact with each other?</em></p>
+
+                <p>This idea became known as <strong>Object-Oriented Programming (OOP)</strong>.</p>
+
+                <!-- Timeline -->
+                <h3 style="margin: 30px 0 15px; color: var(--primary-color); font-size: 1.3rem;">A Brief History</h3>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-dot" style="background: var(--proc-color);">1</div>
+                        <div class="timeline-content">
+                            <div class="timeline-title" style="color: var(--proc-color);">Procedural Programming</div>
+                            <div class="timeline-date">1950s&ndash;1970s &mdash; C, Fortran, COBOL</div>
+                            <p>Programs are organized as sequences of instructions grouped into <strong>functions/procedures</strong>. Data and functions are separate. Great for smaller programs, but large systems become difficult to manage.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot" style="background: var(--fp-color);">2</div>
+                        <div class="timeline-content">
+                            <div class="timeline-title" style="color: var(--fp-color);">Functional Programming</div>
+                            <div class="timeline-date">1950s&ndash;present &mdash; Lisp, Haskell, Clojure</div>
+                            <p>Programs are built from <strong>pure functions</strong> with no side effects and <strong>immutable data</strong>. Excellent for mathematical computations, data transformations, and concurrency. Functions are first-class citizens that can be passed around as values.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot" style="background: var(--oop-color);">3</div>
+                        <div class="timeline-content">
+                            <div class="timeline-title" style="color: var(--oop-color);">Object-Oriented Programming</div>
+                            <div class="timeline-date">1960s&ndash;present &mdash; Simula, Smalltalk, Java, C++, Python</div>
+                            <p>Programs are organized around <strong>objects</strong> &mdash; entities that bundle data and behavior together. Born at Xerox PARC (the same place that gave us the graphical user interface), OOP transformed how we build large, complex systems.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ============================================================ -->
+            <!-- SECTION 2: OOP vs FP vs PROCEDURAL -->
+            <!-- ============================================================ -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">2</span>
+                    The Great Debate: OOP vs Functional vs Procedural
+                </h2>
+
+                <div class="narrative">
+                    <p>Before we dive deep into OOP, let's address something important. You may hear people arguing passionately: "OOP is the best!" or "Functional programming is superior!" The truth is more nuanced than that.</p>
+                    <p>As the renowned software engineer <strong>Dave Farley</strong> puts it: these paradigms are <strong>tools, not religions</strong>. You don't go to war over whether a hammer is better than a screwdriver. You pick the right tool for the job.</p>
+                </div>
+
+                <div class="quote-box">
+                    <p>"My stance is not that I hate functional programming and love OO, or vice versa, but rather that I think of each of these approaches as tools rather than things to go to war about."</p>
+                    <div class="quote-author">&mdash; Dave Farley, <em>"OOP vs Functional Programming"</em>, Continuous Delivery (YouTube Channel)</div>
+                    <p style="font-style: normal; font-size: 0.85rem; color: var(--gray-color); margin-top: 8px;">Dave Farley is a software engineering pioneer, co-author of the award-winning book <em>"Continuous Delivery"</em>, and creator of the Continuous Delivery YouTube channel. He has over 40 years of experience building large-scale software systems.</p>
+                </div>
+
+                <p>Let's understand what makes each paradigm unique:</p>
+
+                <div class="paradigm-comparison">
+                    <div class="paradigm-box procedural">
+                        <div class="paradigm-title">Procedural Programming</div>
+                        <ul class="paradigm-list">
+                            <li>Organizes code into <strong>functions/procedures</strong></li>
+                            <li>Data and functions are <strong>separate</strong></li>
+                            <li>Executes instructions <strong>step by step</strong></li>
+                            <li>Think: <em>"Do this, then do that"</em></li>
+                        </ul>
+                    </div>
+                    <div class="paradigm-box oop">
+                        <div class="paradigm-title">Object-Oriented Programming</div>
+                        <ul class="paradigm-list">
+                            <li>Organizes code into <strong>objects</strong></li>
+                            <li>Data and behavior are <strong>bundled together</strong></li>
+                            <li>Objects <strong>interact</strong> via messages (method calls)</li>
+                            <li>Think: <em>"What are the things, and what can they do?"</em></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="paradigm-full">
+                    <div class="paradigm-box functional" style="margin-top: 0;">
+                        <div class="paradigm-title">Functional Programming</div>
+                        <ul class="paradigm-list">
+                            <li>Organizes code into <strong>pure functions</strong> (no side effects)</li>
+                            <li>Emphasizes <strong>immutable data</strong> (data doesn't change)</li>
+                            <li>Functions can be passed as arguments and returned as values</li>
+                            <li>Think: <em>"What is the transformation from input to output?"</em></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3 style="margin: 25px 0 15px; color: var(--primary-color); font-size: 1.2rem;">A Concrete Example: Calculating Circle Areas</h3>
+                <p>Let's see how the <em>same</em> problem looks in each paradigm:</p>
+
+                <div class="code-label">Procedural Approach</div>
+                <div class="code-block"><span class="comment">// Data is separate from functions</span>
+<span class="keyword">double</span> radius1 = <span class="number">5.0</span>;
+<span class="keyword">double</span> radius2 = <span class="number">10.0</span>;
+
+<span class="comment">// Functions operate on external data</span>
+<span class="keyword">static</span> <span class="keyword">double</span> <span class="method">computeArea</span>(<span class="keyword">double</span> radius) {
+    <span class="keyword">return</span> Math.PI * radius * radius;
+}
+
+System.out.<span class="method">println</span>(<span class="method">computeArea</span>(radius1));  <span class="comment">// 78.54</span>
+System.out.<span class="method">println</span>(<span class="method">computeArea</span>(radius2));  <span class="comment">// 314.16</span></div>
+
+                <div class="code-label">Functional Approach</div>
+                <div class="code-block"><span class="comment">// Functions as values, immutable data, no side effects</span>
+<span class="type">Function</span>&lt;<span class="type">Double</span>, <span class="type">Double</span>&gt; computeArea = radius -&gt; Math.PI * radius * radius;
+
+<span class="comment">// Apply the function to values</span>
+<span class="type">List</span>&lt;<span class="type">Double</span>&gt; radii = <span class="type">List</span>.<span class="method">of</span>(<span class="number">5.0</span>, <span class="number">10.0</span>);
+radii.<span class="method">stream</span>()
+     .<span class="method">map</span>(computeArea)
+     .<span class="method">forEach</span>(System.out::println);  <span class="comment">// 78.54, 314.16</span></div>
+
+                <div class="code-label">Object-Oriented Approach</div>
+                <div class="code-block"><span class="comment">// Data and behavior are bundled inside the object</span>
+<span class="type">Circle</span> c1 = <span class="keyword">new</span> <span class="type">Circle</span>(<span class="number">5.0</span>);
+<span class="type">Circle</span> c2 = <span class="keyword">new</span> <span class="type">Circle</span>(<span class="number">10.0</span>);
+
+<span class="comment">// Each object knows how to compute its own area</span>
+System.out.<span class="method">println</span>(c1.<span class="method">computeArea</span>());  <span class="comment">// 78.54</span>
+System.out.<span class="method">println</span>(c2.<span class="method">computeArea</span>());  <span class="comment">// 314.16</span></div>
+
+                <div class="key-concept">
+                    <div class="key-concept-title">Key Insight: The Real Difference</div>
+                    <p>The real difference between these paradigms is <strong>not what they allow you to do</strong> &mdash; any general-purpose language can solve any problem (this is the concept of <strong>Turing completeness</strong>). The difference is <strong>how easy they make it</strong> to express certain ideas.</p>
+                    <p style="margin-top:10px;">It may be easier to write immutable, side-effect-free code in Haskell. It may be easier to model real-world entities in Java. But you <em>can</em> do either in both. The paradigm shapes how you <strong>think</strong> about the problem.</p>
+                </div>
+
+                <h3 style="margin: 25px 0 15px; color: var(--primary-color); font-size: 1.2rem;">So Why OOP for This Course?</h3>
+
+                <p>OOP excels at <strong>modeling complex systems</strong> made up of interacting entities. When you build a university management system, a banking application, or a video game, you naturally think in terms of objects: <em>students, accounts, characters</em>. OOP lets your code mirror this natural way of thinking.</p>
+
+                <div class="quote-box">
+                    <p>"Object-oriented programming looks a lot like functional programming when it's done right."</p>
+                    <div class="quote-author">&mdash; Michael Feathers</div>
+                </div>
+
+                <p>The best programmers understand <em>both</em> paradigms and use each where it fits best. In this course, we focus on OOP because it provides the architectural foundation for building large, maintainable Java applications &mdash; and it will change the way you think about problem-solving.</p>
+
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Aspect</th>
+                            <th>Procedural</th>
+                            <th>Functional</th>
+                            <th>Object-Oriented</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Core Unit</strong></td>
+                            <td>Function / Procedure</td>
+                            <td>Pure Function</td>
+                            <td>Object (data + behavior)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Data</strong></td>
+                            <td>Separate from functions</td>
+                            <td>Immutable, transformed</td>
+                            <td>Encapsulated inside objects</td>
+                        </tr>
+                        <tr>
+                            <td><strong>State</strong></td>
+                            <td>Global or passed around</td>
+                            <td>Avoided (no side effects)</td>
+                            <td>Managed per object</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Reuse</strong></td>
+                            <td>Copy-paste or function libraries</td>
+                            <td>Higher-order functions, composition</td>
+                            <td>Inheritance, polymorphism</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Best For</strong></td>
+                            <td>Small scripts, system-level code</td>
+                            <td>Data pipelines, concurrency</td>
+                            <td>Large systems, GUI, modeling</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- ============================================================ -->
+            <!-- SECTION 3: WHAT IS AN OBJECT? -->
+            <!-- ============================================================ -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">3</span>
+                    What Is an Object?
+                </h2>
+
+                <div class="narrative">
+                    <p>Look around you right now. Everything you see is an object: your phone, your desk, your coffee mug, even <em>you</em>. Each of these things has <strong>properties</strong> that describe it and <strong>behaviors</strong> &mdash; things it can do or things that can be done to it.</p>
+                </div>
+
+                <p>In OOP, an <strong>object</strong> is a software entity that mirrors this idea:</p>
+
+                <div class="key-concept">
+                    <div class="key-concept-title">Defining an Object</div>
+                    <p>An <strong>object</strong> is an entity that has:</p>
+                    <ul style="margin-top:8px; padding-left:20px;">
+                        <li><strong>Properties (Attributes):</strong> Characteristics that describe the object (e.g., color, size, state).</li>
+                        <li><strong>Behaviors (Methods):</strong> Actions or operations the object can perform (e.g., walk, calculate, display).</li>
+                    </ul>
+                </div>
+
+                <div class="analogy-box">
+                    <div class="analogy-title">Real-World Analogy: You Are an Object!</div>
+                    <p>Think of yourself as an object:</p>
+                    <ul style="margin-top:8px; padding-left:20px;">
+                        <li><strong>Your Properties:</strong> name, age, height, eye color, student ID</li>
+                        <li><strong>Your Behaviors:</strong> speak(), walk(), study(), sleep(), eat()</li>
+                    </ul>
+                    <p style="margin-top:10px;">Your friend is a <em>different</em> object, but of the same <em>type</em> (Human). You both have the same kinds of properties and behaviors, but with different values. Your name is different, your height is different, but you can both walk and speak.</p>
+                </div>
+
+                <p>In software, we model this the same way. Here are some objects and their properties and behaviors:</p>
+
+                <div class="object-visual">
+                    <div class="object-card">
+                        <div class="object-card-header">Circle</div>
+                        <div class="object-card-section">
+                            <div class="object-card-label">Properties</div>
+                            <div class="object-card-item">radius: double</div>
+                            <div class="object-card-item">color: String</div>
+                        </div>
+                        <div class="object-card-section">
+                            <div class="object-card-label">Behaviors</div>
+                            <div class="object-card-item">computeArea()</div>
+                            <div class="object-card-item">computePerimeter()</div>
+                            <div class="object-card-item">draw()</div>
+                        </div>
+                    </div>
+
+                    <div class="object-card">
+                        <div class="object-card-header" style="background: linear-gradient(135deg, #059669, #047857);">Student</div>
+                        <div class="object-card-section">
+                            <div class="object-card-label">Properties</div>
+                            <div class="object-card-item">name: String</div>
+                            <div class="object-card-item">id: int</div>
+                            <div class="object-card-item">gpa: double</div>
+                        </div>
+                        <div class="object-card-section">
+                            <div class="object-card-label">Behaviors</div>
+                            <div class="object-card-item">enroll()</div>
+                            <div class="object-card-item">getTranscript()</div>
+                            <div class="object-card-item">calculateGPA()</div>
+                        </div>
+                    </div>
+
+                    <div class="object-card">
+                        <div class="object-card-header" style="background: linear-gradient(135deg, #d97706, #b45309);">BankAccount</div>
+                        <div class="object-card-section">
+                            <div class="object-card-label">Properties</div>
+                            <div class="object-card-item">owner: String</div>
+                            <div class="object-card-item">balance: double</div>
+                            <div class="object-card-item">accountNo: String</div>
+                        </div>
+                        <div class="object-card-section">
+                            <div class="object-card-label">Behaviors</div>
+                            <div class="object-card-item">deposit()</div>
+                            <div class="object-card-item">withdraw()</div>
+                            <div class="object-card-item">getBalance()</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ============================================================ -->
+            <!-- SECTION 4: NEW MINDSET -->
+            <!-- ============================================================ -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">4</span>
+                    A New Mindset: Thinking in Objects
+                </h2>
+
+                <div class="narrative">
+                    <p>Now that we understand the philosophy behind OOP, let's put it into practice. Suppose we want to write a program that calculates the area of a circle. Simple enough, right? But here's the key point: <strong>our mentality is now different</strong>.</p>
+                    <p>In the old procedural way, we would immediately jump to writing a function: <code class="code-inline">computeArea(radius)</code>. Done. But with OOP, we don't start by thinking about <em>functions</em>. We start by thinking about <em>objects</em> &mdash; because we are <strong>object-oriented</strong>. The objects are what <em>direct</em> and <em>drive</em> our entire thinking process.</p>
+                </div>
+
+                <p>So how does an OOP programmer approach this problem? By following three clear steps:</p>
+
+                <div class="steps-container">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <div class="step-title">Step 1: Identify the Objects</div>
+                            <p>The first question we ask is: <strong>how many objects are involved in this program?</strong> We are <em>oriented</em> by objects, so identifying them is always our starting point. For the circle area problem, the answer is straightforward: there is one object &mdash; the <code class="code-inline">Circle</code>.</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <div class="step-title">Step 2: Identify Properties and Behaviors</div>
+                            <p>Once we've identified the objects, we ask: <strong>what are the properties and behaviors of each object?</strong> For our Circle:</p>
+                            <ul style="margin-top:8px; padding-left:20px;">
+                                <li><strong>Properties:</strong> <code class="code-inline">radius</code> (what describes a circle)</li>
+                                <li><strong>Behaviors:</strong> <code class="code-inline">computeArea()</code> (what a circle can do)</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <div class="step-title">Step 3: Identify Relationships</div>
+                            <p>If we have <strong>more than one object</strong>, we must also identify the <strong>relationships</strong> among them. In our case, we have only one object (Circle), so there are no relationships to define. But in a larger system &mdash; say a library system with <code class="code-inline">Book</code>, <code class="code-inline">Member</code>, <code class="code-inline">Librarian</code>, and <code class="code-inline">Loan</code> &mdash; we would need to define how they connect and interact.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="key-concept">
+                    <div class="key-concept-title">The OOP Thinking Process (Summary)</div>
+                    <p>Every time you face a new problem in OOP, ask these three questions in order:</p>
+                    <ol style="margin-top:8px; padding-left:20px;">
+                        <li><strong>What objects</strong> are involved?</li>
+                        <li><strong>What properties and behaviors</strong> does each object have?</li>
+                        <li><strong>What relationships</strong> exist between the objects?</li>
+                    </ol>
+                    <p style="margin-top:10px;">This is fundamentally different from procedural thinking, where we ask: "What functions do I need?" In OOP, the <em>objects</em> come first. Everything else follows from them.</p>
+                </div>
+
+                <p>This design work &mdash; identifying objects, their properties, behaviors, and relationships &mdash; is typically the responsibility of the <strong>Software Engineer (Designer)</strong>. But now a question arises: once we've identified all of this, <strong>how do we describe it?</strong> What language do we use to communicate this design?</p>
+            </div>
+
+            <!-- ============================================================ -->
+            <!-- SECTION 5: UML -->
+            <!-- ============================================================ -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">5</span>
+                    UML: The Language of Design
+                </h2>
+
+                <div class="narrative">
+                    <p>We've identified our object (Circle), its properties (radius), and its behaviors (computeArea()). But we need a way to <strong>describe and communicate</strong> this design &mdash; a standard language that the software engineer can use to express the design, and the programmer can read and understand.</p>
+                    <p>This language is called the <strong>Unified Modeling Language (UML)</strong>.</p>
+                </div>
+
+                <p>UML is a <strong>graphical notation</strong> &mdash; a visual language of diagrams and symbols. One of its most important diagrams is the <strong>Class Diagram</strong>, which describes the properties, behaviors, and relationships of objects. It has three compartments:</p>
+
+                <div class="info-box">
+                    <div class="info-box-title">UML Class Diagram Structure</div>
+                    <ol style="margin-top:8px; padding-left:20px;">
+                        <li><strong>Top:</strong> The class name (the type of object)</li>
+                        <li><strong>Middle:</strong> Properties (attributes) with their types</li>
+                        <li><strong>Bottom:</strong> Behaviors (methods) with their return types</li>
+                    </ol>
+                    <p style="margin-top:10px;">Visibility markers: <code class="code-inline">-</code> means <strong>private</strong>, <code class="code-inline">+</code> means <strong>public</strong>.</p>
+                </div>
+
+                <p>Here is the UML class diagram for our <code class="code-inline">Circle</code>:</p>
+
+                <div class="uml-diagram">
+                    <div class="uml-class">
+                        <div class="uml-name">Circle</div>
+                        <div class="uml-section">
+                            <div class="uml-item"><span class="uml-private">-</span> radius: double</div>
+                        </div>
+                        <div class="uml-section">
+                            <div class="uml-item"><span class="uml-public">+</span> Circle(radius: double)</div>
+                            <div class="uml-item"><span class="uml-public">+</span> computeArea(): double</div>
+                            <div class="uml-item"><span class="uml-public">+</span> getRadius(): double</div>
+                            <div class="uml-item"><span class="uml-public">+</span> setRadius(radius: double): void</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="analogy-box">
+                    <div class="analogy-title">UML is Like an Architectural Blueprint</div>
+                    <p>Think of UML as the <strong>blueprint</strong> for a building. When an architect designs a house, the blueprint describes the rooms, the doors, the windows, and how everything connects. But here's the critical point: <strong>the blueprint does not specify which brand of cement or steel to use</strong>. In Saudi Arabia, you could use Yamama Cement or Al-Jonoub Cement for the concrete, and the blueprint does not specify whether the steel is from Al-Rajhi Steel or SABIC. That decision is left to the builder.</p>
+                    <p style="margin-top:10px;">Software engineering works exactly the same way. When a software engineer draws the UML diagram, <strong>they are not specifying which programming language will be used</strong>. They don't care if the programmer will use Java, C++, Python, or any other language. The UML is about <em>what</em> the system looks like &mdash; not <em>how</em> it will be built. The choice of language is the programmer's decision, just as the choice of cement and steel is the builder's decision.</p>
+                </div>
+
+                <div class="info-box">
+                    <div class="info-box-title">Two Roles, One Language</div>
+                    <p>In software development, there is a separation of roles:</p>
+                    <ul style="margin-top:8px; padding-left:20px;">
+                        <li><strong>Software Engineer (Designer):</strong> Identifies the objects, their properties, behaviors, and relationships. Expresses the design using <strong>UML</strong>. Does <em>not</em> care which programming language will be used.</li>
+                        <li><strong>Programmer (Implementer):</strong> Reads the UML, understands the graphical notation, and <strong>converts it into code</strong> using a specific programming language like Java or C++.</li>
+                    </ul>
+                    <p style="margin-top:10px;">UML is the <strong>bridge</strong> between these two roles &mdash; a universal graphical language that both can understand, regardless of the programming language that will eventually be used.</p>
+                </div>
+
+                <p>So now we have the UML diagram. The software engineer's job is done. The next question is: <strong>how does the programmer convert this UML into actual working code?</strong></p>
+            </div>
+
+            <!-- ============================================================ -->
+            <!-- SECTION 6: FROM UML TO CODE - THE CLASS -->
+            <!-- ============================================================ -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">6</span>
+                    From UML to Code: The Class
+                </h2>
+
+                <div class="narrative">
+                    <p>The programmer now takes the UML diagram and needs to convert it into a programming language. But the UML describes the properties and behaviors of an <em>object</em>. So the question becomes: <strong>in Java, what is the construct that lets us describe the properties and behaviors of an object?</strong></p>
+                    <p>The answer is a <strong>class</strong>.</p>
+                </div>
+
+                <div class="key-concept">
+                    <div class="key-concept-title">What is a Class?</div>
+                    <p>A <strong>class</strong> is the programming language construct &mdash; the <em>template</em> &mdash; that describes the properties and behaviors of an object. It is the code equivalent of the UML class diagram. Every programming language has its own syntax for writing classes (Java has its syntax, C++ has its own, Python has its own), but the concept is the same:</p>
+                    <ul style="margin-top:8px; padding-left:20px;">
+                        <li>A <strong>class</strong> is a <em>template/blueprint</em> that defines what properties and behaviors an object will have.</li>
+                        <li>An <strong>object</strong> (also called an <em>instance</em>) is a <em>concrete realization</em> created from that class, with specific values for its properties.</li>
+                    </ul>
+                </div>
+
+                <div class="analogy-box">
+                    <div class="analogy-title">Class and Object: Cookie Cutter and Cookies</div>
+                    <p>A <strong>class</strong> is like a cookie cutter &mdash; it defines the <em>shape</em>. Each <strong>object</strong> is a cookie made from that cutter. You can make chocolate cookies, vanilla cookies, and strawberry cookies &mdash; all from the same cutter. They all have the same shape (structure), but different flavors (values). One cutter, many cookies. One class, many objects.</p>
+                </div>
+
+                <p>Now let's convert our UML diagram into Java code. This is where the programmer takes the design and makes it real:</p>
+
+                <div class="code-label">Circle.java &mdash; The Class (Blueprint)</div>
+                <div class="code-block"><span class="keyword">public class</span> <span class="type">Circle</span> {
+
+    <span class="comment">// Property (attribute) — private means only this class can access it directly</span>
+    <span class="keyword">private</span> <span class="keyword">double</span> radius;
+
+    <span class="comment">// Constructor — called when creating a new Circle object</span>
+    <span class="keyword">public</span> <span class="method">Circle</span>(<span class="keyword">double</span> radius) {
+        <span class="keyword">this</span>.radius = radius;
+    }
+
+    <span class="comment">// Behavior — computes the area of this circle</span>
+    <span class="keyword">public</span> <span class="keyword">double</span> <span class="method">computeArea</span>() {
+        <span class="keyword">return</span> Math.PI * radius * radius;
+    }
+
+    <span class="comment">// Getter — allows outside code to READ the radius</span>
+    <span class="keyword">public</span> <span class="keyword">double</span> <span class="method">getRadius</span>() {
+        <span class="keyword">return</span> radius;
+    }
+
+    <span class="comment">// Setter — allows outside code to CHANGE the radius</span>
+    <span class="keyword">public</span> <span class="keyword">void</span> <span class="method">setRadius</span>(<span class="keyword">double</span> radius) {
+        <span class="keyword">this</span>.radius = radius;
+    }
+}</div>
+
+                <p>Now let's <strong>use</strong> this class by creating objects from it:</p>
+
+                <div class="code-label">Main.java &mdash; Creating and Using Objects</div>
+                <div class="code-block"><span class="keyword">public class</span> <span class="type">Main</span> {
+    <span class="keyword">public static void</span> <span class="method">main</span>(<span class="type">String</span>[] args) {
+
+        <span class="comment">// Creating objects (instances) from the Circle class</span>
+        <span class="type">Circle</span> c1 = <span class="keyword">new</span> <span class="type">Circle</span>(<span class="number">5.0</span>);
+        <span class="type">Circle</span> c2 = <span class="keyword">new</span> <span class="type">Circle</span>(<span class="number">10.0</span>);
+
+        <span class="comment">// Each object has its own radius, its own state</span>
+        System.out.<span class="method">println</span>(<span class="string">"c1 radius: "</span> + c1.<span class="method">getRadius</span>());   <span class="comment">// 5.0</span>
+        System.out.<span class="method">println</span>(<span class="string">"c2 radius: "</span> + c2.<span class="method">getRadius</span>());   <span class="comment">// 10.0</span>
+
+        <span class="comment">// Each object computes its own area</span>
+        System.out.<span class="method">println</span>(<span class="string">"Area of c1: "</span> + c1.<span class="method">computeArea</span>()); <span class="comment">// 78.54</span>
+        System.out.<span class="method">println</span>(<span class="string">"Area of c2: "</span> + c2.<span class="method">computeArea</span>()); <span class="comment">// 314.16</span>
+
+        <span class="comment">// Changing state through the setter</span>
+        c1.<span class="method">setRadius</span>(<span class="number">7.5</span>);
+        System.out.<span class="method">println</span>(<span class="string">"New area of c1: "</span> + c1.<span class="method">computeArea</span>()); <span class="comment">// 176.71</span>
+    }
+}</div>
+
+                <div class="success-box">
+                    <div class="success-box-title">What Just Happened?</div>
+                    <ul style="margin-top:8px; padding-left:20px;">
+                        <li><code class="code-inline">Circle c1 = new Circle(5.0);</code> &mdash; We created an <strong>object</strong> (instance) of the Circle class with radius 5.0.</li>
+                        <li><code class="code-inline">c1.computeArea()</code> &mdash; We asked the object to perform one of its <strong>behaviors</strong>. The object knows its own radius and computes its own area.</li>
+                        <li><code class="code-inline">c1.setRadius(7.5)</code> &mdash; We changed the object's <strong>state</strong> through a controlled setter method.</li>
+                    </ul>
+                    <p style="margin-top:10px;">Notice: <code class="code-inline">c1</code> and <code class="code-inline">c2</code> are <strong>independent objects</strong>. Changing c1's radius does not affect c2. Each object maintains its own state.</p>
+                </div>
+            </div>
+
+            <!-- ============================================================ -->
+            <!-- SECTION 7: THE FOUR PILLARS -->
+            <!-- ============================================================ -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">7</span>
+                    The Four Pillars of OOP
+                </h2>
+
+                <div class="narrative">
+                    <p>OOP is built on four foundational principles &mdash; often called the <strong>four pillars</strong>. Together, they give OOP its power. Remove any one, and the whole structure weakens. We will explore each in depth in future modules, but here is the roadmap.</p>
+                </div>
+
+                <div class="pillars-grid">
+                    <div class="pillar-card">
+                        <div class="pillar-icon">&#128274;</div>
+                        <div class="pillar-name">Encapsulation</div>
+                        <div class="pillar-desc">Bundle data and methods together in a class, and <strong>control access</strong> to the internal state. Like a capsule that protects its contents &mdash; you interact with the outside, not the inside.</div>
+                    </div>
+                    <div class="pillar-card">
+                        <div class="pillar-icon">&#127912;</div>
+                        <div class="pillar-name">Abstraction</div>
+                        <div class="pillar-desc">Hide unnecessary complexity and show only <strong>what matters</strong>. Like driving a car &mdash; you use the steering wheel and pedals without knowing how the engine works internally.</div>
+                    </div>
+                    <div class="pillar-card">
+                        <div class="pillar-icon">&#128106;</div>
+                        <div class="pillar-name">Inheritance</div>
+                        <div class="pillar-desc">Create new classes <strong>based on existing ones</strong>, reusing and extending their properties and behaviors. A <code class="code-inline">SportsCar</code> inherits from <code class="code-inline">Car</code> and adds turbo.</div>
+                    </div>
+                    <div class="pillar-card">
+                        <div class="pillar-icon">&#128260;</div>
+                        <div class="pillar-name">Polymorphism</div>
+                        <div class="pillar-desc">Objects of different types respond to the <strong>same message differently</strong>. Call <code class="code-inline">draw()</code> on a Circle, Square, or Triangle &mdash; each draws itself in its own way.</div>
+                    </div>
+                </div>
+
+                <h3 style="margin: 25px 0 15px; color: var(--primary-color); font-size: 1.2rem;">Encapsulation in Action (Our Circle Example)</h3>
+
+                <p>Notice that in our <code class="code-inline">Circle</code> class, the <code class="code-inline">radius</code> field is declared <code class="code-inline">private</code>. This means no code outside the class can do this:</p>
+
+                <div class="code-block"><span class="comment">// This will NOT compile — radius is private!</span>
+c1.radius = <span class="number">-50</span>;  <span class="comment">// ERROR: radius has private access in Circle</span></div>
+
+                <p>Instead, the outside world must use the <strong>getter</strong> and <strong>setter</strong> methods. This gives the class control:</p>
+
+                <div class="code-block"><span class="comment">// We could add validation inside the setter:</span>
+<span class="keyword">public void</span> <span class="method">setRadius</span>(<span class="keyword">double</span> radius) {
+    <span class="keyword">if</span> (radius &gt; <span class="number">0</span>) {
+        <span class="keyword">this</span>.radius = radius;
+    } <span class="keyword">else</span> {
+        System.out.<span class="method">println</span>(<span class="string">"Error: radius must be positive!"</span>);
+    }
+}</div>
+
+                <div class="key-concept">
+                    <div class="key-concept-title">Why Encapsulation Matters</div>
+                    <p><strong>Encapsulation</strong> protects the object's internal state from invalid or unintended changes. It also means you can change the internal implementation without breaking code that uses the class. The outside world only depends on the <em>public interface</em> (the methods), not the internal details.</p>
+                </div>
+
+                <h3 style="margin: 25px 0 15px; color: var(--primary-color); font-size: 1.2rem;">Abstraction in Action</h3>
+
+                <p>When you call <code class="code-inline">c1.computeArea()</code>, you don't need to know <em>how</em> the area is computed. You don't care whether it uses <code class="code-inline">Math.PI * r * r</code> or some other formula internally. You just call the method and get the result. The complexity is <strong>abstracted away</strong>.</p>
+
+                <div class="analogy-box">
+                    <div class="analogy-title">Abstraction in Daily Life</div>
+                    <p>When you send a message on your phone, you tap "Send." You don't think about the radio frequencies, the cell tower routing, the TCP/IP packets, or the server processing. All of that complexity is <strong>abstracted</strong> behind a single button. OOP applies this same principle to code.</p>
+                </div>
+            </div>
+
+            <!-- ============================================================ -->
+            <!-- SECTION 8: PUTTING IT ALL TOGETHER -->
+            <!-- ============================================================ -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">8</span>
+                    A Complete Example: Student Class
+                </h2>
+
+                <p>Let's build something more realistic. We'll design a <code class="code-inline">Student</code> class from scratch, following the full OOP process.</p>
+
+                <h3 style="margin: 20px 0 15px; color: var(--primary-color); font-size: 1.15rem;">Step 1: Identify the Object, Properties, and Behaviors</h3>
+
+                <div class="uml-diagram">
+                    <div class="uml-class" style="min-width: 350px;">
+                        <div class="uml-name" style="background: #059669;">Student</div>
+                        <div class="uml-section" style="border-color: #059669;">
+                            <div class="uml-item"><span class="uml-private">-</span> name: String</div>
+                            <div class="uml-item"><span class="uml-private">-</span> id: int</div>
+                            <div class="uml-item"><span class="uml-private">-</span> gpa: double</div>
+                        </div>
+                        <div class="uml-section" style="border-color: #059669;">
+                            <div class="uml-item"><span class="uml-public">+</span> Student(name: String, id: int)</div>
+                            <div class="uml-item"><span class="uml-public">+</span> getName(): String</div>
+                            <div class="uml-item"><span class="uml-public">+</span> getId(): int</div>
+                            <div class="uml-item"><span class="uml-public">+</span> getGpa(): double</div>
+                            <div class="uml-item"><span class="uml-public">+</span> setGpa(gpa: double): void</div>
+                            <div class="uml-item"><span class="uml-public">+</span> isHonorStudent(): boolean</div>
+                            <div class="uml-item"><span class="uml-public">+</span> toString(): String</div>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 style="margin: 25px 0 15px; color: var(--primary-color); font-size: 1.15rem;">Step 2: Write the Class</h3>
+
+                <div class="code-label">Student.java</div>
+                <div class="code-block"><span class="keyword">public class</span> <span class="type">Student</span> {
+
+    <span class="comment">// Properties (private — encapsulated)</span>
+    <span class="keyword">private</span> <span class="type">String</span> name;
+    <span class="keyword">private</span> <span class="keyword">int</span> id;
+    <span class="keyword">private</span> <span class="keyword">double</span> gpa;
+
+    <span class="comment">// Constructor</span>
+    <span class="keyword">public</span> <span class="method">Student</span>(<span class="type">String</span> name, <span class="keyword">int</span> id) {
+        <span class="keyword">this</span>.name = name;
+        <span class="keyword">this</span>.id = id;
+        <span class="keyword">this</span>.gpa = <span class="number">0.0</span>;  <span class="comment">// default GPA</span>
+    }
+
+    <span class="comment">// Getters</span>
+    <span class="keyword">public</span> <span class="type">String</span> <span class="method">getName</span>()  { <span class="keyword">return</span> name; }
+    <span class="keyword">public</span> <span class="keyword">int</span>    <span class="method">getId</span>()    { <span class="keyword">return</span> id; }
+    <span class="keyword">public</span> <span class="keyword">double</span> <span class="method">getGpa</span>()   { <span class="keyword">return</span> gpa; }
+
+    <span class="comment">// Setter with validation</span>
+    <span class="keyword">public void</span> <span class="method">setGpa</span>(<span class="keyword">double</span> gpa) {
+        <span class="keyword">if</span> (gpa &gt;= <span class="number">0.0</span> &amp;&amp; gpa &lt;= <span class="number">4.0</span>) {
+            <span class="keyword">this</span>.gpa = gpa;
+        } <span class="keyword">else</span> {
+            System.out.<span class="method">println</span>(<span class="string">"Error: GPA must be between 0.0 and 4.0"</span>);
+        }
+    }
+
+    <span class="comment">// Behavior: check if student is on the honor roll</span>
+    <span class="keyword">public boolean</span> <span class="method">isHonorStudent</span>() {
+        <span class="keyword">return</span> gpa &gt;= <span class="number">3.5</span>;
+    }
+
+    <span class="comment">// String representation of the object</span>
+    <span class="keyword">public</span> <span class="type">String</span> <span class="method">toString</span>() {
+        <span class="keyword">return</span> <span class="string">"Student{"</span> + <span class="string">"name='"</span> + name + <span class="string">"', id="</span> + id + <span class="string">", gpa="</span> + gpa + <span class="string">"}"</span>;
+    }
+}</div>
+
+                <h3 style="margin: 25px 0 15px; color: var(--primary-color); font-size: 1.15rem;">Step 3: Create Objects and Use Them</h3>
+
+                <div class="code-label">Main.java</div>
+                <div class="code-block"><span class="keyword">public class</span> <span class="type">Main</span> {
+    <span class="keyword">public static void</span> <span class="method">main</span>(<span class="type">String</span>[] args) {
+
+        <span class="comment">// Create student objects</span>
+        <span class="type">Student</span> s1 = <span class="keyword">new</span> <span class="type">Student</span>(<span class="string">"Ahmed"</span>, <span class="number">1001</span>);
+        <span class="type">Student</span> s2 = <span class="keyword">new</span> <span class="type">Student</span>(<span class="string">"Sara"</span>, <span class="number">1002</span>);
+
+        <span class="comment">// Set GPAs</span>
+        s1.<span class="method">setGpa</span>(<span class="number">3.8</span>);
+        s2.<span class="method">setGpa</span>(<span class="number">3.2</span>);
+
+        <span class="comment">// Display student info</span>
+        System.out.<span class="method">println</span>(s1);  <span class="comment">// Student{name='Ahmed', id=1001, gpa=3.8}</span>
+        System.out.<span class="method">println</span>(s2);  <span class="comment">// Student{name='Sara', id=1002, gpa=3.2}</span>
+
+        <span class="comment">// Check honor status</span>
+        System.out.<span class="method">println</span>(s1.<span class="method">getName</span>() + <span class="string">" honor student? "</span> + s1.<span class="method">isHonorStudent</span>());  <span class="comment">// true</span>
+        System.out.<span class="method">println</span>(s2.<span class="method">getName</span>() + <span class="string">" honor student? "</span> + s2.<span class="method">isHonorStudent</span>());  <span class="comment">// false</span>
+
+        <span class="comment">// Try invalid GPA</span>
+        s1.<span class="method">setGpa</span>(<span class="number">5.0</span>);  <span class="comment">// Error: GPA must be between 0.0 and 4.0</span>
+        System.out.<span class="method">println</span>(s1.<span class="method">getGpa</span>());  <span class="comment">// Still 3.8 — encapsulation protected the data!</span>
+    }
+}</div>
+
+                <div class="success-box">
+                    <div class="success-box-title">Encapsulation in Practice</div>
+                    <p>Notice what happened when we tried <code class="code-inline">s1.setGpa(5.0)</code> &mdash; the object <strong>rejected</strong> the invalid value and the GPA remained unchanged at 3.8. This is encapsulation at work: the object protects its own integrity. Without encapsulation (if <code class="code-inline">gpa</code> were public), anyone could write <code class="code-inline">s1.gpa = 5.0</code> and corrupt the data silently.</p>
+                </div>
+            </div>
+
+            <!-- ============================================================ -->
+            <!-- SECTION 9: WHY THIS MATTERS -->
+            <!-- ============================================================ -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">9</span>
+                    Why OOP Matters: The Big Picture
+                </h2>
+
+                <div class="narrative">
+                    <p>You might be thinking: "I could have done all of this with simple functions. Why go through the trouble of classes and objects?" The answer becomes clear as systems grow. A program with 100 lines doesn't need OOP. A system with 100,000 lines desperately does.</p>
+                </div>
+
+                <p>OOP gives us four superpowers that directly address the problems we identified at the beginning:</p>
+
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Problem</th>
+                            <th>OOP Solution</th>
+                            <th>How</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Reusability</strong></td>
+                            <td>Classes can be used across projects</td>
+                            <td>Write the <code class="code-inline">Student</code> class once, use it in any application that deals with students</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Scalability</strong></td>
+                            <td>New classes extend existing ones</td>
+                            <td>Need a <code class="code-inline">GraduateStudent</code>? Extend <code class="code-inline">Student</code> without changing it (Inheritance)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Maintainability</strong></td>
+                            <td>Changes are localized</td>
+                            <td>Change how GPA is calculated inside <code class="code-inline">Student</code> without touching any code that uses it (Encapsulation)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Modularity</strong></td>
+                            <td>Each class is an independent module</td>
+                            <td>Different team members can work on <code class="code-inline">Student</code>, <code class="code-inline">Course</code>, and <code class="code-inline">Enrollment</code> independently</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="quote-box">
+                    <p>"The key decisions in software are outside the technical detail of individual languages. It pays to understand both functional programming and object-oriented programming. OO and FP are both valuable tools for building complex systems. Use them in the right context, and each will help you build better systems."</p>
+                    <div class="quote-author">&mdash; Dave Farley, <em>"OOP vs Functional Programming"</em>, Continuous Delivery (YouTube Channel)</div>
+                </div>
+            </div>
+
+            <!-- ============================================================ -->
+            <!-- SECTION 10: SUMMARY -->
+            <!-- ============================================================ -->
+            <div class="section" style="margin-bottom:20px;">
+                <h2 class="section-title">
+                    <span class="section-number">10</span>
+                    Summary
+                </h2>
+
+                <div class="key-concept">
+                    <div class="key-concept-title">What We Learned</div>
+                    <ul style="margin-top:8px; padding-left:20px; line-height: 2.2;">
+                        <li>Programming paradigms (procedural, functional, OOP) are <strong>tools</strong>, not religions &mdash; each has strengths.</li>
+                        <li>OOP organizes code around <strong>objects</strong> that bundle data (properties) and behavior (methods).</li>
+                        <li>A <strong>class</strong> is a blueprint; an <strong>object</strong> is an instance of that blueprint.</li>
+                        <li>The OOP process: identify objects &rarr; identify properties &amp; behaviors &rarr; identify relationships.</li>
+                        <li><strong>UML</strong> class diagrams visually represent classes before coding.</li>
+                        <li>The <strong>Four Pillars</strong> of OOP: Encapsulation, Abstraction, Inheritance, and Polymorphism.</li>
+                        <li><strong>Encapsulation</strong> protects internal state using <code class="code-inline">private</code> fields and public getters/setters.</li>
+                        <li><strong>Abstraction</strong> hides complexity &mdash; users call methods without knowing the internal details.</li>
+                        <li>OOP shines in building large, complex systems that need to be reusable, scalable, and maintainable.</li>
+                    </ul>
+                </div>
+
+                <div class="info-box">
+                    <div class="info-box-title">What's Next?</div>
+                    <p>In the next lesson, we will dive deeper into <strong>constructors</strong>, the <code class="code-inline">this</code> keyword, <strong>instance vs. static</strong> members, and how to work with <strong>arrays of objects</strong>. We will also explore more complex class designs with multiple interacting objects.</p>
+                </div>
+            </div>
+
+        </div><!-- end .content -->
+
+        <!-- Navigation -->
+        <div class="nav-buttons">
+            <a href="../index.html" class="nav-btn prev">&larr; Back to Course</a>
+            <a href="02-constructors-and-this.html" class="nav-btn next">Next: Constructors &amp; this Keyword &rarr;</a>
+        </div>
+
+    </div><!-- end .container -->
+</body>
+</html>

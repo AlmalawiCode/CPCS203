@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 3: Reading Files with Scanner | CPCS203</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #d97706;
+            --primary-light: #f59e0b;
+            --primary-dark: #b45309;
+            --secondary-color: #ea580c;
+            --success-color: #059669;
+            --warning-color: #d97706;
+            --danger-color: #dc2626;
+            --dark-color: #1f2937;
+            --light-color: #f3f4f6;
+            --gray-color: #6b7280;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.8;
+            color: var(--dark-color);
+            background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+        }
+
+        /* Navigation Breadcrumb */
+        .nav-breadcrumb {
+            background: linear-gradient(135deg, #92400e, #b45309);
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: white;
+            font-size: 0.9rem;
+        }
+
+        .breadcrumb a {
+            color: #fde68a;
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            color: white;
+        }
+
+        .breadcrumb .separator {
+            color: #d97706;
+        }
+
+        .breadcrumb .current {
+            color: #fef3c7;
+        }
+
+        .lesson-nav {
+            display: flex;
+            gap: 10px;
+        }
+
+        .lesson-nav a {
+            padding: 8px 16px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            text-decoration: none;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+        }
+
+        .lesson-nav a:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .header .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .header .course-info {
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 30px;
+            display: inline-block;
+        }
+
+        /* Content */
+        .content {
+            padding: 40px;
+        }
+
+        .section {
+            margin-bottom: 50px;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--primary-color);
+            padding-bottom: 10px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-number {
+            background: var(--primary-color);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        /* Story Box */
+        .story-box {
+            background: linear-gradient(135deg, #fefce8, #fef9c3);
+            border-left: 5px solid var(--primary-color);
+            padding: 25px 30px;
+            margin: 20px 0;
+            border-radius: 0 15px 15px 0;
+            font-style: italic;
+        }
+
+        .story-character {
+            font-weight: bold;
+            color: var(--primary-dark);
+        }
+
+        /* Key Concept Box */
+        .key-concept {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border-left: 5px solid var(--primary-color);
+            padding: 20px 25px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .key-concept-title {
+            font-weight: bold;
+            color: var(--primary-dark);
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        /* Warning Box */
+        .warning-box {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            border-left: 5px solid var(--danger-color);
+            padding: 20px 25px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .warning-title {
+            font-weight: bold;
+            color: var(--danger-color);
+            margin-bottom: 10px;
+        }
+
+        /* Info Box */
+        .info-box {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            border-left: 5px solid #2563eb;
+            padding: 20px 25px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .info-box-title {
+            font-weight: bold;
+            color: #1d4ed8;
+            margin-bottom: 10px;
+        }
+
+        /* Success Box */
+        .success-box {
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+            border-left: 5px solid var(--success-color);
+            padding: 20px 25px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .success-title {
+            font-weight: bold;
+            color: var(--success-color);
+            margin-bottom: 10px;
+        }
+
+        /* Code Blocks */
+        .code-block {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+        }
+
+        .code-block .keyword {
+            color: #569cd6;
+        }
+
+        .code-block .type {
+            color: #4ec9b0;
+        }
+
+        .code-block .string {
+            color: #ce9178;
+        }
+
+        .code-block .comment {
+            color: #6a9955;
+        }
+
+        .code-block .variable {
+            color: #9cdcfe;
+        }
+
+        .code-block .number {
+            color: #b5cea8;
+        }
+
+        .code-inline {
+            background: #fef3c7;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9rem;
+            color: var(--primary-dark);
+        }
+
+        /* File Content Box */
+        .file-content-box {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 15px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .file-header {
+            background: var(--dark-color);
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9rem;
+        }
+
+        .file-icon {
+            font-size: 1.2rem;
+        }
+
+        .file-body {
+            padding: 20px;
+            font-family: 'Consolas', monospace;
+            line-height: 1.8;
+        }
+
+        /* Comparison Visual */
+        .comparison-visual {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 25px 0;
+        }
+
+        .comparison-item {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 15px;
+            padding: 20px;
+        }
+
+        .comparison-item-title {
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        /* Methods Table */
+        .methods-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .methods-table th {
+            background: var(--primary-color);
+            color: white;
+            padding: 15px;
+            text-align: left;
+        }
+
+        .methods-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .methods-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .methods-table tr:hover {
+            background: #fef3c7;
+        }
+
+        .methods-table code {
+            background: #f3f4f6;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: 'Consolas', monospace;
+            color: var(--primary-dark);
+        }
+
+        /* Flow Diagram */
+        .flow-diagram {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin: 30px 0;
+            padding: 30px;
+            background: #f8fafc;
+            border-radius: 15px;
+        }
+
+        .flow-box {
+            background: white;
+            border: 3px solid var(--primary-color);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            min-width: 150px;
+        }
+
+        .flow-box-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .flow-box-title {
+            font-weight: bold;
+            color: var(--primary-dark);
+        }
+
+        .flow-arrow {
+            font-size: 2rem;
+            color: var(--primary-color);
+        }
+
+        /* Summary Box */
+        .summary-box {
+            background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+            border: 2px solid var(--success-color);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+        }
+
+        .summary-title {
+            font-weight: bold;
+            color: var(--success-color);
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+        }
+
+        .summary-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .summary-list li {
+            padding: 8px 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .summary-list .check {
+            color: var(--success-color);
+            font-size: 1.2rem;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            display: flex;
+            justify-content: space-between;
+            padding: 30px 40px;
+            background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .bottom-nav a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px 25px;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .bottom-nav a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(217, 119, 6, 0.3);
+        }
+
+        .bottom-nav .prev-lesson {
+            background: linear-gradient(135deg, #64748b, #475569);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--dark-color);
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .comparison-visual {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-breadcrumb {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .bottom-nav {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .flow-diagram {
+                flex-direction: column;
+            }
+
+            .flow-arrow {
+                transform: rotate(90deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Navigation Breadcrumb -->
+        <nav class="nav-breadcrumb">
+            <div class="breadcrumb">
+                <a href="../index.html">CPCS203</a>
+                <span class="separator">&#8250;</span>
+                <a href="index.html">Module 3: File I/O</a>
+                <span class="separator">&#8250;</span>
+                <span class="current">Reading with Scanner</span>
+            </div>
+            <div class="lesson-nav">
+                <a href="02-file-class.html">&#8249; Previous</a>
+                <a href="04-writing-printwriter.html">Next &#8250;</a>
+            </div>
+        </nav>
+
+        <!-- Header -->
+        <div class="header">
+            <h1>Reading Files with Scanner</h1>
+            <p class="subtitle">Using the Familiar Scanner Class for File Input</p>
+            <div class="course-info">
+                <strong>Module 3</strong> &bull; Lesson 3 of 5
+            </div>
+        </div>
+
+        <div class="content">
+            <!-- Introduction -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">1</span>
+                    Scanner: Your Old Friend
+                </h2>
+
+                <div class="story-box">
+                    <p><span class="story-character">The teacher</span> held up the <code class="code-inline">Scanner</code> and said, "You've used Scanner before to read input from the keyboard. Now, you can hand the File object to Scanner, and it will read text from that file instead!"</p>
+                </div>
+
+                <div class="key-concept">
+                    <div class="key-concept-title">Key Insight</div>
+                    <p>We've used <code class="code-inline">Scanner</code> before with <code class="code-inline">System.in</code> to read from the keyboard. Now, we'll use the <strong>same Scanner</strong> but give it a <strong>File object</strong> instead!</p>
+                </div>
+
+                <div class="comparison-visual">
+                    <div class="comparison-item">
+                        <div class="comparison-item-title">Reading from Keyboard</div>
+                        <div class="code-block" style="font-size: 0.85rem; margin: 10px 0;">
+<span class="type">Scanner</span> <span class="variable">input</span> = <span class="keyword">new</span> <span class="type">Scanner</span>(
+    System.in
+);
+
+<span class="type">String</span> <span class="variable">name</span> = <span class="variable">input</span>.nextLine();
+                        </div>
+                    </div>
+                    <div class="comparison-item">
+                        <div class="comparison-item-title">Reading from File</div>
+                        <div class="code-block" style="font-size: 0.85rem; margin: 10px 0;">
+<span class="type">File</span> <span class="variable">myFile</span> = <span class="keyword">new</span> <span class="type">File</span>(
+    <span class="string">"data.txt"</span>
+);
+
+<span class="type">Scanner</span> <span class="variable">input</span> = <span class="keyword">new</span> <span class="type">Scanner</span>(
+    <span class="variable">myFile</span>
+);
+
+<span class="type">String</span> <span class="variable">line</span> = <span class="variable">input</span>.nextLine();
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Creating a File Scanner -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">2</span>
+                    Creating a Scanner for Files
+                </h2>
+
+                <p>Here's the basic syntax to read from a file:</p>
+
+                <div class="code-block">
+<span class="keyword">import</span> java.io.File;
+<span class="keyword">import</span> java.io.FileNotFoundException;
+<span class="keyword">import</span> java.util.Scanner;
+
+<span class="keyword">public class</span> <span class="type">ReadFile</span> {
+    <span class="keyword">public static void</span> main(<span class="type">String</span>[] args) {
+        <span class="keyword">try</span> {
+            <span class="comment">// Step 1: Create File object</span>
+            <span class="type">File</span> <span class="variable">myFile</span> = <span class="keyword">new</span> <span class="type">File</span>(<span class="string">"data.txt"</span>);
+
+            <span class="comment">// Step 2: Create Scanner with the File</span>
+            <span class="type">Scanner</span> <span class="variable">fileReader</span> = <span class="keyword">new</span> <span class="type">Scanner</span>(<span class="variable">myFile</span>);
+
+            <span class="comment">// Step 3: Read from the file</span>
+            <span class="type">String</span> <span class="variable">line</span> = <span class="variable">fileReader</span>.nextLine();
+            System.out.println(<span class="variable">line</span>);
+
+            <span class="comment">// Step 4: Close the Scanner</span>
+            <span class="variable">fileReader</span>.close();
+
+        } <span class="keyword">catch</span> (<span class="type">FileNotFoundException</span> e) {
+            System.out.println(<span class="string">"Error: File not found!"</span>);
+        }
+    }
+}
+                </div>
+
+                <div class="warning-box">
+                    <div class="warning-title">FileNotFoundException</div>
+                    <p>When creating a Scanner with a File, Java requires us to handle the possibility that the file doesn't exist. We use <code class="code-inline">try-catch</code> to handle this.</p>
+                </div>
+            </div>
+
+            <!-- Scanner Methods -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">3</span>
+                    Scanner Reading Methods
+                </h2>
+
+                <p>The same methods you used for keyboard input work for file input:</p>
+
+                <table class="methods-table">
+                    <thead>
+                        <tr>
+                            <th>Method</th>
+                            <th>Returns</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>next()</code></td>
+                            <td>String</td>
+                            <td>Reads the next word (token, stops at whitespace)</td>
+                        </tr>
+                        <tr>
+                            <td><code>nextLine()</code></td>
+                            <td>String</td>
+                            <td>Reads the entire line (until newline)</td>
+                        </tr>
+                        <tr>
+                            <td><code>nextInt()</code></td>
+                            <td>int</td>
+                            <td>Reads the next integer</td>
+                        </tr>
+                        <tr>
+                            <td><code>nextDouble()</code></td>
+                            <td>double</td>
+                            <td>Reads the next decimal number</td>
+                        </tr>
+                        <tr>
+                            <td><code>nextBoolean()</code></td>
+                            <td>boolean</td>
+                            <td>Reads true or false</td>
+                        </tr>
+                        <tr>
+                            <td><code>hasNext()</code></td>
+                            <td>boolean</td>
+                            <td>Returns true if there's more data</td>
+                        </tr>
+                        <tr>
+                            <td><code>hasNextLine()</code></td>
+                            <td>boolean</td>
+                            <td>Returns true if there's another line</td>
+                        </tr>
+                        <tr>
+                            <td><code>hasNextInt()</code></td>
+                            <td>boolean</td>
+                            <td>Returns true if next token is an integer</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Reading Entire File -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">4</span>
+                    Reading an Entire File
+                </h2>
+
+                <p>To read all lines in a file, use a <code class="code-inline">while</code> loop with <code class="code-inline">hasNextLine()</code>:</p>
+
+                <div class="file-content-box">
+                    <div class="file-header">
+                        <span class="file-icon">&#128196;</span>
+                        <span>students.txt</span>
+                    </div>
+                    <div class="file-body">
+Ahmed 85<br>
+Sara 92<br>
+Mohammed 78<br>
+Fatima 95
+                    </div>
+                </div>
+
+                <div class="code-block">
+<span class="keyword">import</span> java.io.File;
+<span class="keyword">import</span> java.io.FileNotFoundException;
+<span class="keyword">import</span> java.util.Scanner;
+
+<span class="keyword">public class</span> <span class="type">ReadAllLines</span> {
+    <span class="keyword">public static void</span> main(<span class="type">String</span>[] args) {
+        <span class="keyword">try</span> {
+            <span class="type">File</span> <span class="variable">myFile</span> = <span class="keyword">new</span> <span class="type">File</span>(<span class="string">"students.txt"</span>);
+            <span class="type">Scanner</span> <span class="variable">fileReader</span> = <span class="keyword">new</span> <span class="type">Scanner</span>(<span class="variable">myFile</span>);
+
+            <span class="comment">// Read line by line until end of file</span>
+            <span class="keyword">while</span> (<span class="variable">fileReader</span>.hasNextLine()) {
+                <span class="type">String</span> <span class="variable">line</span> = <span class="variable">fileReader</span>.nextLine();
+                System.out.println(<span class="variable">line</span>);
+            }
+
+            <span class="variable">fileReader</span>.close();
+
+        } <span class="keyword">catch</span> (<span class="type">FileNotFoundException</span> e) {
+            System.out.println(<span class="string">"Error: File not found!"</span>);
+        }
+    }
+}
+                </div>
+
+                <div class="info-box">
+                    <div class="info-box-title">Output</div>
+                    <div class="code-block" style="background: #f8fafc; color: var(--dark-color);">
+Ahmed 85
+Sara 92
+Mohammed 78
+Fatima 95
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reading Specific Data Types -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">5</span>
+                    Reading Specific Data Types
+                </h2>
+
+                <p>You can read individual tokens of different types:</p>
+
+                <div class="file-content-box">
+                    <div class="file-header">
+                        <span class="file-icon">&#128196;</span>
+                        <span>scores.txt</span>
+                    </div>
+                    <div class="file-body">
+Ahmed 85<br>
+Sara 92<br>
+Mohammed 78
+                    </div>
+                </div>
+
+                <div class="code-block">
+<span class="keyword">import</span> java.io.File;
+<span class="keyword">import</span> java.io.FileNotFoundException;
+<span class="keyword">import</span> java.util.Scanner;
+
+<span class="keyword">public class</span> <span class="type">ReadStudentScores</span> {
+    <span class="keyword">public static void</span> main(<span class="type">String</span>[] args) {
+        <span class="keyword">try</span> {
+            <span class="type">File</span> <span class="variable">myFile</span> = <span class="keyword">new</span> <span class="type">File</span>(<span class="string">"scores.txt"</span>);
+            <span class="type">Scanner</span> <span class="variable">fileReader</span> = <span class="keyword">new</span> <span class="type">Scanner</span>(<span class="variable">myFile</span>);
+
+            <span class="keyword">while</span> (<span class="variable">fileReader</span>.hasNext()) {
+                <span class="comment">// Read name (String)</span>
+                <span class="type">String</span> <span class="variable">name</span> = <span class="variable">fileReader</span>.next();
+
+                <span class="comment">// Read score (int)</span>
+                <span class="keyword">int</span> <span class="variable">score</span> = <span class="variable">fileReader</span>.nextInt();
+
+                System.out.println(
+                    <span class="variable">name</span> + <span class="string">" scored "</span> + <span class="variable">score</span> + <span class="string">" points"</span>
+                );
+            }
+
+            <span class="variable">fileReader</span>.close();
+
+        } <span class="keyword">catch</span> (<span class="type">FileNotFoundException</span> e) {
+            System.out.println(<span class="string">"Error: File not found!"</span>);
+        }
+    }
+}
+                </div>
+
+                <div class="success-box">
+                    <div class="success-title">Output</div>
+                    <div class="code-block" style="background: #f8fafc; color: var(--dark-color);">
+Ahmed scored 85 points
+Sara scored 92 points
+Mohammed scored 78 points
+                    </div>
+                </div>
+            </div>
+
+            <!-- Important: Closing Scanner -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">6</span>
+                    Always Close the Scanner!
+                </h2>
+
+                <div class="key-concept">
+                    <div class="key-concept-title">Why Close?</div>
+                    <p>When you open a file for reading, the operating system allocates resources. If you don't close the Scanner, these resources remain locked and can cause problems - especially if you try to modify the file later!</p>
+                </div>
+
+                <div class="flow-diagram">
+                    <div class="flow-box">
+                        <div class="flow-box-icon">&#128194;</div>
+                        <div class="flow-box-title">Open File</div>
+                    </div>
+                    <div class="flow-arrow">&#8594;</div>
+                    <div class="flow-box">
+                        <div class="flow-box-icon">&#128214;</div>
+                        <div class="flow-box-title">Read Data</div>
+                    </div>
+                    <div class="flow-arrow">&#8594;</div>
+                    <div class="flow-box" style="border-color: var(--success-color); background: #d1fae5;">
+                        <div class="flow-box-icon">&#9989;</div>
+                        <div class="flow-box-title" style="color: var(--success-color);">Close Scanner</div>
+                    </div>
+                </div>
+
+                <div class="code-block">
+<span class="comment">// Always remember to close!</span>
+<span class="variable">fileReader</span>.close();
+                </div>
+
+                <div class="info-box">
+                    <div class="info-box-title">Good Practice</div>
+                    <p>Always close your Scanner in a <code class="code-inline">finally</code> block or use try-with-resources (which automatically closes):</p>
+                    <div class="code-block" style="font-size: 0.85rem;">
+<span class="comment">// Try-with-resources: Automatically closes!</span>
+<span class="keyword">try</span> (<span class="type">Scanner</span> <span class="variable">reader</span> = <span class="keyword">new</span> <span class="type">Scanner</span>(<span class="keyword">new</span> <span class="type">File</span>(<span class="string">"data.txt"</span>))) {
+    <span class="keyword">while</span> (<span class="variable">reader</span>.hasNextLine()) {
+        System.out.println(<span class="variable">reader</span>.nextLine());
+    }
+} <span class="comment">// Scanner automatically closed here!</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Complete Example -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">7</span>
+                    Complete Example
+                </h2>
+
+                <p>Let's put it all together with a practical example:</p>
+
+                <div class="file-content-box">
+                    <div class="file-header">
+                        <span class="file-icon">&#128196;</span>
+                        <span>grades.txt</span>
+                    </div>
+                    <div class="file-body">
+3<br>
+Ahmed 85 90 78<br>
+Sara 92 88 95<br>
+Mohammed 78 82 80
+                    </div>
+                </div>
+
+                <p style="margin-top: 15px;">The first line tells us there are 3 students. Each following line has a name and 3 test scores.</p>
+
+                <div class="code-block">
+<span class="keyword">import</span> java.io.File;
+<span class="keyword">import</span> java.io.FileNotFoundException;
+<span class="keyword">import</span> java.util.Scanner;
+
+<span class="keyword">public class</span> <span class="type">GradeCalculator</span> {
+    <span class="keyword">public static void</span> main(<span class="type">String</span>[] args) {
+        <span class="keyword">try</span> {
+            <span class="type">File</span> <span class="variable">file</span> = <span class="keyword">new</span> <span class="type">File</span>(<span class="string">"grades.txt"</span>);
+            <span class="type">Scanner</span> <span class="variable">reader</span> = <span class="keyword">new</span> <span class="type">Scanner</span>(<span class="variable">file</span>);
+
+            <span class="comment">// Read number of students</span>
+            <span class="keyword">int</span> <span class="variable">numStudents</span> = <span class="variable">reader</span>.nextInt();
+
+            System.out.println(
+                <span class="string">"Processing "</span> + <span class="variable">numStudents</span> + <span class="string">" students...\n"</span>
+            );
+
+            <span class="comment">// Process each student</span>
+            <span class="keyword">for</span> (<span class="keyword">int</span> <span class="variable">i</span> = <span class="number">0</span>; <span class="variable">i</span> < <span class="variable">numStudents</span>; <span class="variable">i</span>++) {
+                <span class="type">String</span> <span class="variable">name</span> = <span class="variable">reader</span>.next();
+                <span class="keyword">int</span> <span class="variable">test1</span> = <span class="variable">reader</span>.nextInt();
+                <span class="keyword">int</span> <span class="variable">test2</span> = <span class="variable">reader</span>.nextInt();
+                <span class="keyword">int</span> <span class="variable">test3</span> = <span class="variable">reader</span>.nextInt();
+
+                <span class="keyword">double</span> <span class="variable">average</span> = (<span class="variable">test1</span> + <span class="variable">test2</span> + <span class="variable">test3</span>) / <span class="number">3.0</span>;
+
+                System.out.println(
+                    <span class="variable">name</span> + <span class="string">": Average = "</span> + <span class="variable">average</span>
+                );
+            }
+
+            <span class="variable">reader</span>.close();
+
+        } <span class="keyword">catch</span> (<span class="type">FileNotFoundException</span> e) {
+            System.out.println(<span class="string">"Error: grades.txt not found!"</span>);
+        }
+    }
+}
+                </div>
+
+                <div class="success-box">
+                    <div class="success-title">Output</div>
+                    <div class="code-block" style="background: #f8fafc; color: var(--dark-color);">
+Processing 3 students...
+
+Ahmed: Average = 84.33333333333333
+Sara: Average = 91.66666666666667
+Mohammed: Average = 80.0
+                    </div>
+                </div>
+            </div>
+
+            <!-- Summary -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">8</span>
+                    Summary
+                </h2>
+
+                <div class="summary-box">
+                    <div class="summary-title">Key Takeaways</div>
+                    <ul class="summary-list">
+                        <li>
+                            <span class="check">&#10003;</span>
+                            <span><strong>Scanner</strong> can read from files the same way it reads from keyboard.</span>
+                        </li>
+                        <li>
+                            <span class="check">&#10003;</span>
+                            <span>Pass a <strong>File object</strong> to Scanner instead of System.in.</span>
+                        </li>
+                        <li>
+                            <span class="check">&#10003;</span>
+                            <span>Use <strong>hasNextLine()</strong> or <strong>hasNext()</strong> to check for more data.</span>
+                        </li>
+                        <li>
+                            <span class="check">&#10003;</span>
+                            <span>Use <strong>next(), nextLine(), nextInt(), nextDouble()</strong> to read data.</span>
+                        </li>
+                        <li>
+                            <span class="check">&#10003;</span>
+                            <span><strong>Always close()</strong> the Scanner when done reading!</span>
+                        </li>
+                        <li>
+                            <span class="check">&#10003;</span>
+                            <span>Handle <strong>FileNotFoundException</strong> with try-catch.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="story-box">
+                    <p><span class="story-character">The student exclaimed,</span> "Reading is easy! But how do I save data to a file?"</p>
+                    <p><span class="story-character">The teacher replied,</span> "That's where PrintWriter comes in - let's learn about writing files next!"</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <a href="02-file-class.html" class="prev-lesson">&#8249; Previous: File Class</a>
+            <a href="04-writing-printwriter.html">Next: Writing with PrintWriter &#8250;</a>
+        </nav>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p><strong>CPCS203</strong> - Object-Oriented Programming</p>
+            <p>Module 3: File I/O &bull; Lesson 3</p>
+            <p>Prepared by Dr. Almalawi</p>
+        </div>
+    </div>
+</body>
+</html>

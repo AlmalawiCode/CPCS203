@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>String Basics & Immutability | CPCS203</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #059669;
+            --primary-light: #10b981;
+            --primary-dark: #047857;
+            --secondary-color: #0d9488;
+            --success-color: #059669;
+            --warning-color: #d97706;
+            --danger-color: #dc2626;
+            --dark-color: #1f2937;
+            --light-color: #f3f4f6;
+            --gray-color: #6b7280;
+            --string-color: #8b5cf6;
+            --object-color: #ec4899;
+            --memory-color: #fef3c7;
+            --reference-color: #dbeafe;
+            --heap-color: #d1fae5;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.8;
+            color: var(--dark-color);
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+        }
+
+        /* Navigation Breadcrumb */
+        .nav-breadcrumb {
+            background: linear-gradient(135deg, #065f46, #047857);
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: white;
+            font-size: 0.9rem;
+        }
+
+        .breadcrumb a {
+            color: #a7f3d0;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .breadcrumb a:hover {
+            color: white;
+        }
+
+        .breadcrumb .separator {
+            color: #6ee7b7;
+        }
+
+        .breadcrumb .current {
+            color: #fbbf24;
+        }
+
+        .lesson-nav {
+            display: flex;
+            gap: 10px;
+        }
+
+        .lesson-nav a {
+            padding: 8px 16px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            text-decoration: none;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+        }
+
+        .lesson-nav a:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .lesson-nav a.disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .header .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .header .course-info {
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 30px;
+            display: inline-block;
+        }
+
+        /* Content */
+        .content {
+            padding: 40px;
+        }
+
+        /* Sections */
+        .section {
+            margin-bottom: 50px;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--primary-color);
+            padding-bottom: 10px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-number {
+            background: var(--primary-color);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        /* Key Concept Box */
+        .key-concept {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border-left: 5px solid var(--warning-color);
+            padding: 20px 25px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .key-concept-title {
+            font-weight: bold;
+            color: var(--warning-color);
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        /* Important Box */
+        .important-box {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            border-left: 5px solid var(--danger-color);
+            padding: 20px 25px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .important-box-title {
+            font-weight: bold;
+            color: var(--danger-color);
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        /* Info Box */
+        .info-box {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            border-left: 5px solid #2563eb;
+            padding: 20px 25px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        /* Success Box */
+        .success-box {
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+            border-left: 5px solid var(--success-color);
+            padding: 20px 25px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        /* Code Blocks */
+        .code-block {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+        }
+
+        .code-block .keyword {
+            color: #569cd6;
+        }
+
+        .code-block .type {
+            color: #4ec9b0;
+        }
+
+        .code-block .string {
+            color: #ce9178;
+        }
+
+        .code-block .number {
+            color: #b5cea8;
+        }
+
+        .code-block .comment {
+            color: #6a9955;
+        }
+
+        .code-block .variable {
+            color: #9cdcfe;
+        }
+
+        .code-inline {
+            background: #e5e7eb;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9rem;
+            color: var(--danger-color);
+        }
+
+        /* Memory Visualization */
+        .memory-visualization {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 25px 0;
+        }
+
+        .memory-title {
+            text-align: center;
+            font-weight: bold;
+            color: var(--dark-color);
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+
+        .memory-container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        .memory-section {
+            text-align: center;
+        }
+
+        .memory-section-title {
+            background: var(--dark-color);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+        }
+
+        /* Variable Box */
+        .variable-box {
+            border: 3px solid var(--primary-color);
+            border-radius: 10px;
+            padding: 15px 25px;
+            background: var(--reference-color);
+            min-width: 120px;
+            margin: 10px 0;
+        }
+
+        .variable-name {
+            font-weight: bold;
+            color: var(--primary-color);
+            font-size: 1.1rem;
+        }
+
+        .variable-value {
+            margin-top: 8px;
+            padding: 8px;
+            background: white;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+
+        .variable-type {
+            font-size: 0.8rem;
+            color: #6b7280;
+            margin-top: 5px;
+        }
+
+        /* String Object Visualization */
+        .string-object {
+            background: linear-gradient(135deg, #f3e8ff, #e9d5ff);
+            border: 3px solid var(--string-color);
+            border-radius: 15px;
+            padding: 20px;
+            min-width: 200px;
+        }
+
+        .string-object-title {
+            color: var(--string-color);
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+
+        .string-chars {
+            display: flex;
+            gap: 0;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .char-cell {
+            border: 2px solid var(--string-color);
+            padding: 10px 8px;
+            background: white;
+            text-align: center;
+            min-width: 35px;
+            font-family: monospace;
+            font-weight: bold;
+            font-size: 1rem;
+        }
+
+        .char-cell:first-child {
+            border-radius: 8px 0 0 8px;
+        }
+
+        .char-cell:last-child {
+            border-radius: 0 8px 8px 0;
+        }
+
+        .char-index {
+            font-size: 0.65rem;
+            color: #9ca3af;
+            margin-bottom: 3px;
+        }
+
+        /* Arrow */
+        .arrow {
+            display: flex;
+            align-items: center;
+            color: var(--string-color);
+            font-size: 2rem;
+        }
+
+        .arrow-line {
+            width: 60px;
+            height: 4px;
+            background: var(--string-color);
+            position: relative;
+        }
+
+        .arrow-line::after {
+            content: '';
+            position: absolute;
+            right: -10px;
+            top: -8px;
+            border: 10px solid transparent;
+            border-left: 15px solid var(--string-color);
+        }
+
+        /* Immutability Demo */
+        .immutability-demo {
+            background: #fefce8;
+            border: 2px solid #facc15;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+        }
+
+        .demo-title {
+            text-align: center;
+            font-weight: bold;
+            color: #ca8a04;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+
+        .demo-step {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin: 15px 0;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            flex-wrap: wrap;
+        }
+
+        .step-number {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .step-code {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        /* Loop Visualization */
+        .loop-demo {
+            background: linear-gradient(135deg, #fef2f2, #fee2e2);
+            border: 2px solid #ef4444;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+        }
+
+        .loop-title {
+            text-align: center;
+            font-weight: bold;
+            color: #dc2626;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+
+        .objects-created {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .created-object {
+            padding: 10px 15px;
+            border-radius: 10px;
+            font-family: monospace;
+            font-size: 0.85rem;
+            color: white;
+        }
+
+        .created-object.old {
+            background: linear-gradient(135deg, #9ca3af, #6b7280);
+            text-decoration: line-through;
+            opacity: 0.6;
+        }
+
+        .created-object.current {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            box-shadow: 0 4px 15px rgba(5, 150, 105, 0.4);
+        }
+
+        /* Comparison Grid */
+        .comparison-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .comparison-box {
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .comparison-box.primitive {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border: 2px solid var(--warning-color);
+        }
+
+        .comparison-box.reference {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            border: 2px solid #2563eb;
+        }
+
+        .comparison-title {
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+        }
+
+        .comparison-box.primitive .comparison-title {
+            color: var(--warning-color);
+        }
+
+        .comparison-box.reference .comparison-title {
+            color: #2563eb;
+        }
+
+        /* Lists */
+        ul, ol {
+            margin: 15px 0 15px 25px;
+        }
+
+        li {
+            margin: 8px 0;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            display: flex;
+            justify-content: space-between;
+            padding: 30px 40px;
+            background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .bottom-nav a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px 25px;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .bottom-nav a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(5, 150, 105, 0.3);
+        }
+
+        .bottom-nav a.disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .bottom-nav .prev-lesson {
+            background: linear-gradient(135deg, #64748b, #475569);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--dark-color);
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .comparison-container {
+                grid-template-columns: 1fr;
+            }
+
+            .memory-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .bottom-nav {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav-breadcrumb {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        /* Animation */
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        /* Null and Address values */
+        .null-value {
+            color: var(--danger-color);
+            font-style: italic;
+        }
+
+        .address-value {
+            color: var(--string-color);
+            font-family: monospace;
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Navigation Breadcrumb -->
+        <nav class="nav-breadcrumb">
+            <div class="breadcrumb">
+                <a href="../index.html">CPCS203</a>
+                <span class="separator">›</span>
+                <a href="index.html">Module 2: Strings</a>
+                <span class="separator">›</span>
+                <span class="current">String Basics</span>
+            </div>
+            <div class="lesson-nav">
+                <a href="index.html">‹ Module Index</a>
+                <a href="02-string-interning.html">Next: String Interning ›</a>
+            </div>
+        </nav>
+
+        <!-- Header -->
+        <div class="header">
+            <h1>String Basics & Immutability</h1>
+            <p class="subtitle">Understanding Strings as Reference Types and Why They Cannot Change</p>
+            <div class="course-info">
+                <strong>CPCS203</strong> - Module 2 | Lesson 1
+            </div>
+        </div>
+
+        <div class="content">
+            <!-- Section 1: Review - Primitive vs Reference -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">1</span>
+                    Quick Review: Primitive vs Reference Types
+                </h2>
+
+                <p>Before we dive into Strings, let's quickly review what we learned in the Arrays module about data types in Java.</p>
+
+                <div class="comparison-container">
+                    <div class="comparison-box primitive">
+                        <div class="comparison-title">Primitive Types</div>
+                        <p>Store the <strong>actual value</strong> directly in the variable.</p>
+                        <div class="code-block" style="text-align: left; font-size: 0.85rem; margin-top: 15px;">
+<span class="keyword">int</span> <span class="variable">age</span> = <span class="number">25</span>;
+<span class="comment">// Variable contains: 25</span>
+
+<span class="keyword">double</span> <span class="variable">gpa</span> = <span class="number">3.75</span>;
+<span class="comment">// Variable contains: 3.75</span>
+                        </div>
+                        <p style="margin-top: 15px; font-size: 0.9rem;"><strong>8 types:</strong> byte, short, int, long, float, double, char, boolean</p>
+                    </div>
+                    <div class="comparison-box reference">
+                        <div class="comparison-title">Reference Types</div>
+                        <p>Store the <strong>address (reference)</strong> to the actual data in memory.</p>
+                        <div class="code-block" style="text-align: left; font-size: 0.85rem; margin-top: 15px;">
+<span class="keyword">int</span>[] <span class="variable">ages</span> = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">5</span>];
+<span class="comment">// Variable contains: 0x7A3F</span>
+<span class="comment">// (address pointing to array)</span>
+                        </div>
+                        <p style="margin-top: 15px; font-size: 0.9rem;"><strong>Examples:</strong> Arrays, Strings, Objects</p>
+                    </div>
+                </div>
+
+                <div class="key-concept">
+                    <div class="key-concept-title">Key Point</div>
+                    <p><strong>String is NOT a primitive type!</strong> It is a <strong>reference type</strong>. This means a String variable holds an <strong>address</strong> pointing to a String object in memory, not the actual characters themselves.</p>
+                </div>
+            </div>
+
+            <!-- Section 2: How is a String Stored? -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">2</span>
+                    How is a String Stored in Memory?
+                </h2>
+
+                <p>Let's say we want to store <code class="code-inline">"Welcome to Java"</code> in our program. What happens in memory?</p>
+
+                <div class="code-block">
+<span class="type">String</span> <span class="variable">message</span> = <span class="string">"Welcome to Java"</span>;
+                </div>
+
+                <div class="memory-visualization">
+                    <div class="memory-title">Memory Representation of a String</div>
+                    <div class="memory-container">
+                        <div class="memory-section">
+                            <div class="memory-section-title">Stack Memory</div>
+                            <div class="variable-box">
+                                <div class="variable-name">message</div>
+                                <div class="variable-value"><span class="address-value">0x5B2F</span></div>
+                                <div class="variable-type">String (reference)</div>
+                            </div>
+                        </div>
+                        <div class="arrow">
+                            <div class="arrow-line"></div>
+                        </div>
+                        <div class="memory-section">
+                            <div class="memory-section-title">Heap Memory (0x5B2F)</div>
+                            <div class="string-object">
+                                <div class="string-object-title">String Object</div>
+                                <div class="string-chars">
+                                    <div class="char-cell"><div class="char-index">0</div>W</div>
+                                    <div class="char-cell"><div class="char-index">1</div>e</div>
+                                    <div class="char-cell"><div class="char-index">2</div>l</div>
+                                    <div class="char-cell"><div class="char-index">3</div>c</div>
+                                    <div class="char-cell"><div class="char-index">4</div>o</div>
+                                    <div class="char-cell"><div class="char-index">5</div>m</div>
+                                    <div class="char-cell"><div class="char-index">6</div>e</div>
+                                    <div class="char-cell"><div class="char-index">7</div> </div>
+                                    <div class="char-cell"><div class="char-index">8</div>t</div>
+                                    <div class="char-cell"><div class="char-index">9</div>o</div>
+                                    <div class="char-cell"><div class="char-index">10</div> </div>
+                                    <div class="char-cell"><div class="char-index">11</div>J</div>
+                                    <div class="char-cell"><div class="char-index">12</div>a</div>
+                                    <div class="char-cell"><div class="char-index">13</div>v</div>
+                                    <div class="char-cell"><div class="char-index">14</div>a</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <p><strong>Understanding the Structure:</strong></p>
+                    <ul>
+                        <li>The variable <code class="code-inline">message</code> is stored in <strong>Stack memory</strong></li>
+                        <li>It contains only the <strong>address</strong> (0x5B2F) pointing to the String object</li>
+                        <li>The actual String object is stored in <strong>Heap memory</strong></li>
+                        <li>The String object contains a <strong>sequence of characters</strong> (char array internally)</li>
+                        <li>Each character has an <strong>index</strong> starting from 0</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Section 3: What is Immutability? -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">3</span>
+                    What is Immutability?
+                </h2>
+
+                <div class="key-concept">
+                    <div class="key-concept-title">Definition: Immutable</div>
+                    <p><strong>Immutable</strong> means "cannot be changed." When we say <strong>String is immutable</strong> in Java, it means:</p>
+                    <p style="margin-top: 10px; font-size: 1.1rem; text-align: center;"><em>Once a String object is created in memory, its content <strong>cannot be modified</strong>.</em></p>
+                </div>
+
+                <p>This is a <strong>very important concept</strong> that we will explore in more detail in future lessons about Object-Oriented Programming. For now, let's understand the basics.</p>
+
+                <h3 style="color: var(--primary-color); margin-top: 25px;">Why is String Immutable?</h3>
+
+                <p>There are several important reasons:</p>
+
+                <div class="success-box">
+                    <ol>
+                        <li><strong>String Interning (Memory Optimization)</strong> - We will learn this in the next lesson! It helps save memory by reusing String objects.</li>
+                        <li><strong>Security</strong> - Strings are often used for sensitive data (passwords, file paths, network connections). Immutability prevents accidental or malicious modification.</li>
+                        <li><strong>Thread Safety</strong> - In multi-threaded programs, immutable objects don't need synchronization because they can't be changed.</li>
+                        <li><strong>Caching</strong> - The hash code of a String can be cached because it never changes.</li>
+                    </ol>
+                </div>
+
+                <div class="info-box">
+                    <p><strong>Note for Students:</strong> We will discuss thread safety and multi-threading in more detail when we cover <strong>StringBuilder and StringBuffer</strong>. For now, just understand that immutability is a <strong>design decision</strong> that provides many benefits.</p>
+                </div>
+            </div>
+
+            <!-- Section 4: Visualizing Immutability -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">4</span>
+                    Visualizing Immutability: What Really Happens?
+                </h2>
+
+                <p>Let's see what happens when we try to "modify" a String. Consider this code:</p>
+
+                <div class="code-block">
+<span class="type">String</span> <span class="variable">s</span> = <span class="string">"Java"</span>;
+<span class="variable">s</span> = <span class="variable">s</span> + <span class="string">" Programming"</span>;
+
+System.out.println(<span class="variable">s</span>);  <span class="comment">// Output: Java Programming</span>
+                </div>
+
+                <div class="important-box">
+                    <div class="important-box-title">What You Might Think</div>
+                    <p>Looking at the code, you might think: "The String <code class="code-inline">s</code> was changed from 'Java' to 'Java Programming'."</p>
+                </div>
+
+                <div class="success-box">
+                    <p><strong>What Actually Happens:</strong></p>
+                    <p>The original String <code class="code-inline">"Java"</code> was <strong>NOT modified</strong>! Instead:</p>
+                    <ol>
+                        <li>A <strong>NEW String object</strong> <code class="code-inline">"Java Programming"</code> was created</li>
+                        <li>The variable <code class="code-inline">s</code> now points to this <strong>new object</strong></li>
+                        <li>The old <code class="code-inline">"Java"</code> object still exists (until garbage collected)</li>
+                    </ol>
+                </div>
+
+                <div class="immutability-demo">
+                    <div class="demo-title">Step-by-Step Visualization</div>
+
+                    <div class="demo-step">
+                        <div class="step-number">1</div>
+                        <div class="step-code">
+                            <code class="code-inline">String s = "Java";</code>
+                        </div>
+                        <div class="memory-visualization" style="flex: 2; margin: 0; padding: 15px;">
+                            <div class="memory-container" style="gap: 20px;">
+                                <div class="variable-box" style="padding: 10px 15px;">
+                                    <div class="variable-name" style="font-size: 0.9rem;">s</div>
+                                    <div class="variable-value" style="font-size: 0.8rem;"><span class="address-value">0x100</span></div>
+                                </div>
+                                <span style="font-size: 1.5rem; color: var(--string-color);">→</span>
+                                <div class="string-object" style="padding: 10px; min-width: auto;">
+                                    <div style="font-size: 0.75rem; color: #6b7280;">0x100</div>
+                                    <div style="font-weight: bold; color: var(--string-color);">"Java"</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="demo-step">
+                        <div class="step-number">2</div>
+                        <div class="step-code">
+                            <code class="code-inline">s = s + " Programming";</code>
+                            <p style="font-size: 0.85rem; color: #6b7280; margin-top: 5px;">A NEW object is created!</p>
+                        </div>
+                        <div class="memory-visualization" style="flex: 2; margin: 0; padding: 15px;">
+                            <div class="memory-container" style="gap: 20px; flex-direction: column; align-items: center;">
+                                <!-- New object - s now points here -->
+                                <div style="display: flex; align-items: center; gap: 15px;">
+                                    <div class="variable-box" style="padding: 10px 15px;">
+                                        <div class="variable-name" style="font-size: 0.9rem;">s</div>
+                                        <div class="variable-value" style="font-size: 0.8rem;"><span class="address-value">0x200</span></div>
+                                    </div>
+                                    <span style="font-size: 1.5rem; color: var(--string-color);">→</span>
+                                    <div class="string-object" style="padding: 10px; min-width: auto; background: linear-gradient(135deg, #dcfce7, #bbf7d0); border-color: var(--success-color);">
+                                        <div style="font-size: 0.75rem; color: #6b7280;">0x200 (NEW!)</div>
+                                        <div style="font-weight: bold; color: var(--success-color);">"Java Programming"</div>
+                                    </div>
+                                </div>
+                                <!-- Old object - still in memory, waiting for GC -->
+                                <div style="display: flex; align-items: center; gap: 15px; margin-top: 10px;">
+                                    <div style="position: relative; padding: 10px 15px; border: 3px solid #dc2626; border-radius: 10px; background: linear-gradient(135deg, #fee2e2, #fecaca);">
+                                        <div style="font-size: 0.75rem; color: #6b7280;">0x100</div>
+                                        <div style="font-weight: bold; color: #991b1b;">"Java"</div>
+                                        <!-- Red X overlay -->
+                                        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 3rem; font-weight: bold; color: #dc2626; opacity: 0.8;">✗</div>
+                                    </div>
+                                    <div style="display: flex; flex-direction: column; align-items: flex-start; margin-left: 10px;">
+                                        <span style="font-size: 0.85rem; color: #dc2626; font-weight: bold;">Still in memory!</span>
+                                        <span style="font-size: 0.8rem; color: #6b7280;">Waiting for Garbage Collector</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="important-box">
+                    <div class="important-box-title">The Key Insight</div>
+                    <p>The original String <code class="code-inline">"Java"</code> at address 0x100 was <strong>never changed</strong>. It still contains "Java"!</p>
+                    <p style="margin-top: 10px;">What changed was the <strong>reference</strong> stored in variable <code class="code-inline">s</code> - it now points to a completely new object at address 0x200.</p>
+                </div>
+            </div>
+
+            <!-- Section 5: Loop Example - The Danger -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">5</span>
+                    The Danger: String Modification in a Loop
+                </h2>
+
+                <p>Now let's see why understanding immutability is <strong>critical</strong>. What happens when we modify a String inside a loop?</p>
+
+                <div class="code-block">
+<span class="type">String</span> <span class="variable">result</span> = <span class="string">""</span>;
+
+<span class="keyword">for</span> (<span class="keyword">int</span> <span class="variable">i</span> = <span class="number">0</span>; <span class="variable">i</span> &lt; <span class="number">10</span>; <span class="variable">i</span>++) {
+    <span class="variable">result</span> = <span class="variable">result</span> + <span class="variable">i</span>;  <span class="comment">// String concatenation</span>
+}
+
+System.out.println(<span class="variable">result</span>);  <span class="comment">// Output: 0123456789</span>
+                </div>
+
+                <div class="loop-demo">
+                    <div class="loop-title">What Happens in Memory: 11 Objects Created!</div>
+
+                    <p style="text-align: center; margin-bottom: 20px;">Each iteration creates a <strong>NEW String object</strong>. The old ones become garbage!</p>
+
+                    <div class="objects-created">
+                        <div class="created-object old">"" (initial)</div>
+                        <div class="created-object old">"0"</div>
+                        <div class="created-object old">"01"</div>
+                        <div class="created-object old">"012"</div>
+                        <div class="created-object old">"0123"</div>
+                        <div class="created-object old">"01234"</div>
+                        <div class="created-object old">"012345"</div>
+                        <div class="created-object old">"0123456"</div>
+                        <div class="created-object old">"01234567"</div>
+                        <div class="created-object old">"012345678"</div>
+                        <div class="created-object current">"0123456789" (final)</div>
+                    </div>
+
+                    <p style="text-align: center; margin-top: 20px; color: #dc2626; font-weight: bold;">10 objects were created and immediately abandoned!</p>
+                </div>
+
+                <div class="important-box">
+                    <div class="important-box-title">Performance Problem!</div>
+                    <p>Imagine this loop runs <strong>1000 times</strong> or <strong>1,000,000 times</strong>:</p>
+                    <ul>
+                        <li>Each iteration creates a <strong>new String object</strong></li>
+                        <li>The old String is discarded (becomes garbage)</li>
+                        <li>This wastes <strong>memory</strong> and <strong>CPU time</strong></li>
+                        <li>The garbage collector has to clean up all these abandoned objects</li>
+                    </ul>
+                </div>
+
+                <div class="success-box">
+                    <p><strong>Solution Preview:</strong></p>
+                    <p>In Lesson 4, we will learn about <code class="code-inline">StringBuilder</code> and <code class="code-inline">StringBuffer</code> - <strong>mutable</strong> alternatives that solve this problem efficiently!</p>
+                </div>
+            </div>
+
+            <!-- Section 6: Proving Immutability with Code -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">6</span>
+                    Proving Immutability with Code
+                </h2>
+
+                <p>Let's write a simple program to prove that Strings are immutable:</p>
+
+                <div class="code-block">
+<span class="keyword">public class</span> <span class="type">ImmutabilityDemo</span> {
+    <span class="keyword">public static void</span> <span class="variable">main</span>(<span class="type">String</span>[] <span class="variable">args</span>) {
+
+        <span class="comment">// Create original String</span>
+        <span class="type">String</span> <span class="variable">original</span> = <span class="string">"Java"</span>;
+
+        <span class="comment">// Save the original to compare later</span>
+        <span class="type">String</span> <span class="variable">saved</span> = <span class="variable">original</span>;
+
+        <span class="comment">// Try to "modify" the string</span>
+        <span class="variable">original</span> = <span class="variable">original</span>.toUpperCase();
+
+        <span class="comment">// Print both</span>
+        System.out.println(<span class="string">"original: "</span> + <span class="variable">original</span>);  <span class="comment">// JAVA</span>
+        System.out.println(<span class="string">"saved: "</span> + <span class="variable">saved</span>);        <span class="comment">// Java</span>
+
+        <span class="comment">// Are they the same object?</span>
+        System.out.println(<span class="string">"Same object? "</span> + (<span class="variable">original</span> == <span class="variable">saved</span>));  <span class="comment">// false</span>
+    }
+}
+                </div>
+
+                <div class="success-box">
+                    <p><strong>Output:</strong></p>
+                    <pre style="font-family: monospace; margin: 10px 0;">
+original: JAVA
+saved: Java
+Same object? false</pre>
+                    <p style="margin-top: 10px;"><strong>Explanation:</strong> The <code class="code-inline">saved</code> variable still contains "Java" because the original String object was never changed. The <code class="code-inline">toUpperCase()</code> method created a <strong>new</strong> String "JAVA" and <code class="code-inline">original</code> now points to that new object.</p>
+                </div>
+            </div>
+
+            <!-- Section 7: Summary -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">7</span>
+                    Summary
+                </h2>
+
+                <div class="key-concept">
+                    <div class="key-concept-title">Key Takeaways</div>
+                    <ol>
+                        <li><strong>String is a reference type</strong> - The variable stores an address, not the actual characters</li>
+                        <li><strong>String is immutable</strong> - Once created, the content cannot be changed</li>
+                        <li><strong>"Modification" creates new objects</strong> - Operations like concatenation create new String objects</li>
+                        <li><strong>The old objects become garbage</strong> - They are eventually cleaned up by the garbage collector</li>
+                        <li><strong>Loop concatenation is inefficient</strong> - Use StringBuilder for frequent modifications (we'll learn this later)</li>
+                    </ol>
+                </div>
+
+                <div class="info-box">
+                    <p><strong>What's Next?</strong></p>
+                    <p>In the next lesson, we'll learn about <strong>String Interning</strong> and the <strong>String Pool</strong> - how Java uses immutability to save memory by reusing String objects!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <a href="index.html" class="prev-lesson">‹ Module Index</a>
+            <a href="02-string-interning.html">Next: String Interning & Pool ›</a>
+        </nav>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p><strong>CPCS203</strong> - Object-Oriented Programming</p>
+            <p>Module 2: Strings | Lesson 1: String Basics & Immutability</p>
+            <p>Prepared by Dr. Almalawi</p>
+        </div>
+    </div>
+</body>
+</html>

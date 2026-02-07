@@ -1,0 +1,189 @@
+\documentclass[12pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amsfonts, amssymb}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{xcolor}
+
+\definecolor{lightgray}{gray}{0.95}
+
+\lstset{
+    basicstyle=\ttfamily\small,
+    backgroundcolor=\color{lightgray},
+    keywordstyle=\color{blue}\bfseries,
+    commentstyle=\color{olive},
+    stringstyle=\color{red},
+    showstringspaces=false,
+    tabsize=4,
+    breaklines=true
+}
+
+\begin{document}
+
+\title{Introduction to Object-Oriented Programming}
+\author{Your Name}
+\date{\today}
+\maketitle
+
+\section{Historical Context: From Functional/Procedural to OOP}
+In the early decades of computer science, most software was built using \textit{procedural} or \textit{functional} programming styles. These paradigms focus on writing sequences of instructions (or functions) that manipulate data. While functional and procedural approaches are excellent for certain problem domains, software systems tend to grow in size and complexity over time. As the code base expands, developers increasingly face:
+\begin{enumerate}
+    \item \textbf{Reusability:} The need to write code once and reuse it in different parts of the system or future projects.
+    \item \textbf{Scalability:} Ensuring the software can handle growth in features and data without significant rewrites.
+    \item \textbf{Maintainability:} Making it easier to fix bugs, update features, or add new features.
+    \item \textbf{Modularity:} Dividing the software into logical, independent components that minimize interdependencies.
+\end{enumerate}
+
+These requirements sparked a search for new ways to structure programs. Eventually, a \textit{paradigm} emerged that focuses on the concept of ``objects''—collections of data and behaviors. This paradigm is known as \textbf{Object-Oriented Programming (OOP)}.
+
+\section{What is OOP? Why ``Object-Oriented''?}
+The core idea of OOP is to think about \textbf{objects} and how they interact with each other, rather than merely focusing on functions or procedures. 
+
+\subsection{Defining an Object}
+An \textbf{object} can be thought of as a \textit{real-world} or \textit{conceptual} entity that has:
+\begin{itemize}
+    \item \textbf{Properties (Attributes):} Characteristics that describe the object (e.g., color, size, state).
+    \item \textbf{Behaviors (Methods or Functions):} Actions or operations the object can perform (e.g., walk, talk, calculate).
+\end{itemize}
+
+For instance, consider yourself as an ``object'':
+\begin{itemize}
+    \item \textbf{Properties:} Your eye color, your height, your weight.
+    \item \textbf{Behaviors:} Speaking, walking, learning, etc.
+\end{itemize}
+
+Similarly, in software, any object—such as a \texttt{Circle}—will have its own properties (\texttt{radius}, \texttt{color}, etc.) and behaviors (\texttt{computeArea()}, \texttt{draw()}, etc.).
+
+\subsection{From Requirements to Objects}
+When we solve problems in OOP, we think:
+\begin{enumerate}
+    \item \textbf{Identify the objects} involved in the problem.
+    \item \textbf{Identify the properties and behaviors} of each object.
+    \item \textbf{Identify the relationships} between objects (if there are multiple objects).
+\end{enumerate}
+
+Once these are clear, we design our code based on the objects rather than just a list of functions.
+
+\section{Example: Calculating the Area of a Circle}
+Imagine a very simple program that calculates the area of a circle. In a functional or procedural style, we might jump straight into writing a function \texttt{computeArea(radius)}. But in OOP, we first look at:
+\begin{itemize}
+    \item \textbf{Objects:} Here, the main object is \texttt{Circle}.
+    \item \textbf{Properties of Circle:} \texttt{radius}.
+    \item \textbf{Behaviors of Circle:} \texttt{computeArea()}.
+\end{itemize}
+
+For this problem, we have only one object, so we do not need to worry about the relationships among multiple objects. 
+
+\subsection{Roles: Software Engineer vs. Programmer}
+In many development processes, there are two distinct roles:
+\begin{enumerate}
+    \item \textbf{Software Engineer (Designer):} Identifies objects, their properties, behaviors, and relationships. Communicates this via diagrams and documentation.
+    \item \textbf{Programmer (Implementer):} Translates these designs into actual code using a programming language such as Java or C++.
+\end{enumerate}
+
+\section{UML: Modeling Objects Visually}
+To bridge the gap between software engineers and programmers, we often use the \textbf{Unified Modeling Language (UML)}. One of the most common diagrams in UML is the \textbf{Class Diagram}, which typically has three compartments:
+\begin{enumerate}
+    \item \textbf{Name of the class (object type).}
+    \item \textbf{Properties (attributes).}
+    \item \textbf{Behaviors (methods).}
+\end{enumerate}
+
+For our \texttt{Circle} example, a simplified UML class diagram might look like:
+
+\begin{center}
+\includegraphics[width=0.6\textwidth]{circlepng.png}
+\end{center}
+
+
+
+\section{Translating UML into Code}
+Below is a simple Java implementation that follows the above UML diagram:
+
+\begin{lstlisting}[language=Java, caption=Simple Java class for a Circle]
+public class Circle {
+    private double radius; 
+
+    // Constructor to initialize the radius
+    public Circle(double radius) {
+        this.radius = radius;
+    }
+    
+    // Method to compute the area
+    public double computeArea() {
+        return Math.PI * radius * radius;
+    }
+    
+    // Getter for radius (optional)
+    public double getRadius() {
+        return radius;
+    }
+    
+    // Setter for radius (optional)
+    public void setRadius(double radius) {
+        this.radius = radius;
+    }
+}
+\end{lstlisting}
+
+As a \textit{user} of this class, you can create circle objects:
+
+\begin{lstlisting}[language=Java, caption=Instantiating and using the Circle class]
+public class Main {
+    public static void main(String[] args) {
+        Circle c1 = new Circle(5.0);
+        System.out.println("Area of c1: " + c1.computeArea());
+
+        Circle c2 = new Circle(10.0);
+        System.out.println("Area of c2: " + c2.computeArea());
+    }
+}
+\end{lstlisting}
+
+\section{The Four Pillars of OOP}
+Object-Oriented Programming is typically built upon four main concepts, often called the ``four pillars'':
+\begin{enumerate}
+    \item \textbf{Encapsulation}
+    \item \textbf{Abstraction}
+    \item \textbf{Inheritance}
+    \item \textbf{Polymorphism}
+\end{enumerate}
+It is said that without one of these pillars, OOP loses much of its power and clarity.
+
+\subsection{Encapsulation}
+\begin{itemize}
+    \item \textbf{Definition:} Encapsulation is about bundling data (properties) and methods (behaviors) together within a single unit (class), and restricting direct access to some of the object's components.
+    \item \textbf{Benefit:} This helps protect the object's internal state from unintended interference and misuse, and also allows changes in implementation without affecting external code.
+\end{itemize}
+
+In the \texttt{Circle} class, \texttt{radius} is declared \texttt{private}, and any access must go through methods (\texttt{setRadius}, \texttt{getRadius}), which demonstrates encapsulation.
+
+\subsection{Abstraction}
+\begin{itemize}
+    \item \textbf{Definition:} Abstraction means focusing on \textit{what} an object does rather than \textit{how} it does it. 
+    \item \textbf{Benefit:} Users of a class do not need to see or understand the internal complexities. They just call the methods (like \texttt{computeArea()}) and get the result.
+\end{itemize}
+
+When you call \texttt{computeArea()}, you do not necessarily care \textit{how} it calculates the area; you just need the \textit{result}. This detail is ``abstracted away'' from you.
+
+\subsection{Inheritance and Polymorphism}
+We will explore these two pillars later. In short:
+\begin{itemize}
+    \item \textbf{Inheritance} allows you to create new classes based on existing ones, enabling code reuse and logical hierarchy.
+    \item \textbf{Polymorphism} allows objects of different classes to be treated the same way, even if their internal behaviors differ (e.g., \texttt{computeArea()} might differ for a \texttt{Rectangle} vs. a \texttt{Circle}, but a generic \texttt{Shape} interface can handle both).
+\end{itemize}
+
+\section{Conclusion}
+Object-Oriented Programming fundamentally shifts our perspective from writing functions to manipulating \textbf{objects} that represent real-world or conceptual entities. By leveraging the four pillars—\textbf{encapsulation}, \textbf{abstraction}, \textbf{inheritance}, and \textbf{polymorphism}—we can build software that is more \textbf{reusable}, \textbf{scalable}, \textbf{maintainable}, and \textbf{modular}.
+
+\begin{itemize}
+    \item \textbf{Reusability:} Classes can be adapted for many scenarios.
+    \item \textbf{Scalability:} Adding new features (new classes or extending existing ones) becomes more manageable.
+    \item \textbf{Maintainability:} Clear separation of concerns makes it easier to update or fix parts of the software.
+    \item \textbf{Modularity:} Logical grouping into classes and objects simplifies organization.
+\end{itemize}
+
+In upcoming lessons, we will dive deeper into the remaining pillars, \textbf{inheritance} and \textbf{polymorphism}, along with additional OOP design principles and patterns.
+
+\end{document}
