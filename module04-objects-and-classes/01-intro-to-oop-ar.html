@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>مقدمة في البرمجة كائنية التوجه | CPCS203</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -28,7 +29,7 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Tajawal', 'Amiri', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.8;
             color: var(--dark-color);
             background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #7c3aed 100%);
@@ -697,7 +698,7 @@
         <div class="header">
             <h1>مقدمة في البرمجة كائنية التوجه</h1>
             <p class="subtitle">من التفكير بالخطوات إلى التفكير بالكائنات</p>
-            <div class="course-info">CPCS203 - الوحدة 04: الكائنات والأصناف</div>
+            <div class="course-info">CPCS203 - الوحدة 04: الكائنات (Objects) والأصناف (Classes)</div>
         </div>
 
         <div class="content">
@@ -950,56 +951,6 @@ System.out.<span class="method">println</span>(c2.<span class="method">computeAr
                     <p style="margin-top:10px;">صديقك كائن <em>مختلف</em>، لكن من نفس <em>النوع</em> (Human). كلاكما لديكما نفس أنواع الخصائص والسلوكيات، لكن بقيم مختلفة. اسمك مختلف، طولك مختلف، لكن كلاكما يستطيع المشي والتحدث.</p>
                 </div>
 
-                <p>في البرمجيات، ننمذج هذا بنفس الطريقة. إليك بعض الكائنات وخصائصها وسلوكياتها:</p>
-
-                <div class="object-visual">
-                    <div class="object-card">
-                        <div class="object-card-header">Circle</div>
-                        <div class="object-card-section">
-                            <div class="object-card-label">الخصائص</div>
-                            <div class="object-card-item">radius: double</div>
-                            <div class="object-card-item">color: String</div>
-                        </div>
-                        <div class="object-card-section">
-                            <div class="object-card-label">السلوكيات</div>
-                            <div class="object-card-item">computeArea()</div>
-                            <div class="object-card-item">computePerimeter()</div>
-                            <div class="object-card-item">draw()</div>
-                        </div>
-                    </div>
-
-                    <div class="object-card">
-                        <div class="object-card-header" style="background: linear-gradient(135deg, #059669, #047857);">Student</div>
-                        <div class="object-card-section">
-                            <div class="object-card-label">الخصائص</div>
-                            <div class="object-card-item">name: String</div>
-                            <div class="object-card-item">id: int</div>
-                            <div class="object-card-item">gpa: double</div>
-                        </div>
-                        <div class="object-card-section">
-                            <div class="object-card-label">السلوكيات</div>
-                            <div class="object-card-item">enroll()</div>
-                            <div class="object-card-item">getTranscript()</div>
-                            <div class="object-card-item">calculateGPA()</div>
-                        </div>
-                    </div>
-
-                    <div class="object-card">
-                        <div class="object-card-header" style="background: linear-gradient(135deg, #d97706, #b45309);">BankAccount</div>
-                        <div class="object-card-section">
-                            <div class="object-card-label">الخصائص</div>
-                            <div class="object-card-item">owner: String</div>
-                            <div class="object-card-item">balance: double</div>
-                            <div class="object-card-item">accountNo: String</div>
-                        </div>
-                        <div class="object-card-section">
-                            <div class="object-card-label">السلوكيات</div>
-                            <div class="object-card-item">deposit()</div>
-                            <div class="object-card-item">withdraw()</div>
-                            <div class="object-card-item">getBalance()</div>
-                        </div>
-                    </div>
-                </div>
             </div>
 
             <!-- ============================================================ -->
@@ -1074,19 +1025,19 @@ System.out.<span class="method">println</span>(c2.<span class="method">computeAr
                     <p>هذه اللغة تُسمى <strong>لغة النمذجة الموحدة (UML - Unified Modeling Language)</strong>.</p>
                 </div>
 
-                <p>UML هي <strong>ترميز رسومي</strong> &mdash; لغة بصرية من المخططات والرموز. أحد أهم مخططاتها هو <strong>مخطط الأصناف (Class Diagram)</strong>، الذي يصف خصائص وسلوكيات وعلاقات الكائنات. يحتوي على ثلاثة أقسام:</p>
+                <p>UML هي <strong>ترميز رسومي</strong> &mdash; لغة بصرية من المخططات والرموز. أحد أهم مخططاتها هو <strong>مخطط الأصناف (Classes Diagram)</strong>، الذي يصف خصائص وسلوكيات وعلاقات الكائنات. يحتوي على ثلاثة أقسام:</p>
 
                 <div class="info-box">
-                    <div class="info-box-title">هيكل مخطط الأصناف في UML</div>
+                    <div class="info-box-title">هيكل مخطط الأصناف (Classes) في UML</div>
                     <ol style="margin-top:8px; padding-right:20px;">
-                        <li><strong>الأعلى:</strong> اسم الصنف (نوع الكائن)</li>
+                        <li><strong>الأعلى:</strong> اسم الصنف (Class) (نوع الكائن)</li>
                         <li><strong>الوسط:</strong> الخصائص (السمات) مع أنواعها</li>
                         <li><strong>الأسفل:</strong> السلوكيات (الدوال) مع أنواع القيم المُعادة</li>
                     </ol>
                     <p style="margin-top:10px;">علامات الرؤية: <code class="code-inline">-</code> تعني <strong>خاص (private)</strong>، <code class="code-inline">+</code> تعني <strong>عام (public)</strong>.</p>
                 </div>
 
-                <p>إليك مخطط الأصناف في UML لدائرتنا <code class="code-inline">Circle</code>:</p>
+                <p>إليك مخطط الأصناف (Classes) في UML لدائرتنا <code class="code-inline">Circle</code>:</p>
 
                 <div class="uml-diagram">
                     <div class="uml-class">
@@ -1095,10 +1046,7 @@ System.out.<span class="method">println</span>(c2.<span class="method">computeAr
                             <div class="uml-item"><span class="uml-private">-</span> radius: double</div>
                         </div>
                         <div class="uml-section">
-                            <div class="uml-item"><span class="uml-public">+</span> Circle(radius: double)</div>
                             <div class="uml-item"><span class="uml-public">+</span> computeArea(): double</div>
-                            <div class="uml-item"><span class="uml-public">+</span> getRadius(): double</div>
-                            <div class="uml-item"><span class="uml-public">+</span> setRadius(radius: double): void</div>
                         </div>
                     </div>
                 </div>
@@ -1138,79 +1086,234 @@ System.out.<span class="method">println</span>(c2.<span class="method">computeAr
 
                 <div class="key-concept">
                     <div class="key-concept-title">ما هو الصنف (Class)؟</div>
-                    <p><strong>الصنف (Class)</strong> هو البناء البرمجي &mdash; <em>القالب</em> &mdash; الذي يصف خصائص وسلوكيات الكائن. إنه المكافئ البرمجي لمخطط الأصناف في UML. كل لغة برمجة لها صياغتها الخاصة لكتابة الأصناف (Java لها صياغتها، C++ لها صياغتها، Python لها صياغتها)، لكن المفهوم واحد:</p>
+                    <p><strong>الصنف (Class)</strong> هو البناء البرمجي &mdash; <em>القالب</em> &mdash; الذي يصف خصائص وسلوكيات الكائن. إنه المكافئ البرمجي لمخطط الأصناف (Classes) في UML. كل لغة برمجة لها صياغتها الخاصة لكتابة الأصناف (Classes) (Java لها صياغتها، C++ لها صياغتها، Python لها صياغتها)، لكن المفهوم واحد:</p>
                     <ul style="margin-top:8px; padding-right:20px;">
                         <li><strong>الصنف (Class)</strong> هو <em>قالب/مخطط</em> يُحدد الخصائص والسلوكيات التي سيمتلكها الكائن.</li>
-                        <li><strong>الكائن (Object)</strong> &mdash; ويُسمى أيضًا <em>نسخة (Instance)</em> &mdash; هو <em>تجسيد حقيقي</em> يُنشأ من ذلك الصنف، بقيم محددة لخصائصه.</li>
+                        <li><strong>الكائن (Object)</strong> &mdash; ويُسمى أيضًا <em>نسخة (Instance)</em> &mdash; هو <em>تجسيد حقيقي</em> يُنشأ من ذلك الصنف (Class)، بقيم محددة لخصائصه.</li>
                     </ul>
                 </div>
 
                 <div class="analogy-box">
-                    <div class="analogy-title">الصنف والكائن: قالب البسكويت والبسكويت</div>
-                    <p><strong>الصنف</strong> مثل قالب البسكويت &mdash; يُحدد <em>الشكل</em>. كل <strong>كائن</strong> هو بسكويتة مصنوعة من ذلك القالب. يمكنك صنع بسكويت شوكولاتة وبسكويت فانيلا وبسكويت فراولة &mdash; كلها من نفس القالب. جميعها لها نفس الشكل (الهيكل)، لكن بنكهات مختلفة (قيم). قالب واحد، بسكويت كثير. صنف واحد، كائنات كثيرة.</p>
+                    <div class="analogy-title">الصنف (Class) والكائن (Object): قالب البسكويت والبسكويت</div>
+                    <p><strong>الصنف (Class)</strong> مثل قالب البسكويت &mdash; يُحدد <em>الشكل</em>. كل <strong>كائن</strong> هو بسكويتة مصنوعة من ذلك القالب. يمكنك صنع بسكويت شوكولاتة وبسكويت فانيلا وبسكويت فراولة &mdash; كلها من نفس القالب. جميعها لها نفس الشكل (الهيكل)، لكن بنكهات مختلفة (قيم). قالب واحد، بسكويت كثير. صنف (Class) واحد، كائنات (Objects) كثيرة.</p>
                 </div>
 
-                <p>لنحوّل الآن مخطط UML إلى كود Java. هنا يأخذ المبرمج التصميم ويحوّله إلى واقع:</p>
+                <div class="info-box">
+                    <div class="info-box-title">ثلاثة أدوار في تطوير البرمجيات</div>
+                    <p>الآن ننتقل عبر ثلاثة أدوار مختلفة:</p>
+                    <ol style="margin-top:8px; padding-right:20px;">
+                        <li><strong>مهندس البرمجيات (المصمم):</strong> صمّم مخطط UML &mdash; مهمته انتهت.</li>
+                        <li><strong>المبرمج (المنفذ):</strong> يأخذ مخطط UML ويحوّله إلى كود باستخدام لغة برمجة.</li>
+                        <li><strong>المستخدم:</strong> يُنشئ كائنات (Objects) من الصنف (Class) ويستخدمها في برامجه.</li>
+                    </ol>
+                    <p style="margin-top:10px;">لنأخذ الآن دور <strong>المبرمج</strong> أولًا، ثم دور <strong>المستخدم</strong>.</p>
+                </div>
 
-                <div class="code-label">Circle.java &mdash; الصنف (المخطط)</div>
+                <!-- ====== الخطوة 1: التنفيذ ====== -->
+                <h3 style="margin: 30px 0 15px; color: var(--primary-color); font-size: 1.3rem;">الخطوة 1: التنفيذ (دور المبرمج)</h3>
+
+                <p>المبرمج ينظر إلى مخطط UML. يُظهر صنف (Class) <code class="code-inline">Circle</code> بخاصية واحدة (<code class="code-inline">radius</code>) وسلوك واحد (<code class="code-inline">computeArea()</code>). فيترجم المبرمج ذلك تمامًا إلى Java:</p>
+
+                <div class="code-label">Circle.java &mdash; التنفيذ الأول</div>
                 <div class="code-block"><span class="keyword">public class</span> <span class="type">Circle</span> {
 
-    <span class="comment">// الخاصية (السمة) — private تعني أن هذا الصنف فقط يمكنه الوصول إليها مباشرة</span>
+    <span class="comment">// Property (data field)</span>
     <span class="keyword">private</span> <span class="keyword">double</span> radius;
 
-    <span class="comment">// المُنشئ — يُستدعى عند إنشاء كائن Circle جديد</span>
-    <span class="keyword">public</span> <span class="method">Circle</span>(<span class="keyword">double</span> radius) {
-        <span class="keyword">this</span>.radius = radius;
-    }
-
-    <span class="comment">// السلوك — يحسب مساحة هذه الدائرة</span>
+    <span class="comment">// Behavior</span>
     <span class="keyword">public</span> <span class="keyword">double</span> <span class="method">computeArea</span>() {
         <span class="keyword">return</span> Math.PI * radius * radius;
     }
-
-    <span class="comment">// جالب (Getter) — يسمح للكود الخارجي بقراءة نصف القطر</span>
-    <span class="keyword">public</span> <span class="keyword">double</span> <span class="method">getRadius</span>() {
-        <span class="keyword">return</span> radius;
-    }
-
-    <span class="comment">// ضابط (Setter) — يسمح للكود الخارجي بتغيير نصف القطر</span>
-    <span class="keyword">public</span> <span class="keyword">void</span> <span class="method">setRadius</span>(<span class="keyword">double</span> radius) {
-        <span class="keyword">this</span>.radius = radius;
-    }
 }</div>
 
-                <p>لنستخدم الآن هذا الصنف بإنشاء كائنات منه:</p>
+                <p>هذا كل شيء. الصنف (Class) يحتوي بالضبط على ما وصفه مخطط UML: خاصية <code class="code-inline">radius</code> (مُعلنة <code class="code-inline">private</code>) ودالة <code class="code-inline">computeArea()</code>. مهمة المبرمج انتهت حاليًّا.</p>
 
-                <div class="code-label">Main.java &mdash; إنشاء واستخدام الكائنات</div>
+                <!-- ====== الخطوة 2: المستخدم ينشئ كائنات ====== -->
+                <h3 style="margin: 30px 0 15px; color: var(--primary-color); font-size: 1.3rem;">الخطوة 2: إنشاء الكائنات (دور المستخدم)</h3>
+
+                <p>الآن ننتقل إلى دور مختلف: <strong>المستخدم</strong>. المستخدم يريد إنشاء كائنات Circle وحساب مساحاتها. لنجرّب:</p>
+
+                <div class="code-label">Main.java &mdash; محاولة استخدام الدائرة</div>
                 <div class="code-block"><span class="keyword">public class</span> <span class="type">Main</span> {
     <span class="keyword">public static void</span> <span class="method">main</span>(<span class="type">String</span>[] args) {
 
-        <span class="comment">// إنشاء كائنات (نُسخ) من صنف Circle</span>
-        <span class="type">Circle</span> c1 = <span class="keyword">new</span> <span class="type">Circle</span>(<span class="number">5.0</span>);
-        <span class="type">Circle</span> c2 = <span class="keyword">new</span> <span class="type">Circle</span>(<span class="number">10.0</span>);
+        <span class="comment">// Create two Circle objects</span>
+        <span class="type">Circle</span> c1 = <span class="keyword">new</span> <span class="type">Circle</span>();
+        <span class="type">Circle</span> c2 = <span class="keyword">new</span> <span class="type">Circle</span>();
 
-        <span class="comment">// كل كائن له نصف قطره الخاص، حالته الخاصة</span>
-        System.out.<span class="method">println</span>(<span class="string">"c1 radius: "</span> + c1.<span class="method">getRadius</span>());   <span class="comment">// 5.0</span>
-        System.out.<span class="method">println</span>(<span class="string">"c2 radius: "</span> + c2.<span class="method">getRadius</span>());   <span class="comment">// 10.0</span>
+        <span class="comment">// We want to set the radius, but...</span>
+        <span class="comment">// c1.radius = 5.0;   // ERROR! radius has private access in Circle</span>
+        <span class="comment">// c2.radius = 10.0;  // ERROR! radius has private access in Circle</span>
 
-        <span class="comment">// كل كائن يحسب مساحته بنفسه</span>
-        System.out.<span class="method">println</span>(<span class="string">"Area of c1: "</span> + c1.<span class="method">computeArea</span>()); <span class="comment">// 78.54</span>
-        System.out.<span class="method">println</span>(<span class="string">"Area of c2: "</span> + c2.<span class="method">computeArea</span>()); <span class="comment">// 314.16</span>
+        <span class="comment">// We can't set the radius! Let's just try computeArea anyway...</span>
+        System.out.<span class="method">println</span>(c1.<span class="method">computeArea</span>());  <span class="comment">// 0.0</span>
+        System.out.<span class="method">println</span>(c2.<span class="method">computeArea</span>());  <span class="comment">// 0.0</span>
+    }
+}</div>
 
-        <span class="comment">// تغيير الحالة عبر الضابط</span>
-        c1.<span class="method">setRadius</span>(<span class="number">7.5</span>);
-        System.out.<span class="method">println</span>(<span class="string">"New area of c1: "</span> + c1.<span class="method">computeArea</span>()); <span class="comment">// 176.71</span>
+                <div class="important-box">
+                    <div class="important-box-title">المشكلة</div>
+                    <p>أنشأنا كائنين Circle، لكننا <strong>لا نستطيع الوصول إلى radius</strong>! لا نستطيع تعيين أي بيانات له. لماذا؟ لأن <code class="code-inline">radius</code> مُعلن كـ <code class="code-inline">private</code>. وبما أن نصف القطر لم يُعيَّن أبدًا، فقيمته الافتراضية <code class="code-inline">0.0</code>، لذا <code class="code-inline">computeArea()</code> تُعيد <strong>0.0</strong> لكلتا الدائرتين.</p>
+                    <p style="margin-top:10px;">هذه مشكلة حقيقية. لدينا صنف (Class) Circle، لكن لا نستطيع فعل أي شيء مفيد به! ماذا يمكننا أن نفعل؟</p>
+                </div>
+
+                <!-- ====== الخطوة 3: اقتراح طالب ====== -->
+                <h3 style="margin: 30px 0 15px; color: var(--primary-color); font-size: 1.3rem;">الخطوة 3: اقتراح طالب &mdash; اجعله عامًّا (Public)!</h3>
+
+                <p>طالب يرفع يده: <em>"يا أستاذ، لماذا لا نعرّف radius كـ <code class="code-inline">public</code> بدلًا من <code class="code-inline">private</code>؟"</em></p>
+                <p>اقتراح جيد! لنجرّب:</p>
+
+                <div class="code-label">Circle.java &mdash; بنصف قطر عام</div>
+                <div class="code-block"><span class="keyword">public class</span> <span class="type">Circle</span> {
+
+    <span class="comment">// Changed to public — anyone can access it directly</span>
+    <span class="keyword">public</span> <span class="keyword">double</span> radius;
+
+    <span class="keyword">public</span> <span class="keyword">double</span> <span class="method">computeArea</span>() {
+        <span class="keyword">return</span> Math.PI * radius * radius;
+    }
+}</div>
+
+                <div class="code-label">Main.java &mdash; الآن يعمل!</div>
+                <div class="code-block"><span class="keyword">public class</span> <span class="type">Main</span> {
+    <span class="keyword">public static void</span> <span class="method">main</span>(<span class="type">String</span>[] args) {
+
+        <span class="type">Circle</span> c1 = <span class="keyword">new</span> <span class="type">Circle</span>();
+        c1.radius = <span class="number">5.0</span>;
+        System.out.<span class="method">println</span>(c1.<span class="method">computeArea</span>());  <span class="comment">// 78.54 — it works!</span>
+
+        <span class="type">Circle</span> c2 = <span class="keyword">new</span> <span class="type">Circle</span>();
+        c2.radius = <span class="number">10.0</span>;
+        System.out.<span class="method">println</span>(c2.<span class="method">computeArea</span>());  <span class="comment">// 314.16 — it works!</span>
     }
 }</div>
 
                 <div class="success-box">
-                    <div class="success-box-title">ماذا حدث للتو؟</div>
-                    <ul style="margin-top:8px; padding-right:20px;">
-                        <li><code class="code-inline">Circle c1 = new Circle(5.0);</code> &mdash; أنشأنا <strong>كائنًا</strong> (نسخة) من صنف Circle بنصف قطر 5.0.</li>
-                        <li><code class="code-inline">c1.computeArea()</code> &mdash; طلبنا من الكائن تنفيذ أحد <strong>سلوكياته</strong>. الكائن يعرف نصف قطره ويحسب مساحته بنفسه.</li>
-                        <li><code class="code-inline">c1.setRadius(7.5)</code> &mdash; غيّرنا <strong>حالة</strong> الكائن عبر دالة ضابط مُتحكّم بها.</li>
-                    </ul>
-                    <p style="margin-top:10px;">ملاحظة: <code class="code-inline">c1</code> و <code class="code-inline">c2</code> هما <strong>كائنان مستقلان</strong>. تغيير نصف قطر c1 لا يؤثر على c2. كل كائن يحتفظ بحالته الخاصة.</p>
+                    <div class="success-box-title">يعمل!</div>
+                    <p>مع <code class="code-inline">public</code> radius، يمكننا الآن تعيين القيمة مباشرة وحساب المساحة. المشكلة حُلّت... أم لا؟</p>
+                </div>
+
+                <!-- ====== الخطوة 4: المشكلة الكبرى ====== -->
+                <h3 style="margin: 30px 0 15px; color: var(--danger-color); font-size: 1.3rem;">الخطوة 4: المشكلة الكبرى</h3>
+
+                <p>لحظة. إذا كان نصف القطر <code class="code-inline">public</code>، فهذا يعني أن <strong>أي شخص</strong> يمكنه تعيين <strong>أي قيمة</strong>. ماذا لو فعل شخص ما هذا؟</p>
+
+                <div class="code-block">c1.radius = <span class="number">-10</span>;  <span class="comment">// A negative radius?!</span>
+System.out.<span class="method">println</span>(c1.<span class="method">computeArea</span>());  <span class="comment">// 314.16 — area of a circle with radius -10??</span></div>
+
+                <div class="important-box">
+                    <div class="important-box-title">هذه مشكلة خطيرة!</div>
+                    <p>عندما يكون نصف القطر <code class="code-inline">public</code>، يمكن لأي كود خارجي <strong>الوصول المباشر إلى بيانات الكائن وتعديلها</strong>. أي شخص يمكنه تعيين أي قيمة &mdash; حتى القيم غير المنطقية مثل <code class="code-inline">-10</code>. الكائن <strong>لا يملك أي تحكم</strong> في بياناته الخاصة.</p>
+                    <p style="margin-top:10px;">أهم ما في الكائن هو <strong>حقول بياناته (خصائصه)</strong>. هذه الحقول يجب أن تكون <strong>محكومة فقط من قبل الكائن نفسه</strong>. عندما نجعلها <code class="code-inline">public</code>، نتنازل عن هذا التحكم للعالم الخارجي بأكمله.</p>
+                </div>
+
+                <!-- ====== الخطوة 5: التغليف ====== -->
+                <h3 style="margin: 30px 0 15px; color: var(--secondary-color); font-size: 1.3rem;">الخطوة 5: الركن الأول &mdash; التغليف (Encapsulation)</h3>
+
+                <p>ما اكتشفناه للتو هو بالضبط السبب وراء وجود <strong>الركن الأول في البرمجة كائنية التوجه</strong>: <strong>التغليف (Encapsulation)</strong>. لكن قبل أن نعرّفه، انظر إلى الكلمة نفسها:</p>
+
+                <div style="text-align:center; margin: 25px 0;">
+                    <div style="display:inline-block; background: linear-gradient(135deg, #faf5ff, #f3e8ff); border: 3px solid var(--secondary-color); border-radius: 20px; padding: 30px 50px;">
+                        <div style="font-size: 4rem; margin-bottom: 10px;">&#128138;</div>
+                        <div style="font-size: 1.4rem; font-weight: bold; color: var(--secondary-color);">En<span style="background: #fde68a; padding: 2px 6px; border-radius: 6px;">capsul</span>ation</div>
+                        <div style="margin-top: 10px; color: var(--gray-color); font-size: 1rem;">الكلمة مشتقة من <strong>capsule</strong> (كبسولة) &mdash; مثل كبسولة الدواء.</div>
+                        <div style="margin-top: 8px; color: var(--dark-color); font-size: 1.05rem;">الكبسولة <strong>تلف وتحمي</strong> الدواء بداخلها.<br>لا أحد يستطيع لمس الدواء مباشرة &mdash; إنه <strong>محاط ومحمي</strong>.</div>
+                        <div style="margin-top: 15px; font-size: 1.05rem; color: var(--secondary-color); font-weight: bold;">في البرمجة كائنية التوجه، التغليف يلف ويحمي <em>البيانات</em> داخل الكائن.</div>
+                    </div>
+                </div>
+
+                <div class="key-concept">
+                    <div class="key-concept-title">التغليف (Encapsulation)</div>
+                    <p><strong>التغليف</strong> يعني أن حقول بيانات الكائن يجب أن تكون <strong>محمية من الوصول الخارجي المباشر</strong>. الكائن يجب أن يكون الوحيد الذي يتحكم في بياناته الخاصة. لا يجب أن يستطيع أي كود خارجي الوصول المباشر وتعديل الحالة الداخلية للكائن.</p>
+                    <p style="margin-top:10px;">عندما عرّفنا <code class="code-inline">radius</code> كـ <code class="code-inline">public</code>، <strong>انتهكنا التغليف</strong>. كسرنا قدرة الكائن على حماية نفسه.</p>
+                </div>
+
+                <div class="analogy-box">
+                    <div class="analogy-title">تشبيه: الكائنات مثل الدول ذات السيادة</div>
+                    <p>فكّر في كل كائن كـ<strong>دولة ذات سيادة</strong>. تخيّل المملكة العربية السعودية ومصر. إذا أرادت الحكومة المصرية معلومات عن مواطن سعودي، هل يمكنها مدّ يدها مباشرة والحصول على ذلك المواطن؟ <strong>بالتأكيد لا.</strong></p>
+                    <p style="margin-top:10px;">الإجراء الصحيح: <em>وزارة الداخلية</em> المصرية تتواصل مع <em>وزارة الخارجية</em> المصرية، التي تتواصل مع <em>وزارة الخارجية</em> السعودية، التي تتواصل مع <em>وزارة الداخلية</em> السعودية. كل شيء يمر عبر <strong>القنوات الرسمية</strong> &mdash; عبر البوابات المناسبة.</p>
+                    <p style="margin-top:10px;">كل دولة <strong>مستقلة</strong> ولها <strong>سيادة</strong> &mdash; لا أحد يستطيع التدخل في شؤونها الداخلية مباشرة. هذا بالضبط كيف يجب أن تعمل الكائنات. كل كائن مستقل، وبياناته الداخلية لا يمكن الوصول إليها إلا عبر <strong>بوابات مُتحكّم بها</strong> (الدوال العامة)، وليس مباشرة أبدًا.</p>
+                </div>
+
+                <p>إذن نحتاج العودة إلى <code class="code-inline">private</code>. لكن كيف نحل المشكلة الأصلية المتمثلة في عدم القدرة على تعيين نصف القطر؟ الجواب: <strong>دوال الإرجاع والتعيين (Getters and Setters)</strong>.</p>
+
+                <!-- ====== الخطوة 6: الحل ====== -->
+                <h3 style="margin: 30px 0 15px; color: var(--success-color); font-size: 1.3rem;">الخطوة 6: الحل &mdash; دالّة الإرجاع ودالّة التعيين (Getter and Setter)</h3>
+
+                <p>نُعيد <code class="code-inline">radius</code> إلى <code class="code-inline">private</code>، ونضيف دالتين عامتين: <strong>دالّة تعيين (Setter)</strong> لتغيير البيانات و<strong>دالّة إرجاع (Getter)</strong> لقراءة البيانات. هذه الدوال هي <strong>البوابات الرسمية</strong> التي يتفاعل العالم الخارجي من خلالها مع بيانات الكائن.</p>
+
+                <div class="code-label">Circle.java &mdash; مع دالّة إرجاع ودالّة تعيين</div>
+                <div class="code-block"><span class="keyword">public class</span> <span class="type">Circle</span> {
+
+    <span class="comment">// Property — private (encapsulated)</span>
+    <span class="keyword">private</span> <span class="keyword">double</span> radius;
+
+    <span class="comment">// Setter — allows outside code to CHANGE the radius</span>
+    <span class="keyword">public</span> <span class="keyword">void</span> <span class="method">setRadius</span>(<span class="keyword">double</span> radius) {
+        <span class="keyword">this</span>.radius = radius;
+    }
+
+    <span class="comment">// Getter — allows outside code to READ the radius</span>
+    <span class="keyword">public</span> <span class="keyword">double</span> <span class="method">getRadius</span>() {
+        <span class="keyword">return</span> radius;
+    }
+
+    <span class="comment">// Behavior</span>
+    <span class="keyword">public</span> <span class="keyword">double</span> <span class="method">computeArea</span>() {
+        <span class="keyword">return</span> Math.PI * radius * radius;
+    }
+}</div>
+
+                <div class="code-label">Main.java &mdash; استخدام دالّة الإرجاع ودالّة التعيين</div>
+                <div class="code-block"><span class="keyword">public class</span> <span class="type">Main</span> {
+    <span class="keyword">public static void</span> <span class="method">main</span>(<span class="type">String</span>[] args) {
+
+        <span class="type">Circle</span> c1 = <span class="keyword">new</span> <span class="type">Circle</span>();
+        c1.<span class="method">setRadius</span>(<span class="number">5.0</span>);
+        System.out.<span class="method">println</span>(<span class="string">"Radius: "</span> + c1.<span class="method">getRadius</span>());     <span class="comment">// 5.0</span>
+        System.out.<span class="method">println</span>(<span class="string">"Area: "</span> + c1.<span class="method">computeArea</span>());    <span class="comment">// 78.54</span>
+
+        <span class="type">Circle</span> c2 = <span class="keyword">new</span> <span class="type">Circle</span>();
+        c2.<span class="method">setRadius</span>(<span class="number">10.0</span>);
+        System.out.<span class="method">println</span>(<span class="string">"Radius: "</span> + c2.<span class="method">getRadius</span>());     <span class="comment">// 10.0</span>
+        System.out.<span class="method">println</span>(<span class="string">"Area: "</span> + c2.<span class="method">computeArea</span>());    <span class="comment">// 314.16</span>
+    }
+}</div>
+
+                <p>يعمل مرة أخرى! لكن انتظر &mdash; طالب يطرح سؤالًا جيدًا...</p>
+
+                <!-- ====== الخطوة 7: أليس هذا نفس الشيء؟ ====== -->
+                <h3 style="margin: 30px 0 15px; color: var(--primary-color); font-size: 1.3rem;">الخطوة 7: "أليس هذا نفس الشيء مثل Public؟"</h3>
+
+                <p>طالب يرفع يده: <em>"يا أستاذ، ماذا لو استدعى شخص ما <code class="code-inline">setRadius(-10)</code>؟ لا تزال لدينا نفس المشكلة، أليس كذلك؟ كيف يختلف هذا عن <code class="code-inline">public</code>؟"</em></p>
+
+                <p><strong>سؤال ممتاز!</strong> والجواب هو: <strong>لا، ليسا نفس الشيء على الإطلاق.</strong></p>
+
+                <p>عندما كان نصف القطر <code class="code-inline">public</code>، كانت البيانات تُعدَّل <strong>مباشرة</strong> من الخارج &mdash; الكائن لم يكن له رأي. لكن الآن، مع دالّة التعيين، التعديل يمر <strong>عبر الكائن نفسه</strong>. ولأنه يمر عبر دالة داخل الكائن، <strong>يمكن للكائن إضافة شروط!</strong></p>
+
+                <div class="code-label">Circle.java &mdash; دالّة تعيين مع التحقق</div>
+                <div class="code-block"><span class="comment">// Setter — with validation! The object protects itself.</span>
+<span class="keyword">public</span> <span class="keyword">void</span> <span class="method">setRadius</span>(<span class="keyword">double</span> radius) {
+    <span class="keyword">if</span> (radius &gt;= <span class="number">0</span>) {
+        <span class="keyword">this</span>.radius = radius;
+    } <span class="keyword">else</span> {
+        System.out.<span class="method">println</span>(<span class="string">"Error: radius cannot be negative!"</span>);
+    }
+}</div>
+
+                <div class="code-label">Main.java &mdash; اختبار التحقق</div>
+                <div class="code-block"><span class="type">Circle</span> c1 = <span class="keyword">new</span> <span class="type">Circle</span>();
+c1.<span class="method">setRadius</span>(<span class="number">5.0</span>);
+System.out.<span class="method">println</span>(c1.<span class="method">computeArea</span>());  <span class="comment">// 78.54 — works!</span>
+
+c1.<span class="method">setRadius</span>(<span class="number">-10</span>);                     <span class="comment">// Error: radius cannot be negative!</span>
+System.out.<span class="method">println</span>(c1.<span class="method">computeArea</span>());  <span class="comment">// 78.54 — still 5.0! The object protected itself!</span></div>
+
+                <div class="success-box">
+                    <div class="success-box-title">التغليف عمليًّا</div>
+                    <p>الآن حقل بيانات الكائن يُعدَّل <strong>ليس مباشرة، بل بشكل غير مباشر &mdash; عبر الكائن نفسه</strong>. الكائن يتحكم في بياناته الخاصة. يمكنه التحقق، أو الرفض، أو تحويل القيم قبل قبولها. هذا هو تطبيق <strong>التغليف</strong>.</p>
+                    <p style="margin-top:10px;">كل كائن مثل <strong>دولة ذات سيادة</strong>: مستقل، يحكم نفسه بنفسه، ولا يستطيع أي كود خارجي التدخل في شؤونه الداخلية مباشرة. كل شيء يمر عبر البوابات المناسبة &mdash; الدوال العامة.</p>
+                    <p style="margin-top:10px;">هذا يعني أيضًا أنه في المستقبل، عندما تكبر الأنظمة، يصبح من <strong>السهل صيانة</strong> الكائن. كل المنطق لحماية وإدارة بياناته في مكان واحد &mdash; داخل الكائن نفسه.</p>
                 </div>
             </div>
 
@@ -1229,9 +1332,9 @@ System.out.<span class="method">println</span>(c2.<span class="method">computeAr
 
                 <div class="pillars-grid">
                     <div class="pillar-card">
-                        <div class="pillar-icon">&#128274;</div>
+                        <div class="pillar-icon">&#128138;</div>
                         <div class="pillar-name">التغليف (Encapsulation)</div>
-                        <div class="pillar-desc">تجميع البيانات والدوال معًا في صنف واحد، و<strong>التحكم بالوصول</strong> إلى الحالة الداخلية. مثل كبسولة تحمي محتوياتها &mdash; تتفاعل مع الخارج، لا الداخل.</div>
+                        <div class="pillar-desc">تجميع البيانات والدوال معًا في صنف (Class) واحد، و<strong>التحكم بالوصول</strong> إلى الحالة الداخلية. مثل كبسولة تحمي محتوياتها &mdash; تتفاعل مع الخارج، لا الداخل.</div>
                     </div>
                     <div class="pillar-card">
                         <div class="pillar-icon">&#127912;</div>
@@ -1241,7 +1344,7 @@ System.out.<span class="method">println</span>(c2.<span class="method">computeAr
                     <div class="pillar-card">
                         <div class="pillar-icon">&#128106;</div>
                         <div class="pillar-name">الوراثة (Inheritance)</div>
-                        <div class="pillar-desc">إنشاء أصناف جديدة <strong>مبنية على أصناف موجودة</strong>، مع إعادة استخدام وتوسيع خصائصها وسلوكياتها. سيارة <code class="code-inline">SportsCar</code> ترث من <code class="code-inline">Car</code> وتضيف التوربو.</div>
+                        <div class="pillar-desc">إنشاء أصناف (Classes) جديدة <strong>مبنية على أصناف (Classes) موجودة</strong>، مع إعادة استخدام وتوسيع خصائصها وسلوكياتها. سيارة <code class="code-inline">SportsCar</code> ترث من <code class="code-inline">Car</code> وتضيف التوربو.</div>
                     </div>
                     <div class="pillar-card">
                         <div class="pillar-icon">&#128260;</div>
@@ -1252,14 +1355,14 @@ System.out.<span class="method">println</span>(c2.<span class="method">computeAr
 
                 <h3 style="margin: 25px 0 15px; color: var(--primary-color); font-size: 1.2rem;">التغليف عمليًّا (مثال الدائرة)</h3>
 
-                <p>لاحظ أنه في صنف <code class="code-inline">Circle</code> الخاص بنا، الحقل <code class="code-inline">radius</code> مُعلن بصفة <code class="code-inline">private</code>. هذا يعني أنه لا يمكن لأي كود خارج الصنف فعل هذا:</p>
+                <p>لاحظ أنه في صنف (Class) <code class="code-inline">Circle</code> الخاص بنا، الحقل <code class="code-inline">radius</code> مُعلن بصفة <code class="code-inline">private</code>. هذا يعني أنه لا يمكن لأي كود خارج الصنف (Class) فعل هذا:</p>
 
                 <div class="code-block"><span class="comment">// هذا لن يُترجم — radius خاص!</span>
 c1.radius = <span class="number">-50</span>;  <span class="comment">// ERROR: radius has private access in Circle</span></div>
 
-                <p>بدلًا من ذلك، يجب على العالم الخارجي استخدام دوال <strong>الجالب</strong> و<strong>الضابط</strong>. هذا يمنح الصنف التحكم:</p>
+                <p>بدلًا من ذلك، يجب على العالم الخارجي استخدام <strong>دالّة الإرجاع</strong> و<strong>دالّة التعيين</strong>. هذا يمنح الصنف (Class) التحكم:</p>
 
-                <div class="code-block"><span class="comment">// يمكننا إضافة التحقق داخل الضابط:</span>
+                <div class="code-block"><span class="comment">// يمكننا إضافة التحقق داخل دالّة التعيين:</span>
 <span class="keyword">public void</span> <span class="method">setRadius</span>(<span class="keyword">double</span> radius) {
     <span class="keyword">if</span> (radius &gt; <span class="number">0</span>) {
         <span class="keyword">this</span>.radius = radius;
@@ -1270,139 +1373,135 @@ c1.radius = <span class="number">-50</span>;  <span class="comment">// ERROR: ra
 
                 <div class="key-concept">
                     <div class="key-concept-title">لماذا التغليف مهم</div>
-                    <p><strong>التغليف (Encapsulation)</strong> يحمي الحالة الداخلية للكائن من التغييرات غير الصالحة أو غير المقصودة. كما يعني أنه يمكنك تغيير التنفيذ الداخلي دون كسر الكود الذي يستخدم الصنف. العالم الخارجي يعتمد فقط على <em>الواجهة العامة</em> (الدوال)، وليس التفاصيل الداخلية.</p>
+                    <p><strong>التغليف (Encapsulation)</strong> يحمي الحالة الداخلية للكائن من التغييرات غير الصالحة أو غير المقصودة. كما يعني أنه يمكنك تغيير التنفيذ الداخلي دون كسر الكود الذي يستخدم الصنف (Class). العالم الخارجي يعتمد فقط على <em>الواجهة العامة</em> (الدوال)، وليس التفاصيل الداخلية.</p>
                 </div>
 
                 <h3 style="margin: 25px 0 15px; color: var(--primary-color); font-size: 1.2rem;">التجريد عمليًّا</h3>
 
-                <p>عندما تستدعي <code class="code-inline">c1.computeArea()</code>، لا تحتاج لمعرفة <em>كيف</em> تُحسب المساحة. لا يهمك ما إذا كانت تستخدم <code class="code-inline">Math.PI * r * r</code> أو صيغة أخرى داخليًّا. تستدعي الدالة وتحصل على النتيجة. التعقيد <strong>مُجرَّد</strong> (مخفي).</p>
+                <div class="narrative">
+                    <p>الركن الثاني في البرمجة كائنية التوجه هو <strong>التجريد (Abstraction)</strong>. لكن ماذا يعني حقًّا؟ قبل أن نعرّفه تقنيًّا، لنفكّر فيه من منظور أوسع.</p>
+                </div>
+
+                <h4 style="margin: 20px 0 10px; color: var(--secondary-color); font-size: 1.1rem;">ماذا لو كان كل شيء يتطلب خبرة؟</h4>
+
+                <p>اسأل نفسك هذا السؤال: <strong>ماذا لو كان كل جهاز، كل آلة، كل نظام في العالم لا يمكن استخدامه إلا بواسطة خبير؟</strong></p>
+
+                <div class="important-box">
+                    <div class="important-box-title">تخيّل هذا العالم...</div>
+                    <ul style="margin-top:8px; padding-right:20px;">
+                        <li>لكي <strong>تقود سيارة</strong>، يجب أن تكون مهندسًا ميكانيكيًّا يفهم محركات الاحتراق وأنظمة النقل وحقن الوقود.</li>
+                        <li>لكي <strong>تستخدم هاتفًا</strong>، يجب أن تكون مهندس اتصالات يفهم ترددات الراديو ومعالجة الإشارات وبروتوكولات TCP/IP.</li>
+                        <li>لكي <strong>تستخدم حاسوبًا</strong>، يجب أن تفهم هندسة المعالج وإدارة الذاكرة والأعمال الداخلية لنظام التشغيل.</li>
+                    </ul>
+                    <p style="margin-top:10px;"><strong>كيف ستعمل حياتنا؟</strong> لن تعمل! لن يكون هناك سائقون، ولا مستخدمو هواتف، ولا أحد يستخدم أي جهاز. سينهار المجتمع.</p>
+                </div>
+
+                <p>لكن بالطبع، عالمنا لا يعمل هكذا. أنت تقود السيارة باستخدام <strong>المقود والدواسات</strong> &mdash; لا تحتاج لفهم المحرك. تستخدم الهاتف بالضغط على <strong>أزرار الشاشة</strong> &mdash; لا تحتاج لفهم ترددات الراديو. كل التعقيد <strong>مخفي</strong> خلف واجهة بسيطة.</p>
+
+                <p>هذه هي فلسفة <strong>التجريد</strong>: <em>كيف نطوّر نظامًا يمكن لغير الخبير استخدامه</em>.</p>
+
+                <div class="key-concept">
+                    <div class="key-concept-title">التجريد (Abstraction)</div>
+                    <p><strong>التجريد</strong> هو ممارسة <strong>فصل التنفيذ عن الاستخدام</strong>. المستخدم يتفاعل مع واجهة بسيطة (<em>ماذا</em>) دون الحاجة لمعرفة التفاصيل المعقدة خلفها (<em>كيف</em>).</p>
+                    <p style="margin-top:10px;">في البرمجة كائنية التوجه، هذا يعني: <strong>فصل تنفيذ الصنف (Class) عن استخدام ذلك الصنف (Class)</strong>. الشخص الذي <em>يستخدم</em> الصنف (Class) لا يحتاج لمعرفة <em>كيف</em> تم تنفيذه داخليًّا.</p>
+                </div>
+
+                <h4 style="margin: 25px 0 10px; color: var(--secondary-color); font-size: 1.1rem;">لقد جرّبت التجريد من قبل: صنف (Class) Scanner</h4>
+
+                <p>تذكّر مقرر <strong>CPCS202 (البرمجة 1)</strong>. جميعكم استخدمتم صنف (Class) <code class="code-inline">Scanner</code> لقراءة مدخلات المستخدم:</p>
+
+                <div class="code-block"><span class="type">Scanner</span> input = <span class="keyword">new</span> <span class="type">Scanner</span>(System.in);
+<span class="keyword">int</span> age = input.<span class="method">nextInt</span>();
+<span class="type">String</span> name = input.<span class="method">nextLine</span>();</div>
+
+                <p>استخدمتموه بثقة. أنشأتم كائن <code class="code-inline">Scanner</code>، استدعيتم <code class="code-inline">nextInt()</code>، استدعيتم <code class="code-inline">nextLine()</code>، وعمل الأمر. لكن دعوني أسألكم:</p>
+
+                <div class="quote-box">
+                    <p>"هل تعرفون <em>كيف</em> تم تنفيذ صنف (Class) Scanner داخليًّا؟ هل تعرفون الخوارزميات المعقدة التي يستخدمها لتحليل تدفقات الإدخال، ومعالجة ترميز الأحرف، وتقسيم البيانات إلى رموز؟"</p>
+                </div>
+
+                <p><strong>لا.</strong> ولم تحتاجوا لذلك. صنف (Class) Scanner له تنفيذ داخلي معقد جدًّا، لكن كل ذلك التعقيد كان <strong>مخفيًّا عنكم</strong>. تفاعلتم فقط مع <strong>الدوال العامة</strong> &mdash; الواجهة البسيطة. هذا هو التجريد عمليًّا: هناك <strong>فصل بين التنفيذ والاستخدام</strong>.</p>
+
+                <h4 style="margin: 25px 0 10px; color: var(--secondary-color); font-size: 1.1rem;">التجريد في دائرتنا</h4>
+
+                <p>الآن انظر إلى صنف (Class) <code class="code-inline">Circle</code> الخاص بنا. المستخدم يمكنه إنشاء كائن، تعيين نصف القطر، وحساب المساحة:</p>
+
+                <div class="code-block"><span class="type">Circle</span> c1 = <span class="keyword">new</span> <span class="type">Circle</span>();
+c1.<span class="method">setRadius</span>(<span class="number">5.0</span>);
+System.out.<span class="method">println</span>(c1.<span class="method">computeArea</span>());  <span class="comment">// 78.54</span></div>
+
+                <p>لكن هل يعرف المستخدم <em>كيف</em> تحسب <code class="code-inline">computeArea()</code> المساحة؟ هل يعرف أنها تستخدم <code class="code-inline">Math.PI * radius * radius</code>؟ <strong>لا &mdash; ولا يحتاج لذلك.</strong> التنفيذ مخفي. المستخدم يرى فقط الدوال العامة. هذا هو التجريد.</p>
+
+                <h4 style="margin: 25px 0 10px; color: var(--secondary-color); font-size: 1.1rem;">علامة التجريد السيئ</h4>
+
+                <div class="important-box">
+                    <div class="important-box-title">كيف تعرف أن التجريد ضعيف؟</div>
+                    <p>إذا طوّرت برنامجًا والمستخدم النهائي <strong>يعاني ويصرخ</strong> محاولًا استخدامه &mdash; فهذه علامة واضحة أن تجريدك <strong>ليس جيدًا</strong>.</p>
+                    <p style="margin-top:10px;">أي نظام برمجي <strong>ليس سهل الاستخدام</strong> يعني أن ركن التجريد <strong>لم يُنفَّذ بشكل جيد</strong>. التعقيد لم يُخفَ بشكل صحيح عن المستخدم. فكّر في التطبيقات التي استخدمتها وكانت محبطة &mdash; المطورون فشلوا في التجريد.</p>
+                    <p style="margin-top:10px;"><strong>فكّر دائمًا في المستخدم النهائي عند تصميم برامجك. اجعلها بسيطة الاستخدام، مهما كانت معقدة من الداخل.</strong></p>
+                </div>
+
+                <h4 style="margin: 25px 0 10px; color: var(--secondary-color); font-size: 1.1rem;">الأصناف (Classes) هي بالفعل تجريدات</h4>
+
+                <p>قد يقول طالب: <em>"يا أستاذ، أليس الصنف (Class) نفسه بالفعل تجريدًا؟"</em></p>
+                <p><strong>نعم، بالتأكيد!</strong> كل صنف (Class) في البرمجة كائنية التوجه &mdash; سواء في Java أو Python أو C++ &mdash; هو بحد ذاته تطبيق لمفهوم التجريد. عندما تكتب صنفًا (Class) بحقول <code class="code-inline">private</code> ودوال <code class="code-inline">public</code>، فأنت بالفعل تُنشئ تجريدًا: تخفي التفاصيل الداخلية وتُظهر فقط ما يحتاجه المستخدم.</p>
+
+                <h4 style="margin: 25px 0 10px; color: var(--secondary-color); font-size: 1.1rem;">التجريد على مستوى النظام: الصورة الأكبر</h4>
+
+                <p>لكن عندما تصمم <strong>نظامًا أكبر</strong> مكونًا من أصناف عديدة، يصبح التجريد أكثر أهمية. تحتاج لإنشاء صنف (Class) يمثل <strong>المستوى المُجرَّد</strong> للنظام بأكمله &mdash; يُسمى أحيانًا <strong>صنف (Class) المتحكم (Controller Class)</strong> أو <strong>صنف (Class) المحرك (Engine Class)</strong>. هذا الصنف يخفي كل التعقيد الداخلي ويُظهر فقط العمليات الأساسية، بشكل مشابه لـ <strong>واجهة برمجة التطبيقات (API)</strong>.</p>
 
                 <div class="analogy-box">
-                    <div class="analogy-title">التجريد في الحياة اليومية</div>
-                    <p>عندما ترسل رسالة على هاتفك، تضغط "إرسال". لا تفكر في ترددات الراديو، أو توجيه أبراج الاتصال، أو حزم TCP/IP، أو معالجة الخادم. كل هذا التعقيد <strong>مُجرَّد</strong> خلف زر واحد. البرمجة كائنية التوجه تطبق نفس المبدأ على الكود.</p>
+                    <div class="analogy-title">مثال: نظام توصيل الطعام</div>
+                    <p>تخيّل أنك تطوّر نظام توصيل طعام (مثل HungerStation). داخليًّا، هذا النظام يحتوي على أصناف (Classes) عديدة: <code class="code-inline">Customer</code>، <code class="code-inline">Restaurant</code>، <code class="code-inline">Order</code>، <code class="code-inline">Driver</code>، <code class="code-inline">Payment</code>، وغيرها الكثير &mdash; كل منها بمنطق معقد.</p>
+                    <p style="margin-top:10px;">لكنك أيضًا تُنشئ <strong>صنف (Class) متحكم</strong> يمثل المستوى المُجرَّد للنظام. هذا الصنف (Class) يُظهر دوال عامة بسيطة:</p>
+                </div>
+
+                <div class="code-block"><span class="keyword">public class</span> <span class="type">DeliverySystem</span> {
+
+    <span class="comment">// The abstract level — simple public methods (like an API)</span>
+    <span class="keyword">public</span> <span class="keyword">void</span> <span class="method">registerCustomer</span>(<span class="type">String</span> name, <span class="type">String</span> phone) { ... }
+    <span class="keyword">public</span> <span class="keyword">void</span> <span class="method">deleteCustomer</span>(<span class="keyword">int</span> customerId) { ... }
+    <span class="keyword">public</span> <span class="keyword">void</span> <span class="method">placeOrder</span>(<span class="keyword">int</span> customerId, <span class="keyword">int</span> restaurantId) { ... }
+    <span class="keyword">public</span> <span class="keyword">void</span> <span class="method">cancelOrder</span>(<span class="keyword">int</span> orderId) { ... }
+    <span class="keyword">public</span> <span class="type">String</span> <span class="method">trackOrder</span>(<span class="keyword">int</span> orderId) { ... }
+
+    <span class="comment">// All the complex internal logic is hidden inside...</span>
+}</div>
+
+                <p>الآن، تخيّل أن مطورًا آخر يريد بناء <strong>تطبيق ويب</strong> أو <strong>تطبيق جوال</strong> باستخدام نظام التوصيل الخاص بك. لا يحتاج لفهم العشرات من الأصناف (Classes) الداخلية. ببساطة <strong>يستورد صنف (Class) المتحكم</strong> ويستخدم دواله العامة:</p>
+
+                <div class="code-block"><span class="comment">// Another developer building a web application</span>
+<span class="type">DeliverySystem</span> system = <span class="keyword">new</span> <span class="type">DeliverySystem</span>();
+system.<span class="method">registerCustomer</span>(<span class="string">"Ahmed"</span>, <span class="string">"0551234567"</span>);
+system.<span class="method">placeOrder</span>(<span class="number">1001</span>, <span class="number">55</span>);
+system.<span class="method">trackOrder</span>(<span class="number">3001</span>);
+<span class="comment">// They don't know or care about the internal complexity!</span></div>
+
+                <p>هناك <strong>فصل تام</strong> بين التنفيذ والاستخدام. المطور الذي يستخدم نظامك لا يحتاج لمعرفة أي من التفاصيل الداخلية. بل يمكنه حتى استخدام <strong>لغة برمجة مختلفة</strong> &mdash; مثلًا، استدعاء مكتبتك في Java من MATLAB أو Python &mdash; وسيعمل الأمر، لأنه يتفاعل فقط مع المستوى المُجرَّد.</p>
+
+                <div class="success-box">
+                    <div class="success-box-title">لماذا التجريد مهم</div>
+                    <p>التجريد موجود في كل مكان &mdash; في العالم الحقيقي وفي البرمجيات. إنه المبدأ الذي يجعل الأنظمة المعقدة <strong>قابلة للاستخدام من قبل أي شخص</strong>، وليس فقط الخبراء.</p>
+                    <ul style="margin-top:8px; padding-right:20px;">
+                        <li>كل <strong>صنف (Class)</strong> هو بالفعل تجريد &mdash; يخفي حقوله الخاصة خلف دوال عامة.</li>
+                        <li><strong>نظام</strong> من أصناف (Classes) عديدة يحتاج صنف (Class) متحكم/محرك يمثل المستوى المُجرَّد &mdash; يخفي كل التعقيد خلف عمليات بسيطة وعامة.</li>
+                        <li>إذا كان مستخدموك <strong>يعانون لاستخدام</strong> برنامجك، فتجريدك يحتاج لتحسين.</li>
+                        <li><strong>صمّم دائمًا</strong> برامجك على المستوى المُجرَّد &mdash; اجعلها بسيطة الاستخدام، مهما كانت معقدة من الداخل.</li>
+                    </ul>
                 </div>
             </div>
 
             <!-- ============================================================ -->
-            <!-- القسم 8: مثال كامل: صنف الطالب -->
+            <!-- القسم 8: لماذا البرمجة كائنية التوجه مهمة -->
             <!-- ============================================================ -->
             <div class="section">
                 <h2 class="section-title">
                     <span class="section-number">8</span>
-                    مثال كامل: صنف الطالب (Student)
-                </h2>
-
-                <p>لنبنِ شيئًا أكثر واقعية. سنصمم صنف <code class="code-inline">Student</code> من الصفر، متبعين عملية البرمجة كائنية التوجه كاملة.</p>
-
-                <h3 style="margin: 20px 0 15px; color: var(--primary-color); font-size: 1.15rem;">الخطوة 1: تحديد الكائن والخصائص والسلوكيات</h3>
-
-                <div class="uml-diagram">
-                    <div class="uml-class" style="min-width: 350px;">
-                        <div class="uml-name" style="background: #059669;">Student</div>
-                        <div class="uml-section" style="border-color: #059669;">
-                            <div class="uml-item"><span class="uml-private">-</span> name: String</div>
-                            <div class="uml-item"><span class="uml-private">-</span> id: int</div>
-                            <div class="uml-item"><span class="uml-private">-</span> gpa: double</div>
-                        </div>
-                        <div class="uml-section" style="border-color: #059669;">
-                            <div class="uml-item"><span class="uml-public">+</span> Student(name: String, id: int)</div>
-                            <div class="uml-item"><span class="uml-public">+</span> getName(): String</div>
-                            <div class="uml-item"><span class="uml-public">+</span> getId(): int</div>
-                            <div class="uml-item"><span class="uml-public">+</span> getGpa(): double</div>
-                            <div class="uml-item"><span class="uml-public">+</span> setGpa(gpa: double): void</div>
-                            <div class="uml-item"><span class="uml-public">+</span> isHonorStudent(): boolean</div>
-                            <div class="uml-item"><span class="uml-public">+</span> toString(): String</div>
-                        </div>
-                    </div>
-                </div>
-
-                <h3 style="margin: 25px 0 15px; color: var(--primary-color); font-size: 1.15rem;">الخطوة 2: كتابة الصنف</h3>
-
-                <div class="code-label">Student.java</div>
-                <div class="code-block"><span class="keyword">public class</span> <span class="type">Student</span> {
-
-    <span class="comment">// الخصائص (خاصة — مغلّفة)</span>
-    <span class="keyword">private</span> <span class="type">String</span> name;
-    <span class="keyword">private</span> <span class="keyword">int</span> id;
-    <span class="keyword">private</span> <span class="keyword">double</span> gpa;
-
-    <span class="comment">// المُنشئ</span>
-    <span class="keyword">public</span> <span class="method">Student</span>(<span class="type">String</span> name, <span class="keyword">int</span> id) {
-        <span class="keyword">this</span>.name = name;
-        <span class="keyword">this</span>.id = id;
-        <span class="keyword">this</span>.gpa = <span class="number">0.0</span>;  <span class="comment">// المعدل التراكمي الافتراضي</span>
-    }
-
-    <span class="comment">// الجوالب</span>
-    <span class="keyword">public</span> <span class="type">String</span> <span class="method">getName</span>()  { <span class="keyword">return</span> name; }
-    <span class="keyword">public</span> <span class="keyword">int</span>    <span class="method">getId</span>()    { <span class="keyword">return</span> id; }
-    <span class="keyword">public</span> <span class="keyword">double</span> <span class="method">getGpa</span>()   { <span class="keyword">return</span> gpa; }
-
-    <span class="comment">// ضابط مع التحقق</span>
-    <span class="keyword">public void</span> <span class="method">setGpa</span>(<span class="keyword">double</span> gpa) {
-        <span class="keyword">if</span> (gpa &gt;= <span class="number">0.0</span> &amp;&amp; gpa &lt;= <span class="number">4.0</span>) {
-            <span class="keyword">this</span>.gpa = gpa;
-        } <span class="keyword">else</span> {
-            System.out.<span class="method">println</span>(<span class="string">"Error: GPA must be between 0.0 and 4.0"</span>);
-        }
-    }
-
-    <span class="comment">// السلوك: التحقق مما إذا كان الطالب متفوقًا</span>
-    <span class="keyword">public boolean</span> <span class="method">isHonorStudent</span>() {
-        <span class="keyword">return</span> gpa &gt;= <span class="number">3.5</span>;
-    }
-
-    <span class="comment">// التمثيل النصي للكائن</span>
-    <span class="keyword">public</span> <span class="type">String</span> <span class="method">toString</span>() {
-        <span class="keyword">return</span> <span class="string">"Student{"</span> + <span class="string">"name='"</span> + name + <span class="string">"', id="</span> + id + <span class="string">", gpa="</span> + gpa + <span class="string">"}"</span>;
-    }
-}</div>
-
-                <h3 style="margin: 25px 0 15px; color: var(--primary-color); font-size: 1.15rem;">الخطوة 3: إنشاء الكائنات واستخدامها</h3>
-
-                <div class="code-label">Main.java</div>
-                <div class="code-block"><span class="keyword">public class</span> <span class="type">Main</span> {
-    <span class="keyword">public static void</span> <span class="method">main</span>(<span class="type">String</span>[] args) {
-
-        <span class="comment">// إنشاء كائنات طلاب</span>
-        <span class="type">Student</span> s1 = <span class="keyword">new</span> <span class="type">Student</span>(<span class="string">"Ahmed"</span>, <span class="number">1001</span>);
-        <span class="type">Student</span> s2 = <span class="keyword">new</span> <span class="type">Student</span>(<span class="string">"Sara"</span>, <span class="number">1002</span>);
-
-        <span class="comment">// تعيين المعدلات التراكمية</span>
-        s1.<span class="method">setGpa</span>(<span class="number">3.8</span>);
-        s2.<span class="method">setGpa</span>(<span class="number">3.2</span>);
-
-        <span class="comment">// عرض معلومات الطالب</span>
-        System.out.<span class="method">println</span>(s1);  <span class="comment">// Student{name='Ahmed', id=1001, gpa=3.8}</span>
-        System.out.<span class="method">println</span>(s2);  <span class="comment">// Student{name='Sara', id=1002, gpa=3.2}</span>
-
-        <span class="comment">// التحقق من حالة التفوق</span>
-        System.out.<span class="method">println</span>(s1.<span class="method">getName</span>() + <span class="string">" honor student? "</span> + s1.<span class="method">isHonorStudent</span>());  <span class="comment">// true</span>
-        System.out.<span class="method">println</span>(s2.<span class="method">getName</span>() + <span class="string">" honor student? "</span> + s2.<span class="method">isHonorStudent</span>());  <span class="comment">// false</span>
-
-        <span class="comment">// محاولة معدل تراكمي غير صالح</span>
-        s1.<span class="method">setGpa</span>(<span class="number">5.0</span>);  <span class="comment">// Error: GPA must be between 0.0 and 4.0</span>
-        System.out.<span class="method">println</span>(s1.<span class="method">getGpa</span>());  <span class="comment">// Still 3.8 — encapsulation protected the data!</span>
-    }
-}</div>
-
-                <div class="success-box">
-                    <div class="success-box-title">التغليف عمليًّا</div>
-                    <p>لاحظ ما حدث عندما حاولنا <code class="code-inline">s1.setGpa(5.0)</code> &mdash; الكائن <strong>رفض</strong> القيمة غير الصالحة وبقي المعدل التراكمي دون تغيير عند 3.8. هذا هو التغليف في العمل: الكائن يحمي سلامته الخاصة. بدون التغليف (لو كان <code class="code-inline">gpa</code> عامًّا)، يمكن لأي شخص كتابة <code class="code-inline">s1.gpa = 5.0</code> وإفساد البيانات بصمت.</p>
-                </div>
-            </div>
-
-            <!-- ============================================================ -->
-            <!-- القسم 9: لماذا البرمجة كائنية التوجه مهمة -->
-            <!-- ============================================================ -->
-            <div class="section">
-                <h2 class="section-title">
-                    <span class="section-number">9</span>
                     لماذا البرمجة كائنية التوجه مهمة: الصورة الكبرى
                 </h2>
 
                 <div class="narrative">
-                    <p>قد تفكر: "كان بإمكاني فعل كل هذا بدوال بسيطة. لماذا أتعب نفسي بالأصناف والكائنات؟" الجواب يتضح مع نمو الأنظمة. برنامج من 100 سطر لا يحتاج البرمجة كائنية التوجه. نظام من 100,000 سطر يحتاجها بشدة.</p>
+                    <p>قد تفكر: "كان بإمكاني فعل كل هذا بدوال بسيطة. لماذا أتعب نفسي بالأصناف (Classes) والكائنات (Objects)؟" الجواب يتضح مع نمو الأنظمة. برنامج من 100 سطر لا يحتاج البرمجة كائنية التوجه. نظام من 100,000 سطر يحتاجها بشدة.</p>
                 </div>
 
                 <p>البرمجة كائنية التوجه تمنحنا أربع قوى خارقة تعالج المشاكل التي حددناها في البداية مباشرة:</p>
@@ -1418,12 +1517,12 @@ c1.radius = <span class="number">-50</span>;  <span class="comment">// ERROR: ra
                     <tbody>
                         <tr>
                             <td><strong>إعادة الاستخدام</strong></td>
-                            <td>الأصناف يمكن استخدامها عبر المشاريع</td>
-                            <td>اكتب صنف <code class="code-inline">Student</code> مرة واحدة، واستخدمه في أي تطبيق يتعامل مع الطلاب</td>
+                            <td>الأصناف (Classes) يمكن استخدامها عبر المشاريع</td>
+                            <td>اكتب صنف (Class) <code class="code-inline">Student</code> مرة واحدة، واستخدمه في أي تطبيق يتعامل مع الطلاب</td>
                         </tr>
                         <tr>
                             <td><strong>قابلية التوسع</strong></td>
-                            <td>الأصناف الجديدة تمتد من الموجودة</td>
+                            <td>الأصناف (Classes) الجديدة تمتد من الموجودة</td>
                             <td>تحتاج <code class="code-inline">GraduateStudent</code>؟ وسّع <code class="code-inline">Student</code> دون تغييره (الوراثة)</td>
                         </tr>
                         <tr>
@@ -1433,7 +1532,7 @@ c1.radius = <span class="number">-50</span>;  <span class="comment">// ERROR: ra
                         </tr>
                         <tr>
                             <td><strong>النمطية</strong></td>
-                            <td>كل صنف وحدة مستقلة</td>
+                            <td>كل صنف (Class) وحدة مستقلة</td>
                             <td>أعضاء فريق مختلفون يعملون على <code class="code-inline">Student</code> و <code class="code-inline">Course</code> و <code class="code-inline">Enrollment</code> بشكل مستقل</td>
                         </tr>
                     </tbody>
@@ -1446,11 +1545,11 @@ c1.radius = <span class="number">-50</span>;  <span class="comment">// ERROR: ra
             </div>
 
             <!-- ============================================================ -->
-            <!-- القسم 10: الملخص -->
+            <!-- القسم 9: الملخص -->
             <!-- ============================================================ -->
             <div class="section" style="margin-bottom:20px;">
                 <h2 class="section-title">
-                    <span class="section-number">10</span>
+                    <span class="section-number">9</span>
                     الملخص
                 </h2>
 
@@ -1461,9 +1560,9 @@ c1.radius = <span class="number">-50</span>;  <span class="comment">// ERROR: ra
                         <li>البرمجة كائنية التوجه تنظم الكود حول <strong>كائنات</strong> تجمع البيانات (الخصائص) والسلوك (الدوال).</li>
                         <li><strong>الصنف (Class)</strong> مخطط هندسي؛ <strong>الكائن (Object)</strong> نسخة من ذلك المخطط.</li>
                         <li>عملية البرمجة كائنية التوجه: تحديد الكائنات &rarr; تحديد الخصائص والسلوكيات &rarr; تحديد العلاقات.</li>
-                        <li>مخططات أصناف <strong>UML</strong> تمثل الأصناف بصريًّا قبل كتابة الكود.</li>
+                        <li>مخططات أصناف (Classes) <strong>UML</strong> تمثل الأصناف (Classes) بصريًّا قبل كتابة الكود.</li>
                         <li><strong>الأركان الأربعة</strong> للبرمجة كائنية التوجه: التغليف، التجريد، الوراثة، وتعدد الأشكال.</li>
-                        <li><strong>التغليف</strong> يحمي الحالة الداخلية باستخدام حقول <code class="code-inline">private</code> وجوالب/ضوابط عامة.</li>
+                        <li><strong>التغليف</strong> يحمي الحالة الداخلية باستخدام حقول <code class="code-inline">private</code> ودوال إرجاع/تعيين عامة.</li>
                         <li><strong>التجريد</strong> يخفي التعقيد &mdash; المستخدمون يستدعون الدوال دون معرفة التفاصيل الداخلية.</li>
                         <li>البرمجة كائنية التوجه تتألق في بناء أنظمة كبيرة ومعقدة تحتاج لأن تكون قابلة لإعادة الاستخدام والتوسع والصيانة.</li>
                     </ul>
@@ -1481,6 +1580,12 @@ c1.radius = <span class="number">-50</span>;  <span class="comment">// ERROR: ra
         <div class="nav-buttons">
             <a href="../index.html" class="nav-btn prev">العودة للمقرر &larr;</a>
             <a href="02-constructors-and-this.html" class="nav-btn next">&rarr; التالي: المُنشئات وكلمة this</a>
+        </div>
+
+        <div style="text-align: center; padding: 25px 40px; color: var(--gray-color); font-size: 0.9rem; border-top: 1px solid #e5e7eb; line-height: 1.8;">
+            <div style="font-weight: bold; color: var(--dark-color); font-size: 1rem;">جامعة الملك عبدالعزيز</div>
+            <div>كلية الحاسبات وتقنية المعلومات (FCIT)</div>
+            <div style="margin-top: 8px;">إعداد د. عبدالمحسن المعلوي</div>
         </div>
 
     </div><!-- end .container -->

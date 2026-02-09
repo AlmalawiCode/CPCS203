@@ -941,56 +941,6 @@ System.out.<span class="method">println</span>(c2.<span class="method">computeAr
                     <p style="margin-top:10px;">Your friend is a <em>different</em> object, but of the same <em>type</em> (Human). You both have the same kinds of properties and behaviors, but with different values. Your name is different, your height is different, but you can both walk and speak.</p>
                 </div>
 
-                <p>In software, we model this the same way. Here are some objects and their properties and behaviors:</p>
-
-                <div class="object-visual">
-                    <div class="object-card">
-                        <div class="object-card-header">Circle</div>
-                        <div class="object-card-section">
-                            <div class="object-card-label">Properties</div>
-                            <div class="object-card-item">radius: double</div>
-                            <div class="object-card-item">color: String</div>
-                        </div>
-                        <div class="object-card-section">
-                            <div class="object-card-label">Behaviors</div>
-                            <div class="object-card-item">computeArea()</div>
-                            <div class="object-card-item">computePerimeter()</div>
-                            <div class="object-card-item">draw()</div>
-                        </div>
-                    </div>
-
-                    <div class="object-card">
-                        <div class="object-card-header" style="background: linear-gradient(135deg, #059669, #047857);">Student</div>
-                        <div class="object-card-section">
-                            <div class="object-card-label">Properties</div>
-                            <div class="object-card-item">name: String</div>
-                            <div class="object-card-item">id: int</div>
-                            <div class="object-card-item">gpa: double</div>
-                        </div>
-                        <div class="object-card-section">
-                            <div class="object-card-label">Behaviors</div>
-                            <div class="object-card-item">enroll()</div>
-                            <div class="object-card-item">getTranscript()</div>
-                            <div class="object-card-item">calculateGPA()</div>
-                        </div>
-                    </div>
-
-                    <div class="object-card">
-                        <div class="object-card-header" style="background: linear-gradient(135deg, #d97706, #b45309);">BankAccount</div>
-                        <div class="object-card-section">
-                            <div class="object-card-label">Properties</div>
-                            <div class="object-card-item">owner: String</div>
-                            <div class="object-card-item">balance: double</div>
-                            <div class="object-card-item">accountNo: String</div>
-                        </div>
-                        <div class="object-card-section">
-                            <div class="object-card-label">Behaviors</div>
-                            <div class="object-card-item">deposit()</div>
-                            <div class="object-card-item">withdraw()</div>
-                            <div class="object-card-item">getBalance()</div>
-                        </div>
-                    </div>
-                </div>
             </div>
 
             <!-- ============================================================ -->
@@ -1086,10 +1036,7 @@ System.out.<span class="method">println</span>(c2.<span class="method">computeAr
                             <div class="uml-item"><span class="uml-private">-</span> radius: double</div>
                         </div>
                         <div class="uml-section">
-                            <div class="uml-item"><span class="uml-public">+</span> Circle(radius: double)</div>
                             <div class="uml-item"><span class="uml-public">+</span> computeArea(): double</div>
-                            <div class="uml-item"><span class="uml-public">+</span> getRadius(): double</div>
-                            <div class="uml-item"><span class="uml-public">+</span> setRadius(radius: double): void</div>
                         </div>
                     </div>
                 </div>
@@ -1141,22 +1088,159 @@ System.out.<span class="method">println</span>(c2.<span class="method">computeAr
                     <p>A <strong>class</strong> is like a cookie cutter &mdash; it defines the <em>shape</em>. Each <strong>object</strong> is a cookie made from that cutter. You can make chocolate cookies, vanilla cookies, and strawberry cookies &mdash; all from the same cutter. They all have the same shape (structure), but different flavors (values). One cutter, many cookies. One class, many objects.</p>
                 </div>
 
-                <p>Now let's convert our UML diagram into Java code. This is where the programmer takes the design and makes it real:</p>
+                <div class="info-box">
+                    <div class="info-box-title">Three Roles in Software Development</div>
+                    <p>Now we transition through three distinct roles:</p>
+                    <ol style="margin-top:8px; padding-left:20px;">
+                        <li><strong>Software Engineer (Designer):</strong> Designed the UML &mdash; their job is done.</li>
+                        <li><strong>Programmer (Implementer):</strong> Takes the UML and converts it into code using a programming language.</li>
+                        <li><strong>User:</strong> Creates objects from the class and uses them in their programs.</li>
+                    </ol>
+                    <p style="margin-top:10px;">Let's now step into the <strong>Programmer's</strong> role first, and then the <strong>User's</strong> role.</p>
+                </div>
 
-                <div class="code-label">Circle.java &mdash; The Class (Blueprint)</div>
+                <!-- ====== STEP 1: THE IMPLEMENTATION ====== -->
+                <h3 style="margin: 30px 0 15px; color: var(--primary-color); font-size: 1.3rem;">Step 1: The Implementation (Programmer's Role)</h3>
+
+                <p>The programmer looks at the UML diagram. It shows a <code class="code-inline">Circle</code> with one property (<code class="code-inline">radius</code>) and one behavior (<code class="code-inline">computeArea()</code>). So the programmer translates exactly that into Java:</p>
+
+                <div class="code-label">Circle.java &mdash; First Implementation</div>
                 <div class="code-block"><span class="keyword">public class</span> <span class="type">Circle</span> {
 
-    <span class="comment">// Property (attribute) — private means only this class can access it directly</span>
+    <span class="comment">// Property (data field)</span>
     <span class="keyword">private</span> <span class="keyword">double</span> radius;
 
-    <span class="comment">// Constructor — called when creating a new Circle object</span>
-    <span class="keyword">public</span> <span class="method">Circle</span>(<span class="keyword">double</span> radius) {
-        <span class="keyword">this</span>.radius = radius;
-    }
-
-    <span class="comment">// Behavior — computes the area of this circle</span>
+    <span class="comment">// Behavior</span>
     <span class="keyword">public</span> <span class="keyword">double</span> <span class="method">computeArea</span>() {
         <span class="keyword">return</span> Math.PI * radius * radius;
+    }
+}</div>
+
+                <p>That's it. The class has exactly what the UML described: a <code class="code-inline">radius</code> property (declared <code class="code-inline">private</code>) and a <code class="code-inline">computeArea()</code> method. The programmer's job is done for now.</p>
+
+                <!-- ====== STEP 2: THE USER CREATES OBJECTS ====== -->
+                <h3 style="margin: 30px 0 15px; color: var(--primary-color); font-size: 1.3rem;">Step 2: Creating Objects (The User's Role)</h3>
+
+                <p>Now we switch to a different role: the <strong>User</strong>. The user wants to create Circle objects and compute their areas. Let's try:</p>
+
+                <div class="code-label">Main.java &mdash; Attempting to Use the Circle</div>
+                <div class="code-block"><span class="keyword">public class</span> <span class="type">Main</span> {
+    <span class="keyword">public static void</span> <span class="method">main</span>(<span class="type">String</span>[] args) {
+
+        <span class="comment">// Create two Circle objects</span>
+        <span class="type">Circle</span> c1 = <span class="keyword">new</span> <span class="type">Circle</span>();
+        <span class="type">Circle</span> c2 = <span class="keyword">new</span> <span class="type">Circle</span>();
+
+        <span class="comment">// We want to set the radius, but...</span>
+        <span class="comment">// c1.radius = 5.0;   // ERROR! radius has private access in Circle</span>
+        <span class="comment">// c2.radius = 10.0;  // ERROR! radius has private access in Circle</span>
+
+        <span class="comment">// We can't set the radius! Let's just try computeArea anyway...</span>
+        System.out.<span class="method">println</span>(c1.<span class="method">computeArea</span>());  <span class="comment">// 0.0</span>
+        System.out.<span class="method">println</span>(c2.<span class="method">computeArea</span>());  <span class="comment">// 0.0</span>
+    }
+}</div>
+
+                <div class="important-box">
+                    <div class="important-box-title">The Problem</div>
+                    <p>We created two Circle objects, but we <strong>cannot access the radius</strong>! We cannot set any data to it. Why? Because <code class="code-inline">radius</code> is declared as <code class="code-inline">private</code>. And since the radius was never set, it defaults to <code class="code-inline">0.0</code>, so <code class="code-inline">computeArea()</code> returns <strong>0.0</strong> for both circles.</p>
+                    <p style="margin-top:10px;">This is a real issue. We have a Circle class, but we can't do anything useful with it! What can we do?</p>
+                </div>
+
+                <!-- ====== STEP 3: A STUDENT'S SUGGESTION ====== -->
+                <h3 style="margin: 30px 0 15px; color: var(--primary-color); font-size: 1.3rem;">Step 3: A Student's Suggestion &mdash; Make It Public!</h3>
+
+                <p>A student raises their hand: <em>"Professor, why not just define the radius as <code class="code-inline">public</code> instead of <code class="code-inline">private</code>?"</em></p>
+                <p>Good suggestion! Let's try it:</p>
+
+                <div class="code-label">Circle.java &mdash; With Public Radius</div>
+                <div class="code-block"><span class="keyword">public class</span> <span class="type">Circle</span> {
+
+    <span class="comment">// Changed to public — anyone can access it directly</span>
+    <span class="keyword">public</span> <span class="keyword">double</span> radius;
+
+    <span class="keyword">public</span> <span class="keyword">double</span> <span class="method">computeArea</span>() {
+        <span class="keyword">return</span> Math.PI * radius * radius;
+    }
+}</div>
+
+                <div class="code-label">Main.java &mdash; Now It Works!</div>
+                <div class="code-block"><span class="keyword">public class</span> <span class="type">Main</span> {
+    <span class="keyword">public static void</span> <span class="method">main</span>(<span class="type">String</span>[] args) {
+
+        <span class="type">Circle</span> c1 = <span class="keyword">new</span> <span class="type">Circle</span>();
+        c1.radius = <span class="number">5.0</span>;
+        System.out.<span class="method">println</span>(c1.<span class="method">computeArea</span>());  <span class="comment">// 78.54 — it works!</span>
+
+        <span class="type">Circle</span> c2 = <span class="keyword">new</span> <span class="type">Circle</span>();
+        c2.radius = <span class="number">10.0</span>;
+        System.out.<span class="method">println</span>(c2.<span class="method">computeArea</span>());  <span class="comment">// 314.16 — it works!</span>
+    }
+}</div>
+
+                <div class="success-box">
+                    <div class="success-box-title">It Works!</div>
+                    <p>With <code class="code-inline">public</code> radius, we can now set the value directly and compute the area. Problem solved... or is it?</p>
+                </div>
+
+                <!-- ====== STEP 4: THE BIG ISSUE ====== -->
+                <h3 style="margin: 30px 0 15px; color: var(--danger-color); font-size: 1.3rem;">Step 4: The Big Issue</h3>
+
+                <p>Wait. If the radius is <code class="code-inline">public</code>, that means <strong>anyone</strong> can set <strong>any</strong> value. What if someone does this?</p>
+
+                <div class="code-block">c1.radius = <span class="number">-10</span>;  <span class="comment">// A negative radius?!</span>
+System.out.<span class="method">println</span>(c1.<span class="method">computeArea</span>());  <span class="comment">// 314.16 — area of a circle with radius -10??</span></div>
+
+                <div class="important-box">
+                    <div class="important-box-title">This Is a Serious Problem!</div>
+                    <p>When the radius is <code class="code-inline">public</code>, the object's data can be <strong>directly accessed and modified by any external code</strong>. Anyone can set any value &mdash; even nonsensical ones like <code class="code-inline">-10</code>. The object has <strong>no control</strong> over its own data.</p>
+                    <p style="margin-top:10px;">The most important thing about an object is its <strong>data fields (properties)</strong>. These data fields must be <strong>controlled only by the object itself</strong>. When we make them <code class="code-inline">public</code>, we give away that control to the entire external world.</p>
+                </div>
+
+                <!-- ====== STEP 5: ENCAPSULATION ====== -->
+                <h3 style="margin: 30px 0 15px; color: var(--secondary-color); font-size: 1.3rem;">Step 5: The First Pillar &mdash; Encapsulation</h3>
+
+                <p>What we just discovered is exactly why the <strong>first pillar of OOP</strong> exists: <strong>Encapsulation</strong>. But before we define it, look at the word itself:</p>
+
+                <div style="text-align:center; margin: 25px 0;">
+                    <div style="display:inline-block; background: linear-gradient(135deg, #faf5ff, #f3e8ff); border: 3px solid var(--secondary-color); border-radius: 20px; padding: 30px 50px;">
+                        <div style="font-size: 4rem; margin-bottom: 10px;">&#128138;</div>
+                        <div style="font-size: 1.4rem; font-weight: bold; color: var(--secondary-color);">En<span style="background: #fde68a; padding: 2px 6px; border-radius: 6px;">capsul</span>ation</div>
+                        <div style="margin-top: 10px; color: var(--gray-color); font-size: 1rem;">The word comes from <strong>capsule</strong> &mdash; like a medicine capsule.</div>
+                        <div style="margin-top: 8px; color: var(--dark-color); font-size: 1.05rem;">A capsule <strong>wraps and protects</strong> the medicine inside.<br>No one can touch the medicine directly &mdash; it is <strong>enclosed</strong>.</div>
+                        <div style="margin-top: 15px; font-size: 1.05rem; color: var(--secondary-color); font-weight: bold;">In OOP, encapsulation wraps and protects the <em>data</em> inside the object.</div>
+                    </div>
+                </div>
+
+                <div class="key-concept">
+                    <div class="key-concept-title">Encapsulation</div>
+                    <p><strong>Encapsulation</strong> means that the data fields of an object must be <strong>protected from direct external access</strong>. The object must be the only one that controls its own data. No external code should be able to reach in and modify the object's internal state directly.</p>
+                    <p style="margin-top:10px;">When we defined <code class="code-inline">radius</code> as <code class="code-inline">public</code>, we <strong>violated encapsulation</strong>. We broke the object's ability to protect itself.</p>
+                </div>
+
+                <div class="analogy-box">
+                    <div class="analogy-title">Analogy: Objects Are Like Sovereign States</div>
+                    <p>Think of each object as a <strong>sovereign country</strong>. Imagine Saudi Arabia and Egypt. If the Egyptian government wants information about a Saudi citizen, can they just reach in directly and grab that citizen? <strong>Absolutely not.</strong></p>
+                    <p style="margin-top:10px;">The proper process: the Egyptian <em>Internal Ministry</em> contacts the Egyptian <em>Foreign Ministry</em>, which contacts the Saudi <em>Foreign Ministry</em>, which contacts the Saudi <em>Internal Ministry</em>. Everything goes through <strong>official channels</strong> &mdash; through the proper gates.</p>
+                    <p style="margin-top:10px;">Each country is <strong>independent</strong> and has <strong>sovereignty</strong> &mdash; no one can interfere in its internal affairs directly. This is exactly how objects should work. Each object is independent, and its internal data can only be accessed through <strong>controlled gates</strong> (public methods), never directly.</p>
+                </div>
+
+                <p>So we need to go back to <code class="code-inline">private</code>. But then how do we solve the original problem of not being able to set the radius? The answer: <strong>getters and setters</strong>.</p>
+
+                <!-- ====== STEP 6: THE SOLUTION ====== -->
+                <h3 style="margin: 30px 0 15px; color: var(--success-color); font-size: 1.3rem;">Step 6: The Solution &mdash; Getter and Setter</h3>
+
+                <p>We return <code class="code-inline">radius</code> to <code class="code-inline">private</code>, and we add two public methods: a <strong>setter</strong> (to change the data) and a <strong>getter</strong> (to read the data). These methods are the <strong>official gates</strong> through which the outside world interacts with the object's data.</p>
+
+                <div class="code-label">Circle.java &mdash; With Getter and Setter</div>
+                <div class="code-block"><span class="keyword">public class</span> <span class="type">Circle</span> {
+
+    <span class="comment">// Property — private (encapsulated)</span>
+    <span class="keyword">private</span> <span class="keyword">double</span> radius;
+
+    <span class="comment">// Setter — allows outside code to CHANGE the radius</span>
+    <span class="keyword">public</span> <span class="keyword">void</span> <span class="method">setRadius</span>(<span class="keyword">double</span> radius) {
+        <span class="keyword">this</span>.radius = radius;
     }
 
     <span class="comment">// Getter — allows outside code to READ the radius</span>
@@ -1164,44 +1248,62 @@ System.out.<span class="method">println</span>(c2.<span class="method">computeAr
         <span class="keyword">return</span> radius;
     }
 
-    <span class="comment">// Setter — allows outside code to CHANGE the radius</span>
-    <span class="keyword">public</span> <span class="keyword">void</span> <span class="method">setRadius</span>(<span class="keyword">double</span> radius) {
-        <span class="keyword">this</span>.radius = radius;
+    <span class="comment">// Behavior</span>
+    <span class="keyword">public</span> <span class="keyword">double</span> <span class="method">computeArea</span>() {
+        <span class="keyword">return</span> Math.PI * radius * radius;
     }
 }</div>
 
-                <p>Now let's <strong>use</strong> this class by creating objects from it:</p>
-
-                <div class="code-label">Main.java &mdash; Creating and Using Objects</div>
+                <div class="code-label">Main.java &mdash; Using Getter and Setter</div>
                 <div class="code-block"><span class="keyword">public class</span> <span class="type">Main</span> {
     <span class="keyword">public static void</span> <span class="method">main</span>(<span class="type">String</span>[] args) {
 
-        <span class="comment">// Creating objects (instances) from the Circle class</span>
-        <span class="type">Circle</span> c1 = <span class="keyword">new</span> <span class="type">Circle</span>(<span class="number">5.0</span>);
-        <span class="type">Circle</span> c2 = <span class="keyword">new</span> <span class="type">Circle</span>(<span class="number">10.0</span>);
+        <span class="type">Circle</span> c1 = <span class="keyword">new</span> <span class="type">Circle</span>();
+        c1.<span class="method">setRadius</span>(<span class="number">5.0</span>);
+        System.out.<span class="method">println</span>(<span class="string">"Radius: "</span> + c1.<span class="method">getRadius</span>());     <span class="comment">// 5.0</span>
+        System.out.<span class="method">println</span>(<span class="string">"Area: "</span> + c1.<span class="method">computeArea</span>());    <span class="comment">// 78.54</span>
 
-        <span class="comment">// Each object has its own radius, its own state</span>
-        System.out.<span class="method">println</span>(<span class="string">"c1 radius: "</span> + c1.<span class="method">getRadius</span>());   <span class="comment">// 5.0</span>
-        System.out.<span class="method">println</span>(<span class="string">"c2 radius: "</span> + c2.<span class="method">getRadius</span>());   <span class="comment">// 10.0</span>
-
-        <span class="comment">// Each object computes its own area</span>
-        System.out.<span class="method">println</span>(<span class="string">"Area of c1: "</span> + c1.<span class="method">computeArea</span>()); <span class="comment">// 78.54</span>
-        System.out.<span class="method">println</span>(<span class="string">"Area of c2: "</span> + c2.<span class="method">computeArea</span>()); <span class="comment">// 314.16</span>
-
-        <span class="comment">// Changing state through the setter</span>
-        c1.<span class="method">setRadius</span>(<span class="number">7.5</span>);
-        System.out.<span class="method">println</span>(<span class="string">"New area of c1: "</span> + c1.<span class="method">computeArea</span>()); <span class="comment">// 176.71</span>
+        <span class="type">Circle</span> c2 = <span class="keyword">new</span> <span class="type">Circle</span>();
+        c2.<span class="method">setRadius</span>(<span class="number">10.0</span>);
+        System.out.<span class="method">println</span>(<span class="string">"Radius: "</span> + c2.<span class="method">getRadius</span>());     <span class="comment">// 10.0</span>
+        System.out.<span class="method">println</span>(<span class="string">"Area: "</span> + c2.<span class="method">computeArea</span>());    <span class="comment">// 314.16</span>
     }
 }</div>
 
+                <p>It works again! But wait &mdash; a student raises a good question...</p>
+
+                <!-- ====== STEP 7: BUT ISN'T IT THE SAME? ====== -->
+                <h3 style="margin: 30px 0 15px; color: var(--primary-color); font-size: 1.3rem;">Step 7: "But Isn't That the Same as Public?"</h3>
+
+                <p>A student raises their hand: <em>"Professor, what if someone calls <code class="code-inline">setRadius(-10)</code>? We still have the same problem, right? How is this different from <code class="code-inline">public</code>?"</em></p>
+
+                <p><strong>Excellent question!</strong> And the answer is: <strong>No, they are absolutely not the same.</strong></p>
+
+                <p>When the radius was <code class="code-inline">public</code>, the data was modified <strong>directly</strong> from outside &mdash; the object had no say. But now, with a setter, the modification goes <strong>through the object itself</strong>. And because it goes through a method inside the object, <strong>the object can add conditions!</strong></p>
+
+                <div class="code-label">Circle.java &mdash; Setter with Validation</div>
+                <div class="code-block"><span class="comment">// Setter — with validation! The object protects itself.</span>
+<span class="keyword">public</span> <span class="keyword">void</span> <span class="method">setRadius</span>(<span class="keyword">double</span> radius) {
+    <span class="keyword">if</span> (radius &gt;= <span class="number">0</span>) {
+        <span class="keyword">this</span>.radius = radius;
+    } <span class="keyword">else</span> {
+        System.out.<span class="method">println</span>(<span class="string">"Error: radius cannot be negative!"</span>);
+    }
+}</div>
+
+                <div class="code-label">Main.java &mdash; Testing the Validation</div>
+                <div class="code-block"><span class="type">Circle</span> c1 = <span class="keyword">new</span> <span class="type">Circle</span>();
+c1.<span class="method">setRadius</span>(<span class="number">5.0</span>);
+System.out.<span class="method">println</span>(c1.<span class="method">computeArea</span>());  <span class="comment">// 78.54 — works!</span>
+
+c1.<span class="method">setRadius</span>(<span class="number">-10</span>);                     <span class="comment">// Error: radius cannot be negative!</span>
+System.out.<span class="method">println</span>(c1.<span class="method">computeArea</span>());  <span class="comment">// 78.54 — still 5.0! The object protected itself!</span></div>
+
                 <div class="success-box">
-                    <div class="success-box-title">What Just Happened?</div>
-                    <ul style="margin-top:8px; padding-left:20px;">
-                        <li><code class="code-inline">Circle c1 = new Circle(5.0);</code> &mdash; We created an <strong>object</strong> (instance) of the Circle class with radius 5.0.</li>
-                        <li><code class="code-inline">c1.computeArea()</code> &mdash; We asked the object to perform one of its <strong>behaviors</strong>. The object knows its own radius and computes its own area.</li>
-                        <li><code class="code-inline">c1.setRadius(7.5)</code> &mdash; We changed the object's <strong>state</strong> through a controlled setter method.</li>
-                    </ul>
-                    <p style="margin-top:10px;">Notice: <code class="code-inline">c1</code> and <code class="code-inline">c2</code> are <strong>independent objects</strong>. Changing c1's radius does not affect c2. Each object maintains its own state.</p>
+                    <div class="success-box-title">Encapsulation in Practice</div>
+                    <p>Now the data field of the object is modified <strong>not directly, but indirectly &mdash; through the object itself</strong>. The object controls its own data. It can validate, reject, or transform values before accepting them. This is the practice of <strong>encapsulation</strong>.</p>
+                    <p style="margin-top:10px;">Each object is like a <strong>sovereign state</strong>: independent, self-governing, and no external code can interfere in its internal affairs directly. Everything goes through the proper gates &mdash; the public methods.</p>
+                    <p style="margin-top:10px;">This also means that in the future, when systems grow large, it becomes <strong>easy to maintain</strong> the object. All the logic for protecting and managing its data is in one place &mdash; inside the object itself.</p>
                 </div>
             </div>
 
@@ -1220,7 +1322,7 @@ System.out.<span class="method">println</span>(c2.<span class="method">computeAr
 
                 <div class="pillars-grid">
                     <div class="pillar-card">
-                        <div class="pillar-icon">&#128274;</div>
+                        <div class="pillar-icon">&#128138;</div>
                         <div class="pillar-name">Encapsulation</div>
                         <div class="pillar-desc">Bundle data and methods together in a class, and <strong>control access</strong> to the internal state. Like a capsule that protects its contents &mdash; you interact with the outside, not the inside.</div>
                     </div>
@@ -1266,129 +1368,125 @@ c1.radius = <span class="number">-50</span>;  <span class="comment">// ERROR: ra
 
                 <h3 style="margin: 25px 0 15px; color: var(--primary-color); font-size: 1.2rem;">Abstraction in Action</h3>
 
-                <p>When you call <code class="code-inline">c1.computeArea()</code>, you don't need to know <em>how</em> the area is computed. You don't care whether it uses <code class="code-inline">Math.PI * r * r</code> or some other formula internally. You just call the method and get the result. The complexity is <strong>abstracted away</strong>.</p>
+                <div class="narrative">
+                    <p>The second pillar of OOP is <strong>Abstraction</strong>. But what does it really mean? Before we define it technically, let's think about it from a bigger perspective.</p>
+                </div>
+
+                <h4 style="margin: 20px 0 10px; color: var(--secondary-color); font-size: 1.1rem;">What If Everything Required Expertise?</h4>
+
+                <p>Ask yourself this question: <strong>what if every machine, every device, every system in the world could only be used by an expert?</strong></p>
+
+                <div class="important-box">
+                    <div class="important-box-title">Imagine This World...</div>
+                    <ul style="margin-top:8px; padding-left:20px;">
+                        <li>To <strong>drive a car</strong>, you must be a mechanical engineer who understands combustion engines, transmission systems, and fuel injection.</li>
+                        <li>To <strong>use a phone</strong>, you must be a telecommunications engineer who understands radio frequencies, signal processing, and TCP/IP protocols.</li>
+                        <li>To <strong>use a computer</strong>, you must understand CPU architecture, memory management, and operating system internals.</li>
+                    </ul>
+                    <p style="margin-top:10px;"><strong>How would our life work?</strong> It wouldn't! There would be no drivers, no phone users, no one using any device. Society would collapse.</p>
+                </div>
+
+                <p>But of course, our world doesn't work that way. You drive a car by using a <strong>steering wheel and pedals</strong> &mdash; you don't need to understand the engine. You use a phone by tapping <strong>buttons on a screen</strong> &mdash; you don't need to understand radio frequencies. All the complexity is <strong>hidden</strong> behind a simple interface.</p>
+
+                <p>This is the philosophy of <strong>abstraction</strong>: <em>how to develop a system that can be used by a non-expert</em>.</p>
+
+                <div class="key-concept">
+                    <div class="key-concept-title">Abstraction</div>
+                    <p><strong>Abstraction</strong> is the practice of <strong>separating the implementation from the use</strong>. The user interacts with a simple interface (the <em>what</em>) without needing to know the complex details behind it (the <em>how</em>).</p>
+                    <p style="margin-top:10px;">In OOP, this means: <strong>separating the implementation of a class from the use of that class</strong>. The person who <em>uses</em> the class does not need to know <em>how</em> it was implemented internally.</p>
+                </div>
+
+                <h4 style="margin: 25px 0 10px; color: var(--secondary-color); font-size: 1.1rem;">You Already Experienced Abstraction: The Scanner Class</h4>
+
+                <p>Think back to <strong>CPCS202 (Programming I)</strong>. All of you used the <code class="code-inline">Scanner</code> class to read user input:</p>
+
+                <div class="code-block"><span class="type">Scanner</span> input = <span class="keyword">new</span> <span class="type">Scanner</span>(System.in);
+<span class="keyword">int</span> age = input.<span class="method">nextInt</span>();
+<span class="type">String</span> name = input.<span class="method">nextLine</span>();</div>
+
+                <p>You used it confidently. You created a <code class="code-inline">Scanner</code> object, called <code class="code-inline">nextInt()</code>, called <code class="code-inline">nextLine()</code>, and it worked. But let me ask you:</p>
+
+                <div class="quote-box">
+                    <p>"Do you know <em>how</em> the Scanner class is implemented internally? Do you know the sophisticated algorithms it uses to parse input streams, handle character encoding, and tokenize data?"</p>
+                </div>
+
+                <p><strong>No.</strong> And you didn't need to. The Scanner class has a very complex internal implementation, but all of that complexity was <strong>hidden from you</strong>. You only interacted with the <strong>public methods</strong> &mdash; the simple interface. This is abstraction in practice: there is a <strong>separation between the implementation and the use</strong>.</p>
+
+                <h4 style="margin: 25px 0 10px; color: var(--secondary-color); font-size: 1.1rem;">Abstraction in Our Circle</h4>
+
+                <p>Now look at our <code class="code-inline">Circle</code> class. The user can create an object, set the radius, and compute the area:</p>
+
+                <div class="code-block"><span class="type">Circle</span> c1 = <span class="keyword">new</span> <span class="type">Circle</span>();
+c1.<span class="method">setRadius</span>(<span class="number">5.0</span>);
+System.out.<span class="method">println</span>(c1.<span class="method">computeArea</span>());  <span class="comment">// 78.54</span></div>
+
+                <p>But does the user know <em>how</em> <code class="code-inline">computeArea()</code> calculates the area? Does the user know it uses <code class="code-inline">Math.PI * radius * radius</code>? <strong>No &mdash; and they don't need to.</strong> The implementation is hidden. The user only sees the public methods. This is abstraction.</p>
+
+                <h4 style="margin: 25px 0 10px; color: var(--secondary-color); font-size: 1.1rem;">The Sign of Bad Abstraction</h4>
+
+                <div class="important-box">
+                    <div class="important-box-title">How Do You Know If Abstraction Is Poor?</div>
+                    <p>If you develop a program and the end user is <strong>struggling and screaming</strong> trying to use it &mdash; that is a clear sign that your abstraction is <strong>not good</strong>.</p>
+                    <p style="margin-top:10px;">Any software system that is <strong>not easy to use</strong> means the abstraction pillar was <strong>not implemented well</strong>. The complexity was not properly hidden from the user. Think about apps you've used that were frustrating &mdash; the developers failed at abstraction.</p>
+                    <p style="margin-top:10px;"><strong>Always think of the end user when you design your programs. Make them simple to use, no matter how complex they are inside.</strong></p>
+                </div>
+
+                <h4 style="margin: 25px 0 10px; color: var(--secondary-color); font-size: 1.1rem;">Classes Are Already Abstractions</h4>
+
+                <p>A student might say: <em>"Professor, isn't the class itself already an abstraction?"</em></p>
+                <p><strong>Yes, absolutely!</strong> Every class in OOP &mdash; whether in Java, Python, or C++ &mdash; is itself an implementation of the abstraction concept. When you write a class with <code class="code-inline">private</code> fields and <code class="code-inline">public</code> methods, you are already creating an abstraction: hiding the internal details and exposing only what the user needs.</p>
+
+                <h4 style="margin: 25px 0 10px; color: var(--secondary-color); font-size: 1.1rem;">System-Level Abstraction: The Bigger Picture</h4>
+
+                <p>But when you design a <strong>larger system</strong> made of many classes, abstraction becomes even more critical. You need to create a class that represents the <strong>abstract level</strong> of the entire system &mdash; sometimes called a <strong>controller class</strong> or an <strong>engine class</strong>. This class hides all the internal complexity and exposes only the essential operations, similar to an <strong>API</strong>.</p>
 
                 <div class="analogy-box">
-                    <div class="analogy-title">Abstraction in Daily Life</div>
-                    <p>When you send a message on your phone, you tap "Send." You don't think about the radio frequencies, the cell tower routing, the TCP/IP packets, or the server processing. All of that complexity is <strong>abstracted</strong> behind a single button. OOP applies this same principle to code.</p>
+                    <div class="analogy-title">Example: A Food Delivery System</div>
+                    <p>Imagine you are developing a food delivery system (like HungerStation). Internally, this system has many classes: <code class="code-inline">Customer</code>, <code class="code-inline">Restaurant</code>, <code class="code-inline">Order</code>, <code class="code-inline">Driver</code>, <code class="code-inline">Payment</code>, and many more &mdash; each with complex logic.</p>
+                    <p style="margin-top:10px;">But you also create a <strong>controller class</strong> that represents the abstract level of the system. This class exposes simple public methods:</p>
+                </div>
+
+                <div class="code-block"><span class="keyword">public class</span> <span class="type">DeliverySystem</span> {
+
+    <span class="comment">// The abstract level — simple public methods (like an API)</span>
+    <span class="keyword">public</span> <span class="keyword">void</span> <span class="method">registerCustomer</span>(<span class="type">String</span> name, <span class="type">String</span> phone) { ... }
+    <span class="keyword">public</span> <span class="keyword">void</span> <span class="method">deleteCustomer</span>(<span class="keyword">int</span> customerId) { ... }
+    <span class="keyword">public</span> <span class="keyword">void</span> <span class="method">placeOrder</span>(<span class="keyword">int</span> customerId, <span class="keyword">int</span> restaurantId) { ... }
+    <span class="keyword">public</span> <span class="keyword">void</span> <span class="method">cancelOrder</span>(<span class="keyword">int</span> orderId) { ... }
+    <span class="keyword">public</span> <span class="type">String</span> <span class="method">trackOrder</span>(<span class="keyword">int</span> orderId) { ... }
+
+    <span class="comment">// All the complex internal logic is hidden inside...</span>
+}</div>
+
+                <p>Now, imagine another developer wants to build a <strong>web application</strong> or a <strong>mobile app</strong> using your delivery system. They don't need to understand the dozens of internal classes. They simply <strong>import your controller class</strong> and use its public methods:</p>
+
+                <div class="code-block"><span class="comment">// Another developer building a web application</span>
+<span class="type">DeliverySystem</span> system = <span class="keyword">new</span> <span class="type">DeliverySystem</span>();
+system.<span class="method">registerCustomer</span>(<span class="string">"Ahmed"</span>, <span class="string">"0551234567"</span>);
+system.<span class="method">placeOrder</span>(<span class="number">1001</span>, <span class="number">55</span>);
+system.<span class="method">trackOrder</span>(<span class="number">3001</span>);
+<span class="comment">// They don't know or care about the internal complexity!</span></div>
+
+                <p>There is a <strong>complete separation</strong> between the implementation and the use. The developer using your system doesn't need to know any of the internal details. They could even be using a <strong>different programming language</strong> &mdash; for example, calling your Java library from MATLAB or Python &mdash; and it would still work, because they only interact with the abstract level.</p>
+
+                <div class="success-box">
+                    <div class="success-box-title">Why Abstraction Matters</div>
+                    <p>Abstraction is everywhere &mdash; in the real world and in software. It is the principle that makes complex systems <strong>usable by anyone</strong>, not just experts.</p>
+                    <ul style="margin-top:8px; padding-left:20px;">
+                        <li>A single <strong>class</strong> is already an abstraction &mdash; it hides its private fields behind public methods.</li>
+                        <li>A <strong>system</strong> of many classes needs a controller/engine class that represents the abstract level &mdash; hiding all complexity behind simple, public operations.</li>
+                        <li>If your users are <strong>struggling to use</strong> your program, your abstraction needs improvement.</li>
+                        <li><strong>Always design</strong> your programs at the abstract level &mdash; make them simple to use, no matter how complex they are inside.</li>
+                    </ul>
                 </div>
             </div>
 
             <!-- ============================================================ -->
-            <!-- SECTION 8: PUTTING IT ALL TOGETHER -->
+            <!-- SECTION 8: WHY THIS MATTERS -->
             <!-- ============================================================ -->
             <div class="section">
                 <h2 class="section-title">
                     <span class="section-number">8</span>
-                    A Complete Example: Student Class
-                </h2>
-
-                <p>Let's build something more realistic. We'll design a <code class="code-inline">Student</code> class from scratch, following the full OOP process.</p>
-
-                <h3 style="margin: 20px 0 15px; color: var(--primary-color); font-size: 1.15rem;">Step 1: Identify the Object, Properties, and Behaviors</h3>
-
-                <div class="uml-diagram">
-                    <div class="uml-class" style="min-width: 350px;">
-                        <div class="uml-name" style="background: #059669;">Student</div>
-                        <div class="uml-section" style="border-color: #059669;">
-                            <div class="uml-item"><span class="uml-private">-</span> name: String</div>
-                            <div class="uml-item"><span class="uml-private">-</span> id: int</div>
-                            <div class="uml-item"><span class="uml-private">-</span> gpa: double</div>
-                        </div>
-                        <div class="uml-section" style="border-color: #059669;">
-                            <div class="uml-item"><span class="uml-public">+</span> Student(name: String, id: int)</div>
-                            <div class="uml-item"><span class="uml-public">+</span> getName(): String</div>
-                            <div class="uml-item"><span class="uml-public">+</span> getId(): int</div>
-                            <div class="uml-item"><span class="uml-public">+</span> getGpa(): double</div>
-                            <div class="uml-item"><span class="uml-public">+</span> setGpa(gpa: double): void</div>
-                            <div class="uml-item"><span class="uml-public">+</span> isHonorStudent(): boolean</div>
-                            <div class="uml-item"><span class="uml-public">+</span> toString(): String</div>
-                        </div>
-                    </div>
-                </div>
-
-                <h3 style="margin: 25px 0 15px; color: var(--primary-color); font-size: 1.15rem;">Step 2: Write the Class</h3>
-
-                <div class="code-label">Student.java</div>
-                <div class="code-block"><span class="keyword">public class</span> <span class="type">Student</span> {
-
-    <span class="comment">// Properties (private — encapsulated)</span>
-    <span class="keyword">private</span> <span class="type">String</span> name;
-    <span class="keyword">private</span> <span class="keyword">int</span> id;
-    <span class="keyword">private</span> <span class="keyword">double</span> gpa;
-
-    <span class="comment">// Constructor</span>
-    <span class="keyword">public</span> <span class="method">Student</span>(<span class="type">String</span> name, <span class="keyword">int</span> id) {
-        <span class="keyword">this</span>.name = name;
-        <span class="keyword">this</span>.id = id;
-        <span class="keyword">this</span>.gpa = <span class="number">0.0</span>;  <span class="comment">// default GPA</span>
-    }
-
-    <span class="comment">// Getters</span>
-    <span class="keyword">public</span> <span class="type">String</span> <span class="method">getName</span>()  { <span class="keyword">return</span> name; }
-    <span class="keyword">public</span> <span class="keyword">int</span>    <span class="method">getId</span>()    { <span class="keyword">return</span> id; }
-    <span class="keyword">public</span> <span class="keyword">double</span> <span class="method">getGpa</span>()   { <span class="keyword">return</span> gpa; }
-
-    <span class="comment">// Setter with validation</span>
-    <span class="keyword">public void</span> <span class="method">setGpa</span>(<span class="keyword">double</span> gpa) {
-        <span class="keyword">if</span> (gpa &gt;= <span class="number">0.0</span> &amp;&amp; gpa &lt;= <span class="number">4.0</span>) {
-            <span class="keyword">this</span>.gpa = gpa;
-        } <span class="keyword">else</span> {
-            System.out.<span class="method">println</span>(<span class="string">"Error: GPA must be between 0.0 and 4.0"</span>);
-        }
-    }
-
-    <span class="comment">// Behavior: check if student is on the honor roll</span>
-    <span class="keyword">public boolean</span> <span class="method">isHonorStudent</span>() {
-        <span class="keyword">return</span> gpa &gt;= <span class="number">3.5</span>;
-    }
-
-    <span class="comment">// String representation of the object</span>
-    <span class="keyword">public</span> <span class="type">String</span> <span class="method">toString</span>() {
-        <span class="keyword">return</span> <span class="string">"Student{"</span> + <span class="string">"name='"</span> + name + <span class="string">"', id="</span> + id + <span class="string">", gpa="</span> + gpa + <span class="string">"}"</span>;
-    }
-}</div>
-
-                <h3 style="margin: 25px 0 15px; color: var(--primary-color); font-size: 1.15rem;">Step 3: Create Objects and Use Them</h3>
-
-                <div class="code-label">Main.java</div>
-                <div class="code-block"><span class="keyword">public class</span> <span class="type">Main</span> {
-    <span class="keyword">public static void</span> <span class="method">main</span>(<span class="type">String</span>[] args) {
-
-        <span class="comment">// Create student objects</span>
-        <span class="type">Student</span> s1 = <span class="keyword">new</span> <span class="type">Student</span>(<span class="string">"Ahmed"</span>, <span class="number">1001</span>);
-        <span class="type">Student</span> s2 = <span class="keyword">new</span> <span class="type">Student</span>(<span class="string">"Sara"</span>, <span class="number">1002</span>);
-
-        <span class="comment">// Set GPAs</span>
-        s1.<span class="method">setGpa</span>(<span class="number">3.8</span>);
-        s2.<span class="method">setGpa</span>(<span class="number">3.2</span>);
-
-        <span class="comment">// Display student info</span>
-        System.out.<span class="method">println</span>(s1);  <span class="comment">// Student{name='Ahmed', id=1001, gpa=3.8}</span>
-        System.out.<span class="method">println</span>(s2);  <span class="comment">// Student{name='Sara', id=1002, gpa=3.2}</span>
-
-        <span class="comment">// Check honor status</span>
-        System.out.<span class="method">println</span>(s1.<span class="method">getName</span>() + <span class="string">" honor student? "</span> + s1.<span class="method">isHonorStudent</span>());  <span class="comment">// true</span>
-        System.out.<span class="method">println</span>(s2.<span class="method">getName</span>() + <span class="string">" honor student? "</span> + s2.<span class="method">isHonorStudent</span>());  <span class="comment">// false</span>
-
-        <span class="comment">// Try invalid GPA</span>
-        s1.<span class="method">setGpa</span>(<span class="number">5.0</span>);  <span class="comment">// Error: GPA must be between 0.0 and 4.0</span>
-        System.out.<span class="method">println</span>(s1.<span class="method">getGpa</span>());  <span class="comment">// Still 3.8 — encapsulation protected the data!</span>
-    }
-}</div>
-
-                <div class="success-box">
-                    <div class="success-box-title">Encapsulation in Practice</div>
-                    <p>Notice what happened when we tried <code class="code-inline">s1.setGpa(5.0)</code> &mdash; the object <strong>rejected</strong> the invalid value and the GPA remained unchanged at 3.8. This is encapsulation at work: the object protects its own integrity. Without encapsulation (if <code class="code-inline">gpa</code> were public), anyone could write <code class="code-inline">s1.gpa = 5.0</code> and corrupt the data silently.</p>
-                </div>
-            </div>
-
-            <!-- ============================================================ -->
-            <!-- SECTION 9: WHY THIS MATTERS -->
-            <!-- ============================================================ -->
-            <div class="section">
-                <h2 class="section-title">
-                    <span class="section-number">9</span>
                     Why OOP Matters: The Big Picture
                 </h2>
 
@@ -1437,11 +1535,11 @@ c1.radius = <span class="number">-50</span>;  <span class="comment">// ERROR: ra
             </div>
 
             <!-- ============================================================ -->
-            <!-- SECTION 10: SUMMARY -->
+            <!-- SECTION 9: SUMMARY -->
             <!-- ============================================================ -->
             <div class="section" style="margin-bottom:20px;">
                 <h2 class="section-title">
-                    <span class="section-number">10</span>
+                    <span class="section-number">9</span>
                     Summary
                 </h2>
 
@@ -1472,6 +1570,12 @@ c1.radius = <span class="number">-50</span>;  <span class="comment">// ERROR: ra
         <div class="nav-buttons">
             <a href="../index.html" class="nav-btn prev">&larr; Back to Course</a>
             <a href="02-constructors-and-this.html" class="nav-btn next">Next: Constructors &amp; this Keyword &rarr;</a>
+        </div>
+
+        <div style="text-align: center; padding: 25px 40px; color: var(--gray-color); font-size: 0.9rem; border-top: 1px solid #e5e7eb; line-height: 1.8;">
+            <div style="font-weight: bold; color: var(--dark-color); font-size: 1rem;">King Abdulaziz University</div>
+            <div>Faculty of Computing and Information Technology (FCIT)</div>
+            <div style="margin-top: 8px;">Prepared by Dr. Abdulmohsen Almalawi</div>
         </div>
 
     </div><!-- end .container -->
