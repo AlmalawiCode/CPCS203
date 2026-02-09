@@ -710,19 +710,27 @@
 
                 <p>In the early decades of computer science, most programs were written as a <strong>sequence of instructions</strong>. You told the computer: "Do step 1, then step 2, then step 3." This is called <strong>procedural programming</strong>, and it works beautifully for small programs.</p>
 
-                <p>But software systems grew. They became thousands, then millions of lines of code. And developers kept running into the same problems over and over again:</p>
+                <p>But software systems grew. They became thousands, then millions of lines of code. And developers kept running into the same problems over and over again. Before we look at these problems, let's understand four fundamental concepts that apply not just to software, but to <strong>any well-designed system</strong>:</p>
 
                 <div class="important-box">
-                    <div class="important-box-title">The Growing Pains of Software</div>
-                    <ul style="margin-top:8px; padding-left:20px;">
-                        <li><strong>Reusability:</strong> Writing the same logic again and again in different parts of the system.</li>
-                        <li><strong>Scalability:</strong> Adding a new feature meant rewriting half the program.</li>
-                        <li><strong>Maintainability:</strong> Fixing one bug introduced three new ones.</li>
-                        <li><strong>Modularity:</strong> Everything was tangled together &mdash; change one thing, and everything else breaks.</li>
-                    </ul>
+                    <div class="important-box-title">Four Essential Concepts in System Design</div>
+
+                    <p style="margin-top:12px;"><strong>1. Reusability</strong></p>
+                    <p>When you design any system &mdash; not just software &mdash; it is essential that its parts can be <strong>reused</strong> in different contexts. Think of a car engine: a well-designed engine is not built exclusively for one specific car model. It can be used in different models, or even in different types of vehicles. This is reusability. In OOP, existing classes can be reused, customized, or extended to create new functionality through <strong>inheritance</strong> &mdash; reducing code duplication and development time.</p>
+
+                    <p style="margin-top:15px;"><strong>2. Modularity</strong></p>
+                    <p>Imagine a car that is 3D-printed as a <strong>single solid piece</strong>. If any part breaks &mdash; a mirror, a door handle, a headlight &mdash; you would have to <strong>replace the entire car</strong>. That is terrible design! In real life, we love products that are made of <strong>independent, replaceable parts</strong>. If a headlight breaks, you replace just the headlight. In OOP, modularity means breaking a complex system into <strong>independent, manageable objects</strong>. Each object is responsible for its own behavior, making it easy to understand, modify, or replace without affecting the rest of the system.</p>
+
+                    <p style="margin-top:15px;"><strong>3. Maintainability</strong></p>
+                    <p>Maintainability is closely related to modularity. When code is organized into <strong>encapsulated, self-contained</strong> objects, it becomes easy to fix bugs, update functionality, and make changes. A change in one module has <strong>minimal impact</strong> on the rest of the application. Without maintainability, fixing one bug introduces three new ones &mdash; because everything is tangled together.</p>
+
+                    <p style="margin-top:15px;"><strong>4. Scalability</strong></p>
+                    <p>Imagine you build a system for a supermarket chain. Today you have 3 branches, but tomorrow you might expand to 50 branches across the entire country, with thousands of users. A <strong>scalable</strong> system can handle this growth without needing to be rewritten from scratch. The modular, organized nature of OOP makes it ideal for handling increasing complexity in large systems. New features can be added by creating new objects or extending existing ones &mdash; without overhauling the entire system.</p>
                 </div>
 
-                <p>These problems sparked a search for better ways to organize code. And eventually, a powerful idea emerged: <em>What if we stop thinking about programs as sequences of instructions, and start thinking about them as collections of <strong>objects</strong> that interact with each other?</em></p>
+                <p>Now, procedural programming is <strong>not incapable</strong> of achieving these four concepts &mdash; large, well-maintained systems like the Linux kernel have been built using procedural languages like C. However, as systems grew larger and more complex, achieving reusability, modularity, maintainability, and scalability became <strong>increasingly challenging</strong> without built-in language constructs to support them. Developers had to rely on discipline and conventions rather than the language itself enforcing good design.</p>
+
+                <p>This challenge sparked a search for better ways to organize code. And eventually, a powerful idea emerged: <em>What if we stop thinking about programs as sequences of instructions, and start thinking about them as collections of <strong>objects</strong> that interact with each other?</em> This paradigm provides <strong>built-in mechanisms</strong> &mdash; classes, objects, inheritance, encapsulation &mdash; that make achieving these four concepts more natural and easier.</p>
 
                 <p>This idea became known as <strong>Object-Oriented Programming (OOP)</strong>.</p>
 
