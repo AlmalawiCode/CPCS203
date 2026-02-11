@@ -1,0 +1,1674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Constructors &amp; this Keyword | CPCS203</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #2563eb;
+            --primary-light: #3b82f6;
+            --primary-dark: #1d4ed8;
+            --secondary-color: #7c3aed;
+            --success-color: #059669;
+            --warning-color: #d97706;
+            --danger-color: #dc2626;
+            --dark-color: #1f2937;
+            --light-color: #f3f4f6;
+            --gray-color: #6b7280;
+            --oop-color: #2563eb;
+            --fp-color: #7c3aed;
+            --proc-color: #d97706;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.8;
+            color: var(--dark-color);
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #7c3aed 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .header .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .header .course-info {
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 30px;
+            display: inline-block;
+        }
+
+        /* Content */
+        .content {
+            padding: 40px;
+        }
+
+        /* Sections */
+        .section {
+            margin-bottom: 50px;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--primary-color);
+            padding-bottom: 10px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-number {
+            background: var(--primary-color);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        /* Narrative Block */
+        .narrative {
+            background: linear-gradient(135deg, #f0f4ff, #e8ecff);
+            border-left: 5px solid var(--primary-color);
+            padding: 25px 30px;
+            margin: 20px 0;
+            border-radius: 0 15px 15px 0;
+            font-size: 1.05rem;
+            line-height: 2;
+        }
+
+        .narrative p {
+            margin-bottom: 12px;
+        }
+
+        .narrative p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Key Concept Box */
+        .key-concept {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border-left: 5px solid var(--warning-color);
+            padding: 20px 25px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .key-concept-title {
+            font-weight: bold;
+            color: var(--warning-color);
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        /* Important Box */
+        .important-box {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            border-left: 5px solid var(--danger-color);
+            padding: 20px 25px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .important-box-title {
+            font-weight: bold;
+            color: var(--danger-color);
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        /* Info Box */
+        .info-box {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            border-left: 5px solid var(--primary-color);
+            padding: 20px 25px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .info-box-title {
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        /* Success Box */
+        .success-box {
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+            border-left: 5px solid var(--success-color);
+            padding: 20px 25px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .success-box-title {
+            font-weight: bold;
+            color: var(--success-color);
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        /* Code Blocks */
+        .code-block {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+        }
+
+        .code-block .keyword { color: #569cd6; }
+        .code-block .type { color: #4ec9b0; }
+        .code-block .string { color: #ce9178; }
+        .code-block .number { color: #b5cea8; }
+        .code-block .comment { color: #6a9955; }
+        .code-block .method { color: #dcdcaa; }
+        .code-block .annotation { color: #c586c0; }
+
+        .code-label {
+            background: #2d2d2d;
+            color: #9cdcfe;
+            padding: 8px 15px;
+            border-radius: 10px 10px 0 0;
+            font-family: 'Consolas', monospace;
+            font-size: 0.85rem;
+            display: inline-block;
+            margin-bottom: -1px;
+        }
+
+        .code-inline {
+            background: #e5e7eb;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9rem;
+            color: var(--danger-color);
+        }
+
+        /* Comparison Grid */
+        .paradigm-comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin: 25px 0;
+        }
+
+        .paradigm-box {
+            border-radius: 15px;
+            padding: 25px;
+            border: 3px solid;
+        }
+
+        .paradigm-box.procedural {
+            background: linear-gradient(135deg, #fff7ed, #ffedd5);
+            border-color: var(--proc-color);
+        }
+
+        .paradigm-box.oop {
+            background: linear-gradient(135deg, #eff6ff, #dbeafe);
+            border-color: var(--oop-color);
+        }
+
+        .paradigm-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .paradigm-box.procedural .paradigm-title { color: var(--proc-color); }
+        .paradigm-box.oop .paradigm-title { color: var(--oop-color); }
+
+        .paradigm-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .paradigm-list li {
+            padding: 6px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .paradigm-list li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 14px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .paradigm-box.procedural .paradigm-list li::before { background: var(--proc-color); }
+        .paradigm-box.oop .paradigm-list li::before { background: var(--oop-color); }
+
+        /* Navigation */
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            padding: 30px 40px;
+            background: var(--light-color);
+            border-top: 2px solid #e5e7eb;
+        }
+
+        .nav-btn {
+            padding: 12px 25px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .nav-btn.prev {
+            background: white;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+
+        .nav-btn.next {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+        }
+
+        /* Memory Diagrams */
+        .memory-diagram {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 25px 0;
+            flex-wrap: wrap;
+        }
+
+        .memory-var {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            border: 3px solid var(--primary-color);
+            border-radius: 12px;
+            padding: 15px 20px;
+            text-align: center;
+            min-width: 120px;
+            font-family: 'Consolas', monospace;
+            position: relative;
+        }
+
+        .memory-var-label {
+            font-size: 0.8rem;
+            color: var(--gray-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+        }
+
+        .memory-var-value {
+            font-weight: bold;
+            font-size: 1.05rem;
+            color: var(--primary-color);
+        }
+
+        .memory-arrow {
+            font-size: 2rem;
+            color: var(--primary-color);
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .memory-object {
+            border: 3px solid var(--secondary-color);
+            border-radius: 12px;
+            overflow: hidden;
+            min-width: 200px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .memory-object-header {
+            background: linear-gradient(135deg, var(--secondary-color), #6d28d9);
+            color: white;
+            padding: 10px 18px;
+            text-align: center;
+            font-weight: bold;
+            font-family: 'Consolas', monospace;
+            font-size: 0.95rem;
+        }
+
+        .memory-object-body {
+            background: white;
+            padding: 12px 18px;
+        }
+
+        .memory-field {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            border-bottom: 1px solid #e5e7eb;
+            font-family: 'Consolas', monospace;
+            font-size: 0.9rem;
+        }
+
+        .memory-field:last-child {
+            border-bottom: none;
+        }
+
+        .memory-field-name {
+            color: var(--dark-color);
+        }
+
+        .memory-field-value {
+            color: var(--secondary-color);
+            font-weight: bold;
+        }
+
+        .memory-null {
+            background: #f3f4f6;
+            border: 3px dashed var(--gray-color);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            min-width: 200px;
+            color: var(--gray-color);
+            font-style: italic;
+        }
+
+        .diagram-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+
+        .diagram-label {
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--gray-color);
+            margin-top: 5px;
+        }
+
+        .diagram-step-label {
+            font-weight: bold;
+            color: var(--primary-color);
+            margin: 20px 0 8px 0;
+            font-size: 1rem;
+        }
+
+        /* Language Switch */
+        .lang-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-size: 0.95rem;
+        }
+
+        .lang-switch:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .content { padding: 20px; }
+            .header h1 { font-size: 1.8rem; }
+            .paradigm-comparison { grid-template-columns: 1fr; }
+            .memory-diagram { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <a href="02-constructors-and-this-ar.html" class="lang-switch">&#127480;&#127462; العربية</a>
+    <div class="container">
+
+        <!-- Header -->
+        <div class="header">
+            <h1>Constructors &amp; this Keyword</h1>
+            <p class="subtitle">Giving Life to Objects from the Moment They Are Created</p>
+            <div class="course-info">CPCS203 - Module 04: Objects and Classes</div>
+        </div>
+
+        <div class="content">
+
+            <!-- ============================================================ -->
+            <!-- SECTION 1: WHY CONSTRUCTORS? -->
+            <!-- ============================================================ -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">1</span>
+                    Why Do We Need Constructors?
+                </h2>
+
+                <div class="narrative">
+                    <p>In the previous lesson, we built a <code class="code-inline">Circle</code> class step by step. We learned about <code class="code-inline">private</code> fields, getters, setters, and validation. Our class works well. But let's stop and think about something important.</p>
+                    <p>Look at how we currently create and use a Circle:</p>
+                </div>
+
+                <div class="code-block"><span class="type">Circle</span> c1 = <span class="keyword">new</span> <span class="type">Circle</span>();   <span class="comment">// Step 1: Create the object</span>
+c1.<span class="method">setRadius</span>(<span class="number">5.0</span>);              <span class="comment">// Step 2: Set the radius</span>
+c1.<span class="method">computeArea</span>();               <span class="comment">// Step 3: Now we can use it</span></div>
+
+                <p>This works fine. But notice something: between Step 1 and Step 2, the object <strong>exists but has no meaningful data</strong>. The radius is <code class="code-inline">0.0</code> by default. What if someone forgets Step 2 and goes straight to Step 3? They would get an area of <code class="code-inline">0.0</code> &mdash; a useless result, and possibly a silent bug.</p>
+
+                <p>Wouldn't it be better if we could <strong>create the object and give it its starting values at the same time</strong>? Like this:</p>
+
+                <div class="code-block"><span class="type">Circle</span> c1 = <span class="keyword">new</span> <span class="type">Circle</span>(<span class="number">5.0</span>);   <span class="comment">// Create AND initialize in one step!</span></div>
+
+                <p>This is exactly the role of a <strong>constructor</strong>.</p>
+
+                <h3 style="margin: 25px 0 10px; color: var(--secondary-color); font-size: 1.2rem;">Motivation: Why Constructors Matter</h3>
+
+                <div class="key-concept">
+                    <div class="key-concept-title">Why We Need Constructors</div>
+                    <ul style="margin-top:8px; padding-left:20px; line-height: 2.2;">
+                        <li>Sometimes we need to <strong>initialize an object at the moment it is created</strong>, not later.</li>
+                        <li>In many cases, we can assign values later using setters, as we learned. However, there are situations where the object <strong>must start in a valid state immediately</strong> &mdash; meaning it needs its starting values at the moment it is created.</li>
+                        <li>This is especially important when <strong>certain attributes are mandatory</strong>, or when the object contains internal variables or resources that must be initialized before any method can safely run.</li>
+                        <li>In addition, if we design an object to be <strong>immutable</strong> (no setters, and its state cannot change after creation), then the constructor becomes essential &mdash; because the <strong>only chance</strong> to provide the required values is during object creation.</li>
+                        <li>The constructor is what <strong>gives life</strong> to an object &mdash; it is the very first code that runs when an object is born.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- ============================================================ -->
+            <!-- SECTION 2: WHAT IS A CONSTRUCTOR? -->
+            <!-- ============================================================ -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">2</span>
+                    What Is So Special About a Constructor?
+                </h2>
+
+                <div class="narrative">
+                    <p>A constructor is not just any method. It is a <strong>very special</strong> kind of method with unique rules that set it apart from all other methods in Java. Understanding these rules is essential.</p>
+                </div>
+
+                <div class="important-box">
+                    <div class="important-box-title">Constructor Rules</div>
+                    <ul style="margin-top:8px; padding-left:20px; line-height: 2.2;">
+                        <li>A constructor <strong>must have the same name as the class itself</strong>. If the class is <code class="code-inline">Circle</code>, the constructor must be named <code class="code-inline">Circle()</code>.</li>
+                        <li>Constructors <strong>do not have a return type</strong> &mdash; not even <code class="code-inline">void</code>. This is what distinguishes them from regular methods.</li>
+                        <li>Constructors are <strong>invoked using the <code class="code-inline">new</code> operator</strong> when an object is created. You never call a constructor directly like a regular method.</li>
+                        <li>The role of a constructor is essentially to <strong>initialize objects</strong> &mdash; to set the starting values of the object's data fields when it is first created.</li>
+                    </ul>
+                </div>
+
+                <p>Here is what the constructor looks like in our <code class="code-inline">Circle</code> class:</p>
+
+                <div class="code-label">Circle.java &mdash; With Constructor</div>
+                <div class="code-block"><span class="keyword">public class</span> <span class="type">Circle</span> {
+
+    <span class="keyword">private</span> <span class="keyword">double</span> radius;
+
+    <span class="comment">// Constructor — same name as the class, no return type!</span>
+    <span class="keyword">public</span> <span class="type">Circle</span>(<span class="keyword">double</span> radius) {
+        <span class="keyword">this</span>.radius = radius;
+    }
+
+    <span class="keyword">public</span> <span class="keyword">double</span> <span class="method">getRadius</span>() {
+        <span class="keyword">return</span> radius;
+    }
+
+    <span class="keyword">public</span> <span class="keyword">void</span> <span class="method">setRadius</span>(<span class="keyword">double</span> radius) {
+        <span class="keyword">if</span> (radius &gt;= <span class="number">0</span>) {
+            <span class="keyword">this</span>.radius = radius;
+        }
+    }
+
+    <span class="keyword">public</span> <span class="keyword">double</span> <span class="method">computeArea</span>() {
+        <span class="keyword">return</span> Math.PI * radius * radius;
+    }
+}</div>
+
+                <div class="code-label">Main.java &mdash; Using the Constructor</div>
+                <div class="code-block"><span class="type">Circle</span> c1 = <span class="keyword">new</span> <span class="type">Circle</span>(<span class="number">5.0</span>);    <span class="comment">// Created with radius = 5.0</span>
+<span class="type">Circle</span> c2 = <span class="keyword">new</span> <span class="type">Circle</span>(<span class="number">10.0</span>);   <span class="comment">// Created with radius = 10.0</span>
+
+System.out.<span class="method">println</span>(c1.<span class="method">computeArea</span>());  <span class="comment">// 78.54</span>
+System.out.<span class="method">println</span>(c2.<span class="method">computeArea</span>());  <span class="comment">// 314.16</span></div>
+
+                <div class="success-box">
+                    <div class="success-box-title">The Power of Constructors</div>
+                    <p>Now every <code class="code-inline">Circle</code> object <strong>starts its life with a meaningful radius</strong>. No more objects with default <code class="code-inline">0.0</code> values. No more risk of forgetting to call the setter. The object is <strong>born ready</strong>.</p>
+                </div>
+            </div>
+
+            <!-- ============================================================ -->
+            <!-- SECTION 3: MULTIPLE CONSTRUCTORS -->
+            <!-- ============================================================ -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">3</span>
+                    Can a Class Have More Than One Constructor?
+                </h2>
+
+                <div class="narrative">
+                    <p>So far, our <code class="code-inline">Circle</code> class has only one attribute: <code class="code-inline">radius</code>. But what if we want our circle to also have a <code class="code-inline">color</code>? Now the class has <strong>two</strong> attributes. And here is the interesting question: when creating a Circle, the user might want to:</p>
+                    <ul style="margin-top:8px; padding-left:20px; line-height: 2;">
+                        <li>Create a Circle with <strong>no values</strong> (a default circle)</li>
+                        <li>Create a Circle by specifying only the <strong>radius</strong></li>
+                        <li>Create a Circle by specifying only the <strong>color</strong></li>
+                        <li>Create a Circle by specifying <strong>both radius and color</strong></li>
+                    </ul>
+                    <p style="margin-top:12px;">Should we force the user to always provide all values? That would be rigid and inconvenient. Instead, Java allows us to define <strong>multiple constructors</strong> in the same class &mdash; each accepting a different set of parameters. This is called <strong>constructor overloading</strong>.</p>
+                </div>
+
+                <div class="code-label">Circle.java &mdash; With Multiple Constructors</div>
+                <div class="code-block"><span class="keyword">public class</span> <span class="type">Circle</span> {
+
+    <span class="keyword">private</span> <span class="keyword">double</span> radius;
+    <span class="keyword">private</span> <span class="type">String</span> color;
+
+    <span class="comment">// Constructor 1: No parameters (default values)</span>
+    <span class="keyword">public</span> <span class="type">Circle</span>() {
+        <span class="keyword">this</span>.radius = <span class="number">1.0</span>;
+        <span class="keyword">this</span>.color = <span class="string">"red"</span>;
+    }
+
+    <span class="comment">// Constructor 2: Only radius</span>
+    <span class="keyword">public</span> <span class="type">Circle</span>(<span class="keyword">double</span> radius) {
+        <span class="keyword">this</span>.radius = radius;
+        <span class="keyword">this</span>.color = <span class="string">"red"</span>;
+    }
+
+    <span class="comment">// Constructor 3: Only color</span>
+    <span class="keyword">public</span> <span class="type">Circle</span>(<span class="type">String</span> color) {
+        <span class="keyword">this</span>.radius = <span class="number">1.0</span>;
+        <span class="keyword">this</span>.color = color;
+    }
+
+    <span class="comment">// Constructor 4: Both radius and color</span>
+    <span class="keyword">public</span> <span class="type">Circle</span>(<span class="keyword">double</span> radius, <span class="type">String</span> color) {
+        <span class="keyword">this</span>.radius = radius;
+        <span class="keyword">this</span>.color = color;
+    }
+
+    <span class="keyword">public</span> <span class="keyword">double</span> <span class="method">computeArea</span>() {
+        <span class="keyword">return</span> Math.PI * radius * radius;
+    }
+}</div>
+
+                <div class="code-label">Main.java &mdash; Creating Circles in Different Ways</div>
+                <div class="code-block"><span class="type">Circle</span> c1 = <span class="keyword">new</span> <span class="type">Circle</span>();                      <span class="comment">// radius=1.0, color="red"</span>
+<span class="type">Circle</span> c2 = <span class="keyword">new</span> <span class="type">Circle</span>(<span class="number">5.0</span>);                  <span class="comment">// radius=5.0, color="red"</span>
+<span class="type">Circle</span> c3 = <span class="keyword">new</span> <span class="type">Circle</span>(<span class="string">"blue"</span>);              <span class="comment">// radius=1.0, color="blue"</span>
+<span class="type">Circle</span> c4 = <span class="keyword">new</span> <span class="type">Circle</span>(<span class="number">7.5</span>, <span class="string">"green"</span>);      <span class="comment">// radius=7.5, color="green"</span></div>
+
+                <div class="info-box">
+                    <div class="info-box-title">Constructor Overloading</div>
+                    <p>Just like regular methods can be overloaded (same name, different parameters), <strong>constructors can be overloaded too</strong>. Java determines which constructor to call based on the <strong>number and types of arguments</strong> you pass when using the <code class="code-inline">new</code> operator. This gives the user of the class <strong>flexibility</strong> &mdash; they can create objects in whatever way is most convenient for their situation.</p>
+                </div>
+            </div>
+
+            <!-- ============================================================ -->
+            <!-- SECTION 4: THE DEFAULT CONSTRUCTOR -->
+            <!-- ============================================================ -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">4</span>
+                    The Default Constructor &mdash; A Very Important Concept
+                </h2>
+
+                <div class="narrative">
+                    <p>Now we need to discuss something that is <strong>very important</strong> and often confuses students. Pay close attention.</p>
+                </div>
+
+                <div class="important-box">
+                    <div class="important-box-title">Fundamental Rule: Every Java Class Has At Least One Constructor</div>
+                    <p>This is a rule in Java: <strong>every class must have at least one constructor</strong>. There is no exception to this. An object cannot be created without a constructor being called.</p>
+                    <p style="margin-top:10px;">But wait &mdash; think back to our very first version of the <code class="code-inline">Circle</code> class in the previous lesson. Did we write a constructor? <strong>No, we did not!</strong> We only had a <code class="code-inline">radius</code> field and a <code class="code-inline">computeArea()</code> method. Yet we still wrote <code class="code-inline">new Circle()</code> and it worked perfectly fine. How is that possible if every class must have a constructor?</p>
+                </div>
+
+                <p>The answer is: <strong>Java created one for us.</strong></p>
+
+                <p>When a programmer writes a class and does <strong>not explicitly define any constructor</strong>, Java automatically provides a hidden, invisible constructor called the <strong>implicit default constructor</strong> (also known as the <em>no-arg constructor</em>). This constructor takes no parameters and does nothing except create the object with default values (<code class="code-inline">0</code> for numbers, <code class="code-inline">null</code> for objects, <code class="code-inline">false</code> for booleans).</p>
+
+                <p>It is as if Java silently added this to your class behind the scenes:</p>
+
+                <div class="code-label">What Java Adds Implicitly (You Don't See This in Your Code)</div>
+                <div class="code-block"><span class="keyword">public class</span> <span class="type">Circle</span> {
+
+    <span class="keyword">private</span> <span class="keyword">double</span> radius;
+
+    <span class="comment">// This constructor is INVISIBLE — Java creates it for you</span>
+    <span class="comment">// ONLY if you don't write any constructor yourself</span>
+    <span class="keyword">public</span> <span class="type">Circle</span>() {
+        <span class="comment">// does nothing — fields get default values (radius = 0.0)</span>
+    }
+
+    <span class="keyword">public</span> <span class="keyword">double</span> <span class="method">computeArea</span>() {
+        <span class="keyword">return</span> Math.PI * radius * radius;
+    }
+}</div>
+
+                <p>That is why <code class="code-inline">new Circle()</code> worked even though we never wrote a constructor. Java was quietly helping us.</p>
+
+                <h3 style="margin: 25px 0 10px; color: var(--secondary-color); font-size: 1.2rem;">Two Types of Default Constructors</h3>
+
+                <p>A <strong>default constructor</strong> is a constructor that takes <strong>no parameters</strong>. But there are two ways a default constructor can exist:</p>
+
+                <div class="paradigm-comparison">
+                    <div class="paradigm-box oop">
+                        <div class="paradigm-title">Implicit Default Constructor</div>
+                        <ul class="paradigm-list">
+                            <li>Created <strong>automatically by Java</strong></li>
+                            <li>Only exists when the programmer writes <strong>no constructors at all</strong></li>
+                            <li>Takes no parameters</li>
+                            <li>Assigns default values to all fields (<code class="code-inline">0</code>, <code class="code-inline">null</code>, <code class="code-inline">false</code>)</li>
+                            <li>You <strong>cannot see it</strong> in the source code &mdash; it is invisible</li>
+                        </ul>
+                    </div>
+
+                    <div class="paradigm-box procedural">
+                        <div class="paradigm-title">Explicit Default Constructor</div>
+                        <ul class="paradigm-list">
+                            <li>Written <strong>manually by the programmer</strong></li>
+                            <li>The programmer chooses to define a no-arg constructor</li>
+                            <li>Takes no parameters</li>
+                            <li>Can assign <strong>custom default values</strong> (like <code class="code-inline">radius = 1.0</code>)</li>
+                            <li>You <strong>can see it</strong> in the source code &mdash; it is part of the class</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <p>For example, in Section 3, the first constructor we wrote (<code class="code-inline">Circle()</code> with no parameters, setting <code class="code-inline">radius = 1.0</code> and <code class="code-inline">color = "red"</code>) is an <strong>explicit</strong> default constructor. The programmer deliberately wrote it and chose meaningful default values.</p>
+
+                <!-- ====== THE CRITICAL RULE ====== -->
+                <h3 style="margin: 25px 0 10px; color: var(--danger-color); font-size: 1.2rem;">The Critical Rule You Must Never Forget</h3>
+
+                <div class="important-box" style="border-left-width: 8px;">
+                    <div class="important-box-title">WARNING: When Does the Implicit Default Constructor Disappear?</div>
+                    <p>Here is the rule that catches many students off guard:</p>
+                    <p style="margin-top:12px; font-size: 1.1rem;"><strong>If the programmer defines ANY constructor in the class &mdash; even just one &mdash; Java will NO LONGER create the implicit default constructor.</strong></p>
+                    <p style="margin-top:12px;">In other words, the implicit default constructor is Java's way of being helpful <em>only when you haven't written any constructors yourself</em>. The moment you take control and define even a single constructor, Java steps back and says: <em>"The programmer is handling constructors now. I will not interfere."</em></p>
+                </div>
+
+                <p>Let's see exactly what this means with an example:</p>
+
+                <div class="code-label">Circle.java &mdash; With Only a Parameterized Constructor</div>
+                <div class="code-block"><span class="keyword">public class</span> <span class="type">Circle</span> {
+
+    <span class="keyword">private</span> <span class="keyword">double</span> radius;
+
+    <span class="comment">// The programmer defined ONE constructor (with a parameter)</span>
+    <span class="keyword">public</span> <span class="type">Circle</span>(<span class="keyword">double</span> radius) {
+        <span class="keyword">this</span>.radius = radius;
+    }
+
+    <span class="keyword">public</span> <span class="keyword">double</span> <span class="method">computeArea</span>() {
+        <span class="keyword">return</span> Math.PI * radius * radius;
+    }
+}</div>
+
+                <div class="code-label">Main.java &mdash; What Works and What Doesn't</div>
+                <div class="code-block"><span class="type">Circle</span> c1 = <span class="keyword">new</span> <span class="type">Circle</span>(<span class="number">5.0</span>);   <span class="comment">// WORKS — matches the constructor we defined</span>
+<span class="type">Circle</span> c2 = <span class="keyword">new</span> <span class="type">Circle</span>();       <span class="comment">// ERROR! Does not compile!</span>
+                                    <span class="comment">// "no suitable constructor found for Circle(no arguments)"</span></div>
+
+                <div class="important-box">
+                    <div class="important-box-title">Why Does This Fail?</div>
+                    <p>Because the programmer defined <code class="code-inline">Circle(double radius)</code>, Java <strong>no longer provides the implicit default constructor</strong>. So <code class="code-inline">Circle()</code> with no arguments <strong>does not exist</strong> anymore. The class only has the one constructor the programmer wrote.</p>
+                    <p style="margin-top:10px;">If you still want to allow <code class="code-inline">new Circle()</code> (with no arguments), you must <strong>explicitly write a no-arg constructor yourself</strong>:</p>
+                </div>
+
+                <div class="code-label">Circle.java &mdash; Adding an Explicit Default Constructor</div>
+                <div class="code-block"><span class="keyword">public class</span> <span class="type">Circle</span> {
+
+    <span class="keyword">private</span> <span class="keyword">double</span> radius;
+
+    <span class="comment">// Explicit default constructor (no parameters)</span>
+    <span class="keyword">public</span> <span class="type">Circle</span>() {
+        <span class="keyword">this</span>.radius = <span class="number">1.0</span>;   <span class="comment">// sensible default value</span>
+    }
+
+    <span class="comment">// Parameterized constructor</span>
+    <span class="keyword">public</span> <span class="type">Circle</span>(<span class="keyword">double</span> radius) {
+        <span class="keyword">this</span>.radius = radius;
+    }
+
+    <span class="keyword">public</span> <span class="keyword">double</span> <span class="method">computeArea</span>() {
+        <span class="keyword">return</span> Math.PI * radius * radius;
+    }
+}</div>
+
+                <div class="code-block"><span class="type">Circle</span> c1 = <span class="keyword">new</span> <span class="type">Circle</span>();       <span class="comment">// NOW it works! Uses the explicit default constructor</span>
+<span class="type">Circle</span> c2 = <span class="keyword">new</span> <span class="type">Circle</span>(<span class="number">5.0</span>);   <span class="comment">// Also works! Uses the parameterized constructor</span></div>
+
+                <div class="key-concept">
+                    <div class="key-concept-title">Summary: The Default Constructor</div>
+                    <ul style="margin-top:8px; padding-left:20px; line-height: 2.2;">
+                        <li><strong>Every Java class has at least one constructor.</strong></li>
+                        <li>If the programmer writes <strong>no constructors</strong>, Java automatically provides an <strong>implicit default constructor</strong> (no parameters, default values).</li>
+                        <li>If the programmer writes <strong>any constructor</strong> (even one), the <strong>implicit default constructor disappears</strong>.</li>
+                        <li>If you still need a no-arg constructor alongside other constructors, you must <strong>write it explicitly yourself</strong>.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- ============================================================ -->
+            <!-- SECTION 5: THE this KEYWORD -->
+            <!-- ============================================================ -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">5</span>
+                    The <code style="font-size: 1.6rem;">this</code> Keyword &mdash; "I Am Talking About Myself"
+                </h2>
+
+                <div class="narrative">
+                    <p>You may have noticed that in our constructors and setters, we keep writing <code class="code-inline">this.radius = radius</code>. A student raises their hand: <em>"Professor, what is this <code class="code-inline">this</code> thing? Why do we need it? Can't we just write <code class="code-inline">radius = radius</code>?"</em></p>
+                    <p>Excellent question. Let's explore it step by step.</p>
+                </div>
+
+                <h3 style="margin: 25px 0 10px; color: var(--secondary-color); font-size: 1.2rem;">The "Easy" Solution: Use a Different Name</h3>
+
+                <p>Look at our setter. One student suggests: <em>"Why not just name the parameter something different, like <code class="code-inline">r</code>?"</em></p>
+
+                <div class="code-label">Circle.java &mdash; Using a Different Parameter Name</div>
+                <div class="code-block"><span class="keyword">public</span> <span class="keyword">void</span> <span class="method">setRadius</span>(<span class="keyword">double</span> r) {
+    radius = r;   <span class="comment">// No confusion! 'r' is the parameter, 'radius' is the field.</span>
+}</div>
+
+                <p>This works perfectly fine! There is no ambiguity &mdash; <code class="code-inline">r</code> is clearly the parameter, and <code class="code-inline">radius</code> is clearly the data field. The compiler has no trouble telling them apart.</p>
+
+                <p>But here is the problem: <strong>this is not professional</strong>. When someone reads the method signature <code class="code-inline">setRadius(double r)</code>, what does <code class="code-inline">r</code> mean? It is vague. It is not self-documenting. In a real project with dozens of classes and hundreds of methods, using cryptic short names like <code class="code-inline">r</code>, <code class="code-inline">c</code>, or <code class="code-inline">x</code> makes the code harder to read and maintain.</p>
+
+                <p>The professional and natural choice is to name the parameter exactly what it represents: <code class="code-inline">radius</code>.</p>
+
+                <div class="code-label">Circle.java &mdash; Same Name for Parameter and Field</div>
+                <div class="code-block"><span class="keyword">public</span> <span class="keyword">void</span> <span class="method">setRadius</span>(<span class="keyword">double</span> radius) {
+    radius = radius;   <span class="comment">// Wait... which radius is which?!</span>
+}</div>
+
+                <h3 style="margin: 25px 0 10px; color: var(--danger-color); font-size: 1.2rem;">The Problem: Name Shadowing</h3>
+
+                <p>Now we have a serious problem. Look at that line: <code class="code-inline">radius = radius</code>. There are <strong>two</strong> things named <code class="code-inline">radius</code>:</p>
+
+                <ul style="padding-left:25px; line-height: 2.2; margin: 15px 0;">
+                    <li>The <strong>parameter</strong> <code class="code-inline">radius</code> &mdash; a local variable that exists only inside this method</li>
+                    <li>The <strong>data field</strong> <code class="code-inline">radius</code> &mdash; the property that belongs to the object</li>
+                </ul>
+
+                <p>When the compiler sees <code class="code-inline">radius = radius</code>, it is confused. Actually, it is not confused at all &mdash; it follows a simple rule: <strong>the local variable (parameter) always takes priority over the data field</strong>. This is called <strong>name shadowing</strong>.</p>
+
+                <div class="important-box">
+                    <div class="important-box-title">What Actually Happens with <code class="code-inline">radius = radius</code></div>
+                    <p>The compiler sees <code class="code-inline">radius</code> on <em>both sides</em> of the assignment and interprets both as the <strong>local parameter</strong>. So it assigns the parameter to itself!</p>
+                    <p style="margin-top:10px;">The data field of the object is <strong>never touched</strong>. It remains <code class="code-inline">0.0</code>. The setter does absolutely nothing useful. This is a silent bug &mdash; no error, no warning, just wrong behavior.</p>
+                </div>
+
+                <div class="code-block"><span class="keyword">public</span> <span class="keyword">void</span> <span class="method">setRadius</span>(<span class="keyword">double</span> radius) {
+    radius = radius;
+    <span class="comment">// What the compiler actually understands:</span>
+    <span class="comment">//   local_parameter = local_parameter;   (assigns to itself!)</span>
+    <span class="comment">//   The object's data field 'radius' is NEVER modified.</span>
+}</div>
+
+                <div class="code-label">Main.java &mdash; The Silent Bug</div>
+                <div class="code-block"><span class="type">Circle</span> c1 = <span class="keyword">new</span> <span class="type">Circle</span>();
+c1.<span class="method">setRadius</span>(<span class="number">5.0</span>);
+System.out.<span class="method">println</span>(c1.<span class="method">getRadius</span>());  <span class="comment">// 0.0  — the radius was NEVER set!</span></div>
+
+                <p>We called <code class="code-inline">setRadius(5.0)</code>, but the radius is still <code class="code-inline">0.0</code>. The setter is broken, and the code compiles with no errors. This is a very dangerous kind of bug.</p>
+
+                <h3 style="margin: 25px 0 10px; color: var(--success-color); font-size: 1.2rem;">The Solution: <code class="code-inline">this</code> to the Rescue</h3>
+
+                <div class="narrative">
+                    <p>So how do we tell the compiler: <em>"I don't mean the local parameter. I mean the data field that belongs to <strong>this object</strong>."</em>?</p>
+                    <p>The answer is the <code class="code-inline">this</code> keyword.</p>
+                </div>
+
+                <div class="key-concept">
+                    <div class="key-concept-title">What Is <code class="code-inline">this</code>?</div>
+                    <p>In Java, <code class="code-inline">this</code> is a <strong>reference to the current object</strong> &mdash; the object that is currently executing the method. Think of it as the object pointing to itself and saying: <em>"When I say <code class="code-inline">this.radius</code>, I mean <strong>MY</strong> radius &mdash; the data field that belongs to <strong>me</strong>, the object, not the local variable of the method."</em></p>
+                </div>
+
+                <div class="code-label">Circle.java &mdash; Using <code>this</code> Correctly</div>
+                <div class="code-block"><span class="keyword">public</span> <span class="keyword">void</span> <span class="method">setRadius</span>(<span class="keyword">double</span> radius) {
+    <span class="keyword">this</span>.radius = radius;
+    <span class="comment">// What the compiler understands:</span>
+    <span class="comment">//   this.radius  →  the data field of THIS object</span>
+    <span class="comment">//   radius       →  the local parameter (the value passed in)</span>
+    <span class="comment">//   So: "Take the value passed in, and store it in MY data field."</span>
+}</div>
+
+                <p>Now there is <strong>zero ambiguity</strong>:</p>
+
+                <ul style="padding-left:25px; line-height: 2.2; margin: 15px 0;">
+                    <li><code class="code-inline">this.radius</code> &mdash; the <strong>data field</strong> (the member variable of the object)</li>
+                    <li><code class="code-inline">radius</code> (without <code class="code-inline">this</code>) &mdash; the <strong>local parameter</strong> passed into the method</li>
+                </ul>
+
+                <p>Let's visualize what happens when we call <code class="code-inline">c1.setRadius(5.0)</code>:</p>
+
+                <div class="code-block"><span class="comment">// Suppose c1 holds the reference 0x3A7F (pointing to a Circle object)</span>
+
+c1.<span class="method">setRadius</span>(<span class="number">5.0</span>);
+
+<span class="comment">// Inside the method, 'this' holds the same reference as c1 (0x3A7F)</span>
+<span class="comment">// So:</span>
+<span class="comment">//   this.radius = radius;</span>
+<span class="comment">//   ↓               ↓</span>
+<span class="comment">//   (0x3A7F).radius = 5.0;</span>
+<span class="comment">//   ↓</span>
+<span class="comment">//   The object's data field is now 5.0!</span></div>
+
+                <div class="success-box">
+                    <div class="success-box-title">Understanding <code class="code-inline">this</code></div>
+                    <p><code class="code-inline">this</code> is simply a <strong>reference variable</strong> that holds the address of the current object. When you write <code class="code-inline">this.radius</code>, you are accessing the <code class="code-inline">radius</code> field <strong>through the object's reference</strong> &mdash; just like when you write <code class="code-inline">c1.getRadius()</code> from outside the class, except here the object is referring to <strong>itself</strong>.</p>
+                    <p style="margin-top:10px;">Think of it this way: if someone asks you your name, you say <em>"<strong>My</strong> name is Ahmad."</em> That word <em>"my"</em> is exactly what <code class="code-inline">this</code> does in Java. It says: <em>"<strong>My</strong> radius"</em>, <em>"<strong>My</strong> color"</em> &mdash; the data that belongs to me, the object.</p>
+                </div>
+
+                <p>The same logic applies in constructors:</p>
+
+                <div class="code-label">Constructor &mdash; Same Idea</div>
+                <div class="code-block"><span class="keyword">public</span> <span class="type">Circle</span>(<span class="keyword">double</span> radius, <span class="type">String</span> color) {
+    <span class="keyword">this</span>.radius = radius;   <span class="comment">// MY radius = the radius you gave me</span>
+    <span class="keyword">this</span>.color = color;     <span class="comment">// MY color  = the color you gave me</span>
+}</div>
+
+                <div class="info-box">
+                    <div class="info-box-title">When Is <code class="code-inline">this</code> Required?</div>
+                    <p><code class="code-inline">this</code> is required when the <strong>parameter name is the same as the data field name</strong> (name shadowing). If the names are different (like <code class="code-inline">setRadius(double r)</code>), <code class="code-inline">this</code> is optional because there is no ambiguity. However, it is considered <strong>best practice</strong> in Java to name parameters meaningfully and use <code class="code-inline">this</code> to be explicit &mdash; it makes the code clearer and self-documenting.</p>
+                </div>
+            </div>
+
+            <!-- ============================================================ -->
+            <!-- SECTION 6: this() TO CALL ANOTHER CONSTRUCTOR -->
+            <!-- ============================================================ -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">6</span>
+                    Using <code style="font-size: 1.6rem;">this()</code> to Call Another Constructor
+                </h2>
+
+                <div class="narrative">
+                    <p>Now let's discover another powerful use of <code class="code-inline">this</code>. Look at our Circle class with four constructors from Section 3:</p>
+                </div>
+
+                <div class="code-label">Circle.java &mdash; Four Constructors (Current Version)</div>
+                <div class="code-block"><span class="keyword">public class</span> <span class="type">Circle</span> {
+
+    <span class="keyword">private</span> <span class="keyword">double</span> radius;
+    <span class="keyword">private</span> <span class="type">String</span> color;
+
+    <span class="comment">// Constructor 1: No parameters</span>
+    <span class="keyword">public</span> <span class="type">Circle</span>() {
+        <span class="keyword">this</span>.radius = <span class="number">1.0</span>;
+        <span class="keyword">this</span>.color = <span class="string">"red"</span>;
+    }
+
+    <span class="comment">// Constructor 2: Only radius</span>
+    <span class="keyword">public</span> <span class="type">Circle</span>(<span class="keyword">double</span> radius) {
+        <span class="keyword">this</span>.radius = radius;
+        <span class="keyword">this</span>.color = <span class="string">"red"</span>;
+    }
+
+    <span class="comment">// Constructor 3: Only color</span>
+    <span class="keyword">public</span> <span class="type">Circle</span>(<span class="type">String</span> color) {
+        <span class="keyword">this</span>.radius = <span class="number">1.0</span>;
+        <span class="keyword">this</span>.color = color;
+    }
+
+    <span class="comment">// Constructor 4: Both radius and color</span>
+    <span class="keyword">public</span> <span class="type">Circle</span>(<span class="keyword">double</span> radius, <span class="type">String</span> color) {
+        <span class="keyword">this</span>.radius = radius;
+        <span class="keyword">this</span>.color = color;
+    }
+}</div>
+
+                <p>Do you notice something? Look carefully at the four constructors. They all do the same kind of work: assigning values to <code class="code-inline">radius</code> and <code class="code-inline">color</code>. The code is <strong>repeated</strong> across all four constructors. If we later add a third field (say <code class="code-inline">filled</code>), we would need to update <strong>all four constructors</strong>. This is a maintenance headache.</p>
+
+                <div class="important-box">
+                    <div class="important-box-title">The Problem: Code Duplication</div>
+                    <p>Every constructor is setting the same fields. The logic for assigning <code class="code-inline">radius</code> and <code class="code-inline">color</code> is written <strong>four times</strong>. This violates a fundamental principle in programming: <strong>Don't Repeat Yourself (DRY)</strong>.</p>
+                    <p style="margin-top:10px;">Wouldn't it be better if the simpler constructors could just <strong>call</strong> the most complete constructor and let it do all the work?</p>
+                </div>
+
+                <p>This is exactly what <code class="code-inline">this()</code> does. When you write <code class="code-inline">this(...)</code> inside a constructor, it <strong>calls another constructor in the same class</strong>. Java matches the call based on the arguments you pass, just like it does with <code class="code-inline">new</code>.</p>
+
+                <div class="code-label">Circle.java &mdash; Refactored with <code>this()</code></div>
+                <div class="code-block"><span class="keyword">public class</span> <span class="type">Circle</span> {
+
+    <span class="keyword">private</span> <span class="keyword">double</span> radius;
+    <span class="keyword">private</span> <span class="type">String</span> color;
+
+    <span class="comment">// Constructor 1: No parameters → calls Constructor 4</span>
+    <span class="keyword">public</span> <span class="type">Circle</span>() {
+        <span class="keyword">this</span>(<span class="number">1.0</span>, <span class="string">"red"</span>);    <span class="comment">// calls Circle(double, String)</span>
+    }
+
+    <span class="comment">// Constructor 2: Only radius → calls Constructor 4</span>
+    <span class="keyword">public</span> <span class="type">Circle</span>(<span class="keyword">double</span> radius) {
+        <span class="keyword">this</span>(radius, <span class="string">"red"</span>);  <span class="comment">// calls Circle(double, String)</span>
+    }
+
+    <span class="comment">// Constructor 3: Only color → calls Constructor 4</span>
+    <span class="keyword">public</span> <span class="type">Circle</span>(<span class="type">String</span> color) {
+        <span class="keyword">this</span>(<span class="number">1.0</span>, color);     <span class="comment">// calls Circle(double, String)</span>
+    }
+
+    <span class="comment">// Constructor 4: The "main" constructor — does all the real work</span>
+    <span class="keyword">public</span> <span class="type">Circle</span>(<span class="keyword">double</span> radius, <span class="type">String</span> color) {
+        <span class="keyword">this</span>.radius = radius;
+        <span class="keyword">this</span>.color = color;
+    }
+}</div>
+
+                <div class="success-box">
+                    <div class="success-box-title">How It Works</div>
+                    <p>Now <strong>only one constructor</strong> (Constructor 4) contains the actual assignment logic. All other constructors simply <strong>delegate</strong> to it by calling <code class="code-inline">this(...)</code> with the appropriate values. This is called <strong>constructor chaining</strong>.</p>
+                    <p style="margin-top:10px;">Let's trace what happens when we write <code class="code-inline">new Circle()</code>:</p>
+                </div>
+
+                <div class="code-block"><span class="type">Circle</span> c1 = <span class="keyword">new</span> <span class="type">Circle</span>();
+
+<span class="comment">// Step 1: new Circle()  →  calls Constructor 1 (no parameters)</span>
+<span class="comment">// Step 2: Constructor 1 executes this(1.0, "red")</span>
+<span class="comment">//         →  calls Constructor 4 with radius=1.0 and color="red"</span>
+<span class="comment">// Step 3: Constructor 4 executes this.radius = 1.0; this.color = "red";</span>
+<span class="comment">// Result: c1 has radius=1.0 and color="red"</span></div>
+
+                <div class="code-block"><span class="type">Circle</span> c2 = <span class="keyword">new</span> <span class="type">Circle</span>(<span class="number">5.0</span>);
+
+<span class="comment">// Step 1: new Circle(5.0)  →  calls Constructor 2 (double parameter)</span>
+<span class="comment">// Step 2: Constructor 2 executes this(5.0, "red")</span>
+<span class="comment">//         →  calls Constructor 4 with radius=5.0 and color="red"</span>
+<span class="comment">// Step 3: Constructor 4 executes this.radius = 5.0; this.color = "red";</span>
+<span class="comment">// Result: c2 has radius=5.0 and color="red"</span></div>
+
+                <p>Now if we ever need to add a new field (say <code class="code-inline">filled</code>), we only need to update <strong>one constructor</strong> &mdash; Constructor 4 &mdash; and all the others automatically benefit.</p>
+
+                <div class="important-box">
+                    <div class="important-box-title">Important Rules for <code class="code-inline">this()</code></div>
+                    <ul style="margin-top:8px; padding-left:20px; line-height: 2.2;">
+                        <li><code class="code-inline">this()</code> can <strong>only be used inside a constructor</strong>, not in regular methods.</li>
+                        <li><code class="code-inline">this()</code> must be the <strong>very first statement</strong> in the constructor. Nothing can come before it.</li>
+                        <li>A constructor can call <code class="code-inline">this()</code> <strong>at most once</strong> &mdash; you cannot chain to two different constructors.</li>
+                    </ul>
+                </div>
+
+                <h3 style="margin: 25px 0 10px; color: var(--secondary-color); font-size: 1.2rem;">Two Uses of <code class="code-inline">this</code> &mdash; Don't Confuse Them!</h3>
+
+                <p>We have now seen <code class="code-inline">this</code> used in <strong>two completely different ways</strong>. Make sure you understand the distinction:</p>
+
+                <div class="paradigm-comparison">
+                    <div class="paradigm-box oop">
+                        <div class="paradigm-title"><code style="font-size: 1.1rem;">this.field</code></div>
+                        <ul class="paradigm-list">
+                            <li>Refers to the <strong>current object's data field</strong></li>
+                            <li>Resolves ambiguity when a parameter has the same name as a field</li>
+                            <li>Can be used in <strong>any method or constructor</strong></li>
+                            <li>Example: <code class="code-inline">this.radius = radius;</code></li>
+                        </ul>
+                    </div>
+
+                    <div class="paradigm-box procedural">
+                        <div class="paradigm-title"><code style="font-size: 1.1rem;">this(args)</code></div>
+                        <ul class="paradigm-list">
+                            <li>Calls <strong>another constructor</strong> in the same class</li>
+                            <li>Used for constructor chaining to avoid code duplication</li>
+                            <li>Can <strong>only</strong> be used inside a constructor, as the <strong>first statement</strong></li>
+                            <li>Example: <code class="code-inline">this(1.0, "red");</code></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ============================================================ -->
+            <!-- SECTION 7: OBJECT REFERENCE VARIABLES -->
+            <!-- ============================================================ -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">7</span>
+                    Object Reference Variables
+                </h2>
+
+                <div class="narrative">
+                    <p>Now that we understand constructors and the <code class="code-inline">this</code> keyword, let's take a closer look at what actually happens when we write a line like this:</p>
+                </div>
+
+                <div class="code-block"><span class="type">Circle</span> c1 = <span class="keyword">new</span> <span class="type">Circle</span>(<span class="number">5.0</span>, <span class="string">"blue"</span>);</div>
+
+                <p>This single line does <strong>three things</strong>:</p>
+
+                <ul style="padding-left:25px; line-height: 2.4; margin: 15px 0;">
+                    <li><strong><code class="code-inline">Circle c1</code></strong> &mdash; Declares a variable named <code class="code-inline">c1</code> of type <code class="code-inline">Circle</code>. This variable is called a <strong>reference variable</strong>. It does not hold the object itself &mdash; it holds a <strong>reference</strong> (a pointer) to where the object lives in memory.</li>
+                    <li><strong><code class="code-inline">new Circle(5.0, "blue")</code></strong> &mdash; Creates a new <code class="code-inline">Circle</code> object in memory, calls the constructor to initialize it with <code class="code-inline">radius = 5.0</code> and <code class="code-inline">color = "blue"</code>, and returns a <strong>reference</strong> to the newly created object.</li>
+                    <li><strong><code class="code-inline">=</code></strong> &mdash; Assigns that reference to the variable <code class="code-inline">c1</code>. Now <code class="code-inline">c1</code> <em>refers to</em> (points to) the object.</li>
+                </ul>
+
+                <p>Let's visualize this in memory:</p>
+
+                <!-- VISUAL: Reference pointing to object -->
+                <div class="memory-diagram">
+                    <div>
+                        <div class="memory-var">
+                            <div class="memory-var-label">Variable</div>
+                            <div class="memory-var-value">c1</div>
+                            <div style="font-size: 0.8rem; color: var(--gray-color); margin-top: 4px;">0x3A7F</div>
+                        </div>
+                        <div class="diagram-label">Reference variable<br>(holds a reference to the object)</div>
+                    </div>
+
+                    <div class="memory-arrow">&#10230;</div>
+
+                    <div>
+                        <div class="memory-object">
+                            <div class="memory-object-header">Circle Object (0x3A7F)</div>
+                            <div class="memory-object-body">
+                                <div class="memory-field">
+                                    <span class="memory-field-name">radius:</span>
+                                    <span class="memory-field-value">5.0</span>
+                                </div>
+                                <div class="memory-field">
+                                    <span class="memory-field-name">color:</span>
+                                    <span class="memory-field-value">"blue"</span>
+                                </div>
+                                <div class="memory-field">
+                                    <span class="memory-field-name">computeArea()</span>
+                                    <span class="memory-field-value">method</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="diagram-label">The actual object in memory<br>(contains the data fields and methods)</div>
+                    </div>
+                </div>
+
+                <div class="key-concept">
+                    <div class="key-concept-title">Key Understanding</div>
+                    <p>The variable <code class="code-inline">c1</code> <strong>is NOT the object</strong>. It is a <strong>remote control</strong> that points to the object. The object itself lives somewhere in memory, and <code class="code-inline">c1</code> holds a reference to it. This is why it is called a <strong>reference</strong> variable &mdash; it <em>refers to</em> (points to) the object.</p>
+                    <p style="margin-top:10px;">This is also why the <code class="code-inline">this</code> keyword works the way it does: inside the object, <code class="code-inline">this</code> holds the same reference (<code class="code-inline">0x3A7F</code>), allowing the object to refer to itself.</p>
+                </div>
+            </div>
+
+            <!-- ============================================================ -->
+            <!-- SECTION 8: ACCESSING OBJECT MEMBERS -->
+            <!-- ============================================================ -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">8</span>
+                    Accessing an Object's Members
+                </h2>
+
+                <div class="narrative">
+                    <p>Now that we have a reference variable pointing to an object, how do we interact with it? How do we read its data or call its methods?</p>
+                    <p>The answer is the <strong>dot operator</strong> (<code class="code-inline">.</code>) &mdash; also called the <strong>member access operator</strong>.</p>
+                </div>
+
+                <p>The syntax is simple: <strong><code class="code-inline">referenceVariable.member</code></strong></p>
+
+                <div class="code-label">Accessing Members via the Dot Operator</div>
+                <div class="code-block"><span class="type">Circle</span> c1 = <span class="keyword">new</span> <span class="type">Circle</span>(<span class="number">5.0</span>, <span class="string">"blue"</span>);
+
+<span class="comment">// Calling a method (behavior)</span>
+<span class="keyword">double</span> area = c1.<span class="method">computeArea</span>();      <span class="comment">// c1.computeArea() → calls the method</span>
+
+<span class="comment">// Calling the getter (read the data)</span>
+<span class="keyword">double</span> r = c1.<span class="method">getRadius</span>();            <span class="comment">// c1.getRadius() → returns 5.0</span>
+
+<span class="comment">// Calling the setter (modify the data)</span>
+c1.<span class="method">setRadius</span>(<span class="number">7.5</span>);                    <span class="comment">// c1.setRadius(7.5) → changes the radius</span>
+
+System.out.<span class="method">println</span>(<span class="string">"Radius: "</span> + c1.<span class="method">getRadius</span>());     <span class="comment">// 7.5</span>
+System.out.<span class="method">println</span>(<span class="string">"Area: "</span> + c1.<span class="method">computeArea</span>());      <span class="comment">// 176.71</span></div>
+
+                <div class="info-box">
+                    <div class="info-box-title">What Does the Dot Mean?</div>
+                    <p>Think of the dot (<code class="code-inline">.</code>) as saying <em>"go to the object and access..."</em>. When you write <code class="code-inline">c1.getRadius()</code>, you are telling Java: <em>"Go to the object that <code class="code-inline">c1</code> points to, and call its <code class="code-inline">getRadius()</code> method."</em></p>
+                    <p style="margin-top:10px;">The reference variable is the <strong>gateway</strong>. The dot is the <strong>door</strong>. And the member (field or method) is what you access on the other side.</p>
+                </div>
+            </div>
+
+            <!-- ============================================================ -->
+            <!-- SECTION 9: DEFAULT VALUES FOR DATA FIELDS -->
+            <!-- ============================================================ -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">9</span>
+                    Default Values for Data Fields
+                </h2>
+
+                <div class="narrative">
+                    <p>Here is something very important that every student must know: when an object is created, <strong>all its data fields are automatically initialized with default values</strong>, even if the constructor does not explicitly set them. Java guarantees this.</p>
+                </div>
+
+                <div class="important-box" style="border-left-width: 8px;">
+                    <div class="important-box-title">Default Values for Data Fields</div>
+                    <table style="width:100%; margin-top:10px; border-collapse: collapse;">
+                        <tr style="border-bottom: 2px solid rgba(220,38,38,0.3);">
+                            <th style="text-align:left; padding: 8px 12px; font-size:0.95rem;">Data Type</th>
+                            <th style="text-align:left; padding: 8px 12px; font-size:0.95rem;">Default Value</th>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(220,38,38,0.15);">
+                            <td style="padding: 8px 12px; font-family: Consolas, monospace;">int, long, short, byte</td>
+                            <td style="padding: 8px 12px; font-family: Consolas, monospace; font-weight:bold;">0</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(220,38,38,0.15);">
+                            <td style="padding: 8px 12px; font-family: Consolas, monospace;">double, float</td>
+                            <td style="padding: 8px 12px; font-family: Consolas, monospace; font-weight:bold;">0.0</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(220,38,38,0.15);">
+                            <td style="padding: 8px 12px; font-family: Consolas, monospace;">boolean</td>
+                            <td style="padding: 8px 12px; font-family: Consolas, monospace; font-weight:bold;">false</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(220,38,38,0.15);">
+                            <td style="padding: 8px 12px; font-family: Consolas, monospace;">char</td>
+                            <td style="padding: 8px 12px; font-family: Consolas, monospace; font-weight:bold;">'\u0000'</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px 12px; font-family: Consolas, monospace;">Reference types (String, Object, etc.)</td>
+                            <td style="padding: 8px 12px; font-family: Consolas, monospace; font-weight:bold;">null</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <p>Let's see this in action. Consider a class with several fields that the constructor does <strong>not</strong> initialize:</p>
+
+                <div class="code-label">Student.java &mdash; No Initialization in Constructor</div>
+                <div class="code-block"><span class="keyword">public class</span> <span class="type">Student</span> {
+    <span class="keyword">private</span> <span class="type">String</span> name;
+    <span class="keyword">private</span> <span class="keyword">int</span> age;
+    <span class="keyword">private</span> <span class="keyword">double</span> gpa;
+    <span class="keyword">private</span> <span class="keyword">boolean</span> graduated;
+    <span class="keyword">private</span> <span class="keyword">char</span> grade;
+
+    <span class="comment">// No constructor defined — Java provides the implicit default constructor</span>
+
+    <span class="keyword">public</span> <span class="keyword">void</span> <span class="method">printInfo</span>() {
+        System.out.<span class="method">println</span>(<span class="string">"Name: "</span> + name);
+        System.out.<span class="method">println</span>(<span class="string">"Age: "</span> + age);
+        System.out.<span class="method">println</span>(<span class="string">"GPA: "</span> + gpa);
+        System.out.<span class="method">println</span>(<span class="string">"Graduated: "</span> + graduated);
+        System.out.<span class="method">println</span>(<span class="string">"Grade: ['"</span> + grade + <span class="string">"']"</span>);
+    }
+}</div>
+
+                <div class="code-label">Main.java &mdash; Printing Without Initializing</div>
+                <div class="code-block"><span class="type">Student</span> s = <span class="keyword">new</span> <span class="type">Student</span>();
+s.<span class="method">printInfo</span>();</div>
+
+                <div class="code-label">Output</div>
+                <div class="code-block">Name: null
+Age: 0
+GPA: 0.0
+Graduated: false
+Grade: ['']</div>
+
+                <p>Every field has its <strong>default value</strong> &mdash; even though we never set any of them. Java initializes all data fields automatically.</p>
+
+                <h3 style="margin: 25px 0 10px; color: var(--danger-color); font-size: 1.2rem;">Data Fields vs. Local Variables: A Critical Difference</h3>
+
+                <div class="narrative">
+                    <p>Now here is where students often get confused. The rule above applies <strong>only to data fields</strong> (fields declared inside a class). It does <strong>NOT</strong> apply to <strong>local variables</strong> (variables declared inside a method).</p>
+                </div>
+
+                <div class="code-label">Main.java &mdash; Local Variable Without Initialization</div>
+                <div class="code-block"><span class="keyword">public class</span> <span class="type">Main</span> {
+    <span class="keyword">public static void</span> <span class="method">main</span>(<span class="type">String</span>[] args) {
+
+        <span class="keyword">int</span> x;   <span class="comment">// local variable — NOT initialized</span>
+
+        System.out.<span class="method">println</span>(x);   <span class="comment">// ERROR! "variable x might not have been initialized"</span>
+    }
+}</div>
+
+                <div class="important-box">
+                    <div class="important-box-title">This Will NOT Compile!</div>
+                    <p>Java refuses to compile this code. The local variable <code class="code-inline">x</code> was declared but <strong>never assigned a value</strong>. Unlike data fields, local variables do <strong>not</strong> get default values. You <strong>must</strong> initialize them yourself before using them.</p>
+                </div>
+
+                <div class="paradigm-comparison">
+                    <div class="paradigm-box oop">
+                        <div class="paradigm-title">Data Fields (Class Level)</div>
+                        <ul class="paradigm-list">
+                            <li>Declared <strong>inside a class</strong>, outside any method</li>
+                            <li>Automatically initialized with <strong>default values</strong></li>
+                            <li>Can be used immediately without manual initialization</li>
+                            <li>Example: <code class="code-inline">private int age;</code> &rarr; defaults to <code class="code-inline">0</code></li>
+                        </ul>
+                    </div>
+
+                    <div class="paradigm-box procedural">
+                        <div class="paradigm-title">Local Variables (Method Level)</div>
+                        <ul class="paradigm-list">
+                            <li>Declared <strong>inside a method</strong></li>
+                            <li><strong>No default value</strong> &mdash; uninitialized</li>
+                            <li><strong>Must be initialized</strong> before use, or the code will not compile</li>
+                            <li>Example: <code class="code-inline">int x;</code> &rarr; compile error if used before assignment</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ============================================================ -->
+            <!-- SECTION 10: PRIMITIVE VS REFERENCE TYPES -->
+            <!-- ============================================================ -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">10</span>
+                    Primitive Types vs. Reference Types
+                </h2>
+
+                <div class="narrative">
+                    <p>Now let's understand a very important difference in how Java handles <strong>primitive variables</strong> (like <code class="code-inline">int</code>, <code class="code-inline">double</code>) versus <strong>reference variables</strong> (like <code class="code-inline">Circle</code>, <code class="code-inline">String</code>). This difference affects what happens when you assign one variable to another.</p>
+                </div>
+
+                <h3 style="margin: 25px 0 10px; color: var(--primary-color); font-size: 1.2rem;">Primitive Variables: Values Are Copied</h3>
+
+                <p>With primitive types, each variable holds <strong>its own independent value</strong>. When you assign one to another, the <strong>value is copied</strong>:</p>
+
+                <div class="code-label">Primitive Assignment</div>
+                <div class="code-block"><span class="keyword">int</span> i = <span class="number">5</span>;
+<span class="keyword">int</span> j = i;     <span class="comment">// j gets a COPY of i's value</span>
+
+<span class="comment">// Now: i = 5, j = 5 (two independent copies)</span>
+
+i = <span class="number">10</span>;        <span class="comment">// changing i does NOT affect j</span>
+
+System.out.<span class="method">println</span>(<span class="string">"i = "</span> + i);   <span class="comment">// i = 10</span>
+System.out.<span class="method">println</span>(<span class="string">"j = "</span> + j);   <span class="comment">// j = 5  — unchanged!</span></div>
+
+                <!-- VISUAL: Primitive variables -->
+                <div class="diagram-step-label">After <code class="code-inline">int i = 5; int j = i;</code></div>
+                <div class="memory-diagram">
+                    <div>
+                        <div class="memory-var">
+                            <div class="memory-var-label">i</div>
+                            <div class="memory-var-value">5</div>
+                        </div>
+                    </div>
+                    <div style="font-size: 1.2rem; color: var(--gray-color);">copied to</div>
+                    <div>
+                        <div class="memory-var">
+                            <div class="memory-var-label">j</div>
+                            <div class="memory-var-value">5</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="diagram-step-label">After <code class="code-inline">i = 10;</code></div>
+                <div class="memory-diagram">
+                    <div>
+                        <div class="memory-var">
+                            <div class="memory-var-label">i</div>
+                            <div class="memory-var-value">10</div>
+                        </div>
+                    </div>
+                    <div style="font-size: 1.2rem; color: var(--gray-color);">independent</div>
+                    <div>
+                        <div class="memory-var">
+                            <div class="memory-var-label">j</div>
+                            <div class="memory-var-value">5</div>
+                        </div>
+                    </div>
+                </div>
+
+                <p>Each variable has its own box with its own value. Changing one does not affect the other.</p>
+
+                <h3 style="margin: 25px 0 10px; color: var(--secondary-color); font-size: 1.2rem;">Reference Variables: Addresses Are Copied</h3>
+
+                <p>With reference types, the behavior is <strong>fundamentally different</strong>. The variable does not hold the object &mdash; it holds a <strong>reference</strong> to the object. When you assign one reference variable to another, you are copying the <strong>reference</strong>, not the object itself.</p>
+
+                <div class="code-label">Reference Assignment</div>
+                <div class="code-block"><span class="type">Circle</span> c1 = <span class="keyword">new</span> <span class="type">Circle</span>(<span class="number">5.0</span>, <span class="string">"blue"</span>);
+<span class="type">Circle</span> c2 = <span class="keyword">new</span> <span class="type">Circle</span>(<span class="number">10.0</span>, <span class="string">"red"</span>);</div>
+
+                <!-- VISUAL: Two separate objects -->
+                <div class="diagram-step-label">After creating c1 and c2:</div>
+                <div class="diagram-row">
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <div class="memory-var">
+                            <div class="memory-var-label">c1</div>
+                            <div class="memory-var-value">0x1A2B</div>
+                        </div>
+                        <div class="memory-arrow">&#10230;</div>
+                        <div class="memory-object">
+                            <div class="memory-object-header">Circle Object (0x1A2B)</div>
+                            <div class="memory-object-body">
+                                <div class="memory-field">
+                                    <span class="memory-field-name">radius:</span>
+                                    <span class="memory-field-value">5.0</span>
+                                </div>
+                                <div class="memory-field">
+                                    <span class="memory-field-name">color:</span>
+                                    <span class="memory-field-value">"blue"</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="diagram-row">
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <div class="memory-var">
+                            <div class="memory-var-label">c2</div>
+                            <div class="memory-var-value">0x7F3E</div>
+                        </div>
+                        <div class="memory-arrow">&#10230;</div>
+                        <div class="memory-object">
+                            <div class="memory-object-header">Circle Object (0x7F3E)</div>
+                            <div class="memory-object-body">
+                                <div class="memory-field">
+                                    <span class="memory-field-name">radius:</span>
+                                    <span class="memory-field-value">10.0</span>
+                                </div>
+                                <div class="memory-field">
+                                    <span class="memory-field-name">color:</span>
+                                    <span class="memory-field-value">"red"</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <p>Now watch what happens when we assign <code class="code-inline">c1</code> to <code class="code-inline">c2</code>:</p>
+
+                <div class="code-block">c2 = c1;   <span class="comment">// c2 now holds the SAME reference as c1</span></div>
+
+                <!-- VISUAL: After c2 = c1 -->
+                <div class="diagram-step-label">After <code class="code-inline">c2 = c1;</code></div>
+                <div class="diagram-row">
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <div class="memory-var">
+                            <div class="memory-var-label">c1</div>
+                            <div class="memory-var-value">0x1A2B</div>
+                        </div>
+                        <div class="memory-arrow">&#10230;</div>
+                        <div class="memory-object" style="border-color: var(--success-color);">
+                            <div class="memory-object-header" style="background: linear-gradient(135deg, var(--success-color), #047857);">Circle Object (0x1A2B)</div>
+                            <div class="memory-object-body">
+                                <div class="memory-field">
+                                    <span class="memory-field-name">radius:</span>
+                                    <span class="memory-field-value">5.0</span>
+                                </div>
+                                <div class="memory-field">
+                                    <span class="memory-field-name">color:</span>
+                                    <span class="memory-field-value">"blue"</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="memory-arrow">&#10229;</div>
+                        <div class="memory-var">
+                            <div class="memory-var-label">c2</div>
+                            <div class="memory-var-value">0x1A2B</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="diagram-row">
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <div class="memory-object" style="position: relative; opacity: 0.85;">
+                            <div class="memory-object-header">Circle Object (0x7F3E)</div>
+                            <div class="memory-object-body">
+                                <div class="memory-field">
+                                    <span class="memory-field-name">radius:</span>
+                                    <span class="memory-field-value">10.0</span>
+                                </div>
+                                <div class="memory-field">
+                                    <span class="memory-field-name">color:</span>
+                                    <span class="memory-field-value">"red"</span>
+                                </div>
+                            </div>
+                            <!-- Big X overlay -->
+                            <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 5rem; color: var(--danger-color); font-weight: bold; opacity: 0.4; pointer-events: none;">&#10008;</div>
+                        </div>
+                        <div style="max-width: 280px; padding: 12px 16px; background: #fef2f2; border: 2px solid var(--danger-color); border-radius: 10px; font-size: 0.9rem;">
+                            <div style="font-weight: bold; color: var(--danger-color); margin-bottom: 5px;">No variable points here anymore!</div>
+                            <div>This object is still in memory, occupying space, but it is <strong>unreachable</strong> &mdash; no reference variable refers to it.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="important-box">
+                    <div class="important-box-title">What Happened?</div>
+                    <p>After <code class="code-inline">c2 = c1</code>, the variable <code class="code-inline">c2</code> no longer points to the Circle with <code class="code-inline">radius = 10.0</code>. Instead, <strong>both <code class="code-inline">c1</code> and <code class="code-inline">c2</code> now point to the same object</strong> (the Circle at <code class="code-inline">0x1A2B</code> with <code class="code-inline">radius = 5.0</code>).</p>
+                    <p style="margin-top:10px;">This means if we modify the object through <code class="code-inline">c2</code>, the change is visible through <code class="code-inline">c1</code> as well &mdash; because they are pointing to the <strong>exact same object</strong>:</p>
+                </div>
+
+                <div class="code-block">c2.<span class="method">setRadius</span>(<span class="number">99.0</span>);
+System.out.<span class="method">println</span>(c1.<span class="method">getRadius</span>());  <span class="comment">// 99.0 — c1 sees the change!</span>
+System.out.<span class="method">println</span>(c2.<span class="method">getRadius</span>());  <span class="comment">// 99.0 — same object</span></div>
+
+                <h3 style="margin: 25px 0 10px; color: var(--danger-color); font-size: 1.2rem;">Garbage Collection: What Happens to the Abandoned Object?</h3>
+
+                <p>But what about the original Circle that <code class="code-inline">c2</code> used to point to &mdash; the one with <code class="code-inline">radius = 10.0</code> and <code class="code-inline">color = "red"</code>? It is still sitting in memory, <strong>occupying space</strong>, but no variable points to it. We have no way to access it anymore.</p>
+
+                <div class="key-concept">
+                    <div class="key-concept-title">Garbage Collection</div>
+                    <p>Java has a built-in system called the <strong>Garbage Collector</strong> that <strong>periodically scans the memory</strong> looking for objects that have no reference variable pointing to them. When it finds such an orphaned object, it <strong>automatically frees the memory</strong> it occupies so the memory can be reused.</p>
+                    <p style="margin-top:10px;">This happens <strong>automatically in the background</strong> &mdash; the programmer does not need to worry about it, does not need to delete objects manually, and does not need to write any cleanup code. The Garbage Collector takes care of everything. This is one of the great advantages of Java compared to languages like C and C++, where the programmer is responsible for freeing memory manually.</p>
+                </div>
+
+                <!-- VISUAL: Garbage Collection -->
+                <div class="diagram-row">
+                    <div style="display:flex; align-items:center; gap:15px; flex-wrap: wrap; justify-content: center;">
+                        <div class="memory-object" style="position: relative; opacity: 0.5;">
+                            <div class="memory-object-header">Circle Object (0x7F3E)</div>
+                            <div class="memory-object-body">
+                                <div class="memory-field">
+                                    <span class="memory-field-name">radius:</span>
+                                    <span class="memory-field-value">10.0</span>
+                                </div>
+                                <div class="memory-field">
+                                    <span class="memory-field-name">color:</span>
+                                    <span class="memory-field-value">"red"</span>
+                                </div>
+                            </div>
+                            <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 5rem; color: var(--danger-color); font-weight: bold; opacity: 0.6; pointer-events: none;">&#10008;</div>
+                        </div>
+                        <div class="memory-arrow" style="color: var(--danger-color);">&#10230;</div>
+                        <div style="padding: 15px 20px; background: linear-gradient(135deg, #d1fae5, #a7f3d0); border: 3px solid var(--success-color); border-radius: 12px; text-align: center; min-width: 200px;">
+                            <div style="font-weight: bold; color: var(--success-color); font-size: 1.1rem; margin-bottom: 5px;">Garbage Collector</div>
+                            <div style="font-size: 0.9rem;">Detects the unreachable object, <strong>reclaims the memory</strong>, and frees the space automatically.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="success-box">
+                    <div class="success-box-title">Primitive vs. Reference: Summary</div>
+                    <p><strong>Primitive variables</strong> hold actual values. Assigning one to another <strong>copies the value</strong>. Each variable is independent.</p>
+                    <p style="margin-top:10px;"><strong>Reference variables</strong> hold references to objects. Assigning one to another <strong>copies the reference</strong>. Both variables point to the <strong>same object</strong>. The abandoned object is cleaned up by the Garbage Collector.</p>
+                </div>
+            </div>
+
+            <!-- ============================================================ -->
+            <!-- SECTION 11: USEFUL BUILT-IN CLASSES -->
+            <!-- ============================================================ -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">11</span>
+                    Useful Built-in Classes: Date and Random
+                </h2>
+
+                <div class="narrative">
+                    <p>Java comes with <strong>hundreds of ready-made classes</strong> in its standard library. No one is expected to memorize all of them &mdash; but as a Java programmer, it is <strong>your responsibility</strong> to explore and learn the ones you need. The official Java documentation (Javadoc) is your guide.</p>
+                    <p>Here, we will briefly introduce two commonly used classes to show you how easy it is to use existing classes once you understand objects.</p>
+                </div>
+
+                <h3 style="margin: 25px 0 10px; color: var(--primary-color); font-size: 1.2rem;">The <code class="code-inline">Date</code> Class</h3>
+
+                <p>The <code class="code-inline">java.util.Date</code> class represents a specific point in time. Creating a <code class="code-inline">Date</code> object with no arguments gives you the current date and time:</p>
+
+                <div class="code-block"><span class="keyword">import</span> java.util.Date;
+
+<span class="type">Date</span> now = <span class="keyword">new</span> <span class="type">Date</span>();
+System.out.<span class="method">println</span>(now);
+<span class="comment">// Output: Wed Feb 11 14:30:25 AST 2026 (current date and time)</span></div>
+
+                <div class="info-box">
+                    <div class="info-box-title">Note</div>
+                    <p>The <code class="code-inline">Date</code> class is one of the oldest classes in Java. For more advanced date/time work, Java provides newer classes like <code class="code-inline">LocalDate</code>, <code class="code-inline">LocalTime</code>, and <code class="code-inline">LocalDateTime</code> in the <code class="code-inline">java.time</code> package. But <code class="code-inline">Date</code> is a good starting point to understand how objects work.</p>
+                </div>
+
+                <h3 style="margin: 25px 0 10px; color: var(--secondary-color); font-size: 1.2rem;">The <code class="code-inline">Random</code> Class</h3>
+
+                <p>The <code class="code-inline">java.util.Random</code> class generates pseudo-random numbers. Let's start with a simple example:</p>
+
+                <div class="code-block"><span class="keyword">import</span> java.util.Random;
+
+<span class="type">Random</span> rand = <span class="keyword">new</span> <span class="type">Random</span>();
+
+System.out.<span class="method">println</span>(rand.<span class="method">nextInt</span>(<span class="number">100</span>));    <span class="comment">// random int from 0 to 99</span>
+System.out.<span class="method">println</span>(rand.<span class="method">nextInt</span>(<span class="number">100</span>));    <span class="comment">// another random int from 0 to 99</span>
+System.out.<span class="method">println</span>(rand.<span class="method">nextDouble</span>());     <span class="comment">// random double from 0.0 to 1.0</span></div>
+
+                <p>Every time you run this program, you get <strong>different numbers</strong>. But now, let's try something interesting...</p>
+
+                <h4 style="margin: 20px 0 10px; color: var(--warning-color); font-size: 1.1rem;">The Seed: Why Two Programs Can Produce the Same "Random" Numbers</h4>
+
+                <div class="narrative">
+                    <p>Here is a question that surprises many beginners: <strong>are these numbers truly random?</strong> The answer is <strong>no</strong>. They are called <strong>pseudo-random</strong> numbers &mdash; they are generated by a <strong>mathematical formula</strong>, not by true randomness.</p>
+                    <p>The formula works like this: it starts with an initial number called a <strong>seed</strong>. From that seed, it applies a mathematical calculation to produce the first "random" number. Then it feeds that result back into the formula to produce the second number, and so on. Each number is <strong>determined by the one before it</strong>, forming a chain.</p>
+                </div>
+
+                <div class="key-concept">
+                    <div class="key-concept-title">How Pseudo-Random Numbers Work</div>
+                    <p>Think of it like this:</p>
+                    <p style="margin-top:8px; font-family: Consolas, monospace; padding-left: 20px;">seed &rarr; formula &rarr; number<sub>1</sub> &rarr; formula &rarr; number<sub>2</sub> &rarr; formula &rarr; number<sub>3</sub> &rarr; ...</p>
+                    <p style="margin-top:12px;">The <strong>key insight</strong> is: if two Random objects start with the <strong>same seed</strong>, they will produce the <strong>exact same sequence</strong> of numbers. Every single time. Because the formula is the same, and the starting point is the same.</p>
+                </div>
+
+                <p>Let's prove it:</p>
+
+                <div class="code-label">Same Seed = Same Numbers</div>
+                <div class="code-block"><span class="type">Random</span> rand1 = <span class="keyword">new</span> <span class="type">Random</span>(<span class="number">42</span>);   <span class="comment">// seed = 42</span>
+<span class="type">Random</span> rand2 = <span class="keyword">new</span> <span class="type">Random</span>(<span class="number">42</span>);   <span class="comment">// seed = 42 (same!)</span>
+
+System.out.<span class="method">println</span>(<span class="string">"rand1: "</span> + rand1.<span class="method">nextInt</span>(<span class="number">100</span>));   <span class="comment">// 0</span>
+System.out.<span class="method">println</span>(<span class="string">"rand2: "</span> + rand2.<span class="method">nextInt</span>(<span class="number">100</span>));   <span class="comment">// 0  — same!</span>
+
+System.out.<span class="method">println</span>(<span class="string">"rand1: "</span> + rand1.<span class="method">nextInt</span>(<span class="number">100</span>));   <span class="comment">// 68</span>
+System.out.<span class="method">println</span>(<span class="string">"rand2: "</span> + rand2.<span class="method">nextInt</span>(<span class="number">100</span>));   <span class="comment">// 68 — same!</span>
+
+System.out.<span class="method">println</span>(<span class="string">"rand1: "</span> + rand1.<span class="method">nextInt</span>(<span class="number">100</span>));   <span class="comment">// 54</span>
+System.out.<span class="method">println</span>(<span class="string">"rand2: "</span> + rand2.<span class="method">nextInt</span>(<span class="number">100</span>));   <span class="comment">// 54 — same again!</span></div>
+
+                <div class="important-box">
+                    <div class="important-box-title">Why Are They Identical?</div>
+                    <p>Both <code class="code-inline">rand1</code> and <code class="code-inline">rand2</code> were created with the <strong>same seed</strong> (<code class="code-inline">42</code>). Since the mathematical formula is the same and the starting point is the same, they produce the <strong>exact same sequence</strong> of numbers: 0, 68, 54, ... every single time, on every computer, forever.</p>
+                    <p style="margin-top:10px;">Run this program 100 times &mdash; you will always get the same output. The numbers are <strong>deterministic</strong>, not random.</p>
+                </div>
+
+                <p>Now compare this with using <strong>no seed</strong>:</p>
+
+                <div class="code-label">No Seed = Different Numbers Each Run</div>
+                <div class="code-block"><span class="type">Random</span> rand = <span class="keyword">new</span> <span class="type">Random</span>();   <span class="comment">// no seed — Java uses the current time as seed</span>
+
+System.out.<span class="method">println</span>(rand.<span class="method">nextInt</span>(<span class="number">100</span>));   <span class="comment">// different every time you run!</span>
+System.out.<span class="method">println</span>(rand.<span class="method">nextInt</span>(<span class="number">100</span>));   <span class="comment">// different every time you run!</span></div>
+
+                <div class="success-box">
+                    <div class="success-box-title">When to Use a Seed?</div>
+                    <p>If you want <strong>different results every time</strong> (games, simulations), use <code class="code-inline">new Random()</code> without a seed &mdash; Java will automatically use the current time as the seed, which is different each run.</p>
+                    <p style="margin-top:10px;">If you want <strong>reproducible results</strong> (testing, debugging, scientific experiments), use <code class="code-inline">new Random(seed)</code> with a specific seed &mdash; this guarantees the same sequence every time, making your results predictable and verifiable.</p>
+                </div>
+            </div>
+
+            <!-- ============================================================ -->
+            <!-- SECTION 12: SUMMARY -->
+            <!-- ============================================================ -->
+            <div class="section" style="margin-bottom:20px;">
+                <h2 class="section-title">
+                    <span class="section-number">12</span>
+                    Summary
+                </h2>
+
+                <div class="key-concept">
+                    <div class="key-concept-title">What We Learned</div>
+                    <ul style="margin-top:8px; padding-left:20px; line-height: 2.2;">
+                        <li><strong>Constructors</strong> initialize objects at the moment they are created &mdash; they give life to objects.</li>
+                        <li>A constructor must have the <strong>same name as the class</strong> and has <strong>no return type</strong>.</li>
+                        <li>A class can have <strong>multiple constructors</strong> (constructor overloading).</li>
+                        <li>Every Java class has at least one constructor &mdash; the <strong>implicit default constructor disappears</strong> if any constructor is defined.</li>
+                        <li><code class="code-inline">this.field</code> refers to the <strong>current object's data field</strong>, resolving ambiguity with local variables.</li>
+                        <li><code class="code-inline">this(args)</code> calls <strong>another constructor</strong> in the same class (constructor chaining).</li>
+                        <li>A <strong>reference variable</strong> holds a reference to an object, not the object itself.</li>
+                        <li>The <strong>dot operator</strong> (<code class="code-inline">.</code>) is used to access an object's fields and methods.</li>
+                        <li><strong>Data fields</strong> get default values automatically; <strong>local variables</strong> do not.</li>
+                        <li>Assigning one reference to another copies the <strong>reference</strong> &mdash; both point to the same object. The abandoned object is cleaned by the <strong>Garbage Collector</strong>.</li>
+                        <li>The <strong>Random</strong> class generates pseudo-random numbers using a mathematical formula. Same seed = same sequence.</li>
+                    </ul>
+                </div>
+
+                <div class="info-box">
+                    <div class="info-box-title">What's Next?</div>
+                    <p>In the next lesson, we will explore <strong>instance vs. static</strong> members, and how to work with <strong>arrays of objects</strong>. We will also explore more complex class designs with multiple interacting objects.</p>
+                </div>
+            </div>
+
+        </div><!-- end .content -->
+
+        <!-- Navigation -->
+        <div class="nav-buttons">
+            <a href="01-intro-to-oop.html" class="nav-btn prev">&larr; Previous: Intro to OOP</a>
+            <a href="#" class="nav-btn next">Next: Coming Soon &rarr;</a>
+        </div>
+
+        <div style="text-align: center; padding: 25px 40px; color: var(--gray-color); font-size: 0.9rem; border-top: 1px solid #e5e7eb; line-height: 1.8;">
+            <div style="font-weight: bold; color: var(--dark-color); font-size: 1rem;">King Abdulaziz University</div>
+            <div>Faculty of Computing and Information Technology (FCIT)</div>
+            <div style="margin-top: 8px;">Prepared by Dr. Abdulmohsen Almalawi</div>
+            <div style="margin-top: 6px; font-size: 0.85rem; color: #9ca3af;">Last Updated: February 11, 2026</div>
+        </div>
+
+    </div><!-- end .container -->
+</body>
+</html>

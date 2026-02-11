@@ -1,0 +1,1646 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المُنشئات وكلمة this | CPCS203</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #2563eb;
+            --primary-light: #3b82f6;
+            --primary-dark: #1d4ed8;
+            --secondary-color: #7c3aed;
+            --success-color: #059669;
+            --warning-color: #d97706;
+            --danger-color: #dc2626;
+            --dark-color: #1f2937;
+            --light-color: #f3f4f6;
+            --gray-color: #6b7280;
+            --oop-color: #2563eb;
+            --fp-color: #7c3aed;
+            --proc-color: #d97706;
+        }
+
+        body {
+            font-family: 'Tajawal', 'Amiri', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.8;
+            color: var(--dark-color);
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #7c3aed 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+        }
+
+        /* Language Switch Button */
+        .lang-switch {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-size: 0.95rem;
+        }
+        .lang-switch:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .header .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .header .course-info {
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 30px;
+            display: inline-block;
+        }
+
+        /* Content */
+        .content {
+            padding: 40px;
+        }
+
+        /* Sections */
+        .section {
+            margin-bottom: 50px;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--primary-color);
+            padding-bottom: 10px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-number {
+            background: var(--primary-color);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        /* Narrative Block */
+        .narrative {
+            background: linear-gradient(135deg, #f0f4ff, #e8ecff);
+            border-right: 5px solid var(--primary-color);
+            padding: 25px 30px;
+            margin: 20px 0;
+            border-radius: 15px 0 0 15px;
+            font-size: 1.05rem;
+            line-height: 2;
+        }
+
+        .narrative p {
+            margin-bottom: 12px;
+        }
+
+        .narrative p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Key Concept Box */
+        .key-concept {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border-right: 5px solid var(--warning-color);
+            padding: 20px 25px;
+            margin: 20px 0;
+            border-radius: 10px 0 0 10px;
+        }
+
+        .key-concept-title {
+            font-weight: bold;
+            color: var(--warning-color);
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        /* Important Box */
+        .important-box {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            border-right: 5px solid var(--danger-color);
+            padding: 20px 25px;
+            margin: 20px 0;
+            border-radius: 10px 0 0 10px;
+        }
+
+        .important-box-title {
+            font-weight: bold;
+            color: var(--danger-color);
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        /* Info Box */
+        .info-box {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            border-right: 5px solid var(--primary-color);
+            padding: 20px 25px;
+            margin: 20px 0;
+            border-radius: 10px 0 0 10px;
+        }
+
+        .info-box-title {
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        /* Success Box */
+        .success-box {
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+            border-right: 5px solid var(--success-color);
+            padding: 20px 25px;
+            margin: 20px 0;
+            border-radius: 10px 0 0 10px;
+        }
+
+        .success-box-title {
+            font-weight: bold;
+            color: var(--success-color);
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        /* Code Blocks */
+        .code-block {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            direction: ltr;
+            text-align: left;
+        }
+
+        .code-block .keyword { color: #569cd6; }
+        .code-block .type { color: #4ec9b0; }
+        .code-block .string { color: #ce9178; }
+        .code-block .number { color: #b5cea8; }
+        .code-block .comment { color: #6a9955; }
+        .code-block .method { color: #dcdcaa; }
+        .code-block .annotation { color: #c586c0; }
+
+        .code-label {
+            background: #2d2d2d;
+            color: #9cdcfe;
+            padding: 8px 15px;
+            border-radius: 10px 10px 0 0;
+            font-family: 'Consolas', monospace;
+            font-size: 0.85rem;
+            display: inline-block;
+            margin-bottom: -1px;
+            direction: ltr;
+        }
+
+        .code-inline {
+            background: #e5e7eb;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9rem;
+            color: var(--danger-color);
+            direction: ltr;
+            display: inline-block;
+        }
+
+        /* Comparison Grid */
+        .paradigm-comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin: 25px 0;
+        }
+
+        .paradigm-box {
+            border-radius: 15px;
+            padding: 25px;
+            border: 3px solid;
+        }
+
+        .paradigm-box.procedural {
+            background: linear-gradient(135deg, #fff7ed, #ffedd5);
+            border-color: var(--proc-color);
+        }
+
+        .paradigm-box.oop {
+            background: linear-gradient(135deg, #eff6ff, #dbeafe);
+            border-color: var(--oop-color);
+        }
+
+        .paradigm-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .paradigm-box.procedural .paradigm-title { color: var(--proc-color); }
+        .paradigm-box.oop .paradigm-title { color: var(--oop-color); }
+
+        .paradigm-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .paradigm-list li {
+            padding: 6px 0;
+            padding-right: 20px;
+            position: relative;
+        }
+
+        .paradigm-list li::before {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 14px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .paradigm-box.procedural .paradigm-list li::before { background: var(--proc-color); }
+        .paradigm-box.oop .paradigm-list li::before { background: var(--oop-color); }
+
+        /* Navigation */
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            padding: 30px 40px;
+            background: var(--light-color);
+            border-top: 2px solid #e5e7eb;
+        }
+
+        .nav-btn {
+            padding: 12px 25px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .nav-btn.prev {
+            background: white;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+
+        .nav-btn.next {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+        }
+
+        /* Memory Diagrams */
+        .memory-diagram {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 25px 0;
+            flex-wrap: wrap;
+        }
+
+        .memory-var {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            border: 3px solid var(--primary-color);
+            border-radius: 12px;
+            padding: 15px 20px;
+            text-align: center;
+            min-width: 120px;
+            font-family: 'Consolas', monospace;
+            position: relative;
+        }
+
+        .memory-var-label {
+            font-size: 0.8rem;
+            color: var(--gray-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+        }
+
+        .memory-var-value {
+            font-weight: bold;
+            font-size: 1.05rem;
+            color: var(--primary-color);
+        }
+
+        .memory-arrow {
+            font-size: 2rem;
+            color: var(--primary-color);
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .memory-object {
+            border: 3px solid var(--secondary-color);
+            border-radius: 12px;
+            overflow: hidden;
+            min-width: 200px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            position: relative;
+        }
+
+        .memory-object-header {
+            background: linear-gradient(135deg, var(--secondary-color), #6d28d9);
+            color: white;
+            padding: 10px 18px;
+            text-align: center;
+            font-weight: bold;
+            font-family: 'Consolas', monospace;
+            font-size: 0.95rem;
+        }
+
+        .memory-object-body {
+            background: white;
+            padding: 12px 18px;
+        }
+
+        .memory-field {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            border-bottom: 1px solid #e5e7eb;
+            font-family: 'Consolas', monospace;
+            font-size: 0.9rem;
+        }
+
+        .memory-field:last-child {
+            border-bottom: none;
+        }
+
+        .memory-field-name {
+            color: var(--gray-color);
+        }
+
+        .memory-field-value {
+            font-weight: bold;
+            color: var(--primary-dark);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--dark-color);
+            color: white;
+            text-align: center;
+            padding: 30px;
+        }
+
+        .footer-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .footer-title {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .footer-description {
+            opacity: 0.8;
+            line-height: 1.8;
+        }
+
+        /* Lists */
+        ul {
+            margin: 15px 0;
+            padding-right: 25px;
+        }
+
+        ul li {
+            margin: 8px 0;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        thead {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+        }
+
+        th {
+            padding: 15px;
+            text-align: right;
+            font-weight: bold;
+        }
+
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e5e7eb;
+            text-align: right;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        tbody tr:hover {
+            background: var(--light-color);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .paradigm-comparison {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .section-title {
+                font-size: 1.4rem;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .nav-buttons {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav-btn {
+                width: 100%;
+                text-align: center;
+            }
+        }
+
+        /* Garbage Collection Visualization */
+        .gc-object {
+            position: relative;
+        }
+
+        .gc-object::after {
+            content: 'X';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 4rem;
+            color: rgba(220, 38, 38, 0.3);
+            font-weight: bold;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <a href="02-constructors-and-this.html" class="lang-switch">English 🇬🇧</a>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>المُنشئات وكلمة this</h1>
+            <div class="subtitle">إعطاء الحياة للكائنات من لحظة إنشائها</div>
+            <div class="course-info">CPCS203 - Module 04: Objects and Classes</div>
+        </div>
+
+        <!-- Content -->
+        <div class="content">
+
+            <!-- Section 1 -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">1</span>
+                    لماذا نحتاج المُنشئات؟
+                </h2>
+
+                <div class="narrative">
+                    <p>في الدرس السابق، رأينا كيفية إنشاء صنف <span class="code-inline">Circle</span> بسيط. لكن لإنشاء دائرة قابلة للاستخدام، كان علينا دائمًا القيام بـ خطوتين:</p>
+                </div>
+
+                <div class="code-label">الطريقة القديمة - خطوتان</div>
+                <div class="code-block"><span class="type">Circle</span> c1 = <span class="keyword">new</span> <span class="type">Circle</span>();  <span class="comment">// Step 1: Create object</span>
+c1.radius = <span class="number">5.0</span>;              <span class="comment">// Step 2: Set the radius</span></div>
+
+                <div class="narrative">
+                    <p>هذا يعمل، ولكن يبدو محرجًا بعض الشيء. ماذا لو نسينا الخطوة الثانية؟ عندها سنحصل على دائرة بنصف قطر صفر، وهذا ليس منطقيًا في الغالب.</p>
+                    <p>ألن يكون من الأفضل إنشاء الكائن وتعيين نصف القطر في خطوة واحدة؟</p>
+                </div>
+
+                <div class="code-label">الطريقة الجديدة - خطوة واحدة</div>
+                <div class="code-block"><span class="type">Circle</span> c1 = <span class="keyword">new</span> <span class="type">Circle</span>(<span class="number">5.0</span>);  <span class="comment">// Both create AND initialize!</span></div>
+
+                <div class="narrative">
+                    <p>هذا أفضل بكثير! وهذا بالضبط ما تفعله <strong>المُنشئات</strong> (constructors). المُنشئ هو طريقة خاصة تُستدعى تلقائيًا عند إنشاء كائن جديد باستخدام الكلمة المفتاحية <span class="code-inline">new</span>.</p>
+                </div>
+
+                <div class="key-concept">
+                    <div class="key-concept-title">الدافع وراء المُنشئات</div>
+                    <p>المُنشئات تسمح لنا بـ:</p>
+                    <ul>
+                        <li><strong>التهيئة عند الإنشاء:</strong> تعيين القيم الأولية للكائن مباشرة عند إنشائه</li>
+                        <li><strong>ضمان حالة صالحة:</strong> التأكد من أن جميع الكائنات تُنشأ في حالة صحيحة وقابلة للاستخدام</li>
+                        <li><strong>صفات إلزامية:</strong> إجبار المستخدمين على تقديم قيم ضرورية معينة</li>
+                        <li><strong>كائنات غير قابلة للتغيير:</strong> إنشاء كائنات لا يمكن تغييرها بعد الإنشاء</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Section 2 -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">2</span>
+                    ما المميز في المُنشئ؟
+                </h2>
+
+                <div class="narrative">
+                    <p>المُنشئ يبدو مثل طريقة عادية، ولكن مع بعض القواعد الخاصة:</p>
+                </div>
+
+                <div class="important-box">
+                    <div class="important-box-title">🎯 قواعد المُنشئ</div>
+                    <ul>
+                        <li><strong>الاسم:</strong> يجب أن يكون نفس اسم الصنف تمامًا (بما في ذلك الحروف الكبيرة/الصغيرة)</li>
+                        <li><strong>لا نوع إرجاع:</strong> المُنشئ لا يحتوي على نوع إرجاع، حتى ولا <span class="code-inline">void</span></li>
+                        <li><strong>يُستدعى بـ new:</strong> يُستدعى تلقائيًا عند استخدام <span class="code-inline">new</span></li>
+                        <li><strong>الغرض:</strong> تهيئة حقول البيانات للكائن الجديد</li>
+                    </ul>
+                </div>
+
+                <div class="narrative">
+                    <p>لنكتب صنف <span class="code-inline">Circle</span> مع مُنشئ:</p>
+                </div>
+
+                <div class="code-label">Circle.java</div>
+                <div class="code-block"><span class="keyword">public class</span> <span class="type">Circle</span> {
+    <span class="comment">// Data field</span>
+    <span class="keyword">double</span> radius;
+
+    <span class="comment">// Constructor - same name as class, no return type</span>
+    <span class="keyword">public</span> <span class="type">Circle</span>(<span class="keyword">double</span> r) {
+        radius = r;  <span class="comment">// Initialize radius with the parameter</span>
+    }
+
+    <span class="comment">// Method to compute area</span>
+    <span class="keyword">public double</span> <span class="method">getArea</span>() {
+        <span class="keyword">return</span> <span class="number">3.14159</span> * radius * radius;
+    }
+}</div>
+
+                <div class="narrative">
+                    <p>الآن يمكننا إنشاء دائرة في خطوة واحدة:</p>
+                </div>
+
+                <div class="code-label">TestCircle.java</div>
+                <div class="code-block"><span class="keyword">public class</span> <span class="type">TestCircle</span> {
+    <span class="keyword">public static void</span> <span class="method">main</span>(<span class="type">String</span>[] args) {
+        <span class="type">Circle</span> c1 = <span class="keyword">new</span> <span class="type">Circle</span>(<span class="number">5.0</span>);  <span class="comment">// Constructor is called!</span>
+        <span class="type">System</span>.out.<span class="method">println</span>(<span class="string">"Area: "</span> + c1.<span class="method">getArea</span>());
+    }
+}</div>
+
+                <div class="success-box">
+                    <div class="success-box-title">ناتج التنفيذ</div>
+                    <div class="code-block">Area: 78.53975</div>
+                </div>
+
+                <div class="info-box">
+                    <div class="info-box-title">ملاحظة</div>
+                    <p>عند كتابة <span class="code-inline">new Circle(5.0)</span>، يحدث شيئان:</p>
+                    <ul>
+                        <li><strong>١.</strong> تُنشئ Java كائنًا جديدًا من نوع <span class="code-inline">Circle</span> في الذاكرة</li>
+                        <li><strong>٢.</strong> تستدعي Java المُنشئ <span class="code-inline">Circle(double r)</span> وتمرر <span class="code-inline">5.0</span> كمعامل</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Section 3 -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">3</span>
+                    هل يمكن أن يحتوي الصنف على أكثر من مُنشئ؟
+                </h2>
+
+                <div class="narrative">
+                    <p>نعم! يمكن للصنف أن يحتوي على <strong>مُنشئات متعددة</strong>. هذا يسمى <strong>التحميل الزائد للمُنشئ</strong> (constructor overloading). لنفترض أننا نريد إضافة لون إلى دائرتنا:</p>
+                </div>
+
+                <div class="code-label">Circle.java - مع مُنشئات متعددة</div>
+                <div class="code-block"><span class="keyword">public class</span> <span class="type">Circle</span> {
+    <span class="keyword">double</span> radius;
+    <span class="type">String</span> color;
+
+    <span class="comment">// Constructor 1: Only radius (default color to "red")</span>
+    <span class="keyword">public</span> <span class="type">Circle</span>(<span class="keyword">double</span> r) {
+        radius = r;
+        color = <span class="string">"red"</span>;
+    }
+
+    <span class="comment">// Constructor 2: Both radius and color</span>
+    <span class="keyword">public</span> <span class="type">Circle</span>(<span class="keyword">double</span> r, <span class="type">String</span> c) {
+        radius = r;
+        color = c;
+    }
+
+    <span class="comment">// Constructor 3: Only color (default radius to 1.0)</span>
+    <span class="keyword">public</span> <span class="type">Circle</span>(<span class="type">String</span> c) {
+        radius = <span class="number">1.0</span>;
+        color = c;
+    }
+
+    <span class="comment">// Constructor 4: No parameters (default both)</span>
+    <span class="keyword">public</span> <span class="type">Circle</span>() {
+        radius = <span class="number">1.0</span>;
+        color = <span class="string">"red"</span>;
+    }
+}</div>
+
+                <div class="narrative">
+                    <p>الآن يمكننا إنشاء دوائر بطرق مختلفة:</p>
+                </div>
+
+                <div class="code-label">استخدام مُنشئات مختلفة</div>
+                <div class="code-block"><span class="type">Circle</span> c1 = <span class="keyword">new</span> <span class="type">Circle</span>(<span class="number">5.0</span>);              <span class="comment">// radius=5.0, color="red"</span>
+<span class="type">Circle</span> c2 = <span class="keyword">new</span> <span class="type">Circle</span>(<span class="number">3.0</span>, <span class="string">"blue"</span>);     <span class="comment">// radius=3.0, color="blue"</span>
+<span class="type">Circle</span> c3 = <span class="keyword">new</span> <span class="type">Circle</span>(<span class="string">"green"</span>);         <span class="comment">// radius=1.0, color="green"</span>
+<span class="type">Circle</span> c4 = <span class="keyword">new</span> <span class="type">Circle</span>();               <span class="comment">// radius=1.0, color="red"</span></div>
+
+                <div class="key-concept">
+                    <div class="key-concept-title">التحميل الزائد للمُنشئ</div>
+                    <p>المُنشئات المتعددة تعطي <strong>مرونة</strong> للمستخدمين. يمكنهم اختيار المُنشئ الأنسب لاحتياجاتهم:</p>
+                    <ul>
+                        <li>إذا كانوا يهتمون فقط بنصف القطر → استخدم <span class="code-inline">Circle(double r)</span></li>
+                        <li>إذا كانوا يريدون تحديد كليهما → استخدم <span class="code-inline">Circle(double r, String c)</span></li>
+                        <li>إذا كانوا يريدون القيم الافتراضية → استخدم <span class="code-inline">Circle()</span></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Section 4 -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">4</span>
+                    المُنشئ الافتراضي — مفهوم مهم جدًّا
+                </h2>
+
+                <div class="narrative">
+                    <p>لنعد إلى المثال الأول من الدرس السابق، عندما كتبنا صنف <span class="code-inline">Circle</span> بدون أي مُنشئ على الإطلاق:</p>
+                </div>
+
+                <div class="code-label">Circle.java - بدون مُنشئ صريح</div>
+                <div class="code-block"><span class="keyword">public class</span> <span class="type">Circle</span> {
+    <span class="keyword">double</span> radius;
+
+    <span class="keyword">public double</span> <span class="method">getArea</span>() {
+        <span class="keyword">return</span> <span class="number">3.14159</span> * radius * radius;
+    }
+}</div>
+
+                <div class="narrative">
+                    <p>ومع ذلك، تمكنا من كتابة:</p>
+                </div>
+
+                <div class="code-block"><span class="type">Circle</span> c1 = <span class="keyword">new</span> <span class="type">Circle</span>();  <span class="comment">// This worked! But how?</span></div>
+
+                <div class="narrative">
+                    <p>كيف نجح هذا إذا لم نكتب مُنشئًا؟ الإجابة: إذا لم تكتب <strong>أي</strong> مُنشئ، فإن Java توفر تلقائيًا <strong>مُنشئًا افتراضيًا</strong> (default constructor) لك.</p>
+                </div>
+
+                <div class="important-box">
+                    <div class="important-box-title">قاعدة مهمة جدًّا</div>
+                    <p><strong>المُنشئ الافتراضي يختفي عند تعريف أي مُنشئ!</strong></p>
+                    <p>إذا كتبت <em>أي</em> مُنشئ (حتى مُنشئ واحد فقط)، فإن Java لن توفر لك المُنشئ الافتراضي تلقائيًا.</p>
+                </div>
+
+                <div class="narrative">
+                    <p>لنرى مثالًا:</p>
+                </div>
+
+                <div class="code-label">Circle.java - مع مُنشئ واحد فقط</div>
+                <div class="code-block"><span class="keyword">public class</span> <span class="type">Circle</span> {
+    <span class="keyword">double</span> radius;
+
+    <span class="comment">// We provide ONE constructor</span>
+    <span class="keyword">public</span> <span class="type">Circle</span>(<span class="keyword">double</span> r) {
+        radius = r;
+    }
+}</div>
+
+                <div class="narrative">
+                    <p>الآن، إذا حاولنا كتابة:</p>
+                </div>
+
+                <div class="code-block"><span class="type">Circle</span> c1 = <span class="keyword">new</span> <span class="type">Circle</span>();  <span class="comment">// ❌ ERROR! No such constructor exists!</span>
+<span class="type">Circle</span> c2 = <span class="keyword">new</span> <span class="type">Circle</span>(<span class="number">5.0</span>);  <span class="comment">// This works</span></div>
+
+                <div class="narrative">
+                    <p>إذا كنت تريد <strong>كلا</strong> المُنشئين، يجب عليك كتابتهما بشكل صريح:</p>
+                </div>
+
+                <div class="code-label">Circle.java - كلا المُنشئين صريحين</div>
+                <div class="code-block"><span class="keyword">public class</span> <span class="type">Circle</span> {
+    <span class="keyword">double</span> radius;
+
+    <span class="comment">// Explicit no-argument constructor</span>
+    <span class="keyword">public</span> <span class="type">Circle</span>() {
+        radius = <span class="number">1.0</span>;  <span class="comment">// default radius</span>
+    }
+
+    <span class="comment">// Constructor with parameter</span>
+    <span class="keyword">public</span> <span class="type">Circle</span>(<span class="keyword">double</span> r) {
+        radius = r;
+    }
+}</div>
+
+                <div class="paradigm-comparison">
+                    <div class="paradigm-box procedural">
+                        <div class="paradigm-title">🔸 المُنشئ الافتراضي الضمني</div>
+                        <ul class="paradigm-list">
+                            <li>توفره Java تلقائيًا</li>
+                            <li>لا معاملات</li>
+                            <li>لا يفعل شيئًا (جسم فارغ)</li>
+                            <li>يختفي إذا عرّفت أي مُنشئ</li>
+                            <li>غير مرئي في الكود</li>
+                        </ul>
+                    </div>
+                    <div class="paradigm-box oop">
+                        <div class="paradigm-title">🔹 المُنشئ الافتراضي الصريح</div>
+                        <ul class="paradigm-list">
+                            <li>تكتبه أنت بنفسك</li>
+                            <li>لا معاملات</li>
+                            <li>يمكن أن يحتوي على كود تهيئة</li>
+                            <li>موجود حتى مع مُنشئات أخرى</li>
+                            <li>مرئي في الكود</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 5 -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">5</span>
+                    كلمة <span class="code-inline">this</span> — "أنا أتحدث عن نفسي"
+                </h2>
+
+                <div class="narrative">
+                    <p>هناك مشكلة شائعة عند كتابة المُنشئات. لنلقِ نظرة على هذا الكود:</p>
+                </div>
+
+                <div class="code-label">Circle.java - مشكلة في الأسماء</div>
+                <div class="code-block"><span class="keyword">public class</span> <span class="type">Circle</span> {
+    <span class="keyword">double</span> radius;  <span class="comment">// Data field</span>
+
+    <span class="keyword">public</span> <span class="type">Circle</span>(<span class="keyword">double</span> r) {
+        radius = r;  <span class="comment">// OK, but 'r' is a weird name</span>
+    }
+}</div>
+
+                <div class="narrative">
+                    <p>الاسم <span class="code-inline">r</span> يعمل، لكنه ليس وصفيًا. من الأفضل استخدام <span class="code-inline">radius</span> كاسم المعامل أيضًا:</p>
+                </div>
+
+                <div class="code-label">محاولة - استخدام نفس الاسم</div>
+                <div class="code-block"><span class="keyword">public class</span> <span class="type">Circle</span> {
+    <span class="keyword">double</span> radius;  <span class="comment">// Data field</span>
+
+    <span class="keyword">public</span> <span class="type">Circle</span>(<span class="keyword">double</span> radius) {  <span class="comment">// Parameter named 'radius'</span>
+        radius = radius;  <span class="comment">// ❌ Problem! Which radius is which?</span>
+    }
+}</div>
+
+                <div class="narrative">
+                    <p>هذا <strong>غامض</strong>! الآن لدينا اسمان <span class="code-inline">radius</span>:</p>
+                    <ul>
+                        <li>حقل البيانات <span class="code-inline">radius</span> (متغير الكائن)</li>
+                        <li>المعامل <span class="code-inline">radius</span> (متغير المُنشئ)</li>
+                    </ul>
+                    <p>عندما تكتب <span class="code-inline">radius = radius</span>، فإن Java تعتبر <strong>كلاهما</strong> يشير إلى <strong>المعامل</strong>! حقل البيانات يكون "مخفيًا" (shadowed).</p>
+                </div>
+
+                <div class="important-box">
+                    <div class="important-box-title">🎯 الحل: كلمة <span class="code-inline">this</span></div>
+                    <p>الكلمة المفتاحية <span class="code-inline">this</span> هي <strong>مرجع</strong> للكائن الحالي. يمكنك استخدامها للإشارة بوضوح إلى حقول وطرق الكائن الحالي.</p>
+                </div>
+
+                <div class="code-label">Circle.java - الحل الصحيح</div>
+                <div class="code-block"><span class="keyword">public class</span> <span class="type">Circle</span> {
+    <span class="keyword">double</span> radius;  <span class="comment">// Data field</span>
+
+    <span class="keyword">public</span> <span class="type">Circle</span>(<span class="keyword">double</span> radius) {
+        <span class="keyword">this</span>.radius = radius;  <span class="comment">// Clear: object field = parameter</span>
+        <span class="comment">// 'this.radius' = data field of current object</span>
+        <span class="comment">// 'radius' = parameter</span>
+    }
+}</div>
+
+                <div class="narrative">
+                    <p>الآن الكود واضح تمامًا:</p>
+                    <ul>
+                        <li><span class="code-inline">this.radius</span> يشير إلى حقل البيانات للكائن</li>
+                        <li><span class="code-inline">radius</span> (بدون <span class="code-inline">this</span>) يشير إلى المعامل</li>
+                    </ul>
+                </div>
+
+                <div class="info-box">
+                    <div class="info-box-title">فهم <span class="code-inline">this</span></div>
+                    <p>فكّر في <span class="code-inline">this</span> كأنه كلمة "أنا" أو "نفسي". عندما يقول الكائن <span class="code-inline">this.radius</span>، فهو يقول: "<strong>نصف قطري الخاص</strong>".</p>
+                    <p>في الواقع، <span class="code-inline">this</span> هو <strong>مرجع</strong> (reference) يحمل عنوان الكائن الحالي في الذاكرة. على سبيل المثال، إذا كان الكائن موجودًا في العنوان <span class="code-inline">0x3A7F</span>، فإن <span class="code-inline">this</span> يحتوي على <span class="code-inline">0x3A7F</span>.</p>
+                </div>
+
+                <div class="narrative">
+                    <p>مثال شامل مع عدة حقول:</p>
+                </div>
+
+                <div class="code-label">Circle.java - مع عدة حقول</div>
+                <div class="code-block"><span class="keyword">public class</span> <span class="type">Circle</span> {
+    <span class="keyword">double</span> radius;
+    <span class="type">String</span> color;
+    <span class="keyword">int</span> id;
+
+    <span class="keyword">public</span> <span class="type">Circle</span>(<span class="keyword">double</span> radius, <span class="type">String</span> color, <span class="keyword">int</span> id) {
+        <span class="keyword">this</span>.radius = radius;  <span class="comment">// Object's radius = parameter radius</span>
+        <span class="keyword">this</span>.color = color;    <span class="comment">// Object's color = parameter color</span>
+        <span class="keyword">this</span>.id = id;          <span class="comment">// Object's id = parameter id</span>
+    }
+}</div>
+            </div>
+
+            <!-- Section 6 -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">6</span>
+                    استخدام <span class="code-inline">this()</span> لاستدعاء مُنشئ آخر
+                </h2>
+
+                <div class="narrative">
+                    <p>هناك استخدام آخر لـ <span class="code-inline">this</span>: يمكنك استخدام <span class="code-inline">this()</span> لاستدعاء مُنشئ آخر من نفس الصنف. هذا مفيد لتجنب تكرار الكود.</p>
+                    <p>تذكر المثال من القسم 3 حيث كان لدينا 4 مُنشئات؟ كان هناك الكثير من التكرار. لنعيد كتابته باستخدام <span class="code-inline">this()</span>:</p>
+                </div>
+
+                <div class="code-label">قبل - تكرار الكود</div>
+                <div class="code-block"><span class="keyword">public class</span> <span class="type">Circle</span> {
+    <span class="keyword">double</span> radius;
+    <span class="type">String</span> color;
+
+    <span class="keyword">public</span> <span class="type">Circle</span>(<span class="keyword">double</span> r) {
+        radius = r;
+        color = <span class="string">"red"</span>;  <span class="comment">// Repeated</span>
+    }
+
+    <span class="keyword">public</span> <span class="type">Circle</span>(<span class="keyword">double</span> r, <span class="type">String</span> c) {
+        radius = r;      <span class="comment">// Repeated</span>
+        color = c;       <span class="comment">// Repeated</span>
+    }
+
+    <span class="keyword">public</span> <span class="type">Circle</span>(<span class="type">String</span> c) {
+        radius = <span class="number">1.0</span>;  <span class="comment">// Repeated</span>
+        color = c;
+    }
+
+    <span class="keyword">public</span> <span class="type">Circle</span>() {
+        radius = <span class="number">1.0</span>;    <span class="comment">// Repeated</span>
+        color = <span class="string">"red"</span>;  <span class="comment">// Repeated</span>
+    }
+}</div>
+
+                <div class="code-label">بعد - استخدام this() لتجنب التكرار</div>
+                <div class="code-block"><span class="keyword">public class</span> <span class="type">Circle</span> {
+    <span class="keyword">double</span> radius;
+    <span class="type">String</span> color;
+
+    <span class="comment">// Main constructor - does all the work</span>
+    <span class="keyword">public</span> <span class="type">Circle</span>(<span class="keyword">double</span> radius, <span class="type">String</span> color) {
+        <span class="keyword">this</span>.radius = radius;
+        <span class="keyword">this</span>.color = color;
+    }
+
+    <span class="comment">// Other constructors call the main one</span>
+    <span class="keyword">public</span> <span class="type">Circle</span>(<span class="keyword">double</span> radius) {
+        <span class="keyword">this</span>(radius, <span class="string">"red"</span>);  <span class="comment">// Call Circle(double, String)</span>
+    }
+
+    <span class="keyword">public</span> <span class="type">Circle</span>(<span class="type">String</span> color) {
+        <span class="keyword">this</span>(<span class="number">1.0</span>, color);  <span class="comment">// Call Circle(double, String)</span>
+    }
+
+    <span class="keyword">public</span> <span class="type">Circle</span>() {
+        <span class="keyword">this</span>(<span class="number">1.0</span>, <span class="string">"red"</span>);  <span class="comment">// Call Circle(double, String)</span>
+    }
+}</div>
+
+                <div class="success-box">
+                    <div class="success-box-title">مبدأ DRY: Don't Repeat Yourself</div>
+                    <p>استخدام <span class="code-inline">this()</span> يتبع مبدأ "لا تكرر نفسك" (DRY). الآن، منطق التهيئة موجود في <strong>مكان واحد فقط</strong> (المُنشئ الرئيسي). إذا احتجنا لتغيير كيفية التهيئة، نغيره في مكان واحد فقط.</p>
+                </div>
+
+                <div class="important-box">
+                    <div class="important-box-title">قواعد استخدام <span class="code-inline">this()</span></div>
+                    <ul>
+                        <li><strong>يجب أن يكون أول تعليمة:</strong> استدعاء <span class="code-inline">this()</span> يجب أن يكون <strong>السطر الأول</strong> في المُنشئ</li>
+                        <li><strong>فقط في المُنشئات:</strong> لا يمكن استخدام <span class="code-inline">this()</span> إلا داخل مُنشئ</li>
+                        <li><strong>مرة واحدة فقط:</strong> يمكنك استدعاء مُنشئ واحد فقط (لا يمكنك كتابة <span class="code-inline">this()</span> مرتين)</li>
+                    </ul>
+                </div>
+
+                <div class="code-label">❌ خطأ - this() ليس أول تعليمة</div>
+                <div class="code-block"><span class="keyword">public</span> <span class="type">Circle</span>(<span class="keyword">double</span> radius) {
+    <span class="type">System</span>.out.<span class="method">println</span>(<span class="string">"Creating circle"</span>);  <span class="comment">// ❌ Code before this()</span>
+    <span class="keyword">this</span>(radius, <span class="string">"red"</span>);  <span class="comment">// ❌ ERROR! this() must be first</span>
+}</div>
+
+                <div class="code-label">صحيح - this() هو أول تعليمة</div>
+                <div class="code-block"><span class="keyword">public</span> <span class="type">Circle</span>(<span class="keyword">double</span> radius) {
+    <span class="keyword">this</span>(radius, <span class="string">"red"</span>);  <span class="comment">// Correct: first statement</span>
+    <span class="type">System</span>.out.<span class="method">println</span>(<span class="string">"Circle created"</span>);  <span class="comment">// Code after is OK</span>
+}</div>
+
+                <div class="paradigm-comparison">
+                    <div class="paradigm-box procedural">
+                        <div class="paradigm-title">🔸 this.field</div>
+                        <ul class="paradigm-list">
+                            <li>يشير إلى حقل الكائن</li>
+                            <li>يُستخدم لحل تعارض الأسماء</li>
+                            <li>يمكن استخدامه في أي مكان</li>
+                            <li>مثال: <span class="code-inline" style="font-size: 0.85rem;">this.radius = radius;</span></li>
+                        </ul>
+                    </div>
+                    <div class="paradigm-box oop">
+                        <div class="paradigm-title">🔹 this(...)</div>
+                        <ul class="paradigm-list">
+                            <li>يستدعي مُنشئًا آخر</li>
+                            <li>يُستخدم لتجنب تكرار الكود</li>
+                            <li>فقط في المُنشئات</li>
+                            <li>يجب أن يكون أول تعليمة</li>
+                            <li>مثال: <span class="code-inline" style="font-size: 0.85rem;">this(1.0, "red");</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+<!-- Section 7 -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">7</span>
+                    متغيرات المرجع للكائنات
+                </h2>
+
+                <div class="narrative">
+                    <p>الآن بعد أن فهمنا المُنشئات وكلمة <span class="code-inline">this</span>، لنلقِ نظرة فاحصة على ما يحدث فعلًا عندما نكتب سطرًا مثل هذا:</p>
+                </div>
+
+                <div class="code-block"><span class="type">Circle</span> c1 = <span class="keyword">new</span> <span class="type">Circle</span>(<span class="number">5.0</span>, <span class="string">"blue"</span>);</div>
+
+                <div class="narrative">
+                    <p>هذا السطر الواحد يفعل <strong>ثلاثة أشياء</strong>:</p>
+                </div>
+
+                <ul style="padding-right:25px; line-height: 2.4; margin: 15px 0;">
+                    <li><strong><span class="code-inline">Circle c1</span></strong> — يُعلن عن متغير اسمه <span class="code-inline">c1</span> من النوع <span class="code-inline">Circle</span>. هذا المتغير يُسمى <strong>متغير مرجع</strong>. لا يحمل الكائن نفسه — بل يحمل <strong>مرجعًا</strong> (مؤشرًا) إلى مكان وجود الكائن في الذاكرة.</li>
+                    <li><strong><span class="code-inline">new Circle(5.0, "blue")</span></strong> — ينشئ كائنًا جديدًا من نوع <span class="code-inline">Circle</span> في الذاكرة، يستدعي المُنشئ لتهيئته بـ <span class="code-inline">radius = 5.0</span> و <span class="code-inline">color = "blue"</span>، ويُرجع <strong>مرجعًا</strong> للكائن المُنشأ حديثًا.</li>
+                    <li><strong><span class="code-inline">=</span></strong> — يُسند ذلك المرجع إلى المتغير <span class="code-inline">c1</span>. الآن <span class="code-inline">c1</span> <em>يشير إلى</em> (يؤشر إلى) الكائن.</li>
+                </ul>
+
+                <div class="narrative">
+                    <p>لنصور هذا في الذاكرة:</p>
+                </div>
+
+                <div class="memory-diagram">
+                    <div>
+                        <div class="memory-var">
+                            <div class="memory-var-label">Variable</div>
+                            <div class="memory-var-value">c1</div>
+                            <div style="font-size: 0.8rem; color: var(--gray-color); margin-top: 4px;">0x3A7F</div>
+                        </div>
+                        <div style="text-align: center; font-size: 0.85rem; color: var(--gray-color); margin-top: 8px; max-width: 180px;">متغير مرجع<br>(يحمل مرجعًا للكائن)</div>
+                    </div>
+
+                    <div class="memory-arrow">&#10230;</div>
+
+                    <div>
+                        <div class="memory-object">
+                            <div class="memory-object-header">Circle Object (0x3A7F)</div>
+                            <div class="memory-object-body">
+                                <div class="memory-field">
+                                    <span class="memory-field-name">radius:</span>
+                                    <span class="memory-field-value">5.0</span>
+                                </div>
+                                <div class="memory-field">
+                                    <span class="memory-field-name">color:</span>
+                                    <span class="memory-field-value">"blue"</span>
+                                </div>
+                                <div class="memory-field">
+                                    <span class="memory-field-name">computeArea()</span>
+                                    <span class="memory-field-value">method</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="text-align: center; font-size: 0.85rem; color: var(--gray-color); margin-top: 8px; max-width: 220px;">الكائن الفعلي في الذاكرة<br>(يحتوي على حقول البيانات والطرق)</div>
+                    </div>
+                </div>
+
+                <div class="key-concept">
+                    <div class="key-concept-title">فهم أساسي</div>
+                    <p>المتغير <span class="code-inline">c1</span> <strong>ليس هو الكائن</strong>. إنه <strong>جهاز تحكم عن بُعد</strong> يشير إلى الكائن. الكائن نفسه يعيش في مكان ما في الذاكرة، و<span class="code-inline">c1</span> يحمل مرجعًا إليه. لهذا يُسمى <strong>متغير مرجع</strong> — لأنه <em>يشير إلى</em> (يؤشر إلى) الكائن.</p>
+                    <p style="margin-top:10px;">لهذا السبب أيضًا تعمل كلمة <span class="code-inline">this</span> بهذه الطريقة: داخل الكائن، <span class="code-inline">this</span> يحمل نفس المرجع (<span class="code-inline">0x3A7F</span>)، مما يسمح للكائن بالإشارة إلى نفسه.</p>
+                </div>
+            </div>
+
+            <!-- Section 8 -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">8</span>
+                    الوصول إلى أعضاء الكائن
+                </h2>
+
+                <div class="narrative">
+                    <p>الآن بعد أن أصبح لدينا متغير مرجع يشير إلى كائن، كيف نتفاعل معه؟ كيف نقرأ بياناته أو نستدعي طرقه؟</p>
+                    <p>الإجابة هي <strong>عامل النقطة</strong> (<span class="code-inline">.</span>) — المسمى أيضًا <strong>عامل الوصول للأعضاء</strong>.</p>
+                </div>
+
+                <div class="narrative">
+                    <p>الصيغة بسيطة: <strong><span class="code-inline">referenceVariable.member</span></strong></p>
+                </div>
+
+                <div class="code-label">الوصول إلى الأعضاء عبر عامل النقطة</div>
+                <div class="code-block"><span class="type">Circle</span> c1 = <span class="keyword">new</span> <span class="type">Circle</span>(<span class="number">5.0</span>, <span class="string">"blue"</span>);
+
+<span class="comment">// Calling a method (behavior)</span>
+<span class="keyword">double</span> area = c1.<span class="method">computeArea</span>();      <span class="comment">// c1.computeArea() → calls the method</span>
+
+<span class="comment">// Calling the getter (read the data)</span>
+<span class="keyword">double</span> r = c1.<span class="method">getRadius</span>();            <span class="comment">// c1.getRadius() → returns 5.0</span>
+
+<span class="comment">// Calling the setter (modify the data)</span>
+c1.<span class="method">setRadius</span>(<span class="number">7.5</span>);                    <span class="comment">// c1.setRadius(7.5) → changes the radius</span>
+
+System.out.<span class="method">println</span>(<span class="string">"Radius: "</span> + c1.<span class="method">getRadius</span>());     <span class="comment">// 7.5</span>
+System.out.<span class="method">println</span>(<span class="string">"Area: "</span> + c1.<span class="method">computeArea</span>());      <span class="comment">// 176.71</span></div>
+
+                <div class="info-box">
+                    <div class="info-box-title">ماذا تعني النقطة؟</div>
+                    <p>فكّر في النقطة (<span class="code-inline">.</span>) على أنها تقول <em>"اذهب إلى الكائن والوصول إلى..."</em>. عندما تكتب <span class="code-inline">c1.getRadius()</span>، فأنت تخبر Java: <em>"اذهب إلى الكائن الذي يشير إليه <span class="code-inline">c1</span>، واستدعِ طريقته <span class="code-inline">getRadius()</span>."</em></p>
+                    <p style="margin-top:10px;">متغير المرجع هو <strong>البوابة</strong>. النقطة هي <strong>الباب</strong>. والعضو (حقل أو طريقة) هو ما تصل إليه على الجانب الآخر.</p>
+                </div>
+            </div>
+
+            <!-- Section 9 -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">9</span>
+                    القيم الافتراضية لحقول البيانات
+                </h2>
+
+                <div class="narrative">
+                    <p>هذا أمر مهم جدًّا يجب على كل طالب معرفته: عند إنشاء كائن، <strong>يتم تهيئة جميع حقول البيانات تلقائيًا بقيم افتراضية</strong>، حتى لو لم يحددها المُنشئ بشكل صريح. Java تضمن ذلك.</p>
+                </div>
+
+                <div class="important-box">
+                    <div class="important-box-title">القيم الافتراضية لحقول البيانات</div>
+                    <table style="width:100%; margin-top:10px; border-collapse: collapse;">
+                        <tr style="border-bottom: 2px solid rgba(220,38,38,0.3);">
+                            <th style="text-align:right; padding: 8px 12px; font-size:0.95rem;">نوع البيانات</th>
+                            <th style="text-align:right; padding: 8px 12px; font-size:0.95rem;">القيمة الافتراضية</th>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(220,38,38,0.15);">
+                            <td style="padding: 8px 12px; font-family: Consolas, monospace;">int, long, short, byte</td>
+                            <td style="padding: 8px 12px; font-family: Consolas, monospace; font-weight:bold;">0</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(220,38,38,0.15);">
+                            <td style="padding: 8px 12px; font-family: Consolas, monospace;">double, float</td>
+                            <td style="padding: 8px 12px; font-family: Consolas, monospace; font-weight:bold;">0.0</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(220,38,38,0.15);">
+                            <td style="padding: 8px 12px; font-family: Consolas, monospace;">boolean</td>
+                            <td style="padding: 8px 12px; font-family: Consolas, monospace; font-weight:bold;">false</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(220,38,38,0.15);">
+                            <td style="padding: 8px 12px; font-family: Consolas, monospace;">char</td>
+                            <td style="padding: 8px 12px; font-family: Consolas, monospace; font-weight:bold;">'\u0000'</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px 12px; font-family: Consolas, monospace;">Reference types (String, Object, etc.)</td>
+                            <td style="padding: 8px 12px; font-family: Consolas, monospace; font-weight:bold;">null</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="narrative">
+                    <p>لنرَ هذا عمليًا. لنأخذ صنفًا يحتوي على عدة حقول لا يُهيئها المُنشئ:</p>
+                </div>
+
+                <div class="code-label">Student.java - بدون تهيئة في المُنشئ</div>
+                <div class="code-block"><span class="keyword">public class</span> <span class="type">Student</span> {
+    <span class="keyword">private</span> <span class="type">String</span> name;
+    <span class="keyword">private</span> <span class="keyword">int</span> age;
+    <span class="keyword">private</span> <span class="keyword">double</span> gpa;
+    <span class="keyword">private</span> <span class="keyword">boolean</span> graduated;
+    <span class="keyword">private</span> <span class="keyword">char</span> grade;
+
+    <span class="comment">// No constructor defined — Java provides the implicit default constructor</span>
+
+    <span class="keyword">public</span> <span class="keyword">void</span> <span class="method">printInfo</span>() {
+        System.out.<span class="method">println</span>(<span class="string">"Name: "</span> + name);
+        System.out.<span class="method">println</span>(<span class="string">"Age: "</span> + age);
+        System.out.<span class="method">println</span>(<span class="string">"GPA: "</span> + gpa);
+        System.out.<span class="method">println</span>(<span class="string">"Graduated: "</span> + graduated);
+        System.out.<span class="method">println</span>(<span class="string">"Grade: ['"</span> + grade + <span class="string">"']"</span>);
+    }
+}</div>
+
+                <div class="code-label">Main.java - الطباعة بدون تهيئة</div>
+                <div class="code-block"><span class="type">Student</span> s = <span class="keyword">new</span> <span class="type">Student</span>();
+s.<span class="method">printInfo</span>();</div>
+
+                <div class="code-label">الناتج</div>
+                <div class="code-block">Name: null
+Age: 0
+GPA: 0.0
+Graduated: false
+Grade: ['']</div>
+
+                <div class="narrative">
+                    <p>كل حقل له <strong>قيمته الافتراضية</strong> — حتى مع أننا لم نحدد أيًا منها. Java تُهيئ جميع حقول البيانات تلقائيًا.</p>
+                </div>
+
+                <h3 style="margin: 25px 0 10px; color: var(--danger-color); font-size: 1.2rem;">حقول البيانات مقابل المتغيرات المحلية: فرق حاسم</h3>
+
+                <div class="narrative">
+                    <p>الآن نصل لنقطة يحدث فيها الالتباس كثيرًا للطلاب. القاعدة أعلاه تنطبق <strong>فقط على حقول البيانات</strong> (الحقول المُعلنة داخل الصنف). <strong>لا</strong> تنطبق على <strong>المتغيرات المحلية</strong> (المتغيرات المُعلنة داخل طريقة).</p>
+                </div>
+
+                <div class="code-label">Main.java - متغير محلي بدون تهيئة</div>
+                <div class="code-block"><span class="keyword">public class</span> <span class="type">Main</span> {
+    <span class="keyword">public static void</span> <span class="method">main</span>(<span class="type">String</span>[] args) {
+
+        <span class="keyword">int</span> x;   <span class="comment">// local variable — NOT initialized</span>
+
+        System.out.<span class="method">println</span>(x);   <span class="comment">// ERROR! "variable x might not have been initialized"</span>
+    }
+}</div>
+
+                <div class="important-box">
+                    <div class="important-box-title">هذا لن يُترجَم!</div>
+                    <p>Java ترفض ترجمة هذا الكود. المتغير المحلي <span class="code-inline">x</span> تم الإعلان عنه ولكن <strong>لم يُسند له قيمة أبدًا</strong>. بخلاف حقول البيانات، المتغيرات المحلية <strong>لا</strong> تحصل على قيم افتراضية. يجب عليك <strong>تهيئتها بنفسك</strong> قبل استخدامها.</p>
+                </div>
+
+                <div class="paradigm-comparison">
+                    <div class="paradigm-box oop">
+                        <div class="paradigm-title">🔹 حقول البيانات (مستوى الصنف)</div>
+                        <ul class="paradigm-list">
+                            <li>تُعلن <strong>داخل الصنف</strong>، خارج أي طريقة</li>
+                            <li>تُهيأ تلقائيًا بـ <strong>قيم افتراضية</strong></li>
+                            <li>يمكن استخدامها مباشرة دون تهيئة يدوية</li>
+                            <li>مثال: <span class="code-inline" style="font-size: 0.85rem;">private int age;</span> ← افتراضيًا <span class="code-inline" style="font-size: 0.85rem;">0</span></li>
+                        </ul>
+                    </div>
+
+                    <div class="paradigm-box procedural">
+                        <div class="paradigm-title">🔸 المتغيرات المحلية (مستوى الطريقة)</div>
+                        <ul class="paradigm-list">
+                            <li>تُعلن <strong>داخل طريقة</strong></li>
+                            <li><strong>لا قيمة افتراضية</strong> — غير مُهيأة</li>
+                            <li><strong>يجب تهيئتها</strong> قبل الاستخدام، وإلا لن يُترجَم الكود</li>
+                            <li>مثال: <span class="code-inline" style="font-size: 0.85rem;">int x;</span> ← خطأ في الترجمة إذا استُخدم قبل الإسناد</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 10 -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">10</span>
+                    الأنواع البدائية مقابل الأنواع المرجعية
+                </h2>
+
+                <div class="narrative">
+                    <p>الآن لنفهم فرقًا مهمًا جدًّا في كيفية تعامل Java مع <strong>المتغيرات البدائية</strong> (مثل <span class="code-inline">int</span>، <span class="code-inline">double</span>) مقابل <strong>متغيرات المرجع</strong> (مثل <span class="code-inline">Circle</span>، <span class="code-inline">String</span>). هذا الفرق يؤثر على ما يحدث عند إسناد متغير إلى آخر.</p>
+                </div>
+
+                <h3 style="margin: 25px 0 10px; color: var(--primary-color); font-size: 1.2rem;">المتغيرات البدائية: القيم يتم نسخها</h3>
+
+                <div class="narrative">
+                    <p>مع الأنواع البدائية، كل متغير يحمل <strong>قيمته الخاصة المستقلة</strong>. عندما تُسند أحدهما للآخر، <strong>القيمة يتم نسخها</strong>:</p>
+                </div>
+
+                <div class="code-label">إسناد بدائي</div>
+                <div class="code-block"><span class="keyword">int</span> i = <span class="number">5</span>;
+<span class="keyword">int</span> j = i;     <span class="comment">// j gets a COPY of i's value</span>
+
+<span class="comment">// Now: i = 5, j = 5 (two independent copies)</span>
+
+i = <span class="number">10</span>;        <span class="comment">// changing i does NOT affect j</span>
+
+System.out.<span class="method">println</span>(<span class="string">"i = "</span> + i);   <span class="comment">// i = 10</span>
+System.out.<span class="method">println</span>(<span class="string">"j = "</span> + j);   <span class="comment">// j = 5  — unchanged!</span></div>
+
+                <div style="font-size: 0.95rem; color: var(--gray-color); margin: 15px 0 8px;">بعد <span class="code-inline">int i = 5; int j = i;</span></div>
+                <div class="memory-diagram">
+                    <div>
+                        <div class="memory-var">
+                            <div class="memory-var-label">i</div>
+                            <div class="memory-var-value">5</div>
+                        </div>
+                    </div>
+                    <div style="font-size: 1.2rem; color: var(--gray-color);">نُسخت إلى</div>
+                    <div>
+                        <div class="memory-var">
+                            <div class="memory-var-label">j</div>
+                            <div class="memory-var-value">5</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="font-size: 0.95rem; color: var(--gray-color); margin: 15px 0 8px;">بعد <span class="code-inline">i = 10;</span></div>
+                <div class="memory-diagram">
+                    <div>
+                        <div class="memory-var">
+                            <div class="memory-var-label">i</div>
+                            <div class="memory-var-value">10</div>
+                        </div>
+                    </div>
+                    <div style="font-size: 1.2rem; color: var(--gray-color);">مستقلة</div>
+                    <div>
+                        <div class="memory-var">
+                            <div class="memory-var-label">j</div>
+                            <div class="memory-var-value">5</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="narrative">
+                    <p>كل متغير له صندوقه الخاص بقيمته الخاصة. تغيير أحدهما لا يؤثر على الآخر.</p>
+                </div>
+
+                <h3 style="margin: 25px 0 10px; color: var(--secondary-color); font-size: 1.2rem;">متغيرات المرجع: المراجع يتم نسخها</h3>
+
+                <div class="narrative">
+                    <p>مع الأنواع المرجعية، السلوك <strong>مختلف جذريًا</strong>. المتغير لا يحمل الكائن — بل يحمل <strong>مرجعًا</strong> للكائن. عندما تُسند متغير مرجع إلى آخر، فأنت تنسخ <strong>المرجع</strong>، وليس الكائن نفسه.</p>
+                </div>
+
+                <div class="code-label">إسناد مرجعي</div>
+                <div class="code-block"><span class="type">Circle</span> c1 = <span class="keyword">new</span> <span class="type">Circle</span>(<span class="number">5.0</span>, <span class="string">"blue"</span>);
+<span class="type">Circle</span> c2 = <span class="keyword">new</span> <span class="type">Circle</span>(<span class="number">10.0</span>, <span class="string">"red"</span>);</div>
+
+                <div style="font-size: 0.95rem; color: var(--gray-color); margin: 15px 0 8px;">بعد إنشاء c1 و c2:</div>
+                <div style="display:flex; flex-direction: column; gap: 15px; margin: 15px 0;">
+                    <div style="display:flex; align-items:center; gap:10px; flex-wrap: wrap; justify-content: center;">
+                        <div class="memory-var">
+                            <div class="memory-var-label">c1</div>
+                            <div class="memory-var-value">0x1A2B</div>
+                        </div>
+                        <div class="memory-arrow">&#10230;</div>
+                        <div class="memory-object">
+                            <div class="memory-object-header">Circle Object (0x1A2B)</div>
+                            <div class="memory-object-body">
+                                <div class="memory-field">
+                                    <span class="memory-field-name">radius:</span>
+                                    <span class="memory-field-value">5.0</span>
+                                </div>
+                                <div class="memory-field">
+                                    <span class="memory-field-name">color:</span>
+                                    <span class="memory-field-value">"blue"</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:10px; flex-wrap: wrap; justify-content: center;">
+                        <div class="memory-var">
+                            <div class="memory-var-label">c2</div>
+                            <div class="memory-var-value">0x7F3E</div>
+                        </div>
+                        <div class="memory-arrow">&#10230;</div>
+                        <div class="memory-object">
+                            <div class="memory-object-header">Circle Object (0x7F3E)</div>
+                            <div class="memory-object-body">
+                                <div class="memory-field">
+                                    <span class="memory-field-name">radius:</span>
+                                    <span class="memory-field-value">10.0</span>
+                                </div>
+                                <div class="memory-field">
+                                    <span class="memory-field-name">color:</span>
+                                    <span class="memory-field-value">"red"</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="narrative">
+                    <p>الآن راقب ما يحدث عندما نُسند <span class="code-inline">c1</span> إلى <span class="code-inline">c2</span>:</p>
+                </div>
+
+                <div class="code-block">c2 = c1;   <span class="comment">// c2 now holds the SAME reference as c1</span></div>
+
+                <div style="font-size: 0.95rem; color: var(--gray-color); margin: 15px 0 8px;">بعد <span class="code-inline">c2 = c1;</span></div>
+                <div style="display:flex; flex-direction: column; gap: 15px; margin: 15px 0;">
+                    <div style="display:flex; align-items:center; gap:10px; flex-wrap: wrap; justify-content: center;">
+                        <div class="memory-var">
+                            <div class="memory-var-label">c1</div>
+                            <div class="memory-var-value">0x1A2B</div>
+                        </div>
+                        <div class="memory-arrow">&#10230;</div>
+                        <div class="memory-object" style="border-color: var(--success-color);">
+                            <div class="memory-object-header" style="background: linear-gradient(135deg, var(--success-color), #047857);">Circle Object (0x1A2B)</div>
+                            <div class="memory-object-body">
+                                <div class="memory-field">
+                                    <span class="memory-field-name">radius:</span>
+                                    <span class="memory-field-value">5.0</span>
+                                </div>
+                                <div class="memory-field">
+                                    <span class="memory-field-name">color:</span>
+                                    <span class="memory-field-value">"blue"</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="memory-arrow">&#10229;</div>
+                        <div class="memory-var">
+                            <div class="memory-var-label">c2</div>
+                            <div class="memory-var-value">0x1A2B</div>
+                        </div>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:10px; flex-wrap: wrap; justify-content: center;">
+                        <div class="memory-object gc-object" style="opacity: 0.85;">
+                            <div class="memory-object-header">Circle Object (0x7F3E)</div>
+                            <div class="memory-object-body">
+                                <div class="memory-field">
+                                    <span class="memory-field-name">radius:</span>
+                                    <span class="memory-field-value">10.0</span>
+                                </div>
+                                <div class="memory-field">
+                                    <span class="memory-field-name">color:</span>
+                                    <span class="memory-field-value">"red"</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="max-width: 280px; padding: 12px 16px; background: #fef2f2; border: 2px solid var(--danger-color); border-radius: 10px; font-size: 0.9rem;">
+                            <div style="font-weight: bold; color: var(--danger-color); margin-bottom: 5px;">لا يوجد متغير يشير هنا بعد الآن!</div>
+                            <div>هذا الكائن لا يزال في الذاكرة، يشغل مساحة، لكنه <strong>غير قابل للوصول</strong> — لا يوجد متغير مرجع يشير إليه.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="important-box">
+                    <div class="important-box-title">ماذا حدث؟</div>
+                    <p>بعد <span class="code-inline">c2 = c1</span>، المتغير <span class="code-inline">c2</span> لم يعد يشير إلى الدائرة ذات <span class="code-inline">radius = 10.0</span>. بدلاً من ذلك، <strong>كلا <span class="code-inline">c1</span> و <span class="code-inline">c2</span> يشيران الآن إلى نفس الكائن</strong> (الدائرة عند <span class="code-inline">0x1A2B</span> مع <span class="code-inline">radius = 5.0</span>).</p>
+                    <p style="margin-top:10px;">هذا يعني إذا عدّلنا الكائن عبر <span class="code-inline">c2</span>، فإن التغيير سيكون مرئيًا عبر <span class="code-inline">c1</span> أيضًا — لأنهما يشيران إلى <strong>نفس الكائن تمامًا</strong>:</p>
+                </div>
+
+                <div class="code-block">c2.<span class="method">setRadius</span>(<span class="number">99.0</span>);
+System.out.<span class="method">println</span>(c1.<span class="method">getRadius</span>());  <span class="comment">// 99.0 — c1 sees the change!</span>
+System.out.<span class="method">println</span>(c2.<span class="method">getRadius</span>());  <span class="comment">// 99.0 — same object</span></div>
+
+                <h3 style="margin: 25px 0 10px; color: var(--danger-color); font-size: 1.2rem;">جامع النفايات: ماذا يحدث للكائن المهجور؟</h3>
+
+                <div class="narrative">
+                    <p>لكن ماذا عن الدائرة الأصلية التي كان <span class="code-inline">c2</span> يشير إليها — تلك التي مع <span class="code-inline">radius = 10.0</span> و <span class="code-inline">color = "red"</span>؟ لا تزال موجودة في الذاكرة، <strong>تشغل مساحة</strong>، لكن لا يوجد متغير يشير إليها. ليس لدينا طريقة للوصول إليها بعد الآن.</p>
+                </div>
+
+                <div class="key-concept">
+                    <div class="key-concept-title">جمع النفايات (Garbage Collection)</div>
+                    <p>Java لديها نظام مدمج يُسمى <strong>جامع النفايات</strong> (Garbage Collector) يفحص الذاكرة <strong>بشكل دوري</strong> بحثًا عن كائنات ليس لها متغير مرجع يشير إليها. عندما يجد مثل هذا الكائن اليتيم، يقوم <strong>تلقائيًا بتحرير الذاكرة</strong> التي يشغلها حتى يمكن إعادة استخدام الذاكرة.</p>
+                    <p style="margin-top:10px;">هذا يحدث <strong>تلقائيًا في الخلفية</strong> — المبرمج لا يحتاج للقلق بشأنه، ولا يحتاج لحذف الكائنات يدويًا، ولا يحتاج لكتابة أي كود تنظيف. جامع النفايات يعتني بكل شيء. هذه واحدة من المزايا العظيمة لـ Java مقارنة بلغات مثل C و C++، حيث المبرمج مسؤول عن تحرير الذاكرة يدويًا.</p>
+                </div>
+
+                <div style="display:flex; align-items:center; gap:15px; flex-wrap: wrap; justify-content: center; margin: 20px 0;">
+                    <div class="memory-object gc-object" style="opacity: 0.5;">
+                        <div class="memory-object-header">Circle Object (0x7F3E)</div>
+                        <div class="memory-object-body">
+                            <div class="memory-field">
+                                <span class="memory-field-name">radius:</span>
+                                <span class="memory-field-value">10.0</span>
+                            </div>
+                            <div class="memory-field">
+                                <span class="memory-field-name">color:</span>
+                                <span class="memory-field-value">"red"</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="memory-arrow" style="color: var(--danger-color);">&#10230;</div>
+                    <div style="padding: 15px 20px; background: linear-gradient(135deg, #d1fae5, #a7f3d0); border: 3px solid var(--success-color); border-radius: 12px; text-align: center; min-width: 200px;">
+                        <div style="font-weight: bold; color: var(--success-color); font-size: 1.1rem; margin-bottom: 5px;">جامع النفايات</div>
+                        <div style="font-size: 0.9rem;">يكتشف الكائن غير القابل للوصول، <strong>يستعيد الذاكرة</strong>، ويحرر المساحة تلقائيًا.</div>
+                    </div>
+                </div>
+
+                <div class="success-box">
+                    <div class="success-box-title">ملخص: البدائية مقابل المرجعية</div>
+                    <p><strong>المتغيرات البدائية</strong> تحمل قيمًا فعلية. إسناد إحداها للأخرى <strong>ينسخ القيمة</strong>. كل متغير مستقل.</p>
+                    <p style="margin-top:10px;"><strong>متغيرات المرجع</strong> تحمل مراجع للكائنات. إسناد إحداها للأخرى <strong>ينسخ المرجع</strong>. كلا المتغيرين يشيران إلى <strong>نفس الكائن</strong>. الكائن المهجور يتم تنظيفه بواسطة جامع النفايات.</p>
+                </div>
+            </div>
+
+            <!-- Section 11 -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">11</span>
+                    أصناف مدمجة مفيدة: Date و Random
+                </h2>
+
+                <div class="narrative">
+                    <p>Java تأتي مع <strong>مئات الأصناف الجاهزة</strong> في مكتبتها القياسية. لا أحد يُتوقع منه حفظها جميعًا — لكن كمبرمج Java، من <strong>مسؤوليتك</strong> استكشاف وتعلم تلك التي تحتاجها. توثيق Java الرسمي (Javadoc) هو دليلك.</p>
+                    <p>هنا، سنقدم بإيجاز صنفين شائعي الاستخدام لنريك كم هو سهل استخدام الأصناف الموجودة بمجرد فهمك للكائنات.</p>
+                </div>
+
+                <h3 style="margin: 25px 0 10px; color: var(--primary-color); font-size: 1.2rem;">صنف <span class="code-inline">Date</span></h3>
+
+                <div class="narrative">
+                    <p>صنف <span class="code-inline">java.util.Date</span> يمثل نقطة زمنية محددة. إنشاء كائن <span class="code-inline">Date</span> بدون معاملات يعطيك التاريخ والوقت الحاليين:</p>
+                </div>
+
+                <div class="code-block"><span class="keyword">import</span> java.util.Date;
+
+<span class="type">Date</span> now = <span class="keyword">new</span> <span class="type">Date</span>();
+System.out.<span class="method">println</span>(now);
+<span class="comment">// Output: Wed Feb 11 14:30:25 AST 2026 (current date and time)</span></div>
+
+                <div class="info-box">
+                    <div class="info-box-title">ملاحظة</div>
+                    <p>صنف <span class="code-inline">Date</span> هو واحد من أقدم الأصناف في Java. للعمل الأكثر تقدمًا مع التاريخ/الوقت، توفر Java أصنافًا أحدث مثل <span class="code-inline">LocalDate</span>، <span class="code-inline">LocalTime</span>، و <span class="code-inline">LocalDateTime</span> في حزمة <span class="code-inline">java.time</span>. لكن <span class="code-inline">Date</span> نقطة انطلاق جيدة لفهم كيفية عمل الكائنات.</p>
+                </div>
+
+                <h3 style="margin: 25px 0 10px; color: var(--secondary-color); font-size: 1.2rem;">صنف <span class="code-inline">Random</span></h3>
+
+                <div class="narrative">
+                    <p>صنف <span class="code-inline">java.util.Random</span> يُولّد أرقامًا عشوائية زائفة. لنبدأ بمثال بسيط:</p>
+                </div>
+
+                <div class="code-block"><span class="keyword">import</span> java.util.Random;
+
+<span class="type">Random</span> rand = <span class="keyword">new</span> <span class="type">Random</span>();
+
+System.out.<span class="method">println</span>(rand.<span class="method">nextInt</span>(<span class="number">100</span>));    <span class="comment">// random int from 0 to 99</span>
+System.out.<span class="method">println</span>(rand.<span class="method">nextInt</span>(<span class="number">100</span>));    <span class="comment">// another random int from 0 to 99</span>
+System.out.<span class="method">println</span>(rand.<span class="method">nextDouble</span>());     <span class="comment">// random double from 0.0 to 1.0</span></div>
+
+                <div class="narrative">
+                    <p>في كل مرة تشغل فيها هذا البرنامج، تحصل على <strong>أرقام مختلفة</strong>. لكن الآن، لنجرب شيئًا مثيرًا...</p>
+                </div>
+
+                <h4 style="margin: 20px 0 10px; color: var(--warning-color); font-size: 1.1rem;">البذرة: لماذا يمكن لبرنامجين إنتاج نفس الأرقام "العشوائية"</h4>
+
+                <div class="narrative">
+                    <p>إليك سؤال يفاجئ العديد من المبتدئين: <strong>هل هذه الأرقام عشوائية حقًا؟</strong> الإجابة هي <strong>لا</strong>. تُسمى <strong>أرقامًا عشوائية زائفة</strong> — يتم توليدها بواسطة <strong>معادلة رياضية</strong>، وليس بواسطة عشوائية حقيقية.</p>
+                    <p>المعادلة تعمل هكذا: تبدأ برقم أولي يُسمى <strong>بذرة</strong> (seed). من تلك البذرة، تطبق حسابًا رياضيًا لإنتاج الرقم "العشوائي" الأول. ثم تغذي تلك النتيجة مرة أخرى في المعادلة لإنتاج الرقم الثاني، وهكذا. كل رقم <strong>يُحدد بواسطة الرقم السابق</strong>، مكونًا سلسلة.</p>
+                </div>
+
+                <div class="key-concept">
+                    <div class="key-concept-title">كيف تعمل الأرقام العشوائية الزائفة</div>
+                    <p>فكر فيها هكذا:</p>
+                    <p style="margin-top:8px; font-family: Consolas, monospace; padding-right: 20px; direction: ltr; text-align: left;">seed → formula → number₁ → formula → number₂ → formula → number₃ → ...</p>
+                    <p style="margin-top:12px;"><strong>الفكرة الأساسية</strong> هي: إذا بدأ كائنا Random بـ <strong>نفس البذرة</strong>، فسينتجان <strong>نفس التسلسل تمامًا</strong> من الأرقام. كل مرة. لأن المعادلة نفسها، ونقطة البداية نفسها.</p>
+                </div>
+
+                <div class="narrative">
+                    <p>لنثبت ذلك:</p>
+                </div>
+
+                <div class="code-label">نفس البذرة = نفس الأرقام</div>
+                <div class="code-block"><span class="type">Random</span> rand1 = <span class="keyword">new</span> <span class="type">Random</span>(<span class="number">42</span>);   <span class="comment">// seed = 42</span>
+<span class="type">Random</span> rand2 = <span class="keyword">new</span> <span class="type">Random</span>(<span class="number">42</span>);   <span class="comment">// seed = 42 (same!)</span>
+
+System.out.<span class="method">println</span>(<span class="string">"rand1: "</span> + rand1.<span class="method">nextInt</span>(<span class="number">100</span>));   <span class="comment">// 0</span>
+System.out.<span class="method">println</span>(<span class="string">"rand2: "</span> + rand2.<span class="method">nextInt</span>(<span class="number">100</span>));   <span class="comment">// 0  — same!</span>
+
+System.out.<span class="method">println</span>(<span class="string">"rand1: "</span> + rand1.<span class="method">nextInt</span>(<span class="number">100</span>));   <span class="comment">// 68</span>
+System.out.<span class="method">println</span>(<span class="string">"rand2: "</span> + rand2.<span class="method">nextInt</span>(<span class="number">100</span>));   <span class="comment">// 68 — same!</span>
+
+System.out.<span class="method">println</span>(<span class="string">"rand1: "</span> + rand1.<span class="method">nextInt</span>(<span class="number">100</span>));   <span class="comment">// 54</span>
+System.out.<span class="method">println</span>(<span class="string">"rand2: "</span> + rand2.<span class="method">nextInt</span>(<span class="number">100</span>));   <span class="comment">// 54 — same again!</span></div>
+
+                <div class="important-box">
+                    <div class="important-box-title">لماذا هما متطابقان؟</div>
+                    <p>كلا <span class="code-inline">rand1</span> و <span class="code-inline">rand2</span> تم إنشاؤهما بـ <strong>نفس البذرة</strong> (<span class="code-inline">42</span>). بما أن المعادلة الرياضية نفسها ونقطة البداية نفسها، فإنهما ينتجان <strong>نفس التسلسل تمامًا</strong> من الأرقام: 0، 68، 54، ... كل مرة، على كل جهاز، إلى الأبد.</p>
+                    <p style="margin-top:10px;">شغّل هذا البرنامج 100 مرة — ستحصل دائمًا على نفس الناتج. الأرقام <strong>حتمية</strong>، وليست عشوائية.</p>
+                </div>
+
+                <div class="narrative">
+                    <p>الآن قارن هذا مع استخدام <strong>بدون بذرة</strong>:</p>
+                </div>
+
+                <div class="code-label">بدون بذرة = أرقام مختلفة في كل تشغيل</div>
+                <div class="code-block"><span class="type">Random</span> rand = <span class="keyword">new</span> <span class="type">Random</span>();   <span class="comment">// no seed — Java uses the current time as seed</span>
+
+System.out.<span class="method">println</span>(rand.<span class="method">nextInt</span>(<span class="number">100</span>));   <span class="comment">// different every time you run!</span>
+System.out.<span class="method">println</span>(rand.<span class="method">nextInt</span>(<span class="number">100</span>));   <span class="comment">// different every time you run!</span></div>
+
+                <div class="success-box">
+                    <div class="success-box-title">متى تستخدم بذرة؟</div>
+                    <p>إذا أردت <strong>نتائج مختلفة في كل مرة</strong> (ألعاب، محاكاة)، استخدم <span class="code-inline">new Random()</span> بدون بذرة — Java ستستخدم تلقائيًا الوقت الحالي كبذرة، والذي يختلف في كل تشغيل.</p>
+                    <p style="margin-top:10px;">إذا أردت <strong>نتائج قابلة لإعادة الإنتاج</strong> (اختبار، تصحيح أخطاء، تجارب علمية)، استخدم <span class="code-inline">new Random(seed)</span> مع بذرة محددة — هذا يضمن نفس التسلسل في كل مرة، مما يجعل نتائجك متوقعة وقابلة للتحقق.</p>
+                </div>
+            </div>
+
+            <!-- Section 12 -->
+            <div class="section" style="margin-bottom:20px;">
+                <h2 class="section-title">
+                    <span class="section-number">12</span>
+                    الملخص
+                </h2>
+
+                <div class="key-concept">
+                    <div class="key-concept-title">ما تعلمناه</div>
+                    <ul style="margin-top:8px; padding-right:20px; line-height: 2.2;">
+                        <li><strong>المُنشئات</strong> تُهيئ الكائنات في لحظة إنشائها — تعطي الحياة للكائنات.</li>
+                        <li>المُنشئ يجب أن يكون له <strong>نفس اسم الصنف</strong> وليس له <strong>نوع إرجاع</strong>.</li>
+                        <li>الصنف يمكن أن يحتوي على <strong>مُنشئات متعددة</strong> (التحميل الزائد للمُنشئ).</li>
+                        <li>كل صنف في Java له مُنشئ واحد على الأقل — <strong>المُنشئ الافتراضي الضمني يختفي</strong> إذا عُرّف أي مُنشئ.</li>
+                        <li><span class="code-inline">this.field</span> يشير إلى <strong>حقل البيانات للكائن الحالي</strong>، يحل تعارض الأسماء مع المتغيرات المحلية.</li>
+                        <li><span class="code-inline">this(args)</span> يستدعي <strong>مُنشئًا آخر</strong> في نفس الصنف (سلسلة المُنشئات).</li>
+                        <li><strong>متغير المرجع</strong> يحمل مرجعًا لكائن، وليس الكائن نفسه.</li>
+                        <li><strong>عامل النقطة</strong> (<span class="code-inline">.</span>) يُستخدم للوصول إلى حقول وطرق الكائن.</li>
+                        <li><strong>حقول البيانات</strong> تحصل على قيم افتراضية تلقائيًا؛ <strong>المتغيرات المحلية</strong> لا.</li>
+                        <li>إسناد مرجع لآخر ينسخ <strong>المرجع</strong> — كلاهما يشير إلى نفس الكائن. الكائن المهجور يتم تنظيفه بواسطة <strong>جامع النفايات</strong>.</li>
+                        <li>صنف <strong>Random</strong> يولد أرقامًا عشوائية زائفة باستخدام معادلة رياضية. نفس البذرة = نفس التسلسل.</li>
+                    </ul>
+                </div>
+
+                <div class="info-box">
+                    <div class="info-box-title">ماذا بعد؟</div>
+                    <p>في الدرس القادم، سنستكشف <strong>الأعضاء النسخية مقابل الأعضاء الساكنة</strong> (instance vs. static)، وكيفية العمل مع <strong>مصفوفات من الكائنات</strong>. سنستكشف أيضًا تصاميم أصناف أكثر تعقيدًا مع كائنات متعددة متفاعلة.</p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Navigation -->
+        <div class="nav-buttons">
+            <a href="01-intro-to-oop-ar.html" class="nav-btn prev">السابق: مقدمة في OOP ←</a>
+            <a href="#" class="nav-btn next">→ التالي: قريبًا</a>
+        </div>
+
+        <div style="text-align: center; padding: 25px 40px; color: var(--gray-color); font-size: 0.9rem; border-top: 1px solid #e5e7eb; line-height: 1.8;">
+            <div style="font-weight: bold; color: var(--dark-color); font-size: 1rem;">جامعة الملك عبدالعزيز</div>
+            <div>كلية الحاسبات وتقنية المعلومات (FCIT)</div>
+            <div style="margin-top: 8px;">إعداد د. عبدالمحسن المعلوي</div>
+            <div style="margin-top: 6px; font-size: 0.85rem; color: #9ca3af;">آخر تحديث: ١١ فبراير ٢٠٢٦</div>
+        </div>
+
+    </div><!-- end .container -->
+</body>
+</html>
