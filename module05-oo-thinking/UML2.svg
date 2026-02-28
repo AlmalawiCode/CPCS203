@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" height="214px" preserveAspectRatio="none" style="width:365px;height:214px;background:#FFFFFF;" version="1.1" viewBox="0 0 365 214" width="365px" zoomAndPan="magnify">
+    <defs/>
+    <g>
+        <!--class Student-->
+        <g id="elem_Student">
+            <rect codeLine="13" fill="#EFF6FF" height="200.5433" id="Student" rx="2.5" ry="2.5" style="stroke:#2563EB;stroke-width:0.5;" width="228" x="7" y="7"/>
+            <rect fill="#2563EB" height="32" rx="2.5" ry="2.5" style="stroke:#2563EB;stroke-width:0.5;" width="228" x="7" y="7"/>
+            <rect fill="#2563EB" height="2.5" style="stroke:#2563EB;stroke-width:0.5;" width="228" x="7" y="36.5"/>
+            <rect codeLine="13" fill="none" height="200.5433" id="Student" rx="2.5" ry="2.5" style="stroke:#2563EB;stroke-width:0.5;" width="228" x="7" y="7"/>
+            <ellipse cx="92.75" cy="23" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/>
+            <path d="M95.7188,28.6406 Q95.1406,28.9375 94.5,29.0781 Q93.8594,29.2344 93.1563,29.2344 Q90.6563,29.2344 89.3281,27.5938 Q88.0156,25.9375 88.0156,22.8125 Q88.0156,19.6875 89.3281,18.0313 Q90.6563,16.375 93.1563,16.375 Q93.8594,16.375 94.5,16.5313 Q95.1563,16.6875 95.7188,16.9844 L95.7188,19.7031 Q95.0938,19.125 94.5,18.8594 Q93.9063,18.5781 93.2813,18.5781 Q91.9375,18.5781 91.25,19.6563 Q90.5625,20.7188 90.5625,22.8125 Q90.5625,24.9063 91.25,25.9844 Q91.9375,27.0469 93.2813,27.0469 Q93.9063,27.0469 94.5,26.7813 Q95.0938,26.5 95.7188,25.9219 L95.7188,28.6406 Z " fill="#000000"/>
+            <text fill="#1F2937" font-family="Consolas" font-size="13" lengthAdjust="spacing" textLength="48" x="113.25" y="28.044">Student</text>
+            <line style="stroke:#2563EB;stroke-width:0.5;" x1="8" x2="234" y1="39" y2="39"/>
+            <text fill="#1F2937" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="80" x="13" y="57.9659">-id         : int</text>
+            <text fill="#1F2937" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="120" x="13" y="77.0339">-name       : String</text>
+            <text fill="#1F2937" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="141" x="13" y="96.1018">-supervisor : Student</text>
+            <line style="stroke:#2563EB;stroke-width:1.0;" x1="8" x2="234" y1="104.2038" y2="104.2038"/>
+            <text fill="#1F2937" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="203" x="13" y="123.1697">+Student(id: int, name: String)</text>
+            <text fill="#1F2937" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="216" x="13" y="142.2376">+setSupervisor(s: Student) : void</text>
+            <text fill="#1F2937" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="175" x="13" y="161.3055">+getSupervisor() : Student</text>
+            <text fill="#1F2937" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="90" x="13" y="180.3734">+getId()   : int</text>
+            <text fill="#1F2937" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="131" x="13" y="199.4414">+getName() : String</text>
+        </g>
+        <!--reverse link Student to Student-->
+        <g id="link_Student_Student">
+            <path codeLine="25" d="M246.7283,74.7151 C267.3083,79.2551 270,88.46 270,107.5 C270,126.54 255.59,138.33 235.01,142.87 " fill="none" id="Student-backto-Student" style="stroke:#7C3AED;stroke-width:2.0;"/>
+            <polygon fill="none" points="235.01,72.13,240.0074,77.3286,246.7283,74.7151,241.7308,69.5165,235.01,72.13" style="stroke:#7C3AED;stroke-width:2.0;"/>
+            <polygon fill="#000000" points="276.0771,112.7356,276.9985,103.2698,271.2587,104.536,276.0771,112.7356" style="stroke:#000000;stroke-width:1.0;"/>
+            <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="63" x="289" y="112.897">supervisor</text>
+            <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="20" x="242.9544" y="66.2538">0..1</text>
+            <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="20" x="242.9544" y="141.5256">0..1</text>
+        </g>
+        <!--SRC=[RP51RiCW44Ntd6AKRcArZk9OJLGlAYMkKRFfnhq0DSX5JY02d4gjUlVYaN5Z9omG-l_nPmPi8zM96NQ4wi2itJfdv4VhnBxIgfJV0fR4ZX6gbNjZHm6vLbPxvHQ0LvDqQkrOrTH6juhd-g0Dt1MKhYczmhJXmlJ8wd6T5hifyYgOHwxoRiDTHpr0SKs1OUmBCg6hftHpGJ9Zz5TlRl9qMxnCpVTFMJLAM0ihGZ0OIjToeHpy480O98UmCf3AeQYwnmnYwHjHDUgsFGbpbjRNoq9EPyH-km_2N79CUi2OS3z2n0fN3XbpEuH4Fk-i9KUe7a7Hg1IwU-xL_tvHw_w_Px7TNqB2eBFbOf7CGCTnE0OdkvpecVm1]-->
+    </g>
+</svg>

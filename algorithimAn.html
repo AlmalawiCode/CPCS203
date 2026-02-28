@@ -1,0 +1,1297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Algorithm Analysis & Big O Notation</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    /* ── Base Reset ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue:   #3b82f6;
+      --indigo: #6366f1;
+      --green:  #10b981;
+      --amber:  #f59e0b;
+      --red:    #ef4444;
+      --purple: #8b5cf6;
+      --dark:   #0f172a;
+      --card:   #1e293b;
+      --text:   #e2e8f0;
+      --muted:  #94a3b8;
+      --border: #334155;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: var(--dark);
+      color: var(--text);
+      line-height: 1.75;
+      overflow-x: hidden;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
+      padding: 80px 24px 60px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(99,102,241,.25), transparent);
+    }
+    .hero-badge {
+      display: inline-block;
+      background: rgba(99,102,241,.2);
+      border: 1px solid rgba(99,102,241,.4);
+      color: #a5b4fc;
+      padding: 6px 18px;
+      border-radius: 999px;
+      font-size: .85rem;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 800;
+      background: linear-gradient(135deg, #e2e8f0, #a5b4fc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 16px;
+    }
+    .hero p {
+      font-size: 1.15rem;
+      color: var(--muted);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* ── Layout ── */
+    .container { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+
+    section { padding: 64px 24px; }
+    section:nth-child(even) { background: rgba(30,41,59,.5); }
+
+    /* ── Section Title ── */
+    .section-label {
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 32px;
+    }
+    .section-number {
+      width: 42px; height: 42px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 1rem;
+      flex-shrink: 0;
+    }
+    .section-title { font-size: 1.6rem; font-weight: 700; }
+
+    /* ── Story Box ── */
+    .story-box {
+      background: linear-gradient(135deg, rgba(99,102,241,.12), rgba(139,92,246,.12));
+      border: 1px solid rgba(99,102,241,.3);
+      border-radius: 16px;
+      padding: 32px;
+      margin-bottom: 28px;
+      position: relative;
+    }
+    .story-box .quote-mark {
+      font-size: 4rem;
+      line-height: 1;
+      color: rgba(99,102,241,.4);
+      position: absolute;
+      top: 12px; left: 20px;
+    }
+    .story-box p { padding-left: 8px; color: var(--text); }
+
+    /* ── Character Cards ── */
+    .character-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin: 28px 0;
+    }
+    @media(max-width:600px){ .character-grid { grid-template-columns: 1fr; } }
+
+    .char-card {
+      border-radius: 16px;
+      padding: 24px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .char-card.omar {
+      background: linear-gradient(135deg, rgba(59,130,246,.15), rgba(16,185,129,.1));
+      border: 1px solid rgba(59,130,246,.35);
+    }
+    .char-card.ahmed {
+      background: linear-gradient(135deg, rgba(245,158,11,.15), rgba(239,68,68,.1));
+      border: 1px solid rgba(245,158,11,.35);
+    }
+    .char-avatar {
+      font-size: 3.5rem;
+      margin-bottom: 12px;
+      display: block;
+    }
+    .char-name {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .char-claim {
+      font-size: 1.6rem;
+      font-weight: 800;
+      margin: 10px 0 4px;
+    }
+    .omar .char-claim { color: #f59e0b; }
+    .ahmed .char-claim { color: #10b981; }
+    .char-label { font-size: .85rem; color: var(--muted); }
+
+    .vs-divider {
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem; font-weight: 900;
+      color: var(--muted);
+    }
+
+    /* ── Callout ── */
+    .callout {
+      border-radius: 12px;
+      padding: 20px 24px;
+      margin: 20px 0;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+    .callout-icon { font-size: 1.4rem; flex-shrink: 0; margin-top: 2px; }
+    .callout-body strong { display: block; margin-bottom: 4px; font-size: 1rem; }
+    .callout-body p, .callout-body span { font-size: .95rem; color: var(--muted); }
+
+    .callout.warning { background: rgba(245,158,11,.1); border: 1px solid rgba(245,158,11,.3); }
+    .callout.info    { background: rgba(59,130,246,.1);  border: 1px solid rgba(59,130,246,.3); }
+    .callout.success { background: rgba(16,185,129,.1);  border: 1px solid rgba(16,185,129,.3); }
+    .callout.danger  { background: rgba(239,68,68,.1);   border: 1px solid rgba(239,68,68,.3); }
+
+    /* ── Race Track ── */
+    .race-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin: 28px 0;
+    }
+    @media(max-width:640px){ .race-grid { grid-template-columns: 1fr; } }
+
+    .race-lane {
+      border-radius: 14px;
+      padding: 20px;
+      text-align: center;
+      position: relative;
+    }
+    .lane-solid {
+      background: linear-gradient(135deg, rgba(16,185,129,.15), rgba(16,185,129,.05));
+      border: 1px solid rgba(16,185,129,.35);
+    }
+    .lane-mud {
+      background: linear-gradient(135deg, rgba(245,158,11,.15), rgba(245,158,11,.05));
+      border: 1px solid rgba(245,158,11,.35);
+    }
+    .lane-sand {
+      background: linear-gradient(135deg, rgba(239,68,68,.15), rgba(239,68,68,.05));
+      border: 1px solid rgba(239,68,68,.35);
+    }
+    .lane-icon { font-size: 2.8rem; margin-bottom: 10px; display: block; }
+    .lane-title { font-weight: 700; font-size: 1rem; margin-bottom: 6px; }
+    .lane-desc { font-size: .85rem; color: var(--muted); }
+
+    .race-track-visual {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+      margin: 24px 0;
+    }
+    .track-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+    .track-row:last-child { margin-bottom: 0; }
+    .runner-label {
+      width: 90px;
+      font-size: .85rem;
+      font-weight: 600;
+      color: var(--muted);
+      text-align: right;
+      flex-shrink: 0;
+    }
+    .track-bar-bg {
+      flex: 1;
+      background: rgba(255,255,255,.05);
+      border-radius: 999px;
+      height: 32px;
+      position: relative;
+      overflow: hidden;
+    }
+    .track-bar {
+      height: 100%;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+      font-size: .8rem;
+      font-weight: 600;
+      white-space: nowrap;
+      transition: width 1.5s cubic-bezier(.4,0,.2,1);
+    }
+    .track-finish {
+      position: absolute;
+      right: 0; top: 0; bottom: 0;
+      width: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+    }
+
+    /* ── Independent List ── */
+    .independent-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+      margin: 28px 0;
+    }
+    .ind-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px 16px;
+      text-align: center;
+    }
+    .ind-icon { font-size: 2rem; margin-bottom: 8px; display: block; }
+    .ind-title { font-weight: 700; font-size: .95rem; margin-bottom: 4px; }
+    .ind-sub { font-size: .8rem; color: var(--muted); }
+    .ind-card.crossed .ind-icon { position: relative; }
+    .ind-card.crossed .ind-icon::after {
+      content: '✗';
+      position: absolute;
+      top: -4px; right: -4px;
+      font-size: .9rem;
+      color: #ef4444;
+    }
+
+    /* ── Code Block ── */
+    .code-block {
+      background: #0d1117;
+      border: 1px solid #30363d;
+      border-radius: 12px;
+      padding: 24px;
+      margin: 20px 0;
+      overflow-x: auto;
+      position: relative;
+    }
+    .code-block .code-lang {
+      position: absolute;
+      top: 10px; right: 14px;
+      font-size: .75rem;
+      color: #6e7681;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+    .code-block pre {
+      font-family: 'Fira Code', 'Consolas', monospace;
+      font-size: .9rem;
+      line-height: 1.7;
+      color: #e6edf3;
+    }
+    .kw  { color: #ff7b72; }   /* keyword   */
+    .fn  { color: #d2a8ff; }   /* function  */
+    .cm  { color: #8b949e; }   /* comment   */
+    .nm  { color: #79c0ff; }   /* number    */
+    .op  { color: #f0883e; }   /* operator  */
+    .va  { color: #ffa657; }   /* variable  */
+    .str { color: #a5d6ff; }   /* string    */
+
+    /* ── O Annotation Badges ── */
+    .o-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 14px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: .9rem;
+      margin: 4px 4px 4px 0;
+    }
+    .o-1       { background: rgba(16,185,129,.2);  border: 1px solid rgba(16,185,129,.4);  color: #34d399; }
+    .o-n       { background: rgba(59,130,246,.2);  border: 1px solid rgba(59,130,246,.4);  color: #60a5fa; }
+    .o-n2      { background: rgba(245,158,11,.2);  border: 1px solid rgba(245,158,11,.4);  color: #fbbf24; }
+    .o-logn    { background: rgba(139,92,246,.2);  border: 1px solid rgba(139,92,246,.4);  color: #a78bfa; }
+    .o-2n      { background: rgba(239,68,68,.2);   border: 1px solid rgba(239,68,68,.4);   color: #f87171; }
+
+    /* ── Sum boxes ── */
+    .sum-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px 24px;
+      margin: 16px 0;
+      font-family: 'Fira Code', monospace;
+    }
+    .sum-box .eq { font-size: 1rem; color: var(--text); margin-bottom: 6px; }
+    .sum-box .result { font-size: 1.1rem; font-weight: 700; color: #60a5fa; }
+
+    /* ── Complexity Chart ── */
+    .chart-wrapper {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+      margin: 28px 0;
+    }
+    .chart-wrapper canvas { max-height: 380px; }
+
+    /* ── Complexity Table ── */
+    .complexity-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 28px 0;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .complexity-table th {
+      background: rgba(99,102,241,.2);
+      padding: 14px 18px;
+      text-align: left;
+      font-size: .85rem;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: #a5b4fc;
+    }
+    .complexity-table td {
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border);
+      font-size: .9rem;
+    }
+    .complexity-table tr:last-child td { border-bottom: none; }
+    .complexity-table tr:hover td { background: rgba(255,255,255,.03); }
+    .complexity-table .rating { font-weight: 700; }
+    .rating.excellent { color: #10b981; }
+    .rating.good      { color: #3b82f6; }
+    .rating.fair      { color: #8b5cf6; }
+    .rating.bad       { color: #f59e0b; }
+    .rating.terrible  { color: #ef4444; }
+
+    /* ── Timeline steps ── */
+    .timeline { margin: 28px 0; }
+    .tl-step {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 28px;
+      position: relative;
+    }
+    .tl-step:not(:last-child)::before {
+      content: '';
+      position: absolute;
+      left: 19px; top: 44px;
+      width: 2px;
+      bottom: -28px;
+      background: var(--border);
+    }
+    .tl-dot {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+      border: 2px solid currentColor;
+      z-index: 1;
+    }
+    .tl-content { flex: 1; padding-top: 6px; }
+    .tl-content h4 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .tl-content p  { font-size: .9rem; color: var(--muted); }
+
+    /* ── Key insight box ── */
+    .key-insight {
+      background: linear-gradient(135deg, rgba(99,102,241,.15), rgba(139,92,246,.1));
+      border: 1px solid rgba(99,102,241,.4);
+      border-left: 4px solid var(--indigo);
+      border-radius: 12px;
+      padding: 22px 26px;
+      margin: 24px 0;
+    }
+    .key-insight .ki-label {
+      font-size: .75rem;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      color: #a5b4fc;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .key-insight p { color: var(--text); font-size: 1rem; }
+
+    /* ── Behavior Cards ── */
+    .behavior-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin: 28px 0;
+    }
+    .beh-card {
+      border-radius: 14px;
+      padding: 22px;
+      border: 1px solid transparent;
+    }
+    .beh-card .beh-icon { font-size: 2rem; margin-bottom: 10px; display: block; }
+    .beh-card h4 { font-weight: 700; margin-bottom: 6px; }
+    .beh-card p  { font-size: .85rem; color: var(--muted); }
+    .beh-card .beh-ex { font-family: monospace; font-size: .9rem; margin-top: 8px; }
+
+    .beh-card.linear  { background: rgba(59,130,246,.1);  border-color: rgba(59,130,246,.3); }
+    .beh-card.quad    { background: rgba(245,158,11,.1);  border-color: rgba(245,158,11,.3); }
+    .beh-card.expo    { background: rgba(239,68,68,.1);   border-color: rgba(239,68,68,.3); }
+    .beh-card.log     { background: rgba(139,92,246,.1);  border-color: rgba(139,92,246,.3); }
+    .beh-card.const   { background: rgba(16,185,129,.1);  border-color: rgba(16,185,129,.3); }
+
+    /* ── Quiz / Summary ── */
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 14px;
+      margin: 28px 0;
+    }
+    .sum-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+      text-align: center;
+    }
+    .sum-card .sc-icon { font-size: 2rem; margin-bottom: 8px; }
+    .sum-card h4 { font-weight: 700; margin-bottom: 4px; }
+    .sum-card p  { font-size: .82rem; color: var(--muted); }
+
+    /* ── Footer ── */
+    footer {
+      background: #0a0f1e;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      padding: 32px 24px;
+      color: var(--muted);
+      font-size: .85rem;
+    }
+
+    /* ── Animations ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .fade-up { animation: fadeUp .6s ease both; }
+
+    @keyframes pulse-ring {
+      0%   { box-shadow: 0 0 0 0 rgba(99,102,241,.4); }
+      70%  { box-shadow: 0 0 0 12px transparent; }
+      100% { box-shadow: 0 0 0 0 transparent; }
+    }
+    .pulse { animation: pulse-ring 2s infinite; }
+
+    /* ── Runner animation ── */
+    @keyframes run {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(calc(100% - 36px)); }
+    }
+    .runner-emoji {
+      display: inline-block;
+      font-size: 1.4rem;
+      animation: run 3s ease-in-out infinite alternate;
+    }
+
+    /* Responsive */
+    @media(max-width:480px){
+      .section-title { font-size: 1.3rem; }
+      .char-claim    { font-size: 1.3rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════
+     HERO
+════════════════════════════════════════════════ -->
+<header class="hero">
+  <span class="hero-badge">CPCS 203 — Data Structures &amp; Algorithms</span>
+  <h1>Algorithm Analysis<br>&amp; Big O Notation</h1>
+  <p>Understanding <em>how fast</em> an algorithm is — fairly, independently, and mathematically.</p>
+</header>
+
+
+<!-- ═══════════════════════════════════════════════
+     SECTION 1 — THE CHALLENGE
+════════════════════════════════════════════════ -->
+<section id="challenge">
+<div class="container">
+
+  <div class="section-label">
+    <div class="section-number pulse" style="background:rgba(99,102,241,.2);border:2px solid #6366f1;color:#a5b4fc;">1</div>
+    <h2 class="section-title">The Challenge — Who is Faster?</h2>
+  </div>
+
+  <!-- Story opener -->
+  <div class="story-box">
+    <span class="quote-mark">"</span>
+    <p>
+      <strong style="color:#a5b4fc;">Omar</strong> and <strong style="color:#fbbf24;">Ahmed</strong> are two computer-science students.
+      Both of them wrote a <em>sorting algorithm</em> to sort an array of <strong>1 million numbers</strong>.
+      They ran their programs and started arguing — <em>"My algorithm is faster than yours!"</em>
+    </p>
+  </div>
+
+  <!-- Character cards -->
+  <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:center;margin:28px 0;">
+    <div class="char-card omar">
+      <span class="char-avatar">🧑‍💻</span>
+      <div class="char-name" style="color:#60a5fa;">Omar</div>
+      <div class="char-claim">14 sec</div>
+      <div class="char-label">to sort 1 million numbers</div>
+    </div>
+    <div class="vs-divider">VS</div>
+    <div class="char-card ahmed">
+      <span class="char-avatar">👨‍💻</span>
+      <div class="char-name" style="color:#fbbf24;">Ahmed</div>
+      <div class="char-claim">5 sec</div>
+      <div class="char-label">to sort 1 million numbers</div>
+    </div>
+  </div>
+
+  <div class="callout warning">
+    <span class="callout-icon">🤔</span>
+    <div class="callout-body">
+      <strong>The Big Question</strong>
+      <span>Ahmed finished in <strong>5 seconds</strong> and Omar in <strong>14 seconds</strong>. Can we immediately say Ahmed's algorithm is faster? It <em>looks</em> that way — but is it really fair to compare them this way?</span>
+    </div>
+  </div>
+
+</div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════
+     SECTION 2 — THE RACING ANALOGY
+════════════════════════════════════════════════ -->
+<section id="analogy">
+<div class="container">
+
+  <div class="section-label">
+    <div class="section-number" style="background:rgba(16,185,129,.2);border:2px solid #10b981;color:#34d399;">2</div>
+    <h2 class="section-title">The Racing Analogy — Same Conditions?</h2>
+  </div>
+
+  <div class="story-box">
+    <span class="quote-mark">"</span>
+    <p>
+      Imagine you organise a <strong>race</strong> between two athletes.
+      But one runner is on a <em>solid concrete track</em>,
+      another is running through <em>deep mud</em>,
+      and a third is struggling through <em>soft sand</em>.
+      Would it be fair to compare their finish times?
+    </p>
+  </div>
+
+  <div class="race-grid">
+    <div class="race-lane lane-solid">
+      <span class="lane-icon">🏃‍♂️</span>
+      <div class="lane-title" style="color:#10b981;">Solid Ground</div>
+      <div class="lane-desc">Easy surface. Maximum speed.<br>Fast computer, optimised code.</div>
+    </div>
+    <div class="race-lane lane-mud">
+      <span class="lane-icon">🏃‍♀️</span>
+      <div class="lane-title" style="color:#f59e0b;">Muddy Track</div>
+      <div class="lane-desc">Slows you down every step.<br>Average computer, average code.</div>
+    </div>
+    <div class="race-lane lane-sand">
+      <span class="lane-icon">🚶</span>
+      <div class="lane-title" style="color:#ef4444;">Sandy Desert</div>
+      <div class="lane-desc">Exhausting. Very slow.<br>Old computer, basic code.</div>
+    </div>
+  </div>
+
+  <!-- Animated track visual -->
+  <div class="race-track-visual">
+    <p style="text-align:center;color:var(--muted);font-size:.85rem;margin-bottom:20px;">Same distance, very different conditions</p>
+    <div class="track-row">
+      <span class="runner-label">🏃‍♂️ Solid</span>
+      <div class="track-bar-bg">
+        <div class="track-bar" style="width:85%;background:linear-gradient(90deg,#10b981,#34d399);">⚡ Fastest</div>
+      </div>
+    </div>
+    <div class="track-row">
+      <span class="runner-label">🏃‍♀️ Mud</span>
+      <div class="track-bar-bg">
+        <div class="track-bar" style="width:48%;background:linear-gradient(90deg,#f59e0b,#fbbf24);">Medium</div>
+      </div>
+    </div>
+    <div class="track-row">
+      <span class="runner-label">🚶 Sand</span>
+      <div class="track-bar-bg">
+        <div class="track-bar" style="width:20%;background:linear-gradient(90deg,#ef4444,#f87171);">Slow</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout info">
+    <span class="callout-icon">💡</span>
+    <div class="callout-body">
+      <strong>Back to Omar &amp; Ahmed</strong>
+      <span>
+        Maybe <strong>Ahmed's computer</strong> is a brand-new high-spec machine,
+        while <strong>Omar's laptop</strong> is five years old.
+        Or maybe Ahmed is a senior programmer who writes highly optimised code,
+        while Omar is a beginner. The time difference might have nothing to do with the algorithm!
+      </span>
+    </div>
+  </div>
+
+</div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════
+     SECTION 3 — THE REAL PROBLEM
+════════════════════════════════════════════════ -->
+<section id="problem">
+<div class="container">
+
+  <div class="section-label">
+    <div class="section-number" style="background:rgba(239,68,68,.2);border:2px solid #ef4444;color:#f87171;">3</div>
+    <h2 class="section-title">Why Measuring Time Is Not Enough</h2>
+  </div>
+
+  <p style="color:var(--muted);margin-bottom:24px;">
+    Even if we run both algorithms in the same environment, time alone can be misleading.
+    Here is why:
+  </p>
+
+  <div class="timeline">
+
+    <div class="tl-step">
+      <div class="tl-dot" style="color:#f59e0b;background:rgba(245,158,11,.15);">🖥️</div>
+      <div class="tl-content">
+        <h4>Different Hardware</h4>
+        <p>Ahmed runs his code on a modern i9 processor; Omar uses an older i5. Ahmed's machine executes each instruction roughly 3× faster. The algorithm did not change — only the hardware did.</p>
+      </div>
+    </div>
+
+    <div class="tl-step">
+      <div class="tl-dot" style="color:#8b5cf6;background:rgba(139,92,246,.15);">👨‍💻</div>
+      <div class="tl-content">
+        <h4>Different Programmers</h4>
+        <p>Ahmed is experienced and writes highly optimised C++ code. Omar writes the same algorithm in Python with less experience. The implementation quality affects the measured time, not the algorithm's nature.</p>
+      </div>
+    </div>
+
+    <div class="tl-step">
+      <div class="tl-dot" style="color:#3b82f6;background:rgba(59,130,246,.15);">📋</div>
+      <div class="tl-content">
+        <h4>Different Input Data</h4>
+        <p>Omar's 1 million numbers might already be mostly sorted. Ahmed's are completely random. Some algorithms run much faster on partially sorted data — so the input itself changes the result.</p>
+      </div>
+    </div>
+
+    <div class="tl-step">
+      <div class="tl-dot" style="color:#10b981;background:rgba(16,185,129,.15);">🔧</div>
+      <div class="tl-content">
+        <h4>The Fair Solution</h4>
+        <p>A professor could ask: "Let me take <strong>both algorithms</strong>, implement them myself in the same language, run them on the same machine with identical input — and compare." That would be fairer. But it is expensive and impractical at scale.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="key-insight">
+    <div class="ki-label">🎯 The Goal</div>
+    <p>
+      We need a way to measure and compare algorithms that is <strong>independent of the hardware</strong>,
+      independent of the <strong>programmer</strong>, independent of the <strong>programming language</strong>,
+      and even independent of the <strong>specific input values</strong>.
+      We need a <em>mathematical</em> measurement — and that is exactly what <strong>Big O Notation</strong> gives us.
+    </p>
+  </div>
+
+  <div class="independent-grid">
+    <div class="ind-card crossed">
+      <span class="ind-icon">💻</span>
+      <div class="ind-title">Not the Computer</div>
+      <div class="ind-sub">Fast or slow processor does not matter</div>
+    </div>
+    <div class="ind-card crossed">
+      <span class="ind-icon">👤</span>
+      <div class="ind-title">Not the Programmer</div>
+      <div class="ind-sub">Expert or beginner — irrelevant</div>
+    </div>
+    <div class="ind-card crossed">
+      <span class="ind-icon">📝</span>
+      <div class="ind-title">Not the Language</div>
+      <div class="ind-sub">C++, Python, Java — all the same</div>
+    </div>
+    <div class="ind-card" style="border-color:rgba(99,102,241,.4);background:rgba(99,102,241,.1);">
+      <span class="ind-icon" style="color:#a5b4fc;">📐</span>
+      <div class="ind-title" style="color:#a5b4fc;">The Algorithm</div>
+      <div class="ind-sub">Only its structure and logic</div>
+    </div>
+  </div>
+
+</div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════
+     SECTION 4 — O(1): BASIC OPERATIONS
+════════════════════════════════════════════════ -->
+<section id="o1">
+<div class="container">
+
+  <div class="section-label">
+    <div class="section-number" style="background:rgba(16,185,129,.2);border:2px solid #10b981;color:#34d399;">4</div>
+    <h2 class="section-title">The Minimum Unit — O(1)</h2>
+  </div>
+
+  <p style="color:var(--muted);margin-bottom:24px;">
+    Before we analyse full algorithms, we must agree on a <em>unit of measurement</em>.
+    In algorithm analysis, that unit is a <strong>single basic operation</strong>.
+  </p>
+
+  <div class="callout success">
+    <span class="callout-icon">⚛️</span>
+    <div class="callout-body">
+      <strong>What is a Basic Operation?</strong>
+      <span>
+        Any single statement that the CPU can execute — an assignment, a comparison,
+        an arithmetic operation, accessing an array element. We call the time it takes
+        to run one such statement <strong>O(1)</strong> — "constant time".
+      </span>
+    </div>
+  </div>
+
+  <!-- Code examples -->
+  <div class="code-block">
+    <span class="code-lang">pseudocode</span>
+    <pre><span class="cm">// Each of these lines is ONE operation → O(1)</span>
+
+<span class="va">i</span> <span class="op">=</span> <span class="va">i</span> <span class="op">+</span> <span class="nm">1</span>          <span class="cm">// assignment + addition  → O(1)</span>
+<span class="va">x</span> <span class="op">=</span> <span class="va">arr</span>[<span class="nm">5</span>]         <span class="cm">// array access           → O(1)</span>
+<span class="kw">if</span> (<span class="va">a</span> <span class="op">></span> <span class="va">b</span>)          <span class="cm">// comparison             → O(1)</span>
+<span class="va">sum</span> <span class="op">=</span> <span class="va">a</span> <span class="op">+</span> <span class="va">b</span> <span class="op">*</span> <span class="va">c</span>    <span class="cm">// arithmetic             → O(1)</span></pre>
+  </div>
+
+  <div class="key-insight">
+    <div class="ki-label">🧠 Why O(1)?</div>
+    <p>
+      In reality, <code>i = i + 1</code> compiles into a few CPU micro-instructions
+      (load, add, store). But <strong>regardless</strong> of which computer runs it — a fast server
+      or a slow laptop — it still executes in a <em>fixed, constant number of steps</em>.
+      So we agree: one statement = <strong>O(1)</strong>. It is our atom of computation.
+    </p>
+  </div>
+
+</div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════
+     SECTION 5 — O(n): LOOPS
+════════════════════════════════════════════════ -->
+<section id="on">
+<div class="container">
+
+  <div class="section-label">
+    <div class="section-number" style="background:rgba(59,130,246,.2);border:2px solid #3b82f6;color:#60a5fa;">5</div>
+    <h2 class="section-title">Adding Up Operations — O(n)</h2>
+  </div>
+
+  <p style="color:var(--muted);margin-bottom:24px;">
+    Once we know that one statement = O(1), we can <em>count</em> how many times
+    that statement runs — and that gives us the algorithm's complexity.
+  </p>
+
+  <!-- Fixed loop -->
+  <h3 style="margin-bottom:12px;font-size:1.1rem;">Example 1 — A Fixed Loop (runs 10 times)</h3>
+  <div class="code-block">
+    <span class="code-lang">pseudocode</span>
+    <pre><span class="kw">for</span> <span class="va">i</span> <span class="kw">from</span> <span class="nm">1</span> <span class="kw">to</span> <span class="nm">10</span>:
+    <span class="va">i</span> <span class="op">=</span> <span class="va">i</span> <span class="op">+</span> <span class="nm">1</span>        <span class="cm">// executed 10 times</span></pre>
+  </div>
+
+  <div class="sum-box">
+    <div class="eq">Total = O(1) + O(1) + O(1) + … (10 times)</div>
+    <div class="result">= 10 × O(1) = O(10) ≈ O(1)  <span style="color:var(--muted);font-size:.85rem;">(constant — does not grow)</span></div>
+  </div>
+
+  <!-- Variable loop -->
+  <h3 style="margin-top:28px;margin-bottom:12px;font-size:1.1rem;">Example 2 — A Variable Loop (depends on input size <em>n</em>)</h3>
+  <div class="code-block">
+    <span class="code-lang">pseudocode</span>
+    <pre><span class="kw">for</span> <span class="va">i</span> <span class="kw">from</span> <span class="nm">1</span> <span class="kw">to</span> <span class="va">n</span>:
+    <span class="va">i</span> <span class="op">=</span> <span class="va">i</span> <span class="op">+</span> <span class="nm">1</span>        <span class="cm">// executed n times</span></pre>
+  </div>
+
+  <div class="sum-box">
+    <div class="eq">Total = O(1) + O(1) + O(1) + … (n times)</div>
+    <div class="result">= n × O(1) = <span class="o-badge o-n">O(n)</span>  <span style="color:var(--muted);font-size:.85rem;">(linear — grows with input)</span></div>
+  </div>
+
+  <div class="callout info">
+    <span class="callout-icon">🔍</span>
+    <div class="callout-body">
+      <strong>Why does n matter?</strong>
+      <span>
+        If Omar and Ahmed both sort <strong>n = 1,000,000</strong> numbers, and
+        Omar's algorithm does ~n operations while Ahmed's does ~n² operations,
+        that difference is <em>enormous</em>: 1,000,000 vs 1,000,000,000,000 steps!
+      </span>
+    </div>
+  </div>
+
+  <!-- Nested loop -->
+  <h3 style="margin-top:28px;margin-bottom:12px;font-size:1.1rem;">Example 3 — Nested Loops (two loops inside each other)</h3>
+  <div class="code-block">
+    <span class="code-lang">pseudocode</span>
+    <pre><span class="kw">for</span> <span class="va">i</span> <span class="kw">from</span> <span class="nm">1</span> <span class="kw">to</span> <span class="va">n</span>:           <span class="cm">// outer loop: n times</span>
+    <span class="kw">for</span> <span class="va">j</span> <span class="kw">from</span> <span class="nm">1</span> <span class="kw">to</span> <span class="va">n</span>:       <span class="cm">// inner loop: n times per outer</span>
+        <span class="va">sum</span> <span class="op">=</span> <span class="va">sum</span> <span class="op">+</span> <span class="nm">1</span>       <span class="cm">// executed n × n times</span></pre>
+  </div>
+
+  <div class="sum-box">
+    <div class="eq">Total = n × n = n²  operations</div>
+    <div class="result">= <span class="o-badge o-n2">O(n²)</span>  <span style="color:var(--muted);font-size:.85rem;">(quadratic — grows very fast)</span></div>
+  </div>
+
+</div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════
+     SECTION 6 — BEHAVIOURS
+════════════════════════════════════════════════ -->
+<section id="behaviors">
+<div class="container">
+
+  <div class="section-label">
+    <div class="section-number" style="background:rgba(139,92,246,.2);border:2px solid #8b5cf6;color:#a78bfa;">6</div>
+    <h2 class="section-title">Algorithm Behaviours — How Do They Grow?</h2>
+  </div>
+
+  <p style="color:var(--muted);margin-bottom:24px;">
+    Instead of measuring exact time, we study how the algorithm's running time
+    <em>behaves</em> as the input size <strong>n</strong> grows.
+    Each algorithm falls into one of these behaviour categories:
+  </p>
+
+  <div class="behavior-grid">
+    <div class="beh-card const">
+      <span class="beh-icon">⚡</span>
+      <h4 style="color:#10b981;">Constant — O(1)</h4>
+      <p>Always takes the same time, no matter how big the input is.</p>
+      <div class="beh-ex" style="color:#34d399;">arr[0] → always 1 step</div>
+    </div>
+    <div class="beh-card log">
+      <span class="beh-icon">📉</span>
+      <h4 style="color:#8b5cf6;">Logarithmic — O(log n)</h4>
+      <p>Input doubles, but steps only increase by 1. Very efficient.</p>
+      <div class="beh-ex" style="color:#a78bfa;">Binary Search</div>
+    </div>
+    <div class="beh-card linear">
+      <span class="beh-icon">📈</span>
+      <h4 style="color:#3b82f6;">Linear — O(n)</h4>
+      <p>Steps grow proportionally with input size. Common and acceptable.</p>
+      <div class="beh-ex" style="color:#60a5fa;">Linear Search</div>
+    </div>
+    <div class="beh-card quad">
+      <span class="beh-icon">📊</span>
+      <h4 style="color:#f59e0b;">Quadratic — O(n²)</h4>
+      <p>Steps grow as the square of input. Gets slow quickly for large n.</p>
+      <div class="beh-ex" style="color:#fbbf24;">Bubble Sort</div>
+    </div>
+    <div class="beh-card expo">
+      <span class="beh-icon">🚀</span>
+      <h4 style="color:#ef4444;">Exponential — O(2ⁿ)</h4>
+      <p>Doubles with each new element. Impractical for large inputs.</p>
+      <div class="beh-ex" style="color:#f87171;">Brute Force</div>
+    </div>
+  </div>
+
+  <!-- Chart 1 -->
+  <div class="chart-wrapper">
+    <h3 style="margin-bottom:6px;font-size:1.1rem;text-align:center;">Chart 1 — Efficient Algorithms at Large Scale</h3>
+    <p style="text-align:center;color:var(--muted);font-size:.82rem;margin-bottom:18px;">
+      n grows from 1 to 1,000,000 — notice how O(1) and O(log n) stay nearly flat while O(n) climbs steadily
+    </p>
+    <canvas id="chartEfficient"></canvas>
+    <p style="text-align:center;color:var(--muted);font-size:.78rem;margin-top:10px;">
+      X-axis: Input size (n) &nbsp;|&nbsp; Y-axis: Number of operations (linear scale)
+    </p>
+  </div>
+
+  <!-- Chart 2 -->
+  <div class="chart-wrapper" style="margin-top:28px;">
+    <h3 style="margin-bottom:6px;font-size:1.1rem;text-align:center;">Chart 2 — Expensive Algorithms: The Explosion</h3>
+    <p style="text-align:center;color:var(--muted);font-size:.82rem;margin-bottom:18px;">
+      n grows from 1 to only 30 — yet O(n²) and O(2ⁿ) shoot off the chart completely
+    </p>
+    <canvas id="chartExpensive"></canvas>
+    <p style="text-align:center;color:var(--muted);font-size:.78rem;margin-top:10px;">
+      X-axis: Input size (n) &nbsp;|&nbsp; Y-axis: Number of operations (linear scale)
+    </p>
+  </div>
+
+  <!-- Table -->
+  <table class="complexity-table">
+    <thead>
+      <tr>
+        <th>Notation</th>
+        <th>Name</th>
+        <th>n = 10</th>
+        <th>n = 100</th>
+        <th>n = 1,000</th>
+        <th>Rating</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="o-badge o-1">O(1)</span></td>
+        <td>Constant</td>
+        <td>1</td><td>1</td><td>1</td>
+        <td><span class="rating excellent">Excellent</span></td>
+      </tr>
+      <tr>
+        <td><span class="o-badge o-logn">O(log n)</span></td>
+        <td>Logarithmic</td>
+        <td>3</td><td>7</td><td>10</td>
+        <td><span class="rating good">Great</span></td>
+      </tr>
+      <tr>
+        <td><span class="o-badge o-n">O(n)</span></td>
+        <td>Linear</td>
+        <td>10</td><td>100</td><td>1,000</td>
+        <td><span class="rating fair">Good</span></td>
+      </tr>
+      <tr>
+        <td><span class="o-badge o-n2">O(n²)</span></td>
+        <td>Quadratic</td>
+        <td>100</td><td>10,000</td><td>1,000,000</td>
+        <td><span class="rating bad">Bad</span></td>
+      </tr>
+      <tr>
+        <td><span class="o-badge o-2n">O(2ⁿ)</span></td>
+        <td>Exponential</td>
+        <td>1,024</td><td>~10³⁰</td><td>impossible</td>
+        <td><span class="rating terrible">Terrible</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════
+     SECTION 7 — BACK TO OMAR & AHMED
+════════════════════════════════════════════════ -->
+<section id="conclusion">
+<div class="container">
+
+  <div class="section-label">
+    <div class="section-number" style="background:rgba(245,158,11,.2);border:2px solid #f59e0b;color:#fbbf24;">7</div>
+    <h2 class="section-title">Back to Omar &amp; Ahmed — The Verdict</h2>
+  </div>
+
+  <div class="story-box">
+    <span class="quote-mark">"</span>
+    <p>
+      Now that we understand Big O notation, let us re-examine Omar and Ahmed's case.
+      Suppose a professor takes both algorithms, implements them identically, and analyses them:
+    </p>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:28px 0;">
+    <div class="char-card omar">
+      <span class="char-avatar">🧑‍💻</span>
+      <div class="char-name" style="color:#60a5fa;">Omar's Algorithm</div>
+      <div style="margin:12px 0;">
+        <div style="font-size:.85rem;color:var(--muted);">Measured time</div>
+        <div style="font-size:1.4rem;font-weight:800;color:#f59e0b;">14 seconds</div>
+      </div>
+      <div style="margin:8px 0;">
+        <div style="font-size:.85rem;color:var(--muted);">Big O complexity</div>
+        <div><span class="o-badge o-n">O(n log n)</span></div>
+      </div>
+      <div style="font-size:.8rem;color:var(--muted);margin-top:10px;">
+        Slow machine + beginner code → long time, but <strong style="color:#34d399;">efficient algorithm</strong>
+      </div>
+    </div>
+    <div class="char-card ahmed">
+      <span class="char-avatar">👨‍💻</span>
+      <div class="char-name" style="color:#fbbf24;">Ahmed's Algorithm</div>
+      <div style="margin:12px 0;">
+        <div style="font-size:.85rem;color:var(--muted);">Measured time</div>
+        <div style="font-size:1.4rem;font-weight:800;color:#10b981;">5 seconds</div>
+      </div>
+      <div style="margin:8px 0;">
+        <div style="font-size:.85rem;color:var(--muted);">Big O complexity</div>
+        <div><span class="o-badge o-n2">O(n²)</span></div>
+      </div>
+      <div style="font-size:.8rem;color:var(--muted);margin-top:10px;">
+        Fast machine + expert code → short time, but <strong style="color:#f87171;">inefficient algorithm</strong>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout success">
+    <span class="callout-icon">🏆</span>
+    <div class="callout-body">
+      <strong>The Real Winner</strong>
+      <span>
+        <strong>Omar's algorithm is actually faster!</strong> At n = 1,000,000,
+        O(n log n) ≈ 20,000,000 operations, while O(n²) ≈ 1,000,000,000,000 operations.
+        Ahmed's fast computer hid the truth. On a huge dataset, Omar's algorithm wins — by a trillion steps.
+      </span>
+    </div>
+  </div>
+
+  <!-- Summary cards -->
+  <h3 style="margin:32px 0 16px;font-size:1.15rem;">Key Takeaways from This Chapter</h3>
+  <div class="summary-grid">
+    <div class="sum-card">
+      <div class="sc-icon">⏱️</div>
+      <h4>Time is Misleading</h4>
+      <p>Wall-clock time depends on hardware, language, and programmer skill.</p>
+    </div>
+    <div class="sum-card">
+      <div class="sc-icon">📐</div>
+      <h4>Big O is Fair</h4>
+      <p>It measures the algorithm independently of all external factors.</p>
+    </div>
+    <div class="sum-card">
+      <div class="sc-icon">🔢</div>
+      <h4>Count Operations</h4>
+      <p>We count basic operations (O(1)) and see how they grow with n.</p>
+    </div>
+    <div class="sum-card">
+      <div class="sc-icon">📊</div>
+      <h4>Study the Behaviour</h4>
+      <p>Linear, quadratic, logarithmic, exponential — the shape matters most.</p>
+    </div>
+    <div class="sum-card">
+      <div class="sc-icon">🚀</div>
+      <h4>Small n Hides Truth</h4>
+      <p>For small inputs, a slow algorithm may look fast. Test with large n.</p>
+    </div>
+    <div class="sum-card">
+      <div class="sc-icon">🧠</div>
+      <h4>Algorithm &gt; Hardware</h4>
+      <p>A great algorithm on slow hardware beats a bad algorithm on fast hardware.</p>
+    </div>
+  </div>
+
+</div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════
+     FOOTER
+════════════════════════════════════════════════ -->
+<footer>
+  <p>CPCS 203 — Data Structures &amp; Algorithms &nbsp;|&nbsp; Algorithm Analysis &amp; Big O Notation</p>
+  <p style="margin-top:6px;">Next: Converting code to polynomial equations &amp; formal Big O analysis →</p>
+</footer>
+
+
+<!-- ═══════════════════════════════════════════════
+     CHART SCRIPT
+════════════════════════════════════════════════ -->
+<script>
+  /* ── Shared chart options ── */
+  const chartTooltip = {
+    backgroundColor: '#1e293b',
+    borderColor: '#334155',
+    borderWidth: 1,
+    titleColor: '#e2e8f0',
+    bodyColor: '#94a3b8',
+    padding: 12,
+    callbacks: {
+      label: ctx => {
+        const v = ctx.parsed.y;
+        if (v === null) return ctx.dataset.label + ': — (too large to display)';
+        if (v >= 1e9)  return ctx.dataset.label + ': ' + (v/1e9).toFixed(1) + ' billion ops';
+        if (v >= 1e6)  return ctx.dataset.label + ': ' + (v/1e6).toFixed(1) + ' million ops';
+        if (v >= 1e3)  return ctx.dataset.label + ': ' + (v/1e3).toFixed(1) + 'K ops';
+        return ctx.dataset.label + ': ' + v.toFixed(0) + ' ops';
+      }
+    }
+  };
+  const chartLegend = {
+    labels: { color: '#94a3b8', font: { size: 12 }, boxWidth: 20, padding: 16 }
+  };
+  function makeScales(yLabel) {
+    return {
+      x: { ticks: { color: '#64748b' }, grid: { color: 'rgba(255,255,255,.04)' } },
+      y: {
+        ticks: {
+          color: '#64748b',
+          callback: v => v >= 1e9 ? (v/1e9).toFixed(0)+'B'
+                       : v >= 1e6 ? (v/1e6).toFixed(0)+'M'
+                       : v >= 1e3 ? (v/1e3).toFixed(0)+'K'
+                       : v
+        },
+        grid: { color: 'rgba(255,255,255,.04)' },
+        title: { display: true, text: yLabel, color: '#64748b', font: { size: 11 } }
+      }
+    };
+  }
+
+  /* ════════════════════════════════════════
+     CHART 1 — Efficient algorithms
+     n = 1, 10, 100, 1000, 10000, 100000, 1000000
+     Shows: O(1), O(log n), O(n)
+     On a LINEAR y-axis — true nature revealed
+  ════════════════════════════════════════ */
+  const nEff = [1, 10, 100, 1000, 10000, 100000, 1000000];
+  const labEff = nEff.map(x =>
+    x >= 1e6 ? '1M' : x >= 1e5 ? '100K' : x >= 1e4 ? '10K' :
+    x >= 1e3 ? '1K'  : String(x)
+  );
+
+  new Chart(document.getElementById('chartEfficient').getContext('2d'), {
+    type: 'line',
+    data: {
+      labels: labEff,
+      datasets: [
+        {
+          label: 'O(1) — Constant',
+          data: nEff.map(() => 1),
+          borderColor: '#10b981',
+          backgroundColor: 'rgba(16,185,129,.1)',
+          borderWidth: 3,
+          pointRadius: 5,
+          tension: 0,
+        },
+        {
+          label: 'O(log n) — Logarithmic',
+          data: nEff.map(x => +Math.log2(x).toFixed(2)),
+          borderColor: '#8b5cf6',
+          backgroundColor: 'rgba(139,92,246,.1)',
+          borderWidth: 3,
+          pointRadius: 5,
+          tension: 0.3,
+        },
+        {
+          label: 'O(n) — Linear',
+          data: nEff.map(x => x),
+          borderColor: '#3b82f6',
+          backgroundColor: 'rgba(59,130,246,.1)',
+          borderWidth: 3,
+          pointRadius: 5,
+          tension: 0,
+        },
+      ]
+    },
+    options: {
+      responsive: true,
+      interaction: { mode: 'index', intersect: false },
+      plugins: { legend: chartLegend, tooltip: chartTooltip },
+      scales: makeScales('Operations (linear scale)')
+    }
+  });
+
+  /* ════════════════════════════════════════
+     CHART 2 — Expensive algorithms
+     n = 1 .. 30  (small range, but enough to
+     show the explosion of n² and 2^n)
+     O(2^n) is capped at null above n=25 so
+     the chart stays readable — students see
+     it "disappear off the top"
+  ════════════════════════════════════════ */
+  const nExp = Array.from({length: 30}, (_, i) => i + 1);   // 1 … 30
+  const CAP  = 1.2e9;   // cap y-axis at ~1.2 billion so chart is readable
+
+  new Chart(document.getElementById('chartExpensive').getContext('2d'), {
+    type: 'line',
+    data: {
+      labels: nExp.map(x => 'n=' + x),
+      datasets: [
+        {
+          label: 'O(n) — Linear',
+          data: nExp.map(x => x),
+          borderColor: '#3b82f6',
+          backgroundColor: 'rgba(59,130,246,.08)',
+          borderWidth: 2.5,
+          pointRadius: 3,
+          tension: 0,
+        },
+        {
+          label: 'O(n²) — Quadratic',
+          data: nExp.map(x => x * x),
+          borderColor: '#f59e0b',
+          backgroundColor: 'rgba(245,158,11,.08)',
+          borderWidth: 2.5,
+          pointRadius: 3,
+          tension: 0.2,
+        },
+        {
+          label: 'O(2ⁿ) — Exponential  ↑ exceeds chart after n≈20',
+          data: nExp.map(x => {
+            const v = Math.pow(2, x);
+            return v > CAP ? null : v;   // null = no point drawn, line stops
+          }),
+          borderColor: '#ef4444',
+          backgroundColor: 'rgba(239,68,68,.08)',
+          borderWidth: 2.5,
+          pointRadius: 3,
+          tension: 0.2,
+          spanGaps: false,   // gap shows "it went off the chart"
+        },
+      ]
+    },
+    options: {
+      responsive: true,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: chartLegend,
+        tooltip: chartTooltip,
+        annotation: {}   // placeholder — no plugin needed
+      },
+      scales: {
+        x: { ticks: { color: '#64748b', maxTicksLimit: 15 }, grid: { color: 'rgba(255,255,255,.04)' } },
+        y: {
+          max: CAP,
+          ticks: {
+            color: '#64748b',
+            callback: v => v >= 1e9 ? (v/1e9).toFixed(1)+'B'
+                         : v >= 1e6 ? (v/1e6).toFixed(0)+'M'
+                         : v >= 1e3 ? (v/1e3).toFixed(0)+'K'
+                         : v
+          },
+          grid: { color: 'rgba(255,255,255,.04)' },
+          title: { display: true, text: 'Operations (capped at 1.2 billion for readability)', color: '#64748b', font: { size: 11 } }
+        }
+      }
+    }
+  });
+
+  /* Animate track bars on scroll */
+  const bars = document.querySelectorAll('.track-bar');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.width = e.target.getAttribute('data-width') || e.target.style.width;
+      }
+    });
+  }, { threshold: 0.3 });
+  bars.forEach(b => observer.observe(b));
+</script>
+
+</body>
+</html>

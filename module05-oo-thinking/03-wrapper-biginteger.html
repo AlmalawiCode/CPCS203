@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wrapper Classes &amp; BigInteger | CPCS203 Module 05 — Part 3</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --primary-color: #2563eb;
+            --primary-light: #3b82f6;
+            --primary-dark: #1d4ed8;
+            --secondary-color: #7c3aed;
+            --success-color: #059669;
+            --warning-color: #d97706;
+            --danger-color: #dc2626;
+            --dark-color: #1f2937;
+            --light-color: #f3f4f6;
+            --gray-color: #6b7280;
+            --teal-color: #0d9488;
+            --rose-color: #e11d48;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.8;
+            color: var(--dark-color);
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #7c3aed 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+            overflow: hidden;
+        }
+
+        /* ── Header ── */
+        .header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 45px 40px;
+            text-align: center;
+        }
+        .header .module-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            border: 2px solid rgba(255,255,255,0.4);
+            border-radius: 30px;
+            padding: 6px 20px;
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+        .header h1 { font-size: 2.6rem; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.2); }
+        .header .subtitle { font-size: 1.15rem; opacity: 0.9; margin-bottom: 20px; }
+        .header .topics-pill-row { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
+        .topic-pill { background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.35); border-radius: 20px; padding: 5px 16px; font-size: 0.82rem; }
+
+        /* ── TOC ── */
+        .toc {
+            background: linear-gradient(135deg, #f0f4ff, #e8ecff);
+            border-left: 5px solid var(--primary-color);
+            margin: 30px 40px;
+            border-radius: 0 15px 15px 0;
+            padding: 25px 30px;
+        }
+        .toc-title { font-size: 1.1rem; font-weight: bold; color: var(--primary-color); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+        .toc ol { padding-left: 22px; }
+        .toc li { padding: 4px 0; }
+        .toc a { color: var(--primary-dark); text-decoration: none; font-size: 0.95rem; }
+        .toc a:hover { text-decoration: underline; }
+
+        /* ── Content ── */
+        .content { padding: 10px 40px 40px; }
+
+        /* ── Sections ── */
+        .section { margin-bottom: 60px; }
+        .section-title {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--primary-color);
+            padding-bottom: 10px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .section-number {
+            background: var(--primary-color);
+            color: white;
+            width: 42px; height: 42px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem; font-weight: bold; flex-shrink: 0;
+        }
+
+        /* ── Boxes ── */
+        .narrative {
+            background: linear-gradient(135deg, #f0f4ff, #e8ecff);
+            border-left: 5px solid var(--primary-color);
+            padding: 22px 28px; margin: 20px 0;
+            border-radius: 0 15px 15px 0;
+            font-size: 1.03rem; line-height: 2;
+        }
+        .narrative p { margin-bottom: 12px; }
+        .narrative p:last-child { margin-bottom: 0; }
+
+        .key-concept {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border-left: 5px solid var(--warning-color);
+            padding: 20px 25px; margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+        .key-concept-title { font-weight: bold; color: var(--warning-color); margin-bottom: 10px; font-size: 1.05rem; display: flex; align-items: center; gap: 7px; }
+
+        .important-box {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            border-left: 5px solid var(--danger-color);
+            padding: 20px 25px; margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+        .important-box-title { font-weight: bold; color: var(--danger-color); margin-bottom: 10px; font-size: 1.05rem; display: flex; align-items: center; gap: 7px; }
+
+        .info-box {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            border-left: 5px solid var(--primary-color);
+            padding: 20px 25px; margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+        .info-box-title { font-weight: bold; color: var(--primary-color); margin-bottom: 10px; font-size: 1.05rem; display: flex; align-items: center; gap: 7px; }
+
+        .success-box {
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+            border-left: 5px solid var(--success-color);
+            padding: 20px 25px; margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+        .success-box-title { font-weight: bold; color: var(--success-color); margin-bottom: 10px; font-size: 1.05rem; display: flex; align-items: center; gap: 7px; }
+
+        .analogy-box {
+            background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+            border: 2px dashed var(--success-color);
+            border-radius: 15px;
+            padding: 25px; margin: 20px 0;
+        }
+        .analogy-title { font-weight: bold; color: var(--success-color); font-size: 1.05rem; margin-bottom: 10px; display: flex; align-items: center; gap: 7px; }
+
+        /* ── Cards Grid ── */
+        .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); gap: 20px; margin: 25px 0; }
+        .card { background: white; border-radius: 15px; padding: 25px; border: 2px solid #e2e8f0; box-shadow: 0 4px 10px rgba(0,0,0,0.05); transition: transform 0.2s, box-shadow 0.2s; }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .card-icon { font-size: 2.4rem; margin-bottom: 12px; }
+        .card-title { font-size: 1.15rem; font-weight: bold; margin-bottom: 8px; }
+        .card-desc { color: var(--gray-color); font-size: 0.93rem; line-height: 1.6; }
+
+        /* ── Code Blocks ── */
+        .code-label {
+            background: #2d2d2d; color: #9cdcfe;
+            padding: 8px 15px;
+            border-radius: 10px 10px 0 0;
+            font-family: 'Consolas',monospace; font-size: 0.83rem;
+            display: inline-block;
+        }
+        .code-block {
+            background: #1e1e1e; color: #d4d4d4;
+            padding: 22px;
+            border-radius: 0 10px 10px 10px;
+            margin: 0 0 20px;
+            overflow-x: auto;
+            font-family: 'Consolas','Monaco',monospace;
+            font-size: 0.92rem; line-height: 1.7; white-space: pre;
+        }
+        .code-block .keyword  { color: #569cd6; }
+        .code-block .type     { color: #4ec9b0; }
+        .code-block .string   { color: #ce9178; }
+        .code-block .number   { color: #b5cea8; }
+        .code-block .comment  { color: #6a9955; font-style: italic; }
+        .code-block .method   { color: #dcdcaa; }
+        .code-block .annot    { color: #c586c0; }
+        .code-block .cls      { color: #4ec9b0; }
+        .code-inline { background: #e5e7eb; padding: 2px 8px; border-radius: 4px; font-family: 'Consolas','Monaco',monospace; font-size: 0.88rem; color: var(--danger-color); }
+
+        /* ── Comparison Table ── */
+        .comparison-table {
+            width: 100%; border-collapse: separate; border-spacing: 0;
+            margin: 20px 0; border-radius: 12px; overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+        .comparison-table thead th { background: var(--dark-color); color: white; padding: 14px 20px; text-align: left; }
+        .comparison-table tbody td { padding: 12px 20px; border-bottom: 1px solid #e5e7eb; font-size: 0.93rem; }
+        .comparison-table tbody tr:nth-child(even) { background: #f9fafb; }
+        .comparison-table tbody tr:last-child td { border-bottom: none; }
+        .comparison-table tbody tr:hover { background: #eff6ff; }
+
+        /* ── Wrapper visual ── */
+        .wrapper-outer {
+            border: 4px dashed var(--secondary-color);
+            border-radius: 18px;
+            padding: 20px 30px;
+            display: inline-flex;
+            align-items: center;
+            gap: 20px;
+            background: linear-gradient(135deg, #faf5ff, #f3e8ff);
+            position: relative;
+        }
+        .wrapper-label {
+            position: absolute;
+            top: -13px; left: 20px;
+            background: var(--secondary-color);
+            color: white;
+            padding: 2px 12px;
+            border-radius: 10px;
+            font-size: 0.78rem; font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .wrapper-inner {
+            background: white;
+            border: 3px solid var(--primary-color);
+            border-radius: 12px;
+            padding: 14px 20px;
+            text-align: center;
+            font-family: 'Consolas',monospace;
+        }
+
+        /* ── Big Number Visual ── */
+        .big-num-demo {
+            background: #1e1e1e;
+            color: #b5cea8;
+            border-radius: 12px;
+            padding: 20px 25px;
+            font-family: 'Consolas',monospace;
+            font-size: 0.92rem;
+            margin: 20px 0;
+            line-height: 1.9;
+        }
+        .big-num-demo .result { color: #dcdcaa; font-weight: bold; }
+        .big-num-demo .label  { color: #9cdcfe; }
+
+        /* ── Nav ── */
+        .nav-buttons { display: flex; justify-content: space-between; padding: 30px 40px; background: var(--light-color); border-top: 2px solid #e5e7eb; }
+        .nav-btn { padding: 9px 16px; border-radius: 10px; text-decoration: none; font-weight: bold; font-size: .8rem; white-space: nowrap; transition: transform 0.2s, box-shadow 0.2s; }
+        .nav-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+        .nav-btn.prev { background: white; color: var(--primary-color); border: 2px solid var(--primary-color); }
+        .nav-btn.next { background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); color: white; }
+        .nav-btn.home { background: white; color: var(--secondary-color); border: 2px solid var(--secondary-color); }
+
+        /* ── Rules list ── */
+        .rules-list { display: flex; flex-direction: column; gap: 14px; margin: 20px 0; }
+        .rule-item { display: flex; align-items: flex-start; gap: 15px; background: #f8fafc; border-radius: 12px; padding: 18px 22px; border: 2px solid #e2e8f0; }
+        .rule-badge { background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); color: white; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.95rem; flex-shrink: 0; }
+        .rule-content { flex: 1; }
+        .rule-title { font-weight: bold; color: var(--primary-color); margin-bottom: 4px; }
+        .rule-desc  { color: var(--gray-color); font-size: 0.93rem; }
+
+        @media (max-width: 600px) {
+            .header h1 { font-size: 1.8rem; }
+            .content   { padding: 10px 20px 30px; }
+            .toc       { margin: 20px; }
+            .nav-buttons { flex-direction: column; gap: 12px; }
+        }
+
+        .lang-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-size: 0.95rem;
+        }
+        .lang-switch:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+    </style>
+</head>
+<body>
+    <!-- Language Switch -->
+    <a href="03-wrapper-biginteger-ar.html" class="lang-switch">&#127480;&#127462; العربية</a>
+
+
+<div class="container">
+
+    <div class="nav-buttons">
+        <a href="02-object-relationships.html" class="nav-btn prev">← Part 2: Object Relationships</a>
+        <a href="../index.html" class="nav-btn home">🏠 Home</a>
+        <a href="../module06-inheritance/01-inheritance.html" class="nav-btn next">Module 06: Inheritance →</a>
+    </div>
+
+    <!-- ════════ HEADER ════════ -->
+    <div class="header">
+        <div class="module-badge">CPCS203 &nbsp;·&nbsp; Module 05 &nbsp;·&nbsp; Part 3 of 3</div>
+        <h1>🎁 Wrapper Classes &amp; Big Numbers</h1>
+        <p class="subtitle">Wrapping Primitives · Auto-Boxing · BigInteger · BigDecimal</p>
+        <div class="topics-pill-row">
+            <span class="topic-pill">🎁 Wrapper Classes</span>
+            <span class="topic-pill">🔄 Auto-Boxing</span>
+            <span class="topic-pill">🔢 BigInteger</span>
+            <span class="topic-pill">📐 BigDecimal</span>
+        </div>
+    </div>
+
+    <!-- ════════ TABLE OF CONTENTS ════════ -->
+    <div class="toc">
+        <div class="toc-title">📋 Table of Contents</div>
+        <ol>
+            <li><a href="#s1">Wrapper Classes — Wrapping Primitives as Objects</a></li>
+            <li><a href="#s2">BigInteger &amp; BigDecimal — Computing Beyond Limits</a></li>
+        </ol>
+    </div>
+
+    <div class="content">
+
+        <!-- ════════ S1: WRAPPER CLASSES ════════ -->
+        <div class="section" id="s1">
+            <div class="section-title">
+                <div class="section-number">1</div>
+                Wrapper Classes — Wrapping Primitives as Objects
+            </div>
+
+            <!-- Voltage adapter analogy — narrative story -->
+            <div class="analogy-box">
+                <div class="analogy-title">🔌 Real-World Story: The One Million Devices</div>
+                <p>
+                    Ahmad was a businessman. He travelled to the United States, found an amazing deal at a factory, and bought <strong>one million electronic devices</strong> — investing everything he had. The shipment arrived at the port of Jeddah. He opened the first box, plugged a device into the wall… nothing. A burning smell. 💨
+                </p>
+                <p style="margin-top:10px;">
+                    The devices were built for <strong>110V</strong>. Saudi Arabia runs on <strong>220V</strong>. One million devices — completely incompatible. He could not sell a single one. His business was over before it started.
+                </p>
+                <p style="margin-top:10px;">
+                    Then his friend Khalid called. <em>"Ahmad — do not touch a single device. Build a small box: it takes 220V from the wall, converts it to 110V inside, and gives your device exactly what it needs. Place it in between."</em> Ahmad placed the <strong>wrapper box</strong> in between — nothing changed on either side — and his business was saved. 🎉
+                </p>
+                <p style="margin-top:10px;">
+                    Java has the same problem. <strong>Primitives</strong> (<code>int</code>, <code>double</code>, <code>char</code>…) work perfectly on their own, but Java's object-oriented world — <code>ArrayList</code>, generics, APIs — only accepts <strong>objects</strong>. Java's solution is exactly Khalid's box: a <strong>Wrapper class</strong> (<code>Integer</code>, <code>Double</code>, <code>Character</code>…) placed in between. Nothing on either side is modified.
+                </p>
+            </div>
+
+            <div class="narrative">
+                <p>In Java, there are <strong>8 primitive data types</strong>: <code>byte, short, int, long, float, double, char, boolean</code>. Some Java APIs and data structures (like <code>ArrayList</code>) can only work with <strong>objects</strong>, not primitives. Solution? Java provides a <strong>wrapper class</strong> for each primitive that wraps it in an object!</p>
+            </div>
+
+            <!-- Wrapper visual -->
+            <div style="text-align:center; margin: 25px 0;">
+                <div class="wrapper-outer">
+                    <span class="wrapper-label">Wrapper Class: Integer</span>
+                    <div style="text-align:center;">
+                        <div style="font-size:0.8rem; color:var(--gray-color); margin-bottom:5px;">Outside (Object world)</div>
+                        <div class="wrapper-inner">
+                            <div style="font-size:0.78rem; color:var(--gray-color);">Integer object</div>
+                            <div style="font-size:1.5rem; font-weight:bold; color:var(--secondary-color);">42</div>
+                            <div style="font-size:0.72rem; color:var(--gray-color); margin-top:4px;">private int value = 42;</div>
+                        </div>
+                        <div style="font-size:0.8rem; color:var(--gray-color); margin-top:5px;">
+                            Methods: <code>intValue()</code>, <code>compareTo()</code>, <code>parseInt()</code>…
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Primitive to Wrapper table -->
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Primitive Type</th>
+                        <th>Wrapper Class</th>
+                        <th>Example</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>byte</code></td><td><code>Byte</code></td><td><code>Byte b = new Byte((byte)5);</code></td></tr>
+                    <tr><td><code>short</code></td><td><code>Short</code></td><td><code>Short s = new Short((short)100);</code></td></tr>
+                    <tr><td><code>int</code></td><td><code>Integer</code></td><td><code>Integer i = new Integer(42);</code></td></tr>
+                    <tr><td><code>long</code></td><td><code>Long</code></td><td><code>Long l = new Long(100L);</code></td></tr>
+                    <tr><td><code>float</code></td><td><code>Float</code></td><td><code>Float f = new Float(3.14f);</code></td></tr>
+                    <tr><td><code>double</code></td><td><code>Double</code></td><td><code>Double d = new Double(2.718);</code></td></tr>
+                    <tr><td><code>char</code></td><td><code>Character</code></td><td><code>Character c = new Character('A');</code></td></tr>
+                    <tr><td><code>boolean</code></td><td><code>Boolean</code></td><td><code>Boolean b = new Boolean(true);</code></td></tr>
+                </tbody>
+            </table>
+
+            <div class="code-label">📄 WrapperDemo.java</div>
+            <div class="code-block"><span class="keyword">public class</span> <span class="cls">WrapperDemo</span> {
+    <span class="keyword">public static void</span> <span class="method">main</span>(<span class="type">String</span>[] args) {
+
+        <span class="comment">// Auto-boxing: primitive → wrapper object (Java does this automatically)</span>
+        <span class="cls">Integer</span> intObj = <span class="number">42</span>;           <span class="comment">// same as: new Integer(42)</span>
+        <span class="cls">Double</span>  dblObj = <span class="number">3.14</span>;         <span class="comment">// same as: new Double(3.14)</span>
+
+        <span class="comment">// Auto-unboxing: wrapper object → primitive (Java does this automatically)</span>
+        <span class="keyword">int</span>    x = intObj;              <span class="comment">// same as: intObj.intValue()</span>
+        <span class="keyword">double</span> y = dblObj;             <span class="comment">// same as: dblObj.doubleValue()</span>
+
+        <span class="comment">// Useful static methods</span>
+        <span class="keyword">int</span>    parsed  = <span class="cls">Integer</span>.<span class="method">parseInt</span>(<span class="string">"123"</span>);  <span class="comment">// String → int</span>
+        <span class="type">String</span> asStr   = <span class="cls">Integer</span>.<span class="method">toString</span>(<span class="number">456</span>);  <span class="comment">// int → String</span>
+        <span class="keyword">int</span>    maxVal  = <span class="cls">Integer</span>.MAX_VALUE;        <span class="comment">// 2,147,483,647</span>
+        <span class="keyword">int</span>    minVal  = <span class="cls">Integer</span>.MIN_VALUE;        <span class="comment">// -2,147,483,648</span>
+
+        System.out.<span class="method">println</span>(parsed);   <span class="comment">// 123</span>
+        System.out.<span class="method">println</span>(maxVal);   <span class="comment">// 2147483647</span>
+    }
+}</div>
+
+            <!-- Custom wrapper: MyInt -->
+            <div class="narrative" style="margin-top:22px;">
+                <p>Java's wrapper classes are built-in — but you can also <strong>build your own wrapper class</strong>. This is a powerful idea: take any primitive, wrap it inside a class, and add whatever methods you need. For example, we can define a class called <code>MyInt</code> that wraps an <code>int</code> and provides extra functionality.</p>
+            </div>
+
+            <div class="code-label">📄 MyInt.java — your own custom wrapper</div>
+            <div class="code-block"><span class="keyword">public class</span> <span class="cls">MyInt</span> {
+    <span class="keyword">private int</span> value;   <span class="comment">// the wrapped primitive</span>
+
+    <span class="keyword">public</span> <span class="method">MyInt</span>(<span class="keyword">int</span> value) {
+        <span class="keyword">this</span>.value = value;
+    }
+
+    <span class="keyword">public int</span>     <span class="method">getValue</span>()    { <span class="keyword">return</span> value; }
+    <span class="keyword">public boolean</span> <span class="method">isEven</span>()      { <span class="keyword">return</span> value % <span class="number">2</span> == <span class="number">0</span>; }
+    <span class="keyword">public boolean</span> <span class="method">isPositive</span>()  { <span class="keyword">return</span> value > <span class="number">0</span>; }
+    <span class="keyword">public</span> <span class="type">String</span>  <span class="method">toBinary</span>()   { <span class="keyword">return</span> <span class="cls">Integer</span>.<span class="method">toBinaryString</span>(value); }
+
+    <span class="annotation">@Override</span>
+    <span class="keyword">public</span> <span class="type">String</span> <span class="method">toString</span>() { <span class="keyword">return</span> <span class="string">"MyInt("</span> + value + <span class="string">")"</span>; }
+}
+
+<span class="comment">// Usage</span>
+<span class="cls">MyInt</span> n = <span class="keyword">new</span> <span class="cls">MyInt</span>(<span class="number">42</span>);
+System.out.<span class="method">println</span>(n.<span class="method">getValue</span>());    <span class="comment">// 42</span>
+System.out.<span class="method">println</span>(n.<span class="method">isEven</span>());      <span class="comment">// true</span>
+System.out.<span class="method">println</span>(n.<span class="method">isPositive</span>());  <span class="comment">// true</span>
+System.out.<span class="method">println</span>(n.<span class="method">toBinary</span>());   <span class="comment">// 101010</span>
+System.out.<span class="method">println</span>(n);              <span class="comment">// MyInt(42)</span></div>
+
+            <div class="key-concept">
+                <div class="key-concept-title">💡 Why Wrapper Classes Exist</div>
+                <p>Some Java APIs (like <code>ArrayList&lt;Integer&gt;</code>, <code>HashMap&lt;String, Double&gt;</code>) only accept <strong>objects</strong> (they use generics). You cannot write <code>ArrayList&lt;int&gt;</code>. So wrapper classes let you store primitive values inside these structures.</p>
+                <p style="margin-top:8px;">Java's <strong>auto-boxing</strong> and <strong>auto-unboxing</strong> features (since Java 5) handle most conversions automatically, so you rarely need to call <code>.intValue()</code> manually.</p>
+            </div>
+
+            <div class="success-box">
+                <div class="success-box-title">✅ Quick Reference: Boxing &amp; Unboxing</div>
+                <ul style="padding-left:20px; line-height:2.2; margin-top:8px;">
+                    <li><strong>Auto-boxing</strong>: Java automatically converts a primitive to its wrapper type when needed. <code>Integer x = 5;</code> → Java writes <code>new Integer(5)</code> for you.</li>
+                    <li><strong>Auto-unboxing</strong>: Java automatically converts a wrapper object back to its primitive. <code>int y = x;</code> → Java calls <code>x.intValue()</code> for you.</li>
+                    <li><strong>Useful constants</strong>: <code>Integer.MAX_VALUE</code>, <code>Integer.MIN_VALUE</code>, <code>Double.MAX_VALUE</code>.</li>
+                    <li><strong>Parsing</strong>: <code>Integer.parseInt("42")</code> converts a <code>String</code> to an <code>int</code> — very common in real programs!</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ════════ S2: BIGINTEGER & BIGDECIMAL ════════ -->
+        <div class="section" id="s2">
+            <div class="section-title">
+                <div class="section-number">2</div>
+                BigInteger &amp; BigDecimal — Computing Beyond Limits
+            </div>
+
+            <div class="narrative">
+                <p>What if the number you need to compute is so large that it doesn't fit in a <code>long</code> (which maxes out at about 9.2 × 10<sup>18</sup>)? Or you need extremely precise decimal arithmetic — like in financial calculations or cryptography?</p>
+                <p>Java provides two special classes: <code class="code-inline">BigInteger</code> and <code class="code-inline">BigDecimal</code> in the <code>java.math</code> package.</p>
+            </div>
+
+            <div class="cards-grid">
+                <div class="card" style="border-top: 4px solid #0d9488;">
+                    <div class="card-icon">🔢</div>
+                    <div class="card-title" style="color:#0d9488;">BigInteger</div>
+                    <div class="card-desc">Represents arbitrarily large integers — no overflow, ever. Supports all arithmetic operations: <code>add()</code>, <code>subtract()</code>, <code>multiply()</code>, <code>divide()</code>, <code>pow()</code>, <code>mod()</code>.</div>
+                </div>
+                <div class="card" style="border-top: 4px solid #7c3aed;">
+                    <div class="card-icon">📐</div>
+                    <div class="card-title" style="color:#7c3aed;">BigDecimal</div>
+                    <div class="card-desc">Represents floating-point numbers with arbitrary precision — no rounding errors. Essential for financial and scientific computing where precision matters.</div>
+                </div>
+            </div>
+
+            <div class="important-box">
+                <div class="important-box-title">⚠️ Important Note</div>
+                <p>You <strong>cannot use +, -, *, /</strong> operators with <code>BigInteger</code> or <code>BigDecimal</code>. You must use their <strong>methods</strong>: <code>.add()</code>, <code>.subtract()</code>, <code>.multiply()</code>, <code>.divide()</code>.</p>
+            </div>
+
+            <div class="code-label">📄 BigNumberDemo.java</div>
+            <div class="code-block"><span class="keyword">import</span> java.math.BigInteger;
+<span class="keyword">import</span> java.math.BigDecimal;
+
+<span class="keyword">public class</span> <span class="cls">BigNumberDemo</span> {
+    <span class="keyword">public static void</span> <span class="method">main</span>(<span class="type">String</span>[] args) {
+
+        <span class="comment">// ── BigInteger ──────────────────────────────────────────────────</span>
+        <span class="cls">BigInteger</span> n1 = <span class="keyword">new</span> <span class="cls">BigInteger</span>(<span class="string">"99999999999999999999999999999"</span>);
+        <span class="cls">BigInteger</span> n2 = <span class="keyword">new</span> <span class="cls">BigInteger</span>(<span class="string">"11111111111111111111111111111"</span>);
+
+        System.out.<span class="method">println</span>(<span class="string">"n1 + n2 = "</span> + n1.<span class="method">add</span>(n2));
+        System.out.<span class="method">println</span>(<span class="string">"n1 * n2 = "</span> + n1.<span class="method">multiply</span>(n2));
+        System.out.<span class="method">println</span>(<span class="string">"n1 ^ 2  = "</span> + n1.<span class="method">pow</span>(<span class="number">2</span>));
+
+        <span class="comment">// ── BigDecimal ──────────────────────────────────────────────────</span>
+        <span class="cls">BigDecimal</span> price = <span class="keyword">new</span> <span class="cls">BigDecimal</span>(<span class="string">"19.99"</span>);
+        <span class="cls">BigDecimal</span> tax   = <span class="keyword">new</span> <span class="cls">BigDecimal</span>(<span class="string">"0.15"</span>);
+
+        <span class="cls">BigDecimal</span> total = price.<span class="method">multiply</span>(tax.<span class="method">add</span>(<span class="cls">BigDecimal</span>.ONE));
+        System.out.<span class="method">println</span>(<span class="string">"Total with tax = "</span> + total);
+
+        <span class="comment">// Why NOT to use double for money:</span>
+        System.out.<span class="method">println</span>(<span class="number">1.0</span> - <span class="number">0.9</span>);   <span class="comment">// prints 0.09999999999999998 ❌</span>
+        System.out.<span class="method">println</span>(
+            <span class="keyword">new</span> <span class="cls">BigDecimal</span>(<span class="string">"1.0"</span>).<span class="method">subtract</span>(<span class="keyword">new</span> <span class="cls">BigDecimal</span>(<span class="string">"0.9"</span>))
+        );                               <span class="comment">// prints 0.1 ✅</span>
+    }
+}</div>
+
+            <!-- sample output -->
+            <div class="big-num-demo">
+                <div><span class="label">n1 + n2 = </span><span class="result">111111111111111111111111111110</span></div>
+                <div><span class="label">n1 * n2 = </span><span class="result">1111111111111111111111111111088888888888888888889</span></div>
+                <div><span class="label">n1 ^ 2  = </span><span class="result">9999999999999999999999999999800000000000000000000000000001</span></div>
+                <div><span class="label">Total with tax = </span><span class="result">22.9885</span></div>
+                <div><span class="label">double subtraction: </span><span class="result" style="color:#dc2626;">0.09999999999999998 ❌</span></div>
+                <div><span class="label">BigDecimal subtraction: </span><span class="result" style="color:#4ec9b0;">0.1 ✅</span></div>
+            </div>
+
+            <div class="analogy-box">
+                <div class="analogy-title">🔐 Real-World Use: Cryptography!</div>
+                <p>A student asked: <em>"Why would we ever need numbers this large?"</em></p>
+                <p style="margin-top:8px;">In <strong>cryptography</strong>, algorithms like RSA require working with integers that are hundreds of digits long (e.g., 2048-bit or 4096-bit numbers). The prime factorisation of such numbers is what makes encryption secure. <code>BigInteger</code> is the standard tool for implementing these algorithms in Java.</p>
+            </div>
+
+            <div class="info-box">
+                <div class="info-box-title">📌 Note for Students</div>
+                <p><code>BigInteger</code> and <code>BigDecimal</code> are not strictly OOP concepts — they are Java library features. We discuss them here because they demonstrate how Java <em>wraps</em> complex numeric behaviour inside classes with methods, which is a great example of encapsulation and abstraction in action.</p>
+            </div>
+        </div>
+
+        <!-- ════════ SUMMARY ════════ -->
+        <div class="section">
+            <div class="section-title">
+                <div class="section-number">✓</div>
+                Module 05 Complete — Full Summary
+            </div>
+
+            <div class="success-box">
+                <div class="success-box-title">🎉 Everything Covered in Module 05 (All Three Parts)</div>
+                <div class="rules-list" style="margin-top:12px;">
+                    <div class="rule-item">
+                        <div class="rule-badge" style="background:linear-gradient(135deg,#dc2626,#b91c1c);">🔒</div>
+                        <div class="rule-content">
+                            <div class="rule-title">Mutable vs Immutable (Part 1)</div>
+                            <div class="rule-desc">Three rules for an immutable class: all fields private, no setters, no getter returning a mutable reference (return defensive copies instead).</div>
+                        </div>
+                    </div>
+                    <div class="rule-item">
+                        <div class="rule-badge" style="background:linear-gradient(135deg,#d97706,#b45309);">🔧</div>
+                        <div class="rule-content">
+                            <div class="rule-title">Dependency — "uses" (Part 2)</div>
+                            <div class="rule-desc">Temporary usage of another class as a method parameter. Not part of the object's identity. UML: dashed arrow.</div>
+                        </div>
+                    </div>
+                    <div class="rule-item">
+                        <div class="rule-badge" style="background:linear-gradient(135deg,#2563eb,#1d4ed8);">📦</div>
+                        <div class="rule-content">
+                            <div class="rule-title">Aggregation — "has-a", weak (Part 2)</div>
+                            <div class="rule-desc">The contained object can exist independently and may be shared. Received from outside via constructor parameter. UML: open diamond ◇.</div>
+                        </div>
+                    </div>
+                    <div class="rule-item">
+                        <div class="rule-badge" style="background:linear-gradient(135deg,#059669,#047857);">💎</div>
+                        <div class="rule-content">
+                            <div class="rule-title">Composition — "owns-a", strong (Part 2)</div>
+                            <div class="rule-desc">The contained object is created inside the owner and cannot outlive it. Created inside constructor with <code>new</code>. UML: filled diamond ◆.</div>
+                        </div>
+                    </div>
+                    <div class="rule-item">
+                        <div class="rule-badge" style="background:linear-gradient(135deg,#7c3aed,#6d28d9);">🔄</div>
+                        <div class="rule-content">
+                            <div class="rule-title">Self-Aggregation (Part 2)</div>
+                            <div class="rule-desc">A class that has a field of its own type (e.g., <code>Student supervisor</code> inside <code>Student</code>). Foundation for Linked Lists in Data Structures.</div>
+                        </div>
+                    </div>
+                    <div class="rule-item">
+                        <div class="rule-badge" style="background:linear-gradient(135deg,#0d9488,#0f766e);">🔢</div>
+                        <div class="rule-content">
+                            <div class="rule-title">Multiplicity (Part 2)</div>
+                            <div class="rule-desc">Specifies how many objects participate in a relationship: <code>1</code>, <code>0..1</code>, <code>*</code>, <code>1..*</code>, ranges like <code>5..60</code>.</div>
+                        </div>
+                    </div>
+                    <div class="rule-item">
+                        <div class="rule-badge" style="background:linear-gradient(135deg,#d97706,#f59e0b);">🎁</div>
+                        <div class="rule-content">
+                            <div class="rule-title">Wrapper Classes (Part 3)</div>
+                            <div class="rule-desc">Java wraps each of the 8 primitives in a class (e.g., <code>int → Integer</code>) to allow them to be used as objects. Auto-boxing/unboxing handles conversions automatically.</div>
+                        </div>
+                    </div>
+                    <div class="rule-item">
+                        <div class="rule-badge" style="background:linear-gradient(135deg,#e11d48,#be123c);">🔢</div>
+                        <div class="rule-content">
+                            <div class="rule-title">BigInteger &amp; BigDecimal (Part 3)</div>
+                            <div class="rule-desc">Java library classes for arbitrarily large integers and high-precision decimals. Use methods (<code>add()</code>, <code>multiply()</code>) — not operators. Essential for cryptography and finance.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div><!-- /content -->
+
+    <!-- ════════ NAV ════════ -->
+    <div class="nav-buttons">
+        <a href="02-object-relationships.html" class="nav-btn prev">← Part 2: Object Relationships</a>
+        <a href="../index.html" class="nav-btn home">🏠 Home</a>
+        <a href="../module06-inheritance/01-inheritance.html" class="nav-btn next">Module 06: Inheritance →</a>
+    </div>
+
+</div><!-- /container -->
+</body>
+</html>

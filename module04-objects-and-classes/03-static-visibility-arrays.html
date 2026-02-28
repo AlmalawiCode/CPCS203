@@ -934,10 +934,12 @@
             border-top: 2px solid #e5e7eb;
         }
         .nav-btn {
-            padding: 12px 25px;
+            padding: 9px 16px;
             border-radius: 10px;
             text-decoration: none;
             font-weight: bold;
+            font-size: .8rem;
+            white-space: nowrap;
             transition: transform 0.2s, box-shadow 0.2s;
         }
         .nav-btn:hover {
@@ -953,6 +955,7 @@
             background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             color: white;
         }
+        .nav-btn.home { background: white; color: var(--secondary-color); border: 2px solid var(--secondary-color); }
 
         /* Footer */
         .footer {
@@ -1233,6 +1236,12 @@
 <body>
 <a href="03-static-visibility-arrays-ar.html" class="lang-switch">🇸🇦 العربية</a>
 <div class="container">
+
+    <div class="nav-buttons">
+        <a href="02-constructors-and-this.html" class="nav-btn prev">← Previous: Constructors &amp; this</a>
+        <a href="../index.html" class="nav-btn home">🏠 Home</a>
+        <a href="../module05-oo-thinking/01-immutable-objects.html" class="nav-btn next">Module 05: OO Thinking →</a>
+    </div>
 
     <!-- ══════════════════════════════════════════
          HEADER
@@ -2430,8 +2439,9 @@ System.out.<span class="method">println</span>(students[<span class="number">0</
 
     <!-- Navigation -->
     <div class="nav-buttons">
-        <a href="02-constructors-and-this.html" class="nav-btn prev">&larr; Previous: Constructors &amp; this</a>
-        <a href="../index.html" class="nav-btn next">&#127968; Course Home</a>
+        <a href="02-constructors-and-this.html" class="nav-btn prev">← Previous: Constructors &amp; this</a>
+        <a href="../index.html" class="nav-btn home">🏠 Home</a>
+        <a href="../module05-oo-thinking/01-immutable-objects.html" class="nav-btn next">Module 05: OO Thinking →</a>
     </div>
 
     <div class="footer">

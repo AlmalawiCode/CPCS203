@@ -302,10 +302,12 @@
         }
 
         .nav-btn {
-            padding: 12px 25px;
+            padding: 9px 16px;
             border-radius: 10px;
             text-decoration: none;
             font-weight: bold;
+            font-size: .8rem;
+            white-space: nowrap;
             transition: transform 0.2s, box-shadow 0.2s;
         }
 
@@ -324,6 +326,7 @@
             background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             color: white;
         }
+        .nav-btn.home { background: white; color: var(--secondary-color); border: 2px solid var(--secondary-color); }
 
         /* Memory Diagrams */
         .memory-diagram {
@@ -480,6 +483,12 @@
 <body>
     <a href="02-constructors-and-this-ar.html" class="lang-switch">&#127480;&#127462; العربية</a>
     <div class="container">
+
+        <div class="nav-buttons">
+            <a href="01-intro-to-oop.html" class="nav-btn prev">← Previous: Intro to OOP</a>
+            <a href="../index.html" class="nav-btn home">🏠 Home</a>
+            <a href="03-static-visibility-arrays.html" class="nav-btn next">Next: Static &amp; Visibility →</a>
+        </div>
 
         <!-- Header -->
         <div class="header">
@@ -1658,8 +1667,9 @@ System.out.<span class="method">println</span>(rand.<span class="method">nextInt
 
         <!-- Navigation -->
         <div class="nav-buttons">
-            <a href="01-intro-to-oop.html" class="nav-btn prev">&larr; Previous: Intro to OOP</a>
-            <a href="03-static-visibility-arrays.html" class="nav-btn next">Next: Static, Visibility &amp; Arrays &rarr;</a>
+            <a href="01-intro-to-oop.html" class="nav-btn prev">← Previous: Intro to OOP</a>
+            <a href="../index.html" class="nav-btn home">🏠 Home</a>
+            <a href="03-static-visibility-arrays.html" class="nav-btn next">Next: Static &amp; Visibility →</a>
         </div>
 
         <div style="text-align: center; padding: 25px 40px; color: var(--gray-color); font-size: 0.9rem; border-top: 1px solid #e5e7eb; line-height: 1.8;">

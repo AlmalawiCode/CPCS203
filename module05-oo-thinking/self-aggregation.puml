@@ -1,0 +1,28 @@
+@startuml self-aggregation
+
+skinparam classAttributeIconSize 0
+skinparam classFontName Consolas
+skinparam classFontSize 13
+skinparam classBackgroundColor #EFF6FF
+skinparam classBorderColor #2563EB
+skinparam classHeaderBackgroundColor #2563EB
+skinparam classFontColor #FFFFFF
+skinparam classAttributeFontColor #1F2937
+skinparam arrowColor #7C3AED
+skinparam arrowThickness 2
+
+class Student {
+  - id         : int
+  - name       : String
+  - supervisor : Student
+  --
+  + Student(id: int, name: String)
+  + setSupervisor(s: Student) : void
+  + getSupervisor() : Student
+  + getId()   : int
+  + getName() : String
+}
+
+Student "0..1" o-- "0..1" Student : supervisor >
+
+@enduml

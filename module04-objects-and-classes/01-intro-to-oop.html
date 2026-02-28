@@ -625,10 +625,12 @@
         }
 
         .nav-btn {
-            padding: 12px 25px;
+            padding: 9px 16px;
             border-radius: 10px;
             text-decoration: none;
             font-weight: bold;
+            font-size: .8rem;
+            white-space: nowrap;
             transition: transform 0.2s, box-shadow 0.2s;
         }
 
@@ -647,6 +649,7 @@
             background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             color: white;
         }
+        .nav-btn.home { background: white; color: var(--secondary-color); border: 2px solid var(--secondary-color); }
 
         /* Language Switch */
         .lang-switch {
@@ -683,6 +686,12 @@
 <body>
     <a href="01-intro-to-oop-ar.html" class="lang-switch">&#127480;&#127462; العربية</a>
     <div class="container">
+
+        <div class="nav-buttons">
+            <a href="../module03-string/04-stringbuilder-buffer.html" class="nav-btn prev">← Module 03: String</a>
+            <a href="../index.html" class="nav-btn home">🏠 Home</a>
+            <a href="02-constructors-and-this.html" class="nav-btn next">Next: Constructors &amp; this →</a>
+        </div>
 
         <!-- Header -->
         <div class="header">
@@ -1577,8 +1586,9 @@ system.<span class="method">trackOrder</span>(<span class="number">3001</span>);
 
         <!-- Navigation -->
         <div class="nav-buttons">
-            <a href="../index.html" class="nav-btn prev">&larr; Back to Course</a>
-            <a href="02-constructors-and-this.html" class="nav-btn next">Next: Constructors &amp; this Keyword &rarr;</a>
+            <a href="../module03-string/04-stringbuilder-buffer.html" class="nav-btn prev">← Module 03: String</a>
+            <a href="../index.html" class="nav-btn home">🏠 Home</a>
+            <a href="02-constructors-and-this.html" class="nav-btn next">Next: Constructors &amp; this →</a>
         </div>
 
         <div style="text-align: center; padding: 25px 40px; color: var(--gray-color); font-size: 0.9rem; border-top: 1px solid #e5e7eb; line-height: 1.8;">

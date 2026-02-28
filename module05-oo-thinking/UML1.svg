@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" height="711px" preserveAspectRatio="none" style="width:1029px;height:711px;background:#FFFFFF;" version="1.1" viewBox="0 0 1029 711" width="1029px" zoomAndPan="magnify">
+    <defs/>
+    <g>
+        <!--class Student-->
+        <g id="elem_Student">
+            <rect codeLine="19" fill="#FAFAFA" height="257.7471" id="Student" rx="2.5" ry="2.5" style="stroke:#333333;stroke-width:1.5;" width="303" x="471.5" y="7"/>
+            <ellipse cx="594.75" cy="23" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/>
+            <path d="M597.7188,28.6406 Q597.1406,28.9375 596.5,29.0781 Q595.8594,29.2344 595.1563,29.2344 Q592.6563,29.2344 591.3281,27.5938 Q590.0156,25.9375 590.0156,22.8125 Q590.0156,19.6875 591.3281,18.0313 Q592.6563,16.375 595.1563,16.375 Q595.8594,16.375 596.5,16.5313 Q597.1563,16.6875 597.7188,16.9844 L597.7188,19.7031 Q597.0938,19.125 596.5,18.8594 Q595.9063,18.5781 595.2813,18.5781 Q593.9375,18.5781 593.25,19.6563 Q592.5625,20.7188 592.5625,22.8125 Q592.5625,24.9063 593.25,25.9844 Q593.9375,27.0469 595.2813,27.0469 Q595.9063,27.0469 596.5,26.7813 Q597.0938,26.5 597.7188,25.9219 L597.7188,28.6406 Z " fill="#000000"/>
+            <text fill="#000000" font-family="Consolas" font-size="13" lengthAdjust="spacing" textLength="48" x="615.25" y="28.044">Student</text>
+            <line style="stroke:#333333;stroke-width:1.5;" x1="472.5" x2="773.5" y1="39" y2="39"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="72" x="477.5" y="57.9659">-id       : int</text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="111" x="477.5" y="77.0339">-name     : Name</text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="130" x="477.5" y="96.1018">-address  : Address</text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="98" x="477.5" y="115.1697">-marks    : int[]</text>
+            <line style="stroke:#333333;stroke-width:1.0;" x1="472.5" x2="773.5" y1="123.2717" y2="123.2717"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="192" x="477.5" y="142.2376">+Student(id: int, first: String,</text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="202" x="485.5" y="161.3055">last: String, address: Address)</text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="110" x="477.5" y="180.3734">+getId()        : int</text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="159" x="477.5" y="199.4414">+getFullName()  : String</text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="168" x="477.5" y="218.5093">+getAddress()   : Address</text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="135" x="477.5" y="237.5772">+getMarks()     : int[]</text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="291" x="477.5" y="256.6451">+calculateBMI(calc: BMICalculator) : double</text>
+        </g>
+        <!--class Name-->
+        <g id="elem_Name">
+            <rect codeLine="33" fill="#FAFAFA" height="162.4075" id="Name" rx="2.5" ry="2.5" style="stroke:#333333;stroke-width:1.5;" width="225" x="510.5" y="381.5"/>
+            <ellipse cx="600.75" cy="397.5" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/>
+            <path d="M603.7188,403.1406 Q603.1406,403.4375 602.5,403.5781 Q601.8594,403.7344 601.1563,403.7344 Q598.6563,403.7344 597.3281,402.0938 Q596.0156,400.4375 596.0156,397.3125 Q596.0156,394.1875 597.3281,392.5313 Q598.6563,390.875 601.1563,390.875 Q601.8594,390.875 602.5,391.0313 Q603.1563,391.1875 603.7188,391.4844 L603.7188,394.2031 Q603.0938,393.625 602.5,393.3594 Q601.9063,393.0781 601.2813,393.0781 Q599.9375,393.0781 599.25,394.1563 Q598.5625,395.2188 598.5625,397.3125 Q598.5625,399.4063 599.25,400.4844 Q599.9375,401.5469 601.2813,401.5469 Q601.9063,401.5469 602.5,401.2813 Q603.0938,401 603.7188,400.4219 L603.7188,403.1406 Z " fill="#000000"/>
+            <text fill="#000000" font-family="Consolas" font-size="13" lengthAdjust="spacing" textLength="36" x="621.25" y="402.544">Name</text>
+            <line style="stroke:#333333;stroke-width:1.5;" x1="511.5" x2="734.5" y1="413.5" y2="413.5"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="125" x="516.5" y="432.4659">-firstName : String</text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="126" x="516.5" y="451.5339">-lastName  : String</text>
+            <line style="stroke:#333333;stroke-width:1.0;" x1="511.5" x2="734.5" y1="459.6358" y2="459.6358"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="213" x="516.5" y="478.6018">+Name(first: String, last: String)</text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="160" x="516.5" y="497.6697">+getFirstName() : String</text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="162" x="516.5" y="516.7376">+getLastName()  : String</text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="159" x="516.5" y="535.8055">+getFullName()  : String</text>
+        </g>
+        <!--class Address-->
+        <g id="elem_Address">
+            <rect codeLine="43" fill="#FAFAFA" height="200.5433" id="Address" rx="2.5" ry="2.5" style="stroke:#333333;stroke-width:1.5;" width="171" x="778.5" y="362"/>
+            <ellipse cx="835.75" cy="378" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/>
+            <path d="M838.7188,383.6406 Q838.1406,383.9375 837.5,384.0781 Q836.8594,384.2344 836.1563,384.2344 Q833.6563,384.2344 832.3281,382.5938 Q831.0156,380.9375 831.0156,377.8125 Q831.0156,374.6875 832.3281,373.0313 Q833.6563,371.375 836.1563,371.375 Q836.8594,371.375 837.5,371.5313 Q838.1563,371.6875 838.7188,371.9844 L838.7188,374.7031 Q838.0938,374.125 837.5,373.8594 Q836.9063,373.5781 836.2813,373.5781 Q834.9375,373.5781 834.25,374.6563 Q833.5625,375.7188 833.5625,377.8125 Q833.5625,379.9063 834.25,380.9844 Q834.9375,382.0469 836.2813,382.0469 Q836.9063,382.0469 837.5,381.7813 Q838.0938,381.5 838.7188,380.9219 L838.7188,383.6406 Z " fill="#000000"/>
+            <text fill="#000000" font-family="Consolas" font-size="13" lengthAdjust="spacing" textLength="48" x="856.25" y="383.044">Address</text>
+            <line style="stroke:#333333;stroke-width:1.5;" x1="779.5" x2="948.5" y1="394" y2="394"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="97" x="784.5" y="412.9659">-street : String</text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="89" x="784.5" y="432.0339">-city   : String</text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="70" x="784.5" y="451.1018">-unit   : int</text>
+            <line style="stroke:#333333;stroke-width:1.0;" x1="779.5" x2="948.5" y1="459.2038" y2="459.2038"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="159" x="784.5" y="478.1697">+Address(street: String,</text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="137" x="792.5" y="497.2376">city: String, unit: int)</text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="131" x="784.5" y="516.3055">+getStreet() : String</text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="124" x="784.5" y="535.3734">+getCity()   : String</text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="104" x="784.5" y="554.4414">+getUnit()   : int</text>
+        </g>
+        <!--class BMICalculator-->
+        <g id="elem_BMICalculator">
+            <rect codeLine="54" fill="#FAFAFA" height="181.4754" id="BMICalculator" rx="2.5" ry="2.5" style="stroke:#333333;stroke-width:1.5;" width="224" x="7" y="372"/>
+            <ellipse cx="72.75" cy="388" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/>
+            <path d="M75.7188,393.6406 Q75.1406,393.9375 74.5,394.0781 Q73.8594,394.2344 73.1563,394.2344 Q70.6563,394.2344 69.3281,392.5938 Q68.0156,390.9375 68.0156,387.8125 Q68.0156,384.6875 69.3281,383.0313 Q70.6563,381.375 73.1563,381.375 Q73.8594,381.375 74.5,381.5313 Q75.1563,381.6875 75.7188,381.9844 L75.7188,384.7031 Q75.0938,384.125 74.5,383.8594 Q73.9063,383.5781 73.2813,383.5781 Q71.9375,383.5781 71.25,384.6563 Q70.5625,385.7188 70.5625,387.8125 Q70.5625,389.9063 71.25,390.9844 Q71.9375,392.0469 73.2813,392.0469 Q73.9063,392.0469 74.5,391.7813 Q75.0938,391.5 75.7188,390.9219 L75.7188,393.6406 Z " fill="#000000"/>
+            <text fill="#000000" font-family="Consolas" font-size="13" lengthAdjust="spacing" textLength="84" x="93.25" y="393.044">BMICalculator</text>
+            <line style="stroke:#333333;stroke-width:1.5;" x1="8" x2="230" y1="404" y2="404"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="110" x="13" y="422.9659">-weight : double</text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="108" x="13" y="442.0339">-height : double</text>
+            <line style="stroke:#333333;stroke-width:1.0;" x1="8" x2="230" y1="450.1358" y2="450.1358"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="212" x="13" y="469.1018">+BMICalculator(weight: double,</text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="103" x="21" y="488.1697">height: double)</text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="124" x="13" y="507.2376">+getBMI() : double</text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" text-decoration="underline" textLength="166" x="13" y="526.3055">+getBMI(weight: double,</text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" text-decoration="underline" textLength="162" x="21" y="545.3734">height: double) : double</text>
+        </g>
+        <g id="elem_GMN9">
+            <path d="M809.5,104.5 L809.5,132 L774.65,136 L809.5,140 L809.5,167.618 A0,0 0 0 0 809.5,167.618 L1022.5,167.618 A0,0 0 0 0 1022.5,167.618 L1022.5,114.5 L1012.5,104.5 L809.5,104.5 A0,0 0 0 0 809.5,104.5 " fill="#FFFDE7" style="stroke:#F9A825;stroke-width:0.5;"/>
+            <path d="M1012.5,104.5 L1012.5,114.5 L1022.5,114.5 L1012.5,104.5 " fill="#FFFDE7" style="stroke:#F9A825;stroke-width:0.5;"/>
+            <text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="116" x="815.5" y="123.397">Aggregating class</text>
+            <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="192" x="815.5" y="141.103">Collects Name, Address as fields.</text>
+            <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="192" x="815.5" y="158.809">Uses BMICalculator temporarily.</text>
+        </g>
+        <g id="elem_GMN12">
+            <path d="M499.5,624 L499.5,704.8241 A0,0 0 0 0 499.5,704.8241 L732.5,704.8241 A0,0 0 0 0 732.5,704.8241 L732.5,634 L722.5,624 L621.39,624 L620.19,543.7 L613.39,624 L499.5,624 A0,0 0 0 0 499.5,624 " fill="#FFFDE7" style="stroke:#F9A825;stroke-width:0.5;"/>
+            <path d="M722.5,624 L722.5,634 L732.5,634 L722.5,624 " fill="#FFFDE7" style="stroke:#F9A825;stroke-width:0.5;"/>
+            <text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="95" x="505.5" y="642.897">Composition ◆</text>
+            <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="212" x="505.5" y="660.603">Created inside Student constructor.</text>
+            <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="189" x="505.5" y="678.309">Cannot exist without a Student.</text>
+            <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="142" x="505.5" y="696.0151">Dies when Student dies.</text>
+        </g>
+        <g id="elem_GMN15">
+            <path d="M768,624 L768,704.8241 A0,0 0 0 0 768,704.8241 L988,704.8241 A0,0 0 0 0 988,704.8241 L988,634 L978,624 L879.22,624 L870.98,563.21 L871.22,624 L768,624 A0,0 0 0 0 768,624 " fill="#FFFDE7" style="stroke:#F9A825;stroke-width:0.5;"/>
+            <path d="M978,624 L978,634 L988,634 L978,624 " fill="#FFFDE7" style="stroke:#F9A825;stroke-width:0.5;"/>
+            <text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="95" x="774" y="642.897">Aggregation ◇</text>
+            <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="160" x="774" y="660.603">Created outside, passed in.</text>
+            <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="199" x="774" y="678.309">Can be shared by many students.</text>
+            <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="143" x="774" y="696.0151">Survives independently.</text>
+        </g>
+        <g id="elem_GMN18">
+            <path d="M266.5,413 L266.5,458.5 L231.22,462.5 L266.5,466.5 L266.5,511.5301 A0,0 0 0 0 266.5,511.5301 L475.5,511.5301 A0,0 0 0 0 475.5,511.5301 L475.5,423 L465.5,413 L266.5,413 A0,0 0 0 0 266.5,413 " fill="#FFFDE7" style="stroke:#F9A825;stroke-width:0.5;"/>
+            <path d="M465.5,413 L465.5,423 L475.5,423 L465.5,413 " fill="#FFFDE7" style="stroke:#F9A825;stroke-width:0.5;"/>
+            <text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="82" x="272.5" y="431.897">Dependency</text>
+            <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="188" x="272.5" y="449.603">Passed as a method parameter.</text>
+            <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="126" x="272.5" y="467.309">NOT stored as a field.</text>
+            <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="177" x="272.5" y="485.0151">Not part of student's identity.</text>
+            <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="143" x="272.5" y="502.7211">Can also be made static.</text>
+        </g>
+        <!--reverse link Student to Name-->
+        <g id="link_Student_Name">
+            <path codeLine="67" d="M623,277.25 C623,316.4 623,346.32 623,381.32 " fill="none" id="Student-backto-Name" style="stroke:#333333;stroke-width:1.8;"/>
+            <polygon fill="#333333" points="623,265.25,619,271.25,623,277.25,627,271.25,623,265.25" style="stroke:#333333;stroke-width:1.8;"/>
+            <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="75" x="624" y="309.897">composition</text>
+            <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="45" x="639" y="327.603">◆ owns</text>
+            <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="7" x="615.8086" y="286.7064">1</text>
+            <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="7" x="615.6664" y="369.6836">1</text>
+        </g>
+        <!--reverse link Student to Address-->
+        <g id="link_Student_Address">
+            <path codeLine="71" d="M725.4053,274.8833 C749.2853,307.0333 767.39,331.42 790.06,361.94 " fill="none" id="Student-backto-Address" style="stroke:#333333;stroke-width:1.8;"/>
+            <polygon fill="none" points="718.25,265.25,718.6166,272.4518,725.4053,274.8833,725.0388,267.6816,718.25,265.25" style="stroke:#333333;stroke-width:1.8;"/>
+            <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="74" x="767" y="309.897">aggregation</text>
+            <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="34" x="787" y="327.603">◇ has</text>
+            <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="7" x="716.1035" y="286.7064">*</text>
+            <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="7" x="770.6499" y="350.1926">1</text>
+        </g>
+        <!--link Student to BMICalculator-->
+        <g id="link_Student_BMICalculator">
+            <path codeLine="75" d="M471.37,223.03 C402.4,263.47 320.42,313.41 249,362 C243.13,366 242.0496,366.6826 236.0596,370.9426 " fill="none" id="Student-to-BMICalculator" style="stroke:#333333;stroke-width:1.8;stroke-dasharray:7.0,7.0;"/>
+            <polygon fill="#333333" points="231.17,374.42,240.8226,372.4636,235.2446,371.5222,236.1861,365.9442,231.17,374.42" style="stroke:#333333;stroke-width:1.8;"/>
+            <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="41" x="367.5" y="309.897">«uses»</text>
+            <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="74" x="351" y="327.603">dependency</text>
+        </g>
+        <!--SRC=[tPRDRXit483lUeg1Sv0KIseSmqWg608KkG8Cn4uG9QUw1sgNqh9UaGB9ZQe60N9gNY10tyzFaXakkRlKgiargMrOqCnm-CqVoIuyVFdqi_zrkW2prxF5qoVdyF3f2zoejCWvFBaOmwlbdpony8Rdp0ebJIQsXipdgj0movant8nXOOkKIpk0MxRX0vYcgUR63E35pVMCvKc1YvN6PV-7N7NClP1Rfja64ef_QgqMoyBowqJ9XVWRytPeCbVIEitP-J4L9Grcc5o5aaE35oovNsjLo7IcSgNXqNnAloqpfLEklScv-pbkyZOJoRt4wi3PwA9XmhHMkwRo-Q7olvnBPNcRSZw_-ktPeLKJSlxhzFdJYqwpAq93mG_V0owXeUtXGmTW22A5ycSCGbedabJPKaH5TZ9M3WV9_9muyORfUrEj_lqF4WxntsdOfITIfnh0IcXZQUYqaEl1dGH0cbeGTgZyzvsRDRVNQQyF1v1ECI_od0197Vm4dNVYLZQHdVA6gBtJ6lmK4Z_r74-07dqPnsT17wrJLInptlaOikd6e4obYz1zRz0CNPXE6edBB3dyE3DHMgeap8FlNhyLwqjMgLgwepcgu7rUFB-ncdCRmoV2xY4cXq8AssoOCfIGyT9BL6XoKiT7oztQAhY5Mt8aiXakz2MC5U_GXrSGH1LGL2uVrewBTMRhqf4iQylAA287lN9fi7AnP96e2e4wfj_qTmeVZCNR9_aOrDzt5hLNyuI9BZBumKwLBju2cwqoWWYhMnKU3uVbyT65dcl_X4ayJe7_9Oo5dR2PAcnbJHTueZdENeeLDI95UupNwYAXmUi4kvEp4-UPFlse9VNkT_BXttz0xQGXhEbwhVcQnLWA5uVZ0Cd2122S9nCovLikoJZVEwuj7U-41IkjDe3OnDTW0dXyuXoVd05-2px7m6e2GliC6NDaLtw7P5-3ZKQJrikZ5_TpGHYMOxYQQO5qpC26Oo9JSDSLjrmxOigpmHKyhIbR_f7lyX9TcidaheevsSUTTuiNe86Vv8r3jpLeDzbg5HABitYvd5Iz8DVbk-Bob-K4LNYjv_XKDF4Ra1Ax4ZnFpGXjtj7b7gUkKOHH1nFd7WeUOAcifJPPXTiJjszC262BXitZXW-LQZG-RJyxDZSiM9F5bK30NSPbvI95oJV0wlkmcHh7zlc0pNVxe9u2pmHB3YPZs6EmtED3GEwnvTpkBccBGhyNxv4hcgSMKrMjkFKTM3qbdkbrYO35OQs-fprlNxtrRL_Qk18w1UOFBTr67hABPFI9Dqm8YEL6KLGRXiKe3-y6xrS0]-->
+    </g>
+</svg>

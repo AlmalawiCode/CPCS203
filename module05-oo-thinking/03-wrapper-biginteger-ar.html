@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>فئات التغليف و BigInteger | CPCS203</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --primary-color: #2563eb;
+            --primary-light: #3b82f6;
+            --primary-dark: #1d4ed8;
+            --secondary-color: #7c3aed;
+            --success-color: #059669;
+            --warning-color: #d97706;
+            --danger-color: #dc2626;
+            --dark-color: #1f2937;
+            --light-color: #f3f4f6;
+            --gray-color: #6b7280;
+            --teal-color: #0d9488;
+            --rose-color: #e11d48;
+        }
+
+        body {
+            font-family: 'Tajawal', 'Amiri', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.8;
+            color: var(--dark-color);
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #7c3aed 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+            overflow: hidden;
+        }
+
+        /* Language Switch Button */
+        .lang-switch {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-size: 0.95rem;
+        }
+        .lang-switch:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+
+        /* ── Header ── */
+        .header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 45px 40px;
+            text-align: center;
+        }
+        .header .module-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            border: 2px solid rgba(255,255,255,0.4);
+            border-radius: 30px;
+            padding: 6px 20px;
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+        .header h1 { font-size: 2.6rem; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.2); }
+        .header .subtitle { font-size: 1.15rem; opacity: 0.9; margin-bottom: 20px; }
+        .header .topics-pill-row { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
+        .topic-pill { background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.35); border-radius: 20px; padding: 5px 16px; font-size: 0.82rem; }
+
+        /* ── TOC ── */
+        .toc {
+            background: linear-gradient(135deg, #f0f4ff, #e8ecff);
+            border-right: 5px solid var(--primary-color);
+            margin: 30px 40px;
+            border-radius: 15px 0 0 15px;
+            padding: 25px 30px;
+        }
+        .toc-title { font-size: 1.1rem; font-weight: bold; color: var(--primary-color); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+        .toc ol { padding-right: 22px; padding-left: 0; }
+        .toc li { padding: 4px 0; }
+        .toc a { color: var(--primary-dark); text-decoration: none; font-size: 0.95rem; }
+        .toc a:hover { text-decoration: underline; }
+
+        /* ── Content ── */
+        .content { padding: 10px 40px 40px; }
+
+        /* ── Sections ── */
+        .section { margin-bottom: 60px; }
+        .section-title {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--primary-color);
+            padding-bottom: 10px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .section-number {
+            background: var(--primary-color);
+            color: white;
+            width: 42px; height: 42px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem; font-weight: bold; flex-shrink: 0;
+        }
+
+        /* ── Boxes ── */
+        .narrative {
+            background: linear-gradient(135deg, #f0f4ff, #e8ecff);
+            border-right: 5px solid var(--primary-color);
+            padding: 22px 28px; margin: 20px 0;
+            border-radius: 15px 0 0 15px;
+            font-size: 1.03rem; line-height: 2;
+        }
+        .narrative p { margin-bottom: 12px; }
+        .narrative p:last-child { margin-bottom: 0; }
+
+        .key-concept {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border-right: 5px solid var(--warning-color);
+            padding: 20px 25px; margin: 20px 0;
+            border-radius: 10px 0 0 10px;
+        }
+        .key-concept-title { font-weight: bold; color: var(--warning-color); margin-bottom: 10px; font-size: 1.05rem; display: flex; align-items: center; gap: 7px; }
+
+        .important-box {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            border-right: 5px solid var(--danger-color);
+            padding: 20px 25px; margin: 20px 0;
+            border-radius: 10px 0 0 10px;
+        }
+        .important-box-title { font-weight: bold; color: var(--danger-color); margin-bottom: 10px; font-size: 1.05rem; display: flex; align-items: center; gap: 7px; }
+
+        .info-box {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            border-right: 5px solid var(--primary-color);
+            padding: 20px 25px; margin: 20px 0;
+            border-radius: 10px 0 0 10px;
+        }
+        .info-box-title { font-weight: bold; color: var(--primary-color); margin-bottom: 10px; font-size: 1.05rem; display: flex; align-items: center; gap: 7px; }
+
+        .success-box {
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+            border-right: 5px solid var(--success-color);
+            padding: 20px 25px; margin: 20px 0;
+            border-radius: 10px 0 0 10px;
+        }
+        .success-box-title { font-weight: bold; color: var(--success-color); margin-bottom: 10px; font-size: 1.05rem; display: flex; align-items: center; gap: 7px; }
+
+        .analogy-box {
+            background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+            border: 2px dashed var(--success-color);
+            border-radius: 15px;
+            padding: 25px; margin: 20px 0;
+        }
+        .analogy-title { font-weight: bold; color: var(--success-color); font-size: 1.05rem; margin-bottom: 10px; display: flex; align-items: center; gap: 7px; }
+
+        /* ── Cards Grid ── */
+        .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); gap: 20px; margin: 25px 0; }
+        .card { background: white; border-radius: 15px; padding: 25px; border: 2px solid #e2e8f0; box-shadow: 0 4px 10px rgba(0,0,0,0.05); transition: transform 0.2s, box-shadow 0.2s; }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .card-icon { font-size: 2.4rem; margin-bottom: 12px; }
+        .card-title { font-size: 1.15rem; font-weight: bold; margin-bottom: 8px; }
+        .card-desc { color: var(--gray-color); font-size: 0.93rem; line-height: 1.6; }
+
+        /* ── Code Blocks ── */
+        .code-label {
+            background: #2d2d2d; color: #9cdcfe;
+            padding: 8px 15px;
+            border-radius: 10px 10px 0 0;
+            font-family: 'Consolas',monospace; font-size: 0.83rem;
+            display: inline-block;
+        }
+        .code-block {
+            background: #1e1e1e; color: #d4d4d4;
+            padding: 22px;
+            border-radius: 0 10px 10px 10px;
+            margin: 0 0 20px;
+            overflow-x: auto;
+            font-family: 'Consolas','Monaco',monospace;
+            font-size: 0.92rem; line-height: 1.7; white-space: pre;
+            direction: ltr; text-align: left;
+        }
+        .code-block .keyword  { color: #569cd6; }
+        .code-block .type     { color: #4ec9b0; }
+        .code-block .string   { color: #ce9178; }
+        .code-block .number   { color: #b5cea8; }
+        .code-block .comment  { color: #6a9955; font-style: italic; }
+        .code-block .method   { color: #dcdcaa; }
+        .code-block .annot    { color: #c586c0; }
+        .code-block .cls      { color: #4ec9b0; }
+        .code-inline {
+            background: #e5e7eb; padding: 2px 8px; border-radius: 4px;
+            font-family: 'Consolas','Monaco',monospace; font-size: 0.88rem;
+            color: var(--danger-color);
+            direction: ltr; display: inline-block;
+        }
+
+        /* ── Comparison Table ── */
+        .comparison-table {
+            width: 100%; border-collapse: separate; border-spacing: 0;
+            margin: 20px 0; border-radius: 12px; overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+        .comparison-table thead th { background: var(--dark-color); color: white; padding: 14px 20px; text-align: right; }
+        .comparison-table tbody td { padding: 12px 20px; border-bottom: 1px solid #e5e7eb; font-size: 0.93rem; }
+        .comparison-table tbody tr:nth-child(even) { background: #f9fafb; }
+        .comparison-table tbody tr:last-child td { border-bottom: none; }
+        .comparison-table tbody tr:hover { background: #eff6ff; }
+
+        /* ── Wrapper visual ── */
+        .wrapper-outer {
+            border: 4px dashed var(--secondary-color);
+            border-radius: 18px;
+            padding: 20px 30px;
+            display: inline-flex;
+            align-items: center;
+            gap: 20px;
+            background: linear-gradient(135deg, #faf5ff, #f3e8ff);
+            position: relative;
+        }
+        .wrapper-label {
+            position: absolute;
+            top: -13px; right: 20px;
+            background: var(--secondary-color);
+            color: white;
+            padding: 2px 12px;
+            border-radius: 10px;
+            font-size: 0.78rem; font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .wrapper-inner {
+            background: white;
+            border: 3px solid var(--primary-color);
+            border-radius: 12px;
+            padding: 14px 20px;
+            text-align: center;
+            font-family: 'Consolas',monospace;
+        }
+
+        /* ── Big Number Visual ── */
+        .big-num-demo {
+            background: #1e1e1e;
+            color: #b5cea8;
+            border-radius: 12px;
+            padding: 20px 25px;
+            font-family: 'Consolas',monospace;
+            font-size: 0.92rem;
+            margin: 20px 0;
+            line-height: 1.9;
+            direction: ltr; text-align: left;
+        }
+        .big-num-demo .result { color: #dcdcaa; font-weight: bold; }
+        .big-num-demo .label  { color: #9cdcfe; }
+
+        /* ── Nav ── */
+        .nav-buttons { display: flex; justify-content: space-between; padding: 30px 40px; background: var(--light-color); border-top: 2px solid #e5e7eb; }
+        .nav-btn { padding: 9px 16px; border-radius: 10px; text-decoration: none; font-weight: bold; font-size: .8rem; white-space: nowrap; transition: transform 0.2s, box-shadow 0.2s; }
+        .nav-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+        .nav-btn.prev { background: white; color: var(--primary-color); border: 2px solid var(--primary-color); }
+        .nav-btn.next { background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); color: white; }
+        .nav-btn.home { background: white; color: var(--secondary-color); border: 2px solid var(--secondary-color); }
+
+        /* ── Rules list ── */
+        .rules-list { display: flex; flex-direction: column; gap: 14px; margin: 20px 0; }
+        .rule-item { display: flex; align-items: flex-start; gap: 15px; background: #f8fafc; border-radius: 12px; padding: 18px 22px; border: 2px solid #e2e8f0; }
+        .rule-badge { background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); color: white; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.95rem; flex-shrink: 0; }
+        .rule-content { flex: 1; }
+        .rule-title { font-weight: bold; color: var(--primary-color); margin-bottom: 4px; }
+        .rule-desc  { color: var(--gray-color); font-size: 0.93rem; }
+
+        @media (max-width: 600px) {
+            .header h1 { font-size: 1.8rem; }
+            .content   { padding: 10px 20px 30px; }
+            .toc       { margin: 20px; }
+            .nav-buttons { flex-direction: column; gap: 12px; }
+        }
+
+        /* Fix angle brackets in inline code inside RTL context */
+        code {
+            direction: ltr;
+            unicode-bidi: isolate;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+
+<!-- زر تبديل اللغة -->
+<a href="03-wrapper-biginteger.html" class="lang-switch">English &#127468;&#127463;</a>
+
+<div class="container">
+
+    <div class="nav-buttons">
+        <a href="../module06-inheritance/01-inheritance-ar.html" class="nav-btn next">التالي: الوحدة السادسة &larr;</a>
+        <a href="../index.html" class="nav-btn home">&#127968; الرئيسية</a>
+        <a href="02-object-relationships-ar.html" class="nav-btn prev">&rarr; السابق: علاقات الكائنات</a>
+    </div>
+
+    <!-- ════════ الترويسة ════════ -->
+    <div class="header">
+        <div class="module-badge">CPCS203 &nbsp;&middot;&nbsp; الوحدة 05 &nbsp;&middot;&nbsp; الجزء 3 من 3</div>
+        <h1>&#127873; فئات التغليف والأعداد الكبيرة</h1>
+        <p class="subtitle">Wrapper Classes و BigInteger | البرمجة كائنية التوجه &mdash; الوحدة الخامسة، الجزء الثالث</p>
+        <div class="topics-pill-row">
+            <span class="topic-pill">&#127873; فئات التغليف (Wrapper Classes)</span>
+            <span class="topic-pill">&#128260; التغليف التلقائي (Auto-Boxing)</span>
+            <span class="topic-pill">&#128290; BigInteger</span>
+            <span class="topic-pill">&#128208; BigDecimal</span>
+        </div>
+    </div>
+
+    <!-- ════════ جدول المحتويات ════════ -->
+    <div class="toc">
+        <div class="toc-title">&#128203; جدول المحتويات</div>
+        <ol>
+            <li><a href="#s1">فئات التغليف (Wrapper Classes) — تغليف الأنواع الأساسية ككائنات</a></li>
+            <li><a href="#s2">BigInteger و BigDecimal — الحسابات خارج الحدود</a></li>
+        </ol>
+    </div>
+
+    <div class="content">
+
+        <!-- ════════ القسم 1: فئات التغليف ════════ -->
+        <div class="section" id="s1">
+            <div class="section-title">
+                <div class="section-number">1</div>
+                فئات التغليف (Wrapper Classes) — تغليف الأنواع الأساسية ككائنات
+            </div>
+
+            <!-- قصة التشبيه — محول الجهد الكهربائي -->
+            <div class="analogy-box">
+                <div class="analogy-title">&#128268; قصة من الواقع: مليون جهاز!</div>
+                <p>
+                    كان أحمد رجل أعمال. سافر إلى الولايات المتحدة الأمريكية، ووجد صفقة رائعة في أحد المصانع، فاشترى <strong>مليون جهاز إلكتروني</strong> — مستثمرًا كل ما يملك. وصلت الشحنة إلى ميناء جدة. فتح الصندوق الأول، وصل الجهاز بالكهرباء... لا شيء. رائحة احتراق. &#128168;
+                </p>
+                <p style="margin-top:10px;">
+                    الأجهزة مصممة لـ <strong>110 فولت</strong>، أما المملكة العربية السعودية فتعمل على <strong>220 فولت</strong>. مليون جهاز — غير متوافق تمامًا. لا يستطيع بيع جهاز واحد. انتهى مشروعه قبل أن يبدأ.
+                </p>
+                <p style="margin-top:10px;">
+                    ثم اتصل به صديقه خالد. <em>"يا أحمد — لا تلمس أي جهاز. ابنِ صندوقًا صغيرًا: يأخذ 220 فولتًا من الحائط، يحوّلها إلى 110 فولت في الداخل، ويعطي جهازك ما يحتاجه بالضبط. ضعه في المنتصف."</em> وضع أحمد <strong>صندوق التغليف (Wrapper)</strong> في المنتصف — دون أن يتغيّر شيء على أي من الجانبين — ونجح مشروعه. &#127881;
+                </p>
+                <p style="margin-top:10px;">
+                    لدى Java نفس المشكلة. <strong>الأنواع الأساسية (Primitives)</strong> (<code>int</code>, <code>double</code>, <code>char</code>...) تعمل بشكل ممتاز وحدها، لكن عالم Java الكائني — <code>ArrayList</code>، والأنواع العامة (Generics)، والمكتبات — يقبل <strong>الكائنات (Objects)</strong> فقط. حل Java هو بالضبط صندوق خالد: <strong>فئة التغليف (Wrapper Class)</strong> (<code>Integer</code>, <code>Double</code>, <code>Character</code>...) توضع في المنتصف. لا يتغير شيء على أي من الجانبين.
+                </p>
+            </div>
+
+            <div class="narrative">
+                <p>في Java، توجد <strong>8 أنواع أساسية (Primitive Types)</strong>: <code>byte, short, int, long, float, double, char, boolean</code>. بعض واجهات برمجة Java وهياكل البيانات (مثل <code>ArrayList</code>) تعمل مع <strong>الكائنات (Objects)</strong> فقط، وليس مع الأنواع الأساسية. الحل؟ توفر Java <strong>فئة تغليف (Wrapper Class)</strong> لكل نوع أساسي تقوم بتغليفه داخل كائن!</p>
+            </div>
+
+            <!-- رسم توضيحي للتغليف -->
+            <div style="text-align:center; margin: 25px 0;">
+                <div class="wrapper-outer">
+                    <span class="wrapper-label">Wrapper Class: Integer</span>
+                    <div style="text-align:center;">
+                        <div style="font-size:0.8rem; color:var(--gray-color); margin-bottom:5px;">الخارج (عالم الكائنات)</div>
+                        <div class="wrapper-inner">
+                            <div style="font-size:0.78rem; color:var(--gray-color);">كائن Integer</div>
+                            <div style="font-size:1.5rem; font-weight:bold; color:var(--secondary-color);">42</div>
+                            <div style="font-size:0.72rem; color:var(--gray-color); margin-top:4px;">private int value = 42;</div>
+                        </div>
+                        <div style="font-size:0.8rem; color:var(--gray-color); margin-top:5px;">
+                            الدوال: <code>intValue()</code>، <code>compareTo()</code>، <code>parseInt()</code>...
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- جدول: النوع الأساسي وفئة التغليف -->
+            <table class="comparison-table" dir="ltr">
+                <thead>
+                    <tr>
+                        <th>النوع الأساسي (Primitive Type)</th>
+                        <th>فئة التغليف (Wrapper Class)</th>
+                        <th>مثال</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>byte</code></td><td><code>Byte</code></td><td><code>Byte b = new Byte((byte)5);</code></td></tr>
+                    <tr><td><code>short</code></td><td><code>Short</code></td><td><code>Short s = new Short((short)100);</code></td></tr>
+                    <tr><td><code>int</code></td><td><code>Integer</code></td><td><code>Integer i = new Integer(42);</code></td></tr>
+                    <tr><td><code>long</code></td><td><code>Long</code></td><td><code>Long l = new Long(100L);</code></td></tr>
+                    <tr><td><code>float</code></td><td><code>Float</code></td><td><code>Float f = new Float(3.14f);</code></td></tr>
+                    <tr><td><code>double</code></td><td><code>Double</code></td><td><code>Double d = new Double(2.718);</code></td></tr>
+                    <tr><td><code>char</code></td><td><code>Character</code></td><td><code>Character c = new Character('A');</code></td></tr>
+                    <tr><td><code>boolean</code></td><td><code>Boolean</code></td><td><code>Boolean b = new Boolean(true);</code></td></tr>
+                </tbody>
+            </table>
+
+            <div class="code-label">&#128196; WrapperDemo.java</div>
+            <div class="code-block"><span class="keyword">public class</span> <span class="cls">WrapperDemo</span> {
+    <span class="keyword">public static void</span> <span class="method">main</span>(<span class="type">String</span>[] args) {
+
+        <span class="comment">// التغليف التلقائي (Autoboxing): النوع الأساسي → كائن التغليف (Java تفعل هذا تلقائيًا)</span>
+        <span class="cls">Integer</span> intObj = <span class="number">42</span>;           <span class="comment">// مثل: new Integer(42)</span>
+        <span class="cls">Double</span>  dblObj = <span class="number">3.14</span>;         <span class="comment">// مثل: new Double(3.14)</span>
+
+        <span class="comment">// فك التغليف التلقائي (Auto-unboxing): كائن التغليف → النوع الأساسي (Java تفعل هذا تلقائيًا)</span>
+        <span class="keyword">int</span>    x = intObj;              <span class="comment">// مثل: intObj.intValue()</span>
+        <span class="keyword">double</span> y = dblObj;             <span class="comment">// مثل: dblObj.doubleValue()</span>
+
+        <span class="comment">// دوال ثابتة مفيدة</span>
+        <span class="keyword">int</span>    parsed  = <span class="cls">Integer</span>.<span class="method">parseInt</span>(<span class="string">"123"</span>);  <span class="comment">// String → int</span>
+        <span class="type">String</span> asStr   = <span class="cls">Integer</span>.<span class="method">toString</span>(<span class="number">456</span>);  <span class="comment">// int → String</span>
+        <span class="keyword">int</span>    maxVal  = <span class="cls">Integer</span>.MAX_VALUE;        <span class="comment">// 2,147,483,647</span>
+        <span class="keyword">int</span>    minVal  = <span class="cls">Integer</span>.MIN_VALUE;        <span class="comment">// -2,147,483,648</span>
+
+        System.out.<span class="method">println</span>(parsed);   <span class="comment">// 123</span>
+        System.out.<span class="method">println</span>(maxVal);   <span class="comment">// 2147483647</span>
+    }
+}</div>
+
+            <!-- فئة تغليف مخصصة: MyInt -->
+            <div class="narrative" style="margin-top:22px;">
+                <p>فئات التغليف في Java مدمجة في اللغة — لكن يمكنك أيضًا <strong>بناء فئة التغليف الخاصة بك</strong>. هذه فكرة قوية: خذ أي نوع أساسي، ولفّه داخل صنف، وأضف أي دوال تحتاجها. على سبيل المثال، يمكننا تعريف صنف يسمى <code>MyInt</code> يلفّ نوع <code>int</code> ويوفر وظائف إضافية.</p>
+            </div>
+
+            <div class="code-label">&#128196; MyInt.java — فئة التغليف المخصصة الخاصة بك</div>
+            <div class="code-block"><span class="keyword">public class</span> <span class="cls">MyInt</span> {
+    <span class="keyword">private int</span> value;   <span class="comment">// النوع الأساسي الملفوف</span>
+
+    <span class="keyword">public</span> <span class="method">MyInt</span>(<span class="keyword">int</span> value) {
+        <span class="keyword">this</span>.value = value;
+    }
+
+    <span class="keyword">public int</span>     <span class="method">getValue</span>()    { <span class="keyword">return</span> value; }
+    <span class="keyword">public boolean</span> <span class="method">isEven</span>()      { <span class="keyword">return</span> value % <span class="number">2</span> == <span class="number">0</span>; }
+    <span class="keyword">public boolean</span> <span class="method">isPositive</span>()  { <span class="keyword">return</span> value > <span class="number">0</span>; }
+    <span class="keyword">public</span> <span class="type">String</span>  <span class="method">toBinary</span>()   { <span class="keyword">return</span> <span class="cls">Integer</span>.<span class="method">toBinaryString</span>(value); }
+
+    <span class="annot">@Override</span>
+    <span class="keyword">public</span> <span class="type">String</span> <span class="method">toString</span>() { <span class="keyword">return</span> <span class="string">"MyInt("</span> + value + <span class="string">")"</span>; }
+}
+
+<span class="comment">// الاستخدام</span>
+<span class="cls">MyInt</span> n = <span class="keyword">new</span> <span class="cls">MyInt</span>(<span class="number">42</span>);
+System.out.<span class="method">println</span>(n.<span class="method">getValue</span>());    <span class="comment">// 42</span>
+System.out.<span class="method">println</span>(n.<span class="method">isEven</span>());      <span class="comment">// true</span>
+System.out.<span class="method">println</span>(n.<span class="method">isPositive</span>());  <span class="comment">// true</span>
+System.out.<span class="method">println</span>(n.<span class="method">toBinary</span>());   <span class="comment">// 101010</span>
+System.out.<span class="method">println</span>(n);              <span class="comment">// MyInt(42)</span></div>
+
+            <div class="key-concept">
+                <div class="key-concept-title">&#128161; لماذا توجد فئات التغليف (Wrapper Classes)</div>
+                <p>بعض واجهات برمجة Java (مثل <code>ArrayList&lt;Integer&gt;</code> و <code>HashMap&lt;String, Double&gt;</code>) تقبل <strong>الكائنات (Objects)</strong> فقط (لأنها تستخدم الأنواع العامة Generic). لا يمكنك كتابة <code>ArrayList&lt;int&gt;</code>. لذا تتيح فئات التغليف تخزين قيم الأنواع الأساسية داخل هذه الهياكل.</p>
+                <p style="margin-top:8px;">ميزتا <strong>التغليف التلقائي (Autoboxing)</strong> و<strong>فك التغليف التلقائي (Unboxing)</strong> في Java (منذ الإصدار الخامس) تتولّيان معظم التحويلات تلقائيًا، لذلك نادرًا ما تحتاج إلى استدعاء <code>.intValue()</code> يدويًا.</p>
+            </div>
+
+            <div class="success-box">
+                <div class="success-box-title">&#10003; مرجع سريع: التغليف وفك التغليف (Boxing &amp; Unboxing)</div>
+                <ul style="padding-right:20px; padding-left:0; line-height:2.2; margin-top:8px;">
+                    <li><strong>التغليف التلقائي (Auto-boxing)</strong>: تحوّل Java تلقائيًا النوع الأساسي إلى نوع التغليف المقابل عند الحاجة. <code>Integer x = 5;</code> → تكتب Java <code>new Integer(5)</code> بدلًا عنك.</li>
+                    <li><strong>فك التغليف التلقائي (Auto-unboxing)</strong>: تحوّل Java تلقائيًا الكائن المغلّف إلى نوعه الأساسي. <code>int y = x;</code> → تستدعي Java <code>x.intValue()</code> بدلًا عنك.</li>
+                    <li><strong>ثوابت مفيدة</strong>: <code>Integer.MAX_VALUE</code>، <code>Integer.MIN_VALUE</code>، <code>Double.MAX_VALUE</code>.</li>
+                    <li><strong>التحليل (Parsing)</strong>: <code>Integer.parseInt("42")</code> تحوّل <code>String</code> إلى <code>int</code> — شائع جدًا في البرامج الفعلية!</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ════════ القسم 2: BigInteger و BigDecimal ════════ -->
+        <div class="section" id="s2">
+            <div class="section-title">
+                <div class="section-number">2</div>
+                BigInteger و BigDecimal — الحسابات خارج الحدود
+            </div>
+
+            <div class="narrative">
+                <p>ماذا لو كان العدد الذي تحتاج لحسابه كبيرًا جدًا لدرجة أنه لا يسع في نوع <code>long</code> (الذي يبلغ حده الأقصى حوالي 9.2 × 10<sup>18</sup>)؟ أو تحتاج إلى حساب عشري بدقة بالغة — كما في الحسابات المالية أو التشفير؟</p>
+                <p>توفر Java صنفين خاصين: <code class="code-inline">BigInteger</code> و <code class="code-inline">BigDecimal</code> في الحزمة <code>java.math</code>.</p>
+            </div>
+
+            <div class="cards-grid">
+                <div class="card" style="border-top: 4px solid #0d9488;">
+                    <div class="card-icon">&#128290;</div>
+                    <div class="card-title" style="color:#0d9488;">BigInteger</div>
+                    <div class="card-desc">يمثّل أعدادًا صحيحة كبيرة بشكل تعسفي — لا فيض (Overflow) أبدًا. يدعم جميع العمليات الحسابية: <code>add()</code>، <code>subtract()</code>، <code>multiply()</code>، <code>divide()</code>، <code>pow()</code>، <code>mod()</code>.</div>
+                </div>
+                <div class="card" style="border-top: 4px solid #7c3aed;">
+                    <div class="card-icon">&#128208;</div>
+                    <div class="card-title" style="color:#7c3aed;">BigDecimal</div>
+                    <div class="card-desc">يمثّل أعدادًا عشرية بدقة تعسفية — لا أخطاء تقريب. ضروري للحسابات المالية والعلمية التي تستلزم الدقة.</div>
+                </div>
+            </div>
+
+            <div class="important-box">
+                <div class="important-box-title">&#9888;&#65039; ملاحظة مهمة</div>
+                <p><strong>لا يمكنك استخدام عوامل +، -، *، /</strong> مع <code>BigInteger</code> أو <code>BigDecimal</code>. يجب استخدام <strong>دوالهما</strong>: <code>.add()</code>، <code>.subtract()</code>، <code>.multiply()</code>، <code>.divide()</code>.</p>
+            </div>
+
+            <div class="code-label">&#128196; BigNumberDemo.java</div>
+            <div class="code-block"><span class="keyword">import</span> java.math.BigInteger;
+<span class="keyword">import</span> java.math.BigDecimal;
+
+<span class="keyword">public class</span> <span class="cls">BigNumberDemo</span> {
+    <span class="keyword">public static void</span> <span class="method">main</span>(<span class="type">String</span>[] args) {
+
+        <span class="comment">// ── BigInteger ──────────────────────────────────────────────────</span>
+        <span class="cls">BigInteger</span> n1 = <span class="keyword">new</span> <span class="cls">BigInteger</span>(<span class="string">"99999999999999999999999999999"</span>);
+        <span class="cls">BigInteger</span> n2 = <span class="keyword">new</span> <span class="cls">BigInteger</span>(<span class="string">"11111111111111111111111111111"</span>);
+
+        System.out.<span class="method">println</span>(<span class="string">"n1 + n2 = "</span> + n1.<span class="method">add</span>(n2));
+        System.out.<span class="method">println</span>(<span class="string">"n1 * n2 = "</span> + n1.<span class="method">multiply</span>(n2));
+        System.out.<span class="method">println</span>(<span class="string">"n1 ^ 2  = "</span> + n1.<span class="method">pow</span>(<span class="number">2</span>));
+
+        <span class="comment">// ── BigDecimal ──────────────────────────────────────────────────</span>
+        <span class="cls">BigDecimal</span> price = <span class="keyword">new</span> <span class="cls">BigDecimal</span>(<span class="string">"19.99"</span>);
+        <span class="cls">BigDecimal</span> tax   = <span class="keyword">new</span> <span class="cls">BigDecimal</span>(<span class="string">"0.15"</span>);
+
+        <span class="cls">BigDecimal</span> total = price.<span class="method">multiply</span>(tax.<span class="method">add</span>(<span class="cls">BigDecimal</span>.ONE));
+        System.out.<span class="method">println</span>(<span class="string">"Total with tax = "</span> + total);
+
+        <span class="comment">// لماذا لا تستخدم double للأموال:</span>
+        System.out.<span class="method">println</span>(<span class="number">1.0</span> - <span class="number">0.9</span>);   <span class="comment">// يطبع 0.09999999999999998 ❌</span>
+        System.out.<span class="method">println</span>(
+            <span class="keyword">new</span> <span class="cls">BigDecimal</span>(<span class="string">"1.0"</span>).<span class="method">subtract</span>(<span class="keyword">new</span> <span class="cls">BigDecimal</span>(<span class="string">"0.9"</span>))
+        );                               <span class="comment">// يطبع 0.1 ✅</span>
+    }
+}</div>
+
+            <!-- نموذج المخرجات -->
+            <div class="big-num-demo">
+                <div><span class="label">n1 + n2 = </span><span class="result">111111111111111111111111111110</span></div>
+                <div><span class="label">n1 * n2 = </span><span class="result">1111111111111111111111111111088888888888888888889</span></div>
+                <div><span class="label">n1 ^ 2  = </span><span class="result">9999999999999999999999999999800000000000000000000000000001</span></div>
+                <div><span class="label">Total with tax = </span><span class="result">22.9885</span></div>
+                <div><span class="label">double subtraction: </span><span class="result" style="color:#dc2626;">0.09999999999999998 &#10060;</span></div>
+                <div><span class="label">BigDecimal subtraction: </span><span class="result" style="color:#4ec9b0;">0.1 &#10003;</span></div>
+            </div>
+
+            <div class="analogy-box">
+                <div class="analogy-title">&#128272; استخدام من الواقع: التشفير!</div>
+                <p>سأل أحد الطلاب: <em>"لماذا نحتاج في أي وقت لأعداد بهذا الحجم؟"</em></p>
+                <p style="margin-top:8px;">في <strong>علم التشفير (Cryptography)</strong>، تتطلب خوارزميات مثل RSA التعامل مع أعداد صحيحة تمتد لمئات الأرقام (مثل أعداد من 2048 بت أو 4096 بت). إن تحليل مثل هذه الأعداد إلى عواملها الأولية هو ما يجعل التشفير آمنًا. و<code>BigInteger</code> هو الأداة القياسية لتطبيق هذه الخوارزميات في Java.</p>
+            </div>
+
+            <div class="info-box">
+                <div class="info-box-title">&#128204; ملاحظة للطلاب</div>
+                <p><code>BigInteger</code> و<code>BigDecimal</code> ليسا بالمفهوم الدقيق مفاهيمَ كائنية التوجه (OOP) — بل هما ميزتان من مكتبة Java. ندرسهما هنا لأنهما يوضحان كيف تُغلّف Java سلوكًا عدديًا معقدًا داخل أصناف بدوال، وهو مثال رائع على مبدأي التغليف (Encapsulation) والتجريد (Abstraction) في العمل.</p>
+            </div>
+        </div>
+
+        <!-- ════════ الملخص ════════ -->
+        <div class="section">
+            <div class="section-title">
+                <div class="section-number">&#10003;</div>
+                الوحدة الخامسة مكتملة — الملخص الشامل
+            </div>
+
+            <div class="success-box">
+                <div class="success-box-title">&#127881; كل ما غطّته الوحدة الخامسة (الأجزاء الثلاثة)</div>
+                <div class="rules-list" style="margin-top:12px;">
+                    <div class="rule-item">
+                        <div class="rule-badge" style="background:linear-gradient(135deg,#dc2626,#b91c1c);">&#128274;</div>
+                        <div class="rule-content">
+                            <div class="rule-title">قابل للتغيير وغير قابل للتغيير — Mutable vs Immutable (الجزء الأول)</div>
+                            <div class="rule-desc">ثلاثة قواعد للصنف غير القابل للتغيير (Immutable Class): جميع الحقول private، بلا دوال ضبط (Setters)، ولا دالة getter تعيد مرجعًا لكائن قابل للتغيير (بل أعد نسخة دفاعية).</div>
+                        </div>
+                    </div>
+                    <div class="rule-item">
+                        <div class="rule-badge" style="background:linear-gradient(135deg,#d97706,#b45309);">&#128295;</div>
+                        <div class="rule-content">
+                            <div class="rule-title">الاعتماد (Dependency) — "يستخدم" (الجزء الثاني)</div>
+                            <div class="rule-desc">استخدام مؤقت لصنف آخر كمعامل في دالة. ليس جزءًا من هوية الكائن. رمز UML: سهم متقطع.</div>
+                        </div>
+                    </div>
+                    <div class="rule-item">
+                        <div class="rule-badge" style="background:linear-gradient(135deg,#2563eb,#1d4ed8);">&#128230;</div>
+                        <div class="rule-content">
+                            <div class="rule-title">التجميع (Aggregation) — "يحتوي على" بشكل ضعيف (الجزء الثاني)</div>
+                            <div class="rule-desc">يمكن للكائن المحتوى أن يعيش باستقلالية وقد يُشارَك. يُستقبل من الخارج عبر معامل المُنشئ (Constructor). رمز UML: معين مفتوح &#9671;.</div>
+                        </div>
+                    </div>
+                    <div class="rule-item">
+                        <div class="rule-badge" style="background:linear-gradient(135deg,#059669,#047857);">&#128142;</div>
+                        <div class="rule-content">
+                            <div class="rule-title">التركيب (Composition) — "يمتلك" بشكل قوي (الجزء الثاني)</div>
+                            <div class="rule-desc">الكائن المحتوى يُنشأ داخل المالك ولا يمكنه البقاء بعد تدميره. يُنشأ داخل المُنشئ باستخدام <code>new</code>. رمز UML: معين مملوء &#9670;.</div>
+                        </div>
+                    </div>
+                    <div class="rule-item">
+                        <div class="rule-badge" style="background:linear-gradient(135deg,#7c3aed,#6d28d9);">&#128260;</div>
+                        <div class="rule-content">
+                            <div class="rule-title">التجميع الذاتي (Self-Aggregation) (الجزء الثاني)</div>
+                            <div class="rule-desc">صنف يحتوي على حقل من نفس نوعه (مثل <code>Student supervisor</code> داخل <code>Student</code>). أساس القوائم المترابطة (Linked Lists) في هياكل البيانات.</div>
+                        </div>
+                    </div>
+                    <div class="rule-item">
+                        <div class="rule-badge" style="background:linear-gradient(135deg,#0d9488,#0f766e);">&#128290;</div>
+                        <div class="rule-content">
+                            <div class="rule-title">التعددية (Multiplicity) (الجزء الثاني)</div>
+                            <div class="rule-desc">يحدد عدد الكائنات المشاركة في علاقة: <code>1</code>، <code>0..1</code>، <code>*</code>، <code>1..*</code>، ومدى مثل <code>5..60</code>.</div>
+                        </div>
+                    </div>
+                    <div class="rule-item">
+                        <div class="rule-badge" style="background:linear-gradient(135deg,#d97706,#f59e0b);">&#127873;</div>
+                        <div class="rule-content">
+                            <div class="rule-title">فئات التغليف (Wrapper Classes) (الجزء الثالث)</div>
+                            <div class="rule-desc">تلفّ Java كل نوع من الأنواع الأساسية الثمانية في صنف (مثل <code>int → Integer</code>) لتمكينه من الاستخدام ككائن. يتولى التغليف التلقائي (Autoboxing) وفك التغليف التلقائي (Unboxing) التحويلات تلقائيًا.</div>
+                        </div>
+                    </div>
+                    <div class="rule-item">
+                        <div class="rule-badge" style="background:linear-gradient(135deg,#e11d48,#be123c);">&#128290;</div>
+                        <div class="rule-content">
+                            <div class="rule-title">BigInteger و BigDecimal (الجزء الثالث)</div>
+                            <div class="rule-desc">أصناف مكتبة Java للأعداد الصحيحة الكبيرة بشكل تعسفي والأعداد العشرية ذات الدقة العالية. استخدم الدوال (<code>add()</code>، <code>multiply()</code>) — لا عوامل الحساب. ضرورية للتشفير والحسابات المالية.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div><!-- /content -->
+
+    <!-- ════════ أزرار التنقل ════════ -->
+    <div class="nav-buttons">
+        <a href="../module06-inheritance/01-inheritance-ar.html" class="nav-btn next">التالي: الوحدة السادسة &larr;</a>
+        <a href="../index.html" class="nav-btn home">&#127968; الرئيسية</a>
+        <a href="02-object-relationships-ar.html" class="nav-btn prev">&rarr; السابق: علاقات الكائنات</a>
+    </div>
+
+</div><!-- /container -->
+</body>
+</html>

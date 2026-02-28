@@ -1,0 +1,108 @@
+@startuml four-classes
+' ─────────────────────────────────────────────────────────────────
+'  CPCS203 — Module 05: Object Relationships
+'  Four Classes: Student, Name, Address, BMICalculator
+' ─────────────────────────────────────────────────────────────────
+
+skinparam classAttributeIconSize 0
+skinparam classFontSize 13
+skinparam classFontName Consolas
+skinparam classBackgroundColor #FAFAFA
+skinparam classBorderColor #333333
+skinparam classBorderThickness 1.5
+skinparam arrowThickness 1.8
+skinparam arrowColor #333333
+skinparam noteBackgroundColor #FFFDE7
+skinparam noteBorderColor #F9A825
+
+' ─── Classes ─────────────────────────────────────────────────────
+
+class Student {
+  - id       : int
+  - name     : Name
+  - address  : Address
+  - marks    : int[]
+  --
+  + Student(id: int, first: String,\n  last: String, address: Address)
+  + getId()        : int
+  + getFullName()  : String
+  + getAddress()   : Address
+  + getMarks()     : int[]
+  + calculateBMI(calc: BMICalculator) : double
+}
+
+class Name {
+  - firstName : String
+  - lastName  : String
+  --
+  + Name(first: String, last: String)
+  + getFirstName() : String
+  + getLastName()  : String
+  + getFullName()  : String
+}
+
+class Address {
+  - street : String
+  - city   : String
+  - unit   : int
+  --
+  + Address(street: String,\n  city: String, unit: int)
+  + getStreet() : String
+  + getCity()   : String
+  + getUnit()   : int
+}
+
+class BMICalculator {
+  - weight : double
+  - height : double
+  --
+  + BMICalculator(weight: double,\n  height: double)
+  + getBMI() : double
+  + {static} getBMI(weight: double,\n  height: double) : double
+}
+
+' ─── Relationships ───────────────────────────────────────────────
+
+' Composition: Student *-- Name
+' (Name cannot exist without Student — created inside constructor)
+Student "1" *-- "1" Name : composition\n◆ owns
+
+' Aggregation: Student o-- Address
+' (Address can exist independently — passed in from outside)
+Student "  *" o-- "1  " Address : aggregation\n◇ has
+
+' Dependency: Student ..> BMICalculator
+' (BMICalculator used temporarily as method parameter — not stored)
+Student ..> BMICalculator : <<uses>>\ndependency
+
+' ─── Notes ───────────────────────────────────────────────────────
+
+note right of Student
+  <b>Aggregating class</b>
+  Collects Name, Address as fields.
+  Uses BMICalculator temporarily.
+end note
+
+note bottom of Name
+  <b>Composition ◆</b>
+  Created inside Student constructor.
+  Cannot exist without a Student.
+  Dies when Student dies.
+end note
+
+note bottom of Address
+  <b>Aggregation ◇</b>
+  Created outside, passed in.
+  Can be shared by many students.
+  Survives independently.
+end note
+
+note right of BMICalculator
+  <b>Dependency</b>
+  Passed as a method parameter.
+  NOT stored as a field.
+  Not part of student's identity.
+  Can also be made static.
+end note
+
+@enduml
