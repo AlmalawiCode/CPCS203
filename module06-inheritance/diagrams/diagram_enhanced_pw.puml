@@ -1,0 +1,28 @@
+@startuml diagram_enhanced_pw
+skinparam backgroundColor transparent
+skinparam shadowing false
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 14
+skinparam classBackgroundColor #fdf4ff
+skinparam classBorderColor #8b5cf6
+skinparam classFontColor #5b21b6
+skinparam classAttributeFontColor #374151
+skinparam classAttributeFontSize 13
+skinparam arrowColor #7c3aed
+skinparam arrowThickness 2
+skinparam classHeaderBackgroundColor #ede9fe
+
+class "PrintWriter" as PW <<Java Standard Library>> {
+  + void println(String)
+  + PrintWriter printf(String, Object...)
+  + void print()
+  + void flush()
+}
+
+class "EnhancedPrintWriter" as EPW <<Our New Class>> {
+  + void print2DArray(int[][], String)
+  + void print2DArray(double[][], String, int)
+}
+
+PW <|-- EPW : extends
+@enduml

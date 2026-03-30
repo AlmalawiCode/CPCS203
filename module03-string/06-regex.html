@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Regular Expressions | CPCS203</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #059669;
+            --primary-light: #10b981;
+            --primary-dark: #047857;
+            --secondary-color: #0d9488;
+            --success-color: #059669;
+            --warning-color: #d97706;
+            --danger-color: #dc2626;
+            --dark-color: #1f2937;
+            --light-color: #f3f4f6;
+            --gray-color: #6b7280;
+            --purple-color: #8b5cf6;
+            --regex-color: #7c3aed;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.8;
+            color: var(--dark-color);
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+        }
+
+        /* Navigation Breadcrumb */
+        .nav-breadcrumb {
+            background: linear-gradient(135deg, #065f46, #047857);
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: white;
+            font-size: 0.9rem;
+        }
+
+        .breadcrumb a {
+            color: #a7f3d0;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .breadcrumb a:hover { color: white; }
+
+        .breadcrumb .separator { color: #6ee7b7; }
+        .breadcrumb .current { color: #fbbf24; }
+
+        .lesson-nav {
+            display: flex;
+            gap: 10px;
+        }
+
+        .lesson-nav a {
+            padding: 8px 16px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            text-decoration: none;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+        }
+
+        .lesson-nav a:hover { background: rgba(255,255,255,0.2); }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #7c3aed, #5b21b6);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .header .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .header .course-info {
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 30px;
+            display: inline-block;
+        }
+
+        /* Content */
+        .content { padding: 40px; }
+
+        /* Sections */
+        .section { margin-bottom: 50px; }
+
+        .section-title {
+            font-size: 1.8rem;
+            color: var(--regex-color);
+            border-bottom: 3px solid var(--regex-color);
+            padding-bottom: 10px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-number {
+            background: var(--regex-color);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        /* Key Concept Box */
+        .key-concept {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border-left: 5px solid var(--warning-color);
+            padding: 20px 25px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .key-concept-title {
+            font-weight: bold;
+            color: var(--warning-color);
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        /* Info Box */
+        .info-box {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            border-left: 5px solid #2563eb;
+            padding: 20px 25px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        /* Success Box */
+        .success-box {
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+            border-left: 5px solid var(--success-color);
+            padding: 20px 25px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        /* Important Box */
+        .important-box {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            border-left: 5px solid var(--danger-color);
+            padding: 20px 25px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .important-box-title {
+            font-weight: bold;
+            color: var(--danger-color);
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        /* Purple Box */
+        .regex-box {
+            background: linear-gradient(135deg, #f3e8ff, #e9d5ff);
+            border-left: 5px solid var(--regex-color);
+            padding: 20px 25px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .regex-box-title {
+            font-weight: bold;
+            color: var(--regex-color);
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        /* Code Blocks */
+        .code-block {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+        }
+
+        .code-block .keyword { color: #569cd6; }
+        .code-block .type    { color: #4ec9b0; }
+        .code-block .string  { color: #ce9178; }
+        .code-block .number  { color: #b5cea8; }
+        .code-block .comment { color: #6a9955; }
+        .code-block .variable{ color: #9cdcfe; }
+        .code-block .method  { color: #dcdcaa; }
+        .code-block .regex   { color: #d7ba7d; }
+
+        .code-inline {
+            background: #e5e7eb;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9rem;
+            color: var(--regex-color);
+        }
+
+        /* Metachar Table */
+        .meta-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .meta-table th,
+        .meta-table td {
+            padding: 12px 15px;
+            border: 1px solid #e5e7eb;
+            text-align: left;
+        }
+
+        .meta-table th {
+            background: var(--regex-color);
+            color: white;
+            font-weight: bold;
+        }
+
+        .meta-table tr:nth-child(even) { background: #f9fafb; }
+        .meta-table tr:hover { background: #f3e8ff; }
+
+        .meta-table .pattern-cell {
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-weight: bold;
+            color: var(--regex-color);
+            font-size: 1.05rem;
+        }
+
+        /* Category Section */
+        .category {
+            margin: 30px 0;
+            padding: 25px;
+            background: #f8fafc;
+            border-radius: 15px;
+            border: 2px solid #e2e8f0;
+        }
+
+        .category-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--regex-color);
+        }
+
+        .category-icon { font-size: 1.5rem; }
+
+        /* Lists */
+        ul, ol {
+            margin: 15px 0 15px 25px;
+        }
+
+        li { margin: 8px 0; }
+
+        /* Password visual */
+        .password-checklist {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 20px 0;
+        }
+
+        .check-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 16px;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .check-item.pass {
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #6ee7b7;
+        }
+
+        .check-item.fail {
+            background: #fee2e2;
+            color: #7f1d1d;
+            border: 1px solid #fca5a5;
+        }
+
+        .check-icon { font-size: 1.2rem; }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            display: flex;
+            justify-content: space-between;
+            padding: 30px 40px;
+            background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .bottom-nav a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px 25px;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .bottom-nav a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(5, 150, 105, 0.3);
+        }
+
+        .bottom-nav .prev-lesson {
+            background: linear-gradient(135deg, #64748b, #475569);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--dark-color);
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.8rem; }
+            .content { padding: 20px; }
+            .password-checklist { grid-template-columns: 1fr; }
+            .bottom-nav {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .nav-breadcrumb {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Navigation Breadcrumb -->
+        <nav class="nav-breadcrumb">
+            <div class="breadcrumb">
+                <a href="../index.html">CPCS203</a>
+                <span class="separator">›</span>
+                <a href="index.html">Module 2: Strings</a>
+                <span class="separator">›</span>
+                <span class="current">Regular Expressions</span>
+            </div>
+            <div class="lesson-nav">
+                <a href="03-string-methods.html">‹ Previous</a>
+                <a href="04-stringbuilder-buffer.html">Next: StringBuilder ›</a>
+            </div>
+        </nav>
+
+        <!-- Header -->
+        <div class="header">
+            <h1>Regular Expressions</h1>
+            <p class="subtitle">Powerful Pattern Matching for Strings</p>
+            <div class="course-info">
+                <strong>CPCS203</strong> - Module 2 | Lesson 6
+            </div>
+        </div>
+
+        <div class="content">
+
+            <!-- Section 1: What is Regex? -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">1</span>
+                    What is a Regular Expression?
+                </h2>
+
+                <p>A <strong>Regular Expression</strong> (regex) is a sequence of characters that defines a <strong>search pattern</strong>. It is one of the most powerful tools for working with text, and it exists in almost every programming language — Java, Python, JavaScript, C++, PHP, and more.</p>
+
+                <div class="regex-box">
+                    <div class="regex-box-title">Why Learn Regex?</div>
+                    <p>Without regex, you might write <strong>tens of lines</strong> of loops and conditionals to validate, search, or clean a String. With a regular expression, you can often express the same logic in <strong>a single line</strong>.</p>
+                    <ul>
+                        <li>Validate user input (email, phone, password)</li>
+                        <li>Extract numbers or words from a messy string</li>
+                        <li>Split a string by any non-word delimiter</li>
+                        <li>Replace patterns without writing loops</li>
+                    </ul>
+                </div>
+
+                <p>In Java, the String class has three methods that accept a regular expression directly:</p>
+
+                <table class="meta-table">
+                    <tr>
+                        <th>Method</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td><code class="code-inline">matches(String regex)</code></td>
+                        <td>Returns <strong>true</strong> if the entire string matches the pattern</td>
+                    </tr>
+                    <tr>
+                        <td><code class="code-inline">replaceAll(String regex, String replacement)</code></td>
+                        <td>Replaces every match of the pattern with the replacement</td>
+                    </tr>
+                    <tr>
+                        <td><code class="code-inline">split(String regex)</code></td>
+                        <td>Splits the string at every match of the pattern</td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- Section 2: Basic Metacharacters -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">2</span>
+                    Basic Metacharacters
+                </h2>
+
+                <p>Metacharacters are special symbols in regex that have a specific meaning. The table below shows the most important ones:</p>
+
+                <table class="meta-table">
+                    <tr>
+                        <th>Pattern</th>
+                        <th>Meaning</th>
+                        <th>Example Match</th>
+                    </tr>
+                    <tr>
+                        <td class="pattern-cell">.</td>
+                        <td>Any <strong>single character</strong> (except newline)</td>
+                        <td><code>"a"</code>, <code>"9"</code>, <code>"$"</code></td>
+                    </tr>
+                    <tr>
+                        <td class="pattern-cell">ab|cd</td>
+                        <td>Either <strong>ab</strong> OR <strong>cd</strong> (alternation)</td>
+                        <td><code>"ab"</code> or <code>"cd"</code></td>
+                    </tr>
+                    <tr>
+                        <td class="pattern-cell">[abc]</td>
+                        <td>Any one of <strong>a</strong>, <strong>b</strong>, or <strong>c</strong></td>
+                        <td><code>"a"</code>, <code>"b"</code>, or <code>"c"</code></td>
+                    </tr>
+                    <tr>
+                        <td class="pattern-cell">[^abc]</td>
+                        <td>Any character <strong>except</strong> a, b, or c</td>
+                        <td><code>"x"</code>, <code>"9"</code>, <code>"Z"</code></td>
+                    </tr>
+                    <tr>
+                        <td class="pattern-cell">[a-z]</td>
+                        <td>Any lowercase letter from a to z</td>
+                        <td><code>"m"</code>, <code>"z"</code></td>
+                    </tr>
+                    <tr>
+                        <td class="pattern-cell">[A-Z]</td>
+                        <td>Any uppercase letter</td>
+                        <td><code>"A"</code>, <code>"Z"</code></td>
+                    </tr>
+                    <tr>
+                        <td class="pattern-cell">[0-9]</td>
+                        <td>Any digit from 0 to 9</td>
+                        <td><code>"3"</code>, <code>"7"</code></td>
+                    </tr>
+                </table>
+
+                <div class="key-concept">
+                    <div class="key-concept-title">Example: Dot (.) — Match Any Single Character</div>
+                    <p>The pattern <code class="code-inline">c.t</code> matches any 3-character string starting with <strong>c</strong>, then <em>any</em> character, then <strong>t</strong>:</p>
+                    <ul>
+                        <li><code>"cat"</code> ✓</li>
+                        <li><code>"cut"</code> ✓</li>
+                        <li><code>"c9t"</code> ✓</li>
+                        <li><code>"ct"</code> ✗ (too short — dot requires exactly one character)</li>
+                    </ul>
+                </div>
+
+                <div class="key-concept">
+                    <div class="key-concept-title">Example: Alternation (|) — Either/Or</div>
+                    <p>The pattern <code class="code-inline">apple|orange</code> matches either the word <strong>apple</strong> or the word <strong>orange</strong>:</p>
+                    <div class="code-block">
+<span class="type">String</span> <span class="variable">fruit</span> = <span class="string">"apple"</span>;
+System.out.println(<span class="variable">fruit</span>.<span class="method">matches</span>(<span class="string">"apple|orange"</span>));  <span class="comment">// true</span>
+
+<span class="variable">fruit</span> = <span class="string">"orange"</span>;
+System.out.println(<span class="variable">fruit</span>.<span class="method">matches</span>(<span class="string">"apple|orange"</span>));  <span class="comment">// true</span>
+
+<span class="variable">fruit</span> = <span class="string">"mango"</span>;
+System.out.println(<span class="variable">fruit</span>.<span class="method">matches</span>(<span class="string">"apple|orange"</span>));  <span class="comment">// false</span>
+                    </div>
+                </div>
+
+                <div class="key-concept">
+                    <div class="key-concept-title">Example: Character Class [ ] — One Of These</div>
+                    <p>The pattern <code class="code-inline">[aeiou]</code> matches any single vowel:</p>
+                    <ul>
+                        <li><code>[abc]</code> → matches <strong>a</strong>, <strong>b</strong>, or <strong>c</strong></li>
+                        <li><code>[^abc]</code> → matches anything <strong>except</strong> a, b, or c</li>
+                        <li><code>[a-zA-Z]</code> → matches any letter (upper or lower)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Section 3: Predefined Character Classes -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">3</span>
+                    Predefined Character Classes
+                </h2>
+
+                <p>Java provides <strong>shorthand codes</strong> (called predefined character classes) so you don't have to write out ranges like <code>[0-9]</code> every time. In Java strings, you write a double backslash <code>\\</code> to represent a single backslash in the regex.</p>
+
+                <table class="meta-table">
+                    <tr>
+                        <th>Pattern (in Java String)</th>
+                        <th>Meaning</th>
+                        <th>Equivalent to</th>
+                    </tr>
+                    <tr>
+                        <td class="pattern-cell">\\d</td>
+                        <td>A <strong>digit</strong></td>
+                        <td><code>[0-9]</code></td>
+                    </tr>
+                    <tr>
+                        <td class="pattern-cell">\\D</td>
+                        <td>A <strong>non-digit</strong></td>
+                        <td><code>[^0-9]</code></td>
+                    </tr>
+                    <tr>
+                        <td class="pattern-cell">\\w</td>
+                        <td>A <strong>word character</strong> (letter, digit, or underscore)</td>
+                        <td><code>[a-zA-Z0-9_]</code></td>
+                    </tr>
+                    <tr>
+                        <td class="pattern-cell">\\W</td>
+                        <td>A <strong>non-word character</strong></td>
+                        <td><code>[^a-zA-Z0-9_]</code></td>
+                    </tr>
+                    <tr>
+                        <td class="pattern-cell">\\s</td>
+                        <td>A <strong>whitespace character</strong> (space, tab, newline)</td>
+                        <td><code>[ \t\n\r]</code></td>
+                    </tr>
+                    <tr>
+                        <td class="pattern-cell">\\S</td>
+                        <td>A <strong>non-whitespace character</strong></td>
+                        <td><code>[^ \t\n\r]</code></td>
+                    </tr>
+                </table>
+
+                <div class="important-box">
+                    <div class="important-box-title">Double Backslash in Java!</div>
+                    <p>In Java, the backslash <code>\</code> is a special character in strings. To write the regex <code>\d</code>, you must type <code>"\\d"</code> in your Java code. The first <code>\</code> is an escape character; together <code>\\</code> means a literal backslash.</p>
+                </div>
+
+                <div class="code-block">
+<span class="type">String</span> <span class="variable">text</span> = <span class="string">"Hello 2025"</span>;
+
+<span class="comment">// Does the string contain only digits?</span>
+System.out.println(<span class="string">"12345"</span>.<span class="method">matches</span>(<span class="string">"\\d+"</span>));   <span class="comment">// true  — all digits</span>
+System.out.println(<span class="string">"abc"</span>.<span class="method">matches</span>(<span class="string">"\\d+"</span>));     <span class="comment">// false — no digits</span>
+
+<span class="comment">// Does the string contain only word characters?</span>
+System.out.println(<span class="string">"Hello_123"</span>.<span class="method">matches</span>(<span class="string">"\\w+"</span>));  <span class="comment">// true</span>
+System.out.println(<span class="string">"Hello 123"</span>.<span class="method">matches</span>(<span class="string">"\\w+"</span>));  <span class="comment">// false — space is not \w</span>
+                </div>
+
+                <div class="info-box">
+                    <p><strong>Quantifiers — How Many Times?</strong></p>
+                    <p>The <code class="code-inline">+</code> after a pattern means "one or more". Here are the most common quantifiers:</p>
+                    <ul>
+                        <li><code class="code-inline">+</code> — one or more (e.g., <code>\\d+</code> means one or more digits)</li>
+                        <li><code class="code-inline">*</code> — zero or more</li>
+                        <li><code class="code-inline">?</code> — zero or one (optional)</li>
+                        <li><code class="code-inline">{n}</code> — exactly n times (e.g., <code>\\d{3}</code> = exactly 3 digits)</li>
+                        <li><code class="code-inline">{n,m}</code> — between n and m times</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Section 4: replaceAll — Cleaning Strings -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">4</span>
+                    Using replaceAll() to Clean Strings
+                </h2>
+
+                <p>One of the most practical uses of regex is <strong>cleaning data</strong>. Suppose you receive a string like a ticket number that mixes letters and digits, and you want to extract only the numbers — no loops needed!</p>
+
+                <div class="category">
+                    <div class="category-title">
+                        <span class="category-icon">&#128273;</span>
+                        Example 1: Extract Numbers from a Ticket Code
+                    </div>
+
+                    <p>A ticket like <code>"TKT-2025-AB-001"</code> contains the numbers <code>2025</code> and <code>001</code>. Instead of writing a loop, use <code>replaceAll</code> to remove everything that is <strong>not</strong> a digit:</p>
+
+                    <div class="code-block">
+<span class="type">String</span> <span class="variable">ticket</span> = <span class="string">"TKT-2025-AB-001"</span>;
+
+<span class="comment">// Replace every non-digit character with an empty string</span>
+<span class="type">String</span> <span class="variable">numbersOnly</span> = <span class="variable">ticket</span>.<span class="method">replaceAll</span>(<span class="string">"\\D"</span>, <span class="string">""</span>);
+
+System.out.println(<span class="variable">numbersOnly</span>);  <span class="comment">// 2025001</span>
+                    </div>
+
+                    <div class="success-box">
+                        <p><code>\\D</code> means "any non-digit character." Replacing each one with <code>""</code> removes it, leaving only digits. No loop required.</p>
+                    </div>
+                </div>
+
+                <div class="category">
+                    <div class="category-title">
+                        <span class="category-icon">&#129529;</span>
+                        Example 2: Replace Multiple Spaces with One Space
+                    </div>
+
+                    <div class="code-block">
+<span class="type">String</span> <span class="variable">messy</span> = <span class="string">"Hello    World   Java"</span>;
+
+<span class="comment">// Replace one or more whitespace characters with a single space</span>
+<span class="type">String</span> <span class="variable">clean</span> = <span class="variable">messy</span>.<span class="method">replaceAll</span>(<span class="string">"\\s+"</span>, <span class="string">" "</span>);
+
+System.out.println(<span class="variable">clean</span>);  <span class="comment">// Hello World Java</span>
+                    </div>
+                </div>
+
+                <div class="category">
+                    <div class="category-title">
+                        <span class="category-icon">&#128248;</span>
+                        Example 3: Remove All Non-Letter Characters
+                    </div>
+
+                    <p>Suppose you want only the letters from a string — remove everything that is not a letter:</p>
+
+                    <div class="code-block">
+<span class="type">String</span> <span class="variable">raw</span> = <span class="string">"J4v@-Pr0gr@mm!ng"</span>;
+
+<span class="comment">// Keep only letters (a-z and A-Z)</span>
+<span class="type">String</span> <span class="variable">lettersOnly</span> = <span class="variable">raw</span>.<span class="method">replaceAll</span>(<span class="string">"[^a-zA-Z]"</span>, <span class="string">""</span>);
+
+System.out.println(<span class="variable">lettersOnly</span>);  <span class="comment">// JvrPrgrmmng</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 5: split() -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">5</span>
+                    Using split() with Regex
+                </h2>
+
+                <p>The <code>split()</code> method divides a string into an array of parts wherever the pattern matches. Unlike a simple character split, regex lets you split on <strong>any combination of delimiters</strong>.</p>
+
+                <div class="category">
+                    <div class="category-title">
+                        <span class="category-icon">&#9986;</span>
+                        Example 1: Split by Any Non-Word Character
+                    </div>
+
+                    <p>Sometimes data uses inconsistent separators — commas, semicolons, spaces, dashes. Use <code>\\W+</code> to split on any sequence of non-word characters:</p>
+
+                    <div class="code-block">
+<span class="type">String</span> <span class="variable">data</span> = <span class="string">"apple;banana, cherry - date"</span>;
+
+<span class="comment">// Split wherever there is one or more non-word characters</span>
+<span class="type">String</span>[] <span class="variable">fruits</span> = <span class="variable">data</span>.<span class="method">split</span>(<span class="string">"\\W+"</span>);
+
+<span class="keyword">for</span> (<span class="type">String</span> <span class="variable">f</span> : <span class="variable">fruits</span>) {
+    System.out.println(<span class="variable">f</span>);
+}
+<span class="comment">// apple</span>
+<span class="comment">// banana</span>
+<span class="comment">// cherry</span>
+<span class="comment">// date</span>
+                    </div>
+                </div>
+
+                <div class="category">
+                    <div class="category-title">
+                        <span class="category-icon">&#128290;</span>
+                        Example 2: Extract Numbers from a Sentence
+                    </div>
+
+                    <p>If you split on non-digits, every remaining piece will be a digit sequence:</p>
+
+                    <div class="code-block">
+<span class="type">String</span> <span class="variable">sentence</span> = <span class="string">"Room 101, Floor 3, Building 7"</span>;
+
+<span class="comment">// Split on non-digit sequences to isolate numbers</span>
+<span class="type">String</span>[] <span class="variable">numbers</span> = <span class="variable">sentence</span>.<span class="method">split</span>(<span class="string">"\\D+"</span>);
+
+<span class="keyword">for</span> (<span class="type">String</span> <span class="variable">n</span> : <span class="variable">numbers</span>) {
+    <span class="keyword">if</span> (!<span class="variable">n</span>.<span class="method">isEmpty</span>()) {
+        System.out.println(<span class="variable">n</span>);
+    }
+}
+<span class="comment">// 101</span>
+<span class="comment">// 3</span>
+<span class="comment">// 7</span>
+                    </div>
+                </div>
+
+                <div class="category">
+                    <div class="category-title">
+                        <span class="category-icon">&#128247;</span>
+                        Example 3: Split by Multiple Delimiters
+                    </div>
+
+                    <p>Split a CSV-like string that might use commas, semicolons, or pipes as separators:</p>
+
+                    <div class="code-block">
+<span class="type">String</span> <span class="variable">csv</span> = <span class="string">"Alice,Bob;Charlie|Dave"</span>;
+
+<span class="comment">// Split on comma, semicolon, or pipe</span>
+<span class="type">String</span>[] <span class="variable">names</span> = <span class="variable">csv</span>.<span class="method">split</span>(<span class="string">[,;|]</span>);  <span class="comment">// Note: | must be escaped in regex: [,;|]</span>
+
+<span class="keyword">for</span> (<span class="type">String</span> <span class="variable">name</span> : <span class="variable">names</span>) {
+    System.out.println(<span class="variable">name</span>);
+}
+<span class="comment">// Alice</span>
+<span class="comment">// Bob</span>
+<span class="comment">// Charlie</span>
+<span class="comment">// Dave</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 6: Password Validation -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">6</span>
+                    Practical Example: Password Validation
+                </h2>
+
+                <p>Password validation is one of the most common real-world uses for regular expressions. Instead of writing multiple <code>if</code> conditions and loops, a single <code>matches()</code> call can check all rules at once.</p>
+
+                <div class="regex-box">
+                    <div class="regex-box-title">Password Rules</div>
+                    <div class="password-checklist">
+                        <div class="check-item pass">
+                            <span class="check-icon">&#10003;</span>
+                            At least 8 characters long
+                        </div>
+                        <div class="check-item pass">
+                            <span class="check-icon">&#10003;</span>
+                            Contains at least one uppercase letter
+                        </div>
+                        <div class="check-item pass">
+                            <span class="check-icon">&#10003;</span>
+                            Contains at least one lowercase letter
+                        </div>
+                        <div class="check-item pass">
+                            <span class="check-icon">&#10003;</span>
+                            Contains at least one digit
+                        </div>
+                        <div class="check-item pass">
+                            <span class="check-icon">&#10003;</span>
+                            Contains at least one special character
+                        </div>
+                        <div class="check-item fail">
+                            <span class="check-icon">&#10007;</span>
+                            No whitespace allowed
+                        </div>
+                    </div>
+                </div>
+
+                <div class="code-block">
+<span class="keyword">public static boolean</span> <span class="method">isValidPassword</span>(<span class="type">String</span> <span class="variable">password</span>) {
+
+    <span class="comment">// Rule 1: At least 8 characters long</span>
+    <span class="keyword">if</span> (<span class="variable">password</span>.<span class="method">length</span>() &lt; <span class="number">8</span>) <span class="keyword">return false</span>;
+
+    <span class="comment">// Rule 2: Must contain at least one uppercase letter</span>
+    <span class="keyword">if</span> (!<span class="variable">password</span>.<span class="method">matches</span>(<span class="string">".*[A-Z].*"</span>)) <span class="keyword">return false</span>;
+
+    <span class="comment">// Rule 3: Must contain at least one lowercase letter</span>
+    <span class="keyword">if</span> (!<span class="variable">password</span>.<span class="method">matches</span>(<span class="string">".*[a-z].*"</span>)) <span class="keyword">return false</span>;
+
+    <span class="comment">// Rule 4: Must contain at least one digit</span>
+    <span class="keyword">if</span> (!<span class="variable">password</span>.<span class="method">matches</span>(<span class="string">".*\\d.*"</span>)) <span class="keyword">return false</span>;
+
+    <span class="comment">// Rule 5: Must contain at least one special character</span>
+    <span class="keyword">if</span> (!<span class="variable">password</span>.<span class="method">matches</span>(<span class="string">".*[!@#$%^&amp;*()_+\\-=\\[\\]{};':\"\\\\|,.&lt;&gt;/?].*"</span>)) <span class="keyword">return false</span>;
+
+    <span class="comment">// Rule 6: No whitespace allowed</span>
+    <span class="keyword">if</span> (<span class="variable">password</span>.<span class="method">matches</span>(<span class="string">".*\\s.*"</span>)) <span class="keyword">return false</span>;
+
+    <span class="keyword">return true</span>;
+}
+                </div>
+
+                <div class="code-block">
+<span class="comment">// Testing the password validator</span>
+System.out.println(<span class="method">isValidPassword</span>(<span class="string">"hello"</span>));           <span class="comment">// false — too short, no uppercase, no digit</span>
+System.out.println(<span class="method">isValidPassword</span>(<span class="string">"Hello12345"</span>));      <span class="comment">// false — no special character</span>
+System.out.println(<span class="method">isValidPassword</span>(<span class="string">"Hello 1@3"</span>));       <span class="comment">// false — has whitespace</span>
+System.out.println(<span class="method">isValidPassword</span>(<span class="string">"Hello1@World"</span>));    <span class="comment">// true  — passes all rules!</span>
+                </div>
+
+                <div class="info-box">
+                    <p><strong>Understanding <code>.*[A-Z].*</code></strong></p>
+                    <p>The pattern <code class="code-inline">.*[A-Z].*</code> means:</p>
+                    <ul>
+                        <li><code>.*</code> — zero or more of any character (before the uppercase letter)</li>
+                        <li><code>[A-Z]</code> — exactly one uppercase letter</li>
+                        <li><code>.*</code> — zero or more of any character (after the uppercase letter)</li>
+                    </ul>
+                    <p>Together: the string can have anything, as long as somewhere in it there is at least one uppercase letter.</p>
+                </div>
+            </div>
+
+            <!-- Section 7: Summary -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">7</span>
+                    Summary: Quick Reference
+                </h2>
+
+                <table class="meta-table">
+                    <tr>
+                        <th>Pattern</th>
+                        <th>Meaning</th>
+                    </tr>
+                    <tr>
+                        <td class="pattern-cell">.</td>
+                        <td>Any single character</td>
+                    </tr>
+                    <tr>
+                        <td class="pattern-cell">a|b</td>
+                        <td>a OR b</td>
+                    </tr>
+                    <tr>
+                        <td class="pattern-cell">[abc]</td>
+                        <td>a, b, or c</td>
+                    </tr>
+                    <tr>
+                        <td class="pattern-cell">[^abc]</td>
+                        <td>Any character except a, b, c</td>
+                    </tr>
+                    <tr>
+                        <td class="pattern-cell">\\d</td>
+                        <td>A digit (0–9)</td>
+                    </tr>
+                    <tr>
+                        <td class="pattern-cell">\\D</td>
+                        <td>A non-digit</td>
+                    </tr>
+                    <tr>
+                        <td class="pattern-cell">\\w</td>
+                        <td>A word character (letter, digit, _)</td>
+                    </tr>
+                    <tr>
+                        <td class="pattern-cell">\\W</td>
+                        <td>A non-word character</td>
+                    </tr>
+                    <tr>
+                        <td class="pattern-cell">\\s</td>
+                        <td>A whitespace character</td>
+                    </tr>
+                    <tr>
+                        <td class="pattern-cell">\\S</td>
+                        <td>A non-whitespace character</td>
+                    </tr>
+                    <tr>
+                        <td class="pattern-cell">+</td>
+                        <td>One or more of the preceding pattern</td>
+                    </tr>
+                    <tr>
+                        <td class="pattern-cell">*</td>
+                        <td>Zero or more of the preceding pattern</td>
+                    </tr>
+                    <tr>
+                        <td class="pattern-cell">.*</td>
+                        <td>Zero or more of any character</td>
+                    </tr>
+                    <tr>
+                        <td class="pattern-cell">{n}</td>
+                        <td>Exactly n repetitions</td>
+                    </tr>
+                </table>
+
+                <div class="success-box">
+                    <p><strong>Key Takeaway</strong></p>
+                    <p>Regular expressions exist in nearly every programming language. The patterns you learned here — <code>\\d</code>, <code>\\w</code>, <code>\\s</code>, character classes, and quantifiers — work the same in Python, JavaScript, and more. Learning regex in Java means you already know regex almost everywhere!</p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <a href="03-string-methods.html" class="prev-lesson">‹ Previous: String Methods</a>
+            <a href="04-stringbuilder-buffer.html">Next: StringBuilder &amp; Buffer ›</a>
+        </nav>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p><strong>CPCS203</strong> - Object-Oriented Programming</p>
+            <p>Module 2: Strings | Lesson 6: Regular Expressions</p>
+            <p>Prepared by Dr. Almalawi</p>
+        </div>
+    </div>
+</body>
+</html>

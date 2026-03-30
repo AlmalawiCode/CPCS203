@@ -1,0 +1,49 @@
+@startuml diagram_shapes
+skinparam backgroundColor transparent
+skinparam shadowing false
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 14
+skinparam classBackgroundColor #fdf2f8
+skinparam classBorderColor #ec4899
+skinparam classFontColor #831843
+skinparam classAttributeFontColor #374151
+skinparam classAttributeFontSize 13
+skinparam arrowColor #be185d
+skinparam arrowThickness 2
+skinparam classHeaderBackgroundColor #fce7f3
+skinparam abstractClassBackgroundColor #fff0f9
+skinparam abstractClassBorderColor #be185d
+
+abstract class Shape {
+  # String color
+  # boolean filled
+  + String getColor()
+  + boolean isFilled()
+  + String toString()
+  {abstract} + double area()
+  {abstract} + double perimeter()
+}
+
+class Circle {
+  - double radius
+  + double area()
+  + double perimeter()
+}
+
+class Rectangle {
+  - double width
+  - double height
+  + double area()
+  + double perimeter()
+}
+
+class Triangle {
+  - double a, b, c
+  + double area()
+  + double perimeter()
+}
+
+Shape <|-- Circle
+Shape <|-- Rectangle
+Shape <|-- Triangle
+@enduml

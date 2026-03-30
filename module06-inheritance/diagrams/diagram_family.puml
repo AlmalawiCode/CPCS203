@@ -1,0 +1,31 @@
+@startuml diagram_family
+skinparam backgroundColor transparent
+skinparam shadowing false
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 14
+skinparam classBackgroundColor #fdf2f8
+skinparam classBorderColor #ec4899
+skinparam classFontColor #831843
+skinparam classAttributeFontColor #374151
+skinparam classAttributeFontSize 13
+skinparam arrowColor #be185d
+skinparam arrowThickness 2
+skinparam classHeaderBackgroundColor #fce7f3
+
+class "Father & Mother" as Parent {
+  talents
+  appearance
+  personality
+}
+
+class "Son" {
+  + own unique traits
+}
+
+class "Daughter" {
+  + own unique traits
+}
+
+Parent <|-- Son  : inherits
+Parent <|-- Daughter : inherits
+@enduml

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="330px" preserveAspectRatio="none" style="width:597px;height:330px;" version="1.1" viewBox="0 0 597 330" width="597px" zoomAndPan="magnify"><defs/><g><!--MD5=[426e75666daf533f17226ff4c87e20fd]
+class Shape--><rect fill="#FDF2F8" height="134.5301" id="Shape" style="stroke: #EC4899; stroke-width: 1.5;" width="127" x="183" y="8"/><rect fill="#FCE7F3" height="30" style="stroke: #EC4899; stroke-width: 1.5;" width="127" x="183" y="8"/><ellipse cx="221.75" cy="23" fill="#ADD1B2" rx="10" ry="10" style="stroke: #EC4899; stroke-width: 1.0;"/><path d="M224.1406,27.7031 Q223.6563,27.9531 223.125,28.0781 Q222.6094,28.2031 222.0313,28.2031 Q219.9688,28.2031 218.875,26.8438 Q217.7969,25.4844 217.7969,22.9063 Q217.7969,20.3281 218.875,18.9688 Q219.9688,17.6094 222.0313,17.6094 Q222.6094,17.6094 223.1406,17.7344 Q223.6719,17.8594 224.1406,18.0938 L224.1406,20.3438 Q223.625,19.8594 223.125,19.6406 Q222.6406,19.4219 222.125,19.4219 Q221.0156,19.4219 220.4531,20.2969 Q219.8906,21.1719 219.8906,22.9063 Q219.8906,24.625 220.4531,25.5156 Q221.0156,26.3906 222.125,26.3906 Q222.6406,26.3906 223.125,26.1719 Q223.625,25.9375 224.1406,25.4688 L224.1406,27.7031 Z "/><text fill="#831843" font-family="Segoe UI" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="42" x="240.25" y="28.432">Shape</text><line style="stroke: #EC4899; stroke-width: 1.5;" x1="184" x2="309" y1="38" y2="38"/><polygon fill="none" points="194,44,198,48,194,52,190,48" style="stroke: #B38D22; stroke-width: 1.0;"/><text fill="#374151" font-family="Segoe UI" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="69" x="202" y="55.897">String color</text><polygon fill="none" points="194,61.706,198,65.706,194,69.706,190,65.706" style="stroke: #B38D22; stroke-width: 1.0;"/><text fill="#374151" font-family="Segoe UI" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="80" x="202" y="73.603">boolean filled</text><line style="stroke: #EC4899; stroke-width: 1.0;" x1="184" x2="309" y1="81.412" y2="81.412"/><ellipse cx="194" cy="92.412" fill="#84BE84" rx="3" ry="3" style="stroke: #038048; stroke-width: 1.0;"/><text fill="#374151" font-family="Segoe UI" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="102" x="202" y="99.309">String  getColor()</text><ellipse cx="194" cy="110.118" fill="#84BE84" rx="3" ry="3" style="stroke: #038048; stroke-width: 1.0;"/><text fill="#374151" font-family="Segoe UI" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="100" x="202" y="117.0151">boolean isFilled()</text><ellipse cx="194" cy="127.8241" fill="#84BE84" rx="3" ry="3" style="stroke: #038048; stroke-width: 1.0;"/><text fill="#374151" font-family="Segoe UI" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="99" x="202" y="134.7211">String  toString()</text><!--MD5=[a7f9118cae7621dd25d25149752faef0]
+class Circle--><rect fill="#FDF2F8" height="99.118" id="Circle" style="stroke: #EC4899; stroke-width: 1.5;" width="137" x="6" y="212"/><rect fill="#FCE7F3" height="30" style="stroke: #EC4899; stroke-width: 1.5;" width="137" x="6" y="212"/><ellipse cx="51.5" cy="227" fill="#ADD1B2" rx="10" ry="10" style="stroke: #EC4899; stroke-width: 1.0;"/><path d="M53.8906,231.7031 Q53.4063,231.9531 52.875,232.0781 Q52.3594,232.2031 51.7813,232.2031 Q49.7188,232.2031 48.625,230.8438 Q47.5469,229.4844 47.5469,226.9063 Q47.5469,224.3281 48.625,222.9688 Q49.7188,221.6094 51.7813,221.6094 Q52.3594,221.6094 52.8906,221.7344 Q53.4219,221.8594 53.8906,222.0938 L53.8906,224.3438 Q53.375,223.8594 52.875,223.6406 Q52.3906,223.4219 51.875,223.4219 Q50.7656,223.4219 50.2031,224.2969 Q49.6406,225.1719 49.6406,226.9063 Q49.6406,228.625 50.2031,229.5156 Q50.7656,230.3906 51.875,230.3906 Q52.3906,230.3906 52.875,230.1719 Q53.375,229.9375 53.8906,229.4688 L53.8906,231.7031 Z "/><text fill="#831843" font-family="Segoe UI" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="38" x="70.5" y="232.432">Circle</text><line style="stroke: #EC4899; stroke-width: 1.5;" x1="7" x2="142" y1="242" y2="242"/><rect fill="none" height="6" style="stroke: #C82930; stroke-width: 1.0;" width="6" x="14" y="250"/><text fill="#374151" font-family="Segoe UI" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="82" x="25" y="259.897">double radius</text><line style="stroke: #EC4899; stroke-width: 1.0;" x1="7" x2="142" y1="267.706" y2="267.706"/><ellipse cx="17" cy="278.706" fill="#84BE84" rx="3" ry="3" style="stroke: #038048; stroke-width: 1.0;"/><text fill="#374151" font-family="Segoe UI" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="79" x="25" y="285.603">double area()</text><ellipse cx="17" cy="296.412" fill="#84BE84" rx="3" ry="3" style="stroke: #038048; stroke-width: 1.0;"/><text fill="#374151" font-family="Segoe UI" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="112" x="25" y="303.309">double perimeter()</text><!--MD5=[b5313cd49da22b0744b541f414f8445e]
+class Rectangle--><rect fill="#FDF2F8" height="116.8241" id="Rectangle" style="stroke: #EC4899; stroke-width: 1.5;" width="137" x="178" y="203"/><rect fill="#FCE7F3" height="30" style="stroke: #EC4899; stroke-width: 1.5;" width="137" x="178" y="203"/><ellipse cx="210" cy="218" fill="#ADD1B2" rx="10" ry="10" style="stroke: #EC4899; stroke-width: 1.0;"/><path d="M212.3906,222.7031 Q211.9063,222.9531 211.375,223.0781 Q210.8594,223.2031 210.2813,223.2031 Q208.2188,223.2031 207.125,221.8438 Q206.0469,220.4844 206.0469,217.9063 Q206.0469,215.3281 207.125,213.9688 Q208.2188,212.6094 210.2813,212.6094 Q210.8594,212.6094 211.3906,212.7344 Q211.9219,212.8594 212.3906,213.0938 L212.3906,215.3438 Q211.875,214.8594 211.375,214.6406 Q210.8906,214.4219 210.375,214.4219 Q209.2656,214.4219 208.7031,215.2969 Q208.1406,216.1719 208.1406,217.9063 Q208.1406,219.625 208.7031,220.5156 Q209.2656,221.3906 210.375,221.3906 Q210.8906,221.3906 211.375,221.1719 Q211.875,220.9375 212.3906,220.4688 L212.3906,222.7031 Z "/><text fill="#831843" font-family="Segoe UI" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="67" x="227" y="223.432">Rectangle</text><line style="stroke: #EC4899; stroke-width: 1.5;" x1="179" x2="314" y1="233" y2="233"/><rect fill="none" height="6" style="stroke: #C82930; stroke-width: 1.0;" width="6" x="186" y="241"/><text fill="#374151" font-family="Segoe UI" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="79" x="197" y="250.897">double width</text><rect fill="none" height="6" style="stroke: #C82930; stroke-width: 1.0;" width="6" x="186" y="258.706"/><text fill="#374151" font-family="Segoe UI" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="84" x="197" y="268.603">double height</text><line style="stroke: #EC4899; stroke-width: 1.0;" x1="179" x2="314" y1="276.412" y2="276.412"/><ellipse cx="189" cy="287.412" fill="#84BE84" rx="3" ry="3" style="stroke: #038048; stroke-width: 1.0;"/><text fill="#374151" font-family="Segoe UI" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="79" x="197" y="294.309">double area()</text><ellipse cx="189" cy="305.118" fill="#84BE84" rx="3" ry="3" style="stroke: #038048; stroke-width: 1.0;"/><text fill="#374151" font-family="Segoe UI" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="112" x="197" y="312.0151">double perimeter()</text><path d="M350,228 L350,295.2038 A0,0 0 0 0 350,295.2038 L585,295.2038 A0,0 0 0 0 585,295.2038 L585,238 L575,228 L432.25,228 L310.13,129.47 L424.25,228 L350,228 A0,0 0 0 0 350,228 " fill="#FBFB77" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M575,228 L575,238 L585,238 L575,228 " fill="#FBFB77" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#000000" font-family="Segoe UI" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="194" x="356" y="247.9659">Common fields and methods</text><text fill="#000000" font-family="Segoe UI" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="214" x="356" y="267.0339">defined ONCE here — inherited</text><text fill="#000000" font-family="Segoe UI" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="163" x="356" y="286.1018">by Circle and Rectangle.</text><!--MD5=[d637a7d0c5b779627461b5a6979d5756]
+reverse link Shape to Circle--><path d="M170.49,157.81 C153.23,176.27 135.43,195.32 119.91,211.92 " fill="none" id="Shape&lt;-Circle" style="stroke: #7C3AED; stroke-width: 2.5;"/><polygon fill="none" points="165.39,153.02,184.16,143.19,175.62,162.58,165.39,153.02" style="stroke: #7C3AED; stroke-width: 2.5;"/><!--MD5=[793668fe740f4b06a80dd095381d024c]
+reverse link Shape to Rectangle--><path d="M246.5,163.29 C246.5,176.71 246.5,190.28 246.5,202.85 " fill="none" id="Shape&lt;-Rectangle" style="stroke: #7C3AED; stroke-width: 2.5;"/><polygon fill="none" points="239.5,163.19,246.5,143.19,253.5,163.19,239.5,163.19" style="stroke: #7C3AED; stroke-width: 2.5;"/><!--MD5=[581472e951fae440f98cb5d83e40ae19]
+@startuml diagram_shape_hierarchy
+skinparam backgroundColor transparent
+skinparam shadowing false
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 14
+skinparam classBackgroundColor #fdf2f8
+skinparam classBorderColor #ec4899
+skinparam classFontColor #831843
+skinparam classAttributeFontColor #374151
+skinparam classAttributeFontSize 13
+skinparam arrowColor #7c3aed
+skinparam arrowThickness 2.5
+skinparam classHeaderBackgroundColor #fce7f3
+
+class Shape {
+  # String color
+  # boolean filled
+  - -
+  + String  getColor()
+  + boolean isFilled()
+  + String  toString()
+}
+
+class Circle {
+  - double radius
+  - -
+  + double area()
+  + double perimeter()
+}
+
+class Rectangle {
+  - double width
+  - double height
+  - -
+  + double area()
+  + double perimeter()
+}
+
+Shape <|- - Circle
+Shape <|- - Rectangle
+
+note bottom of Shape
+  Common fields and methods
+  defined ONCE here — inherited
+  by Circle and Rectangle.
+end note
+@enduml
+
+PlantUML version 1.2020.02(Sun Mar 01 13:22:07 AST 2020)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Java Version: 21.0.10+7-Ubuntu-124.04
+Operating System: Linux
+Default Encoding: UTF-8
+Language: en
+Country: US
+--></g></svg>

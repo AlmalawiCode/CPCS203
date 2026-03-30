@@ -1,0 +1,47 @@
+@startuml diagram_shape_hierarchy
+skinparam backgroundColor transparent
+skinparam shadowing false
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 14
+skinparam classBackgroundColor #fdf2f8
+skinparam classBorderColor #ec4899
+skinparam classFontColor #831843
+skinparam classAttributeFontColor #374151
+skinparam classAttributeFontSize 13
+skinparam arrowColor #7c3aed
+skinparam arrowThickness 2.5
+skinparam classHeaderBackgroundColor #fce7f3
+
+class Shape {
+  # String color
+  # boolean filled
+  --
+  + String  getColor()
+  + boolean isFilled()
+  + String  toString()
+}
+
+class Circle {
+  - double radius
+  --
+  + double area()
+  + double perimeter()
+}
+
+class Rectangle {
+  - double width
+  - double height
+  --
+  + double area()
+  + double perimeter()
+}
+
+Shape <|-- Circle
+Shape <|-- Rectangle
+
+note bottom of Shape
+  Common fields and methods
+  defined ONCE here — inherited
+  by Circle and Rectangle.
+end note
+@enduml
