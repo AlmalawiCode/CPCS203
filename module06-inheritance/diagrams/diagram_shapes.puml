@@ -13,6 +13,7 @@ skinparam arrowThickness 2
 skinparam classHeaderBackgroundColor #fce7f3
 skinparam abstractClassBackgroundColor #fff0f9
 skinparam abstractClassBorderColor #be185d
+skinparam classAttributeIconSize 0
 
 abstract class Shape {
   # String color

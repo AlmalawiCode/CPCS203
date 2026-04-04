@@ -11,6 +11,7 @@ skinparam classAttributeFontSize 13
 skinparam arrowColor #be185d
 skinparam arrowThickness 2
 skinparam classHeaderBackgroundColor #fce7f3
+skinparam classAttributeIconSize 0
 
 class Animal {
   + String name

@@ -11,6 +11,7 @@ skinparam classAttributeFontSize 13
 skinparam arrowColor #7c3aed
 skinparam arrowThickness 2
 skinparam classHeaderBackgroundColor #ede9fe
+skinparam classAttributeIconSize 0
 
 class "PrintWriter" as PW <<Java Standard Library>> {
   + void println(String)

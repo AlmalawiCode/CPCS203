@@ -11,6 +11,7 @@ skinparam classAttributeFontSize 13
 skinparam arrowColor #7c3aed
 skinparam arrowThickness 2.5
 skinparam classHeaderBackgroundColor #fce7f3
+skinparam classAttributeIconSize 0
 
 class Shape {
   # String color
