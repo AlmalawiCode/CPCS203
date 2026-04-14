@@ -1,0 +1,2359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inheritance — Reusability | CPCS203</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --pink:          #ec4899;
+            --pink-dark:     #be185d;
+            --pink-light:    #fce7f3;
+            --violet:        #8b5cf6;
+            --violet-dark:   #7c3aed;
+            --violet-light:  #ede9fe;
+            --indigo:        #6366f1;
+            --success:       #059669;
+            --warning:       #d97706;
+            --danger:        #dc2626;
+            --dark:          #1f2937;
+            --gray:          #6b7280;
+            --light:         #f9fafb;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.8;
+            color: var(--dark);
+            background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.35);
+            overflow: hidden;
+        }
+
+        /* ── Breadcrumb ─────────────────────────────────── */
+        .nav-breadcrumb {
+            background: linear-gradient(135deg, #831843, #be185d);
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .breadcrumb { display: flex; align-items: center; gap: 8px; color: white; font-size: 0.9rem; }
+        .breadcrumb a { color: #fbcfe8; text-decoration: none; transition: color .3s; }
+        .breadcrumb a:hover { color: white; }
+        .breadcrumb .sep { color: #f9a8d4; }
+        .breadcrumb .cur { color: #fde68a; }
+        .lesson-nav { display: flex; gap: 10px; }
+        .lesson-nav a {
+            padding: 8px 16px;
+            background: rgba(255,255,255,.15);
+            color: white;
+            text-decoration: none;
+            border-radius: 20px;
+            font-size: .85rem;
+            transition: background .3s;
+        }
+        .lesson-nav a:hover { background: rgba(255,255,255,.25); }
+
+        /* ── Hero ───────────────────────────────────────── */
+        .hero {
+            background: linear-gradient(135deg, #ec4899, #8b5cf6, #6366f1);
+            color: white;
+            padding: 50px 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50px; right: -50px;
+            width: 250px; height: 250px;
+            background: rgba(255,255,255,.05);
+            border-radius: 50%;
+        }
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -80px; left: -40px;
+            width: 300px; height: 300px;
+            background: rgba(255,255,255,.05);
+            border-radius: 50%;
+        }
+        .pillar-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,.2);
+            border: 1px solid rgba(255,255,255,.4);
+            padding: 8px 22px;
+            border-radius: 30px;
+            font-size: .95rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        .pillar-badge .num {
+            background: white;
+            color: var(--pink);
+            width: 28px; height: 28px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 900;
+        }
+        .hero h1 {
+            font-size: 2.8rem;
+            margin-bottom: 15px;
+            text-shadow: 0 3px 8px rgba(0,0,0,.3);
+        }
+        .hero .subtitle { font-size: 1.2rem; opacity: .9; margin-bottom: 10px; }
+        .hero .message {
+            max-width: 700px;
+            margin: 20px auto 0;
+            font-size: 1rem;
+            opacity: .95;
+            font-style: italic;
+            background: rgba(255,255,255,.1);
+            border: 1px solid rgba(255,255,255,.3);
+            padding: 16px 22px;
+            border-radius: 12px;
+            line-height: 1.9;
+        }
+        .topic-chips {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 28px;
+            flex-wrap: wrap;
+        }
+        .topic-chip {
+            padding: 9px 20px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: .88rem;
+            border: 2px solid rgba(255,255,255,.5);
+            background: rgba(255,255,255,.12);
+        }
+
+        /* ── Content wrapper ────────────────────────────── */
+        .content { padding: 50px 40px; }
+
+        /* ── Section headings ───────────────────────────── */
+        .section { margin-bottom: 60px; }
+        .section-title {
+            font-size: 1.85rem;
+            color: var(--pink-dark);
+            border-bottom: 3px solid var(--pink);
+            padding-bottom: 10px;
+            margin-bottom: 28px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .section-number {
+            background: linear-gradient(135deg, var(--pink), var(--violet));
+            color: white;
+            width: 42px; height: 42px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem; font-weight: bold;
+            flex-shrink: 0;
+        }
+        .subsection-title {
+            font-size: 1.3rem;
+            color: var(--violet-dark);
+            margin: 30px 0 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .sub-badge {
+            background: linear-gradient(135deg, var(--violet), var(--indigo));
+            color: white;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: .8rem;
+            font-weight: 700;
+        }
+
+        /* ── Callout boxes ──────────────────────────────── */
+        .key-box {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border-left: 5px solid var(--warning);
+            padding: 18px 24px;
+            margin: 20px 0;
+            border-radius: 0 12px 12px 0;
+        }
+        .key-box-title { font-weight: 700; color: var(--warning); margin-bottom: 8px; font-size: 1.05rem; }
+
+        .info-box {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            border-left: 5px solid #2563eb;
+            padding: 18px 24px;
+            margin: 20px 0;
+            border-radius: 0 12px 12px 0;
+        }
+
+        .pink-box {
+            background: linear-gradient(135deg, #fce7f3, #fbcfe8);
+            border-left: 5px solid var(--pink);
+            padding: 18px 24px;
+            margin: 20px 0;
+            border-radius: 0 12px 12px 0;
+        }
+        .pink-box-title { font-weight: 700; color: var(--pink-dark); margin-bottom: 8px; font-size: 1.05rem; }
+
+        .violet-box {
+            background: linear-gradient(135deg, #ede9fe, #ddd6fe);
+            border-left: 5px solid var(--violet);
+            padding: 18px 24px;
+            margin: 20px 0;
+            border-radius: 0 12px 12px 0;
+        }
+        .violet-box-title { font-weight: 700; color: var(--violet-dark); margin-bottom: 8px; font-size: 1.05rem; }
+
+        .success-box {
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+            border-left: 5px solid var(--success);
+            padding: 18px 24px;
+            margin: 20px 0;
+            border-radius: 0 12px 12px 0;
+        }
+        .success-box-title { font-weight: 700; color: #065f46; margin-bottom: 8px; font-size: 1.05rem; }
+
+        .danger-box {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            border-left: 5px solid var(--danger);
+            padding: 18px 24px;
+            margin: 20px 0;
+            border-radius: 0 12px 12px 0;
+        }
+        .danger-box-title { font-weight: 700; color: var(--danger); margin-bottom: 8px; }
+
+        /* ── Code blocks ────────────────────────────────── */
+        .code-block {
+            background: #282a36;
+            color: #f8f8f2;
+            padding: 24px 26px;
+            border-radius: 12px;
+            margin: 18px 0;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 1.02rem;
+            line-height: 1.75;
+            white-space: pre-wrap;
+            border: 1.5px solid #44475a;
+        }
+        .code-block .kw  { color: #ff79c6; font-weight: 700; }
+        .code-block .tp  { color: #8be9fd; }
+        .code-block .str { color: #f1fa8c; }
+        .code-block .num { color: #bd93f9; }
+        .code-block .cmt { color: #6272a4; font-style: italic; }
+        .code-block .var { color: #f8f8f2; }
+        .code-block .mtd { color: #50fa7b; }
+        .code-block .ann { color: #ff79c6; font-style: italic; }
+
+        .code-inline {
+            background: #f3f4f6;
+            padding: 2px 8px;
+            border-radius: 5px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: .9rem;
+            color: var(--pink-dark);
+        }
+
+        /* ── Terminal output ────────────────────────────── */
+        .terminal {
+            background: #0f172a;
+            color: #e2e8f0;
+            padding: 22px;
+            border-radius: 12px;
+            margin: 18px 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: .88rem;
+            line-height: 1.9;
+            overflow-x: auto;
+            white-space: pre;
+            border: 1px solid #334155;
+        }
+        .terminal-header {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-bottom: none;
+            border-radius: 12px 12px 0 0;
+            padding: 10px 18px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .terminal-dot { width: 12px; height: 12px; border-radius: 50%; }
+        .terminal-dot.r { background: #ef4444; }
+        .terminal-dot.y { background: #f59e0b; }
+        .terminal-dot.g { background: #22c55e; }
+        .terminal-title { color: #94a3b8; font-size: .8rem; margin-left: 8px; }
+        .terminal.with-header { border-radius: 0 0 12px 12px; }
+
+        /* ── UML Diagram ──────────────────────────────────── */
+        .uml-diagram {
+            display: flex; flex-direction: column;
+            align-items: center; margin: 28px auto;
+            max-width: 600px;
+        }
+        .uml-class {
+            border: 2px solid #374151; min-width: 220px;
+            background: white; text-align: left;
+            border-radius: 4px; overflow: hidden;
+        }
+        .uml-class-name {
+            padding: 10px 16px; font-weight: 700;
+            font-family: 'Consolas', monospace;
+            font-size: .95rem; text-align: center; color: white;
+        }
+        .uml-class-name.uml-parent   { background: #7c3aed; }
+        .uml-class-name.uml-child    { background: #be185d; }
+        .uml-class-name.uml-child-b  { background: #1d4ed8; }
+        .uml-class-name.uml-child-g  { background: #15803d; }
+        .uml-section {
+            padding: 8px 14px;
+            border-top: 1px solid #d1d5db;
+            font-family: 'Consolas', monospace;
+            font-size: .8rem; line-height: 1.9; color: #374151;
+        }
+        .uml-section .overridden { color: #be185d; font-weight: 700; }
+        .uml-section .new-method { color: #15803d; font-weight: 700; }
+        .uml-inherit-arrow {
+            display: flex; flex-direction: column;
+            align-items: center; gap: 0;
+        }
+        .uml-arrow-line { width: 2px; height: 28px; background: #374151; }
+        .uml-arrow-tri {
+            width: 0; height: 0;
+            border-left: 11px solid transparent;
+            border-right: 11px solid transparent;
+            border-bottom: 18px solid #374151;
+        }
+        .uml-arrow-label {
+            font-size: .78rem; color: var(--gray);
+            font-style: italic; margin: 5px 0 8px;
+        }
+        .uml-children-row {
+            display: flex; gap: 24px; align-items: flex-start;
+            flex-wrap: wrap; justify-content: center;
+        }
+        .uml-child-col { display: flex; flex-direction: column; align-items: center; }
+
+        /* ── Comparison Table ─────────────────────────────── */
+        .compare-table {
+            width: 100%; border-collapse: collapse; margin: 20px 0;
+            font-size: .9rem;
+        }
+        .compare-table th {
+            padding: 12px 16px; text-align: left;
+            font-weight: 800; font-size: .88rem;
+        }
+        .compare-table th.th-feature { background: #374151; color: white; }
+        .compare-table th.th-overload { background: var(--violet-dark); color: white; }
+        .compare-table th.th-override { background: var(--pink-dark); color: white; }
+        .compare-table td {
+            padding: 11px 16px;
+            border-bottom: 1px solid #e5e7eb;
+            vertical-align: top;
+            line-height: 1.7;
+        }
+        .compare-table tr:last-child td { border-bottom: none; }
+        .compare-table tr:nth-child(even) td { background: #f9fafb; }
+        .compare-table .td-feature { font-weight: 700; color: var(--dark); }
+        .compare-table .td-overload { color: var(--violet-dark); }
+        .compare-table .td-override { color: var(--pink-dark); }
+        .tick   { color: #16a34a; font-weight: 700; }
+        .cross  { color: #dc2626; font-weight: 700; }
+
+        /* ── Visibility Table ─────────────────────────────── */
+        .vis-table {
+            width: 100%; border-collapse: collapse; margin: 20px 0;
+            font-size: .88rem; text-align: center;
+        }
+        .vis-table th {
+            padding: 11px 14px; font-weight: 800;
+            border: 1px solid #d1d5db;
+        }
+        .vis-table th.th-mod { background: #1f2937; color: white; text-align: left; padding-left: 18px; }
+        .vis-table th.th-col { background: #374151; color: white; }
+        .vis-table td {
+            padding: 10px 14px; border: 1px solid #e5e7eb;
+            font-size: 1rem;
+        }
+        .vis-table tr.row-private   td:first-child { background: #fee2e2; color: #991b1b; font-weight: 700; text-align:left; padding-left:18px; }
+        .vis-table tr.row-default   td:first-child { background: #fff7ed; color: #9a3412; font-weight: 700; text-align:left; padding-left:18px; }
+        .vis-table tr.row-protected td:first-child { background: #ede9fe; color: #5b21b6; font-weight: 700; text-align:left; padding-left:18px; }
+        .vis-table tr.row-public    td:first-child { background: #dcfce7; color: #14532d; font-weight: 700; text-align:left; padding-left:18px; }
+
+        /* ── Challenge Boxes ──────────────────────────────── */
+        .challenge-box {
+            background: #fffbeb; border: 2px solid #f59e0b;
+            border-radius: 14px; margin: 20px 0; overflow: hidden;
+        }
+        .challenge-header {
+            background: #f59e0b; color: white;
+            padding: 10px 18px; font-weight: 800; font-size: .9rem;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .challenge-body { padding: 16px 18px; }
+        .challenge-q-text { font-weight: 700; color: #92400e; font-size: .95rem; margin-bottom: 12px; }
+        .verdict {
+            display: inline-flex; align-items: center; gap: 7px;
+            padding: 4px 14px; border-radius: 20px;
+            font-weight: 800; font-size: .85rem; margin: 10px 0 6px;
+        }
+        .verdict.ok  { background: #dcfce7; color: #15803d; border: 1.5px solid #86efac; }
+        .verdict.err { background: #fee2e2; color: #991b1b; border: 1.5px solid #fca5a5; }
+        .verdict-explain { font-size: .86rem; color: var(--dark); line-height: 1.7; }
+
+        /* ── Challenge show/hide ─────────────────────────── */
+        .btn-challenge {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: #3b82f6; color: white; border: none;
+            padding: 9px 22px; border-radius: 20px; cursor: pointer;
+            font-weight: 700; font-size: .85rem; margin: 8px 0;
+            transition: background .25s, transform .1s;
+        }
+        .btn-challenge:hover { background: #2563eb; transform: translateY(-1px); }
+        .btn-challenge.revealed { background: #6b7280; }
+        .btn-challenge.revealed:hover { background: #4b5563; }
+
+        .solution { display: none; margin-top: 14px; }
+        .solution.visible { display: block; }
+        .btn-solution {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: #f59e0b; color: white; border: none;
+            padding: 9px 22px; border-radius: 20px; cursor: pointer;
+            font-weight: 700; font-size: .85rem; margin-top: 14px;
+            transition: background .25s, transform .1s;
+        }
+        .btn-solution:hover { background: #d97706; transform: translateY(-1px); }
+        .btn-solution.revealed { background: #6b7280; }
+        .btn-solution.revealed:hover { background: #4b5563; }
+
+        /* ── Final keyword cards ──────────────────────────── */
+        .final-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr);
+            gap: 18px; margin: 22px 0;
+        }
+        .final-card {
+            border-radius: 16px; padding: 22px 18px;
+            text-align: center; border: 3px solid;
+        }
+        .final-card.fv { border-color: #f59e0b; background: #fffbeb; }
+        .final-card.fm { border-color: var(--violet); background: var(--violet-light); }
+        .final-card.fc { border-color: var(--pink);   background: var(--pink-light); }
+        .final-icon  { font-size: 2.6rem; margin-bottom: 10px; }
+        .final-title { font-weight: 800; font-size: 1rem; margin-bottom: 8px; }
+        .final-card.fv .final-title { color: #92400e; }
+        .final-card.fm .final-title { color: var(--violet-dark); }
+        .final-card.fc .final-title { color: var(--pink-dark); }
+        .final-desc { font-size: .85rem; color: var(--gray); line-height: 1.6; }
+
+        /* ── Object class method table ────────────────────── */
+        .obj-method-table {
+            width: 100%; border-collapse: collapse; margin: 18px 0;
+            font-size: .88rem;
+        }
+        .obj-method-table th {
+            background: #1f2937; color: white;
+            padding: 10px 16px; text-align: left; font-weight: 700;
+        }
+        .obj-method-table td {
+            padding: 10px 16px; border-bottom: 1px solid #e5e7eb;
+            vertical-align: top; line-height: 1.7;
+        }
+        .obj-method-table tr:nth-child(even) td { background: #f9fafb; }
+        .obj-method-table code { font-family: 'Consolas', monospace; background:#f3f4f6; padding: 1px 6px; border-radius:4px; color: var(--pink-dark); font-size:.85rem; }
+
+        /* ── Interface visual ─────────────────────────────── */
+        .iface-visual {
+            display: flex; align-items: flex-start;
+            justify-content: center; gap: 18px;
+            margin: 26px 0; flex-wrap: wrap;
+        }
+        .iface-box {
+            border-radius: 14px; padding: 16px 20px;
+            border: 2px dashed; text-align: center; min-width: 150px;
+        }
+        .iface-box.ib-fly  { border-color: #2563eb; background: #eff6ff; }
+        .iface-box.ib-swim { border-color: #0891b2; background: #ecfeff; }
+        .iface-box.ib-duck { border-color: #15803d; background: #f0fdf4; border-style: solid; }
+        .iface-label { font-size: .72rem; font-weight: 800; letter-spacing: .5px; margin-bottom: 6px; }
+        .iface-box.ib-fly  .iface-label { color: #1d4ed8; }
+        .iface-box.ib-swim .iface-label { color: #0e7490; }
+        .iface-box.ib-duck .iface-label { color: #15803d; }
+        .iface-name { font-weight: 800; font-size: 1rem; font-family: 'Consolas', monospace; }
+        .iface-connector { display: flex; align-items: center; font-size: 1.4rem; color: #6b7280; padding-top: 24px; }
+
+        /* ── Hierarchy visual ─────────────────────────────── */
+        .hierarchy-tree {
+            display: flex; flex-direction: column;
+            align-items: center; margin: 28px 0; gap: 0;
+        }
+        .ht-node {
+            border-radius: 12px; padding: 12px 28px;
+            font-weight: 800; font-size: .95rem;
+            border: 2px solid; text-align: center;
+        }
+        .ht-node.ht-root   { border-color: var(--violet); background: var(--violet-light); color: var(--violet-dark); }
+        .ht-node.ht-mid    { border-color: var(--pink);   background: var(--pink-light);   color: var(--pink-dark);   }
+        .ht-node.ht-leaf   { border-color: #15803d; background: #dcfce7; color: #14532d; }
+        .ht-line { width: 2px; height: 20px; background: var(--gray); }
+        .ht-row  { display: flex; gap: 32px; align-items: flex-start; }
+        .ht-branch-col { display: flex; flex-direction: column; align-items: center; }
+        .ht-h-line-wrap { display: flex; align-items: center; }
+        .ht-h-seg { height: 2px; background: var(--gray); }
+
+        /* ── Misc ───────────────────────────────────────── */
+        ul, ol { margin: 14px 0 14px 26px; }
+        li { margin: 7px 0; }
+        .highlight { color: var(--pink-dark); font-weight: 700; }
+        .violet-hl { color: var(--violet-dark); font-weight: 700; }
+
+        /* ── Bottom nav ─────────────────────────────────── */
+        .bottom-nav {
+            display: flex;
+            justify-content: space-between;
+            padding: 30px 40px;
+            background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+            border-top: 1px solid #e2e8f0;
+        }
+        .bottom-nav a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px 28px;
+            background: linear-gradient(135deg, var(--pink), var(--violet));
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1rem;
+            transition: transform .3s, box-shadow .3s;
+        }
+        .bottom-nav a:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(236,72,153,.4); }
+
+        /* ── Footer ─────────────────────────────────────── */
+        .footer {
+            background: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 22px;
+        }
+        .footer p { margin: 4px 0; font-size: .9rem; opacity: .85; }
+
+        /* ── Responsive ─────────────────────────────────── */
+        @media (max-width: 768px) {
+            .content { padding: 25px 20px; }
+            .hero h1 { font-size: 2rem; }
+            .final-grid { grid-template-columns: 1fr; }
+            .bottom-nav { flex-direction: column; gap: 15px; }
+            .nav-breadcrumb { flex-direction: column; }
+        }
+        @media (max-width: 600px) {
+            .compare-table { font-size: .8rem; }
+            .vis-table { font-size: .78rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <!-- ── Breadcrumb ─────────────────────────────────── -->
+    <nav class="nav-breadcrumb">
+        <div class="breadcrumb">
+            <a href="../index.html">CPCS203</a>
+            <span class="sep">›</span>
+            <a href="index.html">Module 6 — Inheritance</a>
+            <span class="sep">›</span>
+            <span class="cur">Reusability</span>
+        </div>
+        <div class="lesson-nav">
+            <a href="index.html">← Part 1</a>
+            <a href="../module07-polymorphism/index.html">Next: Polymorphism →</a>
+        </div>
+    </nav>
+
+    <!-- ── Hero ──────────────────────────────────────── -->
+    <div class="hero">
+        <div class="pillar-badge">
+            <div class="num">6</div>
+            Module 6 — Inheritance — Part 2
+        </div>
+        <h1>Reusability</h1>
+        <p class="subtitle">The Second Power of Inheritance</p>
+        <div class="message">
+            In Part 1, you understood <em>what</em> inheritance is and <em>why</em> it matters.
+            You saw how it saves code from redundancy and how a child class builds on its parent —
+            just as Omar said: <em>"each generation built on the one before."</em><br><br>
+            Now we go deeper. A child class does not just <strong>receive</strong> — it can
+            <strong>change</strong> what the parent gave it, and <strong>add</strong> what
+            the parent never had. That is <strong>Reusability</strong>: the second reason
+            we use inheritance, and the one with the most power.
+        </div>
+        <div class="topic-chips">
+            <span class="topic-chip" style="background:rgba(255,255,255,.12);opacity:.8;">&#10003; Part 1 — Motivation &amp; Redundancy</span>
+            <span class="topic-chip" style="background:rgba(255,255,255,.28);border-color:white;font-weight:800;">&#9654; Part 2 — Reusability</span>
+        </div>
+    </div>
+
+    <!-- ── Content ────────────────────────────────────── -->
+    <div class="content">
+
+        <!-- ════════ Section 1: The Bridge ════════ -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-number">1</span>
+                Picking Up Where We Left Off
+            </h2>
+
+            <p>
+                Before we move forward, let us take one moment to look back — because
+                what you are about to learn only makes sense when you can see where it connects.
+            </p>
+
+            <!-- ── Part 1 Journey recap ─────────────────────── -->
+            <div style="background:#f8fafc;border:2px solid #e2e8f0;border-radius:18px;padding:26px 28px;margin:28px 0;">
+                <div style="font-size:.75rem;font-weight:800;letter-spacing:1.5px;color:#64748b;text-transform:uppercase;margin-bottom:20px;">&#10003; What You Covered in Part 1</div>
+
+                <div style="display:flex;gap:0;align-items:center;flex-wrap:wrap;justify-content:center;">
+
+                    <!-- Stop 1 -->
+                    <div style="text-align:center;min-width:140px;padding:0 12px;">
+                        <div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--pink),var(--violet));display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:1.4rem;">&#127968;</div>
+                        <div style="font-weight:800;font-size:.88rem;color:var(--pink-dark);margin-bottom:4px;">Inheritance &amp; Nature</div>
+                        <div style="font-size:.78rem;color:var(--gray);line-height:1.5;">Children inherit from parents.<br>Classes can too.</div>
+                    </div>
+
+                    <div style="font-size:1.6rem;color:#cbd5e1;padding:0 4px;flex-shrink:0;">&#8594;</div>
+
+                    <!-- Stop 2 -->
+                    <div style="text-align:center;min-width:140px;padding:0 12px;">
+                        <div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--pink),var(--violet));display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:1.4rem;">&#9888;</div>
+                        <div style="font-weight:800;font-size:.88rem;color:var(--pink-dark);margin-bottom:4px;">Avoid Redundancy</div>
+                        <div style="font-size:.78rem;color:var(--gray);line-height:1.5;">5 shapes, shared code.<br>One parent solves it all.</div>
+                    </div>
+
+                    <div style="font-size:1.6rem;color:#cbd5e1;padding:0 4px;flex-shrink:0;">&#8594;</div>
+
+                    <!-- Stop 3 — Reusability (highlighted: YOU ARE HERE) -->
+                    <div style="text-align:center;min-width:160px;padding:0 12px;">
+                        <div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#d97706,#f59e0b);display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:1.4rem;box-shadow:0 0 0 4px #fde68a;">&#9733;</div>
+                        <div style="font-weight:800;font-size:.88rem;color:#92400e;margin-bottom:4px;">Reusability</div>
+                        <div style="font-size:.78rem;color:#92400e;font-weight:700;line-height:1.5;">Mentioned in Part 1.<br>Explored fully — <em>now</em>.</div>
+                        <div style="display:inline-block;margin-top:6px;background:#f59e0b;color:white;font-size:.65rem;font-weight:800;padding:3px 10px;border-radius:20px;letter-spacing:.5px;">YOU ARE HERE</div>
+                    </div>
+
+                </div>
+            </div>
+
+            <p>
+                In Part 1, we introduced reusability as one of the two reasons to use inheritance —
+                and we briefly showed examples. Now this entire module is dedicated to it.
+                Let us be very clear about what it means.
+            </p>
+
+            <!-- ── The two reusability paths ───────────────── -->
+            <div class="key-box" style="margin:28px 0 20px;">
+                <div class="key-box-title">&#128161; Reusability — Exactly Two Ways</div>
+                <p>
+                    When a child class reuses its parent, it can do it in <strong>exactly two ways</strong>.
+                    There is no third option. Every act of reusability through inheritance
+                    is either one of these — or both at once:
+                </p>
+            </div>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:22px 0;">
+
+                <!-- Way 1: Override -->
+                <div style="border-radius:18px;border:3px solid var(--pink);background:linear-gradient(135deg,#fff0f6,var(--pink-light));padding:26px 22px;text-align:center;">
+                    <div style="font-size:2.8rem;margin-bottom:12px;">&#128260;</div>
+                    <div style="font-size:.72rem;font-weight:800;letter-spacing:1.5px;color:var(--pink);text-transform:uppercase;margin-bottom:8px;">Way 1</div>
+                    <div style="font-weight:900;color:var(--pink-dark);font-size:1.2rem;margin-bottom:14px;">Override</div>
+                    <p style="font-size:.9rem;color:#374151;line-height:1.75;">
+                        Take a method the parent already has — and <strong>replace its behaviour</strong>
+                        with your own version. The method name stays the same.
+                        Only the implementation changes.
+                    </p>
+                    <div style="margin-top:16px;padding:10px 14px;background:rgba(236,72,153,.1);border-radius:10px;font-size:.82rem;color:var(--pink-dark);font-style:italic;line-height:1.6;">
+                        &#128204; You saw this with <strong>Ali's ticket report</strong>:
+                        Ahmed overrode <code class="code-inline">printf()</code> once
+                        and fixed all 11 lines instantly.
+                    </div>
+                </div>
+
+                <!-- Way 2: Add New Features -->
+                <div style="border-radius:18px;border:3px solid var(--violet);background:linear-gradient(135deg,#f5f0ff,var(--violet-light));padding:26px 22px;text-align:center;">
+                    <div style="font-size:2.8rem;margin-bottom:12px;">&#10024;</div>
+                    <div style="font-size:.72rem;font-weight:800;letter-spacing:1.5px;color:var(--violet);text-transform:uppercase;margin-bottom:8px;">Way 2</div>
+                    <div style="font-weight:900;color:var(--violet-dark);font-size:1.2rem;margin-bottom:14px;">Add New Features</div>
+                    <p style="font-size:.9rem;color:#374151;line-height:1.75;">
+                        Give the child class something <strong>the parent never had</strong> —
+                        a new method or a new field. You are extending the parent,
+                        not replacing anything it already does.
+                    </p>
+                    <div style="margin-top:16px;padding:10px 14px;background:rgba(139,92,246,.1);border-radius:10px;font-size:.82rem;color:var(--violet-dark);font-style:italic;line-height:1.6;">
+                        &#128204; You saw this with <strong>EnhancedPrintWriter</strong>:
+                        adding <code class="code-inline">print2DArray()</code> — a method
+                        <code>PrintWriter</code> never had.
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="pink-box">
+                <div class="pink-box-title">&#127775; What This Module Covers</div>
+                <p>
+                    Now that you know the two paths, this module will take you through each one in depth —
+                    the rules, the syntax, the common mistakes, and the powerful tools Java gives you
+                    to make both work correctly.
+                    By the end, reusability will not be a word you read — it will be a skill you have.
+                </p>
+            </div>
+        </div>
+
+        <!-- ════════ Section 2: Recall — Overloading ════════ -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-number">2</span>
+                Recall from CPCS201 — Method Overloading
+            </h2>
+
+            <p>
+                Before introducing overriding, we must be very clear about something you
+                already know from CPCS201: <strong>method overloading</strong>.
+                The two words sound similar, but they describe completely different things.
+            </p>
+
+            <div class="key-box">
+                <div class="key-box-title">&#128218; Overloading — The CPCS201 Rule</div>
+                <p>
+                    A class may have <strong>multiple methods with the same name</strong>,
+                    as long as they have <strong>different signatures</strong>.
+                    The signature is determined by the <em>number</em>, <em>types</em>,
+                    and <em>order</em> of parameters.
+                    The return type is <strong>NOT</strong> part of the signature.
+                </p>
+            </div>
+
+            <div class="code-block"><span class="kw">class</span> <span class="tp">Printer</span> {
+
+    <span class="cmt">// These three are overloads of the same method name "print"</span>
+    <span class="kw">public void</span> <span class="mtd">print</span>(<span class="tp">String</span> <span class="var">msg</span>) {
+        <span class="tp">System</span>.<span class="var">out</span>.<span class="mtd">println</span>(<span class="var">msg</span>);
+    }
+
+    <span class="kw">public void</span> <span class="mtd">print</span>(<span class="tp">String</span> <span class="var">msg</span>, <span class="kw">int</span> <span class="var">times</span>) {    <span class="cmt">// different: extra parameter</span>
+        <span class="kw">for</span> (<span class="kw">int</span> <span class="var">i</span> = <span class="num">0</span>; <span class="var">i</span> &lt; <span class="var">times</span>; <span class="var">i</span>++) <span class="tp">System</span>.<span class="var">out</span>.<span class="mtd">println</span>(<span class="var">msg</span>);
+    }
+
+    <span class="kw">public void</span> <span class="mtd">print</span>(<span class="kw">int</span> <span class="var">number</span>) {              <span class="cmt">// different: parameter type</span>
+        <span class="tp">System</span>.<span class="var">out</span>.<span class="mtd">println</span>(<span class="str">"Number: "</span> + <span class="var">number</span>);
+    }
+}</div>
+
+            <div class="violet-box">
+                <div class="violet-box-title">&#128161; Key Point about Overloading</div>
+                <p>
+                    Overloading happens <strong>within one class</strong>.
+                    It has <strong>nothing to do with inheritance</strong>.
+                    Java resolves which overload to call at <em>compile time</em>,
+                    based purely on the argument types you pass.
+                </p>
+            </div>
+        </div>
+
+        <!-- ════════ Section 3: Method Overriding ════════ -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-number">3</span>
+                Method Overriding — Redefining Inherited Behaviour
+            </h2>
+
+            <p>
+                Now the new concept. When a child class provides its <strong>own implementation</strong>
+                of a method that already exists in the parent — with the <strong>exact same name
+                and the exact same signature</strong> — this is called <strong>method overriding</strong>.
+            </p>
+
+            <div class="key-box">
+                <div class="key-box-title">&#127775; The Definition of Method Overriding</div>
+                <p>
+                    A method in a <strong>subclass</strong> overrides a method in its <strong>superclass</strong>
+                    when it has the <strong>identical name</strong> and the <strong>identical parameter list</strong>
+                    (same number, types, and order).
+                    When the method is called on a child object, the child's version runs — not the parent's.
+                </p>
+            </div>
+
+            <!-- UML Visual -->
+            <h3 class="subsection-title">
+                <span class="sub-badge">Visualization</span>
+                What Overriding Looks Like in a Class Hierarchy
+            </h3>
+
+            <div class="uml-diagram">
+                <div class="uml-class" style="min-width:280px;">
+                    <div class="uml-class-name uml-parent">Animal</div>
+                    <div class="uml-section">
+                        - name : String
+                    </div>
+                    <div class="uml-section">
+                        + getName() : String<br>
+                        + <span style="color:#9333ea;font-weight:700;">makeSound() : String</span>
+                    </div>
+                </div>
+
+                <div class="uml-inherit-arrow">
+                    <div class="uml-arrow-line"></div>
+                    <div style="display:flex;gap:60px;">
+                        <div class="uml-arrow-line" style="width:1px;height:0;"></div>
+                    </div>
+                </div>
+
+                <div class="uml-children-row" style="margin-top:8px;">
+                    <div class="uml-child-col">
+                        <div class="uml-arrow-tri" style="border-bottom-color:#be185d;"></div>
+                        <div class="uml-arrow-line" style="background:#be185d;height:22px;"></div>
+                        <div class="uml-class" style="min-width:200px;">
+                            <div class="uml-class-name uml-child">Dog</div>
+                            <div class="uml-section">
+                                - breed : String
+                            </div>
+                            <div class="uml-section">
+                                + <span class="overridden">makeSound() : String</span><br>
+                                <span class="new-method">+ fetch() : void</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="uml-child-col">
+                        <div class="uml-arrow-tri" style="border-bottom-color:#1d4ed8;"></div>
+                        <div class="uml-arrow-line" style="background:#1d4ed8;height:22px;"></div>
+                        <div class="uml-class" style="min-width:200px;">
+                            <div class="uml-class-name uml-child-b">Cat</div>
+                            <div class="uml-section">
+                                - indoor : boolean
+                            </div>
+                            <div class="uml-section">
+                                + <span class="overridden">makeSound() : String</span><br>
+                                <span class="new-method">+ purr() : void</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <p style="text-align:center;font-size:.85rem;color:var(--gray);margin-top:-10px;margin-bottom:20px;">
+                <span style="color:#9333ea;font-weight:700;">Purple</span> = original method in parent &nbsp;|&nbsp;
+                <span style="color:#be185d;font-weight:700;">Red</span> = overridden (same signature, new body) &nbsp;|&nbsp;
+                <span style="color:#15803d;font-weight:700;">Green</span> = brand-new method added in child
+            </p>
+
+            <!-- Rules -->
+            <h3 class="subsection-title">
+                <span class="sub-badge">Rules</span>
+                The Three Rules of Overriding
+            </h3>
+
+            <div style="display:flex;flex-direction:column;gap:12px;margin:16px 0;">
+                <div style="display:flex;gap:16px;align-items:flex-start;background:#f0fdf4;border:2px solid #16a34a;border-radius:12px;padding:16px 20px;">
+                    <div style="background:#15803d;color:white;border-radius:50%;width:34px;height:34px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:1.1rem;flex-shrink:0;">1</div>
+                    <div>
+                        <div style="font-weight:800;color:#15803d;margin-bottom:4px;">Same Method Name</div>
+                        <p style="font-size:.9rem;color:#374151;margin:0;">The overriding method must have the exact same name as the method in the parent class.</p>
+                    </div>
+                </div>
+                <div style="display:flex;gap:16px;align-items:flex-start;background:#eff6ff;border:2px solid #2563eb;border-radius:12px;padding:16px 20px;">
+                    <div style="background:#1d4ed8;color:white;border-radius:50%;width:34px;height:34px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:1.1rem;flex-shrink:0;">2</div>
+                    <div>
+                        <div style="font-weight:800;color:#1d4ed8;margin-bottom:4px;">Same Signature (parameters)</div>
+                        <p style="font-size:.9rem;color:#374151;margin:0;">The parameter list must be <strong>identical</strong>. If you change the parameters, it becomes overloading, not overriding.</p>
+                    </div>
+                </div>
+                <div style="display:flex;gap:16px;align-items:flex-start;background:var(--pink-light);border:2px solid var(--pink);border-radius:12px;padding:16px 20px;">
+                    <div style="background:var(--pink-dark);color:white;border-radius:50%;width:34px;height:34px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:1.1rem;flex-shrink:0;">3</div>
+                    <div>
+                        <div style="font-weight:800;color:var(--pink-dark);margin-bottom:4px;">Requires Inheritance</div>
+                        <p style="font-size:.9rem;color:#374151;margin:0;">Overriding only makes sense when there is a parent-child relationship via <code class="code-inline">extends</code>. No inheritance = no overriding.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Complete Example -->
+            <h3 class="subsection-title" style="margin-top:32px;">
+                <span class="sub-badge">Complete Example</span>
+                Animal → Dog and Cat
+            </h3>
+
+            <p style="margin-bottom:14px;">
+                Read the parent class first, then each child carefully.
+                Notice the <code class="code-inline">@Override</code> annotation — always write it.
+                It tells Java: "I intend to override. Tell me if I make a mistake."
+            </p>
+
+            <div class="code-block"><span class="cmt">// ── Parent Class ─────────────────────────────</span>
+<span class="kw">class</span> <span class="tp">Animal</span> {
+    <span class="kw">private</span> <span class="tp">String</span> <span class="var">name</span>;
+
+    <span class="kw">public</span> <span class="tp">Animal</span>(<span class="tp">String</span> <span class="var">name</span>) {
+        <span class="kw">this</span>.<span class="var">name</span> = <span class="var">name</span>;
+    }
+
+    <span class="kw">public</span> <span class="tp">String</span> <span class="mtd">getName</span>() { <span class="kw">return</span> <span class="var">name</span>; }
+
+    <span class="kw">public</span> <span class="tp">String</span> <span class="mtd">makeSound</span>() {
+        <span class="kw">return</span> <span class="str">"..."</span>;          <span class="cmt">// generic — every animal makes SOME sound</span>
+    }
+
+    <span class="kw">public void</span> <span class="mtd">describe</span>() {
+        <span class="tp">System</span>.<span class="var">out</span>.<span class="mtd">println</span>(<span class="var">name</span> + <span class="str">" says: "</span> + <span class="mtd">makeSound</span>());
+    }
+}
+
+<span class="cmt">// ── Child Class 1 ────────────────────────────</span>
+<span class="kw">class</span> <span class="tp">Dog</span> <span class="kw">extends</span> <span class="tp">Animal</span> {
+    <span class="kw">private</span> <span class="tp">String</span> <span class="var">breed</span>;
+
+    <span class="kw">public</span> <span class="tp">Dog</span>(<span class="tp">String</span> <span class="var">name</span>, <span class="tp">String</span> <span class="var">breed</span>) {
+        <span class="kw">super</span>(<span class="var">name</span>);
+        <span class="kw">this</span>.<span class="var">breed</span> = <span class="var">breed</span>;
+    }
+
+    <span class="ann">@Override</span>
+    <span class="kw">public</span> <span class="tp">String</span> <span class="mtd">makeSound</span>() {        <span class="cmt">// ← OVERRIDING Animal.makeSound()</span>
+        <span class="kw">return</span> <span class="str">"Woof!"</span>;
+    }
+
+    <span class="kw">public void</span> <span class="mtd">fetch</span>() {               <span class="cmt">// ← NEW METHOD — only exists in Dog</span>
+        <span class="tp">System</span>.<span class="var">out</span>.<span class="mtd">println</span>(<span class="mtd">getName</span>() + <span class="str">" fetches the ball!"</span>);
+    }
+}
+
+<span class="cmt">// ── Child Class 2 ────────────────────────────</span>
+<span class="kw">class</span> <span class="tp">Cat</span> <span class="kw">extends</span> <span class="tp">Animal</span> {
+    <span class="kw">public</span> <span class="tp">Cat</span>(<span class="tp">String</span> <span class="var">name</span>) {
+        <span class="kw">super</span>(<span class="var">name</span>);
+    }
+
+    <span class="ann">@Override</span>
+    <span class="kw">public</span> <span class="tp">String</span> <span class="mtd">makeSound</span>() {        <span class="cmt">// ← OVERRIDING Animal.makeSound()</span>
+        <span class="kw">return</span> <span class="str">"Meow!"</span>;
+    }
+}
+
+<span class="cmt">// ── Demo ─────────────────────────────────────</span>
+<span class="kw">public class</span> <span class="tp">Main</span> {
+    <span class="kw">public static void</span> <span class="mtd">main</span>(<span class="tp">String</span>[] <span class="var">args</span>) {
+        <span class="tp">Dog</span> <span class="var">d</span> = <span class="kw">new</span> <span class="tp">Dog</span>(<span class="str">"Rex"</span>, <span class="str">"Labrador"</span>);
+        <span class="tp">Cat</span> <span class="var">c</span> = <span class="kw">new</span> <span class="tp">Cat</span>(<span class="str">"Whiskers"</span>);
+
+        <span class="var">d</span>.<span class="mtd">describe</span>();    <span class="cmt">// describe() is INHERITED — but it calls Dog's makeSound()</span>
+        <span class="var">c</span>.<span class="mtd">describe</span>();    <span class="cmt">// same — calls Cat's makeSound()</span>
+        <span class="var">d</span>.<span class="mtd">fetch</span>();       <span class="cmt">// only Dog has this</span>
+    }
+}</div>
+
+            <div class="terminal-header">
+                <div class="terminal-dot r"></div>
+                <div class="terminal-dot y"></div>
+                <div class="terminal-dot g"></div>
+                <span class="terminal-title">Output</span>
+            </div>
+            <div class="terminal with-header">Rex says: Woof!
+Whiskers says: Meow!
+Rex fetches the ball!</div>
+
+            <div class="info-box">
+                &#128161; <strong>Notice something powerful:</strong>
+                <code class="code-inline">describe()</code> is defined only once — in <code class="code-inline">Animal</code>.
+                But when called on a <code class="code-inline">Dog</code>, it uses Dog's <code class="code-inline">makeSound()</code>.
+                When called on a <code class="code-inline">Cat</code>, it uses Cat's <code class="code-inline">makeSound()</code>.
+                This is the essence of <strong>polymorphism</strong> — which we will explore fully in Module 7.
+            </div>
+
+            <div class="violet-box">
+                <div class="violet-box-title">&#9998; Why @Override?</div>
+                <p>
+                    The <code class="code-inline">@Override</code> annotation is optional but
+                    <strong>strongly recommended</strong>. Without it, if you accidentally misspell
+                    the method name or use the wrong signature, Java will silently treat it as a
+                    brand-new method instead of telling you the mistake.
+                    With <code class="code-inline">@Override</code>, the compiler will
+                    <strong>immediately report an error</strong> if the override doesn't match.
+                    Always use it.
+                </p>
+            </div>
+        </div>
+
+        <!-- ════════ Section 4: Way 2 — Adding New Features ════════ -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-number">4</span>
+                Way 2 — Adding New Features to the Child Class
+            </h2>
+
+            <p>
+                You have now seen <strong>Way 1</strong> — overriding an existing method.
+                Now it is time to give equal attention to <strong>Way 2</strong>:
+                giving a child class something that the parent never had at all.
+            </p>
+
+            <div class="violet-box">
+                <div class="violet-box-title">&#10024; What "Adding a New Feature" Means</div>
+                <p>
+                    A child class <strong>adds a new feature</strong> when it defines a method
+                    or a field that <strong>does not exist anywhere in the parent</strong>.
+                    This is not overriding — the parent has nothing to replace.
+                    The child is simply <em>extending</em> the parent's abilities with something new.
+                </p>
+            </div>
+
+            <!-- ── Override vs Add New — side by side contrast ── -->
+            <h3 class="subsection-title">
+                <span class="sub-badge">Contrast</span>
+                Override vs Add New — What Is the Difference?
+            </h3>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:20px 0;">
+                <div style="border-radius:14px;border:2px solid var(--pink);background:var(--pink-light);padding:20px;">
+                    <div style="font-weight:800;color:var(--pink-dark);margin-bottom:10px;">&#128260; Override (Way 1)</div>
+                    <ul style="font-size:.9rem;color:#374151;line-height:1.9;margin:0 0 0 18px;">
+                        <li>The method <strong>already exists in the parent</strong></li>
+                        <li>The child provides its <strong>own version</strong> of it</li>
+                        <li>The parent's version is <strong>replaced</strong></li>
+                        <li>Same name, same signature — different body</li>
+                    </ul>
+                </div>
+                <div style="border-radius:14px;border:2px solid var(--violet);background:var(--violet-light);padding:20px;">
+                    <div style="font-weight:800;color:var(--violet-dark);margin-bottom:10px;">&#10024; Add New Feature (Way 2)</div>
+                    <ul style="font-size:.9rem;color:#374151;line-height:1.9;margin:0 0 0 18px;">
+                        <li>The method <strong>does not exist in the parent at all</strong></li>
+                        <li>The child <strong>creates</strong> something brand new</li>
+                        <li>Nothing in the parent is replaced or changed</li>
+                        <li>Only child objects can call this new method</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- ── Code example ──────────────────────────────── -->
+            <h3 class="subsection-title" style="margin-top:32px;">
+                <span class="sub-badge">Code Example</span>
+                A Vehicle That Becomes a Car
+            </h3>
+
+            <p>
+                Consider a parent class <code class="code-inline">Vehicle</code>
+                that knows how to <code class="code-inline">drive()</code> and <code class="code-inline">stop()</code>.
+                A <code class="code-inline">Car</code> inherits both — and then adds two things
+                <code class="code-inline">Vehicle</code> never had:
+                <code class="code-inline">honk()</code> and <code class="code-inline">openTrunk()</code>.
+            </p>
+
+            <div class="code-block"><span class="cmt">// ── Parent class ──────────────────────────────────────</span>
+<span class="kw">class</span> <span class="tp">Vehicle</span> {
+    <span class="kw">protected</span> <span class="tp">String</span> <span class="var">brand</span>;
+
+    <span class="kw">public</span> <span class="tp">Vehicle</span>(<span class="tp">String</span> <span class="var">brand</span>) { <span class="kw">this</span>.<span class="var">brand</span> = <span class="var">brand</span>; }
+
+    <span class="kw">public void</span> <span class="mtd">drive</span>() { <span class="tp">System</span>.<span class="var">out</span>.<span class="mtd">println</span>(<span class="var">brand</span> + <span class="str">" is driving."</span>); }
+
+    <span class="kw">public void</span> <span class="mtd">stop</span>()  { <span class="tp">System</span>.<span class="var">out</span>.<span class="mtd">println</span>(<span class="var">brand</span> + <span class="str">" has stopped."</span>); }
+}
+
+<span class="cmt">// ── Child class ──────────────────────────────────────</span>
+<span class="kw">class</span> <span class="tp">Car</span> <span class="kw">extends</span> <span class="tp">Vehicle</span> {
+
+    <span class="kw">public</span> <span class="tp">Car</span>(<span class="tp">String</span> <span class="var">brand</span>) { <span class="kw">super</span>(<span class="var">brand</span>); }
+
+    <span class="cmt">// ✦ NEW — Vehicle has no honk() at all</span>
+    <span class="kw">public void</span> <span class="mtd">honk</span>() {
+        <span class="tp">System</span>.<span class="var">out</span>.<span class="mtd">println</span>(<span class="var">brand</span> + <span class="str">" goes: Beep! Beep!"</span>);
+    }
+
+    <span class="cmt">// ✦ NEW — Vehicle has no openTrunk() at all</span>
+    <span class="kw">public void</span> <span class="mtd">openTrunk</span>() {
+        <span class="tp">System</span>.<span class="var">out</span>.<span class="mtd">println</span>(<span class="var">brand</span> + <span class="str">"'s trunk is now open."</span>);
+    }
+}</div>
+
+            <div class="terminal-header">
+                <div class="terminal-dot r"></div>
+                <div class="terminal-dot y"></div>
+                <div class="terminal-dot g"></div>
+                <span class="terminal-title">Using Car — inherited + new methods together</span>
+            </div>
+            <div class="terminal with-header"><span style="color:#94a3b8;">Car myCar = new Car("Toyota");</span>
+
+myCar.drive();       <span style="color:#6272a4;">// ← inherited from Vehicle — works perfectly</span>
+myCar.stop();        <span style="color:#6272a4;">// ← inherited from Vehicle — works perfectly</span>
+myCar.honk();        <span style="color:#50fa7b;">// ← NEW — only Car has this</span>
+myCar.openTrunk();   <span style="color:#50fa7b;">// ← NEW — only Car has this</span>
+
+<span style="color:#f1fa8c;">Toyota is driving.
+Toyota has stopped.
+Toyota goes: Beep! Beep!
+Toyota's trunk is now open.</span></div>
+
+            <!-- UML showing inheritance + new methods -->
+            <h3 class="subsection-title" style="margin-top:32px;">
+                <span class="sub-badge">UML View</span>
+                Where Do the New Methods Live?
+            </h3>
+
+            <div class="uml-diagram">
+                <div class="uml-class" style="min-width:260px;">
+                    <div class="uml-class-name uml-parent">Vehicle</div>
+                    <div class="uml-section">
+                        # brand : String
+                    </div>
+                    <div class="uml-section">
+                        + drive() : void<br>
+                        + stop() : void
+                    </div>
+                </div>
+                <div class="uml-inherit-arrow">
+                    <div class="uml-arrow-line"></div>
+                    <div class="uml-arrow-tri" style="border-bottom-color:#be185d;"></div>
+                </div>
+                <div style="margin-top:4px;">
+                    <div class="uml-class" style="min-width:260px;">
+                        <div class="uml-class-name uml-child">Car</div>
+                        <div class="uml-section">
+                            <em style="color:#6b7280;font-size:.82rem;">— inherits brand from Vehicle —</em>
+                        </div>
+                        <div class="uml-section">
+                            + drive() : void &nbsp;<em style="color:#6b7280;font-size:.78rem;">(inherited)</em><br>
+                            + stop() : void &nbsp;&nbsp;<em style="color:#6b7280;font-size:.78rem;">(inherited)</em><br>
+                            <span class="new-method">+ honk() : void</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<em style="color:#15803d;font-size:.78rem;">✦ NEW</em><br>
+                            <span class="new-method">+ openTrunk() : void</span> &nbsp;<em style="color:#15803d;font-size:.78rem;">✦ NEW</em>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-box">
+                &#128161; <strong>Notice:</strong>
+                <code class="code-inline">drive()</code> and <code class="code-inline">stop()</code>
+                are never redefined in <code class="code-inline">Car</code> — they are simply inherited
+                and used exactly as they are. Only <code class="code-inline">honk()</code> and
+                <code class="code-inline">openTrunk()</code> are new.
+                <code class="code-inline">Car</code> is not replacing anything —
+                it is <strong>extending</strong> what <code>Vehicle</code> already does.
+            </div>
+
+            <div class="success-box">
+                <div class="success-box-title">&#128204; The Connection to Part 1</div>
+                <p>
+                    You already saw this in Part 1 with <code class="code-inline">EnhancedPrintWriter</code>:
+                    Java's <code class="code-inline">PrintWriter</code> has no
+                    <code class="code-inline">print2DArray()</code> method.
+                    By extending it and adding that one new method,
+                    we gave <code class="code-inline">EnhancedPrintWriter</code> an ability
+                    <code class="code-inline">PrintWriter</code> never had —
+                    while keeping every existing method working perfectly.
+                    That is exactly <strong>Way 2</strong>.
+                </p>
+            </div>
+        </div>
+
+        <!-- ════════ Section 5: Overriding vs Overloading ════════ -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-number">5</span>
+                Overriding vs Overloading — The Critical Difference
+            </h2>
+
+            <p>
+                Students frequently confuse overriding and overloading because both involve
+                methods with the same name. The difference is clear once you understand the key question:
+                <strong>does the signature change?</strong>
+            </p>
+
+            <table class="compare-table">
+                <thead>
+                    <tr>
+                        <th class="th-feature">Feature</th>
+                        <th class="th-overload">Overloading</th>
+                        <th class="th-override">Overriding</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="td-feature">Where?</td>
+                        <td class="td-overload">Same class</td>
+                        <td class="td-override">Child class — requires inheritance</td>
+                    </tr>
+                    <tr>
+                        <td class="td-feature">Method name</td>
+                        <td class="td-overload">Same</td>
+                        <td class="td-override">Same</td>
+                    </tr>
+                    <tr>
+                        <td class="td-feature">Parameter list</td>
+                        <td class="td-overload"><strong>Must be different</strong></td>
+                        <td class="td-override"><strong>Must be identical</strong></td>
+                    </tr>
+                    <tr>
+                        <td class="td-feature">Return type</td>
+                        <td class="td-overload">Can be anything</td>
+                        <td class="td-override">Must be same (or covariant)</td>
+                    </tr>
+                    <tr>
+                        <td class="td-feature">Resolved when?</td>
+                        <td class="td-overload">Compile time</td>
+                        <td class="td-override">Run time</td>
+                    </tr>
+                    <tr>
+                        <td class="td-feature">@Override needed?</td>
+                        <td class="td-overload">No</td>
+                        <td class="td-override">Recommended — always use it</td>
+                    </tr>
+                    <tr>
+                        <td class="td-feature">Keyword used</td>
+                        <td class="td-overload">None</td>
+                        <td class="td-override"><code>@Override</code> annotation</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3 class="subsection-title" style="margin-top:32px;">
+                <span class="sub-badge">Both in One Example</span>
+                Overloading AND Overriding in the Same Subclass
+            </h3>
+
+            <p style="margin-bottom:14px;">
+                A subclass can both <em>override</em> a parent method AND <em>overload</em> it
+                (add a new version with a different signature).
+                Here is an example that shows both happening at the same time — study it carefully.
+            </p>
+
+            <div class="code-block"><span class="kw">class</span> <span class="tp">Calculator</span> {
+    <span class="kw">public int</span> <span class="mtd">add</span>(<span class="kw">int</span> <span class="var">a</span>, <span class="kw">int</span> <span class="var">b</span>) {
+        <span class="kw">return</span> <span class="var">a</span> + <span class="var">b</span>;
+    }
+}
+
+<span class="kw">class</span> <span class="tp">ScientificCalculator</span> <span class="kw">extends</span> <span class="tp">Calculator</span> {
+
+    <span class="ann">@Override</span>
+    <span class="kw">public int</span> <span class="mtd">add</span>(<span class="kw">int</span> <span class="var">a</span>, <span class="kw">int</span> <span class="var">b</span>) {         <span class="cmt">// OVERRIDING — same signature as parent</span>
+        <span class="tp">System</span>.<span class="var">out</span>.<span class="mtd">println</span>(<span class="str">"Sci: "</span> + <span class="var">a</span> + <span class="str">" + "</span> + <span class="var">b</span>);
+        <span class="kw">return</span> <span class="var">a</span> + <span class="var">b</span>;
+    }
+
+    <span class="kw">public double</span> <span class="mtd">add</span>(<span class="kw">double</span> <span class="var">a</span>, <span class="kw">double</span> <span class="var">b</span>) { <span class="cmt">// OVERLOADING — different parameter type</span>
+        <span class="kw">return</span> <span class="var">a</span> + <span class="var">b</span>;
+    }
+
+    <span class="kw">public int</span> <span class="mtd">add</span>(<span class="kw">int</span> <span class="var">a</span>, <span class="kw">int</span> <span class="var">b</span>, <span class="kw">int</span> <span class="var">c</span>) { <span class="cmt">// OVERLOADING — extra parameter</span>
+        <span class="kw">return</span> <span class="var">a</span> + <span class="var">b</span> + <span class="var">c</span>;
+    }
+}
+
+<span class="kw">public class</span> <span class="tp">Main</span> {
+    <span class="kw">public static void</span> <span class="mtd">main</span>(<span class="tp">String</span>[] <span class="var">args</span>) {
+        <span class="tp">ScientificCalculator</span> <span class="var">sc</span> = <span class="kw">new</span> <span class="tp">ScientificCalculator</span>();
+        <span class="tp">System</span>.<span class="var">out</span>.<span class="mtd">println</span>(<span class="var">sc</span>.<span class="mtd">add</span>(<span class="num">3</span>, <span class="num">4</span>));           <span class="cmt">// calls the OVERRIDDEN version</span>
+        <span class="tp">System</span>.<span class="var">out</span>.<span class="mtd">println</span>(<span class="var">sc</span>.<span class="mtd">add</span>(<span class="num">1.5</span>, <span class="num">2.5</span>));       <span class="cmt">// calls the double OVERLOAD</span>
+        <span class="tp">System</span>.<span class="var">out</span>.<span class="mtd">println</span>(<span class="var">sc</span>.<span class="mtd">add</span>(<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>));         <span class="cmt">// calls the 3-param OVERLOAD</span>
+    }
+}</div>
+
+            <div class="terminal-header">
+                <div class="terminal-dot r"></div>
+                <div class="terminal-dot y"></div>
+                <div class="terminal-dot g"></div>
+                <span class="terminal-title">Output</span>
+            </div>
+            <div class="terminal with-header">Sci: 3 + 4
+7
+4.0
+6</div>
+
+            <!-- Challenges -->
+            <h3 class="subsection-title" style="margin-top:36px;">
+                <span class="sub-badge">Challenges</span>
+                Overriding or Overloading?
+            </h3>
+
+            <!-- Challenge 1 -->
+            <div class="challenge-box">
+                <div class="challenge-header">&#9996; Challenge 1</div>
+                <div class="challenge-body">
+                    <div class="challenge-q-text">Is this overriding or overloading? Does it compile?</div>
+                    <div class="code-block" style="margin:0 0 12px;"><span class="kw">class</span> <span class="tp">Shape</span> {
+    <span class="kw">public void</span> <span class="mtd">draw</span>() {
+        <span class="tp">System</span>.<span class="var">out</span>.<span class="mtd">println</span>(<span class="str">"Drawing a shape"</span>);
+    }
+}
+<span class="kw">class</span> <span class="tp">Circle</span> <span class="kw">extends</span> <span class="tp">Shape</span> {
+    <span class="kw">public void</span> <span class="mtd">draw</span>() {
+        <span class="tp">System</span>.<span class="var">out</span>.<span class="mtd">println</span>(<span class="str">"Drawing a circle"</span>);
+    }
+}</div>
+                    <div class="verdict ok">&#10003; Overriding — Compiles</div>
+                    <div class="verdict-explain">
+                        Same name (<code>draw</code>), same signature (no parameters), child class.
+                        This is a classic override. When you call <code>draw()</code> on a <code>Circle</code>,
+                        it prints "Drawing a circle". Missing <code>@Override</code> is allowed but not recommended.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Challenge 2 -->
+            <div class="challenge-box">
+                <div class="challenge-header">&#9996; Challenge 2</div>
+                <div class="challenge-body">
+                    <div class="challenge-q-text">Is this overriding or overloading? What prints?</div>
+                    <div class="code-block" style="margin:0 0 12px;"><span class="kw">class</span> <span class="tp">Shape</span> {
+    <span class="kw">public void</span> <span class="mtd">draw</span>() {
+        <span class="tp">System</span>.<span class="var">out</span>.<span class="mtd">println</span>(<span class="str">"Drawing a shape"</span>);
+    }
+}
+<span class="kw">class</span> <span class="tp">Circle</span> <span class="kw">extends</span> <span class="tp">Shape</span> {
+    <span class="kw">public void</span> <span class="mtd">draw</span>(<span class="tp">String</span> <span class="var">color</span>) {   <span class="cmt">// extra parameter</span>
+        <span class="tp">System</span>.<span class="var">out</span>.<span class="mtd">println</span>(<span class="str">"Drawing "</span> + <span class="var">color</span> + <span class="str">" circle"</span>);
+    }
+}
+<span class="cmt">// main:</span>
+<span class="tp">Circle</span> <span class="var">c</span> = <span class="kw">new</span> <span class="tp">Circle</span>();
+<span class="var">c</span>.<span class="mtd">draw</span>();</div>
+                    <div class="verdict ok">&#10003; Overloading — Compiles</div>
+                    <div class="verdict-explain">
+                        The signatures differ: <code>draw()</code> vs <code>draw(String)</code>.
+                        This is overloading, not overriding. <code>Circle</code> inherits the no-arg
+                        <code>draw()</code> from <code>Shape</code> and also adds a new <code>draw(String)</code>.
+                        <br><br>
+                        <code>c.draw()</code> calls the inherited version from <code>Shape</code>.<br>
+                        Output: <strong>"Drawing a shape"</strong>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Challenge 3 -->
+            <div class="challenge-box">
+                <div class="challenge-header">&#9996; Challenge 3</div>
+                <div class="challenge-body">
+                    <div class="challenge-q-text">What is the output?</div>
+                    <div class="code-block" style="margin:0 0 12px;"><span class="kw">class</span> <span class="tp">Vehicle</span> {
+    <span class="kw">public void</span> <span class="mtd">move</span>() { <span class="tp">System</span>.<span class="var">out</span>.<span class="mtd">println</span>(<span class="str">"Vehicle moves"</span>); }
+}
+<span class="kw">class</span> <span class="tp">Car</span> <span class="kw">extends</span> <span class="tp">Vehicle</span> {
+    <span class="ann">@Override</span>
+    <span class="kw">public void</span> <span class="mtd">move</span>() { <span class="tp">System</span>.<span class="var">out</span>.<span class="mtd">println</span>(<span class="str">"Car drives"</span>); }
+    <span class="kw">public void</span> <span class="mtd">move</span>(<span class="kw">int</span> <span class="var">speed</span>) { <span class="tp">System</span>.<span class="var">out</span>.<span class="mtd">println</span>(<span class="str">"Car drives at "</span> + <span class="var">speed</span> + <span class="str">" km/h"</span>); }
+}
+<span class="kw">public class</span> <span class="tp">Main</span> {
+    <span class="kw">public static void</span> <span class="mtd">main</span>(<span class="tp">String</span>[] <span class="var">args</span>) {
+        <span class="tp">Car</span> <span class="var">car</span> = <span class="kw">new</span> <span class="tp">Car</span>();
+        <span class="var">car</span>.<span class="mtd">move</span>();
+        <span class="var">car</span>.<span class="mtd">move</span>(<span class="num">120</span>);
+    }
+}</div>
+                    <div class="verdict ok">&#10003; Compiles</div>
+                    <div class="verdict-explain">
+                        <code>Car</code> both overrides <code>move()</code> (no-arg) and overloads it with <code>move(int)</code>.
+                        <br><br>
+                        Output:<br>
+                        <strong>Car drives</strong><br>
+                        <strong>Car drives at 120 km/h</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ════════ Section 5: Using super to call parent method ════════ -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-number">6</span>
+                Calling the Parent's Version — <code style="font-size:1.3rem;">super.method()</code>
+            </h2>
+
+            <p>
+                When a child overrides a method, the parent's version is hidden — but not deleted.
+                You can still call it explicitly using
+                <code class="code-inline">super.methodName()</code>.
+                This is especially useful when the child wants to <strong>extend</strong>
+                the parent's behaviour rather than completely replace it.
+            </p>
+
+            <div class="key-box">
+                <div class="key-box-title">&#128161; When to Use super.method()</div>
+                <ul style="margin:8px 0 0;">
+                    <li>When the child's version should <strong>include</strong> everything the parent does, plus more.</li>
+                    <li>When you want to avoid duplicating the parent's logic in the child.</li>
+                    <li><code class="code-inline">super.method()</code> can appear <strong>anywhere</strong> in the child's method body — not just the first line (unlike <code class="code-inline">super()</code> in constructors).</li>
+                </ul>
+            </div>
+
+            <div class="code-block"><span class="kw">class</span> <span class="tp">Shape</span> {
+    <span class="kw">private</span> <span class="tp">String</span> <span class="var">color</span>;
+
+    <span class="kw">public</span> <span class="tp">Shape</span>(<span class="tp">String</span> <span class="var">color</span>) { <span class="kw">this</span>.<span class="var">color</span> = <span class="var">color</span>; }
+
+    <span class="kw">public</span> <span class="tp">String</span> <span class="mtd">getInfo</span>() {
+        <span class="kw">return</span> <span class="str">"Shape["</span> + <span class="var">color</span> + <span class="str">"]"</span>;
+    }
+}
+
+<span class="kw">class</span> <span class="tp">Circle</span> <span class="kw">extends</span> <span class="tp">Shape</span> {
+    <span class="kw">private double</span> <span class="var">radius</span>;
+
+    <span class="kw">public</span> <span class="tp">Circle</span>(<span class="tp">String</span> <span class="var">color</span>, <span class="kw">double</span> <span class="var">radius</span>) {
+        <span class="kw">super</span>(<span class="var">color</span>);
+        <span class="kw">this</span>.<span class="var">radius</span> = <span class="var">radius</span>;
+    }
+
+    <span class="ann">@Override</span>
+    <span class="kw">public</span> <span class="tp">String</span> <span class="mtd">getInfo</span>() {
+        <span class="cmt">// Call parent's getInfo() first, then add Circle's own details</span>
+        <span class="kw">return</span> <span class="kw">super</span>.<span class="mtd">getInfo</span>() + <span class="str">" → Circle(radius="</span> + <span class="var">radius</span> + <span class="str">")"</span>;
+    }
+}
+
+<span class="kw">public class</span> <span class="tp">Main</span> {
+    <span class="kw">public static void</span> <span class="mtd">main</span>(<span class="tp">String</span>[] <span class="var">args</span>) {
+        <span class="tp">Circle</span> <span class="var">c</span> = <span class="kw">new</span> <span class="tp">Circle</span>(<span class="str">"Red"</span>, <span class="num">5.0</span>);
+        <span class="tp">System</span>.<span class="var">out</span>.<span class="mtd">println</span>(<span class="var">c</span>.<span class="mtd">getInfo</span>());
+    }
+}</div>
+
+            <div class="terminal-header">
+                <div class="terminal-dot r"></div>
+                <div class="terminal-dot y"></div>
+                <div class="terminal-dot g"></div>
+                <span class="terminal-title">Output</span>
+            </div>
+            <div class="terminal with-header">Shape[Red] → Circle(radius=5.0)</div>
+
+            <div class="success-box">
+                <div class="success-box-title">&#128218; The Pattern</div>
+                <p>
+                    <code class="code-inline">return super.getInfo() + " → " + myExtra</code>
+                    is a very common pattern in Java. The child reuses everything the parent
+                    computes, then appends its own additional information. No code is duplicated.
+                </p>
+            </div>
+        </div>
+
+        <!-- ════════ Section 6: The protected Modifier ════════ -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-number">7</span>
+                The <code style="font-size:1.3rem;">protected</code> Modifier
+            </h2>
+
+            <!-- Comeback note -->
+            <div style="background:linear-gradient(135deg,#fffbeb 0%,#fef3c7 100%);border:2px solid #f59e0b;border-left:6px solid #d97706;border-radius:14px;padding:20px 24px;margin:0 0 26px;display:flex;gap:16px;align-items:flex-start;">
+                <div style="font-size:2rem;flex-shrink:0;">&#128204;</div>
+                <div>
+                    <div style="font-weight:800;color:#92400e;font-size:.95rem;margin-bottom:8px;">Remember This Promise?</div>
+                    <p style="color:#374151;font-size:.93rem;line-height:1.75;margin:0;">
+                        Back in the <em>Access Modifiers</em> topic, we listed four access levels —
+                        <code class="code-inline">private</code>, <em>(default)</em>,
+                        <code class="code-inline">protected</code>, and <code class="code-inline">public</code> —
+                        but we deliberately skipped <code class="code-inline">protected</code> and said:
+                        <strong><em>"We will explain this one when you reach Inheritance, because you cannot
+                        fully understand it without knowing what a subclass is."</em></strong><br><br>
+                        You now know what subclasses are. The wait is over.
+                    </p>
+                </div>
+            </div>
+
+            <p>
+                You know <code class="code-inline">private</code> (visible only inside the same class)
+                and <code class="code-inline">public</code> (visible everywhere).
+                There is a modifier between them — <code class="code-inline">protected</code> —
+                and it exists specifically because of inheritance.
+            </p>
+
+            <div class="key-box">
+                <div class="key-box-title">&#128161; Why We Need protected</div>
+                <p>
+                    <strong>The problem:</strong> a subclass inherits a parent's fields,
+                    but if those fields are <code class="code-inline">private</code>, the subclass
+                    cannot access them directly — only through getters/setters.<br><br>
+                    <strong>The solution:</strong> mark the field <code class="code-inline">protected</code>
+                    so that <em>subclasses</em> can access it directly,
+                    while <em>unrelated classes</em> are still blocked.
+                </p>
+            </div>
+
+            <!-- Visibility Table -->
+            <h3 class="subsection-title">
+                <span class="sub-badge">Visibility Table</span>
+                All Four Access Levels — Compared
+            </h3>
+
+            <table class="vis-table">
+                <thead>
+                    <tr>
+                        <th class="th-mod">Modifier</th>
+                        <th class="th-col">Same Class</th>
+                        <th class="th-col">Same Package</th>
+                        <th class="th-col">Subclass (other package)</th>
+                        <th class="th-col">Everywhere</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="row-private">
+                        <td>private</td>
+                        <td>&#10003;</td>
+                        <td>&#10007;</td>
+                        <td>&#10007;</td>
+                        <td>&#10007;</td>
+                    </tr>
+                    <tr class="row-default">
+                        <td>(default / package)</td>
+                        <td>&#10003;</td>
+                        <td>&#10003;</td>
+                        <td>&#10007;</td>
+                        <td>&#10007;</td>
+                    </tr>
+                    <tr class="row-protected">
+                        <td>protected</td>
+                        <td>&#10003;</td>
+                        <td>&#10003;</td>
+                        <td>&#10003;</td>
+                        <td>&#10007;</td>
+                    </tr>
+                    <tr class="row-public">
+                        <td>public</td>
+                        <td>&#10003;</td>
+                        <td>&#10003;</td>
+                        <td>&#10003;</td>
+                        <td>&#10003;</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p style="font-size:.88rem;color:var(--gray);margin-top:-8px;margin-bottom:8px;">
+                Visibility increases from top to bottom: <strong>private → (default) → protected → public</strong>
+            </p>
+            <div style="background:#f0f9ff;border:1px solid #7dd3fc;border-left:4px solid #0284c7;border-radius:10px;padding:13px 16px;margin-bottom:20px;font-size:.87rem;color:#0c4a6e;line-height:1.7;">
+                <strong>&#128161; Why "other package" — not "any package"?</strong><br>
+                A student raised a sharp question: the original column said <em>"any package"</em> — but that is
+                misleading. The <em>(default)</em> modifier already allows access to subclasses
+                <strong>within the same package</strong>. The real superpower of
+                <code class="code-inline">protected</code> is that it <em>additionally</em> lets
+                subclasses in <strong>other packages</strong> access the member — something
+                <em>(default)</em> cannot do. That is the precise distinction the label
+                <strong>"Subclass (other package)"</strong> captures.
+            </div>
+
+            <!-- Code Example -->
+            <h3 class="subsection-title" style="margin-top:28px;">
+                <span class="sub-badge">Example</span>
+                protected in Practice
+            </h3>
+
+            <div class="code-block"><span class="kw">class</span> <span class="tp">Vehicle</span> {
+    <span class="kw">private</span>   <span class="tp">String</span> <span class="var">brand</span>;      <span class="cmt">// private: ONLY Vehicle can touch this</span>
+    <span class="kw">protected</span> <span class="kw">int</span>    <span class="var">speed</span>;      <span class="cmt">// protected: Vehicle AND its subclasses</span>
+    <span class="kw">public</span>    <span class="tp">String</span> <span class="var">color</span>;      <span class="cmt">// public: anyone</span>
+
+    <span class="kw">public</span> <span class="tp">Vehicle</span>(<span class="tp">String</span> <span class="var">brand</span>, <span class="kw">int</span> <span class="var">speed</span>, <span class="tp">String</span> <span class="var">color</span>) {
+        <span class="kw">this</span>.<span class="var">brand</span> = <span class="var">brand</span>;
+        <span class="kw">this</span>.<span class="var">speed</span> = <span class="var">speed</span>;
+        <span class="kw">this</span>.<span class="var">color</span> = <span class="var">color</span>;
+    }
+
+    <span class="kw">public</span> <span class="tp">String</span> <span class="mtd">getBrand</span>() { <span class="kw">return</span> <span class="var">brand</span>; }
+}
+
+<span class="kw">class</span> <span class="tp">Car</span> <span class="kw">extends</span> <span class="tp">Vehicle</span> {
+    <span class="kw">private int</span> <span class="var">doors</span>;
+
+    <span class="kw">public</span> <span class="tp">Car</span>(<span class="tp">String</span> <span class="var">brand</span>, <span class="kw">int</span> <span class="var">speed</span>, <span class="tp">String</span> <span class="var">color</span>, <span class="kw">int</span> <span class="var">doors</span>) {
+        <span class="kw">super</span>(<span class="var">brand</span>, <span class="var">speed</span>, <span class="var">color</span>);
+        <span class="kw">this</span>.<span class="var">doors</span> = <span class="var">doors</span>;
+    }
+
+    <span class="kw">public void</span> <span class="mtd">accelerate</span>(<span class="kw">int</span> <span class="var">amount</span>) {
+        <span class="var">speed</span> += <span class="var">amount</span>;    <span class="cmt">// ✓ allowed — speed is protected</span>
+        <span class="cmt">// brand += "X";   // ✗ ERROR — brand is private to Vehicle</span>
+    }
+
+    <span class="ann">@Override</span>
+    <span class="kw">public</span> <span class="tp">String</span> <span class="mtd">toString</span>() {
+        <span class="kw">return</span> <span class="mtd">getBrand</span>() + <span class="str">" | Speed: "</span> + <span class="var">speed</span> + <span class="str">" | Color: "</span> + <span class="var">color</span> + <span class="str">" | Doors: "</span> + <span class="var">doors</span>;
+    }
+}
+
+<span class="kw">public class</span> <span class="tp">Main</span> {
+    <span class="kw">public static void</span> <span class="mtd">main</span>(<span class="tp">String</span>[] <span class="var">args</span>) {
+        <span class="tp">Car</span> <span class="var">car</span> = <span class="kw">new</span> <span class="tp">Car</span>(<span class="str">"Toyota"</span>, <span class="num">60</span>, <span class="str">"White"</span>, <span class="num">4</span>);
+        <span class="var">car</span>.<span class="mtd">accelerate</span>(<span class="num">40</span>);
+        <span class="tp">System</span>.<span class="var">out</span>.<span class="mtd">println</span>(<span class="var">car</span>);
+    }
+}</div>
+
+            <div class="terminal-header">
+                <div class="terminal-dot r"></div>
+                <div class="terminal-dot y"></div>
+                <div class="terminal-dot g"></div>
+                <span class="terminal-title">Output</span>
+            </div>
+            <div class="terminal with-header">Toyota | Speed: 100 | Color: White | Doors: 4</div>
+
+            <!-- Override accessibility -->
+            <h3 class="subsection-title" style="margin-top:36px;">
+                <span class="sub-badge">Override Accessibility</span>
+                Can a Subclass Change the Access Level of an Overridden Method?
+            </h3>
+
+            <p>
+                When overriding a method, the subclass has a rule about the access modifier it uses:
+                it <strong>cannot reduce</strong> the visibility, but it <strong>can increase</strong> it.
+                Think of it this way — you can open a door wider, but you cannot make it narrower.
+            </p>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0;">
+                <div style="border-radius:12px;overflow:hidden;border:2px solid #86efac;">
+                    <div style="background:#dcfce7;padding:9px 16px;font-weight:700;color:#166534;font-size:.88rem;">&#10003; Allowed — Increasing Visibility</div>
+                    <div class="code-block" style="border-radius:0;margin:0;font-size:.82rem;"><span class="kw">class</span> <span class="tp">Parent</span> {
+    <span class="kw">protected void</span> <span class="mtd">show</span>() { }
+}
+<span class="kw">class</span> <span class="tp">Child</span> <span class="kw">extends</span> <span class="tp">Parent</span> {
+    <span class="ann">@Override</span>
+    <span class="kw">public void</span> <span class="mtd">show</span>() { }  <span class="cmt">// protected → public ✓</span>
+}</div>
+                </div>
+                <div style="border-radius:12px;overflow:hidden;border:2px solid #fca5a5;">
+                    <div style="background:#fee2e2;padding:9px 16px;font-weight:700;color:#991b1b;font-size:.88rem;">&#10007; Not Allowed — Reducing Visibility</div>
+                    <div class="code-block" style="border-radius:0;margin:0;font-size:.82rem;"><span class="kw">class</span> <span class="tp">Parent</span> {
+    <span class="kw">public void</span> <span class="mtd">show</span>() { }
+}
+<span class="kw">class</span> <span class="tp">Child</span> <span class="kw">extends</span> <span class="tp">Parent</span> {
+    <span class="ann">@Override</span>
+    <span class="kw">protected void</span> <span class="mtd">show</span>() { }  <span class="cmt">// public → protected ✗</span>
+}</div>
+                </div>
+            </div>
+
+            <div class="danger-box">
+                <div class="danger-box-title">&#9888; Why Can't Visibility Be Reduced?</div>
+                <p>
+                    Imagine code elsewhere that uses the parent type and calls a <code class="code-inline">public</code>
+                    method. If a subclass could make that method <code class="code-inline">private</code>,
+                    that existing code would break. Java protects this by enforcing that
+                    overridden methods are at least as accessible as the original.
+                </p>
+            </div>
+
+            <!-- Challenges -->
+            <h3 class="subsection-title" style="margin-top:36px;">
+                <span class="sub-badge">Challenges</span>
+                protected &amp; Accessibility
+            </h3>
+
+            <!-- Challenge 4 -->
+            <div class="challenge-box">
+                <div class="challenge-header">&#9996; Challenge 4</div>
+                <div class="challenge-body">
+                    <div class="challenge-q-text">Does this compile?</div>
+                    <div class="code-block" style="margin:0 0 12px;"><span class="kw">class</span> <span class="tp">Animal</span> {
+    <span class="kw">protected</span> <span class="tp">String</span> <span class="var">sound</span> = <span class="str">"..."</span>;
+}
+<span class="kw">class</span> <span class="tp">Dog</span> <span class="kw">extends</span> <span class="tp">Animal</span> {
+    <span class="kw">public void</span> <span class="mtd">bark</span>() {
+        <span class="tp">System</span>.<span class="var">out</span>.<span class="mtd">println</span>(<span class="var">sound</span>);   <span class="cmt">// accessing protected field</span>
+    }
+}</div>
+                    <div class="verdict ok">&#10003; Compiles</div>
+                    <div class="verdict-explain">
+                        <code>sound</code> is <code>protected</code>, so <code>Dog</code> — a subclass — can access it directly.
+                        This is exactly why <code>protected</code> exists.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Challenge 5 -->
+            <div class="challenge-box">
+                <div class="challenge-header">&#9996; Challenge 5</div>
+                <div class="challenge-body">
+                    <div class="challenge-q-text">Does this compile? What is the problem if not?</div>
+                    <div class="code-block" style="margin:0 0 12px;"><span class="kw">class</span> <span class="tp">Person</span> {
+    <span class="kw">public void</span> <span class="mtd">greet</span>() {
+        <span class="tp">System</span>.<span class="var">out</span>.<span class="mtd">println</span>(<span class="str">"Hello!"</span>);
+    }
+}
+<span class="kw">class</span> <span class="tp">Student</span> <span class="kw">extends</span> <span class="tp">Person</span> {
+    <span class="ann">@Override</span>
+    <span class="kw">private void</span> <span class="mtd">greet</span>() {          <span class="cmt">// weakening public to private</span>
+        <span class="tp">System</span>.<span class="var">out</span>.<span class="mtd">println</span>(<span class="str">"Hi!"</span>);
+    }
+}</div>
+                    <div class="verdict err">&#10007; Compile Error</div>
+                    <div class="verdict-explain">
+                        The subclass attempts to weaken the visibility of <code>greet()</code>
+                        from <code>public</code> to <code>private</code>. Java does not allow this.
+                        The fix is to keep the override <code>public</code> (or stronger).
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ════════ Section 8: The final Keyword ════════ -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-number">8</span>
+                The <code style="font-size:1.3rem;">final</code> Keyword
+            </h2>
+
+            <p>
+                The keyword <code class="code-inline">final</code> means <strong>"this cannot be changed"</strong>.
+                It can be applied to three different things in Java, and in each case
+                the meaning is consistent — something is locked and cannot be modified or extended.
+            </p>
+
+            <div class="final-grid">
+                <div class="final-card fv">
+                    <div class="final-icon">&#128274;</div>
+                    <div class="final-title">final Variable</div>
+                    <div class="final-desc">The variable's value cannot be changed after it is assigned. It becomes a constant.</div>
+                </div>
+                <div class="final-card fm">
+                    <div class="final-icon">&#128683;</div>
+                    <div class="final-title">final Method</div>
+                    <div class="final-desc">The method cannot be overridden in any subclass. Its behaviour is fixed forever.</div>
+                </div>
+                <div class="final-card fc">
+                    <div class="final-icon">&#127974;</div>
+                    <div class="final-title">final Class</div>
+                    <div class="final-desc">The class cannot be extended. No subclass can ever inherit from it.</div>
+                </div>
+            </div>
+
+            <!-- final variable -->
+            <h3 class="subsection-title" style="margin-top:28px;">
+                <span class="sub-badge">final Variable</span>
+                Constants That Cannot Change
+            </h3>
+
+            <div class="code-block"><span class="kw">class</span> <span class="tp">MathConstants</span> {
+    <span class="kw">final double</span> <span class="var">PI</span>    = <span class="num">3.14159</span>;   <span class="cmt">// instance constant</span>
+    <span class="kw">static final double</span> <span class="var">E</span> = <span class="num">2.71828</span>;  <span class="cmt">// class-level constant (shared by all)</span>
+
+    <span class="kw">public void</span> <span class="mtd">demo</span>() {
+        <span class="tp">System</span>.<span class="var">out</span>.<span class="mtd">println</span>(<span class="str">"PI = "</span> + <span class="var">PI</span>);
+        <span class="cmt">// PI = 3;   // ← COMPILE ERROR: cannot assign a value to a final variable</span>
+    }
+}</div>
+
+            <div class="info-box">
+                &#128161; By convention, <code class="code-inline">final</code> constants are named in
+                <strong>ALL_CAPS_WITH_UNDERSCORES</strong>. For example:
+                <code class="code-inline">MAX_SPEED</code>, <code class="code-inline">DEFAULT_NAME</code>.
+            </div>
+
+            <!-- final method -->
+            <h3 class="subsection-title" style="margin-top:28px;">
+                <span class="sub-badge">final Method</span>
+                Behaviour That Cannot Be Overridden
+            </h3>
+
+            <div class="code-block"><span class="kw">class</span> <span class="tp">BankAccount</span> {
+    <span class="kw">private double</span> <span class="var">balance</span>;
+
+    <span class="kw">public</span> <span class="tp">BankAccount</span>(<span class="kw">double</span> <span class="var">initial</span>) { <span class="kw">this</span>.<span class="var">balance</span> = <span class="var">initial</span>; }
+
+    <span class="cmt">// This method is sealed — no subclass can change how deduction works</span>
+    <span class="kw">public final void</span> <span class="mtd">deduct</span>(<span class="kw">double</span> <span class="var">amount</span>) {
+        <span class="kw">if</span> (<span class="var">amount</span> &gt; <span class="var">balance</span>) <span class="kw">throw new</span> <span class="tp">IllegalArgumentException</span>(<span class="str">"Insufficient funds"</span>);
+        <span class="var">balance</span> -= <span class="var">amount</span>;
+        <span class="tp">System</span>.<span class="var">out</span>.<span class="mtd">println</span>(<span class="str">"Deducted: "</span> + <span class="var">amount</span> + <span class="str">". Balance: "</span> + <span class="var">balance</span>);
+    }
+}
+
+<span class="kw">class</span> <span class="tp">SavingsAccount</span> <span class="kw">extends</span> <span class="tp">BankAccount</span> {
+    <span class="kw">public</span> <span class="tp">SavingsAccount</span>(<span class="kw">double</span> <span class="var">initial</span>) { <span class="kw">super</span>(<span class="var">initial</span>); }
+
+    <span class="cmt">// @Override</span>
+    <span class="cmt">// public void deduct(double amount) { }  // ← COMPILE ERROR: cannot override final</span>
+}</div>
+
+            <div class="violet-box">
+                <div class="violet-box-title">&#128161; Why Seal a Method?</div>
+                <p>
+                    Security-critical logic (like financial calculations) should not be
+                    alterable by subclasses. Marking a method <code class="code-inline">final</code>
+                    guarantees the business rule is always enforced, no matter who extends the class.
+                </p>
+            </div>
+
+            <!-- final class -->
+            <h3 class="subsection-title" style="margin-top:28px;">
+                <span class="sub-badge">final Class</span>
+                A Class That Cannot Be Extended
+            </h3>
+
+            <div class="code-block"><span class="cmt">// Java's String class is declared final in the standard library:</span>
+<span class="cmt">// public final class String { ... }</span>
+<span class="cmt">// That means you CANNOT do this:</span>
+<span class="cmt">// class MyString extends String { }  // ← COMPILE ERROR</span>
+
+<span class="cmt">// You can declare your own final classes too:</span>
+<span class="kw">public final class</span> <span class="tp">ImmutablePoint</span> {
+    <span class="kw">private final double</span> <span class="var">x</span>, <span class="var">y</span>;
+
+    <span class="kw">public</span> <span class="tp">ImmutablePoint</span>(<span class="kw">double</span> <span class="var">x</span>, <span class="kw">double</span> <span class="var">y</span>) { <span class="kw">this</span>.<span class="var">x</span> = <span class="var">x</span>; <span class="kw">this</span>.<span class="var">y</span> = <span class="var">y</span>; }
+    <span class="kw">public double</span> <span class="mtd">getX</span>() { <span class="kw">return</span> <span class="var">x</span>; }
+    <span class="kw">public double</span> <span class="mtd">getY</span>() { <span class="kw">return</span> <span class="var">y</span>; }
+}
+
+<span class="cmt">// class MovingPoint extends ImmutablePoint { }  // ← COMPILE ERROR: class is final</span></div>
+
+            <!-- Challenges -->
+            <h3 class="subsection-title" style="margin-top:36px;">
+                <span class="sub-badge">Challenges</span>
+                The final Keyword
+            </h3>
+
+            <!-- Challenge 6 -->
+            <div class="challenge-box">
+                <div class="challenge-header">&#9996; Challenge 6</div>
+                <div class="challenge-body">
+                    <div class="challenge-q-text">Does this compile?</div>
+                    <div class="code-block" style="margin:0 0 12px;"><span class="kw">class</span> <span class="tp">Config</span> {
+    <span class="kw">public final int</span> <span class="var">MAX_USERS</span> = <span class="num">100</span>;
+    <span class="kw">public void</span> <span class="mtd">update</span>() {
+        <span class="var">MAX_USERS</span> = <span class="num">200</span>;
+    }
+}</div>
+                    <div class="verdict err">&#10007; Compile Error</div>
+                    <div class="verdict-explain">
+                        <code>MAX_USERS</code> is declared <code>final</code>, meaning it can only be assigned once.
+                        Attempting to reassign it in <code>update()</code> causes a compile error:
+                        <em>"cannot assign a value to final variable MAX_USERS"</em>.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Challenge 7 -->
+            <div class="challenge-box">
+                <div class="challenge-header">&#9996; Challenge 7</div>
+                <div class="challenge-body">
+                    <div class="challenge-q-text">Does this compile? What happens?</div>
+                    <div class="code-block" style="margin:0 0 12px;"><span class="kw">final class</span> <span class="tp">Locked</span> {
+    <span class="kw">public void</span> <span class="mtd">hello</span>() { <span class="tp">System</span>.<span class="var">out</span>.<span class="mtd">println</span>(<span class="str">"Hello from Locked"</span>); }
+}
+<span class="kw">class</span> <span class="tp">Unlocked</span> <span class="kw">extends</span> <span class="tp">Locked</span> {
+    <span class="ann">@Override</span>
+    <span class="kw">public void</span> <span class="mtd">hello</span>() { <span class="tp">System</span>.<span class="var">out</span>.<span class="mtd">println</span>(<span class="str">"Overridden!"</span>); }
+}</div>
+                    <div class="verdict err">&#10007; Compile Error</div>
+                    <div class="verdict-explain">
+                        <code>Locked</code> is declared <code>final</code>. It cannot be extended.
+                        <code>Unlocked extends Locked</code> causes an immediate compile error:
+                        <em>"cannot inherit from final Locked"</em>.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ════════ Section 9: The Object Class ════════ -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-number">9</span>
+                The Object Class — Java's Ultimate Parent
+            </h2>
+
+            <!-- Student question -->
+            <div style="background:#fffbeb;border:2px solid #f59e0b;border-radius:16px;padding:22px 26px;margin:0 0 26px;">
+                <div style="display:flex;gap:16px;align-items:flex-start;">
+                    <div style="font-size:2.4rem;flex-shrink:0;">&#128587;</div>
+                    <div>
+                        <div style="font-weight:800;color:#92400e;font-size:1rem;margin-bottom:8px;">A Student Raises Their Hand…</div>
+                        <p style="font-style:italic;color:#374151;font-size:.95rem;line-height:1.75;margin:0;">
+                            "Professor, I wrote a class with no fields and no methods at all —
+                            just an empty class body. But when I created an object, I noticed it had methods
+                            like <code>.toString()</code> and <code>.equals()</code>.
+                            Where do they come from?!"
+                        </p>
+                    </div>
+                </div>
+                <div style="margin-top:16px;padding-top:14px;border-top:1px dashed #d97706;">
+                    <div style="font-weight:800;color:#15803d;margin-bottom:6px;">&#128218; The Answer:</div>
+                    <p style="color:#374151;font-size:.93rem;line-height:1.75;margin:0;">
+                        That is an excellent observation! <strong>Every class in Java automatically inherits
+                        from a special class called <code>Object</code></strong> — whether you write it or not.
+                        <code>Object</code> is the <em>ultimate parent</em> of every class in the entire Java ecosystem.
+                        Those methods you found come directly from it.
+                    </p>
+                </div>
+            </div>
+
+            <div class="code-block"><span class="cmt">// These two are exactly the same to Java:</span>
+<span class="kw">class</span> <span class="tp">Student</span> { ... }
+<span class="kw">class</span> <span class="tp">Student</span> <span class="kw">extends</span> <span class="tp">Object</span> { ... }   <span class="cmt">// Java writes this for you invisibly</span></div>
+
+            <h3 class="subsection-title" style="margin-top:28px;">
+                <span class="sub-badge">Key Methods</span>
+                Useful Methods Inherited from Object
+            </h3>
+
+            <table class="obj-method-table">
+                <thead>
+                    <tr>
+                        <th>Method</th>
+                        <th>What It Does</th>
+                        <th>Default Behaviour</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>toString()</code></td>
+                        <td>Returns a text representation of the object</td>
+                        <td>ClassName@hexAddress (e.g. <code>Student@1b6d3586</code>)</td>
+                    </tr>
+                    <tr>
+                        <td><code>equals(Object o)</code></td>
+                        <td>Checks equality between two objects</td>
+                        <td>Compares memory addresses (same as <code>==</code>)</td>
+                    </tr>
+                    <tr>
+                        <td><code>hashCode()</code></td>
+                        <td>Returns an integer hash for the object</td>
+                        <td>Based on memory address</td>
+                    </tr>
+                    <tr>
+                        <td><code>getClass()</code></td>
+                        <td>Returns the runtime class of the object</td>
+                        <td>Cannot override (it is <code>final</code>)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3 class="subsection-title" style="margin-top:28px;">
+                <span class="sub-badge">Override toString &amp; equals</span>
+                Making Your Class Meaningful
+            </h3>
+
+            <p style="margin-bottom:14px;">
+                The default <code class="code-inline">toString()</code> is useless for debugging.
+                Override it to produce meaningful output.
+                Similarly, override <code class="code-inline">equals()</code> when equality should be
+                based on field values, not memory addresses.
+            </p>
+
+            <div class="code-block"><span class="kw">class</span> <span class="tp">Student</span> {           <span class="cmt">// implicitly extends Object</span>
+    <span class="kw">private</span> <span class="tp">String</span> <span class="var">name</span>;
+    <span class="kw">private int</span>    <span class="var">id</span>;
+
+    <span class="kw">public</span> <span class="tp">Student</span>(<span class="tp">String</span> <span class="var">name</span>, <span class="kw">int</span> <span class="var">id</span>) {
+        <span class="kw">this</span>.<span class="var">name</span> = <span class="var">name</span>;
+        <span class="kw">this</span>.<span class="var">id</span>   = <span class="var">id</span>;
+    }
+
+    <span class="ann">@Override</span>
+    <span class="kw">public</span> <span class="tp">String</span> <span class="mtd">toString</span>() {
+        <span class="kw">return</span> <span class="str">"Student["</span> + <span class="var">id</span> + <span class="str">"] "</span> + <span class="var">name</span>;
+    }
+
+    <span class="ann">@Override</span>
+    <span class="kw">public boolean</span> <span class="mtd">equals</span>(<span class="tp">Object</span> <span class="var">obj</span>) {
+        <span class="kw">if</span> (<span class="kw">this</span> == <span class="var">obj</span>) <span class="kw">return true</span>;           <span class="cmt">// same object in memory</span>
+        <span class="kw">if</span> (!(<span class="var">obj</span> <span class="kw">instanceof</span> <span class="tp">Student</span>)) <span class="kw">return false</span>;
+        <span class="tp">Student</span> <span class="var">other</span> = (<span class="tp">Student</span>) <span class="var">obj</span>;
+        <span class="kw">return this</span>.<span class="var">id</span> == <span class="var">other</span>.<span class="var">id</span>;            <span class="cmt">// students are equal if same ID</span>
+    }
+}
+
+<span class="kw">public class</span> <span class="tp">Main</span> {
+    <span class="kw">public static void</span> <span class="mtd">main</span>(<span class="tp">String</span>[] <span class="var">args</span>) {
+        <span class="tp">Student</span> <span class="var">s1</span> = <span class="kw">new</span> <span class="tp">Student</span>(<span class="str">"Ali"</span>,  <span class="num">1001</span>);
+        <span class="tp">Student</span> <span class="var">s2</span> = <span class="kw">new</span> <span class="tp">Student</span>(<span class="str">"Ali"</span>,  <span class="num">1001</span>);   <span class="cmt">// same ID — different object</span>
+        <span class="tp">Student</span> <span class="var">s3</span> = <span class="kw">new</span> <span class="tp">Student</span>(<span class="str">"Omar"</span>, <span class="num">1002</span>);
+
+        <span class="tp">System</span>.<span class="var">out</span>.<span class="mtd">println</span>(<span class="var">s1</span>);                   <span class="cmt">// calls toString()</span>
+        <span class="tp">System</span>.<span class="var">out</span>.<span class="mtd">println</span>(<span class="var">s1</span>.<span class="mtd">equals</span>(<span class="var">s2</span>));        <span class="cmt">// same ID → true</span>
+        <span class="tp">System</span>.<span class="var">out</span>.<span class="mtd">println</span>(<span class="var">s1</span>.<span class="mtd">equals</span>(<span class="var">s3</span>));        <span class="cmt">// different ID → false</span>
+        <span class="tp">System</span>.<span class="var">out</span>.<span class="mtd">println</span>(<span class="var">s1</span>.<span class="mtd">getClass</span>().<span class="mtd">getName</span>()); <span class="cmt">// runtime class name</span>
+    }
+}</div>
+
+            <div class="terminal-header">
+                <div class="terminal-dot r"></div>
+                <div class="terminal-dot y"></div>
+                <div class="terminal-dot g"></div>
+                <span class="terminal-title">Output</span>
+            </div>
+            <div class="terminal with-header">Student[1001] Ali
+true
+false
+Student</div>
+
+            <div class="pink-box">
+                <div class="pink-box-title">&#128218; The Hierarchy Reaches All the Way Up</div>
+                <p>
+                    <code class="code-inline">Object</code> is the root of every hierarchy in Java.
+                    This means every object you ever create — <code class="code-inline">String</code>,
+                    <code class="code-inline">Scanner</code>, your own classes — is ultimately an instance of
+                    <code class="code-inline">Object</code>. This is what makes Java's type system coherent.
+                </p>
+            </div>
+        </div>
+
+        <!-- ════════ Section 10: Multiple Inheritance ════════ -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-number">10</span>
+                Multiple Inheritance — and Why Java Says No
+            </h2>
+
+            <p>
+                In some programming languages, a class can extend <strong>more than one parent</strong>
+                at the same time. This is called <strong>multiple inheritance</strong>.
+                Java does <strong>not</strong> support this — and for a very good reason.
+            </p>
+
+            <h3 class="subsection-title">
+                <span class="sub-badge">The Problem</span>
+                The Diamond Problem
+            </h3>
+
+            <p style="margin-bottom:14px;">
+                Imagine three classes: <code class="code-inline">A</code>,
+                <code class="code-inline">B</code> (extends A), and <code class="code-inline">C</code> (extends A).
+                Both <code class="code-inline">B</code> and <code class="code-inline">C</code> override
+                a method from <code class="code-inline">A</code> differently.
+                Now a fourth class <code class="code-inline">D</code> tries to extend <strong>both</strong>
+                <code class="code-inline">B</code> and <code class="code-inline">C</code>.
+                Which version of the method does <code class="code-inline">D</code> inherit?
+                Java cannot answer this — so it prohibits the question entirely.
+            </p>
+
+            <!-- Diamond UML -->
+            <div class="uml-diagram" style="max-width:480px;">
+                <div class="uml-class" style="min-width:150px;">
+                    <div class="uml-class-name uml-parent">A</div>
+                    <div class="uml-section">+ hello() : void</div>
+                </div>
+                <div class="uml-arrow-line"></div>
+                <div class="uml-children-row" style="gap:60px;">
+                    <div class="uml-child-col">
+                        <div class="uml-arrow-tri" style="border-bottom-color:#be185d;"></div>
+                        <div class="uml-arrow-line" style="background:#be185d;height:18px;"></div>
+                        <div class="uml-class" style="min-width:130px;">
+                            <div class="uml-class-name uml-child">B</div>
+                            <div class="uml-section"><span class="overridden">+ hello() : void</span></div>
+                        </div>
+                        <div style="width:2px;height:26px;border-left:2px dashed #dc2626;"></div>
+                    </div>
+                    <div class="uml-child-col">
+                        <div class="uml-arrow-tri" style="border-bottom-color:#1d4ed8;"></div>
+                        <div class="uml-arrow-line" style="background:#1d4ed8;height:18px;"></div>
+                        <div class="uml-class" style="min-width:130px;">
+                            <div class="uml-class-name uml-child-b">C</div>
+                            <div class="uml-section"><span class="overridden">+ hello() : void</span></div>
+                        </div>
+                        <div style="width:2px;height:26px;border-left:2px dashed #dc2626;"></div>
+                    </div>
+                </div>
+                <!-- Converging dashed lines → D (ILLEGAL) -->
+                <div style="width:190px;border-top:2px dashed #dc2626;margin-top:-1px;"></div>
+                <div style="width:2px;height:20px;border-left:2px dashed #dc2626;"></div>
+                <div style="width:0;height:0;border-left:11px solid transparent;border-right:11px solid transparent;border-top:16px solid #dc2626;"></div>
+                <div class="uml-class" style="min-width:195px;border:2px dashed #dc2626;margin-top:4px;">
+                    <div class="uml-class-name" style="background:#6b7280;">D</div>
+                    <div class="uml-section" style="color:#dc2626;font-weight:700;text-align:center;">
+                        extends B, C &nbsp; &#10006; COMPILE ERROR
+                    </div>
+                </div>
+            </div>
+
+            <div class="danger-box">
+                <div class="danger-box-title">&#9888; Java's Decision</div>
+                <p>
+                    Java prohibits <code class="code-inline">extends</code> from listing more than one class.
+                    <code class="code-inline">class D extends B, C { }</code> is a compile error.
+                    This eliminates ambiguity entirely.
+                </p>
+            </div>
+
+            <!-- Hierarchy Example -->
+            <h3 class="subsection-title" style="margin-top:32px;">
+                <span class="sub-badge">Single Inheritance Hierarchy</span>
+                When a Strict Tree IS the Right Answer
+            </h3>
+
+            <p style="margin-bottom:16px;">
+                When a strong IS-A relationship exists through a chain of classes,
+                single inheritance is clean and unambiguous. Here is a realistic example:
+            </p>
+
+            <div class="uml-diagram" style="max-width:500px;">
+                <div class="uml-class" style="min-width:155px;">
+                    <div class="uml-class-name uml-parent">Person</div>
+                    <div class="uml-section">+ getName() : String<br>+ getAge() : int</div>
+                </div>
+                <div class="uml-arrow-line"></div>
+                <div class="uml-children-row" style="gap:50px;">
+                    <!-- Branch 1: Student → GradStudent -->
+                    <div class="uml-child-col">
+                        <div class="uml-arrow-tri" style="border-bottom-color:#be185d;"></div>
+                        <div class="uml-arrow-line" style="background:#be185d;height:18px;"></div>
+                        <div class="uml-class" style="min-width:140px;">
+                            <div class="uml-class-name uml-child">Student</div>
+                            <div class="uml-section">+ getGPA() : double</div>
+                        </div>
+                        <div class="uml-arrow-tri" style="border-bottom-color:#15803d;"></div>
+                        <div class="uml-arrow-line" style="background:#15803d;height:18px;"></div>
+                        <div class="uml-class" style="min-width:140px;">
+                            <div class="uml-class-name uml-child-g">GradStudent</div>
+                            <div class="uml-section">+ getThesis() : String</div>
+                        </div>
+                    </div>
+                    <!-- Branch 2: Employee → Professor -->
+                    <div class="uml-child-col">
+                        <div class="uml-arrow-tri" style="border-bottom-color:#1d4ed8;"></div>
+                        <div class="uml-arrow-line" style="background:#1d4ed8;height:18px;"></div>
+                        <div class="uml-class" style="min-width:140px;">
+                            <div class="uml-class-name uml-child-b">Employee</div>
+                            <div class="uml-section">+ getSalary() : double</div>
+                        </div>
+                        <div class="uml-arrow-tri" style="border-bottom-color:#15803d;"></div>
+                        <div class="uml-arrow-line" style="background:#15803d;height:18px;"></div>
+                        <div class="uml-class" style="min-width:140px;">
+                            <div class="uml-class-name uml-child-g">Professor</div>
+                            <div class="uml-section">+ getDept() : String</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <p>
+                Every arrow here is a clear IS-A relationship:
+                a <em>Student</em> IS-A <em>Person</em>,
+                a <em>Professor</em> IS-A an <em>Employee</em> IS-A a <em>Person</em>.
+                This tree is unambiguous — each class has exactly one parent.
+            </p>
+
+            <!-- When hierarchy is NOT enough -->
+            <h3 class="subsection-title" style="margin-top:36px;">
+                <span class="sub-badge">When Hierarchy Is Not Enough</span>
+                Strong Relationships vs Weak Relationships
+            </h3>
+
+            <p style="margin-bottom:18px;">
+                The hierarchy above works perfectly because every link in the chain is
+                a <strong>strong IS-A relationship</strong>.
+                A GraduateStudent IS-A Student. A Student IS-A Person.
+                No matter how many levels deep the chain goes, the statement
+                <em>"the bottom class IS-A Person"</em> remains true and meaningful.
+                When this condition holds, a clean hierarchy is the right model.
+            </p>
+
+            <!-- Strong relationship visual -->
+            <div style="background:#f0fdf4;border:2px solid #86efac;border-radius:16px;padding:20px 26px;margin:0 0 24px;">
+                <div style="font-weight:800;color:#15803d;font-size:.95rem;margin-bottom:14px;">&#10003; Strong IS-A Chain — Hierarchy Works</div>
+                <div style="display:flex;align-items:center;gap:0;flex-wrap:wrap;row-gap:8px;">
+                    <div style="background:#7c3aed;color:white;padding:8px 18px;border-radius:8px;font-weight:700;font-size:.88rem;">Person</div>
+                    <div style="color:#6b7280;font-size:1.3rem;padding:0 6px;">→</div>
+                    <div style="background:#be185d;color:white;padding:8px 18px;border-radius:8px;font-weight:700;font-size:.88rem;">Student</div>
+                    <div style="color:#6b7280;font-size:1.3rem;padding:0 6px;">→</div>
+                    <div style="background:#1d4ed8;color:white;padding:8px 18px;border-radius:8px;font-weight:700;font-size:.88rem;">GraduateStudent</div>
+                    <div style="color:#6b7280;font-size:1.3rem;padding:0 6px;">→</div>
+                    <div style="background:#15803d;color:white;padding:8px 18px;border-radius:8px;font-weight:700;font-size:.88rem;">MasterStudent</div>
+                </div>
+                <p style="font-size:.86rem;color:#374151;margin-top:14px;line-height:1.7;">
+                    Ask at any level: <em>"Is MasterStudent a Person?"</em> — Yes.
+                    <em>"Is GraduateStudent a Person?"</em> — Yes.
+                    The IS-A test passes all the way up. No multiple inheritance is needed.
+                </p>
+            </div>
+
+            <p style="margin-bottom:18px;">
+                But sometimes you want to model capabilities that are shared across objects
+                which <strong>do not belong to the same family</strong>.
+                Imagine a <em>Duck</em> and a <em>Seaplane</em> — both can fly and both can swim,
+                but they are completely unrelated classes. There is no single meaningful parent
+                that covers both. The IS-A test fails:
+                <em>"Is a Seaplane a Duck?"</em> — No. <em>"Is a Duck a Seaplane?"</em> — No.
+                There is only a <strong>weak, functional relationship</strong>: they share
+                certain <em>capabilities</em>, not a common identity.
+            </p>
+
+            <!-- Weak relationship visual -->
+            <div style="background:#fff7ed;border:2px solid #fed7aa;border-radius:16px;padding:20px 26px;margin:0 0 24px;">
+                <div style="font-weight:800;color:#c2410c;font-size:.95rem;margin-bottom:14px;">&#8987; Weak / Functional Relationship — Hierarchy Breaks Down</div>
+                <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+                    <div style="border:2px solid #be185d;border-radius:10px;padding:10px 18px;font-weight:700;font-size:.88rem;color:#be185d;background:#fce7f3;">Duck</div>
+                    <div style="font-size:.82rem;color:#6b7280;font-style:italic;">and</div>
+                    <div style="border:2px solid #1d4ed8;border-radius:10px;padding:10px 18px;font-weight:700;font-size:.88rem;color:#1d4ed8;background:#eff6ff;">Seaplane</div>
+                    <div style="font-size:.82rem;color:#6b7280;">both <strong>fly</strong> and <strong>swim</strong> — but share no meaningful parent class</div>
+                </div>
+                <p style="font-size:.86rem;color:#374151;margin-top:14px;line-height:1.7;">
+                    Forcing them into one hierarchy would be artificial and misleading.
+                    A different Java tool is needed for this kind of relationship.
+                </p>
+            </div>
+
+            <!-- Teaser box -->
+            <div style="background:linear-gradient(135deg,#ede9fe,#ddd6fe);border:2px solid #8b5cf6;border-radius:16px;padding:22px 26px;margin:0 0 16px;display:flex;gap:18px;align-items:flex-start;">
+                <div style="font-size:2.2rem;flex-shrink:0;">&#128218;</div>
+                <div>
+                    <div style="font-weight:800;color:#5b21b6;font-size:1rem;margin-bottom:10px;">Coming Up — Interfaces</div>
+                    <p style="color:#374151;font-size:.93rem;line-height:1.8;margin:0;">
+                        Java provides a tool called <strong>interfaces</strong> to model exactly
+                        this kind of situation — where objects from different families need to
+                        share capabilities without a forced hierarchy.<br><br>
+                        In the dedicated <em>Interfaces</em> chapter, we will go deep:
+                        what is a strong relationship, what is a weak one, when does hierarchy
+                        work and when does it fail, and how interfaces solve the gap —
+                        all with real examples and full code.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Challenge -->
+            <h3 class="subsection-title" style="margin-top:36px;">
+                <span class="sub-badge">Challenge</span>
+                Multiple Inheritance
+            </h3>
+
+            <div class="challenge-box">
+                <div class="challenge-header">&#9996; Challenge 8</div>
+                <div class="challenge-body">
+                    <div class="challenge-q-text">Does this compile? Why or why not?</div>
+                    <div class="code-block" style="margin:0 0 12px;"><span class="kw">class</span> <span class="tp">A</span> { <span class="kw">public void</span> <span class="mtd">hello</span>() { } }
+<span class="kw">class</span> <span class="tp">B</span> { <span class="kw">public void</span> <span class="mtd">hello</span>() { } }
+<span class="kw">class</span> <span class="tp">C</span> <span class="kw">extends</span> <span class="tp">A</span>, <span class="tp">B</span> { }</div>
+                    <div class="verdict err">&#10007; Compile Error</div>
+                    <div class="verdict-explain">
+                        Java does not support multiple class inheritance.
+                        <code>class C extends A, B</code> is illegal syntax.
+                        A class may only extend <strong>one</strong> class.
+                        This is Java's deliberate decision to eliminate the ambiguity of the diamond problem.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ════════ Final Summary ════════ -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-number">11</span>
+                Module Summary — Everything in One Place
+            </h2>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0;">
+                <div style="border-radius:14px;background:var(--pink-light);border:2px solid var(--pink);padding:18px;">
+                    <div style="font-weight:800;color:var(--pink-dark);margin-bottom:10px;">Method Overriding</div>
+                    <ul style="font-size:.88rem;line-height:2;margin-left:18px;color:#374151;">
+                        <li>Same class, same signature in child → overriding</li>
+                        <li>Use <code>@Override</code> always</li>
+                        <li>Access can be increased, never reduced</li>
+                        <li>Call parent's version with <code>super.method()</code></li>
+                    </ul>
+                </div>
+                <div style="border-radius:14px;background:var(--violet-light);border:2px solid var(--violet);padding:18px;">
+                    <div style="font-weight:800;color:var(--violet-dark);margin-bottom:10px;">Overloading vs Overriding</div>
+                    <ul style="font-size:.88rem;line-height:2;margin-left:18px;color:#374151;">
+                        <li>Overloading: same name, different signature</li>
+                        <li>Overriding: same name, same signature, child class</li>
+                        <li>Overloading → resolved at compile time</li>
+                        <li>Overriding → resolved at run time</li>
+                    </ul>
+                </div>
+                <div style="border-radius:14px;background:#f0fdf4;border:2px solid #16a34a;padding:18px;">
+                    <div style="font-weight:800;color:#15803d;margin-bottom:10px;">protected &amp; final</div>
+                    <ul style="font-size:.88rem;line-height:2;margin-left:18px;color:#374151;">
+                        <li><code>protected</code>: visible to subclasses and same package</li>
+                        <li><code>final</code> variable: constant — cannot change</li>
+                        <li><code>final</code> method: cannot override</li>
+                        <li><code>final</code> class: cannot extend</li>
+                    </ul>
+                </div>
+                <div style="border-radius:14px;background:#fffbeb;border:2px solid #f59e0b;padding:18px;">
+                    <div style="font-weight:800;color:#92400e;margin-bottom:10px;">Object Class &amp; Interfaces</div>
+                    <ul style="font-size:.88rem;line-height:2;margin-left:18px;color:#374151;">
+                        <li>Every class extends <code>Object</code> implicitly</li>
+                        <li>Override <code>toString()</code> and <code>equals()</code></li>
+                        <li>Java has no multiple class inheritance</li>
+                        <li>Use <code>implements</code> for multiple contracts</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div><!-- /content -->
+
+    <!-- ── Bottom Navigation ─────────────────────────── -->
+    <nav class="bottom-nav">
+        <a href="index.html">← Part 1: Motivation</a>
+        <a href="../module07-polymorphism/index.html">Next: Polymorphism →</a>
+    </nav>
+
+    <!-- ── Footer ────────────────────────────────────── -->
+    <div class="footer">
+        <p>CPCS203 — Object-Oriented Programming with Java</p>
+        <p>Prepared by Dr. Almalawi</p>
+    </div>
+
+</div><!-- /container -->
+
+<script>
+    // Hide all challenge boxes by default and add "Show Challenge" buttons
+    document.querySelectorAll('.challenge-box').forEach(function(box) {
+        var headerEl = box.querySelector('.challenge-header');
+        var label = headerEl ? headerEl.textContent.trim() : 'Challenge';
+        box.style.display = 'none';
+        var btn = document.createElement('button');
+        btn.className = 'btn-challenge';
+        btn.innerHTML = '&#9654;&nbsp; Show ' + label;
+        btn.onclick = function() {
+            var open = box.style.display !== 'none';
+            if (open) {
+                box.style.display = 'none';
+                btn.innerHTML = '&#9654;&nbsp; Show ' + label;
+                btn.classList.remove('revealed');
+            } else {
+                box.style.display = 'block';
+                btn.innerHTML = '&#9650;&nbsp; Hide ' + label;
+                btn.classList.add('revealed');
+            }
+        };
+        box.parentNode.insertBefore(btn, box);
+    });
+
+    // Auto-wrap all challenge solutions with a show/hide button
+    document.querySelectorAll('.challenge-body').forEach(function(body) {
+        var verdict = body.querySelector('.verdict');
+        var explain = body.querySelector('.verdict-explain');
+        if (!verdict) return;
+        var wrapper = document.createElement('div');
+        wrapper.className = 'solution';
+        verdict.parentNode.insertBefore(wrapper, verdict);
+        wrapper.appendChild(verdict);
+        if (explain) wrapper.appendChild(explain);
+        var btn = document.createElement('button');
+        btn.className = 'btn-solution';
+        btn.innerHTML = '&#9654;&nbsp; Show Solution';
+        btn.onclick = function() {
+            wrapper.classList.toggle('visible');
+            var open = wrapper.classList.contains('visible');
+            btn.innerHTML = open ? '&#9650;&nbsp; Hide Solution' : '&#9654;&nbsp; Show Solution';
+            btn.classList.toggle('revealed', open);
+        };
+        wrapper.parentNode.insertBefore(btn, wrapper);
+    });
+</script>
+</body>
+</html>

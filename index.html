@@ -343,6 +343,89 @@
             color: #9ca3af;
         }
 
+        /* Badges */
+        .badge-new {
+            position: absolute;
+            top: 12px;
+            left: -2px;
+            background: #fbbf24;
+            color: #78350f;
+            font-size: .68rem;
+            font-weight: 800;
+            padding: 4px 14px 4px 10px;
+            border-radius: 0 20px 20px 0;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            box-shadow: 2px 2px 6px rgba(0,0,0,.25);
+            z-index: 1;
+        }
+
+        .badge-updated {
+            position: absolute;
+            top: 12px;
+            left: -2px;
+            background: #34d399;
+            color: #064e3b;
+            font-size: .68rem;
+            font-weight: 800;
+            padding: 4px 14px 4px 10px;
+            border-radius: 0 20px 20px 0;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            box-shadow: 2px 2px 6px rgba(0,0,0,.25);
+            z-index: 1;
+        }
+
+        /* Part count tag */
+        .part-count {
+            margin-left: auto;
+            color: rgba(255,255,255,.75);
+            font-size: .88rem;
+            font-weight: 400;
+            white-space: nowrap;
+        }
+
+        /* Progress bar */
+        .course-progress {
+            background: rgba(255,255,255,.12);
+            border-radius: 14px;
+            padding: 18px 28px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            max-width: 560px;
+            margin: 28px auto 0;
+            border: 1px solid rgba(255,255,255,.2);
+        }
+
+        .progress-label {
+            color: rgba(255,255,255,.9);
+            font-size: .88rem;
+            white-space: nowrap;
+        }
+
+        .progress-bar-wrap {
+            flex: 1;
+            background: rgba(255,255,255,.2);
+            border-radius: 10px;
+            height: 10px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #34d399, #a7f3d0);
+            border-radius: 10px;
+            transition: width .6s ease;
+        }
+
+        .progress-pct {
+            color: #fff;
+            font-weight: 700;
+            font-size: .95rem;
+            white-space: nowrap;
+        }
+
         /* Footer */
         .footer {
             background: rgba(0, 0, 0, 0.3);
@@ -416,6 +499,27 @@
             Master the fundamentals of Object-Oriented Programming in Java.
             From arrays and strings to inheritance, polymorphism, and beyond.
         </p>
+        <div class="hero-stats">
+            <div class="stat-box">
+                <div class="stat-number">7</div>
+                <div class="stat-label">Modules Ready</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">11</div>
+                <div class="stat-label">Total Modules</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">4</div>
+                <div class="stat-label">OOP Pillars</div>
+            </div>
+        </div>
+        <div class="course-progress">
+            <span class="progress-label">Course Progress</span>
+            <div class="progress-bar-wrap">
+                <div class="progress-bar-fill" style="width:64%;"></div>
+            </div>
+            <span class="progress-pct">7 / 11</span>
+        </div>
     </section>
 
     <!-- Main Content -->
@@ -426,6 +530,7 @@
             <div class="part-header">
                 <div class="part-number">1</div>
                 <h2 class="part-title">Fundamentals</h2>
+                <span class="part-count">3 modules &nbsp;&#183;&nbsp; all ready &#9989;</span>
             </div>
             <div class="modules-grid">
                 <!-- Module 1: Multidimensional Arrays -->
@@ -521,7 +626,8 @@
         <section class="part-section" id="objects">
             <div class="part-header">
                 <div class="part-number">2</div>
-                <h2 class="part-title">Objects & Classes</h2>
+                <h2 class="part-title">Objects &amp; Classes</h2>
+                <span class="part-count">2 modules &nbsp;&#183;&nbsp; all ready &#9989;</span>
             </div>
             <div class="modules-grid">
                 <!-- Module 4: Objects & Classes -->
@@ -589,12 +695,14 @@
         <section class="part-section" id="inheritance">
             <div class="part-header">
                 <div class="part-number">3</div>
-                <h2 class="part-title">Inheritance & Polymorphism</h2>
+                <h2 class="part-title">Inheritance &amp; Polymorphism</h2>
+                <span class="part-count">2 modules &nbsp;&#183;&nbsp; all ready &#9989;</span>
             </div>
             <div class="modules-grid">
                 <!-- Module 6: Inheritance -->
                 <a href="module06-inheritance/index.html" class="module-card" data-updated="2026-03-31">
                     <div class="module-header inheritance">
+                        <span class="badge-updated">&#9650; Updated</span>
                         <span class="module-number">Module 6</span>
                         <div class="module-icon">&#128106;</div>
                         <div class="module-title">Inheritance</div>
@@ -622,29 +730,34 @@
                 </a>
 
                 <!-- Module 7: Polymorphism -->
-                <div class="module-card disabled">
+                <a href="module07-polymorphism/index.html" class="module-card" data-updated="2026-04-13">
                     <div class="module-header polymorphism">
+                        <span class="badge-new">&#10022; New</span>
                         <span class="module-number">Module 7</span>
                         <div class="module-icon">&#128260;</div>
                         <div class="module-title">Polymorphism</div>
                         <div class="module-chapter">Chapter 11</div>
                     </div>
                     <div class="module-body">
+                        <div class="module-updated">
+                            <span class="updated-icon">&#128339;</span>
+                            <span>Last updated: <span class="updated-date">Apr 13, 2026</span> <span class="updated-relative"></span></span>
+                        </div>
                         <ul class="module-topics">
-                            <li>Dynamic Binding</li>
-                            <li>Casting Objects</li>
-                            <li>equals() Method</li>
-                            <li>ArrayList</li>
+                            <li>Polymorphic Variable, Array &amp; Method</li>
+                            <li>Static vs Dynamic Binding</li>
+                            <li>Upcasting, Downcasting &amp; instanceof</li>
+                            <li>ClassCastException &amp; ArrayList</li>
                         </ul>
                         <div class="module-footer">
-                            <span class="module-status coming">
-                                <span class="status-dot coming"></span>
-                                Coming Soon
+                            <span class="module-status ready">
+                                <span class="status-dot ready"></span>
+                                Ready
                             </span>
                             <span class="module-arrow">&#8594;</span>
                         </div>
                     </div>
-                </div>
+                </a>
             </div>
         </section>
 
@@ -653,6 +766,7 @@
             <div class="part-header">
                 <div class="part-number">4</div>
                 <h2 class="part-title">Advanced OOP</h2>
+                <span class="part-count">4 modules &nbsp;&#183;&nbsp; coming soon &#128336;</span>
             </div>
             <div class="modules-grid">
                 <!-- Module 8: Abstract Classes -->
@@ -758,10 +872,10 @@
 
     <!-- Footer -->
     <footer class="footer">
-        <p><strong>CPCS203</strong> - Object-Oriented Programming</p>
-        <p>Faculty of Computing and Information Technology</p>
-        <p>King Abdulaziz University</p>
-        <p>Prepared by Dr. Almalawi</p>
+        <p style="font-size:1.15rem;font-weight:700;margin-bottom:6px;">&#128187; CPCS203 &mdash; Object-Oriented Programming</p>
+        <p style="opacity:.85;">&#127979; Faculty of Computing and Information Technology &nbsp;&bull;&nbsp; King Abdulaziz University</p>
+        <p style="opacity:.75;margin-top:4px;">&#128203; Prepared by Dr. Almalawi</p>
+        <p style="margin-top:14px;opacity:.5;font-size:.8rem;">7 of 11 modules published &nbsp;&bull;&nbsp; Last updated: Apr 13, 2026</p>
     </footer>
     <script>
         // Calculate and display relative time for each module card

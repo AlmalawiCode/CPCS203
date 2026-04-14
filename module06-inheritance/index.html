@@ -936,6 +936,19 @@
         .verdict.err { background: #fee2e2; color: #991b1b; border: 1.5px solid #fca5a5; }
         .verdict-explain { font-size: .86rem; color: var(--dark); line-height: 1.7; }
 
+        /* ── Challenge show/hide challenge ──────────────── */
+        .btn-challenge {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: #3b82f6; color: white; border: none;
+            padding: 9px 22px; border-radius: 20px; cursor: pointer;
+            font-weight: 700; font-size: .85rem; margin: 8px 0;
+            transition: background .25s, transform .1s;
+            letter-spacing: .01em;
+        }
+        .btn-challenge:hover { background: #2563eb; transform: translateY(-1px); }
+        .btn-challenge.revealed { background: #6b7280; }
+        .btn-challenge.revealed:hover { background: #4b5563; }
+
         /* ── Challenge show/hide solution ───────────────── */
         .solution { display: none; margin-top: 14px; }
         .solution.visible { display: block; }
@@ -3274,6 +3287,1071 @@ Puppy age: 2</div>
             </div>
         </div>
 
+        <!-- ════════════════════════════════════════════════
+             Section 14 — Cross-Class Chaining: super() + this()
+             ════════════════════════════════════════════════ -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-number">14</span>
+                Tracing a 3-Level Chain — <code style="font-size:1.3rem;font-weight:900;">super()</code> Meets <code style="font-size:1.3rem;font-weight:900;">this()</code>
+            </h2>
+
+            <p style="line-height:1.9;">
+                By now, you already know the rule:
+                <strong>the constructor of a subclass is responsible for invoking the constructor of its superclass.</strong>
+                We have practised this through the previous challenges — and every one of those examples had
+                exactly <strong>two levels</strong>: one parent class and one child class.
+            </p>
+
+            <p style="line-height:1.9;margin-top:14px;">
+                But what happens when we have a <strong>hierarchy</strong> of classes?
+                Imagine class <code class="code-inline">D</code> inherits from <code class="code-inline">C</code>,
+                <code class="code-inline">C</code> inherits from <code class="code-inline">B</code>,
+                and <code class="code-inline">B</code> inherits from <code class="code-inline">A</code> —
+                that is four levels deep. The same rule still applies at every level, and the result
+                is a <strong>constructor chain</strong>.
+            </p>
+
+            <p style="line-height:1.9;margin-top:14px;">
+                In this challenge we use three levels: <code class="code-inline">Machine</code>,
+                <code class="code-inline">Vehicle</code>, and <code class="code-inline">Car</code>.
+                <code class="code-inline">Car</code> is a subclass of <code class="code-inline">Vehicle</code>,
+                and <code class="code-inline">Vehicle</code> is a subclass of <code class="code-inline">Machine</code>.
+                That means:
+                the constructor of <code class="code-inline">Car</code> is responsible for invoking the constructor
+                of <code class="code-inline">Vehicle</code> —
+                and the constructor of <code class="code-inline">Vehicle</code> is responsible for invoking the
+                constructor of <code class="code-inline">Machine</code>.
+                This is the chain. Now we need to understand how it works and how to trace it.
+            </p>
+
+            <p style="line-height:1.9;margin-top:14px;">
+                Here is the strategy: <strong>follow the computer.</strong>
+                Do not look at all the code at once. Take it one line at a time, exactly as Java does.
+                Every time you ask <em>"what happens on this line?"</em> you will always find a clear answer.
+                After you see it step by step, it becomes very simple — and your students will love it.
+            </p>
+
+            <!-- ── The Hierarchy ─────────────────────────── -->
+            <h3 class="subsection-title" style="margin-top:28px;">
+                <span class="sub-badge">The Hierarchy</span>
+                Three Classes, Two Mechanisms
+            </h3>
+
+            <div style="display:flex;align-items:center;justify-content:center;gap:0;margin:20px 0;flex-wrap:wrap;">
+                <div style="background:var(--violet-light);border:2px solid var(--violet);border-radius:12px;padding:12px 24px;text-align:center;min-width:110px;">
+                    <div style="font-size:.72rem;color:var(--gray);font-weight:700;letter-spacing:.5px;margin-bottom:4px;">GRANDPARENT</div>
+                    <div style="font-weight:800;color:var(--violet-dark);font-size:1rem;">Machine</div>
+                </div>
+                <div style="font-size:1.5rem;color:var(--gray);padding:0 10px;">&#8592;</div>
+                <div style="background:#ede9fe;border:2px solid #a78bfa;border-radius:12px;padding:12px 24px;text-align:center;min-width:110px;">
+                    <div style="font-size:.72rem;color:var(--gray);font-weight:700;letter-spacing:.5px;margin-bottom:4px;">PARENT</div>
+                    <div style="font-weight:800;color:#6d28d9;font-size:1rem;">Vehicle</div>
+                </div>
+                <div style="font-size:1.5rem;color:var(--gray);padding:0 10px;">&#8592;</div>
+                <div style="background:var(--pink-light);border:2px solid var(--pink);border-radius:12px;padding:12px 24px;text-align:center;min-width:110px;">
+                    <div style="font-size:.72rem;color:var(--gray);font-weight:700;letter-spacing:.5px;margin-bottom:4px;">CHILD</div>
+                    <div style="font-weight:800;color:var(--pink-dark);font-size:1rem;">Car</div>
+                </div>
+            </div>
+
+            <!-- ── The Code ──────────────────────────────── -->
+            <h3 class="subsection-title" style="margin-top:32px;">
+                <span class="sub-badge">The Code</span>
+                Read Every Constructor — Then Follow the Trace
+            </h3>
+
+            <p style="margin-bottom:12px;font-size:.93rem;">
+                The comments marked <strong style="color:#6272a4;">// Java inserts →</strong>
+                show the invisible lines Java adds for you.
+                Nothing else is hidden — everything you see is exactly what runs.
+            </p>
+
+            <div class="code-block"><span class="kw">class</span> <span class="tp">Machine</span> {
+    <span class="kw">public</span> <span class="tp">Machine</span>() {
+        <span class="tp">System</span>.<span class="var">out</span>.<span class="mtd">println</span>(<span class="str">"Machine"</span>);
+    }
+}
+
+<span class="kw">class</span> <span class="tp">Vehicle</span> <span class="kw">extends</span> <span class="tp">Machine</span> {
+
+    <span class="kw">public</span> <span class="tp">Vehicle</span>() {
+        <span class="kw">this</span>(<span class="str">"Vehicle 1"</span>);
+        <span class="tp">System</span>.<span class="var">out</span>.<span class="mtd">println</span>(<span class="str">"Vehicle 2"</span>);
+    }
+
+    <span class="kw">public</span> <span class="tp">Vehicle</span>(<span class="tp">String</span> <span class="var">msg</span>) {
+        <span class="tp">System</span>.<span class="var">out</span>.<span class="mtd">println</span>(<span class="var">msg</span>);
+    }
+}
+
+<span class="kw">public class</span> <span class="tp">Car</span> <span class="kw">extends</span> <span class="tp">Vehicle</span> {
+
+    <span class="kw">public</span> <span class="tp">Car</span>() {
+        <span class="tp">System</span>.<span class="var">out</span>.<span class="mtd">println</span>(<span class="str">"Car"</span>);
+    }
+
+    <span class="kw">public static void</span> <span class="mtd">main</span>(<span class="tp">String</span>[] <span class="var">args</span>) {
+        <span class="kw">new</span> <span class="tp">Car</span>();
+    }
+}</div>
+
+            <!-- ── Computer Strategy ──────────────────────── -->
+            <h3 class="subsection-title" style="margin-top:34px;">
+                <span class="sub-badge">The Computer Strategy</span>
+                Don't Look at All the Code at Once — Follow It One Line at a Time
+            </h3>
+
+            <p style="margin-bottom:20px;">
+                The computer does not read the entire file first. It executes <strong>one line,
+                then the next</strong>. Adopt that same mindset when tracing:
+                never jump ahead — just ask <em>"what happens on this exact line?"</em>
+                and follow the arrow it points to.
+            </p>
+
+            <!-- Step-by-step numbered trace -->
+            <div style="display:flex;flex-direction:column;gap:10px;margin:0 0 28px;">
+
+                <!-- Step 1 -->
+                <div style="display:flex;gap:0;align-items:stretch;">
+                    <div style="background:#374151;color:white;border-radius:10px 0 0 10px;padding:12px 16px;font-weight:900;font-size:1.1rem;display:flex;align-items:center;min-width:48px;justify-content:center;">1</div>
+                    <div style="background:#f8fafc;border:2px solid #e5e7eb;border-left:none;border-radius:0 10px 10px 0;padding:12px 18px;flex:1;">
+                        <div style="font-weight:800;color:#1f2937;margin-bottom:6px;">
+                            <code class="code-inline" style="background:var(--pink-light);color:var(--pink-dark);">main()</code>
+                            &nbsp;executes <code class="code-inline">new Car()</code>
+                        </div>
+                        <div style="font-size:.88rem;color:#374151;line-height:1.7;margin-bottom:12px;">
+                            An object is being created. <strong>Rule: whenever an object is created, its constructor is invoked.</strong>
+                        </div>
+                        <div style="border-radius:10px;overflow:hidden;font-family:'Consolas','Courier New',monospace;font-size:.85rem;border:2px solid #e5e7eb;">
+                            <div style="background:#1e293b;padding:6px 14px;font-size:.72rem;color:#94a3b8;font-weight:700;letter-spacing:.5px;">main() — entry point</div>
+                            <div style="background:#0f172a;padding:14px 18px;line-height:2;">
+                                <span style="color:#7dd3fc;">public static void</span> <span style="color:#86efac;">main</span><span style="color:#e2e8f0;">(String[] args) {</span><br>
+                                <span style="display:inline-block;width:100%;background:rgba(251,191,36,.13);border-left:3px solid #fbbf24;padding-left:10px;">
+                                    &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#7dd3fc;">new</span> <span style="color:#86efac;">Car</span><span style="color:#e2e8f0;">();</span>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#64748b;font-style:italic;font-size:.78rem;">// ← Car() constructor is invoked</span>
+                                </span><br>
+                                <span style="color:#e2e8f0;">}</span>
+                            </div>
+                        </div>
+                        <div style="font-size:.88rem;color:#374151;line-height:1.7;margin-top:10px;">
+                            → Java immediately invokes <code class="code-inline">Car()</code>.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div style="display:flex;gap:0;align-items:stretch;">
+                    <div style="background:var(--pink-dark);color:white;border-radius:10px 0 0 10px;padding:12px 16px;font-weight:900;font-size:1.1rem;display:flex;align-items:center;min-width:48px;justify-content:center;">2</div>
+                    <div style="background:var(--pink-light);border:2px solid var(--pink);border-left:none;border-radius:0 10px 10px 0;padding:12px 18px;flex:1;">
+                        <div style="font-weight:800;color:var(--pink-dark);margin-bottom:6px;">
+                            Inside <code class="code-inline">Car()</code> — first line
+                        </div>
+                        <div style="font-size:.88rem;color:#374151;line-height:1.7;margin-bottom:12px;">
+                            <code>Car</code> is a subclass of <code>Vehicle</code>.
+                            <strong>Rule: every subclass constructor must invoke its superclass constructor</strong>
+                            — explicitly or implicitly. You can see that no <code>super()</code> or <code>this()</code>
+                            is written inside <code>Car()</code>. So Java <strong>inserts <code>super()</code> automatically</strong>
+                            as the very first line — this is the implicit call:
+                        </div>
+
+                        <!-- Code block showing implicit super() insertion -->
+                        <div style="border-radius:10px;overflow:hidden;font-family:'Consolas','Courier New',monospace;font-size:.85rem;border:2px solid var(--pink);">
+                            <div style="background:#1e293b;padding:6px 14px;font-size:.72rem;color:#94a3b8;font-weight:700;letter-spacing:.5px;">Car.java — what Java actually executes</div>
+                            <div style="background:#0f172a;padding:14px 18px;line-height:2;">
+                                <span style="color:#7dd3fc;">public</span> <span style="color:#86efac;">Car</span><span style="color:#e2e8f0;">()</span> <span style="color:#e2e8f0;">{</span><br>
+                                <span style="display:inline-block;width:100%;background:rgba(251,191,36,.13);border-left:3px solid #fbbf24;padding-left:10px;margin-left:0;">
+                                    &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#fbbf24;font-weight:700;">super();</span>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#64748b;font-style:italic;font-size:.78rem;">// ← Java inserts this automatically — calls Vehicle()</span>
+                                </span><br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#7dd3fc;">System</span><span style="color:#e2e8f0;">.</span><span style="color:#94a3b8;">out</span><span style="color:#e2e8f0;">.</span><span style="color:#86efac;">println</span><span style="color:#e2e8f0;">(</span><span style="color:#fca5a5;">"Car"</span><span style="color:#e2e8f0;">);</span><br>
+                                <span style="color:#e2e8f0;">}</span>
+                            </div>
+                        </div>
+
+                        <div style="font-size:.88rem;color:#374151;line-height:1.7;margin-top:10px;">
+                            → Java now jumps to <code class="code-inline">Vehicle()</code> (the no-arg constructor of the parent).
+                            The <code class="code-inline">println("Car")</code> line is <em>waiting</em> — it will not run until <code class="code-inline">super()</code> returns.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div style="display:flex;gap:0;align-items:stretch;">
+                    <div style="background:#6d28d9;color:white;border-radius:10px 0 0 10px;padding:12px 16px;font-weight:900;font-size:1.1rem;display:flex;align-items:center;min-width:48px;justify-content:center;">3</div>
+                    <div style="background:#ede9fe;border:2px solid #a78bfa;border-left:none;border-radius:0 10px 10px 0;padding:12px 18px;flex:1;">
+                        <div style="font-weight:800;color:#5b21b6;margin-bottom:6px;">
+                            Inside <code class="code-inline">Vehicle()</code> — first line
+                        </div>
+                        <div style="font-size:.88rem;color:#374151;line-height:1.7;margin-bottom:12px;">
+                            The first line is <code class="code-inline">this("Vehicle 1")</code>.
+                            <strong>Who goes first — <code>super()</code> or <code>this()</code>?</strong>
+                            Answer: <strong><code>this()</code> wins.</strong>
+                            It executes immediately and takes responsibility for reaching the superclass.
+                            The second line is <em>waiting</em> — it will only run after <code>this()</code> returns.
+                        </div>
+                        <div style="border-radius:10px;overflow:hidden;font-family:'Consolas','Courier New',monospace;font-size:.85rem;border:2px solid #a78bfa;">
+                            <div style="background:#1e293b;padding:6px 14px;font-size:.72rem;color:#94a3b8;font-weight:700;letter-spacing:.5px;">Vehicle.java — no-arg constructor</div>
+                            <div style="background:#0f172a;padding:14px 18px;line-height:2;">
+                                <span style="color:#7dd3fc;">public</span> <span style="color:#86efac;">Vehicle</span><span style="color:#e2e8f0;">() {</span><br>
+                                <span style="display:inline-block;width:100%;background:rgba(251,191,36,.13);border-left:3px solid #fbbf24;padding-left:10px;">
+                                    &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#fbbf24;font-weight:700;">this("Vehicle 1");</span>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#64748b;font-style:italic;font-size:.78rem;">// ← delegates to Vehicle(String) — executes now</span>
+                                </span><br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#7dd3fc;">System</span><span style="color:#e2e8f0;">.</span><span style="color:#94a3b8;">out</span><span style="color:#e2e8f0;">.</span><span style="color:#86efac;">println</span><span style="color:#e2e8f0;">(</span><span style="color:#fca5a5;">"Vehicle 2"</span><span style="color:#e2e8f0;">);</span>
+                                &nbsp;&nbsp;&nbsp;<span style="color:#64748b;font-style:italic;font-size:.78rem;">// ← waiting...</span><br>
+                                <span style="color:#e2e8f0;">}</span>
+                            </div>
+                        </div>
+                        <div style="font-size:.88rem;color:#374151;line-height:1.7;margin-top:10px;">
+                            → Java jumps to <code class="code-inline">Vehicle("Vehicle 1")</code> — a constructor in the <em>same</em> class.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 4 -->
+                <div style="display:flex;gap:0;align-items:stretch;">
+                    <div style="background:#4c1d95;color:white;border-radius:10px 0 0 10px;padding:12px 16px;font-weight:900;font-size:1.1rem;display:flex;align-items:center;min-width:48px;justify-content:center;">4</div>
+                    <div style="background:#f5f3ff;border:2px solid #7c3aed;border-left:none;border-radius:0 10px 10px 0;padding:12px 18px;flex:1;">
+                        <div style="font-weight:800;color:#4c1d95;margin-bottom:6px;">
+                            Inside <code class="code-inline">Vehicle("Vehicle 1")</code> — first line
+                        </div>
+                        <div style="font-size:.88rem;color:#374151;line-height:1.7;margin-bottom:12px;">
+                            This constructor also belongs to <code>Vehicle</code>, which is a subclass of <code>Machine</code>.
+                            No <code>super()</code> or <code>this()</code> is written here, so Java
+                            <strong>inserts <code>super()</code> automatically</strong> as the first line.
+                            The <code>println</code> is <em>waiting</em>.
+                        </div>
+                        <div style="border-radius:10px;overflow:hidden;font-family:'Consolas','Courier New',monospace;font-size:.85rem;border:2px solid #7c3aed;">
+                            <div style="background:#1e293b;padding:6px 14px;font-size:.72rem;color:#94a3b8;font-weight:700;letter-spacing:.5px;">Vehicle.java — parameterised constructor — what Java actually executes</div>
+                            <div style="background:#0f172a;padding:14px 18px;line-height:2;">
+                                <span style="color:#7dd3fc;">public</span> <span style="color:#86efac;">Vehicle</span><span style="color:#e2e8f0;">(String msg) {</span><br>
+                                <span style="display:inline-block;width:100%;background:rgba(251,191,36,.13);border-left:3px solid #fbbf24;padding-left:10px;">
+                                    &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#fbbf24;font-weight:700;">super();</span>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#64748b;font-style:italic;font-size:.78rem;">// ← Java inserts this automatically — calls Machine()</span>
+                                </span><br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#7dd3fc;">System</span><span style="color:#e2e8f0;">.</span><span style="color:#94a3b8;">out</span><span style="color:#e2e8f0;">.</span><span style="color:#86efac;">println</span><span style="color:#e2e8f0;">(</span><span style="color:#94a3b8;">msg</span><span style="color:#e2e8f0;">);</span>
+                                &nbsp;&nbsp;&nbsp;<span style="color:#64748b;font-style:italic;font-size:.78rem;">// ← waiting...</span><br>
+                                <span style="color:#e2e8f0;">}</span>
+                            </div>
+                        </div>
+                        <div style="font-size:.88rem;color:#374151;line-height:1.7;margin-top:10px;">
+                            → Java now jumps to <code class="code-inline">Machine()</code> — the deepest ancestor.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 5 -->
+                <div style="display:flex;gap:0;align-items:stretch;">
+                    <div style="background:#065f46;color:white;border-radius:10px 0 0 10px;padding:12px 16px;font-weight:900;font-size:1.1rem;display:flex;align-items:center;min-width:48px;justify-content:center;">5</div>
+                    <div style="background:#d1fae5;border:2px solid #34d399;border-left:none;border-radius:0 10px 10px 0;padding:12px 18px;flex:1;">
+                        <div style="font-weight:800;color:#065f46;margin-bottom:6px;">
+                            Inside <code class="code-inline">Machine()</code> — deepest ancestor reached
+                        </div>
+                        <div style="font-size:.88rem;color:#374151;line-height:1.7;margin-bottom:12px;">
+                            <code>Machine</code> has no explicit superclass — Java inserts
+                            <code>super()</code> to <code>Object</code> (we will discuss this later).
+                            No more waiting — the body runs now and <strong>prints <code>"Machine"</code></strong>.
+                            Then <code>Machine()</code> finishes and <strong>returns</strong>.
+                        </div>
+                        <div style="border-radius:10px;overflow:hidden;font-family:'Consolas','Courier New',monospace;font-size:.85rem;border:2px solid #34d399;">
+                            <div style="background:#1e293b;padding:6px 14px;font-size:.72rem;color:#94a3b8;font-weight:700;letter-spacing:.5px;">Machine.java — deepest ancestor</div>
+                            <div style="background:#0f172a;padding:14px 18px;line-height:2;">
+                                <span style="color:#7dd3fc;">public</span> <span style="color:#86efac;">Machine</span><span style="color:#e2e8f0;">() {</span><br>
+                                <span style="display:inline-block;width:100%;background:rgba(52,211,153,.1);border-left:3px solid #34d399;padding-left:10px;">
+                                    &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#86efac;font-weight:700;">System.out.println(<span style="color:#fca5a5;">"Machine"</span>);</span>
+                                    &nbsp;&nbsp;<span style="color:#64748b;font-style:italic;font-size:.78rem;">// ← prints now — first output!</span>
+                                </span><br>
+                                <span style="color:#e2e8f0;">}</span>
+                            </div>
+                        </div>
+                        <div style="font-size:.88rem;color:#374151;line-height:1.7;margin-top:10px;">
+                            → <code class="code-inline">Machine()</code> returns to <code class="code-inline">Vehicle("Vehicle 1")</code>.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 6 -->
+                <div style="display:flex;gap:0;align-items:stretch;">
+                    <div style="background:#4c1d95;color:white;border-radius:10px 0 0 10px;padding:12px 16px;font-weight:900;font-size:1.1rem;display:flex;align-items:center;min-width:48px;justify-content:center;">6</div>
+                    <div style="background:#f5f3ff;border:2px solid #7c3aed;border-left:none;border-radius:0 10px 10px 0;padding:12px 18px;flex:1;">
+                        <div style="font-weight:800;color:#4c1d95;margin-bottom:6px;">
+                            <code class="code-inline">Vehicle("Vehicle 1")</code> resumes — <code>super()</code> returned
+                        </div>
+                        <div style="font-size:.88rem;color:#374151;line-height:1.7;margin-bottom:12px;">
+                            <code>super()</code> has returned. The line that was waiting now runs:
+                            <strong>prints <code>"Vehicle 1"</code></strong>.
+                            Then <code>Vehicle("Vehicle 1")</code> finishes and <strong>returns</strong> to <code>Vehicle()</code>.
+                        </div>
+                        <div style="border-radius:10px;overflow:hidden;font-family:'Consolas','Courier New',monospace;font-size:.85rem;border:2px solid #7c3aed;">
+                            <div style="background:#1e293b;padding:6px 14px;font-size:.72rem;color:#94a3b8;font-weight:700;letter-spacing:.5px;">Vehicle.java — parameterised constructor resumes</div>
+                            <div style="background:#0f172a;padding:14px 18px;line-height:2;">
+                                <span style="color:#7dd3fc;">public</span> <span style="color:#86efac;">Vehicle</span><span style="color:#e2e8f0;">(String msg) {</span><br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#94a3b8;text-decoration:line-through;opacity:.5;">super();</span>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#34d399;font-size:.78rem;font-style:italic;">// ✓ returned</span><br>
+                                <span style="display:inline-block;width:100%;background:rgba(52,211,153,.1);border-left:3px solid #34d399;padding-left:10px;">
+                                    &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#86efac;font-weight:700;">System.out.println(<span style="color:#94a3b8;">msg</span>);</span>
+                                    &nbsp;&nbsp;&nbsp;<span style="color:#64748b;font-style:italic;font-size:.78rem;">// ← now runs — prints "Vehicle 1"</span>
+                                </span><br>
+                                <span style="color:#e2e8f0;">}</span>
+                            </div>
+                        </div>
+                        <div style="font-size:.88rem;color:#374151;line-height:1.7;margin-top:10px;">
+                            → Returns to <code class="code-inline">Vehicle()</code>.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 7 -->
+                <div style="display:flex;gap:0;align-items:stretch;">
+                    <div style="background:#6d28d9;color:white;border-radius:10px 0 0 10px;padding:12px 16px;font-weight:900;font-size:1.1rem;display:flex;align-items:center;min-width:48px;justify-content:center;">7</div>
+                    <div style="background:#ede9fe;border:2px solid #a78bfa;border-left:none;border-radius:0 10px 10px 0;padding:12px 18px;flex:1;">
+                        <div style="font-weight:800;color:#5b21b6;margin-bottom:6px;">
+                            <code class="code-inline">Vehicle()</code> resumes — <code>this()</code> returned
+                        </div>
+                        <div style="font-size:.88rem;color:#374151;line-height:1.7;margin-bottom:12px;">
+                            <code>this("Vehicle 1")</code> has returned. <code>Vehicle()</code> is <strong>not done yet</strong> —
+                            it still has a second line waiting. Now it runs:
+                            <strong>prints <code>"Vehicle 2"</code></strong>.
+                            Then <code>Vehicle()</code> finishes and <strong>returns</strong> to <code>Car()</code>.
+                        </div>
+                        <div style="border-radius:10px;overflow:hidden;font-family:'Consolas','Courier New',monospace;font-size:.85rem;border:2px solid #a78bfa;">
+                            <div style="background:#1e293b;padding:6px 14px;font-size:.72rem;color:#94a3b8;font-weight:700;letter-spacing:.5px;">Vehicle.java — no-arg constructor resumes</div>
+                            <div style="background:#0f172a;padding:14px 18px;line-height:2;">
+                                <span style="color:#7dd3fc;">public</span> <span style="color:#86efac;">Vehicle</span><span style="color:#e2e8f0;">() {</span><br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#94a3b8;text-decoration:line-through;opacity:.5;">this("Vehicle 1");</span>
+                                &nbsp;&nbsp;&nbsp;<span style="color:#34d399;font-size:.78rem;font-style:italic;">// ✓ returned</span><br>
+                                <span style="display:inline-block;width:100%;background:rgba(52,211,153,.1);border-left:3px solid #34d399;padding-left:10px;">
+                                    &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#86efac;font-weight:700;">System.out.println(<span style="color:#fca5a5;">"Vehicle 2"</span>);</span>
+                                    &nbsp;&nbsp;<span style="color:#64748b;font-style:italic;font-size:.78rem;">// ← now runs — prints "Vehicle 2"</span>
+                                </span><br>
+                                <span style="color:#e2e8f0;">}</span>
+                            </div>
+                        </div>
+                        <div style="font-size:.88rem;color:#374151;line-height:1.7;margin-top:10px;">
+                            → Returns to <code class="code-inline">Car()</code>.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 8 -->
+                <div style="display:flex;gap:0;align-items:stretch;">
+                    <div style="background:var(--pink-dark);color:white;border-radius:10px 0 0 10px;padding:12px 16px;font-weight:900;font-size:1.1rem;display:flex;align-items:center;min-width:48px;justify-content:center;">8</div>
+                    <div style="background:var(--pink-light);border:2px solid var(--pink);border-left:none;border-radius:0 10px 10px 0;padding:12px 18px;flex:1;">
+                        <div style="font-weight:800;color:var(--pink-dark);margin-bottom:6px;">
+                            <code class="code-inline">Car()</code> resumes — <code>super()</code> returned
+                        </div>
+                        <div style="font-size:.88rem;color:#374151;line-height:1.7;margin-bottom:12px;">
+                            The implicit <code>super()</code> has returned.
+                            The line that was waiting now runs: <strong>prints <code>"Car"</code></strong>.
+                            <code>Car()</code> finishes — the object is fully constructed and ready.
+                        </div>
+                        <div style="border-radius:10px;overflow:hidden;font-family:'Consolas','Courier New',monospace;font-size:.85rem;border:2px solid var(--pink);">
+                            <div style="background:#1e293b;padding:6px 14px;font-size:.72rem;color:#94a3b8;font-weight:700;letter-spacing:.5px;">Car.java — constructor resumes</div>
+                            <div style="background:#0f172a;padding:14px 18px;line-height:2;">
+                                <span style="color:#7dd3fc;">public</span> <span style="color:#86efac;">Car</span><span style="color:#e2e8f0;">() {</span><br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#94a3b8;text-decoration:line-through;opacity:.5;">super();</span>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#34d399;font-size:.78rem;font-style:italic;">// ✓ returned</span><br>
+                                <span style="display:inline-block;width:100%;background:rgba(52,211,153,.1);border-left:3px solid #34d399;padding-left:10px;">
+                                    &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#86efac;font-weight:700;">System.out.println(<span style="color:#fca5a5;">"Car"</span>);</span>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#64748b;font-style:italic;font-size:.78rem;">// ← now runs — prints "Car" — last!</span>
+                                </span><br>
+                                <span style="color:#e2e8f0;">}</span>
+                            </div>
+                        </div>
+                        <div style="font-size:.88rem;font-weight:700;color:#065f46;background:#d1fae5;border:2px solid #34d399;border-radius:8px;padding:8px 14px;margin-top:10px;">
+                            &#10003; Object is fully constructed and ready to use.
+                        </div>
+                    </div>
+                </div>
+
+            </div><!-- /steps -->
+
+            <!-- ── Output ─────────────────────────────────── -->
+            <h3 class="subsection-title" style="margin-top:34px;">
+                <span class="sub-badge">Output</span>
+                What Appears on Screen
+            </h3>
+
+            <div style="background:#0f172a;border-radius:14px;overflow:hidden;margin:16px 0 22px;">
+                <div style="background:#1e293b;padding:8px 20px;font-size:.78rem;color:#94a3b8;font-weight:700;letter-spacing:.6px;">TERMINAL OUTPUT</div>
+                <div style="font-family:'Consolas','Courier New',monospace;font-size:.92rem;padding:20px 24px;line-height:2.3;color:#e2e8f0;">
+                    Machine
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#64748b;font-size:.78rem;font-style:italic;">← Machine() ran first — deepest ancestor (Step 5)</span><br>
+                    Vehicle 1
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#64748b;font-size:.78rem;font-style:italic;">← Vehicle(String) resumed after Machine() returned (Step 6)</span><br>
+                    Vehicle 2
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#64748b;font-size:.78rem;font-style:italic;">← Vehicle() resumed after this() returned (Step 7)</span><br>
+                    Car
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#64748b;font-size:.78rem;font-style:italic;">← Car() resumed last — always the shallowest class (Step 8)</span>
+                </div>
+            </div>
+
+            <!-- ══════════════════════════════════════════════
+                 WHY REVERSE ORDER? — CALL STACK EXPLANATION
+                 ══════════════════════════════════════════════ -->
+
+            <!-- ── Intro explanation ─────────────────────────── -->
+            <div style="background:linear-gradient(135deg,#fce7f3,#ede9fe);border:2px solid var(--pink);border-radius:16px;padding:24px 28px;margin:22px 0;">
+                <div style="font-weight:800;color:var(--pink-dark);font-size:1.1rem;margin-bottom:14px;">&#129300; My Student — Why Does the Output Appear in This Order?</div>
+                <p style="line-height:1.9;">
+                    You created a <code class="code-inline">Car</code> object — yet
+                    <code class="code-inline">Machine</code> printed first.
+                    That seems backwards. To understand why, you need to see something about
+                    how Java runs your program: a data structure called the <strong>Call Stack</strong>.
+                </p>
+                <p style="margin-top:12px;line-height:1.9;">
+                    Think of a stack of books on a table. You can only ever add or remove a book
+                    from the <em>top</em>. The last book you placed is always the first one you pick up.
+                    This is called <strong>Last In, First Out (LIFO)</strong>.
+                </p>
+                <p style="margin-top:12px;line-height:1.9;">
+                    Every time Java calls a method, it <em>pushes</em> that method onto the call stack.
+                    That method cannot continue until whatever it called <em>returns</em>.
+                    When a method finishes, it is <em>popped</em> from the top.
+                    Because <code class="code-inline">Machine()</code> was the last to be pushed,
+                    it is the first to be popped — and the first to print.
+                    <code class="code-inline">Car()</code> was pushed first but finishes last —
+                    so it prints last.
+                </p>
+            </div>
+
+            <!-- ── Animation section heading ─────────────────── -->
+            <h3 class="subsection-title" style="margin-top:28px;">
+                <span class="sub-badge">&#127916; Animation</span>
+                Watch the Call Stack Build and Unwind
+            </h3>
+
+            <p style="margin-bottom:16px;line-height:1.8;">
+                Press <strong>&#9654; Start</strong> to trace exactly what happens in memory,
+                step by step. Watch the stack grow — then watch it unwind.
+                Output appears only when each frame is popped:
+            </p>
+
+            <!-- ── Animation box ──────────────────────────────── -->
+            <div id="cs-demo" style="background:#f8fafc;border:2px solid #e5e7eb;border-radius:16px;padding:22px;margin:0 0 24px;">
+
+                <!-- Controls -->
+                <div style="display:flex;align-items:center;gap:10px;margin-bottom:18px;flex-wrap:wrap;">
+                    <button id="cs-btn" onclick="csStart()" style="background:linear-gradient(135deg,#ec4899,#8b5cf6);color:white;border:none;padding:10px 24px;border-radius:20px;font-weight:700;font-size:.9rem;cursor:pointer;transition:opacity .2s;">&#9654; Start</button>
+                    <button onclick="csReset()" style="background:#6b7280;color:white;border:none;padding:10px 18px;border-radius:20px;font-weight:700;font-size:.9rem;cursor:pointer;">&#8635; Reset</button>
+                    <span id="cs-phase" style="font-weight:700;font-size:.85rem;color:#6b7280;padding:6px 14px;background:white;border-radius:20px;border:2px solid #e5e7eb;">Ready — click &#9654; Start</span>
+                </div>
+
+                <!-- Two-column layout: Stack | Output -->
+                <div style="display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap;">
+
+                    <!-- Call Stack column -->
+                    <div style="flex:1;min-width:210px;">
+
+                        <!-- Open-top label with dashed edges — visualises the open mouth of the container -->
+                        <div style="display:flex;align-items:center;gap:6px;margin-bottom:0;">
+                            <div style="flex:1;border-top:3px dashed #64748b;"></div>
+                            <div style="font-size:.68rem;font-weight:800;color:#64748b;letter-spacing:.5px;text-transform:uppercase;white-space:nowrap;padding:0 4px;">&#8597; PUSH in &amp; POP out</div>
+                            <div style="flex:1;border-top:3px dashed #64748b;"></div>
+                        </div>
+
+                        <!-- Container: open at top, solid walls on sides and bottom -->
+                        <div id="cs-stack" style="
+                            background:#1e293b;
+                            border-left:4px solid #64748b;
+                            border-right:4px solid #64748b;
+                            border-bottom:4px solid #64748b;
+                            border-top:none;
+                            border-radius:0 0 14px 14px;
+                            padding:10px 10px 14px;
+                            min-height:290px;
+                            display:flex;
+                            flex-direction:column-reverse;
+                            justify-content:flex-start;
+                            gap:5px;
+                            position:relative;">
+                            <div id="cs-empty" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#475569;font-style:italic;font-size:.82rem;pointer-events:none;">— stack is empty —</div>
+                        </div>
+
+                        <!-- Closed bottom label -->
+                        <div style="text-align:center;font-size:.72rem;font-weight:700;color:#64748b;margin-top:5px;letter-spacing:.3px;">&#9646;&#9646; BOTTOM — main() lives here</div>
+                    </div>
+
+                    <!-- Arrow -->
+                    <div style="display:flex;align-items:center;justify-content:center;padding-top:100px;color:#9ca3af;font-size:1.5rem;min-width:30px;">&#8594;</div>
+
+                    <!-- Output column -->
+                    <div style="flex:1;min-width:210px;">
+                        <div style="text-align:center;font-size:.72rem;font-weight:800;letter-spacing:1px;color:#6b7280;text-transform:uppercase;margin-bottom:8px;">Terminal Output</div>
+                        <div id="cs-output" style="background:#0f172a;border:2px solid #334155;border-radius:12px;padding:16px;min-height:290px;font-family:'Consolas','Courier New',monospace;font-size:.9rem;line-height:2.4;">
+                            <span id="cs-out-empty" style="color:#475569;font-style:italic;font-size:.8rem;">— no output yet —</span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Step description -->
+                <div id="cs-desc" style="margin-top:16px;background:white;border:2px solid #e5e7eb;border-radius:10px;padding:12px 16px;font-size:.88rem;color:#374151;line-height:1.75;min-height:52px;">
+                    Press &#9654; Start to begin the step-by-step trace.
+                </div>
+
+            </div><!-- /cs-demo -->
+
+            <!-- ── Data Structures note ───────────────────────── -->
+            <div class="violet-box">
+                <div class="violet-box-title">&#127979; A Note from Your Professor — Data Structures</div>
+                <p style="line-height:1.9;">
+                    My student — do not worry if the call stack is a new idea.
+                    You will study it in full detail in your <strong>Data Structures</strong> course,
+                    where you will build your own stack, master push and pop,
+                    and understand how it manages method calls, recursion, and much more.
+                </p>
+                <p style="margin-top:10px;line-height:1.9;font-weight:700;color:var(--violet-dark);">
+                    For now, carry this one rule with you:
+                    every method must wait for the method it called to return before it can continue.
+                    That is why the deepest constructor always runs first — and always prints first.
+                </p>
+            </div>
+
+            <!-- ── Animation styles ───────────────────────────── -->
+            <style>
+                @keyframes csIn  { from { opacity:0; transform:translateY(-10px); } to { opacity:1; transform:translateY(0);    } }
+                @keyframes csOut { from { opacity:1; transform:translateX(0);     } to { opacity:0; transform:translateX(30px); } }
+            </style>
+
+            <!-- ── Animation script ───────────────────────────── -->
+            <script>
+            (function () {
+                var STEPS = [
+                    {
+                        push: true, id: 'main', label: 'main()',
+                        bg: '#f1f5f9', bd: '#94a3b8', col: '#374151',
+                        desc: '<strong>&#9312; PUSH:</strong> Java finds <code>main()</code> and places it on the call stack. Execution begins here. Output: nothing yet.'
+                    },
+                    {
+                        push: true, id: 'car', label: 'Car()',
+                        bg: '#fce7f3', bd: '#ec4899', col: '#be185d',
+                        desc: '<strong>&#9313; PUSH:</strong> <code>main()</code> runs <code>new Car()</code>. Java pushes <code>Car()</code> onto the stack. <code>main()</code> must now wait.'
+                    },
+                    {
+                        push: true, id: 'veh0', label: 'Vehicle()',
+                        bg: '#ede9fe', bd: '#a78bfa', col: '#6d28d9',
+                        desc: '<strong>&#9314; PUSH:</strong> <code>Car()</code> has no explicit <code>super()</code> — Java inserts it automatically → calls <code>Vehicle()</code>. <code>Car()</code> must wait. The <code>println("Car")</code> line is sleeping.'
+                    },
+                    {
+                        push: true, id: 'vehS', label: 'Vehicle(&quot;Vehicle 1&quot;)',
+                        bg: '#f5f3ff', bd: '#7c3aed', col: '#5b21b6',
+                        desc: '<strong>&#9315; PUSH:</strong> <code>Vehicle()</code> calls <code>this("Vehicle 1")</code> → pushes <code>Vehicle(String)</code>. <code>Vehicle()</code> must wait. Its second <code>println</code> is sleeping.'
+                    },
+                    {
+                        push: true, id: 'mach', label: 'Machine()',
+                        bg: '#d1fae5', bd: '#34d399', col: '#065f46',
+                        desc: '<strong>&#9316; PUSH:</strong> <code>Vehicle(String)</code> has no explicit <code>super()</code> — Java inserts one → pushes <code>Machine()</code>. <strong>No more method calls. The stack is full. Time to unwind.</strong>'
+                    },
+                    {
+                        push: false, id: 'mach', label: 'Machine()',
+                        bg: '#d1fae5', bd: '#34d399', col: '#065f46',
+                        desc: '<strong>&#9317; POP:</strong> <code>Machine()</code> has nothing left to wait for. Its body runs — <code>println("Machine")</code> executes. Then <code>Machine()</code> finishes and is removed from the stack.',
+                        out: { text: 'Machine', col: '#86efac' }
+                    },
+                    {
+                        push: false, id: 'vehS', label: 'Vehicle(&quot;Vehicle 1&quot;)',
+                        bg: '#f5f3ff', bd: '#7c3aed', col: '#5b21b6',
+                        desc: '<strong>&#9318; POP:</strong> <code>Machine()</code> returned. <code>Vehicle(String)</code> wakes up — runs its <code>println(msg)</code> → prints <code>"Vehicle 1"</code>. Finishes. Removed from stack.',
+                        out: { text: 'Vehicle 1', col: '#c4b5fd' }
+                    },
+                    {
+                        push: false, id: 'veh0', label: 'Vehicle()',
+                        bg: '#ede9fe', bd: '#a78bfa', col: '#6d28d9',
+                        desc: '<strong>&#9319; POP:</strong> <code>Vehicle(String)</code> returned. <code>Vehicle()</code> wakes up — runs its second <code>println("Vehicle 2")</code>. Finishes. Removed from stack.',
+                        out: { text: 'Vehicle 2', col: '#a5b4fc' }
+                    },
+                    {
+                        push: false, id: 'car', label: 'Car()',
+                        bg: '#fce7f3', bd: '#ec4899', col: '#be185d',
+                        desc: '<strong>&#9320; POP:</strong> <code>Vehicle()</code> returned. <code>Car()</code> wakes up — runs its <code>println("Car")</code>. Object is now fully constructed. <code>Car()</code> finishes. Removed from stack.',
+                        out: { text: 'Car', col: '#f9a8d4' }
+                    },
+                    {
+                        push: false, id: 'main', label: 'main()',
+                        bg: '#f1f5f9', bd: '#94a3b8', col: '#374151',
+                        desc: '<strong>&#9321; POP:</strong> <code>Car()</code> returned. <code>main()</code> is done. Removed from stack. <strong>The stack is now empty. The program ends.</strong>'
+                    }
+                ];
+
+                var si = 0, running = false, timer = null, pushed = [];
+
+                function makeFrame(s) {
+                    var d = document.createElement('div');
+                    d.style.cssText = 'background:' + s.bg + ';border:2px solid ' + s.bd + ';border-radius:8px;padding:9px 10px;font-family:Consolas,monospace;font-size:.78rem;font-weight:700;color:' + s.col + ';text-align:center;animation:csIn .35s ease;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;';
+                    d.innerHTML = s.label;
+                    return d;
+                }
+
+                function tick() {
+                    if (si >= STEPS.length) { finish(); return; }
+                    var s       = STEPS[si];
+                    var stackEl = document.getElementById('cs-stack');
+                    var emptyEl = document.getElementById('cs-empty');
+                    var outEl   = document.getElementById('cs-output');
+                    var outEmp  = document.getElementById('cs-out-empty');
+                    var phase   = document.getElementById('cs-phase');
+                    var desc    = document.getElementById('cs-desc');
+
+                    if (s.push) {
+                        phase.textContent = '\u2B06 PUSHING — calling';
+                        phase.style.cssText = 'font-weight:700;font-size:.85rem;color:#1e40af;padding:6px 14px;background:#dbeafe;border-radius:20px;border:2px solid #93c5fd;';
+                        if (emptyEl) emptyEl.style.display = 'none';
+                        var fr = makeFrame(s);
+                        stackEl.appendChild(fr);
+                        pushed.push(fr);
+                    } else {
+                        phase.textContent = '\u2B07 POPPING — returning';
+                        phase.style.cssText = 'font-weight:700;font-size:.85rem;color:#065f46;padding:6px 14px;background:#d1fae5;border-radius:20px;border:2px solid #6ee7b7;';
+                        if (pushed.length > 0) {
+                            var top = pushed[pushed.length - 1];
+                            top.style.animation = 'csOut .3s ease forwards';
+                            (function (el) { setTimeout(function () { if (el.parentNode) el.remove(); }, 300); })(top);
+                            pushed.pop();
+                        }
+                        if (pushed.length === 0 && emptyEl) {
+                            setTimeout(function () { emptyEl.style.display = ''; }, 360);
+                        }
+                        if (s.out) {
+                            if (outEmp) outEmp.style.display = 'none';
+                            var line = document.createElement('div');
+                            line.style.cssText = 'color:' + s.out.col + ';font-weight:700;animation:csIn .3s ease;';
+                            line.textContent = s.out.text;
+                            outEl.appendChild(line);
+                        }
+                    }
+
+                    desc.innerHTML = s.desc;
+                    si++;
+                    if (si < STEPS.length) {
+                        timer = setTimeout(tick, 1300);
+                    } else {
+                        finish();
+                    }
+                }
+
+                window.csStart = function () {
+                    if (running) return;
+                    running = true;
+                    var btn = document.getElementById('cs-btn');
+                    btn.style.opacity = '.4';
+                    btn.disabled = true;
+                    tick();
+                };
+
+                window.csReset = function () {
+                    clearTimeout(timer);
+                    running = false;
+                    si = 0;
+                    pushed = [];
+                    var stackEl = document.getElementById('cs-stack');
+                    while (stackEl.lastChild && stackEl.lastChild.id !== 'cs-empty') {
+                        stackEl.removeChild(stackEl.lastChild);
+                    }
+                    var em = document.getElementById('cs-empty');
+                    if (em) em.style.display = '';
+                    document.getElementById('cs-output').innerHTML = '<span id="cs-out-empty" style="color:#475569;font-style:italic;font-size:.8rem;">— no output yet —</span>';
+                    var ph = document.getElementById('cs-phase');
+                    ph.textContent = 'Ready — click \u25B6 Start';
+                    ph.style.cssText = 'font-weight:700;font-size:.85rem;color:#6b7280;padding:6px 14px;background:white;border-radius:20px;border:2px solid #e5e7eb;';
+                    document.getElementById('cs-desc').innerHTML = 'Press &#9654; Start to begin the step-by-step trace.';
+                    var btn = document.getElementById('cs-btn');
+                    btn.style.opacity = '1';
+                    btn.disabled = false;
+                };
+
+                function finish() {
+                    running = false;
+                    var ph = document.getElementById('cs-phase');
+                    ph.textContent = '\u2713 Complete';
+                    ph.style.cssText = 'font-weight:700;font-size:.85rem;color:#065f46;padding:6px 14px;background:#d1fae5;border-radius:20px;border:2px solid #6ee7b7;';
+                    var btn = document.getElementById('cs-btn');
+                    btn.style.opacity = '1';
+                    btn.disabled = false;
+                }
+            })();
+            </script>
+
+            <!-- ── Key Insight: this() vs super() ─────────── -->
+            <h3 class="subsection-title" style="margin-top:32px;">
+                <span class="sub-badge">Critical Rule</span>
+                Who Goes First — <code>this()</code> or <code>super()</code>?
+            </h3>
+
+            <div style="background:#fef9c3;border:2px solid #d97706;border-radius:14px;padding:20px 24px;margin:16px 0;">
+                <div style="font-weight:800;color:#92400e;font-size:1rem;margin-bottom:14px;">&#9888; The Most Common Student Confusion</div>
+                <p style="font-size:.92rem;color:#374151;line-height:1.8;margin-bottom:12px;">
+                    A subclass constructor must call the superclass constructor. But what if the
+                    constructor uses <code class="code-inline">this()</code> instead?
+                    Must it also call <code class="code-inline">super()</code>?
+                </p>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+                    <div style="background:white;border-radius:10px;padding:14px;border:2px solid #f59e0b;">
+                        <div style="font-weight:800;color:#92400e;margin-bottom:8px;">If you write <code>this()</code>:</div>
+                        <ul style="font-size:.86rem;color:#374151;line-height:2;padding-left:16px;margin:0;">
+                            <li><code>this()</code> executes first</li>
+                            <li>No <code>super()</code> in this constructor</li>
+                            <li>The <em>delegated</em> constructor takes responsibility for calling <code>super()</code></li>
+                            <li>The chain still reaches the superclass — just via a different constructor</li>
+                        </ul>
+                    </div>
+                    <div style="background:white;border-radius:10px;padding:14px;border:2px solid #f59e0b;">
+                        <div style="font-weight:800;color:#92400e;margin-bottom:8px;">If you write neither:</div>
+                        <ul style="font-size:.86rem;color:#374151;line-height:2;padding-left:16px;margin:0;">
+                            <li>Java inserts <code>super()</code> automatically</li>
+                            <li>Calls the no-arg constructor of the parent</li>
+                            <li>Fails if the parent has no no-arg constructor</li>
+                            <li>This is the most common case in student code</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── Side-by-side summary of both mechanisms ── -->
+            <h3 class="subsection-title" style="margin-top:34px;">
+                <span class="sub-badge">Both Mechanisms</span>
+                super() vs this() — Side by Side
+            </h3>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:16px 0 24px;">
+                <div style="background:var(--violet-light);border:2px solid var(--violet);border-radius:14px;padding:20px;">
+                    <div style="font-weight:800;color:var(--violet-dark);font-size:1rem;margin-bottom:12px;">
+                        <code>super()</code> — Cross-Class
+                    </div>
+                    <ul style="font-size:.88rem;line-height:2.1;padding-left:18px;color:#374151;">
+                        <li>Calls a constructor in the <strong>parent</strong> class</li>
+                        <li>Jumps <em>up</em> the hierarchy</li>
+                        <li>Must be the <strong>first line</strong></li>
+                        <li>Java inserts <code>super()</code> automatically if you omit it</li>
+                    </ul>
+                </div>
+                <div style="background:var(--pink-light);border:2px solid var(--pink);border-radius:14px;padding:20px;">
+                    <div style="font-weight:800;color:var(--pink-dark);font-size:1rem;margin-bottom:12px;">
+                        <code>this()</code> — Same-Class
+                    </div>
+                    <ul style="font-size:.88rem;line-height:2.1;padding-left:18px;color:#374151;">
+                        <li>Calls another constructor in the <strong>same</strong> class</li>
+                        <li>Stays <em>inside</em> the current class</li>
+                        <li>Must be the <strong>first line</strong></li>
+                        <li>Cannot coexist with <code>super()</code> in one constructor</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="pink-box">
+                <div class="pink-box-title">&#128218; What to Remember from This Section</div>
+                <ul style="margin-top:8px;line-height:2.3;">
+                    <li><strong>Follow the code one line at a time</strong> — do not jump ahead; trace like a computer.</li>
+                    <li><strong>Stack builds up first, then unwinds</strong> — print statements run only as each constructor returns.</li>
+                    <li><code class="code-inline">this()</code> executes before the superclass chain — the delegated constructor is responsible for reaching the parent.</li>
+                    <li>Java inserts <code class="code-inline">super()</code> automatically when neither <code class="code-inline">this()</code> nor <code class="code-inline">super()</code> is written.</li>
+                    <li>The output order is always <strong>deepest ancestor first, calling class last</strong>.</li>
+                </ul>
+            </div>
+
+            <!-- ── Challenges ─────────────────────────────── -->
+            <h3 class="subsection-title" style="margin-top:36px;">
+                <span class="sub-badge">Challenges</span>
+                Trace the Output — Follow the Chain
+            </h3>
+
+            <p style="margin-bottom:20px;font-size:.93rem;">
+                For each challenge: read the code carefully, then trace the output
+                <strong>one line at a time</strong> — exactly as the computer does.
+                Try it yourself before revealing the solution.
+            </p>
+
+            <!-- ─── Challenge 1 ─── -->
+            <div class="challenge-box">
+                <div class="challenge-header">&#9996; Challenge 1 — 3 Levels, <code style="font-size:.85rem;">this()</code> inside the grandparent</div>
+                <div class="challenge-body">
+                    <div class="challenge-q">What is the output when this program runs?</div>
+                    <div class="code-block" style="margin:0 0 12px;"><span class="kw">class</span> <span class="tp">A</span> {
+    <span class="kw">public</span> <span class="tp">A</span>() {
+        <span class="tp">System</span>.<span class="var">out</span>.<span class="mtd">println</span>(<span class="str">"A-1"</span>);
+    }
+    <span class="kw">public</span> <span class="tp">A</span>(<span class="kw">int</span> <span class="var">n</span>) {
+        <span class="kw">this</span>();
+        <span class="tp">System</span>.<span class="var">out</span>.<span class="mtd">println</span>(<span class="str">"A-2"</span>);
+    }
+}
+
+<span class="kw">class</span> <span class="tp">B</span> <span class="kw">extends</span> <span class="tp">A</span> {
+    <span class="kw">public</span> <span class="tp">B</span>() {
+        <span class="kw">super</span>(<span class="num">5</span>);
+        <span class="tp">System</span>.<span class="var">out</span>.<span class="mtd">println</span>(<span class="str">"B"</span>);
+    }
+}
+
+<span class="kw">public class</span> <span class="tp">C</span> <span class="kw">extends</span> <span class="tp">B</span> {
+    <span class="kw">public</span> <span class="tp">C</span>() {
+        <span class="tp">System</span>.<span class="var">out</span>.<span class="mtd">println</span>(<span class="str">"C"</span>);
+    }
+    <span class="kw">public static void</span> <span class="mtd">main</span>(<span class="tp">String</span>[] <span class="var">args</span>) {
+        <span class="kw">new</span> <span class="tp">C</span>();
+    }
+}</div>
+                    <div class="verdict ok">&#9654; Output</div>
+                    <div class="verdict-explain">
+                        <div style="background:#0f172a;border-radius:10px;padding:14px 18px;font-family:'Consolas',monospace;font-size:.9rem;color:#e2e8f0;line-height:2.2;margin-bottom:12px;">
+                            A-1<br>A-2<br>B<br>C
+                        </div>
+                        <strong>Trace:</strong>
+                        <code>new C()</code> → <code>C()</code> ▸ implicit <code>super()</code> → <code>B()</code> ▸ explicit <code>super(5)</code> → <code>A(int)</code> ▸ <code>this()</code> → <code>A()</code>
+                        prints <em>"A-1"</em>, returns → <code>A(int)</code> prints <em>"A-2"</em>, returns →
+                        <code>B()</code> prints <em>"B"</em>, returns → <code>C()</code> prints <em>"C"</em>.
+                    </div>
+                </div>
+            </div>
+
+            <!-- ─── Challenge 2 ─── -->
+            <div class="challenge-box">
+                <div class="challenge-header">&#9996; Challenge 2 — 3 Levels, <code style="font-size:.85rem;">this()</code> in the parent delays the chain</div>
+                <div class="challenge-body">
+                    <div class="challenge-q">What is the output when this program runs?</div>
+                    <div class="code-block" style="margin:0 0 12px;"><span class="kw">class</span> <span class="tp">Base</span> {
+    <span class="kw">public</span> <span class="tp">Base</span>() {
+        <span class="tp">System</span>.<span class="var">out</span>.<span class="mtd">println</span>(<span class="str">"Base-1"</span>);
+    }
+    <span class="kw">public</span> <span class="tp">Base</span>(<span class="tp">String</span> <span class="var">s</span>) {
+        <span class="tp">System</span>.<span class="var">out</span>.<span class="mtd">println</span>(<span class="str">"Base-2: "</span> + <span class="var">s</span>);
+    }
+}
+
+<span class="kw">class</span> <span class="tp">Mid</span> <span class="kw">extends</span> <span class="tp">Base</span> {
+    <span class="kw">public</span> <span class="tp">Mid</span>() {
+        <span class="kw">this</span>(<span class="str">"hello"</span>);
+        <span class="tp">System</span>.<span class="var">out</span>.<span class="mtd">println</span>(<span class="str">"Mid-1"</span>);
+    }
+    <span class="kw">public</span> <span class="tp">Mid</span>(<span class="tp">String</span> <span class="var">s</span>) {
+        <span class="tp">System</span>.<span class="var">out</span>.<span class="mtd">println</span>(<span class="str">"Mid-2: "</span> + <span class="var">s</span>);
+    }
+}
+
+<span class="kw">public class</span> <span class="tp">Top</span> <span class="kw">extends</span> <span class="tp">Mid</span> {
+    <span class="kw">public</span> <span class="tp">Top</span>() {
+        <span class="tp">System</span>.<span class="var">out</span>.<span class="mtd">println</span>(<span class="str">"Top"</span>);
+    }
+    <span class="kw">public static void</span> <span class="mtd">main</span>(<span class="tp">String</span>[] <span class="var">args</span>) {
+        <span class="kw">new</span> <span class="tp">Top</span>();
+    }
+}</div>
+                    <div class="verdict ok">&#9654; Output</div>
+                    <div class="verdict-explain">
+                        <div style="background:#0f172a;border-radius:10px;padding:14px 18px;font-family:'Consolas',monospace;font-size:.9rem;color:#e2e8f0;line-height:2.2;margin-bottom:12px;">
+                            Base-1<br>Mid-2: hello<br>Mid-1<br>Top
+                        </div>
+                        <strong>Trace:</strong>
+                        <code>new Top()</code> → <code>Top()</code> ▸ implicit <code>super()</code> → <code>Mid()</code> ▸ <code>this("hello")</code> → <code>Mid(String)</code> ▸ implicit <code>super()</code> → <code>Base()</code>
+                        prints <em>"Base-1"</em>, returns → <code>Mid(String)</code> prints <em>"Mid-2: hello"</em>, returns →
+                        <code>Mid()</code> prints <em>"Mid-1"</em>, returns → <code>Top()</code> prints <em>"Top"</em>.
+                    </div>
+                </div>
+            </div>
+
+            <!-- ─── Challenge 3 ─── -->
+            <div class="challenge-box">
+                <div class="challenge-header">&#9996; Challenge 3 — 4 Levels, <code style="font-size:.85rem;">this()</code> buries deep inside the chain</div>
+                <div class="challenge-body">
+                    <div class="challenge-q">What is the output when this program runs?</div>
+                    <div class="code-block" style="margin:0 0 12px;"><span class="kw">class</span> <span class="tp">Alpha</span> {
+    <span class="kw">public</span> <span class="tp">Alpha</span>() {
+        <span class="tp">System</span>.<span class="var">out</span>.<span class="mtd">println</span>(<span class="str">"Alpha"</span>);
+    }
+}
+
+<span class="kw">class</span> <span class="tp">Beta</span> <span class="kw">extends</span> <span class="tp">Alpha</span> {
+    <span class="kw">public</span> <span class="tp">Beta</span>() {
+        <span class="tp">System</span>.<span class="var">out</span>.<span class="mtd">println</span>(<span class="str">"Beta-1"</span>);
+    }
+    <span class="kw">public</span> <span class="tp">Beta</span>(<span class="kw">int</span> <span class="var">n</span>) {
+        <span class="kw">this</span>();
+        <span class="tp">System</span>.<span class="var">out</span>.<span class="mtd">println</span>(<span class="str">"Beta-2"</span>);
+    }
+}
+
+<span class="kw">class</span> <span class="tp">Gamma</span> <span class="kw">extends</span> <span class="tp">Beta</span> {
+    <span class="kw">public</span> <span class="tp">Gamma</span>() {
+        <span class="kw">super</span>(<span class="num">1</span>);
+        <span class="tp">System</span>.<span class="var">out</span>.<span class="mtd">println</span>(<span class="str">"Gamma"</span>);
+    }
+}
+
+<span class="kw">public class</span> <span class="tp">Delta</span> <span class="kw">extends</span> <span class="tp">Gamma</span> {
+    <span class="kw">public</span> <span class="tp">Delta</span>() {
+        <span class="tp">System</span>.<span class="var">out</span>.<span class="mtd">println</span>(<span class="str">"Delta"</span>);
+    }
+    <span class="kw">public static void</span> <span class="mtd">main</span>(<span class="tp">String</span>[] <span class="var">args</span>) {
+        <span class="kw">new</span> <span class="tp">Delta</span>();
+    }
+}</div>
+                    <div class="verdict ok">&#9654; Output</div>
+                    <div class="verdict-explain">
+                        <div style="background:#0f172a;border-radius:10px;padding:14px 18px;font-family:'Consolas',monospace;font-size:.9rem;color:#e2e8f0;line-height:2.2;margin-bottom:12px;">
+                            Alpha<br>Beta-1<br>Beta-2<br>Gamma<br>Delta
+                        </div>
+                        <strong>Trace:</strong>
+                        <code>new Delta()</code> → <code>Delta()</code> ▸ implicit <code>super()</code> → <code>Gamma()</code> ▸ <code>super(1)</code> → <code>Beta(int)</code> ▸ <code>this()</code> → <code>Beta()</code> ▸ implicit <code>super()</code> → <code>Alpha()</code>
+                        prints <em>"Alpha"</em>, returns → <code>Beta()</code> prints <em>"Beta-1"</em>, returns →
+                        <code>Beta(int)</code> prints <em>"Beta-2"</em>, returns →
+                        <code>Gamma()</code> prints <em>"Gamma"</em>, returns → <code>Delta()</code> prints <em>"Delta"</em>.
+                    </div>
+                </div>
+            </div>
+
+            <!-- ─── Challenge 4 ─── -->
+            <div class="challenge-box">
+                <div class="challenge-header">&#9996; Challenge 4 — 3 Levels, <code style="font-size:.85rem;">this()</code> chain in the grandparent, explicit <code style="font-size:.85rem;">super()</code> in child</div>
+                <div class="challenge-body">
+                    <div class="challenge-q">What is the output when this program runs?</div>
+                    <div class="code-block" style="margin:0 0 12px;"><span class="kw">class</span> <span class="tp">X</span> {
+    <span class="kw">public</span> <span class="tp">X</span>() {
+        <span class="kw">this</span>(<span class="num">10</span>);
+        <span class="tp">System</span>.<span class="var">out</span>.<span class="mtd">println</span>(<span class="str">"X-1"</span>);
+    }
+    <span class="kw">public</span> <span class="tp">X</span>(<span class="kw">int</span> <span class="var">n</span>) {
+        <span class="tp">System</span>.<span class="var">out</span>.<span class="mtd">println</span>(<span class="str">"X-2: "</span> + <span class="var">n</span>);
+    }
+}
+
+<span class="kw">class</span> <span class="tp">Y</span> <span class="kw">extends</span> <span class="tp">X</span> {
+    <span class="kw">public</span> <span class="tp">Y</span>() {
+        <span class="tp">System</span>.<span class="var">out</span>.<span class="mtd">println</span>(<span class="str">"Y-1"</span>);
+    }
+    <span class="kw">public</span> <span class="tp">Y</span>(<span class="tp">String</span> <span class="var">s</span>) {
+        <span class="kw">this</span>();
+        <span class="tp">System</span>.<span class="var">out</span>.<span class="mtd">println</span>(<span class="str">"Y-2: "</span> + <span class="var">s</span>);
+    }
+}
+
+<span class="kw">public class</span> <span class="tp">Z</span> <span class="kw">extends</span> <span class="tp">Y</span> {
+    <span class="kw">public</span> <span class="tp">Z</span>() {
+        <span class="kw">super</span>(<span class="str">"go"</span>);
+        <span class="tp">System</span>.<span class="var">out</span>.<span class="mtd">println</span>(<span class="str">"Z"</span>);
+    }
+    <span class="kw">public static void</span> <span class="mtd">main</span>(<span class="tp">String</span>[] <span class="var">args</span>) {
+        <span class="kw">new</span> <span class="tp">Z</span>();
+    }
+}</div>
+                    <div class="verdict ok">&#9654; Output</div>
+                    <div class="verdict-explain">
+                        <div style="background:#0f172a;border-radius:10px;padding:14px 18px;font-family:'Consolas',monospace;font-size:.9rem;color:#e2e8f0;line-height:2.2;margin-bottom:12px;">
+                            X-2: 10<br>X-1<br>Y-1<br>Y-2: go<br>Z
+                        </div>
+                        <strong>Trace:</strong>
+                        <code>new Z()</code> → <code>Z()</code> ▸ <code>super("go")</code> → <code>Y(String)</code> ▸ <code>this()</code> → <code>Y()</code> ▸ implicit <code>super()</code> → <code>X()</code> ▸ <code>this(10)</code> → <code>X(int)</code>
+                        prints <em>"X-2: 10"</em>, returns → <code>X()</code> prints <em>"X-1"</em>, returns →
+                        <code>Y()</code> prints <em>"Y-1"</em>, returns →
+                        <code>Y(String)</code> prints <em>"Y-2: go"</em>, returns → <code>Z()</code> prints <em>"Z"</em>.
+                    </div>
+                </div>
+            </div>
+
+            <!-- ─── Challenge 5 ─── -->
+            <div class="challenge-box">
+                <div class="challenge-header">&#9996; Challenge 5 — 3 Levels, double <code style="font-size:.85rem;">this()</code> chain inside the parent</div>
+                <div class="challenge-body">
+                    <div class="challenge-q">What is the output when this program runs?</div>
+                    <div class="code-block" style="margin:0 0 12px;"><span class="kw">class</span> <span class="tp">P</span> {
+    <span class="kw">public</span> <span class="tp">P</span>() {
+        <span class="tp">System</span>.<span class="var">out</span>.<span class="mtd">println</span>(<span class="str">"P"</span>);
+    }
+}
+
+<span class="kw">class</span> <span class="tp">Q</span> <span class="kw">extends</span> <span class="tp">P</span> {
+    <span class="kw">public</span> <span class="tp">Q</span>() {
+        <span class="kw">this</span>(<span class="num">5</span>);
+        <span class="tp">System</span>.<span class="var">out</span>.<span class="mtd">println</span>(<span class="str">"Q-1"</span>);
+    }
+    <span class="kw">public</span> <span class="tp">Q</span>(<span class="kw">int</span> <span class="var">n</span>) {
+        <span class="kw">this</span>(<span class="str">"Q"</span>);
+        <span class="tp">System</span>.<span class="var">out</span>.<span class="mtd">println</span>(<span class="str">"Q-2: "</span> + <span class="var">n</span>);
+    }
+    <span class="kw">public</span> <span class="tp">Q</span>(<span class="tp">String</span> <span class="var">s</span>) {
+        <span class="tp">System</span>.<span class="var">out</span>.<span class="mtd">println</span>(<span class="str">"Q-3: "</span> + <span class="var">s</span>);
+    }
+}
+
+<span class="kw">public class</span> <span class="tp">R</span> <span class="kw">extends</span> <span class="tp">Q</span> {
+    <span class="kw">public</span> <span class="tp">R</span>() {
+        <span class="tp">System</span>.<span class="var">out</span>.<span class="mtd">println</span>(<span class="str">"R"</span>);
+    }
+    <span class="kw">public static void</span> <span class="mtd">main</span>(<span class="tp">String</span>[] <span class="var">args</span>) {
+        <span class="kw">new</span> <span class="tp">R</span>();
+    }
+}</div>
+                    <div class="verdict ok">&#9654; Output</div>
+                    <div class="verdict-explain">
+                        <div style="background:#0f172a;border-radius:10px;padding:14px 18px;font-family:'Consolas',monospace;font-size:.9rem;color:#e2e8f0;line-height:2.2;margin-bottom:12px;">
+                            P<br>Q-3: Q<br>Q-2: 5<br>Q-1<br>R
+                        </div>
+                        <strong>Trace:</strong>
+                        <code>new R()</code> → <code>R()</code> ▸ implicit <code>super()</code> → <code>Q()</code> ▸ <code>this(5)</code> → <code>Q(int)</code> ▸ <code>this("Q")</code> → <code>Q(String)</code> ▸ implicit <code>super()</code> → <code>P()</code>
+                        prints <em>"P"</em>, returns → <code>Q(String)</code> prints <em>"Q-3: Q"</em>, returns →
+                        <code>Q(int)</code> prints <em>"Q-2: 5"</em>, returns →
+                        <code>Q()</code> prints <em>"Q-1"</em>, returns → <code>R()</code> prints <em>"R"</em>.
+                    </div>
+                </div>
+            </div>
+
+            <!-- ─── Challenge 6 ─── -->
+            <div class="challenge-box">
+                <div class="challenge-header">&#9996; Challenge 6 — 4 Levels, <code style="font-size:.85rem;">this()</code> in grandparent, explicit <code style="font-size:.85rem;">super()</code> in parent, <code style="font-size:.85rem;">this()</code> in child</div>
+                <div class="challenge-body">
+                    <div class="challenge-q">What is the output when this program runs?</div>
+                    <div class="code-block" style="margin:0 0 12px;"><span class="kw">class</span> <span class="tp">W</span> {
+    <span class="kw">public</span> <span class="tp">W</span>() {
+        <span class="kw">this</span>(<span class="str">"start"</span>);
+        <span class="tp">System</span>.<span class="var">out</span>.<span class="mtd">println</span>(<span class="str">"W-1"</span>);
+    }
+    <span class="kw">public</span> <span class="tp">W</span>(<span class="tp">String</span> <span class="var">s</span>) {
+        <span class="tp">System</span>.<span class="var">out</span>.<span class="mtd">println</span>(<span class="str">"W-2: "</span> + <span class="var">s</span>);
+    }
+}
+
+<span class="kw">class</span> <span class="tp">X</span> <span class="kw">extends</span> <span class="tp">W</span> {
+    <span class="kw">public</span> <span class="tp">X</span>() {
+        <span class="kw">super</span>(<span class="str">"hello"</span>);
+        <span class="tp">System</span>.<span class="var">out</span>.<span class="mtd">println</span>(<span class="str">"X"</span>);
+    }
+}
+
+<span class="kw">class</span> <span class="tp">Y</span> <span class="kw">extends</span> <span class="tp">X</span> {
+    <span class="kw">public</span> <span class="tp">Y</span>() {
+        <span class="tp">System</span>.<span class="var">out</span>.<span class="mtd">println</span>(<span class="str">"Y-1"</span>);
+    }
+    <span class="kw">public</span> <span class="tp">Y</span>(<span class="kw">int</span> <span class="var">n</span>) {
+        <span class="kw">this</span>();
+        <span class="tp">System</span>.<span class="var">out</span>.<span class="mtd">println</span>(<span class="str">"Y-2: "</span> + <span class="var">n</span>);
+    }
+}
+
+<span class="kw">public class</span> <span class="tp">Z</span> <span class="kw">extends</span> <span class="tp">Y</span> {
+    <span class="kw">public</span> <span class="tp">Z</span>() {
+        <span class="kw">super</span>(<span class="num">3</span>);
+        <span class="tp">System</span>.<span class="var">out</span>.<span class="mtd">println</span>(<span class="str">"Z"</span>);
+    }
+    <span class="kw">public static void</span> <span class="mtd">main</span>(<span class="tp">String</span>[] <span class="var">args</span>) {
+        <span class="kw">new</span> <span class="tp">Z</span>();
+    }
+}</div>
+                    <div class="verdict ok">&#9654; Output</div>
+                    <div class="verdict-explain">
+                        <div style="background:#0f172a;border-radius:10px;padding:14px 18px;font-family:'Consolas',monospace;font-size:.9rem;color:#e2e8f0;line-height:2.2;margin-bottom:12px;">
+                            W-2: hello<br>X<br>Y-1<br>Y-2: 3<br>Z
+                        </div>
+                        <strong>Trace:</strong>
+                        <code>new Z()</code> → <code>Z()</code> ▸ <code>super(3)</code> → <code>Y(int)</code> ▸ <code>this()</code> → <code>Y()</code> ▸ implicit <code>super()</code> → <code>X()</code> ▸ <code>super("hello")</code> → <code>W(String)</code>
+                        prints <em>"W-2: hello"</em>, returns → <code>X()</code> prints <em>"X"</em>, returns →
+                        <code>Y()</code> prints <em>"Y-1"</em>, returns →
+                        <code>Y(int)</code> prints <em>"Y-2: 3"</em>, returns → <code>Z()</code> prints <em>"Z"</em>.
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
     </div><!-- /content -->
 
     <!-- ── Bottom Navigation ────────────────────────── -->
@@ -3299,6 +4377,31 @@ Puppy age: 2</div>
         body.classList.toggle('closed');
         toggle.classList.toggle('closed');
     }
+
+    // Hide all challenge boxes by default and add "Show Challenge" buttons
+    document.querySelectorAll('.challenge-box').forEach(function(box) {
+        var headerEl = box.querySelector('.challenge-header');
+        var label = headerEl ? headerEl.textContent.trim() : 'Challenge';
+
+        box.style.display = 'none';
+
+        var btn = document.createElement('button');
+        btn.className = 'btn-challenge';
+        btn.innerHTML = '&#9654;&nbsp; Show ' + label;
+        btn.onclick = function() {
+            var open = box.style.display !== 'none';
+            if (open) {
+                box.style.display = 'none';
+                btn.innerHTML = '&#9654;&nbsp; Show ' + label;
+                btn.classList.remove('revealed');
+            } else {
+                box.style.display = 'block';
+                btn.innerHTML = '&#9650;&nbsp; Hide ' + label;
+                btn.classList.add('revealed');
+            }
+        };
+        box.parentNode.insertBefore(btn, box);
+    });
 
     // Auto-wrap all challenge solutions with a show/hide button
     document.querySelectorAll('.challenge-body').forEach(function(body) {
