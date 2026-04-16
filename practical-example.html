@@ -1,0 +1,1386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Payroll — Polymorphism Practical Example | CPCS203</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script>mermaid.initialize({startOnLoad:true, theme:'base', securityLevel:'loose',
+        themeVariables:{
+            primaryColor:'#a855f7', primaryTextColor:'#ffffff',
+            primaryBorderColor:'#7e22ce', lineColor:'#374151',
+            secondaryColor:'#f3e8ff', tertiaryColor:'#fdf4ff'
+        }
+    });</script>
+    <style>
+        .mermaid { display:flex; justify-content:center; margin:20px 0; }
+        .mermaid svg { max-width:100%; height:auto; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --purple:       #a855f7;
+            --purple-dark:  #7e22ce;
+            --purple-light: #f3e8ff;
+            --pink:         #ec4899;
+            --pink-dark:    #be185d;
+            --pink-light:   #fce7f3;
+            --violet:       #8b5cf6;
+            --violet-dark:  #7c3aed;
+            --violet-light: #ede9fe;
+            --indigo:       #6366f1;
+            --success:      #059669;
+            --warning:      #d97706;
+            --danger:       #dc2626;
+            --dark:         #1f2937;
+            --gray:         #6b7280;
+            --light:        #f9fafb;
+            --cl-exec:      #ec4899;
+            --cl-emp:       #3b82f6;
+            --cl-vol:       #f59e0b;
+            --cl-hourly:    #059669;
+            --cl-staff:     #a855f7;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.8;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f472b6 0%, #a855f7 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.35);
+            overflow: hidden;
+        }
+
+        /* ── Breadcrumb ── */
+        .nav-breadcrumb {
+            background: linear-gradient(135deg, #581c87, #7e22ce);
+            padding: 15px 40px;
+            display: flex; justify-content: space-between; align-items: center;
+            flex-wrap: wrap; gap: 10px;
+        }
+        .breadcrumb { display: flex; align-items: center; gap: 8px; color: white; font-size: .9rem; }
+        .breadcrumb a { color: #e9d5ff; text-decoration: none; transition: color .3s; }
+        .breadcrumb a:hover { color: white; }
+        .breadcrumb .sep { color: #d8b4fe; }
+        .breadcrumb .cur { color: #fde68a; }
+        .lesson-nav { display: flex; gap: 10px; }
+        .lesson-nav a {
+            padding: 8px 16px; background: rgba(255,255,255,.15); color: white;
+            text-decoration: none; border-radius: 20px; font-size: .85rem;
+            transition: background .3s;
+        }
+        .lesson-nav a:hover { background: rgba(255,255,255,.28); }
+
+        /* ── Hero ── */
+        .hero {
+            background: linear-gradient(135deg, #f472b6, #a855f7, #7c3aed);
+            color: white; padding: 50px 40px; text-align: center;
+            position: relative; overflow: hidden;
+        }
+        .hero::before {
+            content:''; position:absolute; top:-50px; right:-50px;
+            width:250px; height:250px; background:rgba(255,255,255,.06); border-radius:50%;
+        }
+        .hero::after {
+            content:''; position:absolute; bottom:-80px; left:-40px;
+            width:300px; height:300px; background:rgba(255,255,255,.06); border-radius:50%;
+        }
+        .hero h1 { font-size: 2.6rem; margin-bottom: 12px; text-shadow: 0 3px 8px rgba(0,0,0,.3); }
+        .hero .subtitle { font-size: 1.15rem; opacity: .9; margin-bottom: 10px; }
+        .hero .message {
+            max-width: 720px; margin: 20px auto 0;
+            font-size: 1rem; opacity: .95;
+            background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.3);
+            padding: 16px 24px; border-radius: 12px; line-height: 1.9;
+        }
+        .tag-row { display:flex; justify-content:center; gap:10px; margin-top:20px; flex-wrap:wrap; }
+        .tag-chip {
+            padding: 7px 18px; border-radius: 30px; font-weight: 700;
+            font-size: .85rem; border: 2px solid rgba(255,255,255,.5);
+            background: rgba(255,255,255,.15);
+        }
+
+        /* ── Content ── */
+        .content { padding: 50px 40px; }
+
+        /* ── Sections ── */
+        .section { margin-bottom: 60px; }
+        .section-title {
+            font-size: 1.85rem; color: var(--purple-dark);
+            border-bottom: 3px solid var(--purple);
+            padding-bottom: 10px; margin-bottom: 28px;
+            display: flex; align-items: center; gap: 12px;
+        }
+        .section-number {
+            background: linear-gradient(135deg, var(--pink), var(--purple));
+            color: white; width: 42px; height: 42px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem; font-weight: bold; flex-shrink: 0;
+        }
+        .section-number.star { font-size: 1.4rem; }
+        .subsection-title {
+            font-size: 1.25rem; color: var(--violet-dark);
+            margin: 30px 0 14px;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .sub-badge {
+            background: linear-gradient(135deg, var(--violet), var(--indigo));
+            color: white; padding: 4px 14px; border-radius: 20px;
+            font-size: .8rem; font-weight: 700;
+        }
+
+        /* ── Callout boxes ── */
+        .key-box {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border-left: 5px solid var(--warning);
+            padding: 18px 24px; margin: 20px 0; border-radius: 0 12px 12px 0;
+        }
+        .key-box-title { font-weight: 700; color: #92400e; margin-bottom: 8px; font-size: 1.05rem; }
+        .info-box {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            border-left: 5px solid #2563eb;
+            padding: 18px 24px; margin: 20px 0; border-radius: 0 12px 12px 0;
+        }
+        .info-box-title { font-weight: 700; color: #1e40af; margin-bottom: 8px; font-size: 1.05rem; }
+        .pink-box {
+            background: linear-gradient(135deg, #fce7f3, #fbcfe8);
+            border-left: 5px solid var(--pink);
+            padding: 18px 24px; margin: 20px 0; border-radius: 0 12px 12px 0;
+        }
+        .pink-box-title { font-weight: 700; color: var(--pink-dark); margin-bottom: 8px; font-size: 1.05rem; }
+        .violet-box {
+            background: linear-gradient(135deg, #ede9fe, #ddd6fe);
+            border-left: 5px solid var(--violet);
+            padding: 18px 24px; margin: 20px 0; border-radius: 0 12px 12px 0;
+        }
+        .violet-box-title { font-weight: 700; color: var(--violet-dark); margin-bottom: 8px; font-size: 1.05rem; }
+        .purple-box {
+            background: linear-gradient(135deg, #f3e8ff, #e9d5ff);
+            border-left: 5px solid var(--purple);
+            padding: 18px 24px; margin: 20px 0; border-radius: 0 12px 12px 0;
+        }
+        .purple-box-title { font-weight: 700; color: var(--purple-dark); margin-bottom: 8px; font-size: 1.05rem; }
+        .success-box {
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+            border-left: 5px solid var(--success);
+            padding: 18px 24px; margin: 20px 0; border-radius: 0 12px 12px 0;
+        }
+        .success-box-title { font-weight: 700; color: #065f46; margin-bottom: 8px; font-size: 1.05rem; }
+        .danger-box {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            border-left: 5px solid var(--danger);
+            padding: 18px 24px; margin: 20px 0; border-radius: 0 12px 12px 0;
+        }
+        .danger-box-title { font-weight: 700; color: #991b1b; margin-bottom: 8px; font-size: 1.05rem; }
+
+        /* ── Code blocks ── */
+        .code-container { margin: 20px 0; }
+        .code-header {
+            background: #7e22ce; color: white;
+            padding: 14px 24px; border-radius: 8px 8px 0 0;
+            cursor: pointer; user-select: none;
+            display: flex; justify-content: space-between; align-items: center;
+            font-weight: bold; font-size: 1.05em; transition: background 0.3s;
+        }
+        .code-header:hover { background: #6b21a8; }
+        .code-toggle { font-size: 1.2em; transition: transform 0.3s; }
+        .code-toggle.collapsed { transform: rotate(-90deg); }
+        .code-block {
+            background: #000000; color: #f8f8f2;
+            padding: 25px 30px; border-radius: 0 0 8px 8px;
+            overflow-x: auto;
+            font-family: 'Courier New', Consolas, 'Liberation Mono', monospace;
+            font-size: 1.05em; line-height: 1.8; white-space: pre;
+            max-height: 800px; overflow-y: auto;
+            transition: max-height 0.3s ease; letter-spacing: 0.3px;
+        }
+        .code-block.collapsed { max-height: 0; padding: 0 30px; overflow: hidden; }
+        .code-block .comment    { color: #7a8bbf; }
+        .code-block .keyword    { color: #ff79c6; font-weight: bold; }
+        .code-block .class-name { color: #50fa7b; font-weight: bold; }
+        .code-block .method     { color: #8be9fd; }
+        .code-block .string     { color: #f1fa8c; }
+        .code-block .number     { color: #bd93f9; }
+        .code-inline {
+            background: #f3f4f6; padding: 2px 8px; border-radius: 5px;
+            font-family: 'Consolas','Monaco',monospace;
+            color: var(--purple-dark); font-size: .92em;
+        }
+
+        /* ── Terminal ── */
+        .terminal { background: #0f172a; border-radius: 12px; overflow: hidden; margin: 18px 0; border: 1px solid #334155; }
+        .terminal-header { background: #1e293b; padding: 10px 16px; display: flex; align-items: center; gap: 8px; }
+        .terminal-dot { width: 12px; height: 12px; border-radius: 50%; }
+        .terminal-dot.r { background: #ef4444; }
+        .terminal-dot.y { background: #f59e0b; }
+        .terminal-dot.g { background: #22c55e; }
+        .terminal-title { color: #94a3b8; font-size: .85rem; margin-left: 8px; font-family: monospace; }
+        .terminal-body {
+            padding: 20px 22px; color: #e2e8f0;
+            font-family: 'Consolas','Monaco',monospace; font-size: .95rem; line-height: 1.9;
+            white-space: pre;
+        }
+        .term-exec    { color: #f472b6; font-weight: 700; }
+        .term-emp     { color: #60a5fa; font-weight: 700; }
+        .term-hourly  { color: #34d399; font-weight: 700; }
+        .term-vol     { color: #fbbf24; font-weight: 700; }
+        .term-pay     { color: #a78bfa; }
+        .term-zero    { color: #6b7280; }
+
+        /* ── Class cards (for each Java class display) ── */
+        .class-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap: 18px; margin: 24px 0; }
+        .class-card { border-radius: 14px; overflow: hidden; border: 2px solid; }
+        .class-card-header { padding: 14px 18px; color: white; font-weight: 800; font-size: 1.05rem; display: flex; align-items: center; gap: 10px; }
+        .class-card-body { padding: 14px 18px; font-size: .88rem; line-height: 1.9; }
+        .class-card.staff   { border-color: var(--cl-staff); }
+        .class-card.emp     { border-color: var(--cl-emp); }
+        .class-card.vol     { border-color: var(--cl-vol); }
+        .class-card.exec    { border-color: var(--cl-exec); }
+        .class-card.hourly  { border-color: var(--cl-hourly); }
+        .class-card.staff   .class-card-header { background: linear-gradient(135deg, #a855f7, #7c3aed); }
+        .class-card.emp     .class-card-header { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+        .class-card.vol     .class-card-header { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        .class-card.exec    .class-card-header { background: linear-gradient(135deg, #ec4899, #be185d); }
+        .class-card.hourly  .class-card-header { background: linear-gradient(135deg, #059669, #047857); }
+        .class-card.staff   .class-card-body { background: #faf5ff; }
+        .class-card.emp     .class-card-body { background: #eff6ff; }
+        .class-card.vol     .class-card-body { background: #fffbeb; }
+        .class-card.exec    .class-card-body { background: #fdf2f8; }
+        .class-card.hourly  .class-card-body { background: #f0fdf4; }
+        .field-row  { display:flex; align-items:center; gap:8px; margin: 3px 0; font-family: monospace; font-size: .85rem; }
+        .vis-badge  { width:18px; height:18px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:.72rem; font-weight:900; color:white; flex-shrink:0; }
+        .vis-pub    { background:#059669; }
+        .vis-prot   { background:#d97706; }
+        .vis-priv   { background:#dc2626; }
+        .field-type { color: #7c3aed; font-weight:600; }
+        .field-name { color: #1f2937; }
+        .method-row { display:flex; align-items:center; gap:8px; margin:3px 0; font-family:monospace; font-size:.85rem; padding: 3px 0; border-top: 1px dashed #e5e7eb; margin-top:6px; padding-top:6px; }
+        .method-row:first-of-type { border-top: 1px solid #e5e7eb; margin-top: 10px; padding-top: 10px; }
+
+        /* ── Hierarchy tree ── */
+        .hier-tree { display:flex; flex-direction:column; align-items:center; margin: 28px 0; gap: 0; }
+        .hier-row  { display:flex; justify-content:center; gap: 20px; position:relative; }
+        .hier-node {
+            border-radius: 12px; padding: 12px 20px; min-width: 160px;
+            text-align:center; border: 2.5px solid; font-weight:700; font-size:.9rem;
+            position: relative; z-index: 1;
+        }
+        .hier-node .hn-label { font-size:.72rem; font-weight:600; opacity:.7; margin-bottom:2px; }
+        .hier-node.staff  { border-color:var(--cl-staff); background:linear-gradient(135deg,#f3e8ff,#e9d5ff); color:#7e22ce; }
+        .hier-node.emp    { border-color:var(--cl-emp);   background:linear-gradient(135deg,#eff6ff,#dbeafe); color:#1e40af; }
+        .hier-node.vol    { border-color:var(--cl-vol);   background:linear-gradient(135deg,#fffbeb,#fef3c7); color:#92400e; }
+        .hier-node.exec   { border-color:var(--cl-exec);  background:linear-gradient(135deg,#fdf2f8,#fce7f3); color:#be185d; }
+        .hier-node.hourly { border-color:var(--cl-hourly);background:linear-gradient(135deg,#f0fdf4,#d1fae5); color:#065f46; }
+        .hier-connector { display:flex; justify-content:center; height:28px; align-items:stretch; }
+        .hier-vline { width:2px; background:#a855f7; }
+        .hier-hgroup { display:flex; justify-content:center; position:relative; height:28px; }
+        .hier-hgroup::before {
+            content:''; position:absolute; top:0; left:50%; right:50%;
+            height:2px; background:#a855f7;
+        }
+        .hier-branch {
+            display:flex; flex-direction:column; align-items:center; position:relative;
+        }
+        .hier-branch::before {
+            content:''; position:absolute; top:0; left:50%; width:2px;
+            height:14px; background:#a855f7;
+        }
+
+        /* ── Array visualization ── */
+        .array-row { display:flex; align-items:stretch; margin: 12px 0; flex-wrap:wrap; }
+        .arr-cell  { border: 2px solid #a855f7; min-width:72px; padding:10px 6px; text-align:center; font-family:'Consolas',monospace; }
+        .arr-cell:first-child { border-radius:8px 0 0 8px; }
+        .arr-cell:last-child  { border-radius:0 8px 8px 0; }
+        .arr-cell + .arr-cell { border-left:none; }
+        .arr-cell .ai { font-size:.7rem; color:#9ca3af; margin-bottom:4px; }
+        .arr-cell .av { font-weight:700; font-size:.82rem; }
+
+        /* ── Polymorphic array table ── */
+        .poly-arr-table { width:100%; border-collapse:collapse; margin: 20px 0; }
+        .poly-arr-table th { background: linear-gradient(135deg,#7c3aed,#a855f7); color:white; padding:10px 14px; text-align:left; font-size:.88rem; }
+        .poly-arr-table td { padding:10px 14px; border-bottom:1px solid #e5e7eb; font-size:.88rem; vertical-align:middle; }
+        .poly-arr-table tr:nth-child(even) td { background:#faf5ff; }
+        .poly-arr-table tr:hover td { background:#f3e8ff; }
+        .idx-badge { display:inline-block; background:#7c3aed; color:white; border-radius:6px; padding:2px 10px; font-family:monospace; font-weight:700; font-size:.85rem; }
+        .type-ref  { display:inline-block; background:#e5e7eb; color:#374151; border-radius:20px; padding:3px 12px; font-family:monospace; font-size:.82rem; }
+        .obj-badge { display:inline-block; color:white; border-radius:20px; padding:3px 12px; font-family:monospace; font-size:.82rem; font-weight:700; }
+        .obj-exec    { background: linear-gradient(135deg,#ec4899,#be185d); }
+        .obj-emp     { background: linear-gradient(135deg,#3b82f6,#2563eb); }
+        .obj-hourly  { background: linear-gradient(135deg,#059669,#047857); }
+        .obj-vol     { background: linear-gradient(135deg,#f59e0b,#d97706); }
+        .method-badge { display:inline-block; color:white; border-radius:8px; padding:3px 12px; font-family:monospace; font-size:.82rem; }
+        .mb-exec    { background:#be185d; }
+        .mb-emp     { background:#2563eb; }
+        .mb-hourly  { background:#047857; }
+        .mb-vol     { background:#d97706; }
+        .pay-amount { font-weight:800; font-size:.95rem; }
+        .pay-pos    { color:#059669; }
+        .pay-zero   { color:#9ca3af; }
+
+        /* ── Casting flow ── */
+        .cast-flow { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin:20px 0; }
+        .cast-panel { border-radius:14px; padding:22px 20px; border:2.5px solid; }
+        .cast-panel.wrong { border-color:#dc2626; background:linear-gradient(135deg,#fff5f5,#fee2e2); }
+        .cast-panel.right { border-color:#059669; background:linear-gradient(135deg,#f0fdf4,#d1fae5); }
+        .cast-panel .cp-title { font-weight:800; font-size:1rem; margin-bottom:12px; }
+        .cast-panel.wrong .cp-title { color:#991b1b; }
+        .cast-panel.right .cp-title { color:#065f46; }
+
+        /* ── Design discussion ── */
+        .design-compare { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin:20px 0; }
+        .design-panel { border-radius:14px; padding:22px 20px; border:2.5px solid; }
+        .design-panel.bad  { border-color:#dc2626; background:linear-gradient(135deg,#fff5f5,#fee2e2); }
+        .design-panel.good { border-color:#059669; background:linear-gradient(135deg,#f0fdf4,#d1fae5); }
+        .design-panel .dp-title { font-size:1rem; font-weight:800; margin-bottom:12px; }
+        .design-panel.bad  .dp-title { color:#991b1b; }
+        .design-panel.good .dp-title { color:#065f46; }
+
+        .discussion-box {
+            background: linear-gradient(135deg, #1e1b4b, #312e81);
+            border-radius: 16px; padding: 28px 30px; margin: 24px 0; color: white;
+        }
+        .discussion-box h4 { font-size:1.1rem; margin-bottom:16px; color:#a5b4fc; }
+        .speech-bubble { background:rgba(255,255,255,.1); border-radius:12px; padding:13px 18px; margin:10px 0; }
+        .speech-who  { font-size:.8rem; color:#a5b4fc; font-weight:700; margin-bottom:5px; }
+        .speech-text { font-size:.92rem; line-height:1.75; }
+        .speech-text strong { color:#fbbf24; }
+
+        /* ── Summary ── */
+        .summary-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(185px,1fr)); gap:16px; margin:20px 0; }
+        .summary-card { border-radius:14px; padding:20px 16px; text-align:center; border:2.5px solid; }
+        .summary-card .sc-icon  { font-size:2.5rem; margin-bottom:10px; }
+        .summary-card .sc-title { font-size:1rem; font-weight:800; margin-bottom:6px; }
+        .summary-card .sc-desc  { font-size:.85rem; color:var(--gray); }
+        .summary-card.s1 { border-color:var(--purple); background:var(--purple-light); }
+        .summary-card.s1 .sc-title { color:var(--purple-dark); }
+        .summary-card.s2 { border-color:var(--pink); background:var(--pink-light); }
+        .summary-card.s2 .sc-title { color:var(--pink-dark); }
+        .summary-card.s3 { border-color:var(--success); background:#d1fae5; }
+        .summary-card.s3 .sc-title { color:#065f46; }
+        .summary-card.s4 { border-color:var(--warning); background:#fef3c7; }
+        .summary-card.s4 .sc-title { color:#92400e; }
+
+        /* ── Bottom nav / footer ── */
+        .bottom-nav {
+            display:flex; justify-content:space-between; align-items:center;
+            padding:28px 40px;
+            background:linear-gradient(135deg,#f8fafc,#e2e8f0);
+            border-top:1px solid #e2e8f0; flex-wrap:wrap; gap:15px;
+        }
+        .bottom-nav a {
+            padding:14px 26px; border-radius:12px; font-weight:700;
+            text-decoration:none; color:white; transition:transform .25s,box-shadow .25s;
+        }
+        .bottom-nav a:hover { transform:translateY(-3px); box-shadow:0 8px 20px rgba(0,0,0,.2); }
+        .nav-prev { background:linear-gradient(135deg,var(--pink),var(--pink-dark)); }
+        .nav-next { background:linear-gradient(135deg,var(--purple),var(--purple-dark)); }
+        .footer { background:#1f2937; color:#9ca3af; text-align:center; padding:25px 20px; font-size:.9rem; }
+        .footer p { margin:4px 0; }
+        .footer strong { color:#e5e7eb; }
+
+        /* ── Degree bars ──────────────────────────── */
+        .degree-card {
+            border-radius: 14px; padding: 20px 22px;
+            margin: 12px 0; border: 2px solid;
+            display: flex; align-items: center; gap: 18px;
+        }
+        .degree-pct { font-size: 1.5rem; font-weight: 900; min-width: 62px; text-align: center; }
+        .degree-bar-wrap { flex: 1; }
+        .degree-bar { height: 14px; border-radius: 7px; margin-bottom: 8px; }
+        .degree-desc { font-size: .9rem; color: var(--gray); }
+
+        @media (max-width:768px) {
+            body { padding:10px; }
+            .content { padding:30px 20px; }
+            .hero { padding:35px 20px; }
+            .hero h1 { font-size:2rem; }
+            .nav-breadcrumb { flex-direction:column; }
+            .class-cards { grid-template-columns:1fr; }
+            .cast-flow, .design-compare { grid-template-columns:1fr; }
+            .poly-arr-table { font-size:.8rem; }
+            .degree-card { flex-direction: column; align-items: flex-start; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <!-- Breadcrumb -->
+    <nav class="nav-breadcrumb">
+        <div class="breadcrumb">
+            <a href="../index.html">&#127968; CPCS203</a>
+            <span class="sep">&#8250;</span>
+            <a href="index.html">Polymorphism</a>
+            <span class="sep">&#8250;</span>
+            <span class="cur">Practical Example</span>
+        </div>
+        <div class="lesson-nav">
+            <a href="index.html">&#8592; Back to Polymorphism</a>
+            <a href="../module08-abstract-classes/index.html">Abstract Classes &#8594;</a>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <div class="hero">
+        <h1>&#127970; Staff Payroll System</h1>
+        <p class="subtitle">Polymorphism — Real-World Practical Example &nbsp;&#183;&nbsp; Chapter 11</p>
+        <div class="message">
+            Hello, my students! Now that we understand polymorphism, let's apply it to a
+            <strong>real scenario</strong>: a university staff payroll system.
+            We have different types of staff — Executives, Employees, Hourly workers, and Volunteers.
+            With polymorphism, <strong>one array, one loop, handles them all</strong>!
+        </div>
+        <div class="tag-row">
+            <span class="tag-chip">&#128260; Polymorphic Array</span>
+            <span class="tag-chip">&#9654;&#65038; Dynamic Binding</span>
+            <span class="tag-chip">&#11015; Casting</span>
+            <span class="tag-chip">&#129300; Design Discussion</span>
+            <span class="tag-chip">&#128200; Degrees of Polymorphism</span>
+        </div>
+    </div>
+
+    <div class="content">
+
+    <!-- ══════════════════════════════════════════
+         SECTION 1 — THE SCENARIO
+         ══════════════════════════════════════════ -->
+    <div class="section">
+        <h2 class="section-title">
+            <span class="section-number">1</span>
+            The Real-World Scenario
+        </h2>
+
+        <p>Imagine you are building a payroll system for a university.
+        The university has four kinds of staff members:</p>
+
+        <div class="class-cards" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr));margin-top:20px;">
+            <div class="class-card exec" style="border-radius:14px;overflow:hidden;border:2.5px solid var(--cl-exec);">
+                <div class="class-card-header" style="background:linear-gradient(135deg,#ec4899,#be185d);">
+                    &#128081; Executive
+                </div>
+                <div class="class-card-body" style="background:#fdf2f8;padding:14px 18px;font-size:.88rem;">
+                    Senior staff. Receives a fixed monthly salary <em>plus</em> a periodic bonus.
+                </div>
+            </div>
+            <div class="class-card emp" style="border-radius:14px;overflow:hidden;border:2.5px solid var(--cl-emp);">
+                <div class="class-card-header" style="background:linear-gradient(135deg,#3b82f6,#2563eb);">
+                    &#128188; Employee
+                </div>
+                <div class="class-card-body" style="background:#eff6ff;padding:14px 18px;font-size:.88rem;">
+                    Regular full-time staff. Receives a fixed monthly pay rate.
+                </div>
+            </div>
+            <div class="class-card hourly" style="border-radius:14px;overflow:hidden;border:2.5px solid var(--cl-hourly);">
+                <div class="class-card-header" style="background:linear-gradient(135deg,#059669,#047857);">
+                    &#128336; Hourly
+                </div>
+                <div class="class-card-body" style="background:#f0fdf4;padding:14px 18px;font-size:.88rem;">
+                    Part-time staff. Paid per hour worked: hours &times; rate.
+                </div>
+            </div>
+            <div class="class-card vol" style="border-radius:14px;overflow:hidden;border:2.5px solid var(--cl-vol);">
+                <div class="class-card-header" style="background:linear-gradient(135deg,#f59e0b,#d97706);">
+                    &#129309; Volunteer
+                </div>
+                <div class="class-card-body" style="background:#fffbeb;padding:14px 18px;font-size:.88rem;">
+                    Contributes without payment. Receives SAR 0.
+                </div>
+            </div>
+        </div>
+
+        <div class="key-box" style="margin-top:24px;">
+            <div class="key-box-title">&#128161; The Challenge</div>
+            <p>All these staff members share some common data (name, address, phone).
+            But each type is <em>paid differently</em>.
+            How can we store them all together and process their payments with
+            <strong>a single loop</strong>?
+            The answer: <strong>Polymorphism!</strong></p>
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         SECTION 2 — CLASS HIERARCHY
+         ══════════════════════════════════════════ -->
+    <div class="section">
+        <h2 class="section-title">
+            <span class="section-number">2</span>
+            The Class Hierarchy
+        </h2>
+
+        <p>We design an inheritance hierarchy where <strong>StaffMember</strong> is the superclass
+        for all staff types:</p>
+
+        <div class="mermaid">
+classDiagram
+    class StaffMember {
+        #String name
+        #String address
+        #String phone
+        +StaffMember(name,address,phone)
+        +toString() String
+        +pay() double
+    }
+    class Employee {
+        #String socialSecNum
+        #double payRate
+        +Employee(name,addr,phone,ssn,rate)
+        +toString() String
+        +pay() double
+    }
+    class Volunteer {
+        +Volunteer(name,address,phone)
+        +pay() double
+    }
+    class Executive {
+        -double bonus
+        +Executive(name,addr,phone,ssn,rate)
+        +awardBonus(execBonus double) void
+        +pay() double
+    }
+    class Hourly {
+        -int hoursWorked
+        +Hourly(name,addr,phone,ssn,rate)
+        +toString() String
+        +pay() double
+        +addHours(moreHours int) void
+    }
+    StaffMember <|-- Employee
+    StaffMember <|-- Volunteer
+    Employee <|-- Executive
+    Employee <|-- Hourly
+        </div>
+
+        <div class="info-box">
+            <div class="info-box-title">&#128204; Reading the Hierarchy</div>
+            <ul style="margin-left:20px;line-height:2.2;">
+                <li><strong>StaffMember</strong> — the root. Holds shared data and defines <code class="code-inline">pay()</code> returning 0.</li>
+                <li><strong>Employee</strong> extends StaffMember — adds SSN and payRate. Overrides <code class="code-inline">pay()</code>.</li>
+                <li><strong>Volunteer</strong> extends StaffMember — overrides <code class="code-inline">pay()</code> returning 0 (no salary).</li>
+                <li><strong>Executive</strong> extends Employee — adds bonus. Overrides <code class="code-inline">pay()</code> = salary + bonus.</li>
+                <li><strong>Hourly</strong> extends Employee — adds hoursWorked. Overrides <code class="code-inline">pay()</code> = hours &times; rate.</li>
+            </ul>
+        </div>
+
+        <p>Every class in this hierarchy is connected by IS-A:</p>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin:16px 0;">
+            <span style="background:#f3e8ff;border:2px solid #a855f7;border-radius:20px;padding:6px 16px;font-size:.88rem;font-weight:700;color:#7e22ce;">Executive IS-A Employee</span>
+            <span style="background:#f3e8ff;border:2px solid #a855f7;border-radius:20px;padding:6px 16px;font-size:.88rem;font-weight:700;color:#7e22ce;">Employee IS-A StaffMember</span>
+            <span style="background:#f3e8ff;border:2px solid #a855f7;border-radius:20px;padding:6px 16px;font-size:.88rem;font-weight:700;color:#7e22ce;">Executive IS-A StaffMember</span>
+            <span style="background:#fffbeb;border:2px solid #f59e0b;border-radius:20px;padding:6px 16px;font-size:.88rem;font-weight:700;color:#92400e;">Volunteer IS-A StaffMember</span>
+            <span style="background:#f0fdf4;border:2px solid #059669;border-radius:20px;padding:6px 16px;font-size:.88rem;font-weight:700;color:#065f46;">Hourly IS-A StaffMember</span>
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         SECTION 3 — THE JAVA CLASSES
+         ══════════════════════════════════════════ -->
+    <div class="section">
+        <h2 class="section-title">
+            <span class="section-number">3</span>
+            The Java Classes
+        </h2>
+
+        <p>Here are all five classes. Notice how each one overrides <code class="code-inline">pay()</code>
+        in its own way:</p>
+
+        <!-- StaffMember -->
+        <div class="code-container">
+            <div class="code-header" style="background:linear-gradient(135deg,#7e22ce,#a855f7);" onclick="toggleCode(this)">
+                <span>&#128100; StaffMember.java &mdash; The Superclass</span>
+                <span class="code-toggle">&#9660;</span>
+            </div>
+            <div class="code-block"><span class="keyword">class</span> <span class="class-name">StaffMember</span> {
+    <span class="keyword">protected</span> <span class="class-name">String</span> name;
+    <span class="keyword">protected</span> <span class="class-name">String</span> address;
+    <span class="keyword">protected</span> <span class="class-name">String</span> phone;
+
+    <span class="keyword">public</span> <span class="class-name">StaffMember</span>(<span class="class-name">String</span> name, <span class="class-name">String</span> address, <span class="class-name">String</span> phone) {
+        <span class="keyword">this</span>.name    = name;
+        <span class="keyword">this</span>.address = address;
+        <span class="keyword">this</span>.phone   = phone;
+    }
+
+    <span class="keyword">public</span> <span class="class-name">String</span> <span class="method">toString</span>() {
+        <span class="keyword">return</span> <span class="string">"Name: "</span> + name + <span class="string">", Address: "</span> + address;
+    }
+
+    <span class="comment">// Base implementation — returns 0.  Subclasses override this.</span>
+    <span class="keyword">public double</span> <span class="method">pay</span>() {
+        <span class="keyword">return</span> <span class="number">0.0</span>;
+    }
+}</div>
+        </div>
+
+        <!-- Employee -->
+        <div class="code-container">
+            <div class="code-header" style="background:linear-gradient(135deg,#2563eb,#3b82f6);" onclick="toggleCode(this)">
+                <span>&#128188; Employee.java &mdash; extends StaffMember</span>
+                <span class="code-toggle">&#9660;</span>
+            </div>
+            <div class="code-block"><span class="keyword">class</span> <span class="class-name">Employee</span> <span class="keyword">extends</span> <span class="class-name">StaffMember</span> {
+    <span class="keyword">protected</span> <span class="class-name">String</span> socialSecNum;
+    <span class="keyword">protected</span> <span class="keyword">double</span> payRate;
+
+    <span class="keyword">public</span> <span class="class-name">Employee</span>(<span class="class-name">String</span> name, <span class="class-name">String</span> address, <span class="class-name">String</span> phone,
+                       <span class="class-name">String</span> ssn, <span class="keyword">double</span> payRate) {
+        <span class="keyword">super</span>(name, address, phone);
+        <span class="keyword">this</span>.socialSecNum = ssn;
+        <span class="keyword">this</span>.payRate      = payRate;
+    }
+
+    <span class="keyword">public</span> <span class="class-name">String</span> <span class="method">toString</span>() {
+        <span class="keyword">return</span> <span class="keyword">super</span>.<span class="method">toString</span>();   <span class="comment">// "Name: ..., Address: ..."</span>
+    }
+
+    <span class="keyword">public double</span> <span class="method">pay</span>() {
+        <span class="keyword">return</span> payRate;   <span class="comment">// fixed monthly salary</span>
+    }
+}</div>
+        </div>
+
+        <!-- Volunteer -->
+        <div class="code-container">
+            <div class="code-header" style="background:linear-gradient(135deg,#d97706,#f59e0b);" onclick="toggleCode(this)">
+                <span>&#129309; Volunteer.java &mdash; extends StaffMember</span>
+                <span class="code-toggle">&#9660;</span>
+            </div>
+            <div class="code-block"><span class="keyword">class</span> <span class="class-name">Volunteer</span> <span class="keyword">extends</span> <span class="class-name">StaffMember</span> {
+
+    <span class="keyword">public</span> <span class="class-name">Volunteer</span>(<span class="class-name">String</span> name, <span class="class-name">String</span> address, <span class="class-name">String</span> phone) {
+        <span class="keyword">super</span>(name, address, phone);
+    }
+
+    <span class="keyword">public</span> <span class="class-name">String</span> <span class="method">toString</span>() {
+        <span class="keyword">return</span> <span class="string">"Name: "</span> + name;   <span class="comment">// no address — volunteers are informal</span>
+    }
+
+    <span class="comment">// Volunteers receive no payment</span>
+    <span class="keyword">public double</span> <span class="method">pay</span>() {
+        <span class="keyword">return</span> <span class="number">0.0</span>;
+    }
+}</div>
+        </div>
+
+        <!-- Executive -->
+        <div class="code-container">
+            <div class="code-header" style="background:linear-gradient(135deg,#be185d,#ec4899);" onclick="toggleCode(this)">
+                <span>&#128081; Executive.java &mdash; extends Employee</span>
+                <span class="code-toggle">&#9660;</span>
+            </div>
+            <div class="code-block"><span class="keyword">class</span> <span class="class-name">Executive</span> <span class="keyword">extends</span> <span class="class-name">Employee</span> {
+    <span class="keyword">private double</span> bonus;
+
+    <span class="keyword">public</span> <span class="class-name">Executive</span>(<span class="class-name">String</span> name, <span class="class-name">String</span> address, <span class="class-name">String</span> phone,
+                       <span class="class-name">String</span> ssn, <span class="keyword">double</span> payRate) {
+        <span class="keyword">super</span>(name, address, phone, ssn, payRate);
+        <span class="keyword">this</span>.bonus = <span class="number">0.0</span>;
+    }
+
+    <span class="comment">// Grant a one-time bonus to be included in the next payment</span>
+    <span class="keyword">public void</span> <span class="method">awardBonus</span>(<span class="keyword">double</span> execBonus) {
+        bonus = execBonus;
+    }
+
+    <span class="keyword">public double</span> <span class="method">pay</span>() {
+        <span class="keyword">double</span> payment = <span class="keyword">super</span>.<span class="method">pay</span>() + bonus;  <span class="comment">// salary + bonus</span>
+        bonus = <span class="number">0.0</span>;                            <span class="comment">// reset after paying</span>
+        <span class="keyword">return</span> payment;
+    }
+}</div>
+        </div>
+
+        <!-- Hourly -->
+        <div class="code-container">
+            <div class="code-header" style="background:linear-gradient(135deg,#047857,#059669);" onclick="toggleCode(this)">
+                <span>&#128336; Hourly.java &mdash; extends Employee</span>
+                <span class="code-toggle">&#9660;</span>
+            </div>
+            <div class="code-block"><span class="keyword">class</span> <span class="class-name">Hourly</span> <span class="keyword">extends</span> <span class="class-name">Employee</span> {
+    <span class="keyword">private int</span> hoursWorked;
+
+    <span class="keyword">public</span> <span class="class-name">Hourly</span>(<span class="class-name">String</span> name, <span class="class-name">String</span> address, <span class="class-name">String</span> phone,
+                    <span class="class-name">String</span> ssn, <span class="keyword">double</span> payRate) {
+        <span class="keyword">super</span>(name, address, phone, ssn, payRate);
+        <span class="keyword">this</span>.hoursWorked = <span class="number">0</span>;
+    }
+
+    <span class="comment">// Add hours worked — can be called many times per pay period</span>
+    <span class="keyword">public void</span> <span class="method">addHours</span>(<span class="keyword">int</span> moreHours) {
+        hoursWorked += moreHours;
+    }
+
+    <span class="keyword">public double</span> <span class="method">pay</span>() {
+        <span class="keyword">double</span> payment = hoursWorked * payRate;  <span class="comment">// hours × rate</span>
+        hoursWorked = <span class="number">0</span>;                        <span class="comment">// reset after paying</span>
+        <span class="keyword">return</span> payment;
+    }
+
+    <span class="keyword">public</span> <span class="class-name">String</span> <span class="method">toString</span>() {
+        <span class="keyword">return</span> <span class="string">"Name: "</span> + name + <span class="string">", Hours: "</span> + hoursWorked;
+    }
+}</div>
+        </div>
+
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         SECTION 4 — THE POLYMORPHIC ARRAY
+         ══════════════════════════════════════════ -->
+    <div class="section">
+        <h2 class="section-title">
+            <span class="section-number">4</span>
+            Building the Polymorphic Array
+        </h2>
+
+        <p>We declare the array as <code class="code-inline">StaffMember[]</code> — the superclass type.
+        This lets us store <strong>any subclass object</strong> inside it, because of the IS-A rule.</p>
+
+        <div class="code-container">
+            <div class="code-header" onclick="toggleCode(this)">
+                <span>&#128203; StaffDemo.java &mdash; Creating the Array</span>
+                <span class="code-toggle">&#9660;</span>
+            </div>
+            <div class="code-block"><span class="comment">// Declared as StaffMember[] — but holds any subclass!</span>
+<span class="class-name">StaffMember</span>[] staff = <span class="keyword">new</span> <span class="class-name">StaffMember</span>[<span class="number">5</span>];
+
+<span class="comment">// ── Fill with different types (upcasting is automatic) ──</span>
+staff[<span class="number">0</span>] = <span class="keyword">new</span> <span class="class-name">Executive</span> (<span class="string">"Dr. Khalid"</span>, <span class="string">"KAU, Jeddah"</span>, <span class="string">"055-0001"</span>, <span class="string">"EX-001"</span>, <span class="number">5000.0</span>);
+staff[<span class="number">1</span>] = <span class="keyword">new</span> <span class="class-name">Employee</span>  (<span class="string">"Faisal"</span>,      <span class="string">"Riyadh"</span>,      <span class="string">"055-0002"</span>, <span class="string">"EM-001"</span>, <span class="number">3000.0</span>);
+staff[<span class="number">2</span>] = <span class="keyword">new</span> <span class="class-name">Hourly</span>    (<span class="string">"Layla"</span>,       <span class="string">"Jeddah"</span>,      <span class="string">"055-0003"</span>, <span class="string">"HR-001"</span>,   <span class="number">50.0</span>);
+staff[<span class="number">3</span>] = <span class="keyword">new</span> <span class="class-name">Volunteer</span> (<span class="string">"Maha"</span>,        <span class="string">"Mecca"</span>,       <span class="string">"055-0004"</span>);
+staff[<span class="number">4</span>] = <span class="keyword">new</span> <span class="class-name">Hourly</span>    (<span class="string">"Ziad"</span>,        <span class="string">"Dammam"</span>,      <span class="string">"055-0005"</span>, <span class="string">"HR-002"</span>,   <span class="number">45.0</span>);
+
+<span class="comment">// ── Setup: award bonus and log hours BEFORE payroll ───</span>
+((<span class="class-name">Executive</span>) staff[<span class="number">0</span>]).<span class="method">awardBonus</span>(<span class="number">2000.0</span>);  <span class="comment">// downcast needed!</span>
+((<span class="class-name">Hourly</span>)    staff[<span class="number">2</span>]).<span class="method">addHours</span>(<span class="number">80</span>);         <span class="comment">// downcast needed!</span>
+((<span class="class-name">Hourly</span>)    staff[<span class="number">4</span>]).<span class="method">addHours</span>(<span class="number">60</span>);         <span class="comment">// downcast needed!</span></div>
+        </div>
+
+        <!-- Visual: what's in each slot -->
+        <h3 class="subsection-title">&#128202; What Does the Array Look Like in Memory?</h3>
+
+        <table class="poly-arr-table">
+            <thead>
+                <tr>
+                    <th>Slot</th>
+                    <th>Declared Type</th>
+                    <th>&nbsp;</th>
+                    <th>Actual Object Stored</th>
+                    <th>Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="idx-badge">staff[0]</span></td>
+                    <td><span class="type-ref">StaffMember ref</span></td>
+                    <td style="text-align:center;font-size:1.1rem;">&#10145;</td>
+                    <td><span class="obj-badge obj-exec">Executive object</span></td>
+                    <td><strong>Dr. Khalid</strong> &nbsp;<em style="color:#9ca3af;font-size:.82rem;">salary: 5000 + bonus 2000</em></td>
+                </tr>
+                <tr>
+                    <td><span class="idx-badge">staff[1]</span></td>
+                    <td><span class="type-ref">StaffMember ref</span></td>
+                    <td style="text-align:center;font-size:1.1rem;">&#10145;</td>
+                    <td><span class="obj-badge obj-emp">Employee object</span></td>
+                    <td><strong>Faisal</strong> &nbsp;<em style="color:#9ca3af;font-size:.82rem;">salary: 3000</em></td>
+                </tr>
+                <tr>
+                    <td><span class="idx-badge">staff[2]</span></td>
+                    <td><span class="type-ref">StaffMember ref</span></td>
+                    <td style="text-align:center;font-size:1.1rem;">&#10145;</td>
+                    <td><span class="obj-badge obj-hourly">Hourly object</span></td>
+                    <td><strong>Layla</strong> &nbsp;<em style="color:#9ca3af;font-size:.82rem;">80 hrs &times; 50 SAR/hr</em></td>
+                </tr>
+                <tr>
+                    <td><span class="idx-badge">staff[3]</span></td>
+                    <td><span class="type-ref">StaffMember ref</span></td>
+                    <td style="text-align:center;font-size:1.1rem;">&#10145;</td>
+                    <td><span class="obj-badge obj-vol">Volunteer object</span></td>
+                    <td><strong>Maha</strong> &nbsp;<em style="color:#9ca3af;font-size:.82rem;">no payment</em></td>
+                </tr>
+                <tr>
+                    <td><span class="idx-badge">staff[4]</span></td>
+                    <td><span class="type-ref">StaffMember ref</span></td>
+                    <td style="text-align:center;font-size:1.1rem;">&#10145;</td>
+                    <td><span class="obj-badge obj-hourly">Hourly object</span></td>
+                    <td><strong>Ziad</strong> &nbsp;<em style="color:#9ca3af;font-size:.82rem;">60 hrs &times; 45 SAR/hr</em></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="violet-box">
+            <div class="violet-box-title">&#128204; Upcasting Happens Automatically</div>
+            <p>When we write <code class="code-inline">staff[0] = new Executive(...)</code>,
+            Java automatically <strong>upcasts</strong> the Executive reference to a StaffMember reference.
+            This is safe because Executive IS-A StaffMember. No cast keyword is needed — Java does it silently.</p>
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         SECTION 5 — POLYMORPHIC PAYROLL
+         ══════════════════════════════════════════ -->
+    <div class="section">
+        <h2 class="section-title">
+            <span class="section-number">5</span>
+            Polymorphic Payroll &mdash; One Loop, All Types
+        </h2>
+
+        <p>Now comes the power of polymorphism.
+        <strong>One loop</strong> iterates over all staff members and calls
+        <code class="code-inline">pay()</code> on each.
+        Java's dynamic binding picks the <em>correct</em> version of
+        <code class="code-inline">pay()</code> at <strong>runtime</strong>
+        based on the <em>actual object type</em> — not the declared type.</p>
+
+        <div class="code-container">
+            <div class="code-header" onclick="toggleCode(this)">
+                <span>&#9654;&#65038; The Polymorphic Loop</span>
+                <span class="code-toggle">&#9660;</span>
+            </div>
+            <div class="code-block"><span class="comment">// ONE loop handles Executive, Employee, Hourly, AND Volunteer!</span>
+<span class="class-name">String</span> line = <span class="string">"-"</span>.<span class="method">repeat</span>(<span class="number">74</span>);
+
+System.out.<span class="method">printf</span>(<span class="string">"%-16s| %-41s| %s%n"</span>, <span class="string">"Type"</span>, <span class="string">"Details"</span>, <span class="string">"Payment (SAR)"</span>);
+System.out.<span class="method">println</span>(line);
+
+<span class="keyword">for</span> (<span class="class-name">StaffMember</span> s : staff) {
+    System.out.<span class="method">printf</span>(<span class="string">"%-16s| %-41s| %,13.2f%n%n"</span>,
+        s.<span class="method">getClass</span>().<span class="method">getSimpleName</span>(),   <span class="comment">// "Executive", "Hourly", etc.</span>
+        s,                               <span class="comment">// calls toString() — dynamic binding!</span>
+        s.<span class="method">pay</span>());                          <span class="comment">// calls pay()   — dynamic binding!</span>
+}
+
+System.out.<span class="method">println</span>(<span class="string">"="</span>.<span class="method">repeat</span>(<span class="number">74</span>));</div>
+        </div>
+
+        <div class="terminal">
+            <div class="terminal-header">
+                <span class="terminal-dot r"></span>
+                <span class="terminal-dot y"></span>
+                <span class="terminal-dot g"></span>
+                <span class="terminal-title">Output — Monthly Payroll</span>
+            </div>
+            <div class="terminal-body">Type            | Details                                   | Payment (SAR)
+--------------------------------------------------------------------------
+<span class="term-exec">Executive       | Name: Dr. Khalid, Address: KAU, Jeddah   |      7,000.00</span>
+
+<span class="term-emp">Employee        | Name: Faisal, Address: Riyadh             |      3,000.00</span>
+
+<span class="term-hourly">Hourly          | Name: Layla, Hours: 80                    |      4,000.00</span>
+
+<span class="term-vol">Volunteer       | Name: Maha                                |          0.00</span>
+
+<span class="term-hourly">Hourly          | Name: Ziad, Hours: 60                     |      2,700.00</span>
+
+==========================================================================</div>
+        </div>
+
+        <!-- Dynamic binding table -->
+        <h3 class="subsection-title"><span class="sub-badge">Dynamic Binding</span> Which pay() Gets Called?</h3>
+
+        <p>The JVM looks at the <strong>actual object</strong> (not the declared type) to decide which
+        <code class="code-inline">pay()</code> to execute at runtime:</p>
+
+        <table class="poly-arr-table" style="margin-top:16px;">
+            <thead>
+                <tr>
+                    <th>Variable</th>
+                    <th>Declared type</th>
+                    <th>Actual object</th>
+                    <th>pay() executed</th>
+                    <th>Result</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="idx-badge">staff[0]</span></td>
+                    <td><span class="type-ref">StaffMember</span></td>
+                    <td><span class="obj-badge obj-exec">Executive</span></td>
+                    <td><span class="method-badge mb-exec">Executive.pay()</span></td>
+                    <td><span class="pay-amount pay-pos">SAR 7,000</span></td>
+                </tr>
+                <tr>
+                    <td><span class="idx-badge">staff[1]</span></td>
+                    <td><span class="type-ref">StaffMember</span></td>
+                    <td><span class="obj-badge obj-emp">Employee</span></td>
+                    <td><span class="method-badge mb-emp">Employee.pay()</span></td>
+                    <td><span class="pay-amount pay-pos">SAR 3,000</span></td>
+                </tr>
+                <tr>
+                    <td><span class="idx-badge">staff[2]</span></td>
+                    <td><span class="type-ref">StaffMember</span></td>
+                    <td><span class="obj-badge obj-hourly">Hourly</span></td>
+                    <td><span class="method-badge mb-hourly">Hourly.pay()</span></td>
+                    <td><span class="pay-amount pay-pos">SAR 4,000</span></td>
+                </tr>
+                <tr>
+                    <td><span class="idx-badge">staff[3]</span></td>
+                    <td><span class="type-ref">StaffMember</span></td>
+                    <td><span class="obj-badge obj-vol">Volunteer</span></td>
+                    <td><span class="method-badge mb-vol">Volunteer.pay()</span></td>
+                    <td><span class="pay-amount pay-zero">SAR 0</span></td>
+                </tr>
+                <tr>
+                    <td><span class="idx-badge">staff[4]</span></td>
+                    <td><span class="type-ref">StaffMember</span></td>
+                    <td><span class="obj-badge obj-hourly">Hourly</span></td>
+                    <td><span class="method-badge mb-hourly">Hourly.pay()</span></td>
+                    <td><span class="pay-amount pay-pos">SAR 2,700</span></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="success-box" style="margin-top:20px;">
+            <div class="success-box-title">&#127881; The Power of Dynamic Binding</div>
+            <p>The compiler only knows each variable is a <code class="code-inline">StaffMember</code>.
+            But at runtime, the JVM inspects the actual object and calls the <em>right</em>
+            <code class="code-inline">pay()</code>. Five different implementations —
+            <strong>one line of code</strong>: <code class="code-inline">s.pay()</code>.</p>
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         SECTION 6 — CASTING: addHours
+         ══════════════════════════════════════════ -->
+    <div class="section">
+        <h2 class="section-title">
+            <span class="section-number">6</span>
+            Casting &mdash; Accessing Specific Methods
+        </h2>
+
+        <p>What if we want to log more hours for our Hourly workers?
+        The method <code class="code-inline">addHours()</code> exists <strong>only in Hourly</strong>
+        — it is NOT in StaffMember.
+        The polymorphic reference <code class="code-inline">s</code> (declared as StaffMember)
+        <em>cannot see</em> it directly.</p>
+
+        <div class="cast-flow">
+            <div class="cast-panel wrong">
+                <div class="cp-title">&#10060; This Does NOT Compile</div>
+                <div style="background:#000;border-radius:8px;padding:16px;font-family:monospace;font-size:.88rem;color:#f8f8f2;line-height:1.9;">
+<span style="color:#ff79c6;">for</span> (<span style="color:#50fa7b;">StaffMember</span> s : staff) {<br>
+&nbsp;&nbsp;<span style="color:#7a8bbf;">// ERROR! StaffMember has no addHours()</span><br>
+&nbsp;&nbsp;s.<span style="color:#8be9fd;">addHours</span>(<span style="color:#bd93f9;">40</span>); <span style="color:#ff5555;">// ← compile error!</span><br>
+}
+                </div>
+                <p style="margin-top:12px;font-size:.88rem;color:#991b1b;">
+                    The compiler checks the <em>declared type</em> (StaffMember) and
+                    finds no <code class="code-inline">addHours()</code> there. Refused!
+                </p>
+            </div>
+
+            <div class="cast-panel right">
+                <div class="cp-title">&#9989; Use instanceof + Downcast</div>
+                <div style="background:#000;border-radius:8px;padding:16px;font-family:monospace;font-size:.88rem;color:#f8f8f2;line-height:1.9;">
+<span style="color:#ff79c6;">for</span> (<span style="color:#50fa7b;">StaffMember</span> s : staff) {<br>
+&nbsp;&nbsp;<span style="color:#ff79c6;">if</span> (s <span style="color:#ff79c6;">instanceof</span> <span style="color:#50fa7b;">Hourly</span>) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#50fa7b;">Hourly</span> h = (<span style="color:#50fa7b;">Hourly</span>) s;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;h.<span style="color:#8be9fd;">addHours</span>(<span style="color:#bd93f9;">40</span>); <span style="color:#7a8bbf;">// ✓ works!</span><br>
+&nbsp;&nbsp;}<br>
+}
+                </div>
+                <p style="margin-top:12px;font-size:.88rem;color:#065f46;">
+                    First check with <code class="code-inline">instanceof</code>,
+                    then downcast to <code class="code-inline">Hourly</code>.
+                    Now the compiler sees the full Hourly interface.
+                </p>
+            </div>
+        </div>
+
+        <div class="code-container">
+            <div class="code-header" onclick="toggleCode(this)">
+                <span>&#11015; Full Casting Example — Log New Hours Mid-Period</span>
+                <span class="code-toggle">&#9660;</span>
+            </div>
+            <div class="code-block"><span class="comment">// Scenario: mid-month, log 40 more hours for every Hourly worker</span>
+<span class="keyword">for</span> (<span class="class-name">StaffMember</span> s : staff) {
+    <span class="keyword">if</span> (s <span class="keyword">instanceof</span> <span class="class-name">Hourly</span>) {
+
+        <span class="class-name">Hourly</span> h = (<span class="class-name">Hourly</span>) s;  <span class="comment">// downcast: StaffMember ref → Hourly ref</span>
+        h.<span class="method">addHours</span>(<span class="number">40</span>);         <span class="comment">// now we can call Hourly-specific method</span>
+
+        System.out.<span class="method">println</span>(<span class="string">"Logged 40 hours for: "</span> + h);
+    }
+}
+
+<span class="comment">// Output:</span>
+<span class="comment">// Logged 40 hours for: Layla (055-0003) [HR-001] | Rate: 50.0 SAR/hr</span>
+<span class="comment">// Logged 40 hours for: Ziad  (055-0005) [HR-002] | Rate: 45.0 SAR/hr</span></div>
+        </div>
+
+        <div class="key-box">
+            <div class="key-box-title">&#129300; Rule: What Can You See Through a Polymorphic Reference?</div>
+            <p>A <code class="code-inline">StaffMember</code> reference can <strong>only see methods
+            defined in StaffMember</strong>.
+            To access subclass-specific methods (like <code class="code-inline">addHours()</code> or
+            <code class="code-inline">awardBonus()</code>),
+            you must first check with <code class="code-inline">instanceof</code>,
+            then <strong>downcast</strong> the reference.</p>
+        </div>
+
+        <div class="info-box" style="margin-top:20px;">
+            <div class="info-box-title">&#128204; We Already Used Casting — Setup Before Payroll!</div>
+            <p>Remember the setup lines at the top of our program?</p>
+            <div style="margin:12px 0;font-family:monospace;font-size:.9rem;background:rgba(37,99,235,.08);padding:12px 16px;border-radius:8px;line-height:2;">
+                ((<strong>Executive</strong>) staff[0]).<strong>awardBonus</strong>(2000.0);&nbsp;&nbsp;<span style="color:#6b7280;">// downcast to reach awardBonus()</span><br>
+                ((<strong>Hourly</strong>)&nbsp;&nbsp;&nbsp;&nbsp;staff[2]).<strong>addHours</strong>(80);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#6b7280;">// downcast to reach addHours()</span><br>
+                ((<strong>Hourly</strong>)&nbsp;&nbsp;&nbsp;&nbsp;staff[4]).<strong>addHours</strong>(60);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#6b7280;">// downcast to reach addHours()</span>
+            </div>
+            <p>Both <code class="code-inline">awardBonus()</code> and <code class="code-inline">addHours()</code>
+            are <strong>not in StaffMember</strong>, so the polymorphic array cannot call them directly.
+            Casting is the only way.</p>
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         SECTION 7 — DESIGN DISCUSSION
+         ══════════════════════════════════════════ -->
+    <div class="section">
+        <h2 class="section-title">
+            <span class="section-number">7</span>
+            Design Discussion &mdash; The Volunteer Problem
+        </h2>
+
+        <p>Now let's think critically about this design.
+        Our polymorphic loop calls <code class="code-inline">s.pay()</code> for every staff member.
+        This works — but is it a <strong>good design</strong>?</p>
+
+        <div class="danger-box">
+            <div class="danger-box-title">&#9888;&#65038; The Problem: Volunteer Has a pay() That Means Nothing</div>
+            <p>Look at <code class="code-inline">Volunteer.pay()</code> — it returns <strong>0.0</strong>.
+            This method exists only because <code class="code-inline">StaffMember</code> declares it.
+            In the real world, a volunteer is simply <em>not payable</em> — they shouldn't have a
+            <code class="code-inline">pay()</code> method at all.
+            But we forced it onto them by putting <code class="code-inline">pay()</code> in the superclass!</p>
+        </div>
+
+        <div class="design-compare">
+            <div class="design-panel bad">
+                <div class="dp-title">&#10060; Current Design — pay() in Superclass</div>
+                <div style="font-family:monospace;font-size:.84rem;line-height:1.9;background:rgba(220,38,38,.07);padding:12px;border-radius:8px;">
+                    StaffMember { pay() → 0 }<br>
+                    &nbsp;&nbsp;&#8627; Employee { pay() → salary }<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&#8627; Executive { pay() → salary+bonus }<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&#8627; Hourly { pay() → hrs×rate }<br>
+                    &nbsp;&nbsp;&#8627; <strong style="color:#dc2626;">Volunteer { pay() → 0 }</strong> &#8592; forced!
+                </div>
+                <p style="margin-top:12px;font-size:.85rem;color:#991b1b;">
+                    Volunteer is <em>not payable</em> in real life.
+                    Forcing <code class="code-inline">pay()</code> onto it is a design compromise.
+                </p>
+            </div>
+
+            <div class="design-panel good">
+                <div class="dp-title">&#9989; Better Design — Payable Interface (Coming Later)</div>
+                <div style="font-family:monospace;font-size:.84rem;line-height:1.9;background:rgba(5,150,105,.07);padding:12px;border-radius:8px;">
+                    StaffMember { name, address, phone }<br>
+                    &nbsp;&nbsp;&#8627; Employee <strong style="color:#059669;">implements Payable</strong><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&#8627; Executive <em>(inherits Payable)</em><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&#8627; Hourly <em>(inherits Payable)</em><br>
+                    &nbsp;&nbsp;&#8627; Volunteer &nbsp;<em style="color:#059669;">← no pay() at all! ✓</em>
+                </div>
+                <p style="margin-top:12px;font-size:.85rem;color:#065f46;">
+                    With an interface, only <em>paid</em> staff implement <code class="code-inline">Payable</code>.
+                    Volunteer is cleanly excluded.
+                </p>
+            </div>
+        </div>
+
+        <div class="discussion-box">
+            <h4>&#127947;&#65038; Class Discussion</h4>
+            <div class="speech-bubble">
+                <div class="speech-who">&#128100; Student asks:</div>
+                <div class="speech-text">
+                    Doctor — if <code style="background:rgba(255,255,255,.15);padding:1px 6px;border-radius:4px;">Volunteer.pay()</code> always returns zero,
+                    why is it even there? Can't we just remove it?
+                </div>
+            </div>
+            <div class="speech-bubble">
+                <div class="speech-who">&#128161; The Doctor replies:</div>
+                <div class="speech-text">
+                    Excellent question! We <em>had</em> to put <code style="background:rgba(255,255,255,.15);padding:1px 6px;border-radius:4px;">pay()</code>
+                    in <strong>StaffMember</strong> so that the polymorphic loop can call
+                    <code style="background:rgba(255,255,255,.15);padding:1px 6px;border-radius:4px;">s.pay()</code> on every element.
+                    If <code style="background:rgba(255,255,255,.15);padding:1px 6px;border-radius:4px;">pay()</code> was not in StaffMember,
+                    the compiler would refuse — because <code style="background:rgba(255,255,255,.15);padding:1px 6px;border-radius:4px;">s</code>
+                    is declared as StaffMember.
+                    <br><br>
+                    So yes — <strong>we forced Volunteer to have a method it conceptually does not need</strong>.
+                    This is a real design problem. It is not good design. But at this level, we accept it
+                    because we have no better tool yet.
+                </div>
+            </div>
+            <div class="speech-bubble">
+                <div class="speech-who">&#128100; Student asks:</div>
+                <div class="speech-text">
+                    Then what is the better solution, Doctor?
+                </div>
+            </div>
+            <div class="speech-bubble">
+                <div class="speech-who">&#127775; Coming Soon — Interfaces!</div>
+                <div class="speech-text">
+                    The correct fix is to create a <strong>Payable interface</strong> with a
+                    <code style="background:rgba(255,255,255,.15);padding:1px 6px;border-radius:4px;">pay()</code> method.
+                    Only Employee (and its subclasses Executive and Hourly) would
+                    implement <strong>Payable</strong>. Volunteer would <em>not</em> implement it —
+                    so it would have no <code style="background:rgba(255,255,255,.15);padding:1px 6px;border-radius:4px;">pay()</code> at all.
+                    <br><br>
+                    The payroll loop would then iterate over <strong>Payable[]</strong>
+                    (not StaffMember[]) and Volunteer would simply not appear in the payroll.
+                    We will study this in the <strong>Interfaces</strong> chapter — stay tuned!
+                </div>
+            </div>
+        </div>
+
+        <div class="purple-box">
+            <div class="purple-box-title">&#128204; Key Takeaway</div>
+            <p>This example shows that polymorphism with inheritance has limits.
+            When a method in the superclass does not make conceptual sense for every subclass,
+            it is a <strong>design smell</strong>.
+            Interfaces give us a cleaner way to say: <em>"only these specific classes are Payable"</em>
+            — without forcing the method onto everyone else.</p>
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         SECTION 8 — DEGREES OF POLYMORPHISM
+         ══════════════════════════════════════════ -->
+    <div class="section">
+        <h2 class="section-title">
+            <span class="section-number">8</span>
+            Degrees of Polymorphism &mdash; In Our Staff System
+        </h2>
+
+        <p>Now that we have seen the payroll system in action, let's ask a critical question:
+        <strong>how polymorphic is our design really?</strong>
+        Polymorphism is not always 100% — the degree depends on
+        <strong>how many subclasses genuinely and naturally share each behavior</strong>.</p>
+
+        <!-- 100% — toString / identity -->
+        <div class="degree-card" style="border-color:#059669;background:linear-gradient(135deg,#f0fdf4,#dcfce7);">
+            <div class="degree-pct" style="color:#059669;">100%</div>
+            <div class="degree-bar-wrap">
+                <div class="degree-bar" style="background:linear-gradient(90deg,#059669,#22c55e);width:100%;"></div>
+                <div style="font-weight:700;color:#065f46;margin-bottom:4px;">All staff types share this — fully natural</div>
+                <div class="degree-desc">
+                    <code class="code-inline">toString()</code>, <code class="code-inline">getName()</code> —
+                    every StaffMember has a name and an identity.
+                    Executive, Employee, Hourly, and Volunteer <em>all</em> genuinely have these.
+                    Placing them in <code class="code-inline">StaffMember</code> is 100% natural.
+                    This is perfect polymorphism!
+                </div>
+            </div>
+        </div>
+
+        <!-- ~75% — pay() -->
+        <div class="degree-card" style="border-color:#d97706;background:linear-gradient(135deg,#fffbeb,#fef3c7);">
+            <div class="degree-pct" style="color:#d97706;">75%</div>
+            <div class="degree-bar-wrap">
+                <div class="degree-bar" style="background:linear-gradient(90deg,#d97706,#f59e0b);width:75%;"></div>
+                <div style="font-weight:700;color:#92400e;margin-bottom:4px;">Most staff are paid — but not all</div>
+                <div class="degree-desc">
+                    <code class="code-inline">pay()</code> — Executive, Employee, and Hourly genuinely earn a payment.
+                    But <strong>Volunteer.pay() returns 0.0</strong> — a forced, artificial implementation.
+                    We put <code class="code-inline">pay()</code> in <code class="code-inline">StaffMember</code>
+                    to make the polymorphic loop work, even though a volunteer conceptually
+                    has no salary at all.
+                    This is ~75% natural — a reasonable compromise, but still a design smell.
+                </div>
+            </div>
+        </div>
+
+        <!-- ~25% — addHours / awardBonus -->
+        <div class="degree-card" style="border-color:#dc2626;background:linear-gradient(135deg,#fff5f5,#fee2e2);">
+            <div class="degree-pct" style="color:#dc2626;">25%</div>
+            <div class="degree-bar-wrap">
+                <div class="degree-bar" style="background:linear-gradient(90deg,#dc2626,#ef4444);width:25%;"></div>
+                <div style="font-weight:700;color:#991b1b;margin-bottom:4px;">Role-specific behaviors — do NOT put in StaffMember!</div>
+                <div class="degree-desc">
+                    <code class="code-inline">addHours()</code> — only <code class="code-inline">Hourly</code> staff log hours.
+                    <code class="code-inline">awardBonus()</code> — only <code class="code-inline">Executive</code> receives a bonus.
+                    <strong>These must NOT go into StaffMember.</strong>
+                    What would an Executive's hourly log even mean?
+                    What bonus does a Volunteer receive?
+                    These require <strong>downcasting</strong> — exactly what Section 6 demonstrated.
+                </div>
+            </div>
+        </div>
+
+        <div class="key-box">
+            <div class="key-box-title">&#9878; The Design Rule — Very Important!</div>
+            <strong>Do NOT add a method to the superclass just to achieve 100% polymorphism.</strong>
+            <br><br>
+            Only add methods to the superclass that are <em>naturally and reasonably shared</em>
+            by all (or most) subclasses.
+            Forcing <code class="code-inline">addHours()</code> into <code class="code-inline">StaffMember</code>
+            just to avoid casting would be <strong>bad design</strong> — it would give every Executive,
+            Employee, and Volunteer an hours counter that makes no sense for their role.
+            <br><br>
+            It is perfectly fine to apply polymorphism at 75% or 80%. That is still excellent design.
+            What matters is that the shared methods are <em>conceptually meaningful</em> for every subclass
+            that inherits them.
+        </div>
+
+        <!-- Student discussion -->
+        <div class="discussion-box">
+            <h4>&#127947;&#65038; Class Discussion</h4>
+
+            <div class="speech-bubble">
+                <div class="speech-who">&#128100; Student asks:</div>
+                <div class="speech-text">
+                    Doctor — so <code style="background:rgba(255,255,255,.15);padding:1px 6px;border-radius:4px;">pay()</code>
+                    is not truly 100% polymorphic in our system?
+                </div>
+            </div>
+
+            <div class="speech-bubble">
+                <div class="speech-who">&#128161; The Doctor replies:</div>
+                <div class="speech-text">
+                    Exactly right. Look at the four concrete types in our system:<br><br>
+                    &bull; <strong>Executive</strong> — salary + bonus &rarr; pay() is real and meaningful ✓<br>
+                    &bull; <strong>Employee</strong> — monthly salary &rarr; pay() is real ✓<br>
+                    &bull; <strong>Hourly</strong> — hours &times; rate &rarr; pay() is real ✓<br>
+                    &bull; <strong>Volunteer</strong> — returns 0.0 &rarr; pay() is <em>forced and artificial</em> ✗<br><br>
+                    So <code style="background:rgba(255,255,255,.15);padding:1px 6px;border-radius:4px;">pay()</code>
+                    is <strong>natural for 3 out of 4 staff types</strong>.
+                    We accepted that trade-off to keep the payroll loop simple and uniform.
+                </div>
+            </div>
+
+            <div class="speech-bubble">
+                <div class="speech-who">&#128100; Student asks:</div>
+                <div class="speech-text">
+                    But Doctor — if we cannot reach 100%, does that mean our design is wrong?
+                </div>
+            </div>
+
+            <div class="speech-bubble">
+                <div class="speech-who">&#128161; The Doctor replies:</div>
+                <div class="speech-text">
+                    Not wrong — just a compromise that we knowingly accept.
+                    In real software, you rarely achieve 100% for every method.
+                    The key question is always: <em>is the compromise reasonable?</em>
+                    <br><br>
+                    Here, treating a Volunteer's pay as zero is understandable in a payroll report.
+                    But the <strong>cleaner solution</strong> is the
+                    <code style="background:rgba(255,255,255,.15);padding:1px 6px;border-radius:4px;">Payable</code>
+                    interface we discussed in Section 7 — where only genuinely payable staff
+                    implement the interface, and Volunteer is simply excluded from the payroll loop entirely.
+                    That design achieves <strong>100% conceptual purity</strong>.
+                    We will build it in the Interfaces chapter!
+                </div>
+            </div>
+
+            <div class="speech-bubble">
+                <div class="speech-who">&#128100; Student asks:</div>
+                <div class="speech-text">
+                    So how do we know when to stop trying to push a method into the superclass?
+                </div>
+            </div>
+
+            <div class="speech-bubble">
+                <div class="speech-who">&#128161; The Doctor replies:</div>
+                <div class="speech-text">
+                    Ask yourself this question: <em>"Does every subclass that inherits this method
+                    have a <strong>meaningful, real-world</strong> version of it?"</em>
+                    <br><br>
+                    &bull; <code style="background:rgba(255,255,255,.15);padding:1px 6px;border-radius:4px;">toString()</code>
+                    in StaffMember? Yes — every staff member has an identity. Put it there. ✓<br>
+                    &bull; <code style="background:rgba(255,255,255,.15);padding:1px 6px;border-radius:4px;">pay()</code>
+                    in StaffMember? Mostly yes, but Volunteer is an exception. Acceptable compromise. ⚠<br>
+                    &bull; <code style="background:rgba(255,255,255,.15);padding:1px 6px;border-radius:4px;">addHours()</code>
+                    in StaffMember? No — only Hourly staff have hours. Keep it out! ✗<br><br>
+                    This reasoning is how experienced engineers decide what belongs in the superclass.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         SUMMARY
+         ══════════════════════════════════════════ -->
+    <div class="section">
+        <h2 class="section-title">
+            <span class="section-number star">&#9733;</span>
+            Summary &mdash; What You Learned in This Example
+        </h2>
+
+        <div class="summary-grid">
+            <div class="summary-card s1">
+                <div class="sc-icon">&#127970;</div>
+                <div class="sc-title">Real Hierarchy</div>
+                <div class="sc-desc">5 classes in a 3-level hierarchy: StaffMember → Employee → Executive/Hourly + Volunteer.</div>
+            </div>
+            <div class="summary-card s2">
+                <div class="sc-icon">&#128203;</div>
+                <div class="sc-title">Polymorphic Array</div>
+                <div class="sc-desc">StaffMember[] holds Executive, Employee, Hourly, and Volunteer objects together.</div>
+            </div>
+            <div class="summary-card s3">
+                <div class="sc-icon">&#9654;&#65038;</div>
+                <div class="sc-title">Dynamic Binding</div>
+                <div class="sc-desc">s.pay() calls the right version at runtime — Executive.pay(), Hourly.pay(), etc.</div>
+            </div>
+            <div class="summary-card s4">
+                <div class="sc-icon">&#11015;</div>
+                <div class="sc-title">Casting</div>
+                <div class="sc-desc">addHours() and awardBonus() need instanceof + downcast — they are not in StaffMember.</div>
+            </div>
+            <div class="summary-card s1">
+                <div class="sc-icon">&#9888;&#65038;</div>
+                <div class="sc-title">Design Smell</div>
+                <div class="sc-desc">Putting pay() in StaffMember forces Volunteer to have a method it shouldn't need.</div>
+            </div>
+            <div class="summary-card s2">
+                <div class="sc-icon">&#127775;</div>
+                <div class="sc-title">Coming: Interfaces</div>
+                <div class="sc-desc">A Payable interface solves this cleanly — only paid staff implement it. Volunteer stays out.</div>
+            </div>
+            <div class="summary-card s3">
+                <div class="sc-icon">&#128200;</div>
+                <div class="sc-title">Degrees of Polymorphism</div>
+                <div class="sc-desc">toString() is 100% natural. pay() is ~75% (Volunteer is forced). addHours()/awardBonus() stay out of the superclass.</div>
+            </div>
+        </div>
+    </div>
+
+    </div><!-- /content -->
+
+    <!-- Bottom Nav -->
+    <div class="bottom-nav">
+        <a href="index.html" class="nav-prev">&#8592; Polymorphism</a>
+        <a href="../module08-abstract-classes/index.html" class="nav-next">Abstract Classes &#8594;</a>
+    </div>
+
+</div><!-- /container -->
+
+<div class="footer">
+    <p><strong>CPCS203</strong> &nbsp;&#183;&nbsp; Object-Oriented Programming &nbsp;&#183;&nbsp; Module 7: Polymorphism — Practical Example</p>
+    <p>Faculty of Computing and Information Technology &nbsp;&#183;&nbsp; King Abdulaziz University</p>
+    <p>Prepared by Dr. Almalawi</p>
+</div>
+
+<script>
+function toggleCode(header) {
+    const codeBlock = header.nextElementSibling;
+    const toggle = header.querySelector('.code-toggle');
+    codeBlock.classList.toggle('collapsed');
+    toggle.classList.toggle('collapsed');
+    const label = header.querySelector('span:first-child');
+    if (label && label.textContent.includes('Code')) {
+        label.innerHTML = codeBlock.classList.contains('collapsed')
+            ? '&#128065;&#65038; Show Code'
+            : '&#128065;&#65038; Hide Code';
+    }
+}
+</script>
+</body>
+</html>
