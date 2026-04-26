@@ -235,8 +235,8 @@
         .code-toggle.collapsed { transform: rotate(-90deg); }
 
         .code-block {
-            background: #000000;
-            color: #f8f8f2;
+            background: var(--cb-bg, #000000);
+            color: var(--cb-text, #f8f8f2);
             padding: 25px 30px;
             border-radius: 0 0 8px 8px;
             overflow-x: auto;
@@ -246,34 +246,104 @@
             white-space: pre;
             max-height: 800px;
             overflow-y: auto;
-            transition: max-height 0.3s ease;
+            transition: max-height 0.3s ease, background 0.3s ease, color 0.3s ease;
             letter-spacing: 0.3px;
         }
         .code-block.collapsed { max-height: 0; padding: 0 30px; overflow: hidden; }
-        .code-block .comment    { color: #7a8bbf; }
-        .code-block .keyword    { color: #ff79c6; font-weight: bold; }
-        .code-block .class-name { color: #50fa7b; font-weight: bold; }
-        .code-block .method     { color: #8be9fd; }
-        .code-block .string     { color: #f1fa8c; }
-        .code-block .number     { color: #bd93f9; }
+        .code-block .comment    { color: var(--cb-comment,  #7a8bbf); }
+        .code-block .keyword    { color: var(--cb-keyword,  #ff79c6); font-weight: bold; }
+        .code-block .class-name { color: var(--cb-class,    #50fa7b); font-weight: bold; }
+        .code-block .method     { color: var(--cb-method,   #8be9fd); }
+        .code-block .string     { color: var(--cb-string,   #f1fa8c); }
+        .code-block .number     { color: var(--cb-number,   #bd93f9); }
+
+        /* ── Code-theme floating picker ─────────────────── */
+        #code-theme-picker {
+            position: fixed;
+            bottom: 28px;
+            right: 28px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 10px;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        #theme-toggle-btn {
+            background: linear-gradient(135deg, #7e22ce, #a855f7);
+            color: #fff;
+            border: none;
+            border-radius: 50px;
+            padding: 11px 20px;
+            font-size: 0.88rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 18px rgba(126,34,206,0.5);
+            letter-spacing: 0.5px;
+            transition: box-shadow 0.2s;
+        }
+        #theme-toggle-btn:hover { box-shadow: 0 6px 24px rgba(126,34,206,0.7); }
+        #theme-panel {
+            background: #fff;
+            border-radius: 14px;
+            padding: 14px 16px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+            display: none;
+            flex-direction: column;
+            gap: 8px;
+            min-width: 210px;
+            border: 1px solid #e9d5ff;
+        }
+        #theme-panel.open { display: flex; }
+        #theme-panel .tp-label {
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #7e22ce;
+            margin-bottom: 4px;
+        }
+        .theme-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            font-size: 0.88rem;
+            font-weight: 600;
+            transition: border-color 0.2s, background 0.2s;
+            background: #f9fafb;
+            color: #1f2937;
+        }
+        .theme-btn:hover { background: #f3e8ff; border-color: #a855f7; }
+        .theme-btn.active { border-color: #7e22ce; background: #ede9fe; }
+        .theme-swatch {
+            width: 28px; height: 28px;
+            border-radius: 6px;
+            border: 1px solid rgba(0,0,0,0.15);
+            flex-shrink: 0;
+        }
 
         .code-inline {
             background: #f3f4f6; padding: 2px 8px; border-radius: 5px;
             font-family: 'Consolas', 'Monaco', monospace;
-            color: var(--purple-dark); font-size: .92em;
+            color: var(--purple-dark); font-size: .93em; font-weight: 700;
         }
 
         /* ── Terminal ───────────────────────────────────── */
-        .terminal { background: #0f172a; border-radius: 12px; overflow: hidden; margin: 18px 0; border: 1px solid #334155; }
-        .terminal-header { background: #1e293b; padding: 10px 16px; display: flex; align-items: center; gap: 8px; }
+        .terminal { background: var(--tm-bg, #0f172a); border-radius: 12px; overflow: hidden; margin: 18px 0; border: 1px solid var(--tm-border, #334155); transition: background 0.3s, border-color 0.3s; }
+        .terminal-header { background: var(--tm-header, #1e293b); padding: 10px 16px; display: flex; align-items: center; gap: 8px; transition: background 0.3s; }
         .terminal-dot { width: 12px; height: 12px; border-radius: 50%; }
         .terminal-dot.r { background: #ef4444; }
         .terminal-dot.y { background: #f59e0b; }
         .terminal-dot.g { background: #22c55e; }
-        .terminal-title { color: #94a3b8; font-size: .85rem; margin-left: 8px; font-family: monospace; }
+        .terminal-title { color: var(--tm-title, #94a3b8); font-size: .85rem; margin-left: 8px; font-family: monospace; transition: color 0.3s; }
         .terminal-body {
-            padding: 20px 22px; color: #e2e8f0;
+            padding: 20px 22px; color: var(--tm-text, #e2e8f0);
             font-family: 'Consolas', 'Monaco', monospace; font-size: 1rem; line-height: 1.8;
+            white-space: pre; transition: color 0.3s;
         }
 
         /* ── Shape cards ──────────────────────────────── */
@@ -335,6 +405,7 @@
         .cup-card.poly { border-color: var(--success); background: linear-gradient(135deg, #f0fdf4, #d1fae5); }
         .cup-card.mono { border-color: var(--danger); background: linear-gradient(135deg, #fff5f5, #fee2e2); }
         .cup-card .c-icon { font-size: 3.5rem; margin-bottom: 10px; }
+        .cup-card .c-icon img { width: 110px; height: 110px; object-fit: contain; border-radius: 12px; }
         .cup-card .c-title { font-size: 1.15rem; font-weight: 800; margin-bottom: 8px; }
         .cup-card.poly .c-title { color: #065f46; }
         .cup-card.mono .c-title { color: #991b1b; }
@@ -394,6 +465,7 @@
         .bottom-nav a:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,.2); }
         .nav-prev { background: linear-gradient(135deg, var(--pink), var(--pink-dark)); }
         .nav-next { background: linear-gradient(135deg, var(--purple), var(--purple-dark)); }
+        .nav-practical { background: linear-gradient(135deg, #059669, #047857); font-size: 1rem; }
 
         /* ── Footer ─────────────────────────────────────── */
         .footer { background: #1f2937; color: #9ca3af; text-align: center; padding: 25px 20px; font-size: .9rem; }
@@ -418,6 +490,108 @@
             .pillar-chip { padding: 8px 12px; font-size: .82rem; }
             .degree-card { flex-direction: column; align-items: flex-start; }
         }
+
+        /* ── Array of Objects & ArrayList visualization ──────── */
+        .array-row { display: flex; align-items: stretch; margin: 12px 0; flex-wrap: wrap; }
+        .arr-cell {
+            border: 2px solid #a855f7; min-width: 72px; padding: 10px 6px;
+            text-align: center; font-family: 'Consolas', monospace;
+        }
+        .arr-cell:first-child { border-radius: 8px 0 0 8px; }
+        .arr-cell:last-child  { border-radius: 0 8px 8px 0; }
+        .arr-cell + .arr-cell { border-left: none; }
+        .arr-cell .ai { font-size: .7rem; color: #9ca3af; margin-bottom: 4px; }
+        .arr-cell .av { font-weight: 700; font-size: .85rem; color: #7e22ce; }
+        .arr-cell.empty      { background: #f9fafb; border-style: dashed; border-color: #d1d5db; }
+        .arr-cell.empty .av  { color: #9ca3af; font-style: italic; }
+        .arr-cell.arr-filled { background: linear-gradient(135deg, #f3e8ff, #e9d5ff); }
+        .arr-cell.arr-new    { background: linear-gradient(135deg, #d1fae5, #a7f3d0); border-color: #059669; }
+        .arr-cell.arr-new .av { color: #065f46; }
+        .arr-cell.arr-warn   { background: linear-gradient(135deg, #fef3c7, #fde68a); border-color: #d97706; }
+        .arr-cell.arr-warn .av { color: #92400e; }
+        .arr-label { font-size: .82rem; color: var(--gray); margin: 6px 0 14px 2px; }
+
+        .resize-flow { margin: 24px 0; }
+        .resize-step {
+            border-radius: 14px; padding: 32px 24px 20px;
+            margin: 20px 0; border: 2px solid; position: relative;
+        }
+        .resize-step.rs1 { border-color: #a855f7; background: linear-gradient(135deg, #faf5ff, #f3e8ff); }
+        .resize-step.rs2 { border-color: #d97706; background: linear-gradient(135deg, #fffbeb, #fef3c7); }
+        .resize-step.rs3 { border-color: #2563eb; background: linear-gradient(135deg, #eff6ff, #dbeafe); }
+        .resize-step.rs4 { border-color: #059669; background: linear-gradient(135deg, #f0fdf4, #d1fae5); }
+        .rs-badge {
+            position: absolute; top: -13px; left: 18px;
+            padding: 4px 14px; border-radius: 20px;
+            font-size: .8rem; font-weight: 800; color: white;
+        }
+        .resize-step.rs1 .rs-badge { background: linear-gradient(135deg, #a855f7, #7c3aed); }
+        .resize-step.rs2 .rs-badge { background: linear-gradient(135deg, #d97706, #b45309); }
+        .resize-step.rs3 .rs-badge { background: linear-gradient(135deg, #2563eb, #1d4ed8); }
+        .resize-step.rs4 .rs-badge { background: linear-gradient(135deg, #059669, #047857); }
+        .rs-title { font-weight: 800; font-size: 1rem; margin-bottom: 12px; }
+        .resize-step.rs1 .rs-title { color: #7e22ce; }
+        .resize-step.rs2 .rs-title { color: #92400e; }
+        .resize-step.rs3 .rs-title { color: #1e40af; }
+        .resize-step.rs4 .rs-title { color: #065f46; }
+
+        .cap-bar-wrap { margin: 12px 0 4px; }
+        .cap-bar-label { display: flex; justify-content: space-between; font-size: .8rem; color: var(--gray); margin-bottom: 5px; }
+        .cap-bar { height: 20px; background: #e5e7eb; border-radius: 10px; overflow: hidden; }
+        .cap-fill { height: 100%; border-radius: 10px; display: flex; align-items: center; padding-left: 10px; font-size: .78rem; font-weight: 700; color: white; }
+        .cap-fill.cf-ok     { background: linear-gradient(90deg, #a855f7, #7c3aed); }
+        .cap-fill.cf-warn   { background: linear-gradient(90deg, #f59e0b, #d97706); }
+        .cap-fill.cf-danger { background: linear-gradient(90deg, #dc2626, #991b1b); }
+        .cap-fill.cf-new    { background: linear-gradient(90deg, #059669, #047857); }
+
+        .ops-row { display: flex; gap: 10px; flex-wrap: wrap; margin: 16px 0; }
+        .op-pill {
+            display: inline-flex; align-items: center; gap: 7px;
+            padding: 9px 18px; border-radius: 30px;
+            font-weight: 700; font-size: .88rem; border: 2px solid;
+        }
+        .op-add    { border-color: #059669; background: #d1fae5; color: #065f46; }
+        .op-remove { border-color: #dc2626; background: #fee2e2; color: #991b1b; }
+        .op-get    { border-color: #2563eb; background: #dbeafe; color: #1e40af; }
+        .op-size   { border-color: #d97706; background: #fef3c7; color: #92400e; }
+        .op-iter   { border-color: #7c3aed; background: #ede9fe; color: #5b21b6; }
+
+        .discussion-box {
+            background: linear-gradient(135deg, #1e1b4b, #312e81);
+            border-radius: 16px; padding: 28px 30px; margin: 24px 0; color: white;
+        }
+        .discussion-box h4 { font-size: 1.1rem; margin-bottom: 16px; color: #a5b4fc; }
+        .speech-bubble {
+            background: rgba(255,255,255,.1); border-radius: 12px;
+            padding: 13px 18px; margin: 10px 0;
+        }
+        .speech-who  { font-size: .8rem; color: #a5b4fc; font-weight: 700; margin-bottom: 5px; }
+        .speech-text { font-size: .92rem; line-height: 1.75; }
+        .speech-text strong { color: #fbbf24; }
+
+        .al-compare-table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+        .al-compare-table th, .al-compare-table td { padding: 10px 14px; border-bottom: 1px solid #d1fae5; }
+        .al-compare-table thead tr { background: rgba(5,150,105,.12); }
+        .al-compare-table thead th { color: #065f46; text-align: left; border-bottom: 2px solid #059669; }
+        .al-compare-table tbody tr:nth-child(even) { background: rgba(5,150,105,.04); }
+        .al-compare-table td:not(:first-child) { text-align: center; }
+        .al-compare-table td:first-child { font-weight: 600; }
+
+        /* ═══ PROJECTOR MODE — overrides all dark CSS classes ═══ */
+        body.projector .nav-breadcrumb { background: #e9d5ff !important; }
+        body.projector .breadcrumb a   { color: #5b21b6 !important; }
+        body.projector .breadcrumb .sep, body.projector .breadcrumb .cur { color: #7c3aed !important; }
+        body.projector .lesson-nav a   { background: rgba(109,40,217,.12) !important; color: #4c1d95 !important; border: 1px solid #a78bfa !important; }
+        body.projector .code-header    { background: #c084fc !important; color: #3b0764 !important; }
+        body.projector .code-header:hover { background: #a855f7 !important; color: #fff !important; }
+        body.projector .footer         { background: #f3e8ff !important; color: #4c1d95 !important; }
+        body.projector .footer strong  { color: #3b0764 !important; }
+        body.projector .discussion-box { background: linear-gradient(135deg, #ede9fe, #ddd6fe) !important; color: #1f2937 !important; }
+        body.projector .discussion-box h4 { color: #4c1d95 !important; }
+        body.projector .speech-bubble  { background: rgba(109,40,217,.08) !important; border: 1px solid #c4b5fd !important; }
+        body.projector .speech-who     { color: #4c1d95 !important; }
+        body.projector .speech-text    { color: #1f2937 !important; }
+        body.projector .speech-text strong { color: #7c3aed !important; }
     </style>
 </head>
 <body>
@@ -434,6 +608,7 @@
         </div>
         <div class="lesson-nav">
             <a href="../module06-inheritance/index.html">&#8592; Inheritance</a>
+            <a href="practical-example.html">&#127970; Practical Example</a>
             <a href="../module08-abstract-classes/index.html">Abstract Classes &#8594;</a>
         </div>
     </nav>
@@ -807,11 +982,11 @@ shapes[<span class="number">5</span>] = <span class="keyword">new</span> <span c
                     <span class="terminal-dot g"></span>
                     <span class="terminal-title">Output</span>
                 </div>
-                <div class="terminal-body">[Red]    Area = 78.54
-[Blue]   Area = 24.00
-[Green]  Area = 6.00
-[Pink]   Area = 19.63
-[Gold]   Area = 16.00
+                <div class="terminal-body">[Red] Area = 78.54
+[Blue] Area = 24.00
+[Green] Area = 6.00
+[Pink] Area = 19.63
+[Gold] Area = 16.00
 [Purple] Area = 9.00</div>
             </div>
 
@@ -966,7 +1141,7 @@ s.<span class="method">getDiameter</span>();   <span class="comment">// &#10060;
 
             <div class="cup-grid">
                 <div class="cup-card poly">
-                    <div class="c-icon">&#9749;</div>
+                    <div class="c-icon"><img src="universal coffee.jpeg" alt="Universal Coffee Cup"></div>
                     <div class="c-title">&#128260; The Polymorphic Cup</div>
                     <div class="c-desc">A <strong>general cup</strong> — can hold any hot drink!</div>
                     <div class="drink-tags">
@@ -979,7 +1154,7 @@ s.<span class="method">getDiameter</span>();   <span class="comment">// &#10060;
                     <div style="margin-top:12px;font-size:.85rem;color:#065f46;font-style:italic;">Many types &#10003;</div>
                 </div>
                 <div class="cup-card mono">
-                    <div class="c-icon">&#9749;</div>
+                    <div class="c-icon"><img src="Arabian coffee.jpeg" alt="Arabian Coffee Cup"></div>
                     <div class="c-title">&#128683; The Non-Polymorphic Cup</div>
                     <div class="c-desc">The <strong>Arabic coffee cup (&#1601;&#1606;&#1580;&#1575;&#1606;)</strong> — only for Arabic coffee!</div>
                     <div class="drink-tags">
@@ -1477,73 +1652,11 @@ arabicCup = <span class="keyword">new</span> <span class="class-name">ArabianCof
         </div>
 
         <!-- ════════════════════════════════════════════════
-             SECTION 10 — DEGREES OF POLYMORPHISM
+             SECTION 10 — DYNAMIC BINDING
              ════════════════════════════════════════════════ -->
         <div class="section">
             <h2 class="section-title">
                 <span class="section-number">10</span>
-                Degrees of Polymorphism
-            </h2>
-
-            <p>Polymorphism is not always 100%. The degree depends on
-            <strong>how many behaviors all subclasses genuinely share</strong>.</p>
-
-            <div class="degree-card" style="border-color:#059669;background:linear-gradient(135deg,#f0fdf4,#dcfce7);">
-                <div class="degree-pct" style="color:#059669;">100%</div>
-                <div class="degree-bar-wrap">
-                    <div class="degree-bar" style="background:linear-gradient(90deg,#059669,#22c55e);width:100%;"></div>
-                    <div style="font-weight:700;color:#065f46;margin-bottom:4px;">All subclasses share the behavior</div>
-                    <div class="degree-desc">
-                        Example: <code class="code-inline">getArea()</code> — every shape has an area.
-                        Circle, Rectangle, Triangle, Square, Pentagon all have it. This is 100% polymorphic!
-                    </div>
-                </div>
-            </div>
-
-            <div class="degree-card" style="border-color:#d97706;background:linear-gradient(135deg,#fffbeb,#fef3c7);">
-                <div class="degree-pct" style="color:#d97706;">70%</div>
-                <div class="degree-bar-wrap">
-                    <div class="degree-bar" style="background:linear-gradient(90deg,#d97706,#f59e0b);width:70%;"></div>
-                    <div style="font-weight:700;color:#92400e;margin-bottom:4px;">Most subclasses share the behavior</div>
-                    <div class="degree-desc">
-                        Example: <code class="code-inline">getPerimeter()</code> — most shapes have it.
-                        We can reasonably add this to <code class="code-inline">Shape</code>.
-                    </div>
-                </div>
-            </div>
-
-            <div class="degree-card" style="border-color:#dc2626;background:linear-gradient(135deg,#fff5f5,#fee2e2);">
-                <div class="degree-pct" style="color:#dc2626;">20%</div>
-                <div class="degree-bar-wrap">
-                    <div class="degree-bar" style="background:linear-gradient(90deg,#dc2626,#ef4444);width:20%;"></div>
-                    <div style="font-weight:700;color:#991b1b;margin-bottom:4px;">Only a few subclasses have this behavior</div>
-                    <div class="degree-desc">
-                        Example: <code class="code-inline">getDiameter()</code> — only a Circle has a diameter.
-                        <strong>Do NOT add this to Shape!</strong>
-                        Rectangle, Triangle, and Square have no diameter.
-                    </div>
-                </div>
-            </div>
-
-            <div class="key-box">
-                <div class="key-box-title">&#9878; The Design Rule — Very Important!</div>
-                <strong>Do NOT add a method to the superclass just to achieve 100% polymorphism.</strong>
-                <br><br>
-                Only add methods to the superclass that are <em>naturally and reasonably shared</em>
-                by all (or most) subclasses. Forcing <code class="code-inline">getDiameter()</code>
-                into <code class="code-inline">Shape</code> just for the sake of polymorphism is
-                <strong>bad design</strong>. A good design reflects the real world — not artificial constraints.
-                <br><br>
-                It is perfectly fine to apply polymorphism at 70% or 80%. That is still excellent design!
-            </div>
-        </div>
-
-        <!-- ════════════════════════════════════════════════
-             SECTION 11 — DYNAMIC BINDING
-             ════════════════════════════════════════════════ -->
-        <div class="section">
-            <h2 class="section-title">
-                <span class="section-number">11</span>
                 Dynamic Binding — The Engine Behind Polymorphism
             </h2>
 
@@ -1694,14 +1807,14 @@ s.<span class="method">getArea</span>();   <span class="comment">// Compiler: sa
             <p>When Java sees <code class="code-inline">s.sound()</code> at runtime, it follows this exact lookup path:</p>
 
             <div style="background:#1e1b4b;border-radius:14px;padding:24px;margin:16px 0;font-family:'Courier New',monospace;font-size:.92em;line-height:1.9;color:#f8f8f2;overflow-x:auto;">
-                <div style="color:#c4b5fd;font-weight:700;margin-bottom:10px;">Example: Animal a = new Dog(); &nbsp; a.sound();</div>
+                <div style="color:#c4b5fd;font-weight:700;margin-bottom:10px;">Example: Animal a = new Camel(); &nbsp; a.sound();</div>
                 <div style="display:flex;flex-direction:column;gap:6px;">
                     <div style="background:#312e81;border-radius:8px;padding:8px 16px;">
-                        <span style="color:#818cf8;">Step 1:</span> JVM sees actual object is <span style="color:#50fa7b;font-weight:bold;">Dog</span>
+                        <span style="color:#818cf8;">Step 1:</span> JVM sees actual object is <span style="color:#50fa7b;font-weight:bold;">Camel</span>
                     </div>
                     <div style="padding-left:20px;color:#6b7280;">↓</div>
                     <div style="background:#1e3a5f;border-radius:8px;padding:8px 16px;">
-                        <span style="color:#38bdf8;">Step 2:</span> Does <span style="color:#50fa7b;">Dog</span> override <span style="color:#8be9fd;">sound()</span>? &nbsp;<span style="color:#fbbf24;">→ NO</span> — go UP
+                        <span style="color:#38bdf8;">Step 2:</span> Does <span style="color:#50fa7b;">Camel</span> override <span style="color:#8be9fd;">sound()</span>? &nbsp;<span style="color:#fbbf24;">→ NO</span> — go UP
                     </div>
                     <div style="padding-left:20px;color:#6b7280;">↓</div>
                     <div style="background:#1e3a5f;border-radius:8px;padding:8px 16px;">
@@ -1729,7 +1842,7 @@ s.<span class="method">getArea</span>();   <span class="comment">// Compiler: sa
             <p>Study this hierarchy carefully. Some classes override <code class="code-inline">sound()</code>, some do not:</p>
 
             <div class="code-container">
-                <div class="code-header" onclick="toggleCode(this)"><span>&#128196; The Animal → Mammal → Dog → Poodle hierarchy</span><span class="code-toggle">&#9660;</span></div>
+                <div class="code-header" onclick="toggleCode(this)"><span>&#128196; The Animal → Mammal → Camel → Hashi hierarchy</span><span class="code-toggle">&#9660;</span></div>
                 <div class="code-block"><span class="keyword">class</span> <span class="class-name">Animal</span> {
     <span class="keyword">public void</span> <span class="method">sound</span>() {
         System.out.<span class="method">println</span>(<span class="string">"Generic animal sound"</span>);
@@ -1743,14 +1856,14 @@ s.<span class="method">getArea</span>();   <span class="comment">// Compiler: sa
     }
 }
 
-<span class="keyword">class</span> <span class="class-name">Dog</span> <span class="keyword">extends</span> <span class="class-name">Mammal</span> {
-    <span class="comment">// ⚠ Dog does NOT override sound() — it INHERITS Mammal's version!</span>
+<span class="keyword">class</span> <span class="class-name">Camel</span> <span class="keyword">extends</span> <span class="class-name">Mammal</span> {
+    <span class="comment">// ⚠ Camel does NOT override sound() — it INHERITS Mammal's version!</span>
 }
 
-<span class="keyword">class</span> <span class="class-name">Poodle</span> <span class="keyword">extends</span> <span class="class-name">Dog</span> {
+<span class="keyword">class</span> <span class="class-name">Hashi</span> <span class="keyword">extends</span> <span class="class-name">Camel</span> {   <span class="comment">// Hashi = baby camel (حوار)</span>
     <span class="keyword">@Override</span>
     <span class="keyword">public void</span> <span class="method">sound</span>() {
-        System.out.<span class="method">println</span>(<span class="string">"Yip!"</span>);
+        System.out.<span class="method">println</span>(<span class="string">"Hwar!"</span>);
     }
 }</div>
             </div>
@@ -1771,15 +1884,15 @@ s.<span class="method">getArea</span>();   <span class="comment">// Compiler: sa
                     </div>
                     <div style="padding-left:40px;color:#6b7280;font-size:.85em;">extends ↓</div>
                     <div style="display:flex;align-items:center;gap:12px;background:#1e293b;border-radius:8px;padding:8px 16px;margin-left:20px;">
-                        <span style="color:#94a3b8;font-weight:bold;min-width:90px;">Dog</span>
+                        <span style="color:#94a3b8;font-weight:bold;min-width:90px;">Camel</span>
                         <span style="color:#f97316;">&#9888;&#65039; NO override</span>
                         <span style="color:#6b7280;margin-left:auto;">&rarr; inherits Mammal's</span>
                     </div>
                     <div style="padding-left:60px;color:#6b7280;font-size:.85em;">extends ↓</div>
                     <div style="display:flex;align-items:center;gap:12px;background:#1e3a5f;border-radius:8px;padding:8px 16px;margin-left:40px;">
-                        <span style="color:#50fa7b;font-weight:bold;min-width:90px;">Poodle</span>
+                        <span style="color:#50fa7b;font-weight:bold;min-width:90px;">Hashi</span>
                         <span style="color:#4ade80;">&#9989; overrides sound()</span>
-                        <span style="color:#6b7280;margin-left:auto;">&rarr; "Yip!"</span>
+                        <span style="color:#6b7280;margin-left:auto;">&rarr; "Hwar!" (baby camel)</span>
                     </div>
                 </div>
             </div>
@@ -1799,14 +1912,14 @@ s.<span class="method">getArea</span>();   <span class="comment">// Compiler: sa
                             <span>&#128065;&#65038; Show Code</span>
                             <span class="code-toggle collapsed">&#9660;</span>
                         </div>
-                        <div class="code-block collapsed"><span class="class-name">Animal</span> a = <span class="keyword">new</span> <span class="class-name">Poodle</span>();
+                        <div class="code-block collapsed"><span class="class-name">Animal</span> a = <span class="keyword">new</span> <span class="class-name">Hashi</span>();
 a.<span class="method">sound</span>();</div>
                     </div>
                     <button onclick="toggleAnswer(this)" style="background:#059669;color:#fff;border:none;border-radius:8px;padding:10px 22px;font-size:.95em;font-weight:700;cursor:pointer;display:block;width:100%;text-align:left;transition:background .2s;">&#128161; Show Answer &#9660;</button>
                     <div style="display:none;background:#f0fdf4;border:2px solid #16a34a;border-radius:0 0 8px 8px;padding:14px 16px;font-size:.93em;line-height:1.9;margin-top:-2px;">
-                        <strong style="color:#14532d;">Output: "Yip!"</strong><br>
-                        Actual object is <code>Poodle</code>. JVM checks: does <code>Poodle</code> override <code>sound()</code>?
-                        <strong>YES</strong> — uses <code>Poodle.sound()</code>.
+                        <strong style="color:#14532d;">Output: "Hwar!"</strong><br>
+                        Actual object is <code>Hashi</code> (baby camel). JVM checks: does <code>Hashi</code> override <code>sound()</code>?
+                        <strong>YES</strong> — uses <code>Hashi.sound()</code>.
                         The reference type <code>Animal</code> does not matter.
                     </div>
                 </div>
@@ -1823,16 +1936,16 @@ a.<span class="method">sound</span>();</div>
                             <span>&#128065;&#65038; Show Code</span>
                             <span class="code-toggle collapsed">&#9660;</span>
                         </div>
-                        <div class="code-block collapsed"><span class="class-name">Animal</span> a = <span class="keyword">new</span> <span class="class-name">Dog</span>();
+                        <div class="code-block collapsed"><span class="class-name">Animal</span> a = <span class="keyword">new</span> <span class="class-name">Camel</span>();
 a.<span class="method">sound</span>();</div>
                     </div>
                     <button onclick="toggleAnswer(this)" style="background:#059669;color:#fff;border:none;border-radius:20px;padding:10px 22px;font-size:.95em;font-weight:700;cursor:pointer;display:block;width:100%;text-align:left;transition:background .2s;">&#128161; Show Answer &#9660;</button>
                     <div style="display:none;background:#fffbeb;border:2px solid #d97706;border-radius:0 0 8px 8px;padding:14px 16px;font-size:.93em;line-height:1.9;margin-top:-2px;">
                         <strong style="color:#92400e;">Output: "Warm-blooded mammal sound"</strong><br>
-                        Actual object is <code>Dog</code>. JVM checks: does <code>Dog</code> override <code>sound()</code>?
-                        <strong>NO</strong> — <code>Dog</code> has no override! JVM goes UP to <code>Mammal</code>.
+                        Actual object is <code>Camel</code>. JVM checks: does <code>Camel</code> override <code>sound()</code>?
+                        <strong>NO</strong> — <code>Camel</code> has no override! JVM goes UP to <code>Mammal</code>.
                         Does <code>Mammal</code> override <code>sound()</code>? <strong>YES</strong> — uses <code>Mammal.sound()</code>.<br>
-                        <em>Many students expect "Dog's sound" — but Dog never defined one!</em>
+                        <em>Many students expect "Camel's sound" — but Camel never defined one!</em>
                     </div>
                 </div>
             </div>
@@ -1848,15 +1961,15 @@ a.<span class="method">sound</span>();</div>
                             <span>&#128065;&#65038; Show Code</span>
                             <span class="code-toggle collapsed">&#9660;</span>
                         </div>
-                        <div class="code-block collapsed"><span class="class-name">Mammal</span> m = <span class="keyword">new</span> <span class="class-name">Poodle</span>();
+                        <div class="code-block collapsed"><span class="class-name">Mammal</span> m = <span class="keyword">new</span> <span class="class-name">Hashi</span>();
 m.<span class="method">sound</span>();</div>
                     </div>
                     <button onclick="toggleAnswer(this)" style="background:#059669;color:#fff;border:none;border-radius:8px;padding:10px 22px;font-size:.95em;font-weight:700;cursor:pointer;display:block;width:100%;text-align:left;transition:background .2s;">&#128161; Show Answer &#9660;</button>
                     <div style="display:none;background:#f0fdf4;border:2px solid #16a34a;border-radius:0 0 8px 8px;padding:14px 16px;font-size:.93em;line-height:1.9;margin-top:-2px;">
-                        <strong style="color:#14532d;">Output: "Yip!"</strong><br>
-                        Reference type is <code>Mammal</code> — but the actual object is <code>Poodle</code>.
+                        <strong style="color:#14532d;">Output: "Hwar!"</strong><br>
+                        Reference type is <code>Mammal</code> — but the actual object is <code>Hashi</code> (baby camel).
                         Dynamic binding uses the <strong>actual object type</strong>, not the reference type.
-                        <code>Poodle</code> overrides <code>sound()</code> → <code>Poodle.sound()</code> runs.
+                        <code>Hashi</code> overrides <code>sound()</code> → <code>Hashi.sound()</code> runs.
                         The reference type only controls what methods you <em>can call</em> — not which version runs.
                     </div>
                 </div>
@@ -1899,8 +2012,8 @@ a.<span class="method">sound</span>();</div>
                         <div class="code-block collapsed"><span class="class-name">Animal</span>[] zoo = <span class="keyword">new</span> <span class="class-name">Animal</span>[<span class="number">4</span>];
 zoo[<span class="number">0</span>] = <span class="keyword">new</span> <span class="class-name">Animal</span>();
 zoo[<span class="number">1</span>] = <span class="keyword">new</span> <span class="class-name">Mammal</span>();
-zoo[<span class="number">2</span>] = <span class="keyword">new</span> <span class="class-name">Dog</span>();
-zoo[<span class="number">3</span>] = <span class="keyword">new</span> <span class="class-name">Poodle</span>();
+zoo[<span class="number">2</span>] = <span class="keyword">new</span> <span class="class-name">Camel</span>();
+zoo[<span class="number">3</span>] = <span class="keyword">new</span> <span class="class-name">Hashi</span>();
 
 <span class="keyword">for</span> (<span class="class-name">Animal</span> a : zoo) {
     a.<span class="method">sound</span>();
@@ -1912,8 +2025,8 @@ zoo[<span class="number">3</span>] = <span class="keyword">new</span> <span clas
                         <div style="font-family:'Courier New',monospace;background:#0f172a;color:#f8f8f2;padding:12px 14px;border-radius:8px;margin:10px 0;line-height:1.9;">
                             Generic animal sound &nbsp;&larr; Animal (defines, not overridden)<br>
                             Warm-blooded mammal sound &nbsp;&larr; Mammal (overrides Animal)<br>
-                            Warm-blooded mammal sound &nbsp;&larr; Dog (no override → goes up to Mammal)<br>
-                            Yip! &nbsp;&larr; Poodle (overrides → its own version)
+                            Warm-blooded mammal sound &nbsp;&larr; Camel (no override → goes up to Mammal)<br>
+                            Hwar! &nbsp;&larr; Hashi (baby camel, overrides → its own version)
                         </div>
                         <strong>Dynamic binding in full action!</strong>
                         Same loop, same call <code>a.sound()</code>, but four different results —
@@ -1937,74 +2050,11 @@ zoo[<span class="number">3</span>] = <span class="keyword">new</span> <span clas
         </div>
 
         <!-- ════════════════════════════════════════════════
-             SECTION 12 — ARRAYLIST
+             SECTION 11 — COMPLETE CODE EXAMPLE
              ════════════════════════════════════════════════ -->
         <div class="section">
             <h2 class="section-title">
-                <span class="section-number">12</span>
-                ArrayList — Polymorphism in Practice
-            </h2>
-
-            <p>Everything we've learned about polymorphic arrays applies equally to
-            <code class="code-inline">ArrayList</code> — Java's dynamic, resizable list.
-            An <code class="code-inline">ArrayList&lt;Shape&gt;</code> is a perfect example of
-            a <strong>polymorphic collection</strong>.</p>
-
-            <div class="code-container">
-                <div class="code-header" onclick="toggleCode(this)"><span>&#128204; Polymorphic ArrayList of Shapes</span><span class="code-toggle">&#9660;</span></div>
-            <div class="code-block"><span class="keyword">import</span> java.util.ArrayList;
-
-<span class="class-name">ArrayList</span>&lt;<span class="class-name">Shape</span>&gt; shapeList = <span class="keyword">new</span> <span class="class-name">ArrayList</span>&lt;&gt;();
-
-<span class="comment">// Add different shape types — all stored as Shape!</span>
-shapeList.<span class="method">add</span>(<span class="keyword">new</span> <span class="class-name">Circle</span>(<span class="string">"Red"</span>,    <span class="number">5.0</span>));
-shapeList.<span class="method">add</span>(<span class="keyword">new</span> <span class="class-name">Rectangle</span>(<span class="string">"Blue"</span>,  <span class="number">3.0</span>, <span class="number">4.0</span>));
-shapeList.<span class="method">add</span>(<span class="keyword">new</span> <span class="class-name">Triangle</span>(<span class="string">"Green"</span>, <span class="number">6.0</span>, <span class="number">2.0</span>));
-shapeList.<span class="method">add</span>(<span class="keyword">new</span> <span class="class-name">Circle</span>(<span class="string">"Gold"</span>,   <span class="number">3.5</span>));
-
-<span class="comment">// ONE loop handles ALL types — dynamic binding at work</span>
-<span class="keyword">for</span> (<span class="class-name">Shape</span> s : shapeList) {
-    System.out.<span class="method">printf</span>(<span class="string">"%-12s area = %.2f%n"</span>, s.<span class="method">getColor</span>(), s.<span class="method">getArea</span>());
-}
-
-<span class="comment">// Total area — one method, all types</span>
-<span class="keyword">double</span> total = <span class="number">0</span>;
-<span class="keyword">for</span> (<span class="class-name">Shape</span> s : shapeList) {
-    total += s.<span class="method">getArea</span>();
-}
-System.out.<span class="method">println</span>(<span class="string">"Total area: "</span> + total);</div>
-</div>
-
-            <div class="terminal">
-                <div class="terminal-header">
-                    <span class="terminal-dot r"></span>
-                    <span class="terminal-dot y"></span>
-                    <span class="terminal-dot g"></span>
-                    <span class="terminal-title">Output</span>
-                </div>
-                <div class="terminal-body">Red          area = 78.54
-Blue         area = 12.00
-Green        area = 6.00
-Gold         area = 38.48
-Total area: 135.02</div>
-            </div>
-
-            <div class="info-box">
-                <div class="info-box-title">&#128204; Why ArrayList Over Array?</div>
-                <ul style="margin-left:20px;line-height:2;">
-                    <li><code class="code-inline">Shape[]</code> — fixed size, must know the count upfront</li>
-                    <li><code class="code-inline">ArrayList&lt;Shape&gt;</code> — grows dynamically as you add more shapes</li>
-                    <li>Both are <strong>polymorphic collections</strong> — the concept is identical</li>
-                </ul>
-            </div>
-        </div>
-
-        <!-- ════════════════════════════════════════════════
-             SECTION 13 — COMPLETE CODE EXAMPLE
-             ════════════════════════════════════════════════ -->
-        <div class="section">
-            <h2 class="section-title">
-                <span class="section-number">13</span>
+                <span class="section-number">11</span>
                 Complete Code Example
             </h2>
 
@@ -2141,15 +2191,795 @@ Total area: 135.02</div>
                     <span class="terminal-title">Output — PolymorphismDemo.java</span>
                 </div>
                 <div class="terminal-body">=== All Shapes ===
-[Circle    | Red    | area=78.54]
-[Rectangle | Blue   | area=24.00]
-[Triangle  | Green  | area=6.00]
-[Circle    | Purple | area=19.63]
+[Circle | Red | area=78.54]
+[Rectangle | Blue | area=24.00]
+[Triangle | Green | area=6.00]
+[Circle | Purple | area=19.63]
 
 === Circle-Specific Info ===
-Circle diameter: 10.00
-Circle diameter: 5.00</div>
+Circle diameter: 10.0
+Circle diameter: 5.0</div>
             </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════════
+             SECTION 12 — ARRAY OF OBJECTS
+             ════════════════════════════════════════════════ -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-number">12</span>
+                Array of Objects
+            </h2>
+
+            <p>We already know that an array can hold primitive values like
+            <code class="code-inline">int</code> or <code class="code-inline">double</code>.
+            But arrays can also hold <strong>objects</strong>! When you have many objects of the
+            same class, you can group them all in a single array — this is called an
+            <strong>array of objects</strong>.</p>
+
+            <div class="code-container">
+                <div class="code-header" onclick="toggleCode(this)">
+                    <span>&#128100; Student[] — Storing Objects in a Fixed Array</span>
+                    <span class="code-toggle">&#9660;</span>
+                </div>
+                <div class="code-block"><span class="keyword">class</span> <span class="class-name">Student</span> {
+    <span class="keyword">private</span> <span class="class-name">String</span> name;
+    <span class="keyword">private</span> <span class="keyword">int</span> age;
+
+    <span class="keyword">public</span> <span class="class-name">Student</span>(<span class="class-name">String</span> name, <span class="keyword">int</span> age) {
+        <span class="keyword">this</span>.name = name;
+        <span class="keyword">this</span>.age  = age;
+    }
+
+    <span class="keyword">public</span> <span class="class-name">String</span> <span class="method">toString</span>() {
+        <span class="keyword">return</span> <span class="string">"Student("</span> + name + <span class="string">", age="</span> + age + <span class="string">")"</span>;
+    }
+}
+
+<span class="comment">// ── Create an array of 3 students ────────────────────</span>
+<span class="class-name">Student</span>[] students = <span class="keyword">new</span> <span class="class-name">Student</span>[<span class="number">3</span>];   <span class="comment">// size is FIXED at 3</span>
+students[<span class="number">0</span>] = <span class="keyword">new</span> <span class="class-name">Student</span>(<span class="string">"Ali"</span>,  <span class="number">20</span>);
+students[<span class="number">1</span>] = <span class="keyword">new</span> <span class="class-name">Student</span>(<span class="string">"Maha"</span>, <span class="number">21</span>);
+students[<span class="number">2</span>] = <span class="keyword">new</span> <span class="class-name">Student</span>(<span class="string">"Omar"</span>, <span class="number">19</span>);
+
+<span class="comment">// ── Iterate over all students ─────────────────────────</span>
+<span class="keyword">for</span> (<span class="class-name">Student</span> s : students) {
+    System.out.<span class="method">println</span>(s);
+}</div>
+            </div>
+
+            <div style="margin: 24px 0;">
+                <p style="font-weight:700;color:var(--purple-dark);margin-bottom:10px;">&#128202; The Array in Memory (capacity = 3):</p>
+                <div class="array-row">
+                    <div class="arr-cell arr-filled">
+                        <div class="ai">[0]</div>
+                        <div class="av">&#128100; Ali</div>
+                        <div style="font-size:.72rem;color:#9333ea;margin-top:3px;">age = 20</div>
+                    </div>
+                    <div class="arr-cell arr-filled">
+                        <div class="ai">[1]</div>
+                        <div class="av">&#128100; Maha</div>
+                        <div style="font-size:.72rem;color:#9333ea;margin-top:3px;">age = 21</div>
+                    </div>
+                    <div class="arr-cell arr-filled">
+                        <div class="ai">[2]</div>
+                        <div class="av">&#128100; Omar</div>
+                        <div style="font-size:.72rem;color:#9333ea;margin-top:3px;">age = 19</div>
+                    </div>
+                </div>
+                <div class="arr-label">students[] &nbsp;&#124;&nbsp; type: Student[] &nbsp;&#124;&nbsp; size: 3 &nbsp;&#124;&nbsp; <strong>fixed forever</strong></div>
+            </div>
+
+            <div class="danger-box">
+                <div class="danger-box-title">&#9888;&#65038; The Big Problem — Arrays Are FIXED in Size!</div>
+                <p>What happens when a 4th student joins? The array is <strong>full</strong>.
+                Java gives you <strong>no way to extend it</strong>.
+                The only solution is painful: <em>create a new, bigger array</em>,
+                <em>copy all the old items</em>, then throw the old array away.
+                You have to do this manually — every single time you need more space.</p>
+            </div>
+
+            <div class="code-container">
+                <div class="code-header" onclick="toggleCode(this)">
+                    <span>&#128260; Manual Resize — The Painful Way</span>
+                    <span class="code-toggle">&#9660;</span>
+                </div>
+                <div class="code-block"><span class="comment">// A 4th student joins! But the array only has 3 slots.</span>
+<span class="comment">// students[3] = new Student("Nora", 22);  // ← ERROR! Index out of bounds!</span>
+
+<span class="comment">// ── Step 1: Create a new, bigger array ───────────────</span>
+<span class="class-name">Student</span>[] bigger = <span class="keyword">new</span> <span class="class-name">Student</span>[<span class="number">6</span>];
+
+<span class="comment">// ── Step 2: Copy all old items to the new array ───────</span>
+<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; students.length; i++) {
+    bigger[i] = students[i];
+}
+
+<span class="comment">// ── Step 3: Point the reference to the new array ──────</span>
+students = bigger;
+
+<span class="comment">// ── Now we can finally add the 4th student ────────────</span>
+students[<span class="number">3</span>] = <span class="keyword">new</span> <span class="class-name">Student</span>(<span class="string">"Nora"</span>, <span class="number">22</span>);
+
+<span class="comment">// Imagine doing this every time you need more space... 😓</span></div>
+            </div>
+
+            <div style="margin: 20px 0;">
+                <p style="font-weight:700;color:var(--purple-dark);margin-bottom:10px;">&#128260; After Manual Resize (capacity = 6):</p>
+                <div class="array-row">
+                    <div class="arr-cell arr-filled"><div class="ai">[0]</div><div class="av">&#128100; Ali</div></div>
+                    <div class="arr-cell arr-filled"><div class="ai">[1]</div><div class="av">&#128100; Maha</div></div>
+                    <div class="arr-cell arr-filled"><div class="ai">[2]</div><div class="av">&#128100; Omar</div></div>
+                    <div class="arr-cell arr-warn"><div class="ai">[3]</div><div class="av">&#128100; Nora &#10133;</div></div>
+                    <div class="arr-cell empty"><div class="ai">[4]</div><div class="av">null</div></div>
+                    <div class="arr-cell empty"><div class="ai">[5]</div><div class="av">null</div></div>
+                </div>
+                <div class="arr-label">students[] &nbsp;&#124;&nbsp; new capacity: 6 &nbsp;&#124;&nbsp; resized manually by us</div>
+            </div>
+
+            <div class="key-box">
+                <div class="key-box-title">&#128161; There Has to Be a Better Way!</div>
+                <p>Isn't there something that handles the resizing <em>automatically</em>
+                so we can just focus on adding our students? Yes — Java gives us
+                <strong><code class="code-inline">ArrayList</code></strong>!</p>
+            </div>
+
+        </div>
+
+        <!-- ════════════════════════════════════════════════
+             SECTION 13 — ARRAYLIST: THE DYNAMIC ARRAY
+             ════════════════════════════════════════════════ -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-number">13</span>
+                ArrayList — The Dynamic Array
+            </h2>
+
+            <div class="purple-box">
+                <div class="purple-box-title">&#128204; Definition — What Is ArrayList?</div>
+                <p>An <strong>ArrayList</strong> is a <strong>dynamic (flexible) array</strong>
+                provided by Java. Unlike a regular array, an ArrayList can
+                <strong>grow and shrink automatically</strong> as you add or remove items.
+                You never need to worry about running out of space.</p>
+                <br>
+                <p>It lives in the package: &nbsp;<code class="code-inline">java.util.ArrayList</code></p>
+            </div>
+
+            <h3 class="subsection-title"><span class="sub-badge">Operations</span> What Can We Do with an ArrayList?</h3>
+
+            <div class="ops-row">
+                <span class="op-pill op-add">&#10133; add(item) &nbsp;&mdash;&nbsp; add to end</span>
+                <span class="op-pill op-remove">&#10134; remove(i) &nbsp;&mdash;&nbsp; remove by index</span>
+                <span class="op-pill op-get">&#128269; get(i) &nbsp;&mdash;&nbsp; retrieve item</span>
+                <span class="op-pill op-size">&#128202; size() &nbsp;&mdash;&nbsp; count items</span>
+                <span class="op-pill op-iter">&#128260; for loop &nbsp;&mdash;&nbsp; iterate all</span>
+            </div>
+
+            <div class="code-container">
+                <div class="code-header" onclick="toggleCode(this)">
+                    <span>&#128204; Basic ArrayList Operations</span>
+                    <span class="code-toggle">&#9660;</span>
+                </div>
+                <div class="code-block"><span class="keyword">import</span> java.util.<span class="class-name">ArrayList</span>;
+
+<span class="comment">// ── Create an ArrayList ────────────────────────────────</span>
+<span class="class-name">ArrayList</span> students = <span class="keyword">new</span> <span class="class-name">ArrayList</span>();
+
+<span class="comment">// ── ADD items — grows automatically! ──────────────────</span>
+students.<span class="method">add</span>(<span class="keyword">new</span> <span class="class-name">Student</span>(<span class="string">"Ali"</span>,  <span class="number">20</span>));
+students.<span class="method">add</span>(<span class="keyword">new</span> <span class="class-name">Student</span>(<span class="string">"Maha"</span>, <span class="number">21</span>));
+students.<span class="method">add</span>(<span class="keyword">new</span> <span class="class-name">Student</span>(<span class="string">"Omar"</span>, <span class="number">19</span>));
+students.<span class="method">add</span>(<span class="keyword">new</span> <span class="class-name">Student</span>(<span class="string">"Nora"</span>, <span class="number">22</span>));   <span class="comment">// no resize needed — ArrayList handles it!</span>
+students.<span class="method">add</span>(<span class="keyword">new</span> <span class="class-name">Student</span>(<span class="string">"Ziad"</span>, <span class="number">20</span>));   <span class="comment">// keeps growing!</span>
+
+<span class="comment">// ── SIZE — how many items? ─────────────────────────────</span>
+System.out.<span class="method">println</span>(<span class="string">"Total students: "</span> + students.<span class="method">size</span>());   <span class="comment">// 5</span>
+
+<span class="comment">// ── GET — retrieve by index (must cast!) ───────────────</span>
+<span class="class-name">Student</span> first = (<span class="class-name">Student</span>) students.<span class="method">get</span>(<span class="number">0</span>);
+System.out.<span class="method">println</span>(<span class="string">"First: "</span> + first);
+
+<span class="comment">// ── ITERATE — loop through all ─────────────────────────</span>
+<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; students.<span class="method">size</span>(); i++) {
+    <span class="class-name">Student</span> s = (<span class="class-name">Student</span>) students.<span class="method">get</span>(i);
+    System.out.<span class="method">println</span>(s);
+}
+
+<span class="comment">// ── REMOVE — removes by index, shifts others left ──────</span>
+students.<span class="method">remove</span>(<span class="number">1</span>);   <span class="comment">// removes Maha (index 1)</span>
+System.out.<span class="method">println</span>(<span class="string">"After remove: "</span> + students.<span class="method">size</span>());   <span class="comment">// 4</span></div>
+            </div>
+
+            <div class="terminal">
+                <div class="terminal-header">
+                    <span class="terminal-dot r"></span>
+                    <span class="terminal-dot y"></span>
+                    <span class="terminal-dot g"></span>
+                    <span class="terminal-title">Output</span>
+                </div>
+                <div class="terminal-body">Total students: 5
+First: Student(Ali, age=20)
+Student(Ali, age=20)
+Student(Maha, age=21)
+Student(Omar, age=19)
+Student(Nora, age=22)
+Student(Ziad, age=20)
+After remove: 4</div>
+            </div>
+
+            <!-- ── Discussion: Array vs ArrayList ── -->
+            <div class="discussion-box">
+                <h4>&#127947;&#65038; Class Discussion — Array or ArrayList?</h4>
+                <div class="speech-bubble">
+                    <div class="speech-who">&#127775; The Doctor asks:</div>
+                    <div class="speech-text">My students — what do you think is better:
+                    the <strong>array</strong> or the <strong>ArrayList</strong>?</div>
+                </div>
+                <div class="speech-bubble">
+                    <div class="speech-who">&#128100; Students say:</div>
+                    <div class="speech-text">ArrayList! It grows automatically — no manual copy needed!</div>
+                </div>
+                <div class="speech-bubble">
+                    <div class="speech-who">&#128161; The Doctor replies:</div>
+                    <div class="speech-text">Good answer — I love it! But do you know a <strong>secret</strong>?
+                    <strong>ArrayList is built on top of a regular fixed array</strong> inside Java.
+                    The core of ArrayList is still a plain array. ArrayList just
+                    <em>manages the resizing for you</em> automatically!
+                    And remember — ArrayList is not always fast.
+                    Imagine you have <strong>a million items</strong> and the array fills up —
+                    Java must copy all one million items to a new array.
+                    That is expensive! So ArrayList is convenient, but not always the fastest choice.</div>
+                </div>
+            </div>
+
+            <!-- ── The Secret Inside ── -->
+            <h3 class="subsection-title">&#128268; The Secret Inside ArrayList — How It Really Works</h3>
+
+            <p>Inside Java, <code class="code-inline">ArrayList</code> secretly uses a
+            <strong>regular fixed array</strong> to store your data. When that hidden array becomes
+            <strong>completely full</strong>, it automatically:</p>
+
+            <ol style="margin-left:24px;line-height:2.3;margin-top:12px;margin-bottom:12px;">
+                <li>Creates a <strong>new, bigger array</strong> &mdash; 1.5&times; the old size</li>
+                <li><strong>Copies</strong> all old items into the new array</li>
+                <li><strong>Switches</strong> to the new array and discards the old one (garbage collector removes it)</li>
+            </ol>
+
+            <p>Let's visualize it step by step. Suppose the hidden array starts with capacity <strong>4</strong>:</p>
+
+            <div class="resize-flow">
+
+                <!-- Step 1 -->
+                <div class="resize-step rs1">
+                    <span class="rs-badge">Step 1</span>
+                    <div class="rs-title">&#128202; 3 items stored — capacity 4 is not full yet (75%)</div>
+                    <div class="array-row">
+                        <div class="arr-cell arr-filled"><div class="ai">[0]</div><div class="av">&#128100; Ali</div></div>
+                        <div class="arr-cell arr-filled"><div class="ai">[1]</div><div class="av">&#128100; Maha</div></div>
+                        <div class="arr-cell arr-filled"><div class="ai">[2]</div><div class="av">&#128100; Omar</div></div>
+                        <div class="arr-cell empty"><div class="ai">[3]</div><div class="av">null</div></div>
+                    </div>
+                    <div class="cap-bar-wrap" style="margin-top:14px;">
+                        <div class="cap-bar-label">
+                            <span>Used: 3 / 4 = <strong>75%</strong></span>
+                            <span>&#9989; Still has room — no resize yet</span>
+                        </div>
+                        <div class="cap-bar"><div class="cap-fill cf-ok" style="width:75%;">75%</div></div>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="resize-step rs2">
+                    <span class="rs-badge">Step 2</span>
+                    <div class="rs-title">&#9888;&#65038; 4th item added — array is now 100% FULL!</div>
+                    <div class="array-row">
+                        <div class="arr-cell arr-filled"><div class="ai">[0]</div><div class="av">&#128100; Ali</div></div>
+                        <div class="arr-cell arr-filled"><div class="ai">[1]</div><div class="av">&#128100; Maha</div></div>
+                        <div class="arr-cell arr-filled"><div class="ai">[2]</div><div class="av">&#128100; Omar</div></div>
+                        <div class="arr-cell arr-warn"><div class="ai">[3]</div><div class="av">&#128100; Nora</div></div>
+                    </div>
+                    <div class="cap-bar-wrap" style="margin-top:14px;">
+                        <div class="cap-bar-label">
+                            <span>Used: 4 / 4 = <strong>100% — FULL!</strong></span>
+                            <span>&#128680; Next add will trigger RESIZE!</span>
+                        </div>
+                        <div class="cap-bar"><div class="cap-fill cf-danger" style="width:100%;">100% — Full!</div></div>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="resize-step rs3">
+                    <span class="rs-badge">Step 3</span>
+                    <div class="rs-title">&#128260; 5th add triggers RESIZE! New capacity = 4 &times; 1.5 = <strong>6</strong></div>
+                    <div style="display:flex;gap:22px;align-items:center;flex-wrap:wrap;">
+                        <div>
+                            <div style="font-size:.8rem;color:#9ca3af;font-weight:700;margin-bottom:6px;">OLD array (abandoned):</div>
+                            <div class="array-row" style="opacity:.4;">
+                                <div class="arr-cell arr-filled"><div class="ai">[0]</div><div class="av">Ali</div></div>
+                                <div class="arr-cell arr-filled"><div class="ai">[1]</div><div class="av">Maha</div></div>
+                                <div class="arr-cell arr-filled"><div class="ai">[2]</div><div class="av">Omar</div></div>
+                                <div class="arr-cell arr-filled"><div class="ai">[3]</div><div class="av">Nora</div></div>
+                            </div>
+                        </div>
+                        <div style="font-size:1.8rem;color:#2563eb;font-weight:900;">&#10145;</div>
+                        <div>
+                            <div style="font-size:.8rem;color:#2563eb;font-weight:700;margin-bottom:6px;">NEW array (capacity = 6):</div>
+                            <div class="array-row">
+                                <div class="arr-cell arr-filled"><div class="ai">[0]</div><div class="av">Ali</div></div>
+                                <div class="arr-cell arr-filled"><div class="ai">[1]</div><div class="av">Maha</div></div>
+                                <div class="arr-cell arr-filled"><div class="ai">[2]</div><div class="av">Omar</div></div>
+                                <div class="arr-cell arr-filled"><div class="ai">[3]</div><div class="av">Nora</div></div>
+                                <div class="arr-cell arr-new"><div class="ai">[4]</div><div class="av">&#128100; Ziad &#10133;</div></div>
+                                <div class="arr-cell empty"><div class="ai">[5]</div><div class="av">null</div></div>
+                            </div>
+                        </div>
+                    </div>
+                    <p style="margin-top:12px;font-size:.88rem;color:#1e40af;">
+                        &#9889; Java copies all 4 items from the old array to the new one,
+                        then adds Ziad in position [4].
+                    </p>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="resize-step rs4">
+                    <span class="rs-badge">Step 4</span>
+                    <div class="rs-title">&#9989; Done! ArrayList is comfortable again — 5 items in capacity 6 (83%)</div>
+                    <div class="array-row">
+                        <div class="arr-cell arr-filled"><div class="ai">[0]</div><div class="av">&#128100; Ali</div></div>
+                        <div class="arr-cell arr-filled"><div class="ai">[1]</div><div class="av">&#128100; Maha</div></div>
+                        <div class="arr-cell arr-filled"><div class="ai">[2]</div><div class="av">&#128100; Omar</div></div>
+                        <div class="arr-cell arr-filled"><div class="ai">[3]</div><div class="av">&#128100; Nora</div></div>
+                        <div class="arr-cell arr-filled"><div class="ai">[4]</div><div class="av">&#128100; Ziad</div></div>
+                        <div class="arr-cell empty"><div class="ai">[5]</div><div class="av">null</div></div>
+                    </div>
+                    <div class="cap-bar-wrap" style="margin-top:14px;">
+                        <div class="cap-bar-label">
+                            <span>Used: 5 / 6 = <strong>83%</strong></span>
+                            <span>&#9989; Comfortable — room to grow!</span>
+                        </div>
+                        <div class="cap-bar"><div class="cap-fill cf-new" style="width:83%;">83%</div></div>
+                    </div>
+                    <p style="margin-top:12px;font-size:.88rem;color:#065f46;">
+                        &#128204; The old array of capacity 4 is now abandoned.
+                        Java's <strong>garbage collector</strong> removes it from memory automatically.
+                    </p>
+                </div>
+
+            </div><!-- /resize-flow -->
+
+            <div class="key-box">
+                <div class="key-box-title">&#128204; Real Java Goes Even Further</div>
+                <p>The real Java <code class="code-inline">ArrayList</code> starts with capacity
+                <strong>10</strong> (not 4), and expands early — when around <strong>90%</strong>
+                full — so you never feel a performance pause just before it runs out of space.
+                The factor is still approximately <strong>1.5&times;</strong>.
+                The idea is exactly what we just visualized!</p>
+            </div>
+
+            <!-- ── Simple Implementation ── -->
+            <h3 class="subsection-title">&#128187; Simple Implementation — Look Inside ArrayList!</h3>
+
+            <p>Let's write our own simplified ArrayList to see exactly how it works.
+            This is <em>not</em> the real Java source, but it shows the core idea:</p>
+
+            <div class="code-container">
+                <div class="code-header" onclick="toggleCode(this)">
+                    <span>&#9889; SimpleArrayList.java — ArrayList from Scratch</span>
+                    <span class="code-toggle">&#9660;</span>
+                </div>
+                <div class="code-block"><span class="comment">// Simplified ArrayList — to understand how it really works inside!</span>
+<span class="keyword">class</span> <span class="class-name">SimpleArrayList</span> {
+
+    <span class="keyword">private</span> <span class="class-name">Object</span>[] data;   <span class="comment">// the secret fixed array inside!</span>
+    <span class="keyword">private</span> <span class="keyword">int</span> size;         <span class="comment">// how many items are actually stored</span>
+
+    <span class="comment">// Constructor — start with a small hidden array</span>
+    <span class="keyword">public</span> <span class="class-name">SimpleArrayList</span>() {
+        data = <span class="keyword">new</span> <span class="class-name">Object</span>[<span class="number">4</span>];
+        size = <span class="number">0</span>;
+    }
+
+    <span class="comment">// Add an item — expands automatically when full</span>
+    <span class="keyword">public void</span> <span class="method">add</span>(<span class="class-name">Object</span> item) {
+        <span class="keyword">if</span> (size == data.length) {   <span class="comment">// hidden array is FULL → expand!</span>
+            <span class="method">expand</span>();
+        }
+        data[size] = item;
+        size++;
+    }
+
+    <span class="comment">// Create a bigger array (1.5×), copy old → new, switch</span>
+    <span class="keyword">private void</span> <span class="method">expand</span>() {
+        <span class="keyword">int</span> newCapacity = (<span class="keyword">int</span>)(data.length * <span class="number">1.5</span>);
+        <span class="class-name">Object</span>[] newData = <span class="keyword">new</span> <span class="class-name">Object</span>[newCapacity];
+
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; size; i++) {
+            newData[i] = data[i];          <span class="comment">// copy old items to new array</span>
+        }
+
+        data = newData;   <span class="comment">// switch to the bigger array</span>
+        <span class="comment">// old array → abandoned → garbage collector removes it</span>
+    }
+
+    <span class="comment">// Print all stored items</span>
+    <span class="keyword">public void</span> <span class="method">print</span>() {
+        System.out.<span class="method">println</span>(<span class="string">"Size: "</span> + size + <span class="string">" | Capacity: "</span> + data.length);
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; size; i++) {
+            System.out.<span class="method">println</span>(<span class="string">"  ["</span> + i + <span class="string">"] "</span> + data[i]);
+        }
+    }
+
+    <span class="comment">// ── Test ─────────────────────────────────────────────</span>
+    <span class="keyword">public static void</span> <span class="method">main</span>(<span class="class-name">String</span>[] args) {
+
+        <span class="class-name">SimpleArrayList</span> list = <span class="keyword">new</span> <span class="class-name">SimpleArrayList</span>();
+
+        list.<span class="method">add</span>(<span class="string">"Ali"</span>);
+        list.<span class="method">add</span>(<span class="string">"Maha"</span>);
+        list.<span class="method">add</span>(<span class="string">"Omar"</span>);
+        System.out.<span class="method">println</span>(<span class="string">"--- After 3 items ---"</span>);
+        list.<span class="method">print</span>();
+
+        list.<span class="method">add</span>(<span class="string">"Nora"</span>);
+        System.out.<span class="method">println</span>(<span class="string">"\n--- After 4 items (FULL!) ---"</span>);
+        list.<span class="method">print</span>();
+
+        list.<span class="method">add</span>(<span class="string">"Ziad"</span>);   <span class="comment">// ← this add triggers expand()!</span>
+        System.out.<span class="method">println</span>(<span class="string">"\n--- After 5 items (auto-expanded!) ---"</span>);
+        list.<span class="method">print</span>();
+
+        list.<span class="method">add</span>(<span class="string">"Layla"</span>);
+        System.out.<span class="method">println</span>(<span class="string">"\n--- After 6 items ---"</span>);
+        list.<span class="method">print</span>();
+    }
+}</div>
+            </div>
+
+            <div class="terminal">
+                <div class="terminal-header">
+                    <span class="terminal-dot r"></span>
+                    <span class="terminal-dot y"></span>
+                    <span class="terminal-dot g"></span>
+                    <span class="terminal-title">Output — SimpleArrayList.java</span>
+                </div>
+                <div class="terminal-body">--- After 3 items ---
+Size: 3 | Capacity: 4
+  [0] Ali
+  [1] Maha
+  [2] Omar
+
+--- After 4 items (FULL!) ---
+Size: 4 | Capacity: 4
+  [0] Ali
+  [1] Maha
+  [2] Omar
+  [3] Nora
+
+--- After 5 items (auto-expanded!) ---
+Size: 5 | Capacity: 6
+  [0] Ali
+  [1] Maha
+  [2] Omar
+  [3] Nora
+  [4] Ziad
+
+--- After 6 items ---
+Size: 6 | Capacity: 6
+  [0] Ali
+  [1] Maha
+  [2] Omar
+  [3] Nora
+  [4] Ziad
+  [5] Layla</div>
+            </div>
+
+            <div class="key-box">
+                <div class="key-box-title">&#128269; Did You Notice?</div>
+                <p>The capacity jumped from <strong>4 to 6</strong> (4 &times; 1.5 = 6) automatically
+                when we added the 5th item. All that copying happened silently — we just called
+                <code class="code-inline">add()</code> and everything was handled!</p>
+            </div>
+
+            <!-- ── Why Is ArrayList Polymorphic? ── -->
+            <h3 class="subsection-title">&#128269; Why Is ArrayList Polymorphic?</h3>
+
+            <div class="info-box">
+                <div class="info-box-title">&#128204; The Key Insight — Look at the Internal Array!</div>
+                <p>Look at the <code class="code-inline">SimpleArrayList</code> code above.
+                The hidden internal array is declared as <code class="code-inline">Object[] data</code>
+                — not <code class="code-inline">Student[]</code> or <code class="code-inline">Car[]</code>.</p>
+                <br>
+                <p>Why <strong>Object</strong>? Because <strong>Object is the superclass of ALL classes in Java!</strong>
+                Every class you create automatically inherits from Object (IS-A Object).
+                So an <code class="code-inline">Object[]</code> can hold <em>any</em> type —
+                that is <strong>polymorphism</strong>!</p>
+            </div>
+
+            <div class="code-container">
+                <div class="code-header" onclick="toggleCode(this)">
+                    <span>&#128101; ArrayList Stores EVERYTHING as Object</span>
+                    <span class="code-toggle">&#9660;</span>
+                </div>
+                <div class="code-block"><span class="class-name">ArrayList</span> myList = <span class="keyword">new</span> <span class="class-name">ArrayList</span>();
+
+<span class="comment">// ALL Java classes are subclasses of Object → ArrayList accepts any of them!</span>
+myList.<span class="method">add</span>(<span class="keyword">new</span> <span class="class-name">Student</span>(<span class="string">"Ali"</span>, <span class="number">20</span>));   <span class="comment">// Student IS-A Object ✓</span>
+myList.<span class="method">add</span>(<span class="keyword">new</span> <span class="class-name">Car</span>(<span class="string">"Toyota"</span>));         <span class="comment">// Car     IS-A Object ✓</span>
+myList.<span class="method">add</span>(<span class="keyword">new</span> <span class="class-name">Student</span>(<span class="string">"Maha"</span>, <span class="number">21</span>));  <span class="comment">// Student IS-A Object ✓</span>
+
+<span class="comment">// But when you retrieve, Java only knows it is an "Object"</span>
+<span class="comment">// → you MUST cast to the real type to use its specific methods</span>
+<span class="class-name">Student</span> s = (<span class="class-name">Student</span>) myList.<span class="method">get</span>(<span class="number">0</span>);   <span class="comment">// downcast needed!</span>
+<span class="class-name">Car</span>     c = (<span class="class-name">Car</span>)     myList.<span class="method">get</span>(<span class="number">1</span>);   <span class="comment">// downcast needed!</span></div>
+            </div>
+
+            <!-- ── Student Question ── -->
+            <div class="discussion-box">
+                <h4>&#9757;&#65038; A Student Raises Their Hand...</h4>
+                <div class="speech-bubble">
+                    <div class="speech-who">&#128100; Student asks:</div>
+                    <div class="speech-text">
+                        Doctor, we learned that an array holds only <strong>one type</strong>.
+                        But the ArrayList seems to hold different types (Student, Car...)!
+                        Is that not a contradiction?
+                    </div>
+                </div>
+                <div class="speech-bubble">
+                    <div class="speech-who">&#128161; The Doctor replies:</div>
+                    <div class="speech-text">
+                        Excellent question — I love it! You are thinking correctly.
+                        ArrayList also holds <strong>one type only</strong> — and that type is
+                        <strong>Object</strong>! Same rule as always.
+                        But since every class in Java is a subclass of Object,
+                        everything IS-A Object. So a list of Object can hold any object —
+                        that is polymorphism at work!
+                        <br><br>
+                        But there is a cost: when you take something <em>out</em> of the ArrayList,
+                        Java only knows it is an Object — not a Student, not a Car.
+                        You must <strong>cast</strong> it back to use the real type.
+                        If you store a Student but cast it as a Car — that is a
+                        <strong>ClassCastException</strong>!
+                    </div>
+                </div>
+                <div class="speech-bubble">
+                    <div class="speech-who">&#127775; Coming Soon — Generics!</div>
+                    <div class="speech-text">
+                        There is a solution: you can tell the ArrayList <em>exactly</em> which type
+                        it should hold, so you get compile-time safety and no casting is needed.
+                        This powerful feature is called <strong>Generics</strong> —
+                        and we will study it in a future lesson!
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── Comparison Table ── -->
+            <div class="success-box">
+                <div class="success-box-title">&#127881; Summary — Array vs ArrayList</div>
+                <table class="al-compare-table">
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>Array</th>
+                            <th>ArrayList</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Size</td>
+                            <td>&#128274; Fixed at creation</td>
+                            <td>&#128260; Grows / shrinks dynamically</td>
+                        </tr>
+                        <tr>
+                            <td>Resize</td>
+                            <td>&#10060; Must do manually</td>
+                            <td>&#9989; Automatic</td>
+                        </tr>
+                        <tr>
+                            <td>Speed</td>
+                            <td>&#9889; Fastest (no copy overhead)</td>
+                            <td>&#128992; Good, but copy cost on resize</td>
+                        </tr>
+                        <tr>
+                            <td>Built on</td>
+                            <td>itself (primitive structure)</td>
+                            <td>&#128268; A fixed array internally!</td>
+                        </tr>
+                        <tr>
+                            <td>Type stored</td>
+                            <td>Declared type (e.g. Student[])</td>
+                            <td>Object — polymorphic!</td>
+                        </tr>
+                        <tr>
+                            <td>Retrieval</td>
+                            <td>No cast needed</td>
+                            <td>Must cast (until Generics)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- ══════════════════════════════════════════════
+                 ARRAYLIST CHALLENGE EXERCISE
+                 ══════════════════════════════════════════════ -->
+            <h3 class="subsection-title">&#127919; Challenge: Trace the ArrayList — What Is the Output?</h3>
+
+            <p>Study the code below carefully. An ArrayList is built step by step.
+            <strong>Before looking at the answer</strong>, trace each operation on paper and predict the final output.</p>
+
+            <!-- The code -->
+            <div class="code-container">
+                <div class="code-header" onclick="toggleCode(this)">
+                    <span>&#128196; ArrayList Operations — Trace the Output</span>
+                    <span class="code-toggle">&#9660;</span>
+                </div>
+                <div class="code-block"><span class="keyword">import</span> java.util.<span class="class-name">ArrayList</span>;
+
+<span class="class-name">ArrayList</span> list = <span class="keyword">new</span> <span class="class-name">ArrayList</span>();
+
+list.<span class="method">add</span>(<span class="number">10</span>);          <span class="comment">// Step 1</span>
+list.<span class="method">add</span>(<span class="number">20</span>);          <span class="comment">// Step 2</span>
+list.<span class="method">add</span>(<span class="number">30</span>);          <span class="comment">// Step 3</span>
+list.<span class="method">remove</span>(<span class="number">1</span>);       <span class="comment">// Step 4 — removes by INDEX</span>
+list.<span class="method">add</span>(<span class="number">50</span>);          <span class="comment">// Step 5</span>
+list.<span class="method">remove</span>(<span class="number">2</span>);       <span class="comment">// Step 6 — removes by INDEX</span>
+list.<span class="method">add</span>(<span class="number">1</span>, <span class="number">40</span>);      <span class="comment">// Step 7 — inserts 40 at index 1</span>
+
+System.out.<span class="method">println</span>(list);</div>
+            </div>
+
+            <!-- Ask question -->
+            <div style="background:linear-gradient(135deg,#1e1b4b,#4c1d95);border-radius:14px;padding:22px 28px;margin:18px 0;color:white;">
+                <div style="font-size:1.15rem;font-weight:800;margin-bottom:8px;">&#129300; What does <code style="background:rgba(255,255,255,.15);padding:2px 8px;border-radius:6px;">System.out.println(list)</code> print?</div>
+                <div style="color:#c4b5fd;font-size:.95rem;">Hint: <code>remove(int index)</code> removes the element <em>at that index</em>, not the element with that value. And <code>add(int index, value)</code> inserts at a specific position.</div>
+            </div>
+
+            <!-- Show Answer button + answer -->
+            <div style="border:2px solid #7e22ce;border-radius:12px;overflow:hidden;margin:14px 0;">
+                <div style="background:#7e22ce;color:#fff;padding:14px 20px;font-weight:700;font-size:.98em;">
+                    &#128196; Step-by-Step Visualization
+                </div>
+                <div style="padding:18px 20px;background:#fdf4ff;">
+
+                    <button onclick="toggleAnswer(this)" style="background:#059669;color:#fff;border:none;border-radius:8px;padding:10px 22px;font-size:.95em;font-weight:700;cursor:pointer;display:block;width:100%;text-align:left;transition:background .2s;margin-bottom:0;">&#128161; Show Step-by-Step Trace &#9660;</button>
+
+                    <div style="display:none;margin-top:16px;">
+
+                        <!-- Step table -->
+                        <div style="overflow-x:auto;">
+                        <table style="width:100%;border-collapse:collapse;font-family:'Courier New',monospace;font-size:.91em;">
+                            <thead>
+                                <tr style="background:#4c1d95;color:white;">
+                                    <th style="padding:10px 14px;text-align:left;white-space:nowrap;">Step</th>
+                                    <th style="padding:10px 14px;text-align:left;white-space:nowrap;">Operation</th>
+                                    <th style="padding:10px 14px;text-align:left;">List State</th>
+                                    <th style="padding:10px 14px;text-align:left;white-space:nowrap;">Size</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="background:#f3e8ff;">
+                                    <td style="padding:9px 14px;font-weight:700;color:#6d28d9;">Start</td>
+                                    <td style="padding:9px 14px;color:#374151;">new ArrayList()</td>
+                                    <td style="padding:9px 14px;">
+                                        <span style="background:#e5e7eb;border-radius:6px;padding:3px 10px;color:#6b7280;font-style:italic;">[ empty ]</span>
+                                    </td>
+                                    <td style="padding:9px 14px;font-weight:700;">0</td>
+                                </tr>
+                                <tr style="background:#fdf4ff;">
+                                    <td style="padding:9px 14px;font-weight:700;color:#6d28d9;">Step 1</td>
+                                    <td style="padding:9px 14px;color:#059669;font-weight:700;">add(10)</td>
+                                    <td style="padding:9px 14px;">
+                                        <span style="background:#dcfce7;border:2px solid #16a34a;border-radius:6px;padding:3px 10px;font-weight:700;color:#14532d;">[ <span style="background:#16a34a;color:white;border-radius:4px;padding:1px 6px;">10</span> ]</span>
+                                    </td>
+                                    <td style="padding:9px 14px;font-weight:700;">1</td>
+                                </tr>
+                                <tr style="background:#f3e8ff;">
+                                    <td style="padding:9px 14px;font-weight:700;color:#6d28d9;">Step 2</td>
+                                    <td style="padding:9px 14px;color:#059669;font-weight:700;">add(20)</td>
+                                    <td style="padding:9px 14px;">
+                                        <span style="background:#dcfce7;border:2px solid #16a34a;border-radius:6px;padding:3px 10px;font-weight:700;color:#14532d;">[ 10, <span style="background:#16a34a;color:white;border-radius:4px;padding:1px 6px;">20</span> ]</span>
+                                    </td>
+                                    <td style="padding:9px 14px;font-weight:700;">2</td>
+                                </tr>
+                                <tr style="background:#fdf4ff;">
+                                    <td style="padding:9px 14px;font-weight:700;color:#6d28d9;">Step 3</td>
+                                    <td style="padding:9px 14px;color:#059669;font-weight:700;">add(30)</td>
+                                    <td style="padding:9px 14px;">
+                                        <span style="background:#dcfce7;border:2px solid #16a34a;border-radius:6px;padding:3px 10px;font-weight:700;color:#14532d;">[ 10, 20, <span style="background:#16a34a;color:white;border-radius:4px;padding:1px 6px;">30</span> ]</span>
+                                    </td>
+                                    <td style="padding:9px 14px;font-weight:700;">3</td>
+                                </tr>
+                                <tr style="background:#fff7ed;">
+                                    <td style="padding:9px 14px;font-weight:700;color:#c2410c;">Step 4</td>
+                                    <td style="padding:9px 14px;color:#dc2626;font-weight:700;">remove(1)</td>
+                                    <td style="padding:9px 14px;">
+                                        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                                            <span style="background:#fee2e2;border:2px dashed #dc2626;border-radius:6px;padding:3px 10px;color:#991b1b;text-decoration:line-through;">20</span>
+                                            <span style="color:#dc2626;font-size:.85em;">← index 1 removed</span>
+                                        </div>
+                                        <div style="margin-top:5px;">
+                                            <span style="background:#fef9c3;border:2px solid #ca8a04;border-radius:6px;padding:3px 10px;font-weight:700;color:#713f12;">[ 10, 30 ]</span>
+                                            <span style="color:#6b7280;font-size:.85em;margin-left:8px;">30 shifts left to index 1</span>
+                                        </div>
+                                    </td>
+                                    <td style="padding:9px 14px;font-weight:700;">2</td>
+                                </tr>
+                                <tr style="background:#fdf4ff;">
+                                    <td style="padding:9px 14px;font-weight:700;color:#6d28d9;">Step 5</td>
+                                    <td style="padding:9px 14px;color:#059669;font-weight:700;">add(50)</td>
+                                    <td style="padding:9px 14px;">
+                                        <span style="background:#dcfce7;border:2px solid #16a34a;border-radius:6px;padding:3px 10px;font-weight:700;color:#14532d;">[ 10, 30, <span style="background:#16a34a;color:white;border-radius:4px;padding:1px 6px;">50</span> ]</span>
+                                    </td>
+                                    <td style="padding:9px 14px;font-weight:700;">3</td>
+                                </tr>
+                                <tr style="background:#fff7ed;">
+                                    <td style="padding:9px 14px;font-weight:700;color:#c2410c;">Step 6</td>
+                                    <td style="padding:9px 14px;color:#dc2626;font-weight:700;">remove(2)</td>
+                                    <td style="padding:9px 14px;">
+                                        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                                            <span style="background:#fee2e2;border:2px dashed #dc2626;border-radius:6px;padding:3px 10px;color:#991b1b;text-decoration:line-through;">50</span>
+                                            <span style="color:#dc2626;font-size:.85em;">← index 2 removed</span>
+                                        </div>
+                                        <div style="margin-top:5px;">
+                                            <span style="background:#fef9c3;border:2px solid #ca8a04;border-radius:6px;padding:3px 10px;font-weight:700;color:#713f12;">[ 10, 30 ]</span>
+                                        </div>
+                                    </td>
+                                    <td style="padding:9px 14px;font-weight:700;">2</td>
+                                </tr>
+                                <tr style="background:#eff6ff;">
+                                    <td style="padding:9px 14px;font-weight:700;color:#1d4ed8;">Step 7</td>
+                                    <td style="padding:9px 14px;color:#1d4ed8;font-weight:700;">add(1, 40)</td>
+                                    <td style="padding:9px 14px;">
+                                        <div style="color:#6b7280;font-size:.85em;margin-bottom:4px;">Insert 40 at index 1 → 30 shifts right</div>
+                                        <span style="background:#dbeafe;border:2px solid #2563eb;border-radius:6px;padding:3px 10px;font-weight:700;color:#1e3a8a;">[ 10, <span style="background:#2563eb;color:white;border-radius:4px;padding:1px 6px;">40</span>, 30 ]</span>
+                                    </td>
+                                    <td style="padding:9px 14px;font-weight:700;">3</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        </div>
+
+                        <!-- Final output terminal -->
+                        <div class="terminal" style="margin-top:20px;">
+                            <div class="terminal-header">
+                                <span class="terminal-dot r"></span>
+                                <span class="terminal-dot y"></span>
+                                <span class="terminal-dot g"></span>
+                                <span class="terminal-title">&#9989; Final Output — System.out.println(list)</span>
+                            </div>
+                            <div class="terminal-body">[10, 40, 30]</div>
+                        </div>
+
+                        <!-- Key insight boxes -->
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px;">
+                            <div style="background:#fff7ed;border:2px solid #ea580c;border-radius:10px;padding:14px;">
+                                <div style="font-weight:800;color:#c2410c;margin-bottom:6px;">&#9888; remove(int) — By INDEX</div>
+                                <div style="font-size:.9em;color:#374151;line-height:1.7;">
+                                    <code>remove(1)</code> removes the element <em>at index 1</em>.<br>
+                                    After removal, all elements to the right <strong>shift left</strong> by one position.
+                                </div>
+                            </div>
+                            <div style="background:#eff6ff;border:2px solid #2563eb;border-radius:10px;padding:14px;">
+                                <div style="font-weight:800;color:#1d4ed8;margin-bottom:6px;">&#128204; add(index, value) — Insert</div>
+                                <div style="font-size:.9em;color:#374151;line-height:1.7;">
+                                    <code>add(1, 40)</code> inserts 40 at index 1.<br>
+                                    All elements from index 1 onward <strong>shift right</strong> to make room.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="background:#f0fdf4;border:2px solid #16a34a;border-radius:10px;padding:14px;margin-top:12px;">
+                            <div style="font-weight:800;color:#15803d;margin-bottom:6px;">&#128161; Why is this tricky in the exam?</div>
+                            <div style="font-size:.9em;color:#374151;line-height:1.8;">
+                                After <strong>Step 4</strong> (<code>remove(1)</code>): the list becomes <code>[10, 30]</code> — <strong>not</strong> <code>[10, 30, ???]</code>. Index 1 was 20, not 30! <br>
+                                After <strong>Step 6</strong> (<code>remove(2)</code>): index 2 is now 50 (not 30) — so 50 is removed, leaving <code>[10, 30]</code>.<br>
+                                Always re-index the list after every operation before predicting the next step!
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
         </div>
 
         <!-- ════════════════════════════════════════════════
@@ -2210,9 +3040,45 @@ Circle diameter: 5.00</div>
                 <div class="summary-card s2">
                     <div class="sc-icon">&#128204;</div>
                     <div class="sc-title">ArrayList</div>
-                    <div class="sc-desc">ArrayList&lt;Shape&gt; is a polymorphic collection — dynamic and flexible.</div>
+                    <div class="sc-desc">A dynamic array built on a fixed array inside. Stores Object → polymorphic. Casting required until Generics.</div>
+                </div>
+                <div class="summary-card s3">
+                    <div class="sc-icon">&#128100;</div>
+                    <div class="sc-title">Array of Objects</div>
+                    <div class="sc-desc">Arrays can hold objects — but size is fixed. You must copy manually to resize.</div>
+                </div>
+                <div class="summary-card s4">
+                    <div class="sc-icon">&#128260;</div>
+                    <div class="sc-title">Dynamic Array</div>
+                    <div class="sc-desc">ArrayList hides a fixed array inside. Full? Auto-expand 1.5&times; and copy. Stores Object → polymorphic!</div>
                 </div>
             </div>
+        </div>
+
+        <!-- ══ Practical Example Call-to-Action ══ -->
+        <div style="margin: 48px 0 8px; background: linear-gradient(135deg, #1e1b4b 0%, #4c1d95 60%, #6d28d9 100%);
+                    border-radius: 20px; padding: 42px 40px; text-align: center; color: white;
+                    box-shadow: 0 12px 40px rgba(109,40,217,.35);">
+            <div style="font-size: 2.8rem; margin-bottom: 14px;">&#127970;</div>
+            <h2 style="font-size: 1.65rem; font-weight: 800; margin: 0 0 12px; color: white; letter-spacing: -.3px;">
+                Ready to See It All in Action?
+            </h2>
+            <p style="color: #c4b5fd; font-size: 1.05rem; max-width: 580px; margin: 0 auto 28px; line-height: 1.75;">
+                You have studied polymorphism, dynamic binding, upcasting, downcasting, and degrees.
+                Now apply <strong style="color:#e9d5ff;">everything</strong> in a complete real-world
+                <strong style="color:#e9d5ff;">staff payroll system</strong> — with full Java code,
+                output, casting, and design analysis.
+            </p>
+            <a href="practical-example.html"
+               style="display:inline-block; background: linear-gradient(135deg,#ec4899,#db2777);
+                      color:white; padding:16px 40px; border-radius:14px; font-weight:800;
+                      font-size:1.1rem; text-decoration:none; letter-spacing:.3px;
+                      box-shadow:0 6px 20px rgba(236,72,153,.45);
+                      transition:transform .25s,box-shadow .25s;"
+               onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 10px 30px rgba(236,72,153,.55)'"
+               onmouseout="this.style.transform='';this.style.boxShadow='0 6px 20px rgba(236,72,153,.45)'">
+                Open Practical Example &nbsp;&#8594;
+            </a>
         </div>
 
     </div><!-- /content -->
@@ -2220,6 +3086,7 @@ Circle diameter: 5.00</div>
     <!-- Bottom Navigation -->
     <div class="bottom-nav">
         <a href="../module06-inheritance/index.html" class="nav-prev">&#8592; Inheritance</a>
+        <a href="practical-example.html" class="nav-practical">&#127970; Practical Example</a>
         <a href="../module08-abstract-classes/index.html" class="nav-next">Abstract Classes &#8594;</a>
     </div>
 
@@ -2232,7 +3099,119 @@ Circle diameter: 5.00</div>
     <p>Prepared by Dr. Almalawi</p>
 </div>
 
+<!-- ── Code Theme Picker ───────────────────────────── -->
+<div id="code-theme-picker">
+  <div id="theme-panel">
+    <div class="tp-label">🎨 Code Block Theme</div>
+    <button class="theme-btn active" onclick="setCodeTheme('black')" id="btn-black">
+      <span class="theme-swatch" style="background:#000;"></span> Black (Default)
+    </button>
+    <button class="theme-btn" onclick="setCodeTheme('vscode')" id="btn-vscode">
+      <span class="theme-swatch" style="background:#1e1e1e;"></span> VS Code Dark
+    </button>
+    <button class="theme-btn" onclick="setCodeTheme('white')" id="btn-white">
+      <span class="theme-swatch" style="background:#fff; border:1px solid #ccc;"></span> White (Projector)
+    </button>
+    <button class="theme-btn" onclick="setCodeTheme('cream')" id="btn-cream">
+      <span class="theme-swatch" style="background:#fefce8; border:1px solid #ccc;"></span> Cream (Projector)
+    </button>
+  </div>
+  <button id="theme-toggle-btn" onclick="document.getElementById('theme-panel').classList.toggle('open')">
+    🎨 Code Theme
+  </button>
+</div>
+
 <script>
+/* ─── Theme definitions ─────────────────────────── */
+const CODE_THEMES = {
+  black: {
+    bg:'#000000', text:'#ffffff', comment:'#a0aec0', keyword:'#ff79c6', cls:'#50fa7b', method:'#8be9fd', string:'#f1fa8c', number:'#bd93f9',
+    tmBg:'#0f172a', tmHeader:'#1e293b', tmBorder:'#334155', tmText:'#e2e8f0', tmTitle:'#94a3b8', projector: false
+  },
+  vscode: {
+    bg:'#1e1e1e', text:'#ffffff', comment:'#57c757', keyword:'#569cd6', cls:'#4ec9b0', method:'#dcdcaa', string:'#ce9178', number:'#b5cea8',
+    tmBg:'#1e1e1e', tmHeader:'#2d2d2d', tmBorder:'#444', tmText:'#ffffff', tmTitle:'#9cdcfe', projector: false
+  },
+  white: {
+    bg:'#ffffff', text:'#000000', comment:'#1d4ed8', keyword:'#dc2626', cls:'#16a34a', method:'#0369a1', string:'#b45309', number:'#7c3aed',
+    tmBg:'#f1f5f9', tmHeader:'#e2e8f0', tmBorder:'#94a3b8', tmText:'#000000', tmTitle:'#1d4ed8', projector: true
+  },
+  cream: {
+    bg:'#fefce8', text:'#000000', comment:'#1d4ed8', keyword:'#dc2626', cls:'#15803d', method:'#0369a1', string:'#b45309', number:'#7c3aed',
+    tmBg:'#fefce8', tmHeader:'#fef08a', tmBorder:'#a16207', tmText:'#000000', tmTitle:'#0369a1', projector: true
+  }
+};
+
+/* ─── Luminance helper ──────────────────────────── */
+function _lum(hex) {
+  hex = hex.replace('#','');
+  if (hex.length === 3) hex = hex.split('').map(c=>c+c).join('');
+  if (hex.length !== 6) return 0.5;
+  const r=parseInt(hex.slice(0,2),16), g=parseInt(hex.slice(2,4),16), b=parseInt(hex.slice(4,6),16);
+  return (0.299*r + 0.587*g + 0.114*b) / 255;
+}
+
+/* Turn a dark hex color into a soft light tint (keeps hue) */
+function _lighten(hex) {
+  hex = hex.replace('#','');
+  if (hex.length === 3) hex = hex.split('').map(c=>c+c).join('');
+  const r=parseInt(hex.slice(0,2),16), g=parseInt(hex.slice(2,4),16), b=parseInt(hex.slice(4,6),16);
+  const lr=Math.round(r*.10+255*.90), lg=Math.round(g*.10+255*.90), lb=Math.round(b*.10+255*.90);
+  return '#'+[lr,lg,lb].map(c=>c.toString(16).padStart(2,'0')).join('');
+}
+
+/* ─── Inline-style projector scanner ───────────── */
+const _backup = new Map();
+
+function _applyProjectorInline(enable) {
+  if (enable) {
+    document.querySelectorAll('[style]').forEach(el => {
+      const orig = el.getAttribute('style');
+      _backup.set(el, orig);
+      let s = orig;
+
+      /* Lighten dark background hex colors */
+      s = s.replace(/(background(?:-color)?\s*:[^;}"']*?)(#[0-9a-fA-F]{6}|#[0-9a-fA-F]{3})\b/gi,
+        (m, pre, hex) => _lum(hex) < 0.28 ? pre + _lighten(hex) : m);
+
+      /* Darken light text colors */
+      s = s.replace(/((?:^|;|\s)color\s*:\s*)(#[0-9a-fA-F]{6}|#[0-9a-fA-F]{3})\b/gi,
+        (m, pre, hex) => _lum(hex) > 0.72 ? pre + '#1f2937' : m);
+
+      el.setAttribute('style', s);
+    });
+  } else {
+    _backup.forEach((orig, el) => el.setAttribute('style', orig));
+    _backup.clear();
+  }
+}
+
+/* ─── Main theme switcher ───────────────────────── */
+function setCodeTheme(name) {
+  const t = CODE_THEMES[name], r = document.documentElement.style;
+  r.setProperty('--cb-bg',      t.bg);        r.setProperty('--cb-text',    t.text);
+  r.setProperty('--cb-comment', t.comment);   r.setProperty('--cb-keyword', t.keyword);
+  r.setProperty('--cb-class',   t.cls);       r.setProperty('--cb-method',  t.method);
+  r.setProperty('--cb-string',  t.string);    r.setProperty('--cb-number',  t.number);
+  r.setProperty('--tm-bg',      t.tmBg);      r.setProperty('--tm-header',  t.tmHeader);
+  r.setProperty('--tm-border',  t.tmBorder);  r.setProperty('--tm-text',    t.tmText);
+  r.setProperty('--tm-title',   t.tmTitle);
+
+  /* Projector mode: CSS class overrides + inline style scan */
+  const wasProjector = document.body.classList.contains('projector');
+  if (t.projector) {
+    if (!wasProjector) _applyProjectorInline(true);
+    document.body.classList.add('projector');
+  } else {
+    if (wasProjector) _applyProjectorInline(false);
+    document.body.classList.remove('projector');
+  }
+
+  document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('btn-' + name).classList.add('active');
+  document.getElementById('theme-panel').classList.remove('open');
+}
+
 function toggleCode(header) {
     const codeBlock = header.nextElementSibling;
     const toggle = header.querySelector('.code-toggle');

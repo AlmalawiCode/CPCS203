@@ -1,0 +1,1385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blackboard Ultra — Quiz Guide</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bb-purple: #6b21a8;
+            --bb-dark:   #1e1b4b;
+            --bb-blue:   #2563eb;
+            --bb-teal:   #0891b2;
+            --bb-green:  #059669;
+            --bb-orange: #d97706;
+            --bb-red:    #dc2626;
+            --bb-light:  #f8fafc;
+            --text:      #1e293b;
+            --muted:     #64748b;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: #f1f5f9;
+            color: var(--text);
+            line-height: 1.7;
+        }
+
+        /* ── Header ─────────────────────────────────────── */
+        .header {
+            background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4c1d95 100%);
+            color: #fff;
+            padding: 0;
+        }
+
+        .header-top {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            padding: 28px 48px;
+        }
+
+        .header-logo {
+            background: #fff;
+            color: var(--bb-purple);
+            width: 56px; height: 56px;
+            border-radius: 14px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.6rem; font-weight: 900;
+            flex-shrink: 0;
+        }
+
+        .header-title { font-size: 2rem; font-weight: 800; }
+        .header-sub   { font-size: 1rem; opacity: .8; margin-top: 2px; }
+
+        .header-banner {
+            background: rgba(0,0,0,.25);
+            padding: 14px 48px;
+            display: flex; gap: 32px; flex-wrap: wrap;
+            border-top: 1px solid rgba(255,255,255,.15);
+        }
+
+        .hb-item {
+            display: flex; align-items: center; gap: 8px;
+            font-size: .9rem; opacity: .9;
+        }
+
+        .hb-dot {
+            width: 9px; height: 9px; border-radius: 50%;
+        }
+
+        /* ── Table of Contents ───────────────────────────── */
+        .toc-wrap {
+            max-width: 980px; margin: 36px auto 0; padding: 0 24px;
+        }
+
+        .toc {
+            background: #fff;
+            border-radius: 16px;
+            padding: 28px 32px;
+            box-shadow: 0 4px 20px rgba(0,0,0,.08);
+            border-left: 6px solid var(--bb-purple);
+        }
+
+        .toc-title {
+            font-size: 1.1rem; font-weight: 700;
+            color: var(--bb-purple); margin-bottom: 16px;
+            display: flex; align-items: center; gap: 8px;
+        }
+
+        .toc-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 8px 32px;
+        }
+
+        .toc a {
+            color: var(--bb-blue); text-decoration: none; font-size: .93rem;
+            display: flex; align-items: center; gap: 8px;
+            padding: 5px 0; border-bottom: 1px dashed #e2e8f0;
+            transition: color .2s;
+        }
+
+        .toc a:hover { color: var(--bb-purple); }
+
+        .toc-num {
+            background: var(--bb-purple); color: #fff;
+            width: 22px; height: 22px; border-radius: 50%;
+            font-size: .75rem; font-weight: 700;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+
+        /* ── Page Layout ─────────────────────────────────── */
+        .page { max-width: 980px; margin: 0 auto; padding: 32px 24px 64px; }
+
+        /* ── Section ─────────────────────────────────────── */
+        .guide-section {
+            background: #fff;
+            border-radius: 18px;
+            padding: 36px 40px;
+            margin-bottom: 32px;
+            box-shadow: 0 4px 20px rgba(0,0,0,.07);
+        }
+
+        .section-heading {
+            display: flex; align-items: center; gap: 14px;
+            margin-bottom: 24px; padding-bottom: 16px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .section-num {
+            background: linear-gradient(135deg, var(--bb-purple), #7c3aed);
+            color: #fff;
+            width: 46px; height: 46px; border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.3rem; font-weight: 800; flex-shrink: 0;
+        }
+
+        .section-title { font-size: 1.4rem; font-weight: 700; color: var(--bb-dark); }
+        .section-desc  { font-size: .9rem; color: var(--muted); margin-top: 2px; }
+
+        /* ── Step ────────────────────────────────────────── */
+        .step {
+            display: flex; gap: 18px;
+            margin-bottom: 28px;
+            padding-bottom: 28px;
+            border-bottom: 1px dashed #e2e8f0;
+        }
+
+        .step:last-of-type { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+
+        .step-num {
+            width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 800; font-size: .95rem; color: #fff;
+            margin-top: 2px;
+        }
+
+        .step-num.purple { background: var(--bb-purple); }
+        .step-num.blue   { background: var(--bb-blue); }
+        .step-num.teal   { background: var(--bb-teal); }
+        .step-num.green  { background: var(--bb-green); }
+        .step-num.orange { background: var(--bb-orange); }
+
+        .step-content { flex: 1; }
+
+        .step-title {
+            font-size: 1.02rem; font-weight: 700; color: var(--text);
+            margin-bottom: 6px;
+        }
+
+        .step-body {
+            font-size: .93rem; color: #374151; line-height: 1.8;
+        }
+
+        /* ── Screen Mockup ───────────────────────────────── */
+        .screen {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            margin: 14px 0;
+            overflow: hidden;
+            box-shadow: 0 2px 12px rgba(0,0,0,.07);
+        }
+
+        .screen-bar {
+            background: #1e1b4b;
+            padding: 9px 16px;
+            display: flex; align-items: center; gap: 8px;
+        }
+
+        .screen-dot { width: 11px; height: 11px; border-radius: 50%; }
+        .sd-r { background: #ef4444; }
+        .sd-y { background: #fbbf24; }
+        .sd-g { background: #22c55e; }
+
+        .screen-url {
+            flex: 1; background: rgba(255,255,255,.12); border-radius: 6px;
+            padding: 4px 12px; font-size: .78rem; color: rgba(255,255,255,.7);
+            font-family: monospace; margin-left: 6px;
+        }
+
+        .screen-body { padding: 18px 20px; }
+
+        /* ── UI Elements (mockup) ────────────────────────── */
+        .ui-nav {
+            background: #312e81;
+            color: #c4b5fd; font-size: .82rem;
+            padding: 8px 16px; border-radius: 8px;
+            display: flex; gap: 20px; margin-bottom: 12px;
+        }
+
+        .ui-nav span { cursor: default; }
+        .ui-nav .active { color: #fff; font-weight: 700; border-bottom: 2px solid #a78bfa; padding-bottom: 2px; }
+
+        .ui-btn {
+            display: inline-flex; align-items: center; gap: 7px;
+            padding: 8px 18px; border-radius: 8px;
+            font-size: .85rem; font-weight: 600; cursor: default;
+            white-space: nowrap;
+        }
+
+        .ui-btn.primary { background: #6b21a8; color: #fff; }
+        .ui-btn.secondary { background: #e0e7ff; color: #3730a3; }
+        .ui-btn.success { background: #dcfce7; color: #14532d; }
+        .ui-btn.danger  { background: #fee2e2; color: #991b1b; }
+        .ui-btn.outline { border: 2px solid #6b21a8; color: #6b21a8; background: transparent; }
+
+        .click-badge {
+            display: inline-flex; align-items: center; gap: 5px;
+            background: #fef3c7; border: 1.5px solid #fbbf24;
+            color: #78350f; font-size: .8rem; font-weight: 700;
+            padding: 3px 10px; border-radius: 20px;
+            margin-left: 8px; vertical-align: middle;
+        }
+
+        /* ── Content Area Mockup ─────────────────────────── */
+        .content-area {
+            border: 2px dashed #c7d2fe; border-radius: 10px;
+            padding: 20px; text-align: center;
+            color: #818cf8; font-size: .88rem;
+            background: #eef2ff; margin: 8px 0;
+        }
+
+        .plus-btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 38px; height: 38px;
+            background: #6b21a8; color: #fff;
+            border-radius: 50%; font-size: 1.4rem; font-weight: 300;
+            cursor: default; margin: 0 auto 8px; display: block;
+        }
+
+        /* ── Menu Mockup ─────────────────────────────────── */
+        .dropdown-menu {
+            background: #fff; border: 1.5px solid #e2e8f0;
+            border-radius: 10px; padding: 6px 0;
+            box-shadow: 0 8px 24px rgba(0,0,0,.12);
+            display: inline-block; min-width: 200px;
+        }
+
+        .dm-item {
+            padding: 9px 18px; font-size: .88rem; color: #374151;
+            display: flex; align-items: center; gap: 10px; cursor: default;
+        }
+
+        .dm-item.active {
+            background: #f3e8ff; color: #7e22ce; font-weight: 700;
+        }
+
+        .dm-divider { height: 1px; background: #e2e8f0; margin: 4px 0; }
+
+        /* ── Question Type Card ──────────────────────────── */
+        .qtype-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+            margin: 14px 0;
+        }
+
+        .qtype-card {
+            border: 2px solid #e2e8f0; border-radius: 10px;
+            padding: 14px 16px; text-align: center;
+            cursor: default; transition: all .2s;
+        }
+
+        .qtype-card.highlight {
+            border-color: #7e22ce; background: #fdf4ff;
+        }
+
+        .qtype-icon { font-size: 1.6rem; margin-bottom: 6px; }
+        .qtype-name { font-size: .82rem; font-weight: 700; color: #374151; }
+        .qtype-desc { font-size: .75rem; color: var(--muted); margin-top: 2px; }
+
+        /* ── Info / Warning / Tip Boxes ─────────────────── */
+        .info-box {
+            border-radius: 10px; padding: 16px 20px; margin: 16px 0;
+            display: flex; gap: 12px; align-items: flex-start;
+        }
+
+        .info-box.tip    { background: #f0fdf4; border-left: 4px solid #16a34a; }
+        .info-box.warn   { background: #fffbeb; border-left: 4px solid #d97706; }
+        .info-box.note   { background: #eff6ff; border-left: 4px solid #2563eb; }
+        .info-box.danger { background: #fef2f2; border-left: 4px solid #dc2626; }
+
+        .info-icon { font-size: 1.3rem; flex-shrink: 0; margin-top: 1px; }
+        .info-content { font-size: .92rem; line-height: 1.8; color: #374151; }
+        .info-content strong { display: block; margin-bottom: 4px; }
+
+        /* ── File Badge ──────────────────────────────────── */
+        .file-badge {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: #1e293b; color: #a5f3fc;
+            font-family: monospace; font-size: .88rem;
+            padding: 7px 16px; border-radius: 8px;
+            border: 1px solid #334155;
+        }
+
+        /* ── Arrow ───────────────────────────────────────── */
+        .arrow-row {
+            display: flex; align-items: center; gap: 12px;
+            margin: 10px 0; flex-wrap: wrap;
+        }
+
+        .arrow { color: #6b21a8; font-size: 1.2rem; font-weight: bold; }
+
+        /* ── Settings Row ────────────────────────────────── */
+        .settings-row {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 11px 16px; border-bottom: 1px solid #f1f5f9;
+            font-size: .88rem;
+        }
+
+        .settings-row:last-child { border-bottom: none; }
+        .settings-label { color: #374151; font-weight: 500; }
+
+        .toggle {
+            width: 44px; height: 24px; border-radius: 12px;
+            display: inline-block; cursor: default; position: relative;
+        }
+
+        .toggle.on  { background: #7e22ce; }
+        .toggle.off { background: #cbd5e1; }
+
+        /* ── Progress Steps ──────────────────────────────── */
+        .progress-steps {
+            display: flex; align-items: center;
+            gap: 0; margin: 20px 0; flex-wrap: nowrap; overflow-x: auto;
+        }
+
+        .ps-item {
+            display: flex; flex-direction: column; align-items: center;
+            flex: 1; min-width: 80px;
+        }
+
+        .ps-dot {
+            width: 36px; height: 36px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 800; font-size: .85rem; color: #fff; flex-shrink: 0;
+            position: relative; z-index: 1;
+        }
+
+        .ps-dot.done    { background: var(--bb-green); }
+        .ps-dot.current { background: var(--bb-purple); box-shadow: 0 0 0 4px #e9d5ff; }
+        .ps-dot.pending { background: #cbd5e1; }
+
+        .ps-label { font-size: .75rem; color: var(--muted); margin-top: 6px; text-align: center; }
+
+        .ps-line {
+            flex: 1; height: 3px; background: #e2e8f0;
+            margin-top: -18px; min-width: 20px;
+        }
+
+        .ps-line.done { background: var(--bb-green); }
+
+        /* ── Keyboard Key ────────────────────────────────── */
+        .kbd {
+            display: inline-block; background: #f1f5f9;
+            border: 1.5px solid #cbd5e1; border-bottom-width: 3px;
+            border-radius: 5px; padding: 2px 8px;
+            font-family: monospace; font-size: .82rem; color: #374151;
+        }
+
+        /* ── Footer ──────────────────────────────────────── */
+        .footer {
+            background: #1e1b4b; color: rgba(255,255,255,.7);
+            text-align: center; padding: 28px 20px;
+            font-size: .87rem; line-height: 2;
+        }
+
+        /* ── Responsive ──────────────────────────────────── */
+        @media (max-width: 700px) {
+            .header-top { padding: 20px 20px; }
+            .header-banner { padding: 12px 20px; gap: 16px; }
+            .guide-section { padding: 24px 20px; }
+            .toc-grid { grid-template-columns: 1fr; }
+            .qtype-grid { grid-template-columns: 1fr 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ═══════════════════════ HEADER ═══════════════════════ -->
+<header class="header">
+    <div class="header-top">
+        <div class="header-logo">Bb</div>
+        <div>
+            <div class="header-title">Blackboard Ultra — Quiz Guide</div>
+            <div class="header-sub">Step-by-step: Create &bull; Configure &bull; Export &bull; Import</div>
+        </div>
+    </div>
+    <div class="header-banner">
+        <div class="hb-item">
+            <div class="hb-dot" style="background:#34d399;"></div>
+            Create a Quiz from Scratch
+        </div>
+        <div class="hb-item">
+            <div class="hb-dot" style="background:#60a5fa;"></div>
+            Add Question Types
+        </div>
+        <div class="hb-item">
+            <div class="hb-dot" style="background:#f472b6;"></div>
+            Configure Settings
+        </div>
+        <div class="hb-item">
+            <div class="hb-dot" style="background:#fbbf24;"></div>
+            Export as ZIP
+        </div>
+        <div class="hb-item">
+            <div class="hb-dot" style="background:#a78bfa;"></div>
+            Import into a Course
+        </div>
+    </div>
+</header>
+
+<!-- ═══════════════════════ TABLE OF CONTENTS ═══════════ -->
+<div class="toc-wrap">
+    <div class="toc">
+        <div class="toc-title">&#128218; Table of Contents</div>
+        <div class="toc-grid">
+            <a href="#section1"><span class="toc-num">1</span> Open Your Course</a>
+            <a href="#section4"><span class="toc-num">4</span> Configure Quiz Settings</a>
+            <a href="#section2"><span class="toc-num">2</span> Create the Quiz</a>
+            <a href="#section5"><span class="toc-num">5</span> Export as QTI 2.1 Package</a>
+            <a href="#section3"><span class="toc-num">3</span> Add Questions</a>
+            <a href="#section6"><span class="toc-num">6</span> Import QTI &amp; Create Test</a>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════════════ MAIN PAGE ═══════════════════ -->
+<div class="page">
+
+    <!-- ── Overview Flow ─────────────────────────────── -->
+    <div class="progress-steps">
+        <div class="ps-item">
+            <div class="ps-dot current">1</div>
+            <div class="ps-label">Open<br>Course</div>
+        </div>
+        <div class="ps-line"></div>
+        <div class="ps-item">
+            <div class="ps-dot pending">2</div>
+            <div class="ps-label">Create<br>Quiz</div>
+        </div>
+        <div class="ps-line"></div>
+        <div class="ps-item">
+            <div class="ps-dot pending">3</div>
+            <div class="ps-label">Add<br>Questions</div>
+        </div>
+        <div class="ps-line"></div>
+        <div class="ps-item">
+            <div class="ps-dot pending">4</div>
+            <div class="ps-label">Settings &amp;<br>Due Date</div>
+        </div>
+        <div class="ps-line"></div>
+        <div class="ps-item">
+            <div class="ps-dot pending">5</div>
+            <div class="ps-label">Export<br>QTI</div>
+        </div>
+        <div class="ps-line"></div>
+        <div class="ps-item">
+            <div class="ps-dot pending">6</div>
+            <div class="ps-label">Import<br>&amp; Create</div>
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════
+         SECTION 1 — OPEN YOUR COURSE
+         ══════════════════════════════════════════════════ -->
+    <div class="guide-section" id="section1">
+        <div class="section-heading">
+            <div class="section-num">1</div>
+            <div>
+                <div class="section-title">Open Your Course in Blackboard Ultra</div>
+                <div class="section-desc">Log in and navigate to the course where you want to add the quiz</div>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-num purple">1</div>
+            <div class="step-content">
+                <div class="step-title">Log in to Blackboard Ultra</div>
+                <div class="step-body">
+                    Go to your university's Blackboard URL and sign in with your instructor credentials.
+                    You will land on your <strong>Institution Page</strong> or <strong>Activity Stream</strong>.
+                </div>
+                <div class="screen">
+                    <div class="screen-bar">
+                        <span class="screen-dot sd-r"></span>
+                        <span class="screen-dot sd-y"></span>
+                        <span class="screen-dot sd-g"></span>
+                        <span class="screen-url">https://blackboard.kau.edu.sa</span>
+                    </div>
+                    <div class="screen-body" style="background:#1e1b4b;padding:16px 20px;">
+                        <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
+                            <div style="background:#fff;color:#4c1d95;width:40px;height:40px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:1.2rem;">Bb</div>
+                            <div style="color:#c4b5fd;font-size:1rem;font-weight:700;">Blackboard Ultra</div>
+                        </div>
+                        <div style="display:flex;gap:10px;align-items:center;">
+                            <div style="background:rgba(255,255,255,.1);border-radius:8px;padding:9px 16px;color:#e0e7ff;font-size:.85rem;flex:1;">Username</div>
+                            <div style="background:rgba(255,255,255,.1);border-radius:8px;padding:9px 16px;color:#e0e7ff;font-size:.85rem;flex:1;">Password</div>
+                            <div class="ui-btn primary" style="padding:9px 20px;">Sign In</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-num purple">2</div>
+            <div class="step-content">
+                <div class="step-title">Click on Your Course</div>
+                <div class="step-body">
+                    From your home dashboard, find your course under
+                    <strong>Courses</strong> and click its name to enter it.
+                </div>
+                <div class="info-box note">
+                    <span class="info-icon">&#128204;</span>
+                    <div class="info-content">
+                        <strong>Tip:</strong> If you don't see your course on the dashboard, use the
+                        <strong>Courses</strong> link in the left navigation bar to find it.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-num purple">3</div>
+            <div class="step-content">
+                <div class="step-title">Go to the Course Content Area</div>
+                <div class="step-body">
+                    Inside the course, click <strong>Content</strong> in the left sidebar.
+                    This is where you will add the quiz.
+                </div>
+                <div class="screen">
+                    <div class="screen-bar">
+                        <span class="screen-dot sd-r"></span>
+                        <span class="screen-dot sd-y"></span>
+                        <span class="screen-dot sd-g"></span>
+                        <span class="screen-url">blackboard.kau.edu.sa / courses / CPCS203 / content</span>
+                    </div>
+                    <div class="screen-body">
+                        <div class="ui-nav">
+                            <span>&#127968; Home</span>
+                            <span class="active">&#128196; Content</span>
+                            <span>&#128202; Grades</span>
+                            <span>&#128101; Roster</span>
+                            <span>&#128172; Messages</span>
+                        </div>
+                        <div class="content-area">
+                            <div class="plus-btn">+</div>
+                            <div style="font-weight:600;color:#6b21a8;">Course Content Area</div>
+                            <div style="font-size:.82rem;color:#818cf8;margin-top:4px;">Click the <strong>+</strong> button to add new content, assessments, or folders</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════
+         SECTION 2 — CREATE THE QUIZ
+         ══════════════════════════════════════════════════ -->
+    <div class="guide-section" id="section2">
+        <div class="section-heading">
+            <div class="section-num">2</div>
+            <div>
+                <div class="section-title">Create a New Quiz (Test)</div>
+                <div class="section-desc">Add a new assessment to your course content</div>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-num blue">1</div>
+            <div class="step-content">
+                <div class="step-title">Click the <strong>+</strong> (Add Content) Button</div>
+                <div class="step-body">
+                    Hover over the content area. A purple
+                    <span class="ui-btn primary" style="padding:3px 10px;font-size:.8rem;">+</span>
+                    button will appear. Click it to open the content menu.
+                </div>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-num blue">2</div>
+            <div class="step-content">
+                <div class="step-title">Select <strong>Create &rarr; Test</strong></div>
+                <div class="step-body">
+                    A dropdown menu appears. Click <strong>Create</strong>, then select <strong>Test</strong>
+                    from the sub-menu.
+                </div>
+                <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:12px;">
+                    <div class="dropdown-menu">
+                        <div class="dm-item">&#128230; Content</div>
+                        <div class="dm-item">&#128196; Document</div>
+                        <div class="dm-divider"></div>
+                        <div class="dm-item active">&#9998; Create &rarr;</div>
+                        <div class="dm-item">&#128279; Link</div>
+                        <div class="dm-item">&#128190; Upload</div>
+                    </div>
+                    <div class="arrow" style="margin-top:40px;">&#8594;</div>
+                    <div class="dropdown-menu">
+                        <div class="dm-item active">&#128196; Test <span class="click-badge">&#128070; Click this</span></div>
+                        <div class="dm-item">&#128203; Assignment</div>
+                        <div class="dm-item">&#128172; Discussion</div>
+                        <div class="dm-divider"></div>
+                        <div class="dm-item">&#128101; Group Assessment</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-num blue">3</div>
+            <div class="step-content">
+                <div class="step-title">Enter the Quiz Name &amp; Description</div>
+                <div class="step-body">
+                    A new panel opens. Type a clear, descriptive name for your quiz
+                    (e.g., <em>"Module 7 — Polymorphism Quiz"</em>).
+                    Optionally add a description for students.
+                </div>
+                <div class="screen">
+                    <div class="screen-bar">
+                        <span class="screen-dot sd-r"></span>
+                        <span class="screen-dot sd-y"></span>
+                        <span class="screen-dot sd-g"></span>
+                        <span class="screen-url">New Test</span>
+                    </div>
+                    <div class="screen-body">
+                        <div style="margin-bottom:14px;">
+                            <div style="font-size:.82rem;color:#64748b;margin-bottom:5px;font-weight:600;">Test Name *</div>
+                            <div style="border:2px solid #7e22ce;border-radius:8px;padding:10px 14px;font-size:.93rem;color:#374151;background:#fdf4ff;">
+                                Module 7 — Polymorphism Quiz
+                            </div>
+                        </div>
+                        <div>
+                            <div style="font-size:.82rem;color:#64748b;margin-bottom:5px;font-weight:600;">Description (optional)</div>
+                            <div style="border:2px solid #e2e8f0;border-radius:8px;padding:10px 14px;font-size:.88rem;color:#94a3b8;height:56px;">
+                                This quiz covers Chapter 11: Polymorphism, dynamic binding, and casting...
+                            </div>
+                        </div>
+                        <div style="margin-top:16px;display:flex;gap:10px;">
+                            <span class="ui-btn primary">Save &amp; Add Questions</span>
+                            <span class="ui-btn secondary">Cancel</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-box tip">
+            <span class="info-icon">&#9989;</span>
+            <div class="info-content">
+                <strong>Good Naming Practice:</strong>
+                Use a name that includes the module number, topic, and type.
+                Example: <em>"CPCS203 — Ch11 — Polymorphism — Quiz 1"</em>.
+                This helps when you export and re-import later.
+            </div>
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════
+         SECTION 3 — ADD QUESTIONS
+         ══════════════════════════════════════════════════ -->
+    <div class="guide-section" id="section3">
+        <div class="section-heading">
+            <div class="section-num">3</div>
+            <div>
+                <div class="section-title">Add Questions to the Quiz</div>
+                <div class="section-desc">Blackboard Ultra supports many question types</div>
+            </div>
+        </div>
+
+        <!-- Question Types Overview -->
+        <div style="margin-bottom:24px;">
+            <div style="font-weight:700;color:#374151;margin-bottom:12px;">Available Question Types:</div>
+            <div class="qtype-grid">
+                <div class="qtype-card highlight">
+                    <div class="qtype-icon">&#9711;</div>
+                    <div class="qtype-name">Multiple Choice</div>
+                    <div class="qtype-desc">One correct answer from a list</div>
+                </div>
+                <div class="qtype-card highlight">
+                    <div class="qtype-icon">&#9888;</div>
+                    <div class="qtype-name">True / False</div>
+                    <div class="qtype-desc">Binary correct/incorrect</div>
+                </div>
+                <div class="qtype-card highlight">
+                    <div class="qtype-icon">&#128221;</div>
+                    <div class="qtype-name">Short Answer</div>
+                    <div class="qtype-desc">Student types a brief answer</div>
+                </div>
+                <div class="qtype-card">
+                    <div class="qtype-icon">&#128196;</div>
+                    <div class="qtype-name">Essay</div>
+                    <div class="qtype-desc">Long written response</div>
+                </div>
+                <div class="qtype-card">
+                    <div class="qtype-icon">&#9645;</div>
+                    <div class="qtype-name">Fill in the Blank</div>
+                    <div class="qtype-desc">Complete a sentence</div>
+                </div>
+                <div class="qtype-card">
+                    <div class="qtype-icon">&#128260;</div>
+                    <div class="qtype-name">Matching</div>
+                    <div class="qtype-desc">Match items from two lists</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Adding a Multiple Choice Question -->
+        <div style="font-weight:700;font-size:1.05rem;color:#7e22ce;margin-bottom:14px;padding:10px 16px;background:#fdf4ff;border-radius:8px;border-left:4px solid #7e22ce;">
+            &#9711; How to Add a Multiple Choice Question
+        </div>
+
+        <div class="step">
+            <div class="step-num teal">1</div>
+            <div class="step-content">
+                <div class="step-title">Click <strong>Add Question</strong> &rarr; <strong>Multiple Choice</strong></div>
+                <div class="step-body">
+                    Inside the test editor, click the <span class="ui-btn primary" style="padding:4px 12px;font-size:.8rem;">+ Add Question</span> button and choose <strong>Multiple Choice</strong>.
+                </div>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-num teal">2</div>
+            <div class="step-content">
+                <div class="step-title">Type Your Question Text</div>
+                <div class="step-body">
+                    Click in the <strong>Question Text</strong> field and type your question.
+                    You can format text, add code, images, or math formulas using the toolbar.
+                </div>
+                <div class="screen">
+                    <div class="screen-bar">
+                        <span class="screen-dot sd-r"></span>
+                        <span class="screen-dot sd-y"></span>
+                        <span class="screen-dot sd-g"></span>
+                        <span class="screen-url">Question 1 — Multiple Choice</span>
+                    </div>
+                    <div class="screen-body">
+                        <div style="margin-bottom:12px;">
+                            <div style="font-size:.8rem;color:#64748b;font-weight:600;margin-bottom:5px;">Question Text *</div>
+                            <div style="border:2px solid #7e22ce;border-radius:8px;padding:12px 14px;font-size:.9rem;color:#1e293b;background:#fdf4ff;">
+                                What does dynamic binding in Java use to decide which method version to call at runtime?
+                            </div>
+                        </div>
+                        <div style="font-size:.8rem;color:#64748b;font-weight:600;margin-bottom:8px;">Answer Options:</div>
+                        <div style="display:flex;flex-direction:column;gap:7px;">
+                            <div style="display:flex;align-items:center;gap:10px;">
+                                <div style="width:20px;height:20px;border-radius:50%;border:2px solid #cbd5e1;"></div>
+                                <div style="flex:1;border:1.5px solid #e2e8f0;border-radius:7px;padding:8px 12px;font-size:.88rem;">The reference type of the variable</div>
+                            </div>
+                            <div style="display:flex;align-items:center;gap:10px;">
+                                <div style="width:20px;height:20px;border-radius:50%;border:2px solid #16a34a;background:#dcfce7;"></div>
+                                <div style="flex:1;border:2px solid #16a34a;border-radius:7px;padding:8px 12px;font-size:.88rem;background:#f0fdf4;color:#14532d;font-weight:600;">The actual type of the object at runtime &#9989;</div>
+                            </div>
+                            <div style="display:flex;align-items:center;gap:10px;">
+                                <div style="width:20px;height:20px;border-radius:50%;border:2px solid #cbd5e1;"></div>
+                                <div style="flex:1;border:1.5px solid #e2e8f0;border-radius:7px;padding:8px 12px;font-size:.88rem;">The method name only</div>
+                            </div>
+                            <div style="display:flex;align-items:center;gap:10px;">
+                                <div style="width:20px;height:20px;border-radius:50%;border:2px solid #cbd5e1;"></div>
+                                <div style="flex:1;border:1.5px solid #e2e8f0;border-radius:7px;padding:8px 12px;font-size:.88rem;">The number of parameters</div>
+                            </div>
+                        </div>
+                        <div style="margin-top:14px;display:flex;gap:10px;align-items:center;">
+                            <span style="font-size:.82rem;color:#64748b;">Points:</span>
+                            <div style="border:1.5px solid #e2e8f0;border-radius:6px;padding:5px 14px;font-size:.88rem;font-weight:700;color:#374151;width:60px;text-align:center;">1</div>
+                            <span class="ui-btn primary" style="margin-left:auto;">Save Question</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-num teal">3</div>
+            <div class="step-content">
+                <div class="step-title">Add Answer Options &amp; Mark the Correct Answer</div>
+                <div class="step-body">
+                    Type each answer option. Click the <strong>circle/checkbox</strong> next to the correct answer to mark it as correct — it will turn green with a checkmark &#9989;. Set the <strong>point value</strong> (default is 1).
+                </div>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-num teal">4</div>
+            <div class="step-content">
+                <div class="step-title">Click <strong>Save Question</strong></div>
+                <div class="step-body">
+                    Click <span class="ui-btn primary" style="padding:4px 12px;font-size:.8rem;">Save Question</span> to save it.
+                    Repeat steps 1–4 for every question you need.
+                </div>
+            </div>
+        </div>
+
+        <!-- True/False -->
+        <div style="font-weight:700;font-size:1.05rem;color:#0891b2;margin:20px 0 14px;padding:10px 16px;background:#ecfeff;border-radius:8px;border-left:4px solid #0891b2;">
+            &#9888; How to Add a True / False Question
+        </div>
+
+        <div class="step">
+            <div class="step-num teal">1</div>
+            <div class="step-content">
+                <div class="step-title">Click <strong>Add Question &rarr; True/False</strong></div>
+                <div class="step-body">Type the statement. Then click <strong>True</strong> or <strong>False</strong> to indicate which is correct. Set point value and save.</div>
+                <div class="screen">
+                    <div class="screen-bar">
+                        <span class="screen-dot sd-r"></span>
+                        <span class="screen-dot sd-y"></span>
+                        <span class="screen-dot sd-g"></span>
+                        <span class="screen-url">Question — True / False</span>
+                    </div>
+                    <div class="screen-body">
+                        <div style="margin-bottom:12px;">
+                            <div style="font-size:.8rem;color:#64748b;font-weight:600;margin-bottom:5px;">Statement *</div>
+                            <div style="border:2px solid #0891b2;border-radius:8px;padding:12px 14px;font-size:.9rem;color:#1e293b;background:#ecfeff;">
+                                Dynamic binding uses the reference type to decide which method to call.
+                            </div>
+                        </div>
+                        <div style="display:flex;gap:12px;margin-top:10px;">
+                            <div style="border:2px solid #e2e8f0;border-radius:8px;padding:10px 24px;font-size:.92rem;cursor:default;">True</div>
+                            <div style="border:2px solid #dc2626;border-radius:8px;padding:10px 24px;font-size:.92rem;background:#fef2f2;color:#991b1b;font-weight:700;cursor:default;">False &#9989;</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-box warn">
+            <span class="info-icon">&#9888;&#65039;</span>
+            <div class="info-content">
+                <strong>Important — Shuffle Answers:</strong>
+                For Multiple Choice questions, enable <strong>Shuffle Answers</strong> in the question settings
+                so the answer order is randomized for each student.
+                This discourages answer sharing.
+            </div>
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════
+         SECTION 4 — CONFIGURE SETTINGS
+         ══════════════════════════════════════════════════ -->
+    <div class="guide-section" id="section4">
+        <div class="section-heading">
+            <div class="section-num">4</div>
+            <div>
+                <div class="section-title">Configure Quiz Settings</div>
+                <div class="section-desc">Set the due date, time limit, attempts, and display options</div>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-num orange">1</div>
+            <div class="step-content">
+                <div class="step-title">Click the <strong>Settings</strong> (gear icon &#9881;) on the Test</div>
+                <div class="step-body">
+                    From the test editor page, click the <strong>gear icon &#9881;</strong>
+                    or the <strong>&hellip; (three dots)</strong> menu in the top-right corner,
+                    then choose <strong>Settings</strong>.
+                </div>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-num orange">2</div>
+            <div class="step-content">
+                <div class="step-title">Configure the Key Options</div>
+                <div class="step-body">A settings panel slides open on the right. Here are the most important options:</div>
+                <div class="screen">
+                    <div class="screen-bar">
+                        <span class="screen-dot sd-r"></span>
+                        <span class="screen-dot sd-y"></span>
+                        <span class="screen-dot sd-g"></span>
+                        <span class="screen-url">Test Settings</span>
+                    </div>
+                    <div class="screen-body" style="padding:0;">
+                        <div class="settings-row">
+                            <span class="settings-label">&#128197; Due Date</span>
+                            <span style="font-size:.85rem;color:#374151;font-weight:600;">Apr 20, 2026 &nbsp; 11:59 PM</span>
+                        </div>
+                        <div class="settings-row">
+                            <span class="settings-label">&#9200; Time Limit</span>
+                            <span style="font-size:.85rem;color:#374151;font-weight:600;">30 minutes</span>
+                        </div>
+                        <div class="settings-row">
+                            <span class="settings-label">&#128260; Number of Attempts</span>
+                            <span style="font-size:.85rem;color:#374151;font-weight:600;">1 attempt</span>
+                        </div>
+                        <div class="settings-row">
+                            <span class="settings-label">&#128272; Shuffle Questions</span>
+                            <span class="toggle on"></span>
+                        </div>
+                        <div class="settings-row">
+                            <span class="settings-label">&#128065; Show Correct Answers</span>
+                            <span class="toggle off"></span>
+                        </div>
+                        <div class="settings-row">
+                            <span class="settings-label">&#128202; Show Score After Submit</span>
+                            <span class="toggle on"></span>
+                        </div>
+                        <div class="settings-row">
+                            <span class="settings-label">&#128274; Require a Password</span>
+                            <span class="toggle off"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-num orange">3</div>
+            <div class="step-content">
+                <div class="step-title">Save Settings &amp; Publish the Quiz</div>
+                <div class="step-body">
+                    When you are satisfied with the settings, click
+                    <span class="ui-btn primary" style="padding:4px 12px;font-size:.8rem;">Save</span>.
+                    Then use the toggle at the top of the test to switch from
+                    <span class="ui-btn secondary" style="padding:4px 10px;font-size:.78rem;">Hidden</span>
+                    to
+                    <span class="ui-btn success" style="padding:4px 10px;font-size:.78rem;">&#9989; Visible to Students</span>
+                    when you are ready for students to see it.
+                </div>
+            </div>
+        </div>
+
+        <div class="info-box tip">
+            <span class="info-icon">&#128161;</span>
+            <div class="info-content">
+                <strong>Keep it Hidden while building:</strong>
+                Always keep the quiz <strong>Hidden</strong> until you have finished adding all questions
+                and reviewing everything. Students cannot see hidden assessments.
+            </div>
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════
+         SECTION 5 — EXPORT AS QTI 2.1 PACKAGE
+         ══════════════════════════════════════════════════ -->
+    <div class="guide-section" id="section5">
+        <div class="section-heading">
+            <div class="section-num">5</div>
+            <div>
+                <div class="section-title">Export Questions as a QTI 2.1 Package</div>
+                <div class="section-desc">Save your question bank so you can reuse it in another course or semester</div>
+            </div>
+        </div>
+
+        <div class="info-box note">
+            <span class="info-icon">&#128204;</span>
+            <div class="info-content">
+                <strong>How this works:</strong>
+                In Blackboard Ultra, questions are shared via <strong>Question Banks</strong> — not via course-level export.
+                You first copy your quiz questions into a Question Bank, then export the bank as a
+                <strong>QTI 2.1 ZIP package</strong>.
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-num green">1</div>
+            <div class="step-content">
+                <div class="step-title">In the <strong>right pane</strong>, under "Question Banks", click <strong>Manage banks</strong></div>
+                <div class="step-body">
+                    On the Course Content page, look at the right side panel.
+                    You will see a <strong>Question Banks</strong> section with a "Manage banks" link — click it.
+                </div>
+                <div class="screen">
+                    <div class="screen-bar">
+                        <span class="screen-dot sd-r"></span>
+                        <span class="screen-dot sd-y"></span>
+                        <span class="screen-dot sd-g"></span>
+                        <span class="screen-url">Course Content — Right Pane</span>
+                    </div>
+                    <div class="screen-body">
+                        <div style="background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:10px;padding:12px 16px;font-size:.88rem;">
+                            <div style="color:#64748b;font-size:.78rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;">Details &amp; Actions</div>
+                            <div style="border-top:1px solid #e2e8f0;padding-top:10px;margin-top:4px;">
+                                <div style="display:flex;align-items:center;gap:8px;font-weight:700;color:#374151;margin-bottom:4px;">
+                                    <span style="font-size:1rem;">&#128202;</span> Question Banks
+                                </div>
+                                <div style="padding-left:24px;color:#2563eb;font-size:.85rem;font-weight:600;cursor:pointer;text-decoration:underline;">Manage banks <span class="click-badge" style="font-size:.7rem;">&#128070; Click this</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-num green">2</div>
+            <div class="step-content">
+                <div class="step-title">Click the <strong>purple line</strong> at the bottom, then choose <strong>New</strong></div>
+                <div class="step-body">
+                    The Question Banks page opens. Click the <strong>purple + line</strong> in the middle of the page.
+                    A menu appears — choose <strong>New</strong> to create a new question bank.
+                </div>
+                <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:12px;align-items:flex-start;">
+                    <div class="dropdown-menu">
+                        <div class="dm-item active">&#8853; New <span class="click-badge">&#128070; Click this</span></div>
+                        <div class="dm-item" style="color:#94a3b8;">&#128196; Import from file</div>
+                        <div class="dm-item" style="color:#94a3b8;">&#128196; Import from QTI 2.1 package</div>
+                        <div class="dm-item" style="color:#94a3b8;">&#10024; Auto-generate</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-num green">3</div>
+            <div class="step-content">
+                <div class="step-title">From the menu inside the new bank, choose <strong>Reuse questions</strong></div>
+                <div class="step-body">
+                    Give the bank a name (e.g., <em>Quiz 2</em>). Then click the <strong>purple + line</strong> inside the bank.
+                    From the question-type menu, scroll down and click <strong>Reuse questions</strong>.
+                </div>
+                <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:12px;align-items:flex-start;">
+                    <div class="dropdown-menu" style="min-width:230px;">
+                        <div class="dm-item" style="color:#94a3b8;font-size:.82rem;">&#8853; Multiple Choice question</div>
+                        <div class="dm-item" style="color:#94a3b8;font-size:.82rem;">&#8853; True/False question</div>
+                        <div class="dm-item" style="color:#94a3b8;font-size:.82rem;">&#8853; Essay question</div>
+                        <div class="dm-item" style="color:#94a3b8;font-size:.82rem;">&#8853; Fill in the Blank question</div>
+                        <div class="dm-item" style="color:#94a3b8;font-size:.82rem;">&bull;&bull;&bull;</div>
+                        <div class="dm-item active" style="font-size:.82rem;">&#8853; Reuse questions <span class="click-badge">&#128070; Click this</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-num green">4</div>
+            <div class="step-content">
+                <div class="step-title">In the <strong>left pane</strong>, choose your quiz &rarr; <strong>Select all</strong> &rarr; <strong>Copy Questions</strong></div>
+                <div class="step-body">
+                    The "Reuse Questions" panel opens. In the left pane, find and click your quiz (e.g., <em>Quiz 2</em>).
+                    All its questions appear on the right. Click <strong>Select all</strong>, then click
+                    the <strong>Copy Questions</strong> button.
+                </div>
+                <div class="screen">
+                    <div class="screen-bar">
+                        <span class="screen-dot sd-r"></span>
+                        <span class="screen-dot sd-y"></span>
+                        <span class="screen-dot sd-g"></span>
+                        <span class="screen-url">Reuse Questions</span>
+                    </div>
+                    <div class="screen-body" style="display:flex;gap:12px;padding:12px;">
+                        <div style="width:160px;flex-shrink:0;border-right:1px solid #e2e8f0;padding-right:12px;font-size:.8rem;">
+                            <div style="font-weight:700;color:#374151;margin-bottom:8px;">Question Banks</div>
+                            <div style="background:#ede9fe;border:2px solid #7e22ce;border-radius:6px;padding:5px 8px;color:#6d28d9;font-weight:700;font-size:.78rem;">&#9746; Quiz 2</div>
+                        </div>
+                        <div style="flex:1;font-size:.8rem;">
+                            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+                                <span style="color:#059669;font-weight:600;">Select all</span>
+                                <span style="color:#94a3b8;">Clear all</span>
+                            </div>
+                            <div style="color:#374151;margin-bottom:4px;">&#9989; Multiple Choice — Q1</div>
+                            <div style="color:#374151;margin-bottom:4px;">&#9989; Multiple Choice — Q2</div>
+                            <div style="color:#374151;margin-bottom:12px;">&#9989; Multiple Choice — Q3 ...</div>
+                            <div style="text-align:right;">
+                                <span style="background:#059669;color:#fff;padding:7px 16px;border-radius:8px;font-weight:700;font-size:.82rem;">Copy Questions</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-num green">5</div>
+            <div class="step-content">
+                <div class="step-title">Wait for the success message, then click <strong>X</strong> to leave the bank</div>
+                <div class="step-body">
+                    Blackboard shows: <em>"5 questions copied successfully to the question bank"</em>.
+                    Click the <strong>X</strong> (top-left) to return to the Question Banks main page.
+                </div>
+                <div class="info-box tip" style="margin-top:10px;">
+                    <span class="info-icon">&#9989;</span>
+                    <div class="info-content">
+                        You will now see your question bank listed with the number of questions and last edited date.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-num green">6</div>
+            <div class="step-content">
+                <div class="step-title">Click the <strong>&hellip; three dots</strong> next to the bank &rarr; <strong>Export QTI 2.1 Package</strong></div>
+                <div class="step-body">
+                    On the Question Banks page, find your bank. Click the <strong>&hellip;</strong> icon on the right side.
+                    Choose <strong>Export QTI 2.1 Package</strong>. The ZIP file downloads to your computer.
+                </div>
+                <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:12px;align-items:flex-start;">
+                    <div class="dropdown-menu">
+                        <div class="dm-item" style="color:#dc2626;">&#128465; Delete</div>
+                        <div class="dm-item active">&#128196; Export QTI 2.1 Package <span class="click-badge">&#128070; Click this</span></div>
+                    </div>
+                </div>
+                <div style="margin-top:14px;">
+                    <span class="file-badge">&#128230; Quiz2_QTI_package.zip</span>
+                    <span style="margin-left:12px;font-size:.85rem;color:var(--muted);">← saved to your Downloads folder</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-box warn">
+            <span class="info-icon">&#9888;&#65039;</span>
+            <div class="info-content">
+                <strong>Keep this ZIP safe!</strong>
+                Store it in Google Drive, OneDrive, or USB.
+                It contains all your questions and correct answers in QTI 2.1 format —
+                you can re-import it any semester without re-typing everything.
+            </div>
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════
+         SECTION 6 — IMPORT QTI & CREATE TEST
+         ══════════════════════════════════════════════════ -->
+    <div class="guide-section" id="section6">
+        <div class="section-heading">
+            <div class="section-num">6</div>
+            <div>
+                <div class="section-title">Import QTI Package &amp; Create the Test</div>
+                <div class="section-desc">Import the question bank, then build a new test from it</div>
+            </div>
+        </div>
+
+        <div class="info-box note">
+            <span class="info-icon">&#128204;</span>
+            <div class="info-content">
+                <strong>How this works:</strong>
+                You import the QTI ZIP into <strong>Question Banks</strong> (right pane),
+                then create a new Test in Course Content and pull questions from the bank using
+                <strong>Reuse Questions</strong>.
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-num purple">1</div>
+            <div class="step-content">
+                <div class="step-title">In the <strong>right pane</strong>, click <strong>Question Banks &rarr; Manage banks</strong></div>
+                <div class="step-body">
+                    On the Course Content page, find the <strong>Question Banks</strong> section in the right panel and click <strong>Manage banks</strong>.
+                </div>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-num purple">2</div>
+            <div class="step-content">
+                <div class="step-title">Click the <strong>purple line</strong>, then choose <strong>Import from QTI 2.1</strong></div>
+                <div class="step-body">
+                    Click the purple + line on the Question Banks page. From the menu, choose <strong>Import from QTI 2.1 package</strong>.
+                </div>
+                <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:12px;align-items:flex-start;">
+                    <div class="dropdown-menu">
+                        <div class="dm-item" style="color:#94a3b8;">&#8853; New</div>
+                        <div class="dm-item" style="color:#94a3b8;">&#128196; Import from file</div>
+                        <div class="dm-item active">&#128196; Import from QTI 2.1 package <span class="click-badge">&#128070; Click this</span></div>
+                        <div class="dm-item" style="color:#94a3b8;">&#10024; Auto-generate</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-num purple">3</div>
+            <div class="step-content">
+                <div class="step-title">Choose the <strong>ZIP file</strong> and wait for it to upload</div>
+                <div class="step-body">
+                    A file browser opens. Select the QTI ZIP file you exported earlier and wait for the upload to complete.
+                    Blackboard will show a success message and the bank will appear in the list.
+                </div>
+                <div style="margin-top:12px;">
+                    <span class="file-badge">&#128230; Quiz2_QTI_package.zip</span>
+                    <span style="margin-left:12px;font-size:.85rem;color:var(--muted);">← select this file</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-num purple">4</div>
+            <div class="step-content">
+                <div class="step-title">Go back to the course &rarr; click the <strong>purple line</strong> &rarr; choose <strong>Create</strong></div>
+                <div class="step-body">
+                    Return to the <strong>Course Content</strong> main page. Click the <strong>purple + line</strong>
+                    at the position where you want to add the quiz. From the menu, choose <strong>Create</strong>.
+                </div>
+                <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:12px;align-items:flex-start;">
+                    <div class="dropdown-menu" style="min-width:200px;">
+                        <div class="dm-item active">&#8853; Create <span class="click-badge">&#128070; Click this</span></div>
+                        <div class="dm-item" style="color:#94a3b8;">&#10024; Auto-Generate Modules</div>
+                        <div class="dm-item" style="color:#94a3b8;">&#128196; Copy Content</div>
+                        <div class="dm-item" style="color:#94a3b8;">&#8679; Upload</div>
+                        <div class="dm-item" style="color:#94a3b8;">&#9729; Cloud Storage</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-num purple">5</div>
+            <div class="step-content">
+                <div class="step-title">Choose <strong>Test</strong> from the right pane menu</div>
+                <div class="step-body">
+                    A right-side panel opens with content types. Under <strong>Assessment</strong>, click <strong>Test</strong>.
+                    Give the test a name.
+                </div>
+                <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:12px;align-items:flex-start;">
+                    <div class="dropdown-menu" style="min-width:220px;">
+                        <div class="dm-item" style="color:#94a3b8;font-size:.82rem;">&#128196; Document</div>
+                        <div class="dm-item" style="color:#94a3b8;font-size:.82rem;">&#128279; Link</div>
+                        <div class="dm-item" style="color:#64748b;font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;cursor:default;">Assessment</div>
+                        <div class="dm-item active" style="font-size:.82rem;">&#128202; Test <span class="click-badge">&#128070; Click this</span></div>
+                        <div class="dm-item" style="color:#94a3b8;font-size:.82rem;">&#128203; Assignment</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-num purple">6</div>
+            <div class="step-content">
+                <div class="step-title">In the Test window, click the <strong>purple line</strong> &rarr; <strong>Reuse questions</strong></div>
+                <div class="step-body">
+                    The new test opens. Click the <strong>purple + line</strong> inside the test content area.
+                    From the menu, choose <strong>Reuse questions</strong>.
+                </div>
+                <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:12px;align-items:flex-start;">
+                    <div class="dropdown-menu" style="min-width:230px;">
+                        <div class="dm-item" style="color:#94a3b8;font-size:.82rem;">&#8853; Add question pool</div>
+                        <div class="dm-item" style="color:#94a3b8;font-size:.82rem;">&#8853; Add Multiple Choice question</div>
+                        <div class="dm-item" style="color:#94a3b8;font-size:.82rem;">&#8853; Add True/False question</div>
+                        <div class="dm-item" style="color:#94a3b8;font-size:.82rem;">&bull;&bull;&bull;</div>
+                        <div class="dm-item active" style="font-size:.82rem;">&#8853; Reuse questions <span class="click-badge">&#128070; Click this</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-num purple">7</div>
+            <div class="step-content">
+                <div class="step-title">In the left pane under <strong>Question Banks</strong>, choose the imported bank &rarr; <strong>Select all</strong> &rarr; <strong>Copy Questions</strong></div>
+                <div class="step-body">
+                    The "Reuse Questions" panel opens. In the left pane, scroll down to <strong>Question Banks</strong>
+                    and click your imported bank (e.g., <em>Quiz 2</em>). Click <strong>Select all</strong>,
+                    then click <strong>Copy Questions</strong>.
+                </div>
+                <div class="screen">
+                    <div class="screen-bar">
+                        <span class="screen-dot sd-r"></span>
+                        <span class="screen-dot sd-y"></span>
+                        <span class="screen-dot sd-g"></span>
+                        <span class="screen-url">Reuse Questions</span>
+                    </div>
+                    <div class="screen-body" style="display:flex;gap:12px;padding:12px;">
+                        <div style="width:160px;flex-shrink:0;border-right:1px solid #e2e8f0;padding-right:12px;font-size:.8rem;">
+                            <div style="color:#64748b;font-size:.75rem;font-weight:700;text-transform:uppercase;margin-bottom:6px;">Question Banks</div>
+                            <div style="background:#ede9fe;border:2px solid #7e22ce;border-radius:6px;padding:5px 8px;color:#6d28d9;font-weight:700;font-size:.78rem;">&#9746; Quiz 2</div>
+                        </div>
+                        <div style="flex:1;font-size:.8rem;">
+                            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+                                <span style="color:#059669;font-weight:600;">Select all</span>
+                                <span style="color:#94a3b8;">Clear all</span>
+                            </div>
+                            <div style="color:#374151;margin-bottom:4px;">&#9989; Multiple Choice — Q1</div>
+                            <div style="color:#374151;margin-bottom:4px;">&#9989; Multiple Choice — Q2</div>
+                            <div style="color:#374151;margin-bottom:12px;">&#9989; Multiple Choice — Q3 ...</div>
+                            <div style="display:flex;justify-content:space-between;align-items:center;">
+                                <span style="font-size:.78rem;color:#374151;">5 questions will be copied</span>
+                                <span style="background:#059669;color:#fff;padding:7px 16px;border-radius:8px;font-weight:700;font-size:.82rem;">Copy Questions</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-num purple">8</div>
+            <div class="step-content">
+                <div class="step-title">Configure test settings in the <strong>right pane</strong></div>
+                <div class="step-body">
+                    All questions are now added. Use the right pane to set:
+                </div>
+                <div style="background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:10px;padding:16px 20px;margin-top:10px;font-size:.88rem;line-height:2.4;">
+                    <div><span style="background:#7e22ce;color:#fff;border-radius:50%;width:22px;height:22px;display:inline-flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;margin-right:8px;">a</span> <strong>Due date</strong> — set the deadline</div>
+                    <div><span style="background:#7e22ce;color:#fff;border-radius:50%;width:22px;height:22px;display:inline-flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;margin-right:8px;">b</span> <strong>Prohibit late submission</strong></div>
+                    <div><span style="background:#7e22ce;color:#fff;border-radius:50%;width:22px;height:22px;display:inline-flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;margin-right:8px;">c</span> <strong>One question at a time</strong></div>
+                    <div><span style="background:#7e22ce;color:#fff;border-radius:50%;width:22px;height:22px;display:inline-flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;margin-right:8px;">d</span> <strong>Randomize questions</strong></div>
+                    <div><span style="background:#7e22ce;color:#fff;border-radius:50%;width:22px;height:22px;display:inline-flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;margin-right:8px;">e</span> <strong>Randomize answers</strong></div>
+                    <div><span style="background:#7e22ce;color:#fff;border-radius:50%;width:22px;height:22px;display:inline-flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;margin-right:8px;">f</span> Under <strong>Submission view</strong> — change everything to <strong>"After due date"</strong></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-num purple">9</div>
+            <div class="step-content">
+                <div class="step-title">Set the <strong>release condition</strong> (availability window)</div>
+                <div class="step-body">
+                    Set when the test becomes available to students and when it closes.
+                    This controls the exact time window students can access the test.
+                </div>
+                <div class="info-box tip" style="margin-top:10px;">
+                    <span class="info-icon">&#9200;</span>
+                    <div class="info-content">
+                        Example: Release from <strong>7:00 pm</strong> to <strong>10:59 pm</strong> on the exam date —
+                        students outside this window cannot open the test.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════
+         QUICK REFERENCE
+         ══════════════════════════════════════════════════ -->
+    <div class="guide-section" style="background:linear-gradient(135deg,#1e1b4b,#312e81);color:#fff;">
+        <div style="font-size:1.2rem;font-weight:800;margin-bottom:20px;display:flex;align-items:center;gap:10px;">
+            <span>&#128203;</span> Quick Reference Card
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+            <div style="background:rgba(255,255,255,.1);border-radius:12px;padding:18px 20px;">
+                <div style="font-weight:700;color:#c4b5fd;margin-bottom:10px;">&#9200; Create Quiz</div>
+                <div style="font-size:.88rem;color:#e0e7ff;line-height:2.1;">
+                    Course Content &rarr; + &rarr; Create &rarr; Test<br>
+                    Name it &rarr; Add Questions &rarr; Save
+                </div>
+            </div>
+            <div style="background:rgba(255,255,255,.1);border-radius:12px;padding:18px 20px;">
+                <div style="font-weight:700;color:#86efac;margin-bottom:10px;">&#128230; Export QTI</div>
+                <div style="font-size:.88rem;color:#e0e7ff;line-height:2.1;">
+                    Manage Banks &rarr; <strong>New</strong> &rarr; Reuse Questions<br>
+                    &rarr; Copy from quiz &rarr; <strong>&hellip; Export QTI 2.1</strong>
+                </div>
+            </div>
+            <div style="background:rgba(255,255,255,.1);border-radius:12px;padding:18px 20px;">
+                <div style="font-weight:700;color:#fcd34d;margin-bottom:10px;">&#8679; Import QTI</div>
+                <div style="font-size:.88rem;color:#e0e7ff;line-height:2.1;">
+                    Manage Banks &rarr; purple line<br>
+                    &rarr; <strong>Import from QTI 2.1</strong> &rarr; Upload ZIP
+                </div>
+            </div>
+            <div style="background:rgba(255,255,255,.1);border-radius:12px;padding:18px 20px;">
+                <div style="font-weight:700;color:#f9a8d4;margin-bottom:10px;">&#128202; Create Test from Bank</div>
+                <div style="font-size:.88rem;color:#e0e7ff;line-height:2.1;">
+                    Purple line &rarr; Create &rarr; <strong>Test</strong><br>
+                    &rarr; Reuse questions &rarr; choose bank &rarr; Copy
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- ═══════════════════════ FOOTER ═══════════════════════ -->
+<footer class="footer">
+    <p style="font-weight:700;font-size:1rem;color:#e0e7ff;">&#127979; King Abdulaziz University &mdash; CPCS203</p>
+    <p>Blackboard Ultra Quiz Guide &bull; Prepared by Dr. Almalawi</p>
+    <p style="margin-top:8px;font-size:.8rem;opacity:.5;">Note: Exact menu locations may vary slightly by Blackboard version and institution configuration.</p>
+</footer>
+
+</body>
+</html>
