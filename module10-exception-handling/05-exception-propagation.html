@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 5: Exception Propagation — Module 10: Exception Handling | CPCS203</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --red: #ef4444; --red-dark: #dc2626; --red-darker: #991b1b; --red-light: #fee2e2;
+            --orange: #f97316; --orange-dark: #ea580c; --orange-light: #fff7ed;
+            --amber: #f59e0b; --amber-dark: #b45309; --amber-light: #fffbeb;
+            --success: #059669; --success-light: #d1fae5;
+            --info: #2563eb; --info-light: #dbeafe;
+            --violet: #7c3aed; --violet-light: #ede9fe;
+            --dark: #1f2937; --gray: #6b7280; --light: #f9fafb;
+        }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.8; color: var(--dark); background: #f1f5f9; min-height: 100vh; padding: 20px; }
+        .container { max-width: 1000px; margin: 0 auto; background: white; border-radius: 20px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.35); overflow: hidden; }
+        .nav-breadcrumb { background: linear-gradient(135deg, #7f1d1d, #991b1b); padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+        .breadcrumb { display: flex; align-items: center; gap: 8px; color: white; font-size: 0.9rem; }
+        .breadcrumb a { color: #fca5a5; text-decoration: none; transition: color .3s; }
+        .breadcrumb a:hover { color: white; }
+        .breadcrumb .sep { color: #f87171; }
+        .breadcrumb .cur { color: #fde68a; }
+        .lesson-nav { display: flex; gap: 10px; }
+        .lesson-nav a { padding: 8px 16px; background: rgba(255,255,255,.15); color: white; text-decoration: none; border-radius: 20px; font-size: .85rem; transition: background .3s; }
+        .lesson-nav a:hover { background: rgba(255,255,255,.25); }
+        .hero { background: linear-gradient(135deg, #dc2626, #ef4444, #f97316, #f59e0b); color: white; padding: 50px 40px; text-align: center; position: relative; overflow: hidden; }
+        .hero::before { content: ''; position: absolute; top: -50px; right: -50px; width: 250px; height: 250px; background: rgba(255,255,255,.05); border-radius: 50%; }
+        .hero::after { content: ''; position: absolute; bottom: -80px; left: -40px; width: 300px; height: 300px; background: rgba(255,255,255,.05); border-radius: 50%; }
+        .module-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,.2); border: 1px solid rgba(255,255,255,.4); padding: 8px 22px; border-radius: 30px; font-size: .95rem; font-weight: 600; margin-bottom: 20px; }
+        .module-badge .num { background: white; color: var(--red); width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; }
+        .hero h1 { font-size: 2.8rem; margin-bottom: 15px; text-shadow: 0 3px 8px rgba(0,0,0,.3); }
+        .hero .subtitle { font-size: 1.2rem; opacity: .9; margin-bottom: 10px; }
+        .topic-chips { display: flex; justify-content: center; gap: 12px; margin-top: 28px; flex-wrap: wrap; }
+        .topic-chip { padding: 9px 20px; border-radius: 30px; font-weight: 700; font-size: .88rem; border: 2px solid rgba(255,255,255,.5); background: rgba(255,255,255,.12); }
+        .content { padding: 50px 40px; }
+        .section { margin-bottom: 60px; }
+        .section-title { font-size: 1.85rem; color: var(--red-darker); border-bottom: 3px solid var(--red); padding-bottom: 10px; margin-bottom: 28px; display: flex; align-items: center; gap: 12px; }
+        .section-number { background: linear-gradient(135deg, var(--red), var(--orange)); color: white; width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; font-weight: bold; flex-shrink: 0; }
+        .subsection-title { font-size: 1.3rem; color: var(--orange-dark); margin: 30px 0 15px; display: flex; align-items: center; gap: 10px; }
+        .sub-badge { background: linear-gradient(135deg, var(--orange), var(--amber)); color: white; padding: 4px 14px; border-radius: 20px; font-size: .8rem; font-weight: 700; }
+        .narrative { background: linear-gradient(135deg, #fff7ed, #ffedd5); border-left: 5px solid var(--orange); padding: 25px 30px; margin: 20px 0; border-radius: 0 15px 15px 0; font-size: 1.05rem; line-height: 2; }
+        .narrative p { margin-bottom: 12px; }
+        .narrative p:last-child { margin-bottom: 0; }
+        .key-box { background: linear-gradient(135deg, #fef3c7, #fde68a); border-left: 5px solid var(--amber); padding: 18px 24px; margin: 20px 0; border-radius: 0 12px 12px 0; }
+        .key-box-title { font-weight: 700; color: var(--amber-dark); margin-bottom: 8px; font-size: 1.05rem; }
+        .info-box { background: linear-gradient(135deg, #dbeafe, #bfdbfe); border-left: 5px solid var(--info); padding: 18px 24px; margin: 20px 0; border-radius: 0 12px 12px 0; }
+        .info-box-title { font-weight: 700; color: var(--info); margin-bottom: 8px; font-size: 1.05rem; }
+        .red-box { background: linear-gradient(135deg, #fee2e2, #fecaca); border-left: 5px solid var(--red); padding: 18px 24px; margin: 20px 0; border-radius: 0 12px 12px 0; }
+        .red-box-title { font-weight: 700; color: var(--red-dark); margin-bottom: 8px; font-size: 1.05rem; }
+        .orange-box { background: linear-gradient(135deg, #fff7ed, #fed7aa); border-left: 5px solid var(--orange); padding: 18px 24px; margin: 20px 0; border-radius: 0 12px 12px 0; }
+        .orange-box-title { font-weight: 700; color: var(--orange-dark); margin-bottom: 8px; font-size: 1.05rem; }
+        .success-box { background: linear-gradient(135deg, #d1fae5, #a7f3d0); border-left: 5px solid var(--success); padding: 18px 24px; margin: 20px 0; border-radius: 0 12px 12px 0; }
+        .success-box-title { font-weight: 700; color: #065f46; margin-bottom: 8px; font-size: 1.05rem; }
+        .violet-box { background: linear-gradient(135deg, #ede9fe, #ddd6fe); border-left: 5px solid var(--violet); padding: 18px 24px; margin: 20px 0; border-radius: 0 12px 12px 0; }
+        .violet-box-title { font-weight: 700; color: #5b21b6; margin-bottom: 8px; font-size: 1.05rem; }
+        .code-block { background: var(--cb-bg, #282a36); color: var(--cb-text, #f8f8f2); padding: 24px 26px; border-radius: 12px; margin: 18px 0; overflow-x: auto; font-family: 'Consolas', 'Monaco', monospace; font-size: 1.02rem; line-height: 1.75; white-space: pre-wrap; border: 1.5px solid #44475a; }
+        .code-block .kw  { color: var(--cb-keyword, #ff79c6); font-weight: 700; }
+        .code-block .tp  { color: var(--cb-class, #8be9fd); }
+        .code-block .str { color: var(--cb-string, #f1fa8c); }
+        .code-block .num { color: var(--cb-number, #bd93f9); }
+        .code-block .cmt { color: var(--cb-comment, #6272a4); font-style: italic; }
+        .code-block .mtd { color: var(--cb-method, #50fa7b); }
+        .code-label { background: var(--cb-bg, #21222c); color: var(--cb-class, #8be9fd); padding: 8px 18px; border-radius: 12px 12px 0 0; font-family: 'Consolas', monospace; font-size: .85rem; display: inline-block; margin-bottom: -2px; border: 1.5px solid #44475a; border-bottom: none; }
+        .code-inline { background: #f3f4f6; padding: 2px 8px; border-radius: 5px; font-family: 'Consolas', monospace; font-size: .9rem; color: var(--red-dark); }
+        .terminal { background: var(--tm-bg, #0f172a); color: var(--tm-text, #e2e8f0); padding: 22px; border-radius: 12px; margin: 18px 0; font-family: 'Consolas', monospace; font-size: .88rem; line-height: 1.9; overflow-x: auto; white-space: pre; border: 1px solid var(--tm-border, #334155); }
+        .terminal-header { background: var(--tm-header, #1e293b); border: 1px solid var(--tm-border, #334155); border-bottom: none; border-radius: 12px 12px 0 0; padding: 10px 18px; display: flex; align-items: center; gap: 8px; }
+        .terminal-dot { width: 12px; height: 12px; border-radius: 50%; }
+        .terminal-dot.r { background: #ef4444; }
+        .terminal-dot.y { background: #f59e0b; }
+        .terminal-dot.g { background: #22c55e; }
+        .terminal-title { color: #94a3b8; font-size: .8rem; margin-left: 8px; font-weight: 600; }
+        .terminal.with-header { border-radius: 0 0 12px 12px; }
+        .terminal .t-red { color: #f87171; }
+        @media (max-width: 768px) { body { padding: 10px; } .hero { padding: 30px 20px; } .hero h1 { font-size: 2rem; } .content { padding: 30px 20px; } }
+        .footer { background: linear-gradient(135deg, #7f1d1d, #991b1b); color: #fca5a5; padding: 25px 40px; text-align: center; font-size: .85rem; line-height: 1.7; }
+        .bottom-nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; background: linear-gradient(135deg, #991b1b, #b91c1c); }
+        .bottom-nav a { display: inline-flex; align-items: center; gap: 8px; padding: 10px 22px; background: rgba(255,255,255,.15); color: white; text-decoration: none; border-radius: 25px; font-size: .9rem; font-weight: 600; transition: background .3s, transform .2s; }
+        .bottom-nav a:hover { background: rgba(255,255,255,.28); transform: translateY(-2px); }
+
+        /* Call Stack Visualization */
+        .call-stack {
+            display: flex; flex-direction: column;
+            align-items: center; margin: 24px auto;
+            max-width: 400px; gap: 0;
+        }
+        .stack-frame {
+            width: 100%;
+            padding: 14px 20px;
+            border: 2px solid;
+            text-align: center;
+            font-family: 'Consolas', monospace;
+            font-size: .9rem;
+            font-weight: 700;
+            position: relative;
+        }
+        .stack-frame:first-child { border-radius: 10px 10px 0 0; }
+        .stack-frame:last-child  { border-radius: 0 0 10px 10px; }
+        .stack-frame.sf-main  { background: #dbeafe; border-color: var(--info); color: var(--info); }
+        .stack-frame.sf-m1    { background: #ede9fe; border-color: var(--violet); color: #5b21b6; }
+        .stack-frame.sf-m2    { background: #fff7ed; border-color: var(--orange); color: var(--orange-dark); }
+        .stack-frame.sf-m3    { background: #fee2e2; border-color: var(--red); color: var(--red-dark); }
+        .stack-arrow-up {
+            font-size: 1.2rem;
+            color: var(--red);
+            margin: 2px 0;
+        }
+        /* ── Code-theme floating picker ── */
+        #code-theme-picker { position: fixed; bottom: 28px; right: 28px; z-index: 9999; display: flex; flex-direction: column; align-items: flex-end; gap: 10px; font-family: 'Segoe UI', sans-serif; }
+        #theme-toggle-btn { background: linear-gradient(135deg, #991b1b, #dc2626); color: #fff; border: none; border-radius: 50px; padding: 11px 20px; font-size: .88rem; font-weight: 700; cursor: pointer; box-shadow: 0 4px 18px rgba(220,38,38,.5); letter-spacing: .5px; transition: box-shadow .2s; }
+        #theme-toggle-btn:hover { box-shadow: 0 6px 24px rgba(220,38,38,.7); }
+        #theme-panel { background: #fff; border-radius: 14px; padding: 14px 16px; box-shadow: 0 8px 32px rgba(0,0,0,.25); display: none; flex-direction: column; gap: 8px; min-width: 210px; border: 1px solid #fca5a5; }
+        #theme-panel.open { display: flex; }
+        #theme-panel .tp-label { font-size: .72rem; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: #dc2626; margin-bottom: 4px; }
+        .theme-btn { display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-radius: 8px; border: 2px solid transparent; cursor: pointer; font-size: .88rem; font-weight: 600; transition: border-color .2s, background .2s; background: #f9fafb; color: #1f2937; }
+        .theme-btn:hover { background: #fef2f2; border-color: #dc2626; }
+        .theme-btn.active { border-color: #991b1b; background: #fee2e2; }
+        .theme-swatch { width: 28px; height: 28px; border-radius: 6px; border: 1px solid rgba(0,0,0,.15); flex-shrink: 0; }
+        /* ── Projector mode overrides ── */
+        body.projector .nav-breadcrumb { background: #fee2e2 !important; }
+        body.projector .breadcrumb a { color: #991b1b !important; }
+        body.projector .breadcrumb .sep, body.projector .breadcrumb .cur { color: #dc2626 !important; }
+        body.projector .lesson-nav a { background: rgba(220,38,38,.12) !important; color: #7f1d1d !important; border: 1px solid #fca5a5 !important; }
+        body.projector .bottom-nav { background: #fee2e2 !important; }
+        body.projector .bottom-nav a { background: rgba(220,38,38,.12) !important; color: #7f1d1d !important; border: 1px solid #fca5a5 !important; }
+        body.projector .footer { background: #fef2f2 !important; color: #7f1d1d !important; }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <!-- Breadcrumb Navigation -->
+        <nav class="nav-breadcrumb">
+            <div class="breadcrumb">
+                <a href="#">CPCS203</a>
+                <span class="sep">/</span>
+                <a href="#">Module 10</a>
+                <span class="sep">/</span>
+                <span class="cur">Lesson 5 &mdash; Exception Propagation</span>
+            </div>
+            <div class="lesson-nav">
+                <a href="04-exception-hierarchy.html">&larr; Lesson 4</a>
+                <a href="06-try-catch-finally.html">Lesson 6 &rarr;</a>
+            </div>
+        </nav>
+
+        <!-- Hero Section -->
+        <div class="hero">
+            <div class="module-badge">
+                <span class="num">10</span>
+                Lesson 5 of 8
+            </div>
+            <h1>Exception Propagation</h1>
+            <p class="subtitle">How exceptions travel up the call stack</p>
+            <div class="topic-chips">
+                <span class="topic-chip">Call Stack</span>
+                <span class="topic-chip">Propagation</span>
+                <span class="topic-chip">throws</span>
+                <span class="topic-chip">Handler</span>
+            </div>
+        </div>
+
+        <!-- Content -->
+        <div class="content">
+
+            <!-- Section 1: What is Propagation? -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">1</span>
+                    What is Propagation?
+                </h2>
+
+                <div class="narrative">
+                    <p>When a method encounters a problem it can't fix, it throws an exception. But what happens to that exception? Where does it go?</p>
+                    <p>The exception travels <strong>UP</strong> the call stack &mdash; from the method that threw it, to the method that called it, to the method that called <strong>THAT</strong> method, and so on &mdash; until someone catches it.</p>
+                    <p>If no one catches it, the exception reaches <span class="code-inline">main()</span>. If <span class="code-inline">main()</span> doesn't catch it either, the program crashes.</p>
+                </div>
+
+                <div class="key-box">
+                    <div class="key-box-title">The Two Decisions</div>
+                    We are always about two things &mdash; <strong>stopping the program gracefully</strong> and <strong>continuing the program</strong>. The main method (or whichever method catches the exception) takes this decision.
+                </div>
+            </div>
+
+            <!-- Section 2: The Municipality Analogy -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">2</span>
+                    The Municipality Analogy
+                </h2>
+
+                <div class="narrative">
+                    <p>Imagine a <strong>father</strong> asks his son (the student) to go to Jeddah municipality (<strong>&#1571;&#1605;&#1575;&#1606;&#1577; &#1580;&#1583;&#1577;</strong>) to follow up on an application for electricity. The father has been waiting for this application for <strong>one year</strong>. He gives the student the papers and sends him.</p>
+                    <p>The student arrives at the counter. The <strong>employee</strong> checks the application and finds that a document is missing &mdash; the father's national ID. Can the employee fix this? <strong>Absolutely not.</strong> This is a document that only the <strong>father</strong> has. All the employee can do is <strong>REPORT</strong> the problem back to the student: <em>"Sorry, the national ID is missing. I cannot process this."</em></p>
+                </div>
+
+                <p style="margin: 25px 0 15px; font-size: 1.08rem; font-weight: 600; color: var(--orange-dark);">Now the student has four possible reactions:</p>
+
+                <div class="red-box">
+                    <div class="red-box-title">Situation 1: Ignore the Problem (Catastrophic!)</div>
+                    <p>The student goes to a coffee shop, forgets about the documents, and <strong>never returns</strong> to his father. The father is still waiting at home, wondering what happened. The application is stuck forever.</p>
+                    <p style="margin-top: 8px;">In code: this is like <strong>catching an exception and doing nothing</strong> &mdash; swallowing the error silently. The program continues but the problem is never resolved. The caller never knows what went wrong.</p>
+                </div>
+
+                <div class="success-box">
+                    <div class="success-box-title">Situation 2: Fix It Himself (Simple Problem)</div>
+                    <p>The employee tells him: <em>"This document needs two copies, but you only have one."</em> Easy! The student walks to a nearby stationery shop, makes a copy, comes back, and the application is processed.</p>
+                    <p style="margin-top: 8px;">In code: this is like <strong>catching the exception and handling it locally</strong> &mdash; the caller knows how to fix the problem and recovers on its own. For example, asking the user for new input.</p>
+                </div>
+
+                <div class="red-box">
+                    <div class="red-box-title">Situation 3: Cancel the Application (Destructive!)</div>
+                    <p>The student says: <em>"Forget it, just cancel the whole application."</em> But his father has been waiting for <strong>one year</strong>! The student just destroyed everything in one moment without consulting his father.</p>
+                    <p style="margin-top: 8px;">In code: this is like calling <span class="code-inline">System.exit(1)</span> inside the method &mdash; <strong>terminating the entire program</strong> without giving the caller a chance to decide. Very dangerous.</p>
+                </div>
+
+                <div class="success-box" style="border-left-color: #059669; border-left-width: 5px;">
+                    <div class="success-box-title">Situation 4: Go Back to His Father (The Right Way!)</div>
+                    <p>The student goes back to his father and says: <em>"They said a document is missing."</em> Now the <strong>father</strong> &mdash; the one who started this whole process &mdash; can make the right decision: provide the missing document, try a different approach, or cancel the application <strong>knowingly</strong>.</p>
+                    <p style="margin-top: 8px;">In code: this is <strong>exception propagation</strong> &mdash; the exception travels up the call chain until it reaches someone who can properly handle it. This is the correct approach.</p>
+                </div>
+
+                <div class="info-box">
+                    <div class="info-box-title">The Mapping to Code</div>
+                    <p>Imagine this call chain: <span class="code-inline">main()</span> calls <span class="code-inline">method1()</span>, and <span class="code-inline">method1()</span> calls <span class="code-inline">method2()</span>.</p>
+                    <p style="margin-top: 10px;">
+                        <strong>The father</strong> = <span class="code-inline">main()</span> &mdash; the one who started the whole process<br>
+                        <strong>The student</strong> = <span class="code-inline">method1()</span> &mdash; sent by <span class="code-inline">main</span> to do the job<br>
+                        <strong>The employee</strong> = <span class="code-inline">method2()</span> &mdash; does the actual work, but finds a problem<br>
+                        <strong>"National ID is missing"</strong> = the exception object
+                    </p>
+                    <p style="margin-top: 10px;"><span class="code-inline">method2()</span> reports the problem to <span class="code-inline">method1()</span>. If <span class="code-inline">method1()</span> cannot handle it, the exception propagates up to <span class="code-inline">main()</span> &mdash; the one who can make the right decision.</p>
+                </div>
+
+                <p style="margin: 30px 0 15px; font-size: 1.3rem; font-weight: 700; color: var(--red-darker);">Why Must the Caller Decide?</p>
+                <p style="margin-bottom: 20px; font-size: 1.05rem;">You might ask: why does it matter who handles the error? Why can't the method just close the program or ignore the problem? Here are two real-world examples that show why the <strong>caller</strong> must have the right to decide whether to keep the program running or to stop it:</p>
+
+                <div class="key-box">
+                    <div class="key-box-title">Example 1: Bank Transaction</div>
+                    <p>Consider a bank transfer: move money from Ahmed's account to Omar's account. The system deducts from Ahmed's account but <strong>crashes</strong> before depositing to Omar's account.</p>
+                    <p style="margin-top: 8px;">Where did the money go? If we don't handle this properly, Ahmed loses money and Omar gets nothing!</p>
+                    <p style="margin-top: 8px;">The caller (the main banking flow) <strong>needs to know</strong> what happened so it can <strong>ROLLBACK</strong> the transaction &mdash; put the money back into Ahmed's account. If the method had terminated the program on its own, there would be no chance to rollback. The caller <strong>must</strong> stay in control.</p>
+                </div>
+
+                <div class="orange-box">
+                    <div class="orange-box-title">Example 2: File Handling</div>
+                    <p>When you open a file in Java, the operating system marks that file as "in use" by your program.</p>
+                    <p style="margin-top: 8px;">If your program crashes while the file is open, the OS still thinks the file is in use. Have you ever tried to delete a file and Windows says <em>"Cannot delete &mdash; file in use by another process"</em>? That happens because a program crashed without properly closing the file.</p>
+                    <p style="margin-top: 8px;">The caller needs the chance to <strong>close the file properly</strong> before anything else happens. If the method had terminated the program, the file stays locked. Exception handling (specifically <span class="code-inline">try-finally</span> and <span class="code-inline">try-with-resources</span>) guarantees that cleanup always happens, even when things go wrong.</p>
+                </div>
+            </div>
+
+            <!-- Section 3: Visual Example — The Call Stack -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">3</span>
+                    Visual Example &mdash; The Call Stack
+                </h2>
+
+                <p style="margin-bottom: 15px; font-size: 1.05rem;">Let's trace an exception through a chain of method calls.</p>
+
+                <div class="call-stack">
+                    <div class="stack-frame sf-main">main() &mdash; the decision maker</div>
+                    <div class="stack-arrow-up">&uarr; exception propagates</div>
+                    <div class="stack-frame sf-m1">method1() &mdash; can't handle it</div>
+                    <div class="stack-arrow-up">&uarr; exception propagates</div>
+                    <div class="stack-frame sf-m2">method2() &mdash; can't handle it</div>
+                    <div class="stack-arrow-up">&uarr; exception propagates</div>
+                    <div class="stack-frame sf-m3">method3() &mdash; throws exception!</div>
+                </div>
+
+                <div class="orange-box">
+                    <div class="orange-box-title">How It Works</div>
+                    <p><span class="code-inline">method3()</span> throws the exception. <span class="code-inline">method2()</span> doesn't know how to fix it, so the exception propagates to <span class="code-inline">method1()</span>. <span class="code-inline">method1()</span> doesn't know either, so it propagates to <span class="code-inline">main()</span>. <span class="code-inline">main()</span> decides: handle it and continue, or terminate gracefully.</p>
+                </div>
+            </div>
+
+            <!-- Section 4: Complete Code Example -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">4</span>
+                    Complete Code Example
+                </h2>
+
+                <span class="code-label">ExceptionPropagationDemo.java</span>
+<div class="code-block"><span class="kw">public class</span> <span class="tp">ExceptionPropagationDemo</span> {
+    <span class="kw">public static void</span> <span class="mtd">main</span>(<span class="tp">String</span>[] args) {
+        <span class="kw">try</span> {
+            <span class="mtd">m1</span>();
+            <span class="tp">System</span>.out.<span class="mtd">println</span>(<span class="str">"S1"</span>);
+        } <span class="kw">catch</span> (<span class="tp">ArithmeticException</span> e) {
+            <span class="tp">System</span>.out.<span class="mtd">println</span>(e.<span class="mtd">getMessage</span>());
+        }
+        <span class="tp">System</span>.out.<span class="mtd">println</span>(<span class="str">"S2"</span>);
+    }
+
+    <span class="kw">public static void</span> <span class="mtd">m1</span>() {
+        <span class="kw">try</span> {
+            <span class="mtd">m2</span>();
+            <span class="tp">System</span>.out.<span class="mtd">println</span>(<span class="str">"S3"</span>);
+        } <span class="kw">catch</span> (<span class="tp">NullPointerException</span> e) {
+            <span class="tp">System</span>.out.<span class="mtd">println</span>(e.<span class="mtd">getMessage</span>());
+        }
+        <span class="tp">System</span>.out.<span class="mtd">println</span>(<span class="str">"S4"</span>);
+    }
+
+    <span class="kw">public static void</span> <span class="mtd">m2</span>() {
+        <span class="kw">try</span> {
+            <span class="mtd">m3</span>();
+            <span class="tp">System</span>.out.<span class="mtd">println</span>(<span class="str">"S5"</span>);
+        } <span class="kw">catch</span> (<span class="tp">IllegalArgumentException</span> e) {
+            <span class="tp">System</span>.out.<span class="mtd">println</span>(e.<span class="mtd">getMessage</span>());
+        }
+        <span class="tp">System</span>.out.<span class="mtd">println</span>(<span class="str">"S6"</span>);
+    }
+
+    <span class="kw">public static void</span> <span class="mtd">m3</span>() {
+        <span class="kw">throw new</span> <span class="tp">IllegalArgumentException</span>(<span class="str">"Illegal wrong"</span>);
+    }
+}</div>
+
+                <div class="terminal-header">
+                    <span class="terminal-dot r"></span>
+                    <span class="terminal-dot y"></span>
+                    <span class="terminal-dot g"></span>
+                    <span class="terminal-title">Console Output</span>
+                </div>
+<div class="terminal with-header">Illegal wrong
+S6
+S3
+S4
+S1
+S2</div>
+            </div>
+
+            <!-- Section 5: Step-by-Step Trace -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">5</span>
+                    Step-by-Step Trace
+                </h2>
+
+                <div class="call-stack">
+                    <div class="stack-frame sf-main">main() &mdash; catches ArithmeticException</div>
+                    <div class="stack-frame sf-m1">m1() &mdash; catches NullPointerException</div>
+                    <div class="stack-frame sf-m2">m2() &mdash; catches IllegalArgumentException &#10003;</div>
+                    <div class="stack-frame sf-m3">m3() &mdash; throws IllegalArgumentException</div>
+                </div>
+
+                <div class="orange-box">
+                    <div class="orange-box-title">Trace Through the Code</div>
+                    <ol style="margin-left: 20px; line-height: 2.4;">
+                        <li><span class="code-inline">m3()</span> throws <span class="code-inline">IllegalArgumentException</span></li>
+                        <li><span class="code-inline">m2()</span> catches it (<span class="code-inline">IllegalArgumentException</span> matches). Prints <strong>"Illegal wrong"</strong>, then <strong>"S6"</strong></li>
+                        <li>Control returns to <span class="code-inline">m1()</span> &mdash; the call to <span class="code-inline">m2()</span> completed normally (exception was handled). Prints <strong>"S3"</strong>, then <strong>"S4"</strong></li>
+                        <li>Control returns to <span class="code-inline">main()</span> &mdash; the call to <span class="code-inline">m1()</span> completed normally. Prints <strong>"S1"</strong>, then <strong>"S2"</strong></li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- Section 6: What If No One Catches It? -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">6</span>
+                    What If No One Catches It?
+                </h2>
+
+                <p style="margin-bottom: 15px; font-size: 1.05rem;">Let's change the example. What if <span class="code-inline">m2()</span> catches a <strong>DIFFERENT</strong> exception type?</p>
+
+                <span class="code-label">Modified m2() &mdash; wrong catch type</span>
+<div class="code-block"><span class="kw">public static void</span> <span class="mtd">m2</span>() {
+    <span class="kw">try</span> {
+        <span class="mtd">m3</span>();
+        <span class="tp">System</span>.out.<span class="mtd">println</span>(<span class="str">"S5"</span>);
+    } <span class="kw">catch</span> (<span class="tp">ArrayIndexOutOfBoundsException</span> e) {  <span class="cmt">// Wrong type!</span>
+        <span class="tp">System</span>.out.<span class="mtd">println</span>(e.<span class="mtd">getMessage</span>());
+    }
+    <span class="tp">System</span>.out.<span class="mtd">println</span>(<span class="str">"S6"</span>);
+}
+
+<span class="kw">public static void</span> <span class="mtd">m3</span>() {
+    <span class="kw">throw new</span> <span class="tp">IllegalArgumentException</span>(<span class="str">"Illegal wrong"</span>);
+}</div>
+
+                <div class="narrative">
+                    <p>Now <span class="code-inline">m2()</span> can't catch <span class="code-inline">IllegalArgumentException</span> &mdash; it only catches <span class="code-inline">ArrayIndexOutOfBoundsException</span>. So the exception propagates to <span class="code-inline">m1()</span>.</p>
+                    <p><span class="code-inline">m1()</span> catches <span class="code-inline">NullPointerException</span> &mdash; wrong type again! The exception propagates to <span class="code-inline">main()</span>.</p>
+                    <p><span class="code-inline">main()</span> catches <span class="code-inline">ArithmeticException</span> &mdash; wrong type again!</p>
+                </div>
+
+                <div class="red-box">
+                    <div class="red-box-title">No One Caught the Exception!</div>
+                    No method in the entire call chain had a matching <span class="code-inline">catch</span> block for <span class="code-inline">IllegalArgumentException</span>. The exception reached the top of the call stack with no handler &mdash; the program crashes with an unhandled exception error.
+                </div>
+
+                <div class="terminal-header">
+                    <span class="terminal-dot r"></span>
+                    <span class="terminal-dot y"></span>
+                    <span class="terminal-dot g"></span>
+                    <span class="terminal-title">Console Output &mdash; Crash!</span>
+                </div>
+<div class="terminal with-header"><span class="t-red">Exception in thread "main" java.lang.IllegalArgumentException: Illegal wrong
+    at ExceptionPropagationDemo.m3(ExceptionPropagationDemo.java:27)
+    at ExceptionPropagationDemo.m2(ExceptionPropagationDemo.java:19)
+    at ExceptionPropagationDemo.m1(ExceptionPropagationDemo.java:11)
+    at ExceptionPropagationDemo.main(ExceptionPropagationDemo.java:4)</span></div>
+            </div>
+
+            <!-- Section 7: Why Didn't It Match? — Revisiting the Hierarchy -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">7</span>
+                    Why Didn&rsquo;t It Match? &mdash; Revisiting the Hierarchy
+                </h2>
+
+                <div class="narrative">
+                    <p>Let&rsquo;s stop and think. In the previous example, <span class="code-inline">m3()</span> threw <span class="code-inline">IllegalArgumentException</span>, and <span class="code-inline">m2()</span> tried to catch <span class="code-inline">ArrayIndexOutOfBoundsException</span>. It didn&rsquo;t work. Why?</p>
+                    <p>Because they are <strong>siblings</strong> &mdash; they are both children of <span class="code-inline">RuntimeException</span>, but they are not related to each other by inheritance.</p>
+                </div>
+
+                <div class="info-box">
+                    <div class="info-box-title">The Hierarchy</div>
+                    <p><span class="code-inline">RuntimeException</span></p>
+                    <p style="margin-left: 30px;">&boxur;&mdash; <span class="code-inline">IllegalArgumentException</span></p>
+                    <p style="margin-left: 30px;">&boxur;&mdash; <span class="code-inline">IndexOutOfBoundsException</span></p>
+                    <p style="margin-left: 60px;">&boxur;&mdash; <span class="code-inline">ArrayIndexOutOfBoundsException</span></p>
+                    <p style="margin-top: 10px;"><span class="code-inline">ArrayIndexOutOfBoundsException</span> is <strong>NOT</strong> a parent of <span class="code-inline">IllegalArgumentException</span>. They are in different branches. So the catch does not match.</p>
+                </div>
+
+                <h3 class="subsection-title">
+                    <span class="sub-badge">Question</span>
+                    What if we catch with a supertype?
+                </h3>
+
+                <div class="narrative">
+                    <p>What if <span class="code-inline">m2()</span> catches <span class="code-inline">RuntimeException</span> instead?</p>
+                </div>
+
+                <span class="code-label">Modified m2() &mdash; catching the supertype</span>
+<div class="code-block"><span class="kw">public static void</span> <span class="mtd">m2</span>() {
+    <span class="kw">try</span> {
+        <span class="mtd">m3</span>();
+        <span class="tp">System</span>.out.<span class="mtd">println</span>(<span class="str">"S5"</span>);
+    } <span class="kw">catch</span> (<span class="tp">RuntimeException</span> e) {  <span class="cmt">// Supertype of IllegalArgumentException</span>
+        <span class="tp">System</span>.out.<span class="mtd">println</span>(e.<span class="mtd">getMessage</span>());
+    }
+    <span class="tp">System</span>.out.<span class="mtd">println</span>(<span class="str">"S6"</span>);
+}
+
+<span class="kw">public static void</span> <span class="mtd">m3</span>() {
+    <span class="kw">throw new</span> <span class="tp">IllegalArgumentException</span>(<span class="str">"Illegal wrong"</span>);
+}</div>
+
+                <div class="success-box">
+                    <div class="success-box-title">It Works!</div>
+                    <p><span class="code-inline">RuntimeException</span> is a <strong>parent</strong> of <span class="code-inline">IllegalArgumentException</span>. A catch block catches the specified exception <strong>and all its subclasses</strong>. So <span class="code-inline">catch (RuntimeException e)</span> catches <span class="code-inline">IllegalArgumentException</span>, <span class="code-inline">ArithmeticException</span>, <span class="code-inline">NullPointerException</span> &mdash; any child of <span class="code-inline">RuntimeException</span>.</p>
+                </div>
+
+                <div class="terminal-header">
+                    <span class="terminal-dot r"></span>
+                    <span class="terminal-dot y"></span>
+                    <span class="terminal-dot g"></span>
+                    <span class="terminal-title">Console Output</span>
+                </div>
+<div class="terminal with-header">Illegal wrong
+S6
+S3
+S4
+S1
+S2</div>
+
+                <div class="key-box">
+                    <div class="key-box-title">The Rule</div>
+                    <p>A <span class="code-inline">catch</span> block matches if the thrown exception is the <strong>same type</strong> or a <strong>subclass</strong> of the declared type. This is polymorphism &mdash; a concept you already know from Chapter 11.</p>
+                    <p style="margin-top: 10px;"><span class="code-inline">catch (RuntimeException e)</span> &rarr; catches <strong>any</strong> RuntimeException subclass<br>
+                    <span class="code-inline">catch (Exception e)</span> &rarr; catches <strong>any</strong> Exception subclass<br>
+                    <span class="code-inline">catch (IllegalArgumentException e)</span> &rarr; catches <strong>only</strong> IllegalArgumentException and its subclasses</p>
+                </div>
+
+                <div class="violet-box">
+                    <div class="violet-box-title">Now You See Why the Hierarchy Matters</div>
+                    <p>When we studied the exception hierarchy in Lesson 4, you might have thought: why do I need to know all these classes? Now you see &mdash; the hierarchy tells you <strong>which catch block will match</strong>. If you catch a parent type, you catch all the children. If you catch a sibling type, you catch nothing.</p>
+                </div>
+            </div>
+
+            <!-- Section 8: Summary -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">8</span>
+                    Summary
+                </h2>
+
+                <div class="success-box">
+                    <div class="success-box-title">Key Takeaways</div>
+                    <ul style="margin-left: 20px; line-height: 2.2;">
+                        <li>Exceptions travel <strong>UP</strong> the call stack from thrower to caller</li>
+                        <li>Each method on the stack can catch or let it propagate</li>
+                        <li>If no one catches it &rarr; program crashes</li>
+                        <li>A catch block matches the <strong>same type or any subclass</strong> (polymorphism)</li>
+                        <li>The method that catches decides: handle and continue, or terminate gracefully</li>
+                    </ul>
+                </div>
+
+                <div class="info-box" style="margin-top: 25px;">
+                    <div class="info-box-title">Coming Up Next</div>
+                    <p>In the next lesson, we will learn the complete syntax for handling exceptions: <span class="code-inline">try</span>, <span class="code-inline">catch</span>, <span class="code-inline">finally</span>, and <span class="code-inline">try-with-resources</span>.</p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Bottom Navigation -->
+        <div class="bottom-nav">
+            <a href="04-exception-hierarchy.html">&#8592; Lesson 4: Exception Hierarchy</a>
+            <a href="06-try-catch-finally.html">Lesson 6: try-catch-finally &#8594;</a>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            CPCS203 &mdash; Object-Oriented Programming<br>
+            Module 10: Exception Handling &mdash; Lesson 5: Exception Propagation<br>
+            Prepared by Dr. Almalawi
+        </div>
+
+    </div>
+
+<!-- ── Code Theme Picker ── -->
+<div id="code-theme-picker">
+  <div id="theme-panel">
+    <div class="tp-label">Code Block Theme</div>
+    <button class="theme-btn active" onclick="setCodeTheme('black')" id="btn-black">
+      <span class="theme-swatch" style="background:#000;"></span> Black (Default)
+    </button>
+    <button class="theme-btn" onclick="setCodeTheme('vscode')" id="btn-vscode">
+      <span class="theme-swatch" style="background:#1e1e1e;"></span> VS Code Dark
+    </button>
+    <button class="theme-btn" onclick="setCodeTheme('white')" id="btn-white">
+      <span class="theme-swatch" style="background:#fff;border:1px solid #ccc;"></span> White (Projector)
+    </button>
+    <button class="theme-btn" onclick="setCodeTheme('cream')" id="btn-cream">
+      <span class="theme-swatch" style="background:#fefce8;border:1px solid #ccc;"></span> Cream (Projector)
+    </button>
+  </div>
+  <button id="theme-toggle-btn" onclick="document.getElementById('theme-panel').classList.toggle('open')">Code Theme</button>
+</div>
+<script>
+const CODE_THEMES={black:{bg:'#000000',text:'#ffffff',comment:'#a0aec0',keyword:'#ff79c6',cls:'#8be9fd',method:'#50fa7b',string:'#f1fa8c',number:'#bd93f9',tmBg:'#0f172a',tmHeader:'#1e293b',tmBorder:'#334155',tmText:'#4ade80',tmTitle:'#94a3b8',projector:false},vscode:{bg:'#1e1e1e',text:'#ffffff',comment:'#57c757',keyword:'#569cd6',cls:'#4ec9b0',method:'#dcdcaa',string:'#ce9178',number:'#b5cea8',tmBg:'#1e1e1e',tmHeader:'#2d2d2d',tmBorder:'#444',tmText:'#ffffff',tmTitle:'#9cdcfe',projector:false},white:{bg:'#ffffff',text:'#000000',comment:'#1d4ed8',keyword:'#dc2626',cls:'#16a34a',method:'#0369a1',string:'#b45309',number:'#7c3aed',tmBg:'#f1f5f9',tmHeader:'#e2e8f0',tmBorder:'#94a3b8',tmText:'#000000',tmTitle:'#1d4ed8',projector:true},cream:{bg:'#fefce8',text:'#000000',comment:'#1d4ed8',keyword:'#dc2626',cls:'#15803d',method:'#0369a1',string:'#b45309',number:'#7c3aed',tmBg:'#fefce8',tmHeader:'#fef08a',tmBorder:'#a16207',tmText:'#000000',tmTitle:'#0369a1',projector:true}};
+function _lum(hex){hex=hex.replace('#','');if(hex.length===3)hex=hex.split('').map(c=>c+c).join('');if(hex.length!==6)return .5;const r=parseInt(hex.slice(0,2),16),g=parseInt(hex.slice(2,4),16),b=parseInt(hex.slice(4,6),16);return(.299*r+.587*g+.114*b)/255;}
+function _lighten(hex){hex=hex.replace('#','');if(hex.length===3)hex=hex.split('').map(c=>c+c).join('');const r=parseInt(hex.slice(0,2),16),g=parseInt(hex.slice(2,4),16),b=parseInt(hex.slice(4,6),16);const lr=Math.round(r*.1+255*.9),lg=Math.round(g*.1+255*.9),lb=Math.round(b*.1+255*.9);return'#'+[lr,lg,lb].map(c=>c.toString(16).padStart(2,'0')).join('');}
+const _backup=new Map();
+function _applyProjectorInline(enable){if(enable){document.querySelectorAll('[style]').forEach(el=>{const orig=el.getAttribute('style');_backup.set(el,orig);let s=orig;s=s.replace(/(background(?:-color)?\s*:[^;}"']*?)(#[0-9a-fA-F]{6}|#[0-9a-fA-F]{3})\b/gi,(m,pre,hex)=>_lum(hex)<.28?pre+_lighten(hex):m);s=s.replace(/((?:^|;|\s)color\s*:\s*)(#[0-9a-fA-F]{6}|#[0-9a-fA-F]{3})\b/gi,(m,pre,hex)=>_lum(hex)>.72?pre+'#1f2937':m);el.setAttribute('style',s);});}else{_backup.forEach((orig,el)=>el.setAttribute('style',orig));_backup.clear();}}
+function setCodeTheme(name){const t=CODE_THEMES[name],r=document.documentElement.style;r.setProperty('--cb-bg',t.bg);r.setProperty('--cb-text',t.text);r.setProperty('--cb-comment',t.comment);r.setProperty('--cb-keyword',t.keyword);r.setProperty('--cb-class',t.cls);r.setProperty('--cb-method',t.method);r.setProperty('--cb-string',t.string);r.setProperty('--cb-number',t.number);r.setProperty('--tm-bg',t.tmBg);r.setProperty('--tm-header',t.tmHeader);r.setProperty('--tm-border',t.tmBorder);r.setProperty('--tm-text',t.tmText);r.setProperty('--tm-title',t.tmTitle);const wasProjector=document.body.classList.contains('projector');if(t.projector){if(!wasProjector)_applyProjectorInline(true);document.body.classList.add('projector');}else{if(wasProjector)_applyProjectorInline(false);document.body.classList.remove('projector');}document.querySelectorAll('.theme-btn').forEach(b=>b.classList.remove('active'));document.getElementById('btn-'+name).classList.add('active');document.getElementById('theme-panel').classList.remove('open');}
+</script>
+</body>
+</html>

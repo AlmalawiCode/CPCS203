@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 7: Creating Your Own Exceptions — Module 10: Exception Handling | CPCS203</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --red: #ef4444; --red-dark: #dc2626; --red-darker: #991b1b; --red-light: #fee2e2;
+            --orange: #f97316; --orange-dark: #ea580c; --orange-light: #fff7ed;
+            --amber: #f59e0b; --amber-dark: #b45309; --amber-light: #fffbeb;
+            --success: #059669; --success-light: #d1fae5;
+            --info: #2563eb; --info-light: #dbeafe;
+            --violet: #7c3aed; --violet-light: #ede9fe;
+            --dark: #1f2937; --gray: #6b7280; --light: #f9fafb;
+        }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.8; color: var(--dark); background: #f1f5f9; min-height: 100vh; padding: 20px; }
+        .container { max-width: 1000px; margin: 0 auto; background: white; border-radius: 20px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.35); overflow: hidden; }
+        .nav-breadcrumb { background: linear-gradient(135deg, #7f1d1d, #991b1b); padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+        .breadcrumb { display: flex; align-items: center; gap: 8px; color: white; font-size: 0.9rem; }
+        .breadcrumb a { color: #fca5a5; text-decoration: none; }
+        .breadcrumb a:hover { color: white; }
+        .breadcrumb .sep { color: #f87171; }
+        .breadcrumb .cur { color: #fde68a; }
+        .lesson-nav { display: flex; gap: 10px; }
+        .lesson-nav a { padding: 8px 16px; background: rgba(255,255,255,.15); color: white; text-decoration: none; border-radius: 20px; font-size: .85rem; }
+        .lesson-nav a:hover { background: rgba(255,255,255,.25); }
+        .hero { background: linear-gradient(135deg, #dc2626, #ef4444, #f97316, #f59e0b); color: white; padding: 50px 40px; text-align: center; position: relative; overflow: hidden; }
+        .hero::before { content: ''; position: absolute; top: -50px; right: -50px; width: 250px; height: 250px; background: rgba(255,255,255,.05); border-radius: 50%; }
+        .hero::after { content: ''; position: absolute; bottom: -80px; left: -40px; width: 300px; height: 300px; background: rgba(255,255,255,.05); border-radius: 50%; }
+        .module-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,.2); border: 1px solid rgba(255,255,255,.4); padding: 8px 22px; border-radius: 30px; font-size: .95rem; font-weight: 600; margin-bottom: 20px; }
+        .module-badge .num { background: white; color: var(--red); width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; }
+        .hero h1 { font-size: 2.8rem; margin-bottom: 15px; text-shadow: 0 3px 8px rgba(0,0,0,.3); }
+        .hero .subtitle { font-size: 1.2rem; opacity: .9; }
+        .topic-chips { display: flex; justify-content: center; gap: 12px; margin-top: 28px; flex-wrap: wrap; }
+        .topic-chip { padding: 9px 20px; border-radius: 30px; font-weight: 700; font-size: .88rem; border: 2px solid rgba(255,255,255,.5); background: rgba(255,255,255,.12); }
+        .content { padding: 50px 40px; }
+        .section { margin-bottom: 60px; }
+        .section-title { font-size: 1.85rem; color: var(--red-darker); border-bottom: 3px solid var(--red); padding-bottom: 10px; margin-bottom: 28px; display: flex; align-items: center; gap: 12px; }
+        .section-number { background: linear-gradient(135deg, var(--red), var(--orange)); color: white; width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; font-weight: bold; flex-shrink: 0; }
+        .subsection-title { font-size: 1.3rem; color: var(--orange-dark); margin: 30px 0 15px; display: flex; align-items: center; gap: 10px; }
+        .sub-badge { background: linear-gradient(135deg, var(--orange), var(--amber)); color: white; padding: 4px 14px; border-radius: 20px; font-size: .8rem; font-weight: 700; }
+        .narrative { background: linear-gradient(135deg, #fff7ed, #ffedd5); border-left: 5px solid var(--orange); padding: 25px 30px; margin: 20px 0; border-radius: 0 15px 15px 0; font-size: 1.05rem; line-height: 2; }
+        .narrative p { margin-bottom: 12px; }
+        .narrative p:last-child { margin-bottom: 0; }
+        .key-box { background: linear-gradient(135deg, #fef3c7, #fde68a); border-left: 5px solid var(--amber); padding: 18px 24px; margin: 20px 0; border-radius: 0 12px 12px 0; }
+        .key-box-title { font-weight: 700; color: var(--amber-dark); margin-bottom: 8px; font-size: 1.05rem; }
+        .info-box { background: linear-gradient(135deg, #dbeafe, #bfdbfe); border-left: 5px solid var(--info); padding: 18px 24px; margin: 20px 0; border-radius: 0 12px 12px 0; }
+        .info-box-title { font-weight: 700; color: var(--info); margin-bottom: 8px; font-size: 1.05rem; }
+        .red-box { background: linear-gradient(135deg, #fee2e2, #fecaca); border-left: 5px solid var(--red); padding: 18px 24px; margin: 20px 0; border-radius: 0 12px 12px 0; }
+        .red-box-title { font-weight: 700; color: var(--red-dark); margin-bottom: 8px; font-size: 1.05rem; }
+        .orange-box { background: linear-gradient(135deg, #fff7ed, #fed7aa); border-left: 5px solid var(--orange); padding: 18px 24px; margin: 20px 0; border-radius: 0 12px 12px 0; }
+        .orange-box-title { font-weight: 700; color: var(--orange-dark); margin-bottom: 8px; font-size: 1.05rem; }
+        .success-box { background: linear-gradient(135deg, #d1fae5, #a7f3d0); border-left: 5px solid var(--success); padding: 18px 24px; margin: 20px 0; border-radius: 0 12px 12px 0; }
+        .success-box-title { font-weight: 700; color: #065f46; margin-bottom: 8px; font-size: 1.05rem; }
+        .violet-box { background: linear-gradient(135deg, #ede9fe, #ddd6fe); border-left: 5px solid var(--violet); padding: 18px 24px; margin: 20px 0; border-radius: 0 12px 12px 0; }
+        .violet-box-title { font-weight: 700; color: #5b21b6; margin-bottom: 8px; font-size: 1.05rem; }
+        .code-block { background: var(--cb-bg, #282a36); color: var(--cb-text, #f8f8f2); padding: 24px 26px; border-radius: 12px; margin: 18px 0; overflow-x: auto; font-family: 'Consolas', 'Monaco', monospace; font-size: 1.02rem; line-height: 1.75; white-space: pre-wrap; border: 1.5px solid #44475a; }
+        .code-block .kw  { color: var(--cb-keyword, #ff79c6); font-weight: 700; }
+        .code-block .tp  { color: var(--cb-class, #8be9fd); }
+        .code-block .str { color: var(--cb-string, #f1fa8c); }
+        .code-block .num { color: var(--cb-number, #bd93f9); }
+        .code-block .cmt { color: var(--cb-comment, #6272a4); font-style: italic; }
+        .code-block .mtd { color: var(--cb-method, #50fa7b); }
+        .code-label { background: var(--cb-bg, #21222c); color: var(--cb-class, #8be9fd); padding: 8px 18px; border-radius: 12px 12px 0 0; font-family: 'Consolas', monospace; font-size: .85rem; display: inline-block; margin-bottom: -2px; border: 1.5px solid #44475a; border-bottom: none; }
+        .code-inline { background: #f3f4f6; padding: 2px 8px; border-radius: 5px; font-family: 'Consolas', monospace; font-size: .9rem; color: var(--red-dark); }
+        .terminal { background: var(--tm-bg, #0f172a); color: var(--tm-text, #e2e8f0); padding: 22px; border-radius: 12px; margin: 18px 0; font-family: 'Consolas', monospace; font-size: .88rem; line-height: 1.9; overflow-x: auto; white-space: pre; border: 1px solid var(--tm-border, #334155); }
+        .terminal-header { background: var(--tm-header, #1e293b); border: 1px solid var(--tm-border, #334155); border-bottom: none; border-radius: 12px 12px 0 0; padding: 10px 18px; display: flex; align-items: center; gap: 8px; }
+        .terminal-dot { width: 12px; height: 12px; border-radius: 50%; }
+        .terminal-dot.r { background: #ef4444; }
+        .terminal-dot.y { background: #f59e0b; }
+        .terminal-dot.g { background: #22c55e; }
+        .terminal-title { color: #94a3b8; font-size: .8rem; margin-left: 8px; font-weight: 600; }
+        .terminal.with-header { border-radius: 0 0 12px 12px; }
+        .terminal .t-red { color: #f87171; }
+        .compare-table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: .9rem; }
+        .compare-table th { padding: 12px 16px; text-align: left; font-weight: 800; font-size: .88rem; }
+        .compare-table th.th-feature { background: #374151; color: white; }
+        .compare-table th.th-checked { background: var(--info); color: white; }
+        .compare-table th.th-unchecked { background: var(--red); color: white; }
+        .compare-table td { padding: 11px 16px; border-bottom: 1px solid #e5e7eb; vertical-align: top; line-height: 1.7; }
+        .compare-table tr:last-child td { border-bottom: none; }
+        .compare-table tr:nth-child(even) td { background: #f9fafb; }
+        .compare-table .td-feature { font-weight: 700; color: var(--dark); }
+        .compare-table .td-checked { color: var(--info); }
+        .compare-table .td-unchecked { color: var(--red-dark); }
+        @media (max-width: 768px) { body { padding: 10px; } .hero { padding: 30px 20px; } .hero h1 { font-size: 2rem; } .content { padding: 30px 20px; } .compare-table { font-size: .8rem; } .compare-table th, .compare-table td { padding: 8px 10px; } }
+        .footer { background: linear-gradient(135deg, #7f1d1d, #991b1b); color: #fca5a5; padding: 25px 40px; text-align: center; font-size: .85rem; line-height: 1.7; }
+        .bottom-nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; background: linear-gradient(135deg, #991b1b, #b91c1c); }
+        .bottom-nav a { display: inline-flex; align-items: center; gap: 8px; padding: 10px 22px; background: rgba(255,255,255,.15); color: white; text-decoration: none; border-radius: 25px; font-size: .9rem; font-weight: 600; transition: background .3s, transform .2s; }
+        .bottom-nav a:hover { background: rgba(255,255,255,.28); transform: translateY(-2px); }
+        /* ── Code-theme floating picker ── */
+        #code-theme-picker { position: fixed; bottom: 28px; right: 28px; z-index: 9999; display: flex; flex-direction: column; align-items: flex-end; gap: 10px; font-family: 'Segoe UI', sans-serif; }
+        #theme-toggle-btn { background: linear-gradient(135deg, #991b1b, #dc2626); color: #fff; border: none; border-radius: 50px; padding: 11px 20px; font-size: .88rem; font-weight: 700; cursor: pointer; box-shadow: 0 4px 18px rgba(220,38,38,.5); letter-spacing: .5px; transition: box-shadow .2s; }
+        #theme-toggle-btn:hover { box-shadow: 0 6px 24px rgba(220,38,38,.7); }
+        #theme-panel { background: #fff; border-radius: 14px; padding: 14px 16px; box-shadow: 0 8px 32px rgba(0,0,0,.25); display: none; flex-direction: column; gap: 8px; min-width: 210px; border: 1px solid #fca5a5; }
+        #theme-panel.open { display: flex; }
+        #theme-panel .tp-label { font-size: .72rem; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: #dc2626; margin-bottom: 4px; }
+        .theme-btn { display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-radius: 8px; border: 2px solid transparent; cursor: pointer; font-size: .88rem; font-weight: 600; transition: border-color .2s, background .2s; background: #f9fafb; color: #1f2937; }
+        .theme-btn:hover { background: #fef2f2; border-color: #dc2626; }
+        .theme-btn.active { border-color: #991b1b; background: #fee2e2; }
+        .theme-swatch { width: 28px; height: 28px; border-radius: 6px; border: 1px solid rgba(0,0,0,.15); flex-shrink: 0; }
+        /* ── Projector mode overrides ── */
+        body.projector .nav-breadcrumb { background: #fee2e2 !important; }
+        body.projector .breadcrumb a { color: #991b1b !important; }
+        body.projector .breadcrumb .sep, body.projector .breadcrumb .cur { color: #dc2626 !important; }
+        body.projector .lesson-nav a { background: rgba(220,38,38,.12) !important; color: #7f1d1d !important; border: 1px solid #fca5a5 !important; }
+        body.projector .bottom-nav { background: #fee2e2 !important; }
+        body.projector .bottom-nav a { background: rgba(220,38,38,.12) !important; color: #7f1d1d !important; border: 1px solid #fca5a5 !important; }
+        body.projector .footer { background: #fef2f2 !important; color: #7f1d1d !important; }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <!-- Breadcrumb Navigation -->
+    <nav class="nav-breadcrumb">
+        <div class="breadcrumb">
+            <a href="../index.html">CPCS203</a>
+            <span class="sep">/</span>
+            <a href="index.html">Module 10</a>
+            <span class="sep">/</span>
+            <span class="cur">Lesson 7 &mdash; Custom Exceptions</span>
+        </div>
+        <div class="lesson-nav">
+            <a href="06-try-catch-finally.html">&larr; Lesson 6</a>
+            <a href="08-exercises.html">Lesson 8 &rarr;</a>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <header class="hero">
+        <div class="module-badge">
+            <span class="num">10</span>
+            Lesson 7 of 8
+        </div>
+        <h1>Creating Your Own Exceptions</h1>
+        <p class="subtitle">Domain-specific exceptions for precise error handling</p>
+        <div class="topic-chips">
+            <span class="topic-chip">Custom Exceptions</span>
+            <span class="topic-chip">Grouping</span>
+            <span class="topic-chip">Checked vs Unchecked</span>
+        </div>
+    </header>
+
+    <!-- Content -->
+    <div class="content">
+
+        <!-- =============================== SECTION 1 =============================== -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-number">1</span>
+                Why We Need Custom Exceptions (The "Grouping" Advantage)
+            </h2>
+
+            <div class="narrative">
+                <p>You go to the doctor and say <strong>"I am sick."</strong> The doctor asks: <em>"Your head? Stomach? Something else?"</em> Why? Because the doctor needs to know the <strong>CATEGORY</strong> to refer you to the right specialist. A headache goes to the neurologist. A stomach ache goes to the gastroenterologist. The diagnosis matters.</p>
+                <p>Same with exceptions. If all we get is <code class="code-inline">Exception</code>, <code class="code-inline">Exception</code>, <code class="code-inline">Exception</code> &mdash; how do we know which class or object caused it? Was it a bad input? A missing file? An invalid amount? A generic <code class="code-inline">Exception</code> tells us <em>"something went wrong"</em> but not <em>what</em> went wrong or <em>where</em>.</p>
+                <p>Custom exceptions solve this by giving each error type its own name, its own class, and its own data.</p>
+            </div>
+
+            <div class="key-box">
+                <div class="key-box-title">Custom exceptions = specific diagnosis</div>
+                Instead of a generic "something went wrong," you get <code class="code-inline">InvalidZakahAmountException</code> or <code class="code-inline">InsufficientFundsException</code> &mdash; now you know <strong>EXACTLY</strong> what happened. You can catch each one separately, log meaningful messages, and take the right corrective action.
+            </div>
+        </div>
+
+        <!-- =============================== SECTION 2 =============================== -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-number">2</span>
+                The Zakah Example
+            </h2>
+
+            <div class="narrative">
+                <p>Let's write a Zakah calculator. In Islam, Zakah is 2.5% of wealth, but not all amounts are zakatable &mdash; the wealth must be above a threshold (based on the current price of gold, called <strong>Nisab</strong>). What if someone tries to calculate Zakah on an amount below the threshold?</p>
+                <p>We could throw <code class="code-inline">ArithmeticException</code> &mdash; but that's too general. It tells us "math error" but not "invalid Zakah amount." It groups our error with division-by-zero and overflow errors, which have nothing to do with Zakah rules.</p>
+                <p>Let's create our own exception: <code class="code-inline">InvalidZakahAmountException</code>.</p>
+            </div>
+
+            <span class="code-label">InvalidZakahAmountException.java</span>
+<div class="code-block"><span class="kw">public class</span> <span class="tp">InvalidZakahAmountException</span> <span class="kw">extends</span> <span class="tp">Exception</span> {
+    <span class="kw">private double</span> amount;
+
+    <span class="kw">public</span> <span class="mtd">InvalidZakahAmountException</span>(<span class="kw">double</span> amount) {
+        <span class="kw">super</span>(<span class="str">"Amount "</span> + amount + <span class="str">" SAR is below the Nisab threshold for Zakah"</span>);
+        <span class="kw">this</span>.amount = amount;
+    }
+
+    <span class="kw">public double</span> <span class="mtd">getAmount</span>() {
+        <span class="kw">return</span> amount;
+    }
+}</div>
+
+            <div class="key-box">
+                <div class="key-box-title">Wow, it's just this? Nothing else?</div>
+                Yes! Creating a custom exception is simple &mdash; just extend <code class="code-inline">Exception</code> (or <code class="code-inline">RuntimeException</code>) and add a constructor. That's the entire recipe. The <code class="code-inline">super()</code> call passes the message to the parent <code class="code-inline">Exception</code> class, so <code class="code-inline">getMessage()</code> works automatically.
+            </div>
+
+            <p>Now let's use it in a Zakah calculator:</p>
+
+            <span class="code-label">ZakahCalculator.java</span>
+<div class="code-block"><span class="kw">public class</span> <span class="tp">ZakahCalculator</span> {
+    <span class="cmt">// Nisab threshold (example: ~23,000 SAR based on gold price)</span>
+    <span class="kw">private static final double</span> NISAB = <span class="num">23000.0</span>;
+    <span class="kw">private static final double</span> ZAKAH_RATE = <span class="num">0.025</span>; <span class="cmt">// 2.5%</span>
+
+    <span class="kw">public static double</span> <span class="mtd">calculateZakah</span>(<span class="kw">double</span> wealth)
+            <span class="kw">throws</span> <span class="tp">InvalidZakahAmountException</span> {
+        <span class="kw">if</span> (wealth &lt; NISAB) {
+            <span class="kw">throw new</span> <span class="tp">InvalidZakahAmountException</span>(wealth);
+        }
+        <span class="kw">return</span> wealth * ZAKAH_RATE;
+    }
+}</div>
+
+            <p style="margin: 25px 0 15px; font-size: 1.05rem;">Now let's act as a user of this class. We just want to use <code class="code-inline">ZakahCalculator</code> &mdash; let's try the simplest thing:</p>
+
+            <span class="code-label">Main.java &mdash; first attempt (NO try-catch)</span>
+<div class="code-block"><span class="kw">public class</span> <span class="tp">Main</span> {
+    <span class="kw">public static void</span> <span class="mtd">main</span>(<span class="tp">String</span>[] args) {
+        <span class="kw">double</span> zakah = <span class="tp">ZakahCalculator</span>.<span class="mtd">calculateZakah</span>(<span class="num">50000</span>);
+        <span class="tp">System</span>.out.<span class="mtd">println</span>(<span class="str">"Zakah = "</span> + zakah);
+    }
+}</div>
+
+            <div class="red-box">
+                <div class="red-box-title">Compiler Error!</div>
+                <p>This code <strong>does not compile</strong>. The compiler gives us:</p>
+                <p style="margin-top: 8px; font-family: 'Consolas', monospace; font-size: .9rem; color: #991b1b;">Error: Unhandled exception type InvalidZakahAmountException</p>
+            </div>
+
+            <p style="margin: 20px 0 15px; font-size: 1.08rem; font-weight: 600; color: var(--red-darker);">But why? We didn't do anything wrong!</p>
+
+            <div class="narrative">
+                <p>Look at the <code class="code-inline">calculateZakah</code> method signature again:</p>
+                <p style="margin: 10px 0; font-family: 'Consolas', monospace; font-size: .95rem;"><code class="code-inline">public static double calculateZakah(double wealth) <strong>throws InvalidZakahAmountException</strong></code></p>
+                <p>That <code class="code-inline">throws</code> keyword is a <strong>warning label</strong>. It says: <em>"This method might throw an InvalidZakahAmountException."</em></p>
+                <p>And because <code class="code-inline">InvalidZakahAmountException</code> extends <code class="code-inline">Exception</code> (not <code class="code-inline">RuntimeException</code>), it is a <strong>checked exception</strong>. The compiler says: <em>"I see you are calling a method that may throw a checked exception, but you are not handling it. I will not let you compile until you deal with this."</em></p>
+            </div>
+
+            <div class="key-box">
+                <div class="key-box-title">Do you remember Week 3?</div>
+                <p>When you worked with file I/O in Week 3, the compiler forced you to add <code class="code-inline">try-catch</code> around file operations. At that time, you did it without fully understanding why &mdash; you just followed the instructions to make the compiler happy.</p>
+                <p style="margin-top: 8px;"><strong>Today</strong>, you finally understand the reason: those file methods declare <code class="code-inline">throws IOException</code>, and <code class="code-inline">IOException</code> is a <strong>checked exception</strong>. The compiler was protecting you all along!</p>
+            </div>
+
+            <p style="margin: 25px 0 15px; font-size: 1.08rem; font-weight: 600; color: var(--orange-dark);">So how do we fix the compiler error? We have two options:</p>
+
+            <div class="info-box">
+                <div class="info-box-title">Option 1: Handle it with try-catch</div>
+                <p>Catch the exception right here and deal with it.</p>
+            </div>
+
+            <div class="info-box">
+                <div class="info-box-title">Option 2: Declare throws on your own method</div>
+                <p>Pass the responsibility to <em>your</em> caller by adding <code class="code-inline">throws InvalidZakahAmountException</code> to your method signature. This is what we learned in exception propagation.</p>
+            </div>
+
+            <p style="margin: 20px 0 15px; font-size: 1.05rem;">Let's use <strong>Option 1</strong> &mdash; handle it with try-catch:</p>
+
+            <span class="code-label">Main.java &mdash; with try-catch (compiles!)</span>
+<div class="code-block"><span class="kw">public class</span> <span class="tp">Main</span> {
+    <span class="kw">public static void</span> <span class="mtd">main</span>(<span class="tp">String</span>[] args) {
+        <span class="kw">try</span> {
+            <span class="kw">double</span> zakah1 = <span class="tp">ZakahCalculator</span>.<span class="mtd">calculateZakah</span>(<span class="num">50000</span>);
+            <span class="tp">System</span>.out.<span class="mtd">println</span>(<span class="str">"Zakah on 50,000 SAR: "</span> + zakah1 + <span class="str">" SAR"</span>);
+
+            <span class="kw">double</span> zakah2 = <span class="tp">ZakahCalculator</span>.<span class="mtd">calculateZakah</span>(<span class="num">5000</span>);
+            <span class="tp">System</span>.out.<span class="mtd">println</span>(<span class="str">"Zakah on 5,000 SAR: "</span> + zakah2 + <span class="str">" SAR"</span>);
+        } <span class="kw">catch</span> (<span class="tp">InvalidZakahAmountException</span> e) {
+            <span class="tp">System</span>.out.<span class="mtd">println</span>(<span class="str">"Error: "</span> + e.<span class="mtd">getMessage</span>());
+            <span class="tp">System</span>.out.<span class="mtd">println</span>(<span class="str">"The amount "</span> + e.<span class="mtd">getAmount</span>()
+                + <span class="str">" SAR does not meet the Nisab requirement."</span>);
+        }
+    }
+}</div>
+
+            <div class="terminal-header">
+                <span class="terminal-dot r"></span>
+                <span class="terminal-dot y"></span>
+                <span class="terminal-dot g"></span>
+                <span class="terminal-title">Output</span>
+            </div>
+<div class="terminal with-header">Zakah on 50,000 SAR: 1250.0 SAR
+<span class="t-red">Error: Amount 5000.0 SAR is below the Nisab threshold for Zakah</span>
+The amount 5000.0 SAR does not meet the Nisab requirement.</div>
+
+            <div class="success-box">
+                <div class="success-box-title">Now it compiles and runs!</div>
+                <p>The compiler is satisfied because we wrapped the call in a try-catch. And we get precise error information &mdash; not a vague "math error," but the exact amount and reason. Thanks to the <code class="code-inline">getAmount()</code> method, we can programmatically access the invalid amount and do something useful with it (like showing the user how much more they need).</p>
+            </div>
+
+            <div class="violet-box">
+                <div class="violet-box-title">This is the big idea</div>
+                <p>There are <strong>two types</strong> of exceptions in Java:</p>
+                <p style="margin-top: 8px;"><strong>Checked exceptions</strong> (extend <code class="code-inline">Exception</code>) &mdash; the compiler <strong>forces</strong> you to handle them. You cannot ignore them. Examples: <code class="code-inline">IOException</code>, <code class="code-inline">SQLException</code>, <code class="code-inline">InvalidZakahAmountException</code>.</p>
+                <p style="margin-top: 8px;"><strong>Unchecked exceptions</strong> (extend <code class="code-inline">RuntimeException</code>) &mdash; the compiler does <strong>not</strong> force you. You can handle them if you want, but the compiler won't complain if you don't. Examples: <code class="code-inline">ArithmeticException</code>, <code class="code-inline">NullPointerException</code>, <code class="code-inline">ArrayIndexOutOfBoundsException</code>.</p>
+                <p style="margin-top: 8px;">Let's prove this right now with the same Zakah example.</p>
+            </div>
+
+            <h3 class="subsection-title">
+                <span class="sub-badge">Experiment</span>
+                What if we change it to RuntimeException?
+            </h3>
+
+            <p style="margin-bottom: 15px;">Let's change <strong>one word</strong> in our exception class &mdash; replace <code class="code-inline">Exception</code> with <code class="code-inline">RuntimeException</code>:</p>
+
+            <span class="code-label">InvalidZakahAmountException.java &mdash; now unchecked</span>
+<div class="code-block"><span class="kw">public class</span> <span class="tp">InvalidZakahAmountException</span> <span class="kw">extends</span> <span class="tp">RuntimeException</span> {  <span class="cmt">// Changed!</span>
+    <span class="kw">private double</span> amount;
+
+    <span class="kw">public</span> <span class="mtd">InvalidZakahAmountException</span>(<span class="kw">double</span> amount) {
+        <span class="kw">super</span>(<span class="str">"Amount "</span> + amount + <span class="str">" SAR is below the Nisab threshold for Zakah"</span>);
+        <span class="kw">this</span>.amount = amount;
+    }
+
+    <span class="kw">public double</span> <span class="mtd">getAmount</span>() {
+        <span class="kw">return</span> amount;
+    }
+}</div>
+
+            <p style="margin: 20px 0 15px; font-size: 1.05rem;">Now let's try the <strong>same Main.java without try-catch</strong> that gave us a compiler error before:</p>
+
+            <span class="code-label">Main.java &mdash; NO try-catch</span>
+<div class="code-block"><span class="kw">public class</span> <span class="tp">Main</span> {
+    <span class="kw">public static void</span> <span class="mtd">main</span>(<span class="tp">String</span>[] args) {
+        <span class="kw">double</span> zakah = <span class="tp">ZakahCalculator</span>.<span class="mtd">calculateZakah</span>(<span class="num">50000</span>);
+        <span class="tp">System</span>.out.<span class="mtd">println</span>(<span class="str">"Zakah = "</span> + zakah);
+    }
+}</div>
+
+            <div class="success-box">
+                <div class="success-box-title">It compiles! No error!</div>
+                <p>The compiler does <strong>not</strong> complain. Because <code class="code-inline">InvalidZakahAmountException</code> now extends <code class="code-inline">RuntimeException</code>, it is <strong>unchecked</strong>. The compiler does not force you to handle it.</p>
+            </div>
+
+            <p style="margin: 20px 0 15px; font-size: 1.05rem;">If we pass a valid amount (50,000), everything works fine:</p>
+
+            <div class="terminal-header">
+                <span class="terminal-dot r"></span>
+                <span class="terminal-dot y"></span>
+                <span class="terminal-dot g"></span>
+                <span class="terminal-title">Output &mdash; valid amount</span>
+            </div>
+<div class="terminal with-header">Zakah = 1250.0</div>
+
+            <p style="margin: 20px 0 15px; font-size: 1.05rem;">But what if we pass an invalid amount (5,000)?</p>
+
+            <span class="code-label">Main.java &mdash; invalid amount, still no try-catch</span>
+<div class="code-block"><span class="kw">public class</span> <span class="tp">Main</span> {
+    <span class="kw">public static void</span> <span class="mtd">main</span>(<span class="tp">String</span>[] args) {
+        <span class="kw">double</span> zakah = <span class="tp">ZakahCalculator</span>.<span class="mtd">calculateZakah</span>(<span class="num">5000</span>);  <span class="cmt">// below Nisab!</span>
+        <span class="tp">System</span>.out.<span class="mtd">println</span>(<span class="str">"Zakah = "</span> + zakah);
+    }
+}</div>
+
+            <div class="red-box">
+                <div class="red-box-title">Compiles fine, but CRASHES at runtime!</div>
+                <p>The compiler let it pass. But when the program runs and hits the invalid amount, it crashes with an unhandled exception:</p>
+            </div>
+
+            <div class="terminal-header">
+                <span class="terminal-dot r"></span>
+                <span class="terminal-dot y"></span>
+                <span class="terminal-dot g"></span>
+                <span class="terminal-title">Runtime crash!</span>
+            </div>
+<div class="terminal with-header"><span class="t-red">Exception in thread "main" InvalidZakahAmountException:
+    Amount 5000.0 SAR is below the Nisab threshold for Zakah
+    at ZakahCalculator.calculateZakah(ZakahCalculator.java:8)
+    at Main.main(Main.java:3)</span></div>
+
+            <div class="key-box">
+                <div class="key-box-title">Same exception, two completely different behaviors</div>
+                <p><strong>extends Exception</strong> (checked) &rarr; compiler error if you don't handle it. You <strong>cannot</strong> forget.</p>
+                <p style="margin-top: 8px;"><strong>extends RuntimeException</strong> (unchecked) &rarr; compiles fine without handling. But if the exception is thrown, your program <strong>crashes</strong>. The compiler trusted you, and you let it down.</p>
+                <p style="margin-top: 8px;">The only difference is <strong>one word</strong> in the class declaration. That one word changes everything.</p>
+            </div>
+        </div>
+
+        <!-- =============================== SECTION 3 =============================== -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-number">3</span>
+                The Key Rule
+            </h2>
+
+            <div class="red-box">
+                <div class="red-box-title">The Fundamental Rule of Checked Exceptions</div>
+                <p style="font-size: 1.1rem; font-weight: 700; margin-bottom: 10px;">Any method that calls another method which may throw a <strong>CHECKED</strong> exception MUST either:</p>
+                <p style="margin-left: 20px;"><strong>(1)</strong> Handle it with <code class="code-inline">try-catch</code>, <strong>OR</strong></p>
+                <p style="margin-left: 20px;"><strong>(2)</strong> Declare it with <code class="code-inline">throws</code> in its own signature</p>
+                <p style="margin-top: 10px;">There is no third option. The compiler enforces this &mdash; you have no choice.</p>
+            </div>
+
+            <p>This is the fundamental rule of checked exceptions. Every time you call a method that declares <code class="code-inline">throws SomeCheckedException</code>, you must decide: do I handle it here, or do I pass it along?</p>
+
+            <div class="key-box">
+                <div class="key-box-title">throw vs throws &mdash; Do Not Confuse!</div>
+                <p><strong><code class="code-inline">throw</code></strong> &mdash; used <strong>inside</strong> a method body to create and throw an exception object: <code class="code-inline">throw new X("message")</code></p>
+                <p style="margin-top: 6px;"><strong><code class="code-inline">throws</code></strong> &mdash; used in the <strong>method signature</strong> to declare that the method might throw an exception: <code class="code-inline">void myMethod() throws X</code></p>
+                <p style="margin-top: 10px;">One letter difference, completely different meaning!</p>
+            </div>
+
+            <div class="orange-box">
+                <div class="orange-box-title">The chain effect</div>
+                <p><code class="code-inline">methodA()</code> calls <code class="code-inline">methodB()</code> which declares <code class="code-inline">throws CheckedException</code>.</p>
+                <p style="margin-top: 6px;">Now <code class="code-inline">methodA()</code> MUST either catch it or declare <code class="code-inline">throws CheckedException</code> itself.</p>
+                <p style="margin-top: 6px;">If <code class="code-inline">methodA()</code> declares <code class="code-inline">throws</code>, then whoever calls <code class="code-inline">methodA()</code> must also catch or declare. This chain continues until someone handles it.</p>
+                <p style="margin-top: 6px;">Think of it like a hot potato &mdash; you either catch it or throw it to the next person. Someone eventually <strong>must</strong> catch it.</p>
+            </div>
+
+            <span class="code-label">The chain in action</span>
+<div class="code-block"><span class="cmt">// methodC throws a checked exception</span>
+<span class="kw">public void</span> <span class="mtd">methodC</span>() <span class="kw">throws</span> <span class="tp">InvalidZakahAmountException</span> {
+    <span class="kw">throw new</span> <span class="tp">InvalidZakahAmountException</span>(<span class="num">1000</span>);
+}
+
+<span class="cmt">// methodB calls methodC — must catch or declare throws</span>
+<span class="kw">public void</span> <span class="mtd">methodB</span>() <span class="kw">throws</span> <span class="tp">InvalidZakahAmountException</span> {
+    <span class="mtd">methodC</span>();  <span class="cmt">// passes the exception along</span>
+}
+
+<span class="cmt">// methodA calls methodB — decides to catch it here</span>
+<span class="kw">public void</span> <span class="mtd">methodA</span>() {
+    <span class="kw">try</span> {
+        <span class="mtd">methodB</span>();
+    } <span class="kw">catch</span> (<span class="tp">InvalidZakahAmountException</span> e) {
+        <span class="tp">System</span>.out.<span class="mtd">println</span>(<span class="str">"Caught: "</span> + e.<span class="mtd">getMessage</span>());
+    }
+}</div>
+
+            <h3 class="subsection-title">
+                <span class="sub-badge">Student Q</span>
+                When I create a custom exception, which one should I extend?
+            </h3>
+
+            <div class="narrative">
+                <p>A student asks: <em>"When I create my own exception, should I extend <code class="code-inline">Exception</code> (checked) or <code class="code-inline">RuntimeException</code> (unchecked)? How do I decide?"</em></p>
+                <p>The answer comes down to <strong>one question</strong>:</p>
+            </div>
+
+            <div class="red-box">
+                <div class="red-box-title">Can the caller fix this problem at runtime?</div>
+                <p style="font-size: 1.15rem; font-weight: 700; margin-bottom: 12px; text-align: center;">Yes &rarr; <code class="code-inline">extends Exception</code> (checked) &nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp; No &rarr; <code class="code-inline">extends RuntimeException</code> (unchecked)</p>
+            </div>
+
+            <div class="info-box">
+                <div class="info-box-title">extends Exception (checked) &mdash; the problem is external and recoverable</div>
+                <p>The error is caused by something <strong>outside the program's control</strong>: bad user input, a missing file, a network failure, insufficient funds. The caller <strong>can</strong> do something about it &mdash; ask the user for new input, try a different file, retry the connection, suggest a smaller withdrawal.</p>
+                <p style="margin-top: 8px;">You <strong>want</strong> the compiler to force every caller to think about it, because ignoring it would be dangerous.</p>
+                <p style="margin-top: 10px;"><strong>Examples:</strong> <code class="code-inline">IOException</code>, <code class="code-inline">SQLException</code>, <code class="code-inline">InsufficientFundsException</code>, <code class="code-inline">InvalidZakahAmountException</code></p>
+            </div>
+
+            <div class="orange-box">
+                <div class="orange-box-title">extends RuntimeException (unchecked) &mdash; the problem is a programming bug</div>
+                <p>The error is caused by a <strong>mistake in the code itself</strong>: accessing a null reference, using an invalid array index, passing a negative number where only positive makes sense. The caller <strong>shouldn't have let this happen</strong> in the first place.</p>
+                <p style="margin-top: 8px;">No amount of catching fixes bad code &mdash; the <strong>code itself</strong> needs to be fixed. Forcing try-catch everywhere would just hide the bug.</p>
+                <p style="margin-top: 10px;"><strong>Examples:</strong> <code class="code-inline">NullPointerException</code>, <code class="code-inline">ArrayIndexOutOfBoundsException</code>, <code class="code-inline">IllegalArgumentException</code></p>
+            </div>
+
+            <div class="key-box">
+                <div class="key-box-title">Back to our Zakah example</div>
+                <p>We made <code class="code-inline">InvalidZakahAmountException</code> extend <code class="code-inline">Exception</code> (checked). Why? Because the user enters the amount &mdash; it's <strong>user input</strong>, which is external and unpredictable. The program can recover by asking the user to enter a valid amount. The caller <strong>should</strong> be forced to handle this case.</p>
+                <p style="margin-top: 8px;">If instead the problem was a programmer passing <code class="code-inline">null</code> to a method that expects an object &mdash; that's a bug. No try-catch fixes that. The programmer needs to fix their code. That would be unchecked.</p>
+            </div>
+        </div>
+
+        <!-- =============================== SECTION 4 =============================== -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-number">4</span>
+                Second Example &mdash; InsufficientFundsException
+            </h2>
+
+            <p>Let's build a more practical example: a bank account that throws a custom exception when you try to withdraw more money than you have.</p>
+
+            <span class="code-label">InsufficientFundsException.java</span>
+<div class="code-block"><span class="kw">public class</span> <span class="tp">InsufficientFundsException</span> <span class="kw">extends</span> <span class="tp">Exception</span> {
+    <span class="kw">private double</span> shortfall;
+
+    <span class="kw">public</span> <span class="mtd">InsufficientFundsException</span>(<span class="kw">double</span> shortfall) {
+        <span class="kw">super</span>(<span class="str">"Insufficient funds. Short by: $"</span> + shortfall);
+        <span class="kw">this</span>.shortfall = shortfall;
+    }
+
+    <span class="kw">public double</span> <span class="mtd">getShortfall</span>() {
+        <span class="kw">return</span> shortfall;
+    }
+}</div>
+
+            <span class="code-label">BankAccount.java</span>
+<div class="code-block"><span class="kw">public class</span> <span class="tp">BankAccount</span> {
+    <span class="kw">private double</span> balance;
+
+    <span class="kw">public</span> <span class="mtd">BankAccount</span>(<span class="kw">double</span> balance) {
+        <span class="kw">this</span>.balance = balance;
+    }
+
+    <span class="kw">public void</span> <span class="mtd">withdraw</span>(<span class="kw">double</span> amount) <span class="kw">throws</span> <span class="tp">InsufficientFundsException</span> {
+        <span class="kw">if</span> (amount &gt; balance) {
+            <span class="kw">double</span> shortfall = amount - balance;
+            <span class="kw">throw new</span> <span class="tp">InsufficientFundsException</span>(shortfall);
+        }
+        balance -= amount;
+        <span class="tp">System</span>.out.<span class="mtd">println</span>(<span class="str">"Withdrawal successful. Remaining: $"</span> + balance);
+    }
+
+    <span class="kw">public double</span> <span class="mtd">getBalance</span>() {
+        <span class="kw">return</span> balance;
+    }
+}</div>
+
+            <span class="code-label">Main.java</span>
+<div class="code-block"><span class="kw">public class</span> <span class="tp">Main</span> {
+    <span class="kw">public static void</span> <span class="mtd">main</span>(<span class="tp">String</span>[] args) {
+        <span class="tp">BankAccount</span> account = <span class="kw">new</span> <span class="tp">BankAccount</span>(<span class="num">500.0</span>);
+
+        <span class="kw">try</span> {
+            account.<span class="mtd">withdraw</span>(<span class="num">200</span>);   <span class="cmt">// Should succeed</span>
+            account.<span class="mtd">withdraw</span>(<span class="num">400</span>);   <span class="cmt">// Should fail (only $300 left)</span>
+        } <span class="kw">catch</span> (<span class="tp">InsufficientFundsException</span> e) {
+            <span class="tp">System</span>.out.<span class="mtd">println</span>(e.<span class="mtd">getMessage</span>());
+            <span class="tp">System</span>.out.<span class="mtd">println</span>(<span class="str">"You need $"</span> + e.<span class="mtd">getShortfall</span>() + <span class="str">" more."</span>);
+        }
+    }
+}</div>
+
+            <div class="terminal-header">
+                <span class="terminal-dot r"></span>
+                <span class="terminal-dot y"></span>
+                <span class="terminal-dot g"></span>
+                <span class="terminal-title">Output</span>
+            </div>
+<div class="terminal with-header">Withdrawal successful. Remaining: $300.0
+<span class="t-red">Insufficient funds. Short by: $100.0</span>
+You need $100.0 more.</div>
+
+            <div class="violet-box">
+                <div class="violet-box-title">Why this is better than a generic exception</div>
+                <p>If we had used <code class="code-inline">throw new Exception("Not enough money")</code>, the caller would only get a string message. With <code class="code-inline">InsufficientFundsException</code>, the caller can call <code class="code-inline">getShortfall()</code> to find out the exact dollar amount &mdash; and perhaps suggest the user deposit more, or offer a smaller withdrawal.</p>
+            </div>
+        </div>
+
+        <!-- =============================== SECTION 5 =============================== -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-number">5</span>
+                Should We Always Use Exceptions?
+            </h2>
+
+            <div class="narrative">
+                <p>After learning all this, you might think: <em>"Exceptions are powerful! I should use them everywhere!"</em></p>
+                <p>Not so fast. Remember what happens when you write <code class="code-inline">throw new InvalidZakahAmountException(amount)</code>:</p>
+                <p style="margin-left: 20px; margin-top: 8px;"><strong>1.</strong> Java creates a <strong>new object</strong> in memory (the exception object)</p>
+                <p style="margin-left: 20px;"><strong>2.</strong> Java captures the <strong>entire call stack</strong> (which method called which method called which method...)</p>
+                <p style="margin-left: 20px;"><strong>3.</strong> Java walks <strong>back up the call chain</strong> looking for a matching catch block</p>
+                <p style="margin-top: 12px;">All of this takes <strong>time and memory</strong>. For truly exceptional situations (a file that doesn't exist, a network that goes down), this cost is worth it. But for situations you can predict and check easily? A simple <code class="code-inline">if</code> statement is much cheaper.</p>
+            </div>
+
+            <p style="margin: 25px 0 15px; font-size: 1.08rem; font-weight: 600; color: var(--red-darker);">Let's see a concrete example:</p>
+
+            <p style="margin-bottom: 10px;">Suppose we receive a <code class="code-inline">String</code> and want to print its length. But the string might be <code class="code-inline">null</code>. Should we use an exception or an <code class="code-inline">if</code> statement?</p>
+
+            <h3 class="subsection-title">
+                <span class="sub-badge">Approach 1</span>
+                Using an if statement (efficient)
+            </h3>
+
+            <span class="code-label">StringDemo.java &mdash; using if</span>
+<div class="code-block"><span class="kw">public class</span> <span class="tp">StringDemo</span> {
+    <span class="kw">public static void</span> <span class="mtd">main</span>(<span class="tp">String</span>[] args) {
+        <span class="tp">String</span> name = <span class="kw">null</span>;
+
+        <span class="kw">if</span> (name != <span class="kw">null</span>) {
+            <span class="tp">System</span>.out.<span class="mtd">println</span>(<span class="str">"Length: "</span> + name.<span class="mtd">length</span>());
+        } <span class="kw">else</span> {
+            <span class="tp">System</span>.out.<span class="mtd">println</span>(<span class="str">"Name is null."</span>);
+        }
+    }
+}</div>
+
+            <div class="success-box">
+                <div class="success-box-title">Fast and simple</div>
+                <p>The <code class="code-inline">if</code> statement checks whether <code class="code-inline">name</code> is <code class="code-inline">null</code> <strong>before</strong> calling <code class="code-inline">length()</code>. No object is created. No stack trace is captured. No exception propagation. Just a simple comparison &mdash; almost zero cost.</p>
+            </div>
+
+            <h3 class="subsection-title">
+                <span class="sub-badge">Approach 2</span>
+                Using exception handling (expensive)
+            </h3>
+
+            <span class="code-label">StringDemo.java &mdash; using try-catch</span>
+<div class="code-block"><span class="kw">public class</span> <span class="tp">StringDemo</span> {
+    <span class="kw">public static void</span> <span class="mtd">main</span>(<span class="tp">String</span>[] args) {
+        <span class="tp">String</span> name = <span class="kw">null</span>;
+
+        <span class="kw">try</span> {
+            <span class="tp">System</span>.out.<span class="mtd">println</span>(<span class="str">"Length: "</span> + name.<span class="mtd">length</span>());  <span class="cmt">// crashes here!</span>
+        } <span class="kw">catch</span> (<span class="tp">NullPointerException</span> e) {
+            <span class="tp">System</span>.out.<span class="mtd">println</span>(<span class="str">"Name is null."</span>);
+        }
+    }
+}</div>
+
+            <div class="red-box">
+                <div class="red-box-title">Same result, but more expensive</div>
+                <p>Both approaches print <code class="code-inline">"Name is null."</code> &mdash; same output. But the second approach lets <code class="code-inline">name.length()</code> <strong>execute</strong>, then Java creates a <code class="code-inline">NullPointerException</code> object in memory, captures the entire stack trace, and searches for a matching catch block. All of that work for something we could have prevented with one <code class="code-inline">if</code> check.</p>
+            </div>
+
+            <div class="key-box">
+                <div class="key-box-title">The Rule: Don't use exceptions for things you can check</div>
+                <p>If you <strong>can predict</strong> the problem with a simple condition (<code class="code-inline">if b == 0</code>, <code class="code-inline">if index &lt; 0</code>, <code class="code-inline">if name == null</code>), use an <code class="code-inline">if</code> statement. It's faster, simpler, and clearer.</p>
+                <p style="margin-top: 10px;">Use exceptions for situations that are <strong>truly exceptional</strong> &mdash; things you <strong>cannot</strong> easily predict or prevent:</p>
+                <ul style="margin-left: 20px; margin-top: 8px; line-height: 2;">
+                    <li>A file that was there a moment ago but got deleted</li>
+                    <li>A network connection that suddenly drops</li>
+                    <li>A database that runs out of space</li>
+                    <li>User input that comes from outside your program</li>
+                </ul>
+            </div>
+
+            <div class="violet-box">
+                <div class="violet-box-title">Think of it like a fire alarm</div>
+                <p>You don't pull the fire alarm to tell someone <em>"the door is locked."</em> You check the door handle first. The fire alarm is for <strong>actual fires</strong> &mdash; situations you didn't expect and couldn't prevent with a simple check.</p>
+                <p style="margin-top: 8px;">Exceptions are your fire alarm. The <code class="code-inline">if</code> statement is checking the door handle. Use each one where it belongs.</p>
+            </div>
+        </div>
+
+        <!-- =============================== SECTION 6 =============================== -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-number">6</span>
+                Summary
+            </h2>
+
+            <div class="success-box">
+                <div class="success-box-title">Key Takeaways</div>
+                <ul style="margin-left: 20px; margin-top: 8px; line-height: 2.2;">
+                    <li><strong>Custom exceptions</strong> let you create domain-specific error types that describe exactly what went wrong.</li>
+                    <li>Extend <code class="code-inline">Exception</code> for <strong>checked</strong> exceptions, <code class="code-inline">RuntimeException</code> for <strong>unchecked</strong>.</li>
+                    <li><strong>Checked</strong> = the compiler forces every caller to handle it. <strong>Unchecked</strong> = handling is optional (but the program crashes if unhandled).</li>
+                    <li>Custom exceptions are just <strong>regular classes</strong> with constructors &mdash; nothing fancy, just inheritance.</li>
+                    <li>Use them to provide <strong>meaningful error information</strong> (extra fields, getter methods) beyond a simple message string.</li>
+                </ul>
+            </div>
+
+            <p style="margin-top: 20px; font-size: 1.05rem;">In the next lesson: <strong>Practice exercises</strong> to test your understanding of everything we've covered in Module 10!</p>
+        </div>
+
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+        <a href="06-try-catch-finally.html">&#8592; Lesson 6: try-catch-finally</a>
+        <a href="08-exercises.html">Lesson 8: Exercises &#8594;</a>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        Module 10: Exception Handling &mdash; Lesson 7: Custom Exceptions / Prepared by Dr. Almalawi
+    </footer>
+
+</div>
+
+<!-- ── Code Theme Picker ── -->
+<div id="code-theme-picker">
+  <div id="theme-panel">
+    <div class="tp-label">Code Block Theme</div>
+    <button class="theme-btn active" onclick="setCodeTheme('black')" id="btn-black">
+      <span class="theme-swatch" style="background:#000;"></span> Black (Default)
+    </button>
+    <button class="theme-btn" onclick="setCodeTheme('vscode')" id="btn-vscode">
+      <span class="theme-swatch" style="background:#1e1e1e;"></span> VS Code Dark
+    </button>
+    <button class="theme-btn" onclick="setCodeTheme('white')" id="btn-white">
+      <span class="theme-swatch" style="background:#fff;border:1px solid #ccc;"></span> White (Projector)
+    </button>
+    <button class="theme-btn" onclick="setCodeTheme('cream')" id="btn-cream">
+      <span class="theme-swatch" style="background:#fefce8;border:1px solid #ccc;"></span> Cream (Projector)
+    </button>
+  </div>
+  <button id="theme-toggle-btn" onclick="document.getElementById('theme-panel').classList.toggle('open')">Code Theme</button>
+</div>
+<script>
+const CODE_THEMES={black:{bg:'#000000',text:'#ffffff',comment:'#a0aec0',keyword:'#ff79c6',cls:'#8be9fd',method:'#50fa7b',string:'#f1fa8c',number:'#bd93f9',tmBg:'#0f172a',tmHeader:'#1e293b',tmBorder:'#334155',tmText:'#4ade80',tmTitle:'#94a3b8',projector:false},vscode:{bg:'#1e1e1e',text:'#ffffff',comment:'#57c757',keyword:'#569cd6',cls:'#4ec9b0',method:'#dcdcaa',string:'#ce9178',number:'#b5cea8',tmBg:'#1e1e1e',tmHeader:'#2d2d2d',tmBorder:'#444',tmText:'#ffffff',tmTitle:'#9cdcfe',projector:false},white:{bg:'#ffffff',text:'#000000',comment:'#1d4ed8',keyword:'#dc2626',cls:'#16a34a',method:'#0369a1',string:'#b45309',number:'#7c3aed',tmBg:'#f1f5f9',tmHeader:'#e2e8f0',tmBorder:'#94a3b8',tmText:'#000000',tmTitle:'#1d4ed8',projector:true},cream:{bg:'#fefce8',text:'#000000',comment:'#1d4ed8',keyword:'#dc2626',cls:'#15803d',method:'#0369a1',string:'#b45309',number:'#7c3aed',tmBg:'#fefce8',tmHeader:'#fef08a',tmBorder:'#a16207',tmText:'#000000',tmTitle:'#0369a1',projector:true}};
+function _lum(hex){hex=hex.replace('#','');if(hex.length===3)hex=hex.split('').map(c=>c+c).join('');if(hex.length!==6)return .5;const r=parseInt(hex.slice(0,2),16),g=parseInt(hex.slice(2,4),16),b=parseInt(hex.slice(4,6),16);return(.299*r+.587*g+.114*b)/255;}
+function _lighten(hex){hex=hex.replace('#','');if(hex.length===3)hex=hex.split('').map(c=>c+c).join('');const r=parseInt(hex.slice(0,2),16),g=parseInt(hex.slice(2,4),16),b=parseInt(hex.slice(4,6),16);const lr=Math.round(r*.1+255*.9),lg=Math.round(g*.1+255*.9),lb=Math.round(b*.1+255*.9);return'#'+[lr,lg,lb].map(c=>c.toString(16).padStart(2,'0')).join('');}
+const _backup=new Map();
+function _applyProjectorInline(enable){if(enable){document.querySelectorAll('[style]').forEach(el=>{const orig=el.getAttribute('style');_backup.set(el,orig);let s=orig;s=s.replace(/(background(?:-color)?\s*:[^;}"']*?)(#[0-9a-fA-F]{6}|#[0-9a-fA-F]{3})\b/gi,(m,pre,hex)=>_lum(hex)<.28?pre+_lighten(hex):m);s=s.replace(/((?:^|;|\s)color\s*:\s*)(#[0-9a-fA-F]{6}|#[0-9a-fA-F]{3})\b/gi,(m,pre,hex)=>_lum(hex)>.72?pre+'#1f2937':m);el.setAttribute('style',s);});}else{_backup.forEach((orig,el)=>el.setAttribute('style',orig));_backup.clear();}}
+function setCodeTheme(name){const t=CODE_THEMES[name],r=document.documentElement.style;r.setProperty('--cb-bg',t.bg);r.setProperty('--cb-text',t.text);r.setProperty('--cb-comment',t.comment);r.setProperty('--cb-keyword',t.keyword);r.setProperty('--cb-class',t.cls);r.setProperty('--cb-method',t.method);r.setProperty('--cb-string',t.string);r.setProperty('--cb-number',t.number);r.setProperty('--tm-bg',t.tmBg);r.setProperty('--tm-header',t.tmHeader);r.setProperty('--tm-border',t.tmBorder);r.setProperty('--tm-text',t.tmText);r.setProperty('--tm-title',t.tmTitle);const wasProjector=document.body.classList.contains('projector');if(t.projector){if(!wasProjector)_applyProjectorInline(true);document.body.classList.add('projector');}else{if(wasProjector)_applyProjectorInline(false);document.body.classList.remove('projector');}document.querySelectorAll('.theme-btn').forEach(b=>b.classList.remove('active'));document.getElementById('btn-'+name).classList.add('active');document.getElementById('theme-panel').classList.remove('open');}
+</script>
+</body>
+</html>

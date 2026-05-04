@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 4: Exception Class Hierarchy | Module 10 | CPCS203</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script>
+    mermaid.initialize({
+        startOnLoad: true, theme: 'base', securityLevel: 'loose',
+        themeVariables: {
+            primaryColor: '#ef4444', primaryTextColor: '#ffffff',
+            primaryBorderColor: '#dc2626', lineColor: '#374151',
+            secondaryColor: '#fff7ed', tertiaryColor: '#fee2e2'
+        }
+    });
+    </script>
+    <style>
+        .mermaid { display: flex; justify-content: center; margin: 24px 0; }
+        .mermaid svg { max-width: 100%; height: auto; }
+        /* ── Diagram fullscreen ── */
+        .diagram-wrap { position: relative; }
+        .diagram-zoom-btn { display: flex; align-items: center; gap: 8px; margin: 12px auto 0; padding: 11px 26px; background: linear-gradient(135deg, var(--red), var(--orange)); color: white; border: none; border-radius: 25px; font-size: .92rem; font-weight: 700; cursor: pointer; transition: transform .2s, box-shadow .2s; box-shadow: 0 4px 14px rgba(239,68,68,.35); }
+        .diagram-zoom-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 22px rgba(239,68,68,.5); }
+        .diagram-zoom-btn svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+        .diagram-wrap:fullscreen,
+        .diagram-wrap:-webkit-full-screen { background: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 30px; }
+        .diagram-wrap:fullscreen .mermaid,
+        .diagram-wrap:-webkit-full-screen .mermaid { flex: 1; display: flex; align-items: center; justify-content: center; width: 100%; }
+        .diagram-wrap:fullscreen .mermaid svg,
+        .diagram-wrap:-webkit-full-screen .mermaid svg { max-width: 95vw; max-height: 82vh; width: auto; height: auto; }
+        .diagram-wrap:fullscreen .diagram-zoom-btn,
+        .diagram-wrap:-webkit-full-screen .diagram-zoom-btn { position: fixed; bottom: 24px; right: 30px; background: linear-gradient(135deg, #374151, #1f2937); box-shadow: 0 4px 18px rgba(0,0,0,.4); }
+        .diagram-wrap:fullscreen .fs-hint,
+        .diagram-wrap:-webkit-full-screen .fs-hint { display: block; position: fixed; bottom: 28px; left: 30px; color: #9ca3af; font-size: .82rem; font-style: italic; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --red: #ef4444; --red-dark: #dc2626; --red-darker: #991b1b; --red-light: #fee2e2;
+            --orange: #f97316; --orange-dark: #ea580c; --orange-light: #fff7ed;
+            --amber: #f59e0b; --amber-dark: #b45309; --amber-light: #fffbeb;
+            --success: #059669; --success-light: #d1fae5;
+            --info: #2563eb; --info-light: #dbeafe;
+            --violet: #7c3aed; --violet-light: #ede9fe;
+            --dark: #1f2937; --gray: #6b7280; --light: #f9fafb;
+        }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.8; color: var(--dark); background: #f1f5f9; min-height: 100vh; padding: 20px; }
+        .container { max-width: 1000px; margin: 0 auto; background: white; border-radius: 20px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.35); overflow: hidden; }
+        .nav-breadcrumb { background: linear-gradient(135deg, #7f1d1d, #991b1b); padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+        .breadcrumb { display: flex; align-items: center; gap: 8px; color: white; font-size: 0.9rem; }
+        .breadcrumb a { color: #fca5a5; text-decoration: none; transition: color .3s; }
+        .breadcrumb a:hover { color: white; }
+        .breadcrumb .sep { color: #f87171; }
+        .breadcrumb .cur { color: #fde68a; }
+        .lesson-nav { display: flex; gap: 10px; }
+        .lesson-nav a { padding: 8px 16px; background: rgba(255,255,255,.15); color: white; text-decoration: none; border-radius: 20px; font-size: .85rem; transition: background .3s; }
+        .lesson-nav a:hover { background: rgba(255,255,255,.25); }
+        .hero { background: linear-gradient(135deg, #dc2626, #ef4444, #f97316, #f59e0b); color: white; padding: 50px 40px; text-align: center; position: relative; overflow: hidden; }
+        .hero::before { content: ''; position: absolute; top: -50px; right: -50px; width: 250px; height: 250px; background: rgba(255,255,255,.05); border-radius: 50%; }
+        .hero::after { content: ''; position: absolute; bottom: -80px; left: -40px; width: 300px; height: 300px; background: rgba(255,255,255,.05); border-radius: 50%; }
+        .module-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,.2); border: 1px solid rgba(255,255,255,.4); padding: 8px 22px; border-radius: 30px; font-size: .95rem; font-weight: 600; margin-bottom: 20px; }
+        .module-badge .num { background: white; color: var(--red); width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; }
+        .hero h1 { font-size: 2.8rem; margin-bottom: 15px; text-shadow: 0 3px 8px rgba(0,0,0,.3); }
+        .hero .subtitle { font-size: 1.2rem; opacity: .9; margin-bottom: 10px; }
+        .topic-chips { display: flex; justify-content: center; gap: 12px; margin-top: 28px; flex-wrap: wrap; }
+        .topic-chip { padding: 9px 20px; border-radius: 30px; font-weight: 700; font-size: .88rem; border: 2px solid rgba(255,255,255,.5); background: rgba(255,255,255,.12); }
+        .content { padding: 50px 40px; }
+        .section { margin-bottom: 60px; }
+        .section-title { font-size: 1.85rem; color: var(--red-darker); border-bottom: 3px solid var(--red); padding-bottom: 10px; margin-bottom: 28px; display: flex; align-items: center; gap: 12px; }
+        .section-number { background: linear-gradient(135deg, var(--red), var(--orange)); color: white; width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; font-weight: bold; flex-shrink: 0; }
+        .subsection-title { font-size: 1.3rem; color: var(--orange-dark); margin: 30px 0 15px; display: flex; align-items: center; gap: 10px; }
+        .sub-badge { background: linear-gradient(135deg, var(--orange), var(--amber)); color: white; padding: 4px 14px; border-radius: 20px; font-size: .8rem; font-weight: 700; }
+        .narrative { background: linear-gradient(135deg, #fff7ed, #ffedd5); border-left: 5px solid var(--orange); padding: 25px 30px; margin: 20px 0; border-radius: 0 15px 15px 0; font-size: 1.05rem; line-height: 2; }
+        .narrative p { margin-bottom: 12px; }
+        .narrative p:last-child { margin-bottom: 0; }
+        .key-box { background: linear-gradient(135deg, #fef3c7, #fde68a); border-left: 5px solid var(--amber); padding: 18px 24px; margin: 20px 0; border-radius: 0 12px 12px 0; }
+        .key-box-title { font-weight: 700; color: var(--amber-dark); margin-bottom: 8px; font-size: 1.05rem; }
+        .info-box { background: linear-gradient(135deg, #dbeafe, #bfdbfe); border-left: 5px solid var(--info); padding: 18px 24px; margin: 20px 0; border-radius: 0 12px 12px 0; }
+        .info-box-title { font-weight: 700; color: var(--info); margin-bottom: 8px; font-size: 1.05rem; }
+        .red-box { background: linear-gradient(135deg, #fee2e2, #fecaca); border-left: 5px solid var(--red); padding: 18px 24px; margin: 20px 0; border-radius: 0 12px 12px 0; }
+        .red-box-title { font-weight: 700; color: var(--red-dark); margin-bottom: 8px; font-size: 1.05rem; }
+        .orange-box { background: linear-gradient(135deg, #fff7ed, #fed7aa); border-left: 5px solid var(--orange); padding: 18px 24px; margin: 20px 0; border-radius: 0 12px 12px 0; }
+        .orange-box-title { font-weight: 700; color: var(--orange-dark); margin-bottom: 8px; font-size: 1.05rem; }
+        .success-box { background: linear-gradient(135deg, #d1fae5, #a7f3d0); border-left: 5px solid var(--success); padding: 18px 24px; margin: 20px 0; border-radius: 0 12px 12px 0; }
+        .success-box-title { font-weight: 700; color: #065f46; margin-bottom: 8px; font-size: 1.05rem; }
+        .code-inline { background: #f3f4f6; padding: 2px 8px; border-radius: 5px; font-family: 'Consolas', monospace; font-size: .9rem; color: var(--red-dark); }
+        .compare-table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: .9rem; }
+        .compare-table th { padding: 12px 16px; text-align: left; font-weight: 800; font-size: .88rem; }
+        .compare-table th.th-feature { background: #374151; color: white; }
+        .compare-table th.th-checked { background: var(--info); color: white; }
+        .compare-table th.th-unchecked { background: var(--red); color: white; }
+        .compare-table td { padding: 11px 16px; border-bottom: 1px solid #e5e7eb; vertical-align: top; line-height: 1.7; }
+        .compare-table tr:last-child td { border-bottom: none; }
+        .compare-table tr:nth-child(even) td { background: #f9fafb; }
+        .compare-table .td-feature { font-weight: 700; color: var(--dark); }
+        .compare-table .td-checked { color: var(--info); }
+        .compare-table .td-unchecked { color: var(--red-dark); }
+        @media (max-width: 768px) { body { padding: 10px; } .hero { padding: 30px 20px; } .hero h1 { font-size: 2rem; } .content { padding: 30px 20px; } .compare-table { font-size: .8rem; } .compare-table th, .compare-table td { padding: 8px 10px; } }
+        .footer { background: linear-gradient(135deg, #7f1d1d, #991b1b); color: #fca5a5; padding: 25px 40px; text-align: center; font-size: .85rem; line-height: 1.7; }
+        .bottom-nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; background: linear-gradient(135deg, #991b1b, #b91c1c); }
+        .bottom-nav a { display: inline-flex; align-items: center; gap: 8px; padding: 10px 22px; background: rgba(255,255,255,.15); color: white; text-decoration: none; border-radius: 25px; font-size: .9rem; font-weight: 600; transition: background .3s, transform .2s; }
+        .bottom-nav a:hover { background: rgba(255,255,255,.28); transform: translateY(-2px); }
+        /* ── Code-theme floating picker ── */
+        #code-theme-picker { position: fixed; bottom: 28px; right: 28px; z-index: 9999; display: flex; flex-direction: column; align-items: flex-end; gap: 10px; font-family: 'Segoe UI', sans-serif; }
+        #theme-toggle-btn { background: linear-gradient(135deg, #991b1b, #dc2626); color: #fff; border: none; border-radius: 50px; padding: 11px 20px; font-size: .88rem; font-weight: 700; cursor: pointer; box-shadow: 0 4px 18px rgba(220,38,38,.5); letter-spacing: .5px; transition: box-shadow .2s; }
+        #theme-toggle-btn:hover { box-shadow: 0 6px 24px rgba(220,38,38,.7); }
+        #theme-panel { background: #fff; border-radius: 14px; padding: 14px 16px; box-shadow: 0 8px 32px rgba(0,0,0,.25); display: none; flex-direction: column; gap: 8px; min-width: 210px; border: 1px solid #fca5a5; }
+        #theme-panel.open { display: flex; }
+        #theme-panel .tp-label { font-size: .72rem; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: #dc2626; margin-bottom: 4px; }
+        .theme-btn { display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-radius: 8px; border: 2px solid transparent; cursor: pointer; font-size: .88rem; font-weight: 600; transition: border-color .2s, background .2s; background: #f9fafb; color: #1f2937; }
+        .theme-btn:hover { background: #fef2f2; border-color: #dc2626; }
+        .theme-btn.active { border-color: #991b1b; background: #fee2e2; }
+        .theme-swatch { width: 28px; height: 28px; border-radius: 6px; border: 1px solid rgba(0,0,0,.15); flex-shrink: 0; }
+        /* ── Projector mode overrides ── */
+        body.projector .nav-breadcrumb { background: #fee2e2 !important; }
+        body.projector .breadcrumb a { color: #991b1b !important; }
+        body.projector .breadcrumb .sep, body.projector .breadcrumb .cur { color: #dc2626 !important; }
+        body.projector .lesson-nav a { background: rgba(220,38,38,.12) !important; color: #7f1d1d !important; border: 1px solid #fca5a5 !important; }
+        body.projector .bottom-nav { background: #fee2e2 !important; }
+        body.projector .bottom-nav a { background: rgba(220,38,38,.12) !important; color: #7f1d1d !important; border: 1px solid #fca5a5 !important; }
+        body.projector .footer { background: #fef2f2 !important; color: #7f1d1d !important; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Breadcrumb Navigation -->
+        <nav class="nav-breadcrumb">
+            <div class="breadcrumb">
+                <a href="../index.html">CPCS203</a>
+                <span class="sep">/</span>
+                <a href="index.html">Module 10</a>
+                <span class="sep">/</span>
+                <span class="cur">Lesson 4 &mdash; Exception Hierarchy</span>
+            </div>
+            <div class="lesson-nav">
+                <a href="03-motivation-division-problem.html">&larr; Lesson 3</a>
+                <a href="05-exception-propagation.html">Lesson 5 &rarr;</a>
+            </div>
+        </nav>
+
+        <!-- Hero Section -->
+        <header class="hero">
+            <div class="module-badge">
+                <span class="num">10</span>
+                Lesson 4 of 8
+            </div>
+            <h1>Exception Class Hierarchy</h1>
+            <p class="subtitle">Understanding the family tree of all exceptions in Java</p>
+            <div class="topic-chips">
+                <span class="topic-chip">Throwable</span>
+                <span class="topic-chip">Error</span>
+                <span class="topic-chip">Exception</span>
+                <span class="topic-chip">Checked</span>
+                <span class="topic-chip">Unchecked</span>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="content">
+
+            <!-- Section 1: Why This Topic Now -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">1</span>
+                    Why This Topic Now
+                </h2>
+
+                <div class="narrative">
+                    <p>Imagine taking this topic in week 3 or 4, when you didn't know what a class is, what a superclass is, or what a subclass is. It would have been impossible! But now you are strong students &mdash; you know classes, superclasses, subclasses, and inheritance. This is the perfect time.</p>
+                    <p>Exception handling in Java is built entirely on the class hierarchy. Every exception is an <strong>object</strong>, every exception type is a <strong>class</strong>, and those classes are organized in a carefully designed <strong>inheritance tree</strong>. Understanding this tree is the key to writing precise, effective error handling.</p>
+                </div>
+            </div>
+
+            <!-- Section 2: The Throwable Family Tree -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">2</span>
+                    The Throwable Family Tree
+                </h2>
+
+                <p style="margin-bottom: 20px; font-size: 1.05rem;">All exceptions in Java descend from a single root: <span class="code-inline">Throwable</span>. This is the ultimate superclass of everything that can be thrown with the <span class="code-inline">throw</span> keyword and caught with <span class="code-inline">catch</span>. Let's see the full family tree:</p>
+
+                <div class="diagram-wrap" id="tree-diagram">
+                <div class="mermaid">
+%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#f8fafc', 'primaryTextColor': '#1f2937', 'primaryBorderColor': '#94a3b8', 'lineColor': '#374151'}}}%%
+classDiagram
+    direction TB
+    class Throwable {
+        &lt;&lt;root&gt;&gt;
+        +getMessage() String
+        +printStackTrace() void
+    }
+    class Error {
+        &lt;&lt;do NOT catch&gt;&gt;
+        Critical system failures
+    }
+    class Exception {
+        &lt;&lt;recoverable&gt;&gt;
+        Problems you CAN handle
+    }
+    class RuntimeException {
+        &lt;&lt;unchecked&gt;&gt;
+        Programming bugs
+    }
+    class ArithmeticException { e.g. division by zero }
+    class NullPointerException { e.g. calling method on null }
+    class IndexOutOfBoundsException { e.g. invalid array index }
+    class ClassCastException { e.g. invalid cast }
+    class IOException { &lt;&lt;checked&gt;&gt; e.g. file read/write failure }
+    class SQLException { &lt;&lt;checked&gt;&gt; e.g. database error }
+    class FileNotFoundException { &lt;&lt;checked&gt;&gt; e.g. missing file }
+    class OutOfMemoryError { JVM ran out of memory }
+    class StackOverflowError { Infinite recursion }
+    Throwable &lt;|-- Error : extends
+    Throwable &lt;|-- Exception : extends
+    Error &lt;|-- OutOfMemoryError : extends
+    Error &lt;|-- StackOverflowError : extends
+    Exception &lt;|-- RuntimeException : extends
+    Exception &lt;|-- IOException : extends
+    Exception &lt;|-- SQLException : extends
+    RuntimeException &lt;|-- ArithmeticException : extends
+    RuntimeException &lt;|-- NullPointerException : extends
+    RuntimeException &lt;|-- IndexOutOfBoundsException : extends
+    RuntimeException &lt;|-- ClassCastException : extends
+    IOException &lt;|-- FileNotFoundException : extends
+    style Throwable fill:#f1f5f9,stroke:#374151,color:#1f2937
+    style Error fill:#fee2e2,stroke:#991b1b,color:#7f1d1d
+    style OutOfMemoryError fill:#fecaca,stroke:#991b1b,color:#7f1d1d
+    style StackOverflowError fill:#fecaca,stroke:#991b1b,color:#7f1d1d
+    style Exception fill:#fff7ed,stroke:#ea580c,color:#9a3412
+    style RuntimeException fill:#fee2e2,stroke:#dc2626,color:#991b1b
+    style ArithmeticException fill:#fef2f2,stroke:#ef4444,color:#b91c1c
+    style NullPointerException fill:#fef2f2,stroke:#ef4444,color:#b91c1c
+    style IndexOutOfBoundsException fill:#fef2f2,stroke:#ef4444,color:#b91c1c
+    style ClassCastException fill:#fef2f2,stroke:#ef4444,color:#b91c1c
+    style IOException fill:#dbeafe,stroke:#2563eb,color:#1e40af
+    style SQLException fill:#dbeafe,stroke:#2563eb,color:#1e40af
+    style FileNotFoundException fill:#dbeafe,stroke:#2563eb,color:#1e40af
+                </div>
+                <button class="diagram-zoom-btn" onclick="toggleDiagramFullscreen()">
+                    <svg viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+                    <span id="zoom-btn-text">Zoom Fullscreen</span>
+                </button>
+                <span class="fs-hint" style="display:none;">Press Escape to exit fullscreen</span>
+                </div>
+
+                <div class="info-box">
+                    <div class="info-box-title">Diagram Legend</div>
+                    <p>
+                        <strong style="color: #991b1b;">Red</strong> = <span class="code-inline">Error</span> branch &mdash; do NOT catch these<br>
+                        <strong style="color: #ea580c;">Orange</strong> = <span class="code-inline">Exception</span> &mdash; the recoverable parent class<br>
+                        <strong style="color: #b91c1c;">Light Red</strong> = <span class="code-inline">RuntimeException</span> and subclasses (e.g., <span class="code-inline">ArithmeticException</span>, <span class="code-inline">NullPointerException</span>)<br>
+                        <strong style="color: #2563eb;">Blue</strong> = Other exceptions (e.g., <span class="code-inline">IOException</span>, <span class="code-inline">SQLException</span>) &mdash; we will learn the difference later
+                    </p>
+                </div>
+            </div>
+
+            <!-- Section 3: The Error Branch -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">3</span>
+                    The Error Branch &mdash; Do NOT Catch
+                </h2>
+
+                <div class="red-box">
+                    <div class="red-box-title">Error and Its Subclasses</div>
+                    <p><span class="code-inline">Error</span> and its subclasses represent <strong>serious system failures</strong> that are beyond the control of your program. These indicate problems with the JVM itself or the underlying hardware/OS environment. You should <strong>never</strong> try to catch or recover from these.</p>
+                </div>
+
+                <h3 class="subsection-title">
+                    <span class="sub-badge">Analogy</span>
+                    The Earthquake Analogy
+                </h3>
+
+                <div class="narrative">
+                    <p>We can handle problems inside our car or building. If the engine overheats, pull over. If a pipe bursts, call a plumber. But if there's an earthquake &mdash; that's out of our scope. The entire ground beneath us is shaking. There's nothing we can fix about the earth's tectonic plates.</p>
+                    <p>Similarly, if the JVM goes down, <strong>everything</strong> goes down. Your Java program cannot fix the JVM. An <span class="code-inline">OutOfMemoryError</span> means the JVM has exhausted all available memory &mdash; your program can't magically create more RAM. A <span class="code-inline">StackOverflowError</span> means infinite recursion has consumed the entire call stack &mdash; there's no stack space left to even run your catch block properly.</p>
+                    <p>That's why <span class="code-inline">Error</span> is on the <strong>left branch</strong> of our tree, completely separate from <span class="code-inline">Exception</span>. They are fundamentally different beasts.</p>
+                </div>
+
+                <div class="info-box">
+                    <div class="info-box-title">The Simple Rule</div>
+                    <p><strong><span class="code-inline">Error</span></strong> = do <strong>NOT</strong> catch. These are system-level catastrophes.<br>
+                    <strong><span class="code-inline">Exception</span></strong> = <strong>CAN</strong> handle. These are problems your program can recover from.</p>
+                </div>
+            </div>
+
+            <!-- Section 4: Summary -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">4</span>
+                    Summary
+                </h2>
+
+                <div class="success-box">
+                    <div class="success-box-title">Key Takeaways</div>
+                    <ul style="margin-left: 20px; margin-top: 8px; line-height: 2.2;">
+                        <li><strong><span class="code-inline">Throwable</span></strong> is the root of the entire exception hierarchy &mdash; everything that can be thrown extends it.</li>
+                        <li><strong><span class="code-inline">Error</span></strong> represents catastrophic system failures (like <span class="code-inline">OutOfMemoryError</span>) &mdash; do <strong>NOT</strong> catch these.</li>
+                        <li><strong><span class="code-inline">Exception</span></strong> represents recoverable problems &mdash; this is where your <span class="code-inline">try-catch</span> blocks focus.</li>
+                        <li><strong><span class="code-inline">RuntimeException</span></strong> is a special branch under <span class="code-inline">Exception</span> &mdash; we will learn the difference between these two branches later when we create our own custom exceptions.</li>
+                    </ul>
+                </div>
+
+                <p style="margin-top: 25px; font-size: 1.05rem; color: var(--gray);">In the next lesson: how exceptions <strong>travel</strong> through the call stack &mdash; <em>exception propagation</em>.</p>
+            </div>
+
+        </div>
+
+        <!-- Bottom Navigation -->
+        <div class="bottom-nav">
+            <a href="03-motivation-division-problem.html">&#8592; Lesson 3: Division Problem</a>
+            <a href="05-exception-propagation.html">Lesson 5: Propagation &#8594;</a>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            Module 10: Exception Handling &mdash; Lesson 4: Exception Hierarchy<br>
+            Prepared by Dr. Almalawi
+        </footer>
+    </div>
+<!-- ── Code Theme Picker ── -->
+<div id="code-theme-picker">
+  <div id="theme-panel">
+    <div class="tp-label">Code Block Theme</div>
+    <button class="theme-btn active" onclick="setCodeTheme('black')" id="btn-black">
+      <span class="theme-swatch" style="background:#000;"></span> Black (Default)
+    </button>
+    <button class="theme-btn" onclick="setCodeTheme('vscode')" id="btn-vscode">
+      <span class="theme-swatch" style="background:#1e1e1e;"></span> VS Code Dark
+    </button>
+    <button class="theme-btn" onclick="setCodeTheme('white')" id="btn-white">
+      <span class="theme-swatch" style="background:#fff;border:1px solid #ccc;"></span> White (Projector)
+    </button>
+    <button class="theme-btn" onclick="setCodeTheme('cream')" id="btn-cream">
+      <span class="theme-swatch" style="background:#fefce8;border:1px solid #ccc;"></span> Cream (Projector)
+    </button>
+  </div>
+  <button id="theme-toggle-btn" onclick="document.getElementById('theme-panel').classList.toggle('open')">Code Theme</button>
+</div>
+<script>
+const CODE_THEMES={black:{bg:'#000000',text:'#ffffff',comment:'#a0aec0',keyword:'#ff79c6',cls:'#8be9fd',method:'#50fa7b',string:'#f1fa8c',number:'#bd93f9',tmBg:'#0f172a',tmHeader:'#1e293b',tmBorder:'#334155',tmText:'#4ade80',tmTitle:'#94a3b8',projector:false},vscode:{bg:'#1e1e1e',text:'#ffffff',comment:'#57c757',keyword:'#569cd6',cls:'#4ec9b0',method:'#dcdcaa',string:'#ce9178',number:'#b5cea8',tmBg:'#1e1e1e',tmHeader:'#2d2d2d',tmBorder:'#444',tmText:'#ffffff',tmTitle:'#9cdcfe',projector:false},white:{bg:'#ffffff',text:'#000000',comment:'#1d4ed8',keyword:'#dc2626',cls:'#16a34a',method:'#0369a1',string:'#b45309',number:'#7c3aed',tmBg:'#f1f5f9',tmHeader:'#e2e8f0',tmBorder:'#94a3b8',tmText:'#000000',tmTitle:'#1d4ed8',projector:true},cream:{bg:'#fefce8',text:'#000000',comment:'#1d4ed8',keyword:'#dc2626',cls:'#15803d',method:'#0369a1',string:'#b45309',number:'#7c3aed',tmBg:'#fefce8',tmHeader:'#fef08a',tmBorder:'#a16207',tmText:'#000000',tmTitle:'#0369a1',projector:true}};
+function _lum(hex){hex=hex.replace('#','');if(hex.length===3)hex=hex.split('').map(c=>c+c).join('');if(hex.length!==6)return .5;const r=parseInt(hex.slice(0,2),16),g=parseInt(hex.slice(2,4),16),b=parseInt(hex.slice(4,6),16);return(.299*r+.587*g+.114*b)/255;}
+function _lighten(hex){hex=hex.replace('#','');if(hex.length===3)hex=hex.split('').map(c=>c+c).join('');const r=parseInt(hex.slice(0,2),16),g=parseInt(hex.slice(2,4),16),b=parseInt(hex.slice(4,6),16);const lr=Math.round(r*.1+255*.9),lg=Math.round(g*.1+255*.9),lb=Math.round(b*.1+255*.9);return'#'+[lr,lg,lb].map(c=>c.toString(16).padStart(2,'0')).join('');}
+const _backup=new Map();
+function _applyProjectorInline(enable){if(enable){document.querySelectorAll('[style]').forEach(el=>{const orig=el.getAttribute('style');_backup.set(el,orig);let s=orig;s=s.replace(/(background(?:-color)?\s*:[^;}"']*?)(#[0-9a-fA-F]{6}|#[0-9a-fA-F]{3})\b/gi,(m,pre,hex)=>_lum(hex)<.28?pre+_lighten(hex):m);s=s.replace(/((?:^|;|\s)color\s*:\s*)(#[0-9a-fA-F]{6}|#[0-9a-fA-F]{3})\b/gi,(m,pre,hex)=>_lum(hex)>.72?pre+'#1f2937':m);el.setAttribute('style',s);});}else{_backup.forEach((orig,el)=>el.setAttribute('style',orig));_backup.clear();}}
+function setCodeTheme(name){const t=CODE_THEMES[name],r=document.documentElement.style;r.setProperty('--cb-bg',t.bg);r.setProperty('--cb-text',t.text);r.setProperty('--cb-comment',t.comment);r.setProperty('--cb-keyword',t.keyword);r.setProperty('--cb-class',t.cls);r.setProperty('--cb-method',t.method);r.setProperty('--cb-string',t.string);r.setProperty('--cb-number',t.number);r.setProperty('--tm-bg',t.tmBg);r.setProperty('--tm-header',t.tmHeader);r.setProperty('--tm-border',t.tmBorder);r.setProperty('--tm-text',t.tmText);r.setProperty('--tm-title',t.tmTitle);const wasProjector=document.body.classList.contains('projector');if(t.projector){if(!wasProjector)_applyProjectorInline(true);document.body.classList.add('projector');}else{if(wasProjector)_applyProjectorInline(false);document.body.classList.remove('projector');}document.querySelectorAll('.theme-btn').forEach(b=>b.classList.remove('active'));document.getElementById('btn-'+name).classList.add('active');document.getElementById('theme-panel').classList.remove('open');}
+/* ── Diagram fullscreen toggle ── */
+function toggleDiagramFullscreen(){
+  var el=document.getElementById('tree-diagram');
+  var fs=document.fullscreenElement||document.webkitFullscreenElement;
+  if(fs){(document.exitFullscreen||document.webkitExitFullscreen).call(document);}
+  else{(el.requestFullscreen||el.webkitRequestFullscreen).call(el);}
+}
+document.addEventListener('fullscreenchange',function(){
+  var fs=!!document.fullscreenElement;
+  document.getElementById('zoom-btn-text').textContent=fs?'Exit Fullscreen':'Zoom Fullscreen';
+});
+document.addEventListener('webkitfullscreenchange',function(){
+  var fs=!!document.webkitFullscreenElement;
+  document.getElementById('zoom-btn-text').textContent=fs?'Exit Fullscreen':'Zoom Fullscreen';
+});
+</script>
+</body>
+</html>
