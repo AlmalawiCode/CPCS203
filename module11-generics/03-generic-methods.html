@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 3: Generic Methods | Module 11 — Generics | CPCS203</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --amber: #f59e0b; --amber-dark: #d97706; --amber-darker: #92400e; --amber-darkest: #78350f; --amber-light: #fef3c7; --amber-lighter: #fffbeb;
+            --orange: #f97316; --orange-dark: #ea580c; --orange-light: #fff7ed;
+            --success: #059669; --success-light: #d1fae5;
+            --info: #2563eb; --info-light: #dbeafe;
+            --violet: #7c3aed; --violet-light: #ede9fe;
+            --red: #ef4444; --red-light: #fee2e2;
+            --dark: #1f2937; --gray: #6b7280; --light: #f9fafb;
+        }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.8; color: var(--dark); background: #f1f5f9; min-height: 100vh; padding: 20px; }
+        .container { max-width: 1000px; margin: 0 auto; background: white; border-radius: 20px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.35); overflow: hidden; }
+        .nav-breadcrumb { background: linear-gradient(135deg, #78350f, #92400e); padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+        .breadcrumb { display: flex; align-items: center; gap: 8px; color: white; font-size: 0.9rem; }
+        .breadcrumb a { color: #fcd34d; text-decoration: none; transition: color .3s; }
+        .breadcrumb a:hover { color: white; }
+        .breadcrumb .sep { color: #fbbf24; }
+        .breadcrumb .cur { color: #fef3c7; }
+        .lesson-nav { display: flex; gap: 10px; }
+        .lesson-nav a { padding: 8px 16px; background: rgba(255,255,255,.15); color: white; text-decoration: none; border-radius: 20px; font-size: .85rem; transition: background .3s; }
+        .lesson-nav a:hover { background: rgba(255,255,255,.25); }
+        .hero { background: linear-gradient(135deg, #d97706, #f59e0b, #f97316, #ef4444); color: white; padding: 50px 40px; text-align: center; position: relative; overflow: hidden; }
+        .hero::before { content: ''; position: absolute; top: -50px; right: -50px; width: 250px; height: 250px; background: rgba(255,255,255,.05); border-radius: 50%; }
+        .hero::after { content: ''; position: absolute; bottom: -80px; left: -40px; width: 300px; height: 300px; background: rgba(255,255,255,.05); border-radius: 50%; }
+        .module-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,.2); border: 1px solid rgba(255,255,255,.4); padding: 8px 22px; border-radius: 30px; font-size: .95rem; font-weight: 600; margin-bottom: 20px; }
+        .module-badge .num { background: white; color: var(--amber-dark); width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; }
+        .hero h1 { font-size: 2.8rem; margin-bottom: 15px; text-shadow: 0 3px 8px rgba(0,0,0,.3); }
+        .hero .subtitle { font-size: 1.2rem; opacity: .9; }
+        .topic-chips { display: flex; justify-content: center; gap: 12px; margin-top: 28px; flex-wrap: wrap; }
+        .topic-chip { padding: 9px 20px; border-radius: 30px; font-weight: 700; font-size: .88rem; border: 2px solid rgba(255,255,255,.5); background: rgba(255,255,255,.12); }
+        .content { padding: 50px 40px; }
+        .section { margin-bottom: 60px; }
+        .section-title { font-size: 1.85rem; color: var(--amber-darkest); border-bottom: 3px solid var(--amber); padding-bottom: 10px; margin-bottom: 28px; display: flex; align-items: center; gap: 12px; }
+        .section-number { background: linear-gradient(135deg, var(--amber), var(--orange)); color: white; width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; font-weight: bold; flex-shrink: 0; }
+        .subsection-title { font-size: 1.3rem; color: var(--orange-dark); margin: 30px 0 15px; display: flex; align-items: center; gap: 10px; }
+        .sub-badge { background: linear-gradient(135deg, var(--orange), var(--amber)); color: white; padding: 4px 14px; border-radius: 20px; font-size: .8rem; font-weight: 700; }
+        .narrative { background: linear-gradient(135deg, #fffbeb, #fef3c7); border-left: 5px solid var(--amber); padding: 25px 30px; margin: 20px 0; border-radius: 0 15px 15px 0; font-size: 1.05rem; line-height: 2; }
+        .narrative p { margin-bottom: 12px; }
+        .narrative p:last-child { margin-bottom: 0; }
+        .key-box { background: linear-gradient(135deg, #fef3c7, #fde68a); border-left: 5px solid var(--amber); padding: 18px 24px; margin: 20px 0; border-radius: 0 12px 12px 0; }
+        .key-box-title { font-weight: 700; color: var(--amber-dark); margin-bottom: 8px; font-size: 1.05rem; }
+        .info-box { background: linear-gradient(135deg, #dbeafe, #bfdbfe); border-left: 5px solid var(--info); padding: 18px 24px; margin: 20px 0; border-radius: 0 12px 12px 0; }
+        .info-box-title { font-weight: 700; color: var(--info); margin-bottom: 8px; font-size: 1.05rem; }
+        .red-box { background: linear-gradient(135deg, #fee2e2, #fecaca); border-left: 5px solid var(--red); padding: 18px 24px; margin: 20px 0; border-radius: 0 12px 12px 0; }
+        .red-box-title { font-weight: 700; color: #dc2626; margin-bottom: 8px; font-size: 1.05rem; }
+        .success-box { background: linear-gradient(135deg, #d1fae5, #a7f3d0); border-left: 5px solid var(--success); padding: 18px 24px; margin: 20px 0; border-radius: 0 12px 12px 0; }
+        .success-box-title { font-weight: 700; color: #065f46; margin-bottom: 8px; font-size: 1.05rem; }
+        .violet-box { background: linear-gradient(135deg, #ede9fe, #ddd6fe); border-left: 5px solid var(--violet); padding: 18px 24px; margin: 20px 0; border-radius: 0 12px 12px 0; }
+        .violet-box-title { font-weight: 700; color: #5b21b6; margin-bottom: 8px; font-size: 1.05rem; }
+        .code-block { background: var(--cb-bg, #282a36); color: var(--cb-text, #f8f8f2); padding: 24px 26px; border-radius: 12px; margin: 18px 0; overflow-x: auto; font-family: 'Consolas', 'Monaco', monospace; font-size: 1.02rem; line-height: 1.75; white-space: pre-wrap; border: 1.5px solid #44475a; }
+        .code-block .kw { color: var(--cb-keyword, #ff79c6); font-weight: 700; }
+        .code-block .tp { color: var(--cb-class, #8be9fd); }
+        .code-block .str { color: var(--cb-string, #f1fa8c); }
+        .code-block .num { color: var(--cb-number, #bd93f9); }
+        .code-block .cmt { color: var(--cb-comment, #6272a4); font-style: italic; }
+        .code-block .mtd { color: var(--cb-method, #50fa7b); }
+        .code-block .err { color: #ff5555; font-weight: 700; }
+        .code-label { background: var(--cb-bg, #21222c); color: var(--cb-class, #8be9fd); padding: 8px 18px; border-radius: 12px 12px 0 0; font-family: 'Consolas', monospace; font-size: .85rem; display: inline-block; margin-bottom: -2px; border: 1.5px solid #44475a; border-bottom: none; }
+        .code-inline { background: #f3f4f6; padding: 2px 8px; border-radius: 5px; font-family: 'Consolas', monospace; font-size: .9rem; color: #dc2626; }
+        .terminal { background: var(--tm-bg, #0f172a); color: var(--tm-text, #e2e8f0); padding: 22px; border-radius: 12px; margin: 18px 0; font-family: 'Consolas', monospace; font-size: .88rem; line-height: 1.9; overflow-x: auto; white-space: pre; border: 1px solid var(--tm-border, #334155); }
+        .terminal-header { background: var(--tm-header, #1e293b); border: 1px solid var(--tm-border, #334155); border-bottom: none; border-radius: 12px 12px 0 0; padding: 10px 18px; display: flex; align-items: center; gap: 8px; }
+        .terminal-dot { width: 12px; height: 12px; border-radius: 50%; }
+        .terminal-dot.r { background: #ef4444; }
+        .terminal-dot.y { background: #f59e0b; }
+        .terminal-dot.g { background: #22c55e; }
+        .terminal-title { color: var(--tm-title, #94a3b8); font-size: .8rem; margin-left: 8px; font-weight: 600; }
+        .terminal.with-header { border-radius: 0 0 12px 12px; }
+        .vs-container { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 20px 0; }
+        .vs-box { border-radius: 14px; overflow: hidden; border: 2px solid; }
+        .vs-box.before { border-color: #fca5a5; }
+        .vs-box.after { border-color: #6ee7b7; }
+        .vs-header { padding: 12px 20px; font-weight: 800; font-size: .95rem; text-align: center; }
+        .vs-box.before .vs-header { background: #fee2e2; color: #991b1b; }
+        .vs-box.after .vs-header { background: #d1fae5; color: #065f46; }
+        .vs-body { padding: 0; }
+        .vs-body .code-block { margin: 0; border-radius: 0; border: none; font-size: .92rem; }
+        .bottom-nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; background: linear-gradient(135deg, #92400e, #b45309); }
+        .bottom-nav a { display: inline-flex; align-items: center; gap: 8px; padding: 10px 22px; background: rgba(255,255,255,.15); color: white; text-decoration: none; border-radius: 25px; font-size: .9rem; font-weight: 600; transition: background .3s, transform .2s; }
+        .bottom-nav a:hover { background: rgba(255,255,255,.28); transform: translateY(-2px); }
+        .bottom-nav .placeholder { width: 160px; }
+        .footer { background: linear-gradient(135deg, #78350f, #92400e); color: #fcd34d; padding: 25px 40px; text-align: center; font-size: .85rem; line-height: 1.7; }
+        /* ── Code-theme floating picker ── */
+        #code-theme-picker { position: fixed; bottom: 28px; right: 28px; z-index: 9999; display: flex; flex-direction: column; align-items: flex-end; gap: 10px; font-family: 'Segoe UI', sans-serif; }
+        #theme-toggle-btn { background: linear-gradient(135deg, #92400e, #d97706); color: #fff; border: none; border-radius: 50px; padding: 11px 20px; font-size: .88rem; font-weight: 700; cursor: pointer; box-shadow: 0 4px 18px rgba(217,119,6,.5); letter-spacing: .5px; transition: box-shadow .2s; }
+        #theme-toggle-btn:hover { box-shadow: 0 6px 24px rgba(217,119,6,.7); }
+        #theme-panel { background: #fff; border-radius: 14px; padding: 14px 16px; box-shadow: 0 8px 32px rgba(0,0,0,.25); display: none; flex-direction: column; gap: 8px; min-width: 210px; border: 1px solid #fcd34d; }
+        #theme-panel.open { display: flex; }
+        #theme-panel .tp-label { font-size: .72rem; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: var(--amber-dark); margin-bottom: 4px; }
+        .theme-btn { display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-radius: 8px; border: 2px solid transparent; cursor: pointer; font-size: .88rem; font-weight: 600; transition: border-color .2s, background .2s; background: #f9fafb; color: #1f2937; }
+        .theme-btn:hover { background: #fffbeb; border-color: var(--amber-dark); }
+        .theme-btn.active { border-color: var(--amber-darkest); background: var(--amber-light); }
+        .theme-swatch { width: 28px; height: 28px; border-radius: 6px; border: 1px solid rgba(0,0,0,.15); flex-shrink: 0; }
+        /* ── Projector mode overrides ── */
+        body.projector .nav-breadcrumb { background: var(--amber-light) !important; }
+        body.projector .breadcrumb a { color: var(--amber-darkest) !important; }
+        body.projector .breadcrumb .sep, body.projector .breadcrumb .cur { color: var(--amber-dark) !important; }
+        body.projector .lesson-nav a { background: rgba(217,119,6,.12) !important; color: var(--amber-darkest) !important; border: 1px solid #fcd34d !important; }
+        body.projector .bottom-nav { background: var(--amber-light) !important; }
+        body.projector .bottom-nav a { background: rgba(217,119,6,.12) !important; color: var(--amber-darkest) !important; border: 1px solid #fcd34d !important; }
+        body.projector .footer { background: var(--amber-lighter) !important; color: var(--amber-darkest) !important; }
+        .lang-switch { position: fixed; top: 20px; right: 20px; z-index: 1000; padding: 10px 20px; background: linear-gradient(135deg, var(--amber), var(--orange)); color: white; text-decoration: none; border-radius: 30px; font-weight: 700; font-size: 0.9rem; box-shadow: 0 4px 14px rgba(245,158,11,.4); transition: transform .2s, box-shadow .2s; }
+        .lang-switch:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(245,158,11,.6); }
+        @media (max-width: 768px) { body { padding: 10px; } .hero { padding: 30px 20px; } .hero h1 { font-size: 2rem; } .content { padding: 30px 20px; } .vs-container { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+<a href="03-generic-methods-ar.html" class="lang-switch">&#127760; العربية</a>
+
+<div class="container">
+
+    <!-- Breadcrumb Navigation -->
+    <nav class="nav-breadcrumb">
+        <div class="breadcrumb">
+            <a href="../index.html">CPCS203</a>
+            <span class="sep">/</span>
+            <a href="index.html">Module 11</a>
+            <span class="sep">/</span>
+            <span class="cur">Lesson 3 — Generic Methods</span>
+        </div>
+        <div class="lesson-nav">
+            <a href="02-generic-classes.html">&larr; Lesson 2</a>
+            <a href="04-generic-interfaces.html">Lesson 4 &rarr;</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero">
+        <div class="module-badge">
+            <span class="num">11</span>
+            Lesson 3 of 5
+        </div>
+        <h1>Generic Methods</h1>
+        <p class="subtitle">One Method for All Types</p>
+        <p class="subtitle" style="font-size: 1rem; margin-top: 8px; opacity: .85;">Write a single method that works with Integer, String, Student, or any type</p>
+        <div class="topic-chips">
+            <span class="topic-chip">&lt;T&gt; void</span>
+            <span class="topic-chip">Return Types</span>
+            <span class="topic-chip">printArray</span>
+            <span class="topic-chip">No Duplicates</span>
+        </div>
+    </header>
+
+    <!-- Content -->
+    <div class="content">
+
+        <!-- Section 1: The Duplication Problem -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-number">1</span>
+                The Duplication Problem
+            </h2>
+
+            <div class="narrative">
+                <p>In Lesson 1, we saw the challenge: if we want a method to print an <span class="code-inline">Integer</span> array, then a <span class="code-inline">String</span> array, then a <span class="code-inline">Student</span> array, we need three separate methods -- identical logic, duplicated code. Let's look at what that actually looks like.</p>
+            </div>
+
+            <span class="code-label">Three overloaded printArray methods</span>
+            <div class="code-block"><span class="kw">public static void</span> <span class="mtd">printArray</span>(<span class="tp">Integer</span>[] array) {
+    <span class="kw">for</span> (<span class="tp">Integer</span> element : array)
+        <span class="tp">System</span>.out.<span class="mtd">println</span>(element);
+}
+
+<span class="kw">public static void</span> <span class="mtd">printArray</span>(<span class="tp">String</span>[] array) {
+    <span class="kw">for</span> (<span class="tp">String</span> element : array)
+        <span class="tp">System</span>.out.<span class="mtd">println</span>(element);
+}
+
+<span class="kw">public static void</span> <span class="mtd">printArray</span>(<span class="tp">Student</span>[] array) {
+    <span class="kw">for</span> (<span class="tp">Student</span> element : array)
+        <span class="tp">System</span>.out.<span class="mtd">println</span>(element);
+}</div>
+
+            <div class="red-box">
+                <div class="red-box-title">DRY Violation</div>
+                Same logic, copy-pasted three times. What if we need 100 types? This violates the <strong>DRY principle</strong> (Don't Repeat Yourself). Every time we add a new type, we have to write yet another identical method. There has to be a better way.
+            </div>
+        </div>
+
+        <!-- Section 2: The Object Approach (And Its Limitations) -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-number">2</span>
+                The Object Approach (And Its Limitations)
+            </h2>
+
+            <div class="narrative">
+                <p>Your first instinct might be: "Everything in Java extends <span class="code-inline">Object</span>, so why not just use <span class="code-inline">Object[]</span>?" Good thinking! Let's try it.</p>
+            </div>
+
+            <h3 class="subsection-title">
+                <span class="sub-badge">2a</span>
+                Printing with Object — It Works!
+            </h3>
+
+            <span class="code-label">Using Object[] for printing</span>
+            <div class="code-block"><span class="kw">public static void</span> <span class="mtd">printArray</span>(<span class="tp">Object</span>[] array) {
+    <span class="kw">for</span> (<span class="tp">Object</span> element : array)
+        <span class="tp">System</span>.out.<span class="mtd">println</span>(element);
+}</div>
+
+            <p>This works perfectly for printing! Since every class has a <span class="code-inline">toString()</span> method inherited from <span class="code-inline">Object</span>, <span class="code-inline">println</span> can handle anything. But what about <strong>returning</strong> elements?</p>
+
+            <h3 class="subsection-title">
+                <span class="sub-badge">2b</span>
+                Returning with Object — The Problem
+            </h3>
+
+            <span class="code-label">A method that returns an element</span>
+            <div class="code-block"><span class="kw">public static</span> <span class="tp">Object</span> <span class="mtd">getFirst</span>(<span class="tp">Object</span>[] array) {
+    <span class="kw">return</span> array[<span class="num">0</span>];
+}
+
+<span class="cmt">// Usage -- casting required!</span>
+<span class="tp">Integer</span>[] nums = {<span class="num">10</span>, <span class="num">20</span>, <span class="num">30</span>};
+<span class="tp">Integer</span> first = (<span class="tp">Integer</span>) <span class="mtd">getFirst</span>(nums);  <span class="cmt">// Must cast!</span>
+
+<span class="tp">String</span>[] names = {<span class="str">"Ali"</span>, <span class="str">"Sara"</span>};
+<span class="tp">String</span> name = (<span class="tp">String</span>) <span class="mtd">getFirst</span>(names);    <span class="cmt">// Must cast!</span>
+
+<span class="cmt">// DANGER: Wrong cast compiles fine!</span>
+<span class="tp">Integer</span> wrong = (<span class="tp">Integer</span>) <span class="mtd">getFirst</span>(names); <span class="cmt">// <span class="err">RUNTIME ERROR!</span></span></div>
+
+            <div class="red-box">
+                <div class="red-box-title">Casting is Dangerous</div>
+                When the method returns <span class="code-inline">Object</span>, we <strong>must</strong> cast the result back to the specific type. And if we cast to the wrong type? The code compiles without any warnings, but crashes at runtime with a <span class="code-inline">ClassCastException</span>. The compiler cannot protect us here.
+            </div>
+        </div>
+
+        <!-- Section 3: The Generic Method Solution -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-number">3</span>
+                The Generic Method Solution
+            </h2>
+
+            <div class="narrative">
+                <p>Here is the big idea: instead of <span class="code-inline">Object</span>, we use a <strong>type parameter</strong>. The key syntax rule is that <span class="code-inline">&lt;T&gt;</span> goes <strong>before</strong> the return type. Let's see how the duplicated <span class="code-inline">printArray</span> method becomes a single generic method.</p>
+            </div>
+
+            <span class="code-label">The generic printArray method</span>
+            <div class="code-block"><span class="kw">public static</span> &lt;<span class="tp">T</span>&gt; <span class="kw">void</span> <span class="mtd">printArray</span>(<span class="tp">T</span>[] array) {
+    <span class="kw">for</span> (<span class="tp">T</span> element : array)
+        <span class="tp">System</span>.out.<span class="mtd">println</span>(element);
+}</div>
+
+            <div class="key-box">
+                <div class="key-box-title">Understanding the Syntax</div>
+                <ul style="margin-left: 20px; margin-top: 8px; line-height: 2.2;">
+                    <li><span class="code-inline">&lt;T&gt;</span> -- Declares this is a generic method with type parameter <span class="code-inline">T</span></li>
+                    <li><span class="code-inline">void</span> -- The return type (this method returns nothing)</li>
+                    <li><span class="code-inline">T[]</span> -- The parameter type; the array can be of <em>any</em> type</li>
+                    <li>The compiler <strong>figures out</strong> what <span class="code-inline">T</span> is from the argument you pass</li>
+                </ul>
+            </div>
+
+            <h3 class="subsection-title">
+                <span class="sub-badge">Usage</span>
+                Calling the Generic Method
+            </h3>
+
+            <span class="code-label">One method, many types</span>
+            <div class="code-block"><span class="tp">Integer</span>[] nums = {<span class="num">10</span>, <span class="num">20</span>, <span class="num">30</span>};
+<span class="tp">String</span>[] names = {<span class="str">"Ali"</span>, <span class="str">"Sara"</span>, <span class="str">"Ahmad"</span>};
+<span class="tp">Double</span>[] prices = {<span class="num">9.99</span>, <span class="num">19.99</span>, <span class="num">29.99</span>};
+
+<span class="mtd">printArray</span>(nums);    <span class="cmt">// T is Integer</span>
+<span class="mtd">printArray</span>(names);   <span class="cmt">// T is String</span>
+<span class="mtd">printArray</span>(prices);  <span class="cmt">// T is Double</span></div>
+
+            <div class="terminal-header">
+                <span class="terminal-dot r"></span>
+                <span class="terminal-dot y"></span>
+                <span class="terminal-dot g"></span>
+                <span class="terminal-title">Output</span>
+            </div>
+            <div class="terminal with-header">10
+20
+30
+Ali
+Sara
+Ahmad
+9.99
+19.99
+29.99</div>
+
+            <div class="success-box">
+                <div class="success-box-title">One Method Handles All Types</div>
+                <strong>ONE</strong> method handles <strong>ALL</strong> types! No duplication, no casting, complete type safety. The compiler infers the type automatically from the argument you pass.
+            </div>
+        </div>
+
+        <!-- Section 4: Generic Methods with Return Types -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-number">4</span>
+                Generic Methods with Return Types
+            </h2>
+
+            <div class="narrative">
+                <p>Generic methods are not limited to <span class="code-inline">void</span>. They can also <strong>return</strong> a value of the generic type. This is where they really shine compared to the <span class="code-inline">Object</span> approach -- no casting required!</p>
+            </div>
+
+            <span class="code-label">A generic method that returns a value</span>
+            <div class="code-block"><span class="kw">public static</span> &lt;<span class="tp">T</span>&gt; <span class="tp">T</span> <span class="mtd">getFirst</span>(<span class="tp">T</span>[] array) {
+    <span class="kw">return</span> array[<span class="num">0</span>];
+}</div>
+
+            <div class="info-box">
+                <div class="info-box-title">Reading the Signature</div>
+                <p>Let's read <span class="code-inline">&lt;T&gt; T getFirst(T[] array)</span> piece by piece:</p>
+                <ul style="margin-left: 20px; margin-top: 8px; line-height: 2.2;">
+                    <li><span class="code-inline">&lt;T&gt;</span> -- "This method has a type parameter called T"</li>
+                    <li><span class="code-inline">T</span> (after &lt;T&gt;) -- "The return type is T -- whatever T turns out to be"</li>
+                    <li><span class="code-inline">T[] array</span> -- "The parameter is an array of T"</li>
+                </ul>
+                <p style="margin-top: 8px;">So if you pass an <span class="code-inline">Integer[]</span>, T becomes <span class="code-inline">Integer</span>, and the return type becomes <span class="code-inline">Integer</span>.</p>
+            </div>
+
+            <h3 class="subsection-title">
+                <span class="sub-badge">Usage</span>
+                No Casting Needed
+            </h3>
+
+            <span class="code-label">Using the generic getFirst method</span>
+            <div class="code-block"><span class="tp">Integer</span>[] nums = {<span class="num">10</span>, <span class="num">20</span>, <span class="num">30</span>};
+<span class="tp">Integer</span> first = <span class="mtd">getFirst</span>(nums);   <span class="cmt">// Returns Integer -- no cast!</span>
+
+<span class="tp">String</span>[] names = {<span class="str">"Ali"</span>, <span class="str">"Sara"</span>};
+<span class="tp">String</span> name = <span class="mtd">getFirst</span>(names);    <span class="cmt">// Returns String -- no cast!</span></div>
+
+            <div class="success-box">
+                <div class="success-box-title">Type-Safe Returns</div>
+                No casting needed for the return value! The compiler knows that if you pass <span class="code-inline">Integer[]</span>, the return type is <span class="code-inline">Integer</span>. If you accidentally try to assign the result to the wrong type, you get a <strong>compile-time error</strong> instead of a runtime crash.
+            </div>
+        </div>
+
+        <!-- Section 5: Side-by-Side Comparison -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-number">5</span>
+                Side-by-Side Comparison
+            </h2>
+
+            <div class="narrative">
+                <p>Let's put the Object approach and the Generic approach next to each other so you can clearly see the difference.</p>
+            </div>
+
+            <div class="vs-container">
+                <div class="vs-box before">
+                    <div class="vs-header">BEFORE: Using Object</div>
+                    <div class="vs-body">
+                        <div class="code-block"><span class="kw">public static</span> <span class="tp">Object</span> <span class="mtd">getFirst</span>(<span class="tp">Object</span>[] arr) {
+    <span class="kw">return</span> arr[<span class="num">0</span>];
+}
+
+<span class="cmt">// Must cast -- error-prone!</span>
+<span class="tp">Integer</span> n = (<span class="tp">Integer</span>) <span class="mtd">getFirst</span>(nums);</div>
+                    </div>
+                </div>
+                <div class="vs-box after">
+                    <div class="vs-header">AFTER: Using Generics</div>
+                    <div class="vs-body">
+                        <div class="code-block"><span class="kw">public static</span> &lt;<span class="tp">T</span>&gt; <span class="tp">T</span> <span class="mtd">getFirst</span>(<span class="tp">T</span>[] arr) {
+    <span class="kw">return</span> arr[<span class="num">0</span>];
+}
+
+<span class="cmt">// No cast needed -- type-safe!</span>
+<span class="tp">Integer</span> n = <span class="mtd">getFirst</span>(nums);</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="violet-box">
+                <div class="violet-box-title">The Key Difference</div>
+                With <span class="code-inline">Object</span>, the compiler forgets the original type -- you have to remember it yourself and cast manually. With generics, the compiler <strong>tracks the type</strong> throughout, so it knows exactly what goes in and what comes out.
+            </div>
+        </div>
+
+        <!-- Section 6: Complete Example -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-number">6</span>
+                Complete Example
+            </h2>
+
+            <div class="narrative">
+                <p>Let's put it all together in a complete, runnable program. You can copy this code into your IDE and run it right away to see generic methods in action.</p>
+            </div>
+
+            <span class="code-label">GenericMethodDemo.java</span>
+            <div class="code-block"><span class="kw">public class</span> <span class="tp">GenericMethodDemo</span> {
+
+    <span class="cmt">// Generic print method</span>
+    <span class="kw">public static</span> &lt;<span class="tp">T</span>&gt; <span class="kw">void</span> <span class="mtd">printArray</span>(<span class="tp">T</span>[] array) {
+        <span class="kw">for</span> (<span class="tp">T</span> element : array) {
+            <span class="tp">System</span>.out.<span class="mtd">print</span>(element + <span class="str">" "</span>);
+        }
+        <span class="tp">System</span>.out.<span class="mtd">println</span>();
+    }
+
+    <span class="cmt">// Generic method with return type</span>
+    <span class="kw">public static</span> &lt;<span class="tp">T</span>&gt; <span class="tp">T</span> <span class="mtd">getFirst</span>(<span class="tp">T</span>[] array) {
+        <span class="kw">return</span> array[<span class="num">0</span>];
+    }
+
+    <span class="kw">public static void</span> <span class="mtd">main</span>(<span class="tp">String</span>[] args) {
+        <span class="tp">Integer</span>[] nums = {<span class="num">10</span>, <span class="num">20</span>, <span class="num">30</span>};
+        <span class="tp">String</span>[] names = {<span class="str">"Ali"</span>, <span class="str">"Sara"</span>, <span class="str">"Ahmad"</span>};
+
+        <span class="tp">System</span>.out.<span class="mtd">println</span>(<span class="str">"Numbers:"</span>);
+        <span class="mtd">printArray</span>(nums);
+
+        <span class="tp">System</span>.out.<span class="mtd">println</span>(<span class="str">"Names:"</span>);
+        <span class="mtd">printArray</span>(names);
+
+        <span class="tp">Integer</span> firstNum = <span class="mtd">getFirst</span>(nums);
+        <span class="tp">String</span> firstName = <span class="mtd">getFirst</span>(names);
+
+        <span class="tp">System</span>.out.<span class="mtd">println</span>(<span class="str">"First number: "</span> + firstNum);
+        <span class="tp">System</span>.out.<span class="mtd">println</span>(<span class="str">"First name: "</span> + firstName);
+    }
+}</div>
+
+            <div class="terminal-header">
+                <span class="terminal-dot r"></span>
+                <span class="terminal-dot y"></span>
+                <span class="terminal-dot g"></span>
+                <span class="terminal-title">Output</span>
+            </div>
+            <div class="terminal with-header">Numbers:
+10 20 30
+Names:
+Ali Sara Ahmad
+First number: 10
+First name: Ali</div>
+        </div>
+
+        <!-- Section 7: Key Takeaways -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-number">7</span>
+                Key Takeaways
+            </h2>
+
+            <div class="key-box">
+                <div class="key-box-title">What You Learned in This Lesson</div>
+                <ol style="margin-left: 20px; margin-top: 10px; line-height: 2.4;">
+                    <li><strong>Generic methods declare <span class="code-inline">&lt;T&gt;</span> before the return type</strong> -- this is the syntax that makes a method generic.</li>
+                    <li><strong>The compiler infers the type from the arguments</strong> -- you do not need to specify the type explicitly when calling the method.</li>
+                    <li><strong>One method replaces many type-specific methods</strong> -- no more copy-pasting the same logic for different types.</li>
+                    <li><strong>Return types can be generic too (<span class="code-inline">&lt;T&gt; T</span>)</strong> -- the return type matches whatever type you pass in.</li>
+                    <li><strong>No casting needed</strong> -- the compiler handles type tracking automatically, catching errors at compile time instead of runtime.</li>
+                    <li><strong>Generic methods can exist in both generic and non-generic classes</strong> -- you do not need a generic class to write a generic method.</li>
+                </ol>
+            </div>
+
+            <div class="info-box">
+                <div class="info-box-title">Coming Up Next</div>
+                In <strong>Lesson 4</strong>, we will explore <strong>Generic Interfaces</strong> -- how to define interfaces with type parameters and implement them in concrete classes. This is the next step toward mastering Java generics.
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+        <a href="02-generic-classes.html">&larr; Lesson 2: Generic Classes</a>
+        <a href="04-generic-interfaces.html">Lesson 4: Generic Interfaces &rarr;</a>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        CPCS203 — Object-Oriented Programming | King Abdulaziz University<br>
+        Module 11: Generics — Lesson 3: Generic Methods<br>
+        Prepared by Dr. Abdulmohsen Almalwi
+    </div>
+
+</div>
+
+
+    <!-- Code Theme Picker -->
+    <div id="code-theme-picker">
+        <div id="theme-panel">
+            <div class="tp-label">Code Block Theme</div>
+            <button class="theme-btn active" onclick="setCodeTheme('black')" id="btn-black">
+                <span class="theme-swatch" style="background:#000;"></span> Black (Default)
+            </button>
+            <button class="theme-btn" onclick="setCodeTheme('vscode')" id="btn-vscode">
+                <span class="theme-swatch" style="background:#1e1e1e;"></span> VS Code Dark
+            </button>
+            <button class="theme-btn" onclick="setCodeTheme('white')" id="btn-white">
+                <span class="theme-swatch" style="background:#fff;border:1px solid #ccc;"></span> White (Projector)
+            </button>
+            <button class="theme-btn" onclick="setCodeTheme('cream')" id="btn-cream">
+                <span class="theme-swatch" style="background:#fefce8;border:1px solid #ccc;"></span> Cream (Projector)
+            </button>
+        </div>
+        <button id="theme-toggle-btn" onclick="document.getElementById('theme-panel').classList.toggle('open')">Code Theme</button>
+    </div>
+    <script>
+const CODE_THEMES={black:{bg:'#000000',text:'#ffffff',comment:'#a0aec0',keyword:'#ff79c6',cls:'#8be9fd',method:'#50fa7b',string:'#f1fa8c',number:'#bd93f9',tmBg:'#0f172a',tmHeader:'#1e293b',tmBorder:'#334155',tmText:'#4ade80',tmTitle:'#94a3b8',projector:false},vscode:{bg:'#1e1e1e',text:'#ffffff',comment:'#57c757',keyword:'#569cd6',cls:'#4ec9b0',method:'#dcdcaa',string:'#ce9178',number:'#b5cea8',tmBg:'#1e1e1e',tmHeader:'#2d2d2d',tmBorder:'#444',tmText:'#ffffff',tmTitle:'#9cdcfe',projector:false},white:{bg:'#ffffff',text:'#000000',comment:'#1d4ed8',keyword:'#dc2626',cls:'#16a34a',method:'#0369a1',string:'#b45309',number:'#7c3aed',tmBg:'#f1f5f9',tmHeader:'#e2e8f0',tmBorder:'#94a3b8',tmText:'#000000',tmTitle:'#1d4ed8',projector:true},cream:{bg:'#fefce8',text:'#000000',comment:'#1d4ed8',keyword:'#dc2626',cls:'#15803d',method:'#0369a1',string:'#b45309',number:'#7c3aed',tmBg:'#fefce8',tmHeader:'#fef08a',tmBorder:'#a16207',tmText:'#000000',tmTitle:'#0369a1',projector:true}};
+function _lum(hex){hex=hex.replace('#','');if(hex.length===3)hex=hex.split('').map(c=>c+c).join('');if(hex.length!==6)return .5;const r=parseInt(hex.slice(0,2),16),g=parseInt(hex.slice(2,4),16),b=parseInt(hex.slice(4,6),16);return(.299*r+.587*g+.114*b)/255;}
+function _lighten(hex){hex=hex.replace('#','');if(hex.length===3)hex=hex.split('').map(c=>c+c).join('');const r=parseInt(hex.slice(0,2),16),g=parseInt(hex.slice(2,4),16),b=parseInt(hex.slice(4,6),16);const lr=Math.round(r*.1+255*.9),lg=Math.round(g*.1+255*.9),lb=Math.round(b*.1+255*.9);return'#'+[lr,lg,lb].map(c=>c.toString(16).padStart(2,'0')).join('');}
+const _backup=new Map();
+function _applyProjectorInline(enable){if(enable){document.querySelectorAll('[style]').forEach(el=>{const orig=el.getAttribute('style');_backup.set(el,orig);let s=orig;s=s.replace(/(background(?:-color)?\s*:[^;}"']*?)(#[0-9a-fA-F]{6}|#[0-9a-fA-F]{3})\b/gi,(m,pre,hex)=>_lum(hex)<.28?pre+_lighten(hex):m);s=s.replace(/((?:^|;|\s)color\s*:\s*)(#[0-9a-fA-F]{6}|#[0-9a-fA-F]{3})\b/gi,(m,pre,hex)=>_lum(hex)>.72?pre+'#1f2937':m);el.setAttribute('style',s);});}else{_backup.forEach((orig,el)=>el.setAttribute('style',orig));_backup.clear();}}
+function setCodeTheme(name){const t=CODE_THEMES[name],r=document.documentElement.style;r.setProperty('--cb-bg',t.bg);r.setProperty('--cb-text',t.text);r.setProperty('--cb-comment',t.comment);r.setProperty('--cb-keyword',t.keyword);r.setProperty('--cb-class',t.cls);r.setProperty('--cb-method',t.method);r.setProperty('--cb-string',t.string);r.setProperty('--cb-number',t.number);r.setProperty('--tm-bg',t.tmBg);r.setProperty('--tm-header',t.tmHeader);r.setProperty('--tm-border',t.tmBorder);r.setProperty('--tm-text',t.tmText);r.setProperty('--tm-title',t.tmTitle);const wasProjector=document.body.classList.contains('projector');if(t.projector){if(!wasProjector)_applyProjectorInline(true);document.body.classList.add('projector');}else{if(wasProjector)_applyProjectorInline(false);document.body.classList.remove('projector');}document.querySelectorAll('.theme-btn').forEach(b=>b.classList.remove('active'));document.getElementById('btn-'+name).classList.add('active');document.getElementById('theme-panel').classList.remove('open');}
+    </script>
+
+</body>
+</html>

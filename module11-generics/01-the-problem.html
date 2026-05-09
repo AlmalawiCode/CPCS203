@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 1 — The Problem | Module 11: Generics | CPCS203</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --amber: #f59e0b; --amber-dark: #d97706; --amber-darker: #92400e; --amber-darkest: #78350f; --amber-light: #fef3c7; --amber-lighter: #fffbeb;
+            --orange: #f97316; --orange-dark: #ea580c; --orange-light: #fff7ed;
+            --success: #059669; --success-light: #d1fae5;
+            --info: #2563eb; --info-light: #dbeafe;
+            --violet: #7c3aed; --violet-light: #ede9fe;
+            --red: #ef4444; --red-light: #fee2e2;
+            --dark: #1f2937; --gray: #6b7280; --light: #f9fafb;
+        }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.8; color: var(--dark); background: #f1f5f9; min-height: 100vh; padding: 20px; }
+        .container { max-width: 1000px; margin: 0 auto; background: white; border-radius: 20px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.35); overflow: hidden; }
+        .nav-breadcrumb { background: linear-gradient(135deg, #78350f, #92400e); padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+        .breadcrumb { display: flex; align-items: center; gap: 8px; color: white; font-size: 0.9rem; }
+        .breadcrumb a { color: #fcd34d; text-decoration: none; transition: color .3s; }
+        .breadcrumb a:hover { color: white; }
+        .breadcrumb .sep { color: #fbbf24; }
+        .breadcrumb .cur { color: #fef3c7; }
+        .lesson-nav { display: flex; gap: 10px; }
+        .lesson-nav a { padding: 8px 16px; background: rgba(255,255,255,.15); color: white; text-decoration: none; border-radius: 20px; font-size: .85rem; transition: background .3s; }
+        .lesson-nav a:hover { background: rgba(255,255,255,.25); }
+        .hero { background: linear-gradient(135deg, #d97706, #f59e0b, #f97316, #ef4444); color: white; padding: 50px 40px; text-align: center; position: relative; overflow: hidden; }
+        .hero::before { content: ''; position: absolute; top: -50px; right: -50px; width: 250px; height: 250px; background: rgba(255,255,255,.05); border-radius: 50%; }
+        .hero::after { content: ''; position: absolute; bottom: -80px; left: -40px; width: 300px; height: 300px; background: rgba(255,255,255,.05); border-radius: 50%; }
+        .module-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,.2); border: 1px solid rgba(255,255,255,.4); padding: 8px 22px; border-radius: 30px; font-size: .95rem; font-weight: 600; margin-bottom: 20px; }
+        .module-badge .num { background: white; color: var(--amber-dark); width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; }
+        .hero h1 { font-size: 2.8rem; margin-bottom: 15px; text-shadow: 0 3px 8px rgba(0,0,0,.3); }
+        .hero .subtitle { font-size: 1.2rem; opacity: .9; margin-bottom: 10px; }
+        .topic-chips { display: flex; justify-content: center; gap: 12px; margin-top: 28px; flex-wrap: wrap; }
+        .topic-chip { padding: 9px 20px; border-radius: 30px; font-weight: 700; font-size: .88rem; border: 2px solid rgba(255,255,255,.5); background: rgba(255,255,255,.12); }
+        .content { padding: 50px 40px; }
+        .section { margin-bottom: 60px; }
+        .section-title { font-size: 1.85rem; color: var(--amber-darkest); border-bottom: 3px solid var(--amber); padding-bottom: 10px; margin-bottom: 28px; display: flex; align-items: center; gap: 12px; }
+        .section-number { background: linear-gradient(135deg, var(--amber), var(--orange)); color: white; width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; font-weight: bold; flex-shrink: 0; }
+        .subsection-title { font-size: 1.3rem; color: var(--orange-dark); margin: 30px 0 15px; display: flex; align-items: center; gap: 10px; }
+        .sub-badge { background: linear-gradient(135deg, var(--orange), var(--amber)); color: white; padding: 4px 14px; border-radius: 20px; font-size: .8rem; font-weight: 700; }
+        .narrative { background: linear-gradient(135deg, #fffbeb, #fef3c7); border-left: 5px solid var(--amber); padding: 25px 30px; margin: 20px 0; border-radius: 0 15px 15px 0; font-size: 1.05rem; line-height: 2; }
+        .narrative p { margin-bottom: 12px; }
+        .narrative p:last-child { margin-bottom: 0; }
+        .key-box { background: linear-gradient(135deg, #fef3c7, #fde68a); border-left: 5px solid var(--amber); padding: 18px 24px; margin: 20px 0; border-radius: 0 12px 12px 0; }
+        .key-box-title { font-weight: 700; color: var(--amber-dark); margin-bottom: 8px; font-size: 1.05rem; }
+        .info-box { background: linear-gradient(135deg, #dbeafe, #bfdbfe); border-left: 5px solid var(--info); padding: 18px 24px; margin: 20px 0; border-radius: 0 12px 12px 0; }
+        .info-box-title { font-weight: 700; color: var(--info); margin-bottom: 8px; font-size: 1.05rem; }
+        .red-box { background: linear-gradient(135deg, #fee2e2, #fecaca); border-left: 5px solid var(--red); padding: 18px 24px; margin: 20px 0; border-radius: 0 12px 12px 0; }
+        .red-box-title { font-weight: 700; color: #dc2626; margin-bottom: 8px; font-size: 1.05rem; }
+        .success-box { background: linear-gradient(135deg, #d1fae5, #a7f3d0); border-left: 5px solid var(--success); padding: 18px 24px; margin: 20px 0; border-radius: 0 12px 12px 0; }
+        .success-box-title { font-weight: 700; color: #065f46; margin-bottom: 8px; font-size: 1.05rem; }
+        .code-block { background: var(--cb-bg, #282a36); color: var(--cb-text, #f8f8f2); padding: 24px 26px; border-radius: 12px; margin: 18px 0; overflow-x: auto; font-family: 'Consolas', 'Monaco', monospace; font-size: 1.02rem; line-height: 1.75; white-space: pre-wrap; border: 1.5px solid #44475a; }
+        .code-block .kw  { color: var(--cb-keyword, #ff79c6); font-weight: 700; }
+        .code-block .tp  { color: var(--cb-class, #8be9fd); }
+        .code-block .str { color: var(--cb-string, #f1fa8c); }
+        .code-block .num { color: var(--cb-number, #bd93f9); }
+        .code-block .cmt { color: var(--cb-comment, #6272a4); font-style: italic; }
+        .code-block .mtd { color: var(--cb-method, #50fa7b); }
+        .code-block .err { color: #ff5555; font-weight: 700; }
+        .code-label { background: var(--cb-bg, #21222c); color: var(--cb-class, #8be9fd); padding: 8px 18px; border-radius: 12px 12px 0 0; font-family: 'Consolas', monospace; font-size: .85rem; display: inline-block; margin-bottom: -2px; border: 1.5px solid #44475a; border-bottom: none; }
+        .code-inline { background: #f3f4f6; padding: 2px 8px; border-radius: 5px; font-family: 'Consolas', monospace; font-size: .9rem; color: var(--amber-dark); }
+        .terminal { background: var(--tm-bg, #0f172a); color: var(--tm-text, #e2e8f0); padding: 22px; border-radius: 12px; margin: 18px 0; font-family: 'Consolas', monospace; font-size: .88rem; line-height: 1.9; overflow-x: auto; white-space: pre; border: 1px solid var(--tm-border, #334155); }
+        .terminal-header { background: var(--tm-header, #1e293b); border: 1px solid var(--tm-border, #334155); border-bottom: none; border-radius: 12px 12px 0 0; padding: 10px 18px; display: flex; align-items: center; gap: 8px; }
+        .terminal-dot { width: 12px; height: 12px; border-radius: 50%; }
+        .terminal-dot.r { background: #ef4444; }
+        .terminal-dot.y { background: #f59e0b; }
+        .terminal-dot.g { background: #22c55e; }
+        .terminal-title { color: #94a3b8; font-size: .8rem; margin-left: 8px; font-weight: 600; }
+        .terminal.with-header { border-radius: 0 0 12px 12px; }
+        .terminal .t-red { color: #f87171; }
+        .takeaway-list { list-style: none; padding: 0; margin: 20px 0; }
+        .takeaway-list li { padding: 14px 20px; margin-bottom: 10px; border-radius: 12px; font-size: 1rem; display: flex; align-items: flex-start; gap: 14px; line-height: 1.7; }
+        .takeaway-list li:nth-child(odd) { background: var(--amber-lighter); border: 1px solid var(--amber-light); }
+        .takeaway-list li:nth-child(even) { background: var(--orange-light); border: 1px solid #fed7aa; }
+        .takeaway-num { background: linear-gradient(135deg, var(--amber), var(--orange)); color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: .85rem; flex-shrink: 0; margin-top: 2px; }
+        @media (max-width: 768px) { body { padding: 10px; } .hero { padding: 30px 20px; } .hero h1 { font-size: 2rem; } .content { padding: 30px 20px; } }
+        .footer { background: linear-gradient(135deg, #78350f, #92400e); color: #fcd34d; padding: 25px 40px; text-align: center; font-size: .85rem; line-height: 1.7; }
+        .footer a { color: #fef3c7; text-decoration: none; }
+        .bottom-nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; background: linear-gradient(135deg, #92400e, #78350f); }
+        .bottom-nav a { display: inline-flex; align-items: center; gap: 8px; padding: 10px 22px; background: rgba(255,255,255,.15); color: white; text-decoration: none; border-radius: 25px; font-size: .9rem; font-weight: 600; transition: background .3s, transform .2s; }
+        .bottom-nav a:hover { background: rgba(255,255,255,.28); transform: translateY(-2px); }
+        .bottom-nav .placeholder { width: 160px; }
+        /* ── Code-theme floating picker ── */
+        #code-theme-picker { position: fixed; bottom: 28px; right: 28px; z-index: 9999; display: flex; flex-direction: column; align-items: flex-end; gap: 10px; font-family: 'Segoe UI', sans-serif; }
+        #theme-toggle-btn { background: linear-gradient(135deg, #92400e, #d97706); color: #fff; border: none; border-radius: 50px; padding: 11px 20px; font-size: .88rem; font-weight: 700; cursor: pointer; box-shadow: 0 4px 18px rgba(217,119,6,.5); letter-spacing: .5px; transition: box-shadow .2s; }
+        #theme-toggle-btn:hover { box-shadow: 0 6px 24px rgba(217,119,6,.7); }
+        #theme-panel { background: #fff; border-radius: 14px; padding: 14px 16px; box-shadow: 0 8px 32px rgba(0,0,0,.25); display: none; flex-direction: column; gap: 8px; min-width: 210px; border: 1px solid #fcd34d; }
+        #theme-panel.open { display: flex; }
+        #theme-panel .tp-label { font-size: .72rem; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: var(--amber-dark); margin-bottom: 4px; }
+        .theme-btn { display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-radius: 8px; border: 2px solid transparent; cursor: pointer; font-size: .88rem; font-weight: 600; transition: border-color .2s, background .2s; background: #f9fafb; color: #1f2937; }
+        .theme-btn:hover { background: #fffbeb; border-color: var(--amber-dark); }
+        .theme-btn.active { border-color: var(--amber-darkest); background: var(--amber-light); }
+        .theme-swatch { width: 28px; height: 28px; border-radius: 6px; border: 1px solid rgba(0,0,0,.15); flex-shrink: 0; }
+        /* ── Projector mode overrides ── */
+        body.projector .nav-breadcrumb { background: var(--amber-light) !important; }
+        body.projector .breadcrumb a { color: var(--amber-darkest) !important; }
+        body.projector .breadcrumb .sep, body.projector .breadcrumb .cur { color: var(--amber-dark) !important; }
+        body.projector .lesson-nav a { background: rgba(217,119,6,.12) !important; color: var(--amber-darkest) !important; border: 1px solid #fcd34d !important; }
+        body.projector .bottom-nav { background: var(--amber-light) !important; }
+        body.projector .bottom-nav a { background: rgba(217,119,6,.12) !important; color: var(--amber-darkest) !important; border: 1px solid #fcd34d !important; }
+        body.projector .footer { background: var(--amber-lighter) !important; color: var(--amber-darkest) !important; }
+        .lang-switch { position: fixed; top: 20px; right: 20px; z-index: 1000; padding: 10px 20px; background: linear-gradient(135deg, var(--amber), var(--orange)); color: white; text-decoration: none; border-radius: 30px; font-weight: 700; font-size: 0.9rem; box-shadow: 0 4px 14px rgba(245,158,11,.4); transition: transform .2s, box-shadow .2s; }
+        .lang-switch:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(245,158,11,.6); }
+    </style>
+</head>
+<body>
+    <a href="01-the-problem-ar.html" class="lang-switch">&#127760; العربية</a>
+    <div class="container">
+
+        <!-- Breadcrumb Navigation -->
+        <nav class="nav-breadcrumb">
+            <div class="breadcrumb">
+                <a href="../index.html">CPCS203</a>
+                <span class="sep">/</span>
+                <a href="index.html">Module 11</a>
+                <span class="sep">/</span>
+                <span class="cur">Lesson 1 &mdash; The Problem</span>
+            </div>
+            <div class="lesson-nav">
+                <a href="index.html">&larr; Module Hub</a>
+                <a href="02-generic-classes.html">Lesson 2 &rarr;</a>
+            </div>
+        </nav>
+
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="module-badge">
+                <span class="num">11</span>
+                Lesson 1 of 5
+            </div>
+            <h1>The Problem &mdash; Why Do We Need Generics?</h1>
+            <p class="subtitle">Understanding the challenge that led to one of Java&rsquo;s most powerful features</p>
+            <div class="topic-chips">
+                <span class="topic-chip">Multiple Types</span>
+                <span class="topic-chip">Object Workaround</span>
+                <span class="topic-chip">Casting Danger</span>
+                <span class="topic-chip">Spell Checker</span>
+            </div>
+        </section>
+
+        <!-- Content -->
+        <div class="content">
+
+            <!-- Section 1: Our Journey So Far -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">1</span>
+                    Our Journey So Far
+                </h2>
+
+                <div class="narrative">
+                    <p>Hello, my dear student. Welcome to Module 11. Before we begin today&rsquo;s lesson, let us take a moment to appreciate how far we have come together.</p>
+                    <p>We have learned <strong>Object-Oriented Programming</strong> &mdash; a paradigm for software development. We explored <strong>inheritance</strong>, where classes share common behavior through parent-child relationships. We explored <strong>polymorphism</strong>, where a single variable or array can hold objects of different types and behave differently at runtime. We explored <strong>encapsulation</strong>, where we protect data behind private fields and public methods. And we explored <strong>abstraction</strong>, where we hide complex details and expose only what is necessary.</p>
+                    <p>In polymorphism, we saw something very interesting: an array of type <span class="code-inline">Animal</span> could hold a <span class="code-inline">Cat</span>, a <span class="code-inline">Dog</span>, a <span class="code-inline">Bird</span> &mdash; all different types, all in one array. That is polymorphic behavior.</p>
+                    <p><strong>Today, we encounter a new challenge.</strong> A challenge that will motivate us to learn one of the most powerful features in Java: <strong>Generics</strong>.</p>
+                </div>
+            </div>
+
+            <!-- Section 2: The Challenge -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">2</span>
+                    The Challenge &mdash; One Method, Many Types
+                </h2>
+
+                <div class="narrative">
+                    <p>Imagine this scenario. You have an array of <span class="code-inline">Integer</span> values, and you want a method that prints all elements of that array. Simple enough, right?</p>
+                    <p>But then your professor says: <em>&ldquo;Now write the same method for a <span class="code-inline">String</span> array.&rdquo;</em> And then: <em>&ldquo;Now for a <span class="code-inline">Student</span> array.&rdquo;</em> And then for <span class="code-inline">Double</span>, and <span class="code-inline">Character</span>, and <span class="code-inline">Employee</span>&hellip;</p>
+                    <p>Let us see what this looks like in code.</p>
+                </div>
+
+                <h3 class="subsection-title">
+                    <span class="sub-badge">Problem</span>
+                    Duplicated Methods for Different Types
+                </h3>
+
+                <span class="code-label">PrintArrays.java</span>
+                <div class="code-block"><span class="cmt">// Method 1: Print an Integer array</span>
+<span class="kw">public static void</span> <span class="mtd">printArray</span>(<span class="tp">int</span>[] array) {
+    <span class="kw">for</span> (<span class="tp">int</span> i = <span class="num">0</span>; i &lt; array.length; i++) {
+        <span class="tp">System</span>.out.<span class="mtd">print</span>(array[i] + <span class="str">" "</span>);
+    }
+    <span class="tp">System</span>.out.<span class="mtd">println</span>();
+}
+
+<span class="cmt">// Method 2: Print a String array</span>
+<span class="kw">public static void</span> <span class="mtd">printArray</span>(<span class="tp">String</span>[] array) {
+    <span class="kw">for</span> (<span class="tp">int</span> i = <span class="num">0</span>; i &lt; array.length; i++) {
+        <span class="tp">System</span>.out.<span class="mtd">print</span>(array[i] + <span class="str">" "</span>);
+    }
+    <span class="tp">System</span>.out.<span class="mtd">println</span>();
+}
+
+<span class="cmt">// Method 3: Print a Student array</span>
+<span class="kw">public static void</span> <span class="mtd">printArray</span>(<span class="tp">Student</span>[] array) {
+    <span class="kw">for</span> (<span class="tp">int</span> i = <span class="num">0</span>; i &lt; array.length; i++) {
+        <span class="tp">System</span>.out.<span class="mtd">print</span>(array[i] + <span class="str">" "</span>);
+    }
+    <span class="tp">System</span>.out.<span class="mtd">println</span>();
+}</div>
+
+                <div class="red-box">
+                    <div class="red-box-title">This Is a Problem!</div>
+                    <p>Look at those three methods. The <strong>logic is identical</strong> &mdash; loop through the array and print each element. The only difference is the <strong>type</strong> in the parameter. We are writing the same code over and over for different types.</p>
+                    <p>What if we have <strong>100 types</strong>? Do we write 100 identical methods? That is not just tedious &mdash; it violates the DRY principle: <strong>Don&rsquo;t Repeat Yourself.</strong></p>
+                </div>
+
+                <div class="narrative">
+                    <p>At this point, a smart student in the class raises their hand and says:</p>
+                    <p><em>&ldquo;Professor, why don&rsquo;t we just use <span class="code-inline">Object</span>? It is the superclass of ALL classes in Java. If we use <span class="code-inline">Object</span>, one method can accept any type!&rdquo;</em></p>
+                    <p>Excellent thinking! Let us explore that idea.</p>
+                </div>
+            </div>
+
+            <!-- Section 3: The "Smart" Solution -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">3</span>
+                    The &ldquo;Smart&rdquo; Solution &mdash; Using Object
+                </h2>
+
+                <div class="narrative">
+                    <p>The student&rsquo;s idea is to use <span class="code-inline">Object</span> as the type. Since every class in Java extends <span class="code-inline">Object</span>, an <span class="code-inline">Object</span> variable can hold anything: a <span class="code-inline">String</span>, an <span class="code-inline">Integer</span>, a <span class="code-inline">Student</span>, even your own custom classes.</p>
+                    <p>Let us demonstrate this with a real-world analogy. Imagine a <strong>glass</strong> &mdash; it can hold any liquid: juice, water, honey. Let us model this in Java using <span class="code-inline">Object</span>.</p>
+                </div>
+
+                <h3 class="subsection-title">
+                    <span class="sub-badge">Step 1</span>
+                    The Liquid Classes
+                </h3>
+
+                <span class="code-label">Juice.java</span>
+                <div class="code-block"><span class="kw">public class</span> <span class="tp">Juice</span> {
+    <span class="kw">public</span> <span class="tp">String</span> <span class="mtd">toString</span>() {
+        <span class="kw">return</span> <span class="str">"Fresh Orange Juice"</span>;
+    }
+}</div>
+
+                <span class="code-label">Water.java</span>
+                <div class="code-block"><span class="kw">public class</span> <span class="tp">Water</span> {
+    <span class="kw">public</span> <span class="tp">String</span> <span class="mtd">toString</span>() {
+        <span class="kw">return</span> <span class="str">"Pure Water"</span>;
+    }
+}</div>
+
+                <span class="code-label">Honey.java</span>
+                <div class="code-block"><span class="kw">public class</span> <span class="tp">Honey</span> {
+    <span class="kw">public</span> <span class="tp">String</span> <span class="mtd">toString</span>() {
+        <span class="kw">return</span> <span class="str">"Golden Honey"</span>;
+    }
+}</div>
+
+                <h3 class="subsection-title">
+                    <span class="sub-badge">Step 2</span>
+                    The Glass Class (Using Object)
+                </h3>
+
+                <span class="code-label">Glass.java</span>
+                <div class="code-block"><span class="kw">public class</span> <span class="tp">Glass</span> {
+    <span class="kw">private</span> <span class="tp">Object</span> liquid;
+
+    <span class="kw">public</span> <span class="mtd">Glass</span>() { }
+
+    <span class="kw">public</span> <span class="mtd">Glass</span>(<span class="tp">Object</span> liquid) {
+        <span class="kw">this</span>.liquid = liquid;
+    }
+
+    <span class="kw">public</span> <span class="tp">Object</span> <span class="mtd">getLiquid</span>() {
+        <span class="kw">return</span> liquid;
+    }
+
+    <span class="kw">public void</span> <span class="mtd">setLiquid</span>(<span class="tp">Object</span> liquid) {
+        <span class="kw">this</span>.liquid = liquid;
+    }
+}</div>
+
+                <div class="narrative">
+                    <p>Notice the type of the <span class="code-inline">liquid</span> field: it is <span class="code-inline">Object</span>. This means our Glass can accept <em>any</em> liquid &mdash; Juice, Water, Honey, anything. The setter accepts <span class="code-inline">Object</span>, and the getter returns <span class="code-inline">Object</span>.</p>
+                    <p>Let us use it!</p>
+                </div>
+
+                <h3 class="subsection-title">
+                    <span class="sub-badge">Step 3</span>
+                    Using the Glass
+                </h3>
+
+                <span class="code-label">TestGlass.java</span>
+                <div class="code-block"><span class="kw">public class</span> <span class="tp">TestGlass</span> {
+    <span class="kw">public static void</span> <span class="mtd">main</span>(<span class="tp">String</span>[] args) {
+        <span class="tp">Glass</span> g = <span class="kw">new</span> <span class="tp">Glass</span>();
+
+        <span class="cmt">// Pour some juice into the glass</span>
+        g.<span class="mtd">setLiquid</span>(<span class="kw">new</span> <span class="tp">Juice</span>());
+
+        <span class="cmt">// Get the juice back out</span>
+        <span class="tp">Juice</span> j = (<span class="tp">Juice</span>) g.<span class="mtd">getLiquid</span>();  <span class="cmt">// Casting required!</span>
+
+        <span class="tp">System</span>.out.<span class="mtd">println</span>(j);  <span class="cmt">// Fresh Orange Juice</span>
+    }
+}</div>
+
+                <div class="key-box">
+                    <div class="key-box-title">It Works &mdash; But Notice the Casting!</div>
+                    <p>It works! We stored a <span class="code-inline">Juice</span> object in the Glass and retrieved it successfully. But look carefully at the retrieval line:</p>
+                    <p><span class="code-inline">Juice j = (Juice) g.getLiquid();</span></p>
+                    <p>When we store <span class="code-inline">Juice</span> in the Glass, it is stored as <span class="code-inline">Object</span>, not as <span class="code-inline">Juice</span>. The Glass does not know or care that it holds Juice &mdash; it just sees an <span class="code-inline">Object</span>. When we retrieve it, it comes back as <span class="code-inline">Object</span>. We <strong>MUST cast</strong> it back to <span class="code-inline">Juice</span> to use it as Juice.</p>
+                    <p>This is the price we pay for flexibility. And this price &mdash; as we are about to see &mdash; can be very, very dangerous.</p>
+                </div>
+            </div>
+
+            <!-- Section 4: The Danger Zone -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">4</span>
+                    The Danger Zone &mdash; Runtime Errors
+                </h2>
+
+                <div class="narrative">
+                    <p>Now let me show you what happens when casting goes wrong. Imagine a scenario: a programmer pours <span class="code-inline">Juice</span> into the Glass, but later &mdash; perhaps in a different part of the program, or after many lines of code &mdash; they forget what they put in and try to retrieve it as <span class="code-inline">Water</span>.</p>
+                </div>
+
+                <h3 class="subsection-title">
+                    <span class="sub-badge">Danger</span>
+                    Wrong Cast &mdash; The Silent Bomb
+                </h3>
+
+                <span class="code-label">DangerousGlass.java</span>
+                <div class="code-block"><span class="kw">public class</span> <span class="tp">DangerousGlass</span> {
+    <span class="kw">public static void</span> <span class="mtd">main</span>(<span class="tp">String</span>[] args) {
+        <span class="tp">Glass</span> g = <span class="kw">new</span> <span class="tp">Glass</span>();
+
+        g.<span class="mtd">setLiquid</span>(<span class="kw">new</span> <span class="tp">Juice</span>());           <span class="cmt">// We put Juice in</span>
+
+        <span class="tp">Water</span> w = (<span class="tp">Water</span>) g.<span class="mtd">getLiquid</span>();     <span class="cmt">// But we say it's Water!</span>
+
+        <span class="tp">System</span>.out.<span class="mtd">println</span>(w);
+    }
+}</div>
+
+                <div class="narrative">
+                    <p>Will this code compile? Let us check...</p>
+                    <p><strong>Yes!</strong> The compiler sees <span class="code-inline">(Water) g.getLiquid()</span> and thinks: <em>&ldquo;getLiquid() returns Object, and Water is a subclass of Object, so this cast COULD be valid. I will allow it.&rdquo;</em></p>
+                    <p>The compiler <strong>trusts</strong> the programmer. It compiles without a single error. But when we run it...</p>
+                </div>
+
+                <div class="terminal-header">
+                    <span class="terminal-dot r"></span>
+                    <span class="terminal-dot y"></span>
+                    <span class="terminal-dot g"></span>
+                    <span class="terminal-title">Runtime Output</span>
+                </div>
+                <div class="terminal with-header">$ javac DangerousGlass.java
+$ java DangerousGlass
+<span class="t-red">Exception in thread "main" java.lang.ClassCastException:
+    Juice cannot be cast to Water
+        at DangerousGlass.main(DangerousGlass.java:6)</span></div>
+
+                <div class="red-box">
+                    <div class="red-box-title">ClassCastException &mdash; A Runtime Catastrophe</div>
+                    <p>The compiler trusted us when we said this was <span class="code-inline">Water</span>. It compiled just fine! But at runtime, Java found the actual object was <span class="code-inline">Juice</span>, not <span class="code-inline">Water</span>. Juice cannot be cast to Water &mdash; they are completely different classes.</p>
+                    <p>This causes a <strong>ClassCastException</strong> &mdash; a <strong>RUNTIME error</strong> that crashes the program immediately. The line <span class="code-inline">System.out.println(w)</span> is never reached. The program is dead.</p>
+                </div>
+
+                <div class="narrative">
+                    <p>Remember from <strong>Module 10</strong>? We classified errors into three types: <strong>syntax errors</strong> (caught by the compiler), <strong>logical errors</strong> (wrong output), and <strong>runtime errors</strong> (program crashes). Runtime errors are the most catastrophic &mdash; they stop the program entirely.</p>
+                    <p>This <span class="code-inline">ClassCastException</span> is exactly that kind of error. It is a runtime error. And the worst part? <strong>The compiler gave us no warning.</strong> It compiled perfectly. The bug is invisible until the program is already running.</p>
+                </div>
+
+                <div class="info-box">
+                    <div class="info-box-title">Imagine This at Scale</div>
+                    <p>Imagine a programmer dealing with <strong>thousands of classes</strong> in a large enterprise application. They are casting everywhere &mdash; retrieving objects from collections, converting between types, passing data between modules.</p>
+                    <p>Wrong casts are <strong>inevitable</strong>. And each one is a <strong>ticking time bomb</strong> &mdash; invisible at compile time, exploding at runtime. Maybe it crashes during a critical transaction. Maybe it brings down a server at 2 AM. Maybe it corrupts data silently before crashing.</p>
+                    <p>We need a better way.</p>
+                </div>
+            </div>
+
+            <!-- Section 5: The Spell Checker Analogy -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">5</span>
+                    The Spell Checker Analogy
+                </h2>
+
+                <div class="narrative">
+                    <p>Let me tell you a story. Imagine you are in the office, writing an important letter to a high-ranking government official. You spend hours crafting every sentence. You finish the letter, print it, sign it, and send it.</p>
+                    <p>But there were <strong>spelling mistakes</strong> in the letter! The official reads it and finds errors everywhere. This is very embarrassing. Your reputation is damaged.</p>
+                    <p>Now, how did Microsoft solve this problem? They introduced a <strong>spell checker</strong> in Microsoft Word. As you type, misspelled words are highlighted with <strong>red underlines</strong>. You see the errors <em>BEFORE</em> you send the letter. You can fix them right away, while you are still writing.</p>
+                    <p>The spell checker does not wait until the letter is delivered to tell you there are mistakes. It catches them <strong>early</strong> &mdash; at <em>writing time</em>, not at <em>delivery time</em>.</p>
+                </div>
+
+                <div class="success-box">
+                    <div class="success-box-title">Generics Are Like a Spell Checker for Your Types</div>
+                    <p>Generics work exactly like a spell checker, but for <strong>types</strong> instead of words. They catch type mistakes at <strong>COMPILE time</strong> &mdash; before your program ever runs. Just like the spell checker catches spelling errors before you send the letter, generics catch type errors before you deploy the program.</p>
+                    <p>Without generics: the wrong cast compiles fine, and you discover the error when the program crashes at runtime (the letter was already sent with mistakes).</p>
+                    <p>With generics: the compiler immediately tells you <em>&ldquo;You cannot put Juice in a Glass&lt;Water&gt;!&rdquo;</em> and refuses to compile (the spell checker underlines the mistake before you send).</p>
+                </div>
+            </div>
+
+            <!-- Section 6: What Are Generics? -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">6</span>
+                    What Are Generics?
+                </h2>
+
+                <div class="info-box">
+                    <div class="info-box-title">A Bit of History</div>
+                    <p>Generics were introduced in <strong>Java 5 (JDK 1.5)</strong> in <strong>2004</strong>. Before that, Java programmers had to use <span class="code-inline">Object</span> and casting everywhere &mdash; exactly the dangerous approach we just saw. Generics were one of the most significant additions to the Java language.</p>
+                </div>
+
+                <div class="key-box">
+                    <div class="key-box-title">What Exactly Are Generics?</div>
+                    <p>Let us be very clear about what generics are and what they are not:</p>
+                    <ul style="margin: 12px 0 0 20px; line-height: 2.2;">
+                        <li>Generics are a <strong>TOOL / FEATURE</strong> in the Java language &mdash; they are <strong>NOT</strong> one of the four OOP pillars (Encapsulation, Inheritance, Polymorphism, Abstraction).</li>
+                        <li>They <strong>eliminate the need for casting</strong>. No more <span class="code-inline">(Juice) g.getLiquid()</span>.</li>
+                        <li>If we eliminate casting, we eliminate <span class="code-inline">ClassCastException</span> at runtime.</li>
+                        <li>Instead of writing methods and classes with <span class="code-inline">Object</span>, we write them with a <strong>type parameter</strong> (like <span class="code-inline">&lt;T&gt;</span>).</li>
+                        <li>We get <strong>ONE class or method</strong> that works with <strong>ANY type</strong>, AND it is <strong>type-safe</strong> &mdash; the compiler checks everything for us.</li>
+                    </ul>
+                </div>
+
+                <div class="narrative">
+                    <p>In the upcoming lessons, we will learn three applications of generics:</p>
+                    <ul style="margin: 12px 0 0 20px; line-height: 2.2;">
+                        <li><strong>Generic Classes</strong> &mdash; a class like <span class="code-inline">Glass&lt;T&gt;</span> where <span class="code-inline">T</span> is a type parameter</li>
+                        <li><strong>Generic Methods</strong> &mdash; a single <span class="code-inline">printArray</span> method that works for Integer, String, Student, and any other type</li>
+                        <li><strong>Generic Interfaces</strong> &mdash; like <span class="code-inline">Comparable&lt;T&gt;</span>, which ensures type-safe comparisons</li>
+                    </ul>
+                </div>
+
+                <div class="success-box">
+                    <div class="success-box-title">Think of Generics as a Plugin Tool</div>
+                    <p>Think of generics as a <strong>plugin tool</strong> that helps the programmer avoid the catastrophic runtime errors caused by wrong type casting. It is a safety net built into the compiler. It does the hard work for you &mdash; checking every type assignment, every method call, every return value &mdash; at compile time, so you never have to worry about <span class="code-inline">ClassCastException</span> again.</p>
+                </div>
+            </div>
+
+            <!-- Section 7: Key Takeaways -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">7</span>
+                    Key Takeaways
+                </h2>
+
+                <ul class="takeaway-list">
+                    <li>
+                        <span class="takeaway-num">1</span>
+                        <span>Using <span class="code-inline">Object</span> as a universal type requires <strong>casting</strong> &mdash; you must manually tell the compiler what the actual type is every time you retrieve an object.</span>
+                    </li>
+                    <li>
+                        <span class="takeaway-num">2</span>
+                        <span>Wrong casting causes <span class="code-inline">ClassCastException</span> at <strong>runtime</strong> &mdash; the compiler does not catch this mistake, and your program crashes when it runs.</span>
+                    </li>
+                    <li>
+                        <span class="takeaway-num">3</span>
+                        <span>Runtime errors are <strong>catastrophic</strong> &mdash; they crash the program entirely, potentially causing data loss, service outages, and security vulnerabilities.</span>
+                    </li>
+                    <li>
+                        <span class="takeaway-num">4</span>
+                        <span>Generics <strong>eliminate casting entirely</strong> &mdash; the compiler knows the exact type and handles everything automatically.</span>
+                    </li>
+                    <li>
+                        <span class="takeaway-num">5</span>
+                        <span>Generics catch type errors at <strong>compile time</strong>, not runtime &mdash; like a spell checker that catches mistakes before you send the letter.</span>
+                    </li>
+                    <li>
+                        <span class="takeaway-num">6</span>
+                        <span>Generics are a <strong>Java feature</strong> (since JDK 1.5, 2004), not one of the four OOP pillars &mdash; think of them as a powerful plugin tool for type safety.</span>
+                    </li>
+                </ul>
+
+                <div class="success-box">
+                    <div class="success-box-title">What&rsquo;s Next?</div>
+                    <p>In the next lesson, we will take our <span class="code-inline">Glass</span> class and transform it into a <strong>generic class</strong> using <span class="code-inline">Glass&lt;T&gt;</span>. You will see how a single line of code &mdash; adding <span class="code-inline">&lt;T&gt;</span> &mdash; eliminates all the problems we discussed today. No more casting, no more <span class="code-inline">ClassCastException</span>, and the compiler becomes your best friend.</p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <div class="placeholder"></div>
+            <a href="02-generic-classes.html">Lesson 2: Generic Classes &rarr;</a>
+        </nav>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p><strong>CPCS203</strong> &mdash; Object-Oriented Programming</p>
+            <p>King Abdulaziz University</p>
+            <p>Module 11: Generics &mdash; Chapter 19</p>
+            <p>Prepared by Dr. Abdulmohsen Almalwi</p>
+        </footer>
+
+    </div>
+
+    <!-- Code Theme Picker -->
+    <div id="code-theme-picker">
+        <div id="theme-panel">
+            <div class="tp-label">Code Block Theme</div>
+            <button class="theme-btn active" onclick="setCodeTheme('black')" id="btn-black">
+                <span class="theme-swatch" style="background:#000;"></span> Black (Default)
+            </button>
+            <button class="theme-btn" onclick="setCodeTheme('vscode')" id="btn-vscode">
+                <span class="theme-swatch" style="background:#1e1e1e;"></span> VS Code Dark
+            </button>
+            <button class="theme-btn" onclick="setCodeTheme('white')" id="btn-white">
+                <span class="theme-swatch" style="background:#fff;border:1px solid #ccc;"></span> White (Projector)
+            </button>
+            <button class="theme-btn" onclick="setCodeTheme('cream')" id="btn-cream">
+                <span class="theme-swatch" style="background:#fefce8;border:1px solid #ccc;"></span> Cream (Projector)
+            </button>
+        </div>
+        <button id="theme-toggle-btn" onclick="document.getElementById('theme-panel').classList.toggle('open')">Code Theme</button>
+    </div>
+    <script>
+const CODE_THEMES={black:{bg:'#000000',text:'#ffffff',comment:'#a0aec0',keyword:'#ff79c6',cls:'#8be9fd',method:'#50fa7b',string:'#f1fa8c',number:'#bd93f9',tmBg:'#0f172a',tmHeader:'#1e293b',tmBorder:'#334155',tmText:'#4ade80',tmTitle:'#94a3b8',projector:false},vscode:{bg:'#1e1e1e',text:'#ffffff',comment:'#57c757',keyword:'#569cd6',cls:'#4ec9b0',method:'#dcdcaa',string:'#ce9178',number:'#b5cea8',tmBg:'#1e1e1e',tmHeader:'#2d2d2d',tmBorder:'#444',tmText:'#ffffff',tmTitle:'#9cdcfe',projector:false},white:{bg:'#ffffff',text:'#000000',comment:'#1d4ed8',keyword:'#dc2626',cls:'#16a34a',method:'#0369a1',string:'#b45309',number:'#7c3aed',tmBg:'#f1f5f9',tmHeader:'#e2e8f0',tmBorder:'#94a3b8',tmText:'#000000',tmTitle:'#1d4ed8',projector:true},cream:{bg:'#fefce8',text:'#000000',comment:'#1d4ed8',keyword:'#dc2626',cls:'#15803d',method:'#0369a1',string:'#b45309',number:'#7c3aed',tmBg:'#fefce8',tmHeader:'#fef08a',tmBorder:'#a16207',tmText:'#000000',tmTitle:'#0369a1',projector:true}};
+function _lum(hex){hex=hex.replace('#','');if(hex.length===3)hex=hex.split('').map(c=>c+c).join('');if(hex.length!==6)return .5;const r=parseInt(hex.slice(0,2),16),g=parseInt(hex.slice(2,4),16),b=parseInt(hex.slice(4,6),16);return(.299*r+.587*g+.114*b)/255;}
+function _lighten(hex){hex=hex.replace('#','');if(hex.length===3)hex=hex.split('').map(c=>c+c).join('');const r=parseInt(hex.slice(0,2),16),g=parseInt(hex.slice(2,4),16),b=parseInt(hex.slice(4,6),16);const lr=Math.round(r*.1+255*.9),lg=Math.round(g*.1+255*.9),lb=Math.round(b*.1+255*.9);return'#'+[lr,lg,lb].map(c=>c.toString(16).padStart(2,'0')).join('');}
+const _backup=new Map();
+function _applyProjectorInline(enable){if(enable){document.querySelectorAll('[style]').forEach(el=>{const orig=el.getAttribute('style');_backup.set(el,orig);let s=orig;s=s.replace(/(background(?:-color)?\s*:[^;}"']*?)(#[0-9a-fA-F]{6}|#[0-9a-fA-F]{3})\b/gi,(m,pre,hex)=>_lum(hex)<.28?pre+_lighten(hex):m);s=s.replace(/((?:^|;|\s)color\s*:\s*)(#[0-9a-fA-F]{6}|#[0-9a-fA-F]{3})\b/gi,(m,pre,hex)=>_lum(hex)>.72?pre+'#1f2937':m);el.setAttribute('style',s);});}else{_backup.forEach((orig,el)=>el.setAttribute('style',orig));_backup.clear();}}
+function setCodeTheme(name){const t=CODE_THEMES[name],r=document.documentElement.style;r.setProperty('--cb-bg',t.bg);r.setProperty('--cb-text',t.text);r.setProperty('--cb-comment',t.comment);r.setProperty('--cb-keyword',t.keyword);r.setProperty('--cb-class',t.cls);r.setProperty('--cb-method',t.method);r.setProperty('--cb-string',t.string);r.setProperty('--cb-number',t.number);r.setProperty('--tm-bg',t.tmBg);r.setProperty('--tm-header',t.tmHeader);r.setProperty('--tm-border',t.tmBorder);r.setProperty('--tm-text',t.tmText);r.setProperty('--tm-title',t.tmTitle);const wasProjector=document.body.classList.contains('projector');if(t.projector){if(!wasProjector)_applyProjectorInline(true);document.body.classList.add('projector');}else{if(wasProjector)_applyProjectorInline(false);document.body.classList.remove('projector');}document.querySelectorAll('.theme-btn').forEach(b=>b.classList.remove('active'));document.getElementById('btn-'+name).classList.add('active');document.getElementById('theme-panel').classList.remove('open');}
+    </script>
+</body>
+</html>

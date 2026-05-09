@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الدرس 4 — الواجهات المعممة (Generic Interfaces) | الوحدة 11: الأنماط المعممة | CPCS203</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --amber: #f59e0b; --amber-dark: #d97706; --amber-darker: #92400e; --amber-darkest: #78350f; --amber-light: #fef3c7; --amber-lighter: #fffbeb;
+            --orange: #f97316; --orange-dark: #ea580c; --orange-light: #fff7ed;
+            --success: #059669; --success-light: #d1fae5;
+            --info: #2563eb; --info-light: #dbeafe;
+            --violet: #7c3aed; --violet-light: #ede9fe;
+            --red: #ef4444; --red-light: #fee2e2;
+            --dark: #1f2937; --gray: #6b7280; --light: #f9fafb;
+        }
+        body { font-family: 'Tajawal', 'Amiri', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.8; color: var(--dark); background: #f1f5f9; min-height: 100vh; padding: 20px; }
+        .container { max-width: 1000px; margin: 0 auto; background: white; border-radius: 20px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.35); overflow: hidden; }
+        .nav-breadcrumb { background: linear-gradient(135deg, #78350f, #92400e); padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+        .breadcrumb { display: flex; align-items: center; gap: 8px; color: white; font-size: 0.9rem; }
+        .breadcrumb a { color: #fcd34d; text-decoration: none; transition: color .3s; }
+        .breadcrumb a:hover { color: white; }
+        .breadcrumb .sep { color: #fbbf24; }
+        .breadcrumb .cur { color: #fef3c7; }
+        .lesson-nav { display: flex; gap: 10px; }
+        .lesson-nav a { padding: 8px 16px; background: rgba(255,255,255,.15); color: white; text-decoration: none; border-radius: 20px; font-size: .85rem; transition: background .3s; }
+        .lesson-nav a:hover { background: rgba(255,255,255,.25); }
+        .hero { background: linear-gradient(135deg, #d97706, #f59e0b, #f97316, #ef4444); color: white; padding: 50px 40px; text-align: center; position: relative; overflow: hidden; }
+        .hero::before { content: ''; position: absolute; top: -50px; left: -50px; width: 250px; height: 250px; background: rgba(255,255,255,.05); border-radius: 50%; }
+        .hero::after { content: ''; position: absolute; bottom: -80px; right: -40px; width: 300px; height: 300px; background: rgba(255,255,255,.05); border-radius: 50%; }
+        .module-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,.2); border: 1px solid rgba(255,255,255,.4); padding: 8px 22px; border-radius: 30px; font-size: .95rem; font-weight: 600; margin-bottom: 20px; }
+        .module-badge .num { background: white; color: var(--amber-dark); width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; }
+        .hero h1 { font-size: 2.8rem; margin-bottom: 15px; text-shadow: 0 3px 8px rgba(0,0,0,.3); }
+        .hero .subtitle { font-size: 1.2rem; opacity: .9; }
+        .topic-chips { display: flex; justify-content: center; gap: 12px; margin-top: 28px; flex-wrap: wrap; }
+        .topic-chip { padding: 9px 20px; border-radius: 30px; font-weight: 700; font-size: .88rem; border: 2px solid rgba(255,255,255,.5); background: rgba(255,255,255,.12); }
+        .content { padding: 50px 40px; }
+        .section { margin-bottom: 60px; }
+        .section-title { font-size: 1.85rem; color: var(--amber-darkest); border-bottom: 3px solid var(--amber); padding-bottom: 10px; margin-bottom: 28px; display: flex; align-items: center; gap: 12px; }
+        .section-number { background: linear-gradient(135deg, var(--amber), var(--orange)); color: white; width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; font-weight: bold; flex-shrink: 0; }
+        .subsection-title { font-size: 1.3rem; color: var(--orange-dark); margin: 30px 0 15px; display: flex; align-items: center; gap: 10px; }
+        .sub-badge { background: linear-gradient(135deg, var(--orange), var(--amber)); color: white; padding: 4px 14px; border-radius: 20px; font-size: .8rem; font-weight: 700; }
+        .narrative { background: linear-gradient(135deg, #fffbeb, #fef3c7); border-right: 5px solid var(--amber); padding: 25px 30px; margin: 20px 0; border-radius: 15px 0 0 15px; font-size: 1.05rem; line-height: 2; }
+        .narrative p { margin-bottom: 12px; }
+        .narrative p:last-child { margin-bottom: 0; }
+        .key-box { background: linear-gradient(135deg, #fef3c7, #fde68a); border-right: 5px solid var(--amber); padding: 18px 24px; margin: 20px 0; border-radius: 12px 0 0 12px; }
+        .key-box-title { font-weight: 700; color: var(--amber-dark); margin-bottom: 8px; font-size: 1.05rem; }
+        .info-box { background: linear-gradient(135deg, #dbeafe, #bfdbfe); border-right: 5px solid var(--info); padding: 18px 24px; margin: 20px 0; border-radius: 12px 0 0 12px; }
+        .info-box-title { font-weight: 700; color: var(--info); margin-bottom: 8px; font-size: 1.05rem; }
+        .red-box { background: linear-gradient(135deg, #fee2e2, #fecaca); border-right: 5px solid var(--red); padding: 18px 24px; margin: 20px 0; border-radius: 12px 0 0 12px; }
+        .red-box-title { font-weight: 700; color: #dc2626; margin-bottom: 8px; font-size: 1.05rem; }
+        .success-box { background: linear-gradient(135deg, #d1fae5, #a7f3d0); border-right: 5px solid var(--success); padding: 18px 24px; margin: 20px 0; border-radius: 12px 0 0 12px; }
+        .success-box-title { font-weight: 700; color: #065f46; margin-bottom: 8px; font-size: 1.05rem; }
+        .violet-box { background: linear-gradient(135deg, #ede9fe, #ddd6fe); border-right: 5px solid var(--violet); padding: 18px 24px; margin: 20px 0; border-radius: 12px 0 0 12px; }
+        .violet-box-title { font-weight: 700; color: #5b21b6; margin-bottom: 8px; font-size: 1.05rem; }
+        code, .code-inline { direction: ltr; unicode-bidi: embed; }
+        .code-block, .terminal { direction: ltr; text-align: left; }
+        .code-block { background: var(--cb-bg, #282a36); color: var(--cb-text, #f8f8f2); padding: 24px 26px; border-radius: 12px; margin: 18px 0; overflow-x: auto; font-family: 'Consolas', 'Monaco', monospace; font-size: 1.02rem; line-height: 1.75; white-space: pre-wrap; border: 1.5px solid #44475a; direction: ltr; text-align: left; }
+        .code-block .kw { color: var(--cb-keyword, #ff79c6); font-weight: 700; }
+        .code-block .tp { color: var(--cb-class, #8be9fd); }
+        .code-block .str { color: var(--cb-string, #f1fa8c); }
+        .code-block .num { color: var(--cb-number, #bd93f9); }
+        .code-block .cmt { color: var(--cb-comment, #6272a4); font-style: italic; }
+        .code-block .mtd { color: var(--cb-method, #50fa7b); }
+        .code-block .err { color: #ff5555; font-weight: 700; }
+        .code-label { background: var(--cb-bg, #21222c); color: var(--cb-class, #8be9fd); padding: 8px 18px; border-radius: 12px 12px 0 0; font-family: 'Consolas', monospace; font-size: .85rem; display: inline-block; margin-bottom: -2px; border: 1.5px solid #44475a; border-bottom: none; direction: ltr; }
+        .code-inline { background: #f3f4f6; padding: 2px 8px; border-radius: 5px; font-family: 'Consolas', monospace; font-size: .9rem; color: #dc2626; }
+        .terminal { background: var(--tm-bg, #0f172a); color: var(--tm-text, #e2e8f0); padding: 22px; border-radius: 12px; margin: 18px 0; font-family: 'Consolas', monospace; font-size: .88rem; line-height: 1.9; overflow-x: auto; white-space: pre; border: 1px solid var(--tm-border, #334155); }
+        .terminal-header { background: var(--tm-header, #1e293b); border: 1px solid var(--tm-border, #334155); border-bottom: none; border-radius: 12px 12px 0 0; padding: 10px 18px; display: flex; align-items: center; gap: 8px; }
+        .terminal-dot { width: 12px; height: 12px; border-radius: 50%; }
+        .terminal-dot.r { background: #ef4444; }
+        .terminal-dot.y { background: #f59e0b; }
+        .terminal-dot.g { background: #22c55e; }
+        .terminal-title { color: var(--tm-title, #94a3b8); font-size: .8rem; margin-right: 8px; font-weight: 600; }
+        .terminal.with-header { border-radius: 0 0 12px 12px; }
+        .vs-container { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 20px 0; }
+        .vs-box { border-radius: 14px; overflow: hidden; border: 2px solid; }
+        .vs-box.before { border-color: #fca5a5; }
+        .vs-box.after { border-color: #6ee7b7; }
+        .vs-header { padding: 12px 20px; font-weight: 800; font-size: .95rem; text-align: center; }
+        .vs-box.before .vs-header { background: #fee2e2; color: #991b1b; }
+        .vs-box.after .vs-header { background: #d1fae5; color: #065f46; }
+        .vs-body { padding: 0; }
+        .vs-body .code-block { margin: 0; border-radius: 0; border: none; font-size: .92rem; }
+        .takeaway-list { list-style: none; padding: 0; margin: 20px 0; }
+        .takeaway-list li { padding: 14px 20px; margin-bottom: 10px; border-radius: 12px; font-size: 1rem; display: flex; align-items: flex-start; gap: 14px; line-height: 1.7; }
+        .takeaway-list li:nth-child(odd) { background: var(--amber-lighter); border: 1px solid var(--amber-light); }
+        .takeaway-list li:nth-child(even) { background: var(--orange-light); border: 1px solid #fed7aa; }
+        .takeaway-num { background: linear-gradient(135deg, var(--amber), var(--orange)); color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: .85rem; flex-shrink: 0; margin-top: 2px; }
+        .bottom-nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; background: linear-gradient(135deg, #92400e, #b45309); }
+        .bottom-nav a { display: inline-flex; align-items: center; gap: 8px; padding: 10px 22px; background: rgba(255,255,255,.15); color: white; text-decoration: none; border-radius: 25px; font-size: .9rem; font-weight: 600; transition: background .3s, transform .2s; }
+        .bottom-nav a:hover { background: rgba(255,255,255,.28); transform: translateY(-2px); }
+        .bottom-nav .placeholder { width: 160px; }
+        .footer { background: linear-gradient(135deg, #78350f, #92400e); color: #fcd34d; padding: 25px 40px; text-align: center; font-size: .85rem; line-height: 1.7; }
+        /* ── Code-theme floating picker ── */
+        #code-theme-picker { position: fixed; bottom: 28px; left: 28px; z-index: 9999; display: flex; flex-direction: column; align-items: flex-start; gap: 10px; font-family: 'Segoe UI', sans-serif; }
+        #theme-toggle-btn { background: linear-gradient(135deg, #92400e, #d97706); color: #fff; border: none; border-radius: 50px; padding: 11px 20px; font-size: .88rem; font-weight: 700; cursor: pointer; box-shadow: 0 4px 18px rgba(217,119,6,.5); letter-spacing: .5px; transition: box-shadow .2s; }
+        #theme-toggle-btn:hover { box-shadow: 0 6px 24px rgba(217,119,6,.7); }
+        #theme-panel { background: #fff; border-radius: 14px; padding: 14px 16px; box-shadow: 0 8px 32px rgba(0,0,0,.25); display: none; flex-direction: column; gap: 8px; min-width: 210px; border: 1px solid #fcd34d; }
+        #theme-panel.open { display: flex; }
+        #theme-panel .tp-label { font-size: .72rem; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: var(--amber-dark); margin-bottom: 4px; }
+        .theme-btn { display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-radius: 8px; border: 2px solid transparent; cursor: pointer; font-size: .88rem; font-weight: 600; transition: border-color .2s, background .2s; background: #f9fafb; color: #1f2937; }
+        .theme-btn:hover { background: #fffbeb; border-color: var(--amber-dark); }
+        .theme-btn.active { border-color: var(--amber-darkest); background: var(--amber-light); }
+        .theme-swatch { width: 28px; height: 28px; border-radius: 6px; border: 1px solid rgba(0,0,0,.15); flex-shrink: 0; }
+        /* ── Projector mode overrides ── */
+        body.projector .nav-breadcrumb { background: var(--amber-light) !important; }
+        body.projector .breadcrumb a { color: var(--amber-darkest) !important; }
+        body.projector .breadcrumb .sep, body.projector .breadcrumb .cur { color: var(--amber-dark) !important; }
+        body.projector .lesson-nav a { background: rgba(217,119,6,.12) !important; color: var(--amber-darkest) !important; border: 1px solid #fcd34d !important; }
+        body.projector .bottom-nav { background: var(--amber-light) !important; }
+        body.projector .bottom-nav a { background: rgba(217,119,6,.12) !important; color: var(--amber-darkest) !important; border: 1px solid #fcd34d !important; }
+        body.projector .footer { background: var(--amber-lighter) !important; color: var(--amber-darkest) !important; }
+        .lang-switch { position: fixed; top: 20px; left: 20px; z-index: 1000; padding: 10px 20px; background: linear-gradient(135deg, var(--amber), var(--orange)); color: white; text-decoration: none; border-radius: 30px; font-weight: 700; font-size: 0.9rem; box-shadow: 0 4px 14px rgba(245,158,11,.4); transition: transform .2s, box-shadow .2s; }
+        .lang-switch:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(245,158,11,.6); }
+        @media (max-width: 768px) { body { padding: 10px; } .hero { padding: 30px 20px; } .hero h1 { font-size: 2rem; } .content { padding: 30px 20px; } .vs-container { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+<a href="04-generic-interfaces.html" class="lang-switch">English &#127760;</a>
+
+<div class="container">
+
+    <!-- ===== BREADCRUMB NAV ===== -->
+    <nav class="nav-breadcrumb">
+        <div class="breadcrumb">
+            <a href="../index-ar.html">CPCS203</a>
+            <span class="sep">&#8249;</span>
+            <a href="index-ar.html">الوحدة 11</a>
+            <span class="sep">&#8249;</span>
+            <span class="cur">الدرس 4 &mdash; الواجهات المعممة (Generic Interfaces)</span>
+        </div>
+        <div class="lesson-nav">
+            <a href="05-type-erasure-ar.html">الدرس 5 &larr;</a>
+            <a href="03-generic-methods-ar.html">&rarr; الدرس 3</a>
+        </div>
+    </nav>
+
+    <!-- ===== HERO ===== -->
+    <header class="hero">
+        <div class="module-badge">
+            <span class="num">11</span>
+            الدرس 4 من 5
+        </div>
+        <h1>الواجهات المعممة (Generic Interfaces) &mdash; Comparable&lt;T&gt;</h1>
+        <p class="subtitle">تعرّف على كيفية استخدام الواجهات (Interfaces) للأنماط المعممة (Generics) لفرض عقود آمنة الأنواع (Type-Safe Contracts)</p>
+        <div class="topic-chips">
+            <span class="topic-chip">Comparable&lt;T&gt;</span>
+            <span class="topic-chip">أمان الأنواع (Type Safety)</span>
+            <span class="topic-chip">String مقابل Date</span>
+            <span class="topic-chip">عقد الواجهة (Interface Contract)</span>
+        </div>
+    </header>
+
+    <!-- ===== CONTENT ===== -->
+    <div class="content">
+
+        <!-- ========== SECTION 1 ========== -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-number">1</span>
+                الواجهات يمكن أن تكون معممة أيضًا
+            </h2>
+
+            <div class="narrative">
+                <p>لقد رأينا الأصناف المعممة (Generic Classes) في الدرس 2 والتوابع المعممة (Generic Methods) في الدرس 3. والآن دعنا نرى أن <strong>الواجهات (Interfaces) يمكن أن تكون معممة أيضًا</strong>. في الواقع، لقد استخدمت واجهة معممة من قبل دون أن تدرك ذلك!</p>
+            </div>
+
+            <p>تمامًا مثل الأصناف (Classes)، يمكن للواجهات (Interfaces) أن تحتوي على معاملات أنواع (Type Parameters). الصياغة هي نفسها تمامًا &mdash; تضع معامل النوع بين أقواس زاوية مباشرة بعد اسم الواجهة:</p>
+
+            <div class="code-label">Generic Interface Syntax</div>
+            <div class="code-block"><span class="kw">public interface</span> <span class="tp">InterfaceName</span>&lt;<span class="tp">T</span>&gt; {
+    <span class="tp">T</span> <span class="mtd">doSomething</span>(<span class="tp">T</span> input);
+    <span class="kw">void</span> <span class="mtd">process</span>(<span class="tp">T</span> item);
+}</div>
+
+            <div class="key-box">
+                <div class="key-box-title">الصياغة الأساسية (Key Syntax)</div>
+                النمط <code class="code-inline">interface Name&lt;T&gt;</code> يعلن عن واجهة معممة (Generic Interface). يمكن بعد ذلك استخدام معامل النوع <code class="code-inline">T</code> في جميع أنحاء الواجهة كعنصر نائب لأي نوع. عندما يقوم صنف بتنفيذ هذه الواجهة، فإنه يحدد النوع الفعلي.
+            </div>
+        </div>
+
+        <!-- ========== SECTION 2 ========== -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-number">2</span>
+                هل تذكر Comparable؟ (بدون الأنماط المعممة)
+            </h2>
+
+            <div class="narrative">
+                <p>هل تتذكر واجهة <code class="code-inline">Comparable</code> من الوحدة 9 (الواجهات - Interfaces)؟ قبل Java 5، كانت تبدو هكذا:</p>
+            </div>
+
+            <div class="code-label">Comparable.java &mdash; Before Java 5 (no generics)</div>
+            <div class="code-block"><span class="cmt">// Before Java 5 &mdash; no generics</span>
+<span class="kw">public interface</span> <span class="tp">Comparable</span> {
+    <span class="kw">int</span> <span class="mtd">compareTo</span>(<span class="tp">Object</span> o);
+}</div>
+
+            <p>التابع <code class="code-inline">compareTo</code> يأخذ <code class="code-inline">Object</code> كمعامل. وهذا يعني أنه يمكنك مقارنة <strong>أي شيء</strong> مع <strong>أي شيء</strong> &mdash; مقارنة <code class="code-inline">String</code> مع <code class="code-inline">Date</code>، أو <code class="code-inline">Integer</code> مع <code class="code-inline">Circle</code>. المترجم (Compiler) لا يمكنه منعك.</p>
+
+            <h3 class="subsection-title">
+                <span class="sub-badge">المشكلة (Problem)</span>
+                مقارنة التفاح بالبرتقال
+            </h3>
+
+            <div class="code-label">The Dangerous Code</div>
+            <div class="code-block"><span class="tp">String</span> name = <span class="str">"Ali"</span>;
+<span class="tp">Date</span> today = <span class="kw">new</span> <span class="tp">Date</span>();
+
+<span class="cmt">// Both String and Date implement Comparable</span>
+<span class="cmt">// So this compiles fine:</span>
+<span class="kw">int</span> result = name.<span class="mtd">compareTo</span>(today);  <span class="cmt">// Comparing String with Date?!</span></div>
+
+            <div class="red-box">
+                <div class="red-box-title">كارثة وقت التشغيل! (Runtime Disaster!)</div>
+                هذا الكود يُترجم بدون أي خطأ! المترجم (Compiler) يرى <code class="code-inline">Object</code> ويقول "حسنًا، لا مشكلة." لكن أثناء وقت التشغيل (Runtime)، مقارنة <code class="code-inline">String</code> مع <code class="code-inline">Date</code> لا معنى لها &mdash; وسيؤدي ذلك إلى رمي <strong>ClassCastException</strong>! البرنامج ينهار، ولن تكتشف الخطأ إلا عندما يبلغ عنه أحد المستخدمين.
+            </div>
+        </div>
+
+        <!-- ========== SECTION 3 ========== -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-number">3</span>
+                Comparable مع الأنماط المعممة
+            </h2>
+
+            <div class="narrative">
+                <p>بدءًا من Java 5، أُعيد تصميم واجهة <code class="code-inline">Comparable</code> باستخدام الأنماط المعممة (Generics). دعنا نرى النسخة الجديدة:</p>
+            </div>
+
+            <div class="code-label">Comparable.java &mdash; Java 5+ (with generics)</div>
+            <div class="code-block"><span class="cmt">// Java 5+ &mdash; with generics</span>
+<span class="kw">public interface</span> <span class="tp">Comparable</span>&lt;<span class="tp">T</span>&gt; {
+    <span class="kw">int</span> <span class="mtd">compareTo</span>(<span class="tp">T</span> o);
+}</div>
+
+            <p>الآن <code class="code-inline">T</code> هو معامل النوع (Type Parameter). عندما يقوم صنف بتنفيذ <code class="code-inline">Comparable&lt;String&gt;</code>، فإن تابع <code class="code-inline">compareTo</code> يقبل فقط <code class="code-inline">String</code>. لا مزيد من <code class="code-inline">Object</code> &mdash; المترجم (Compiler) يعرف النوع الدقيق!</p>
+
+            <h3 class="subsection-title">
+                <span class="sub-badge">مثال (Example)</span>
+                كيف ينفّذ String واجهة Comparable&lt;String&gt;
+            </h3>
+
+            <div class="code-label">String.java (simplified)</div>
+            <div class="code-block"><span class="cmt">// String implements Comparable&lt;String&gt;</span>
+<span class="kw">public final class</span> <span class="tp">String</span> <span class="kw">implements</span> <span class="tp">Comparable</span>&lt;<span class="tp">String</span>&gt; {
+    <span class="kw">@Override</span>
+    <span class="kw">public int</span> <span class="mtd">compareTo</span>(<span class="tp">String</span> o) {
+        <span class="cmt">// Compare this string with another String only</span>
+    }
+}</div>
+
+            <p>لاحظ أن <code class="code-inline">compareTo</code> الآن يأخذ <code class="code-inline">String</code> &mdash; وليس <code class="code-inline">Object</code>. تم استبدال معامل النوع المعمم <code class="code-inline">T</code> بالنوع المحدد <code class="code-inline">String</code>.</p>
+
+            <h3 class="subsection-title">
+                <span class="sub-badge">استخدام آمن (Safe Usage)</span>
+                المترجم يحميك
+            </h3>
+
+            <div class="code-label">Type-Safe Comparison</div>
+            <div class="code-block"><span class="tp">String</span> name1 = <span class="str">"Ali"</span>;
+<span class="tp">String</span> name2 = <span class="str">"Sara"</span>;
+<span class="kw">int</span> result = name1.<span class="mtd">compareTo</span>(name2);  <span class="cmt">// String vs String &mdash; OK!</span>
+
+<span class="tp">Date</span> today = <span class="kw">new</span> <span class="tp">Date</span>();
+<span class="cmt">// name1.compareTo(today);  // COMPILE ERROR!</span>
+<span class="cmt">// Error: incompatible types: Date cannot be converted to String</span></div>
+
+            <div class="success-box">
+                <div class="success-box-title">تم اكتشاف الخطأ وقت الترجمة! (Error Caught at Compile Time!)</div>
+                تم اكتشاف الخطأ في <strong>وقت الترجمة (Compile Time)</strong>! المدقق الإملائي للأنماط المعممة (Generics) يمنعنا من مقارنة <code class="code-inline">String</code> مع <code class="code-inline">Date</code>. المترجم (Compiler) يقول: "لا، لقد أعلنت عن <code class="code-inline">Comparable&lt;String&gt;</code>، لذا يمكنك المقارنة فقط مع <code class="code-inline">String</code>."
+            </div>
+        </div>
+
+        <!-- ========== SECTION 4 ========== -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-number">4</span>
+                مقارنة جنبًا إلى جنب
+            </h2>
+
+            <p>دعنا نضع النهج القديم والجديد جنبًا إلى جنب حتى تتمكن من رؤية الفرق بوضوح:</p>
+
+            <div class="vs-container">
+                <div class="vs-box before">
+                    <div class="vs-header">قبل &mdash; بدون أنماط معممة</div>
+                    <div class="vs-body">
+                        <div class="code-block"><span class="tp">Comparable</span> c = <span class="str">"Ali"</span>;
+
+<span class="cmt">// Compiles fine...</span>
+c.<span class="mtd">compareTo</span>(<span class="kw">new</span> <span class="tp">Date</span>());
+
+<span class="cmt">// ...but CRASHES at runtime!</span>
+<span class="cmt">// ClassCastException</span></div>
+                    </div>
+                </div>
+                <div class="vs-box after">
+                    <div class="vs-header">بعد &mdash; مع الأنماط المعممة</div>
+                    <div class="vs-body">
+                        <div class="code-block"><span class="tp">Comparable</span>&lt;<span class="tp">String</span>&gt; c = <span class="str">"Ali"</span>;
+
+<span class="cmt">// COMPILE ERROR!</span>
+c.<span class="mtd">compareTo</span>(<span class="kw">new</span> <span class="tp">Date</span>());
+
+<span class="cmt">// Error caught BEFORE running</span>
+<span class="cmt">// Safe and sound</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="key-box">
+                <div class="key-box-title">النمط (The Pattern)</div>
+                بدون الأنماط المعممة (Generics): يختبئ الخطأ حتى وقت التشغيل (Runtime). مع الأنماط المعممة: يكتشفه المترجم (Compiler) فورًا. هذا هو نفس الموضوع الذي رأيناه طوال هذه الوحدة &mdash; الأنماط المعممة تنقل الأخطاء من <strong>وقت التشغيل (Runtime)</strong> إلى <strong>وقت الترجمة (Compile Time)</strong>.
+            </div>
+        </div>
+
+        <!-- ========== SECTION 5 ========== -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-number">5</span>
+                إنشاء واجهتك المعممة الخاصة
+            </h2>
+
+            <div class="narrative">
+                <p>أنت لست مقيدًا باستخدام واجهات Java المعممة المدمجة. يمكنك إنشاء واجهاتك الخاصة! دعنا نبني واجهة <code class="code-inline">Container&lt;T&gt;</code> بسيطة تحدد عقدًا لتخزين واسترجاع العناصر من أي نوع.</p>
+            </div>
+
+            <h3 class="subsection-title">
+                <span class="sub-badge">الخطوة 1 (Step 1)</span>
+                تعريف الواجهة المعممة (Define the Generic Interface)
+            </h3>
+
+            <div class="code-label">Container.java</div>
+            <div class="code-block"><span class="kw">public interface</span> <span class="tp">Container</span>&lt;<span class="tp">T</span>&gt; {
+    <span class="kw">void</span> <span class="mtd">add</span>(<span class="tp">T</span> item);
+    <span class="tp">T</span> <span class="mtd">get</span>(<span class="kw">int</span> index);
+    <span class="kw">int</span> <span class="mtd">size</span>();
+}</div>
+
+            <h3 class="subsection-title">
+                <span class="sub-badge">الخطوة 2 (Step 2)</span>
+                تنفيذ الواجهة (Implement the Interface)
+            </h3>
+
+            <div class="code-label">SimpleList.java</div>
+            <div class="code-block"><span class="kw">public class</span> <span class="tp">SimpleList</span>&lt;<span class="tp">T</span>&gt; <span class="kw">implements</span> <span class="tp">Container</span>&lt;<span class="tp">T</span>&gt; {
+    <span class="kw">private</span> <span class="tp">Object</span>[] items = <span class="kw">new</span> <span class="tp">Object</span>[<span class="num">100</span>];
+    <span class="kw">private int</span> count = <span class="num">0</span>;
+
+    <span class="kw">@Override</span>
+    <span class="kw">public void</span> <span class="mtd">add</span>(<span class="tp">T</span> item) {
+        items[count++] = item;
+    }
+
+    <span class="kw">@Override</span>
+    <span class="kw">@SuppressWarnings</span>(<span class="str">"unchecked"</span>)
+    <span class="kw">public</span> <span class="tp">T</span> <span class="mtd">get</span>(<span class="kw">int</span> index) {
+        <span class="kw">return</span> (<span class="tp">T</span>) items[index];
+    }
+
+    <span class="kw">@Override</span>
+    <span class="kw">public int</span> <span class="mtd">size</span>() {
+        <span class="kw">return</span> count;
+    }
+}</div>
+
+            <p>لاحظ أن <code class="code-inline">SimpleList&lt;T&gt;</code> يمرر معامل النوع الخاص به <code class="code-inline">T</code> إلى <code class="code-inline">Container&lt;T&gt;</code>. هذا يعني أن الصنف المنفِّذ يبقى معممًا &mdash; المستخدم يقرر النوع عند إنشاء كائن <code class="code-inline">SimpleList</code>.</p>
+
+            <h3 class="subsection-title">
+                <span class="sub-badge">الخطوة 3 (Step 3)</span>
+                استخدامها مع أمان الأنواع (Use It with Type Safety)
+            </h3>
+
+            <div class="code-label">Main.java</div>
+            <div class="code-block"><span class="tp">SimpleList</span>&lt;<span class="tp">String</span>&gt; names = <span class="kw">new</span> <span class="tp">SimpleList</span>&lt;&gt;();
+names.<span class="mtd">add</span>(<span class="str">"Ali"</span>);
+names.<span class="mtd">add</span>(<span class="str">"Sara"</span>);
+<span class="tp">String</span> first = names.<span class="mtd">get</span>(<span class="num">0</span>);  <span class="cmt">// No casting needed!</span>
+
+<span class="cmt">// names.add(42);  // COMPILE ERROR! Only String allowed</span></div>
+
+            <div class="info-box">
+                <div class="info-box-title">خلف الكواليس (Behind the Scenes)</div>
+                هذا هو بالضبط كيف يعمل <code class="code-inline">ArrayList&lt;E&gt;</code> في Java داخليًا! صنف <code class="code-inline">ArrayList</code> ينفّذ واجهة <code class="code-inline">List&lt;E&gt;</code>، وهي واجهة معممة (Generic Interface). الآن أنت تفهم القوة الكامنة وراءها.
+            </div>
+
+            <div class="violet-box">
+                <div class="violet-box-title">طريقتان لتنفيذ واجهة معممة (Two Ways to Implement a Generic Interface)</div>
+                <p><strong>1. إبقاؤها معممة:</strong> <code class="code-inline">class SimpleList&lt;T&gt; implements Container&lt;T&gt;</code> &mdash; يبقى الصنف معممًا، والمستخدم يختار النوع لاحقًا.</p>
+                <p style="margin-top: 8px;"><strong>2. تثبيت النوع:</strong> <code class="code-inline">class StringList implements Container&lt;String&gt;</code> &mdash; يقفل الصنف على نوع محدد. كل تابع يستخدم <code class="code-inline">String</code> مباشرة.</p>
+            </div>
+        </div>
+
+        <!-- ========== SECTION 6 ========== -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-number">6</span>
+                النقاط الرئيسية
+            </h2>
+
+            <ul class="takeaway-list">
+                <li>
+                    <span class="takeaway-num">1</span>
+                    <span>الواجهات (Interfaces) يمكن أن تكون معممة، تمامًا مثل الأصناف (Classes): <code class="code-inline">interface Name&lt;T&gt;</code></span>
+                </li>
+                <li>
+                    <span class="takeaway-num">2</span>
+                    <span>عند التنفيذ (Implementing)، حدد النوع: <code class="code-inline">implements Comparable&lt;String&gt;</code></span>
+                </li>
+                <li>
+                    <span class="takeaway-num">3</span>
+                    <span>الواجهات المعممة (Generic Interfaces) تفرض <strong>عقودًا آمنة الأنواع (Type-Safe Contracts)</strong> &mdash; يتحقق المترجم (Compiler) من أن طرفي العقد متفقان على الأنواع</span>
+                </li>
+                <li>
+                    <span class="takeaway-num">4</span>
+                    <span><code class="code-inline">Comparable&lt;T&gt;</code> يمنع مقارنة الأنواع غير المتوافقة &mdash; لا مزيد من أخطاء مقارنة <code class="code-inline">String</code> مع <code class="code-inline">Date</code></span>
+                </li>
+                <li>
+                    <span class="takeaway-num">5</span>
+                    <span>واجهات Java المدمجة (<code class="code-inline">Comparable</code>، <code class="code-inline">Iterable</code>، <code class="code-inline">List</code>، إلخ) جميعها تستخدم الأنماط المعممة (Generics)</span>
+                </li>
+                <li>
+                    <span class="takeaway-num">6</span>
+                    <span>يمكنك إنشاء واجهاتك المعممة (Generic Interfaces) الخاصة لبناء تجريدات قابلة لإعادة الاستخدام وآمنة الأنواع (Type-Safe)</span>
+                </li>
+            </ul>
+        </div>
+
+    </div><!-- end .content -->
+
+    <!-- ===== BOTTOM NAV ===== -->
+    <div class="bottom-nav">
+        <a href="05-type-erasure-ar.html">الدرس 5: محو الأنواع (Type Erasure) &larr;</a>
+        <a href="03-generic-methods-ar.html">&rarr; الدرس 3: التوابع المعممة (Generic Methods)</a>
+    </div>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        CPCS203 &mdash; البرمجة كائنية التوجه (Object-Oriented Programming) / جامعة الملك عبدالعزيز (King Abdulaziz University) / الوحدة 11: الأنماط المعممة (Generics) / الفصل 19<br>
+        إعداد د. عبدالمحسن المعلوي
+    </footer>
+
+</div><!-- end .container -->
+
+
+    <!-- Code Theme Picker -->
+    <div id="code-theme-picker">
+        <div id="theme-panel">
+            <div class="tp-label">سمة كتل الكود</div>
+            <button class="theme-btn active" onclick="setCodeTheme('black')" id="btn-black">
+                <span class="theme-swatch" style="background:#000;"></span> أسود (افتراضي)
+            </button>
+            <button class="theme-btn" onclick="setCodeTheme('vscode')" id="btn-vscode">
+                <span class="theme-swatch" style="background:#1e1e1e;"></span> VS Code داكن
+            </button>
+            <button class="theme-btn" onclick="setCodeTheme('white')" id="btn-white">
+                <span class="theme-swatch" style="background:#fff;border:1px solid #ccc;"></span> أبيض (بروجكتور)
+            </button>
+            <button class="theme-btn" onclick="setCodeTheme('cream')" id="btn-cream">
+                <span class="theme-swatch" style="background:#fefce8;border:1px solid #ccc;"></span> كريمي (بروجكتور)
+            </button>
+        </div>
+        <button id="theme-toggle-btn" onclick="document.getElementById('theme-panel').classList.toggle('open')">سمة الكود</button>
+    </div>
+    <script>
+const CODE_THEMES={black:{bg:'#000000',text:'#ffffff',comment:'#a0aec0',keyword:'#ff79c6',cls:'#8be9fd',method:'#50fa7b',string:'#f1fa8c',number:'#bd93f9',tmBg:'#0f172a',tmHeader:'#1e293b',tmBorder:'#334155',tmText:'#4ade80',tmTitle:'#94a3b8',projector:false},vscode:{bg:'#1e1e1e',text:'#ffffff',comment:'#57c757',keyword:'#569cd6',cls:'#4ec9b0',method:'#dcdcaa',string:'#ce9178',number:'#b5cea8',tmBg:'#1e1e1e',tmHeader:'#2d2d2d',tmBorder:'#444',tmText:'#ffffff',tmTitle:'#9cdcfe',projector:false},white:{bg:'#ffffff',text:'#000000',comment:'#1d4ed8',keyword:'#dc2626',cls:'#16a34a',method:'#0369a1',string:'#b45309',number:'#7c3aed',tmBg:'#f1f5f9',tmHeader:'#e2e8f0',tmBorder:'#94a3b8',tmText:'#000000',tmTitle:'#1d4ed8',projector:true},cream:{bg:'#fefce8',text:'#000000',comment:'#1d4ed8',keyword:'#dc2626',cls:'#15803d',method:'#0369a1',string:'#b45309',number:'#7c3aed',tmBg:'#fefce8',tmHeader:'#fef08a',tmBorder:'#a16207',tmText:'#000000',tmTitle:'#0369a1',projector:true}};
+function _lum(hex){hex=hex.replace('#','');if(hex.length===3)hex=hex.split('').map(c=>c+c).join('');if(hex.length!==6)return .5;const r=parseInt(hex.slice(0,2),16),g=parseInt(hex.slice(2,4),16),b=parseInt(hex.slice(4,6),16);return(.299*r+.587*g+.114*b)/255;}
+function _lighten(hex){hex=hex.replace('#','');if(hex.length===3)hex=hex.split('').map(c=>c+c).join('');const r=parseInt(hex.slice(0,2),16),g=parseInt(hex.slice(2,4),16),b=parseInt(hex.slice(4,6),16);const lr=Math.round(r*.1+255*.9),lg=Math.round(g*.1+255*.9),lb=Math.round(b*.1+255*.9);return'#'+[lr,lg,lb].map(c=>c.toString(16).padStart(2,'0')).join('');}
+const _backup=new Map();
+function _applyProjectorInline(enable){if(enable){document.querySelectorAll('[style]').forEach(el=>{const orig=el.getAttribute('style');_backup.set(el,orig);let s=orig;s=s.replace(/(background(?:-color)?\s*:[^;}"']*?)(#[0-9a-fA-F]{6}|#[0-9a-fA-F]{3})\b/gi,(m,pre,hex)=>_lum(hex)<.28?pre+_lighten(hex):m);s=s.replace(/((?:^|;|\s)color\s*:\s*)(#[0-9a-fA-F]{6}|#[0-9a-fA-F]{3})\b/gi,(m,pre,hex)=>_lum(hex)>.72?pre+'#1f2937':m);el.setAttribute('style',s);});}else{_backup.forEach((orig,el)=>el.setAttribute('style',orig));_backup.clear();}}
+function setCodeTheme(name){const t=CODE_THEMES[name],r=document.documentElement.style;r.setProperty('--cb-bg',t.bg);r.setProperty('--cb-text',t.text);r.setProperty('--cb-comment',t.comment);r.setProperty('--cb-keyword',t.keyword);r.setProperty('--cb-class',t.cls);r.setProperty('--cb-method',t.method);r.setProperty('--cb-string',t.string);r.setProperty('--cb-number',t.number);r.setProperty('--tm-bg',t.tmBg);r.setProperty('--tm-header',t.tmHeader);r.setProperty('--tm-border',t.tmBorder);r.setProperty('--tm-text',t.tmText);r.setProperty('--tm-title',t.tmTitle);const wasProjector=document.body.classList.contains('projector');if(t.projector){if(!wasProjector)_applyProjectorInline(true);document.body.classList.add('projector');}else{if(wasProjector)_applyProjectorInline(false);document.body.classList.remove('projector');}document.querySelectorAll('.theme-btn').forEach(b=>b.classList.remove('active'));document.getElementById('btn-'+name).classList.add('active');document.getElementById('theme-panel').classList.remove('open');}
+    </script>
+
+</body>
+</html>

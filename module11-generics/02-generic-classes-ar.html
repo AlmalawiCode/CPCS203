@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الدرس 2 — الأصناف المعممة (Generic Classes) | الوحدة 11: الأنماط المعممة | CPCS203</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --amber: #f59e0b; --amber-dark: #d97706; --amber-darker: #92400e; --amber-darkest: #78350f; --amber-light: #fef3c7; --amber-lighter: #fffbeb;
+            --orange: #f97316; --orange-dark: #ea580c; --orange-light: #fff7ed;
+            --success: #059669; --success-light: #d1fae5;
+            --info: #2563eb; --info-light: #dbeafe;
+            --violet: #7c3aed; --violet-light: #ede9fe;
+            --red: #ef4444; --red-light: #fee2e2;
+            --dark: #1f2937; --gray: #6b7280; --light: #f9fafb;
+        }
+        body { font-family: 'Tajawal', 'Amiri', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.8; color: var(--dark); background: #f1f5f9; min-height: 100vh; padding: 20px; }
+        .container { max-width: 1000px; margin: 0 auto; background: white; border-radius: 20px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.35); overflow: hidden; }
+        .nav-breadcrumb { background: linear-gradient(135deg, #78350f, #92400e); padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+        .breadcrumb { display: flex; align-items: center; gap: 8px; color: white; font-size: 0.9rem; }
+        .breadcrumb a { color: #fcd34d; text-decoration: none; transition: color .3s; }
+        .breadcrumb a:hover { color: white; }
+        .breadcrumb .sep { color: #fbbf24; }
+        .breadcrumb .cur { color: #fef3c7; }
+        .lesson-nav { display: flex; gap: 10px; }
+        .lesson-nav a { padding: 8px 16px; background: rgba(255,255,255,.15); color: white; text-decoration: none; border-radius: 20px; font-size: .85rem; transition: background .3s; }
+        .lesson-nav a:hover { background: rgba(255,255,255,.25); }
+        .hero { background: linear-gradient(135deg, #d97706, #f59e0b, #f97316, #ef4444); color: white; padding: 50px 40px; text-align: center; position: relative; overflow: hidden; }
+        .hero::before { content: ''; position: absolute; top: -50px; left: -50px; width: 250px; height: 250px; background: rgba(255,255,255,.05); border-radius: 50%; }
+        .hero::after { content: ''; position: absolute; bottom: -80px; right: -40px; width: 300px; height: 300px; background: rgba(255,255,255,.05); border-radius: 50%; }
+        .module-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,.2); border: 1px solid rgba(255,255,255,.4); padding: 8px 22px; border-radius: 30px; font-size: .95rem; font-weight: 600; margin-bottom: 20px; }
+        .module-badge .num { background: white; color: var(--amber-dark); width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; }
+        .hero h1 { font-size: 2.8rem; margin-bottom: 15px; text-shadow: 0 3px 8px rgba(0,0,0,.3); }
+        .hero .subtitle { font-size: 1.2rem; opacity: .9; }
+        .topic-chips { display: flex; justify-content: center; gap: 12px; margin-top: 28px; flex-wrap: wrap; }
+        .topic-chip { padding: 9px 20px; border-radius: 30px; font-weight: 700; font-size: .88rem; border: 2px solid rgba(255,255,255,.5); background: rgba(255,255,255,.12); }
+        .content { padding: 50px 40px; }
+        .section { margin-bottom: 60px; }
+        .section-title { font-size: 1.85rem; color: var(--amber-darkest); border-bottom: 3px solid var(--amber); padding-bottom: 10px; margin-bottom: 28px; display: flex; align-items: center; gap: 12px; }
+        .section-number { background: linear-gradient(135deg, var(--amber), var(--orange)); color: white; width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; font-weight: bold; flex-shrink: 0; }
+        .subsection-title { font-size: 1.3rem; color: var(--orange-dark); margin: 30px 0 15px; display: flex; align-items: center; gap: 10px; }
+        .sub-badge { background: linear-gradient(135deg, var(--orange), var(--amber)); color: white; padding: 4px 14px; border-radius: 20px; font-size: .8rem; font-weight: 700; }
+        .narrative { background: linear-gradient(135deg, #fffbeb, #fef3c7); border-right: 5px solid var(--amber); padding: 25px 30px; margin: 20px 0; border-radius: 15px 0 0 15px; font-size: 1.05rem; line-height: 2; }
+        .narrative p { margin-bottom: 12px; }
+        .narrative p:last-child { margin-bottom: 0; }
+        .key-box { background: linear-gradient(135deg, #fef3c7, #fde68a); border-right: 5px solid var(--amber); padding: 18px 24px; margin: 20px 0; border-radius: 12px 0 0 12px; }
+        .key-box-title { font-weight: 700; color: var(--amber-dark); margin-bottom: 8px; font-size: 1.05rem; }
+        .info-box { background: linear-gradient(135deg, #dbeafe, #bfdbfe); border-right: 5px solid var(--info); padding: 18px 24px; margin: 20px 0; border-radius: 12px 0 0 12px; }
+        .info-box-title { font-weight: 700; color: var(--info); margin-bottom: 8px; font-size: 1.05rem; }
+        .red-box { background: linear-gradient(135deg, #fee2e2, #fecaca); border-right: 5px solid var(--red); padding: 18px 24px; margin: 20px 0; border-radius: 12px 0 0 12px; }
+        .red-box-title { font-weight: 700; color: #dc2626; margin-bottom: 8px; font-size: 1.05rem; }
+        .success-box { background: linear-gradient(135deg, #d1fae5, #a7f3d0); border-right: 5px solid var(--success); padding: 18px 24px; margin: 20px 0; border-radius: 12px 0 0 12px; }
+        .success-box-title { font-weight: 700; color: #065f46; margin-bottom: 8px; font-size: 1.05rem; }
+        .violet-box { background: linear-gradient(135deg, #ede9fe, #ddd6fe); border-right: 5px solid var(--violet); padding: 18px 24px; margin: 20px 0; border-radius: 12px 0 0 12px; }
+        .violet-box-title { font-weight: 700; color: #5b21b6; margin-bottom: 8px; font-size: 1.05rem; }
+        .code-block { background: var(--cb-bg, #282a36); color: var(--cb-text, #f8f8f2); padding: 24px 26px; border-radius: 12px; margin: 18px 0; overflow-x: auto; font-family: 'Consolas', 'Monaco', monospace; font-size: 1.02rem; line-height: 1.75; white-space: pre-wrap; border: 1.5px solid #44475a; direction: ltr; text-align: left; }
+        .code-block .kw { color: var(--cb-keyword, #ff79c6); font-weight: 700; }
+        .code-block .tp { color: var(--cb-class, #8be9fd); }
+        .code-block .str { color: var(--cb-string, #f1fa8c); }
+        .code-block .num { color: var(--cb-number, #bd93f9); }
+        .code-block .cmt { color: var(--cb-comment, #6272a4); font-style: italic; }
+        .code-block .mtd { color: var(--cb-method, #50fa7b); }
+        .code-block .err { color: #ff5555; font-weight: 700; }
+        .code-label { background: var(--cb-bg, #21222c); color: var(--cb-class, #8be9fd); padding: 8px 18px; border-radius: 12px 12px 0 0; font-family: 'Consolas', monospace; font-size: .85rem; display: inline-block; margin-bottom: -2px; border: 1.5px solid #44475a; border-bottom: none; }
+        code, .code-inline { direction: ltr; unicode-bidi: embed; }
+        .code-inline { background: #f3f4f6; padding: 2px 8px; border-radius: 5px; font-family: 'Consolas', monospace; font-size: .9rem; color: #dc2626; }
+        .terminal { background: var(--tm-bg, #0f172a); color: var(--tm-text, #e2e8f0); padding: 22px; border-radius: 12px; margin: 18px 0; font-family: 'Consolas', monospace; font-size: .88rem; line-height: 1.9; overflow-x: auto; white-space: pre; border: 1px solid var(--tm-border, #334155); direction: ltr; text-align: left; }
+        .terminal-header { background: var(--tm-header, #1e293b); border: 1px solid var(--tm-border, #334155); border-bottom: none; border-radius: 12px 12px 0 0; padding: 10px 18px; display: flex; align-items: center; gap: 8px; }
+        .terminal-dot { width: 12px; height: 12px; border-radius: 50%; }
+        .terminal-dot.r { background: #ef4444; }
+        .terminal-dot.y { background: #f59e0b; }
+        .terminal-dot.g { background: #22c55e; }
+        .terminal-title { color: var(--tm-title, #94a3b8); font-size: .8rem; margin-right: 8px; font-weight: 600; }
+        .terminal.with-header { border-radius: 0 0 12px 12px; }
+        .vs-container { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 20px 0; }
+        .vs-box { border-radius: 14px; overflow: hidden; border: 2px solid; }
+        .vs-box.before { border-color: #fca5a5; }
+        .vs-box.after { border-color: #6ee7b7; }
+        .vs-header { padding: 12px 20px; font-weight: 800; font-size: .95rem; text-align: center; }
+        .vs-box.before .vs-header { background: #fee2e2; color: #991b1b; }
+        .vs-box.after .vs-header { background: #d1fae5; color: #065f46; }
+        .vs-body { padding: 0; }
+        .vs-body .code-block { margin: 0; border-radius: 0; border: none; font-size: .92rem; }
+        .bottom-nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; background: linear-gradient(135deg, #92400e, #b45309); }
+        .bottom-nav a { display: inline-flex; align-items: center; gap: 8px; padding: 10px 22px; background: rgba(255,255,255,.15); color: white; text-decoration: none; border-radius: 25px; font-size: .9rem; font-weight: 600; transition: background .3s, transform .2s; }
+        .bottom-nav a:hover { background: rgba(255,255,255,.28); transform: translateY(-2px); }
+        .bottom-nav .placeholder { width: 160px; }
+        .footer { background: linear-gradient(135deg, #78350f, #92400e); color: #fcd34d; padding: 25px 40px; text-align: center; font-size: .85rem; line-height: 1.7; }
+        ol { margin-right: 20px; }
+        /* ── Code-theme floating picker ── */
+        #code-theme-picker { position: fixed; bottom: 28px; left: 28px; z-index: 9999; display: flex; flex-direction: column; align-items: flex-start; gap: 10px; font-family: 'Segoe UI', sans-serif; }
+        #theme-toggle-btn { background: linear-gradient(135deg, #92400e, #d97706); color: #fff; border: none; border-radius: 50px; padding: 11px 20px; font-size: .88rem; font-weight: 700; cursor: pointer; box-shadow: 0 4px 18px rgba(217,119,6,.5); letter-spacing: .5px; transition: box-shadow .2s; }
+        #theme-toggle-btn:hover { box-shadow: 0 6px 24px rgba(217,119,6,.7); }
+        #theme-panel { background: #fff; border-radius: 14px; padding: 14px 16px; box-shadow: 0 8px 32px rgba(0,0,0,.25); display: none; flex-direction: column; gap: 8px; min-width: 210px; border: 1px solid #fcd34d; }
+        #theme-panel.open { display: flex; }
+        #theme-panel .tp-label { font-size: .72rem; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: var(--amber-dark); margin-bottom: 4px; }
+        .theme-btn { display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-radius: 8px; border: 2px solid transparent; cursor: pointer; font-size: .88rem; font-weight: 600; transition: border-color .2s, background .2s; background: #f9fafb; color: #1f2937; }
+        .theme-btn:hover { background: #fffbeb; border-color: var(--amber-dark); }
+        .theme-btn.active { border-color: var(--amber-darkest); background: var(--amber-light); }
+        .theme-swatch { width: 28px; height: 28px; border-radius: 6px; border: 1px solid rgba(0,0,0,.15); flex-shrink: 0; }
+        /* ── Projector mode overrides ── */
+        body.projector .nav-breadcrumb { background: var(--amber-light) !important; }
+        body.projector .breadcrumb a { color: var(--amber-darkest) !important; }
+        body.projector .breadcrumb .sep, body.projector .breadcrumb .cur { color: var(--amber-dark) !important; }
+        body.projector .lesson-nav a { background: rgba(217,119,6,.12) !important; color: var(--amber-darkest) !important; border: 1px solid #fcd34d !important; }
+        body.projector .bottom-nav { background: var(--amber-light) !important; }
+        body.projector .bottom-nav a { background: rgba(217,119,6,.12) !important; color: var(--amber-darkest) !important; border: 1px solid #fcd34d !important; }
+        body.projector .footer { background: var(--amber-lighter) !important; color: var(--amber-darkest) !important; }
+        .lang-switch { position: fixed; top: 20px; left: 20px; z-index: 1000; padding: 10px 20px; background: linear-gradient(135deg, var(--amber), var(--orange)); color: white; text-decoration: none; border-radius: 30px; font-weight: 700; font-size: 0.9rem; box-shadow: 0 4px 14px rgba(245,158,11,.4); transition: transform .2s, box-shadow .2s; }
+        .lang-switch:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(245,158,11,.6); }
+        @media (max-width: 768px) { body { padding: 10px; } .hero { padding: 30px 20px; } .hero h1 { font-size: 2rem; } .content { padding: 30px 20px; } .vs-container { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+<a href="02-generic-classes.html" class="lang-switch">English &#127760;</a>
+
+<div class="container">
+
+    <!-- Breadcrumb Navigation -->
+    <nav class="nav-breadcrumb">
+        <div class="breadcrumb">
+            <a href="../index-ar.html">CPCS203</a>
+            <span class="sep">&#8249;</span>
+            <a href="index-ar.html">الوحدة 11</a>
+            <span class="sep">&#8249;</span>
+            <span class="cur">الدرس 2 &mdash; الأصناف المعممة (Generic Classes)</span>
+        </div>
+        <div class="lesson-nav">
+            <a href="01-the-problem-ar.html">الدرس 1 &rarr;</a>
+            <a href="03-generic-methods-ar.html">&larr; الدرس 3</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="module-badge">
+            <span class="num">11</span>
+            الدرس 2 من 5
+        </div>
+        <h1>الأصناف المعممة (Generic Classes) &mdash; مثال الكأس</h1>
+        <p class="subtitle">تصميم صنف واحد يعمل بأمان مع أي نوع</p>
+        <div class="topic-chips">
+            <span class="topic-chip">Glass&lt;T&gt;</span>
+            <span class="topic-chip">معامل النوع (Type Parameter)</span>
+            <span class="topic-chip">بدون تحويل قسري (No Casting)</span>
+            <span class="topic-chip">صنف واحد (One Class)</span>
+        </div>
+    </section>
+
+    <!-- Content -->
+    <div class="content">
+
+        <!-- Section 1: تذكّر المشكلة -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-number">1</span>
+                تذكّر المشكلة
+            </h2>
+
+            <div class="narrative">
+                <p>في الدرس الأول، رأينا أن استخدام <span class="code-inline">Object</span> في البرمجة المعممة يتطلب تحويلًا قسريًا (Casting)، وأن التحويل القسري قد يتسبب في <span class="code-inline">ClassCastException</span> أثناء التشغيل. لم يستطع المترجم مساعدتنا &mdash; فهو لم يرَ أي خطأ. ظهر الخطأ فقط عند تشغيل البرنامج، وعندها كان الأوان قد فات.</p>
+                <p>الآن دعونا نحل هذه المشكلة باستخدام <strong>الأنماط المعممة (Generics)</strong>. نريد من المترجم أن يكون بمثابة المدقق الإملائي &mdash; يكتشف أخطاء الأنواع <em>قبل</em> تشغيل البرنامج.</p>
+            </div>
+        </div>
+
+        <!-- Section 2: تعريف صنف معمم -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-number">2</span>
+                تعريف صنف معمم (Generic Class)
+            </h2>
+
+            <div class="narrative">
+                <p>الفكرة بسيطة. بعد اسم الصنف، نضيف <strong>أقواس زاوية</strong> (Angle Brackets) مع <strong>معامل نوع</strong> (Type Parameter) بداخلها:</p>
+            </div>
+
+            <div class="code-block"><span class="kw">public class</span> <span class="tp">Glass</span>&lt;<span class="tp">T</span>&gt; {
+    <span class="cmt">// T is a placeholder for any type</span>
+}</div>
+
+            <div class="narrative">
+                <p><span class="code-inline">T</span> هو <strong>عنصر نائب</strong> (Placeholder) &mdash; يمثل أي نوع. يمكن أن يكون <span class="code-inline">Juice</span> أو <span class="code-inline">Water</span> أو <span class="code-inline">Honey</span> أو أي شيء آخر. لا نقرر ما هو <span class="code-inline">T</span> عندما <em>نكتب</em> الصنف. بل نقرر ذلك عندما <em>ننشئ كائنًا</em> من هذا الصنف.</p>
+                <p>فكّر فيه مثل سطر فارغ في استمارة. تقول الاستمارة &ldquo;الاسم: ______&rdquo;. الفراغ هو عنصر نائب. تملأه لاحقًا عندما تستخدم الاستمارة فعليًا.</p>
+            </div>
+
+            <h3 class="subsection-title">
+                <span class="sub-badge">اصطلاح</span>
+                تسمية معاملات النوع (Type Parameters)
+            </h3>
+
+            <div class="narrative">
+                <p>وفقًا للاصطلاح، تستخدم Java <strong>حروفًا كبيرة مفردة</strong> لمعاملات النوع. يمكنك استخدام أي اسم (مثل <span class="code-inline">ABC</span> أو <span class="code-inline">MyType</span>)، لكن الاصطلاح هو استخدام حروف مفردة. هذا يوضح فورًا أنك تنظر إلى معامل نوع وليس اسم صنف عادي.</p>
+            </div>
+
+            <div class="info-box">
+                <div class="info-box-title">اصطلاحات معاملات النوع القياسية</div>
+                <p><strong><span class="code-inline">T</span></strong> &mdash; النوع (Type) (الأكثر شيوعًا، معامل عام الاستخدام)</p>
+                <p><strong><span class="code-inline">E</span></strong> &mdash; العنصر (Element) (يُستخدم في مجموعات Java، مثل <span class="code-inline">ArrayList&lt;E&gt;</span>)</p>
+                <p><strong><span class="code-inline">K</span></strong> &mdash; المفتاح (Key) (يُستخدم في الخرائط، مثل <span class="code-inline">Map&lt;K, V&gt;</span>)</p>
+                <p><strong><span class="code-inline">V</span></strong> &mdash; القيمة (Value) (يُستخدم في الخرائط، مثل <span class="code-inline">Map&lt;K, V&gt;</span>)</p>
+                <p><strong><span class="code-inline">N</span></strong> &mdash; العدد (Number)</p>
+                <p><strong><span class="code-inline">S, U</span></strong> &mdash; معاملات النوع الثاني والثالث عندما يكون <span class="code-inline">T</span> مستخدمًا بالفعل</p>
+            </div>
+        </div>
+
+        <!-- Section 3: صنف الكأس — النسخة المعممة -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-number">3</span>
+                صنف الكأس &mdash; النسخة المعممة
+            </h2>
+
+            <div class="narrative">
+                <p>لنكتب الآن صنف <span class="code-inline">Glass</span> الكامل باستخدام الأنماط المعممة. قارن ذهنيًا هذا مع النسخة المبنية على <span class="code-inline">Object</span> من الدرس الأول &mdash; لاحظ كيف تم استبدال كل <span class="code-inline">Object</span> بـ <span class="code-inline">T</span>.</p>
+            </div>
+
+            <span class="code-label">Glass.java</span>
+            <div class="code-block"><span class="kw">public class</span> <span class="tp">Glass</span>&lt;<span class="tp">T</span>&gt; {
+    <span class="kw">private</span> <span class="tp">T</span> liquid;
+
+    <span class="kw">public</span> <span class="mtd">Glass</span>() { }
+
+    <span class="kw">public</span> <span class="mtd">Glass</span>(<span class="tp">T</span> liquid) {
+        <span class="kw">this</span>.liquid = liquid;
+    }
+
+    <span class="kw">public</span> <span class="tp">T</span> <span class="mtd">getLiquid</span>() {
+        <span class="kw">return</span> liquid;
+    }
+
+    <span class="kw">public void</span> <span class="mtd">setLiquid</span>(<span class="tp">T</span> liquid) {
+        <span class="kw">this</span>.liquid = liquid;
+    }
+
+    <span class="tp">@Override</span>
+    <span class="kw">public</span> <span class="tp">String</span> <span class="mtd">toString</span>() {
+        <span class="kw">return</span> <span class="str">"Glass contains: "</span> + liquid;
+    }
+}</div>
+
+            <div class="key-box">
+                <div class="key-box-title">ملاحظة مهمة</div>
+                <p>لاحظ: في كل مكان استخدمنا فيه <span class="code-inline">Object</span> سابقًا، نستخدم الآن <span class="code-inline">T</span>. نوع الحقل هو <span class="code-inline">T</span>. التابع getter يُرجع <span class="code-inline">T</span>. التابع setter يقبل <span class="code-inline">T</span>. النوع لم يعد ثابتًا &mdash; سيُحدَّد عند <strong>إنشاء كائن</strong> من هذا الصنف.</p>
+            </div>
+        </div>
+
+        <!-- Section 4: استخدام الصنف المعمم -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-number">4</span>
+                استخدام الصنف المعمم
+            </h2>
+
+            <div class="narrative">
+                <p>الآن يأتي الجزء الجميل. عندما ننشئ كائنًا من <span class="code-inline">Glass</span>، نحدد النوع الذي يجب أن يكون عليه <span class="code-inline">T</span>. نضع النوع الفعلي داخل أقواس زاوية. شاهد &mdash; لا يوجد تحويل قسري في أي مكان!</p>
+            </div>
+
+            <span class="code-label">TestGlass.java</span>
+            <div class="code-block"><span class="cmt">// Create a glass parameterized for Juice</span>
+<span class="tp">Glass</span>&lt;<span class="tp">Juice</span>&gt; juiceGlass = <span class="kw">new</span> <span class="tp">Glass</span>&lt;&gt;();
+juiceGlass.<span class="mtd">setLiquid</span>(<span class="kw">new</span> <span class="tp">Juice</span>());
+<span class="tp">Juice</span> j = juiceGlass.<span class="mtd">getLiquid</span>();  <span class="cmt">// No casting needed!</span>
+
+<span class="cmt">// Create a glass parameterized for Water</span>
+<span class="tp">Glass</span>&lt;<span class="tp">Water</span>&gt; waterGlass = <span class="kw">new</span> <span class="tp">Glass</span>&lt;&gt;();
+waterGlass.<span class="mtd">setLiquid</span>(<span class="kw">new</span> <span class="tp">Water</span>());
+<span class="tp">Water</span> w = waterGlass.<span class="mtd">getLiquid</span>();  <span class="cmt">// No casting needed!</span>
+
+<span class="cmt">// Create a glass parameterized for Honey</span>
+<span class="tp">Glass</span>&lt;<span class="tp">Honey</span>&gt; honeyGlass = <span class="kw">new</span> <span class="tp">Glass</span>&lt;&gt;();
+honeyGlass.<span class="mtd">setLiquid</span>(<span class="kw">new</span> <span class="tp">Honey</span>());
+<span class="tp">Honey</span> h = honeyGlass.<span class="mtd">getLiquid</span>();  <span class="cmt">// No casting needed!</span></div>
+
+            <div class="success-box">
+                <div class="success-box-title">لا تحويل قسري في أي مكان!</div>
+                <p>المترجم يعرف بالضبط ما النوع الموجود في كل كأس. <span class="code-inline">juiceGlass</span> يحتوي على <span class="code-inline">Juice</span>، و <span class="code-inline">waterGlass</span> يحتوي على <span class="code-inline">Water</span>، و <span class="code-inline">honeyGlass</span> يحتوي على <span class="code-inline">Honey</span>. عند استدعاء <span class="code-inline">getLiquid()</span>، يُرجع النوع الذي حددته بالضبط &mdash; بدون تحويل قسري، بدون تخمين، بدون مخاطر.</p>
+            </div>
+        </div>
+
+        <!-- Section 5: أمان وقت الترجمة -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-number">5</span>
+                أمان وقت الترجمة (Compile-Time Safety) &mdash; مقارنة جنبًا إلى جنب
+            </h2>
+
+            <div class="narrative">
+                <p>دعونا نضع الطريقة القديمة والطريقة الجديدة جنبًا إلى جنب حتى تتمكن من رؤية ما تغير بالضبط.</p>
+            </div>
+
+            <div class="vs-container">
+                <div class="vs-box before">
+                    <div class="vs-header">قبل &mdash; باستخدام Object</div>
+                    <div class="vs-body">
+                        <div class="code-block"><span class="tp">Glass</span> g = <span class="kw">new</span> <span class="tp">Glass</span>();
+g.<span class="mtd">setLiquid</span>(<span class="kw">new</span> <span class="tp">Juice</span>());
+
+<span class="cmt">// Must cast &mdash; risky!</span>
+<span class="tp">Juice</span> j = (<span class="tp">Juice</span>) g.<span class="mtd">getLiquid</span>();</div>
+                    </div>
+                </div>
+                <div class="vs-box after">
+                    <div class="vs-header">بعد &mdash; باستخدام الأنماط المعممة (Generics)</div>
+                    <div class="vs-body">
+                        <div class="code-block"><span class="tp">Glass</span>&lt;<span class="tp">Juice</span>&gt; g = <span class="kw">new</span> <span class="tp">Glass</span>&lt;&gt;();
+g.<span class="mtd">setLiquid</span>(<span class="kw">new</span> <span class="tp">Juice</span>());
+
+<span class="cmt">// No cast needed &mdash; safe!</span>
+<span class="tp">Juice</span> j = g.<span class="mtd">getLiquid</span>();</div>
+                    </div>
+                </div>
+            </div>
+
+            <h3 class="subsection-title">
+                <span class="sub-badge">أمان</span>
+                ماذا لو حاولت استخدام النوع الخاطئ؟
+            </h3>
+
+            <div class="narrative">
+                <p>هنا تتألق الأنماط المعممة حقًا. ماذا يحدث إذا حاول مطور عن طريق الخطأ وضع <span class="code-inline">Water</span> في كأس تم التصريح عنه لـ <span class="code-inline">Juice</span>؟</p>
+            </div>
+
+            <span class="code-label">Compile Error Example</span>
+            <div class="code-block"><span class="tp">Glass</span>&lt;<span class="tp">Juice</span>&gt; juiceGlass = <span class="kw">new</span> <span class="tp">Glass</span>&lt;&gt;();
+juiceGlass.<span class="mtd">setLiquid</span>(<span class="kw">new</span> <span class="tp">Water</span>()); <span class="err">// COMPILE ERROR!</span>
+<span class="cmt">// Error: incompatible types: Water cannot be converted to Juice</span></div>
+
+            <div class="terminal-header">
+                <span class="terminal-dot r"></span>
+                <span class="terminal-dot y"></span>
+                <span class="terminal-dot g"></span>
+                <span class="terminal-title">مخرجات المترجم (Compiler Output)</span>
+            </div>
+            <div class="terminal with-header">$ javac TestGlass.java
+<span style="color:#f87171;">TestGlass.java:3: error: incompatible types: Water cannot be converted to Juice
+        juiceGlass.setLiquid(new Water());
+                             ^
+1 error</span></div>
+
+            <div class="success-box">
+                <div class="success-box-title">تم اكتشافه وقت الترجمة!</div>
+                <p>تم اكتشاف الخطأ في <strong>وقت الترجمة</strong> (Compile Time)، وليس وقت التشغيل! المدقق يعمل. لا يمكنك حتى تشغيل البرنامج حتى تصلح هذا الخطأ. هذا بالضبط ما أردناه.</p>
+            </div>
+
+            <div class="red-box">
+                <div class="red-box-title">مقارنة مع طريقة Object</div>
+                <p>مع صنف Glass القديم المبني على <span class="code-inline">Object</span>، كان نفس الخطأ سيُترجم <strong>بنجاح تام</strong>. لم يكن المترجم ليرى أي خطأ. ثم أثناء التشغيل &mdash; <strong>انهيار!</strong> يظهر <span class="code-inline">ClassCastException</span> من العدم. مع الأنماط المعممة، يتم القضاء على هذه الفئة الكاملة من الأخطاء.</p>
+            </div>
+        </div>
+
+        <!-- Section 6: ملف صنف واحد -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-number">6</span>
+                ملف صنف واحد (One .class File) &mdash; سؤال طالب
+            </h2>
+
+            <div class="narrative">
+                <p>يرفع طالب ذكي يده ويسأل: <em>&ldquo;يا دكتور، أنشأنا <span class="code-inline">Glass&lt;Juice&gt;</span> و <span class="code-inline">Glass&lt;Water&gt;</span> و <span class="code-inline">Glass&lt;Honey&gt;</span>. عندما نترجم، هل نحصل على ثلاثة ملفات <span class="code-inline">.class</span> منفصلة؟&rdquo;</em></p>
+                <p>سؤال ممتاز! <strong>لا</strong> &mdash; تحصل فقط على ملف <strong>واحد</strong>: <span class="code-inline">Glass.class</span>. ليس ثلاثة. واحد فقط.</p>
+                <p>قد يبدو هذا مفاجئًا. إذا كان هناك ملف صنف واحد فقط، فكيف تحافظ Java على فصل الأنواع؟ هذا سؤال متابعة رائع، وسنجيب عليه في الدرس الخامس عندما ندرس <strong>محو النوع (Type Erasure)</strong>.</p>
+            </div>
+
+            <div class="info-box">
+                <div class="info-box-title">ملف <span class="code-inline">.class</span> واحد لجميع معاملات النوع</div>
+                <p>بغض النظر عن عدد معاملات النوع المختلفة التي تستخدمها &mdash; <span class="code-inline">Glass&lt;Juice&gt;</span> أو <span class="code-inline">Glass&lt;Water&gt;</span> أو <span class="code-inline">Glass&lt;String&gt;</span> أو <span class="code-inline">Glass&lt;Integer&gt;</span> &mdash; ينتج المترجم ملف <span class="code-inline">Glass.class</span> <strong>واحدًا</strong> فقط. يتم فحص الأنواع في وقت الترجمة، ثم تُزال معلومات النوع. سنتعلم بالضبط كيف يعمل هذا في الدرس الخامس (محو النوع - Type Erasure).</p>
+            </div>
+        </div>
+
+        <!-- Section 7: النقاط الرئيسية -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-number">7</span>
+                النقاط الرئيسية
+            </h2>
+
+            <div class="key-box">
+                <div class="key-box-title">ما يجب أن تتذكره من هذا الدرس</div>
+                <ol style="margin-right: 20px; line-height: 2.2;">
+                    <li>أضف <span class="code-inline">&lt;T&gt;</span> بعد اسم الصنف لجعله معممًا.</li>
+                    <li>استخدم <span class="code-inline">T</span> في كل مكان كنت ستستخدم فيه <span class="code-inline">Object</span>.</li>
+                    <li>عند إنشاء كائن، حدد النوع الفعلي: <span class="code-inline">new Glass&lt;Juice&gt;()</span></li>
+                    <li>لا حاجة للتحويل القسري &mdash; المترجم يفرض أمان الأنواع.</li>
+                    <li>الأنواع الخاطئة تُكتشف في <strong>وقت الترجمة</strong> (Compile Time)، وليس وقت التشغيل.</li>
+                    <li>يُنتَج ملف <span class="code-inline">.class</span> <strong>واحد</strong> فقط بغض النظر عن معاملات النوع.</li>
+                    <li>الاصطلاح: <span class="code-inline">T</span> (النوع)، <span class="code-inline">E</span> (العنصر)، <span class="code-inline">K</span> (المفتاح)، <span class="code-inline">V</span> (القيمة).</li>
+                </ol>
+            </div>
+
+            <div class="success-box">
+                <div class="success-box-title">ما التالي؟</div>
+                <p>لقد أنشأنا <em>صنفًا</em> معممًا. لكن ماذا لو لم تكن بحاجة إلى صنف كامل &mdash; ماذا لو كنت تحتاج فقط إلى <em>تابع</em> واحد يعمل مع أي نوع؟ في الدرس التالي، سنتعلم عن <strong>التوابع المعممة (Generic Methods)</strong>.</p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+        <a href="03-generic-methods-ar.html">الدرس 3: التوابع المعممة &larr;</a>
+        <a href="01-the-problem-ar.html">&rarr; الدرس 1: المشكلة</a>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p><strong>CPCS203</strong> &mdash; البرمجة كائنية التوجه (Object-Oriented Programming)</p>
+        <p>الوحدة 11: الأنماط المعممة (Generics) &mdash; الدرس 2: الأصناف المعممة (Generic Classes)</p>
+        <p>جامعة الملك عبدالعزيز</p>
+        <p>إعداد د. عبدالمحسن المعلوي</p>
+    </footer>
+
+</div>
+
+
+    <!-- Code Theme Picker -->
+    <div id="code-theme-picker">
+        <div id="theme-panel">
+            <div class="tp-label">سمة كتل الكود</div>
+            <button class="theme-btn active" onclick="setCodeTheme('black')" id="btn-black">
+                <span class="theme-swatch" style="background:#000;"></span> أسود (افتراضي)
+            </button>
+            <button class="theme-btn" onclick="setCodeTheme('vscode')" id="btn-vscode">
+                <span class="theme-swatch" style="background:#1e1e1e;"></span> VS Code داكن
+            </button>
+            <button class="theme-btn" onclick="setCodeTheme('white')" id="btn-white">
+                <span class="theme-swatch" style="background:#fff;border:1px solid #ccc;"></span> أبيض (بروجكتور)
+            </button>
+            <button class="theme-btn" onclick="setCodeTheme('cream')" id="btn-cream">
+                <span class="theme-swatch" style="background:#fefce8;border:1px solid #ccc;"></span> كريمي (بروجكتور)
+            </button>
+        </div>
+        <button id="theme-toggle-btn" onclick="document.getElementById('theme-panel').classList.toggle('open')">سمة الكود</button>
+    </div>
+    <script>
+const CODE_THEMES={black:{bg:'#000000',text:'#ffffff',comment:'#a0aec0',keyword:'#ff79c6',cls:'#8be9fd',method:'#50fa7b',string:'#f1fa8c',number:'#bd93f9',tmBg:'#0f172a',tmHeader:'#1e293b',tmBorder:'#334155',tmText:'#4ade80',tmTitle:'#94a3b8',projector:false},vscode:{bg:'#1e1e1e',text:'#ffffff',comment:'#57c757',keyword:'#569cd6',cls:'#4ec9b0',method:'#dcdcaa',string:'#ce9178',number:'#b5cea8',tmBg:'#1e1e1e',tmHeader:'#2d2d2d',tmBorder:'#444',tmText:'#ffffff',tmTitle:'#9cdcfe',projector:false},white:{bg:'#ffffff',text:'#000000',comment:'#1d4ed8',keyword:'#dc2626',cls:'#16a34a',method:'#0369a1',string:'#b45309',number:'#7c3aed',tmBg:'#f1f5f9',tmHeader:'#e2e8f0',tmBorder:'#94a3b8',tmText:'#000000',tmTitle:'#1d4ed8',projector:true},cream:{bg:'#fefce8',text:'#000000',comment:'#1d4ed8',keyword:'#dc2626',cls:'#15803d',method:'#0369a1',string:'#b45309',number:'#7c3aed',tmBg:'#fefce8',tmHeader:'#fef08a',tmBorder:'#a16207',tmText:'#000000',tmTitle:'#0369a1',projector:true}};
+function _lum(hex){hex=hex.replace('#','');if(hex.length===3)hex=hex.split('').map(c=>c+c).join('');if(hex.length!==6)return .5;const r=parseInt(hex.slice(0,2),16),g=parseInt(hex.slice(2,4),16),b=parseInt(hex.slice(4,6),16);return(.299*r+.587*g+.114*b)/255;}
+function _lighten(hex){hex=hex.replace('#','');if(hex.length===3)hex=hex.split('').map(c=>c+c).join('');const r=parseInt(hex.slice(0,2),16),g=parseInt(hex.slice(2,4),16),b=parseInt(hex.slice(4,6),16);const lr=Math.round(r*.1+255*.9),lg=Math.round(g*.1+255*.9),lb=Math.round(b*.1+255*.9);return'#'+[lr,lg,lb].map(c=>c.toString(16).padStart(2,'0')).join('');}
+const _backup=new Map();
+function _applyProjectorInline(enable){if(enable){document.querySelectorAll('[style]').forEach(el=>{const orig=el.getAttribute('style');_backup.set(el,orig);let s=orig;s=s.replace(/(background(?:-color)?\s*:[^;}"']*?)(#[0-9a-fA-F]{6}|#[0-9a-fA-F]{3})\b/gi,(m,pre,hex)=>_lum(hex)<.28?pre+_lighten(hex):m);s=s.replace(/((?:^|;|\s)color\s*:\s*)(#[0-9a-fA-F]{6}|#[0-9a-fA-F]{3})\b/gi,(m,pre,hex)=>_lum(hex)>.72?pre+'#1f2937':m);el.setAttribute('style',s);});}else{_backup.forEach((orig,el)=>el.setAttribute('style',orig));_backup.clear();}}
+function setCodeTheme(name){const t=CODE_THEMES[name],r=document.documentElement.style;r.setProperty('--cb-bg',t.bg);r.setProperty('--cb-text',t.text);r.setProperty('--cb-comment',t.comment);r.setProperty('--cb-keyword',t.keyword);r.setProperty('--cb-class',t.cls);r.setProperty('--cb-method',t.method);r.setProperty('--cb-string',t.string);r.setProperty('--cb-number',t.number);r.setProperty('--tm-bg',t.tmBg);r.setProperty('--tm-header',t.tmHeader);r.setProperty('--tm-border',t.tmBorder);r.setProperty('--tm-text',t.tmText);r.setProperty('--tm-title',t.tmTitle);const wasProjector=document.body.classList.contains('projector');if(t.projector){if(!wasProjector)_applyProjectorInline(true);document.body.classList.add('projector');}else{if(wasProjector)_applyProjectorInline(false);document.body.classList.remove('projector');}document.querySelectorAll('.theme-btn').forEach(b=>b.classList.remove('active'));document.getElementById('btn-'+name).classList.add('active');document.getElementById('theme-panel').classList.remove('open');}
+    </script>
+
+</body>
+</html>
