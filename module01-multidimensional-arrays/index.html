@@ -222,6 +222,47 @@
             border: 2px solid var(--warning-color);
         }
 
+        .lesson-number.placement {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            color: var(--danger-color);
+            border: 2px solid var(--danger-color);
+            font-size: 1.4rem;
+        }
+
+        /* Placement test card: visually highlighted "start here" banner */
+        .lesson-card.placement-card {
+            background: linear-gradient(135deg, #fdf2f8, #faf5ff);
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        .lesson-card.placement-card:hover {
+            background: linear-gradient(135deg, #fce7f3, #f3e8ff);
+        }
+
+        .lesson-type.placement {
+            color: var(--danger-color);
+        }
+
+        .placement-flag {
+            display: inline-block;
+            background: var(--danger-color);
+            color: white;
+            font-size: 0.65rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 3px 8px;
+            border-radius: 6px;
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+
+        .lesson-tag.placement-tag {
+            background: #fee2e2;
+            color: var(--danger-color);
+            font-weight: 600;
+        }
+
         .lesson-content {
             flex: 1;
         }
@@ -426,7 +467,7 @@
         <div class="progress-section">
             <div class="progress-header">
                 <span>Module Progress</span>
-                <span>7 Lessons</span>
+                <span>Placement Test + 7 Lessons</span>
             </div>
             <div class="progress-bar">
                 <div class="progress-fill" style="width: 100%;"></div>
@@ -440,10 +481,44 @@
         <div class="learning-path">
             <div class="path-header">
                 <div class="path-title">Learning Path</div>
-                <div class="path-count">7 Lessons</div>
+                <div class="path-count">Placement Test + 7 Lessons</div>
             </div>
 
             <div class="lessons-list">
+                <!-- Lesson 0: Placement Test (take before starting) -->
+                <a href="00-placement-test.html" class="lesson-card placement-card">
+                    <div class="lesson-number placement">&#129514;</div>
+                    <div class="lesson-content">
+                        <div class="lesson-type placement">Placement Test <span class="placement-flag">Start Here First</span></div>
+                        <div class="lesson-title">Fundamentals Check: Primitives, Arrays &amp; References</div>
+                        <div class="lesson-description">
+                            30 "What is the output?" questions from CPCS202, easy to hard: primitive values, array declare/create/initialize, references &amp; aliasing, and pass-by-value vs pass-by-reference. Get an instant diagnostic report before the lecture.
+                        </div>
+                    </div>
+                    <div class="lesson-meta">
+                        <span class="lesson-tag placement-tag">30 Questions</span>
+                        <span class="lesson-tag">Diagnostic Report</span>
+                        <span class="lesson-arrow">&#8594;</span>
+                    </div>
+                </a>
+
+                <!-- Placement Test Solutions (companion tutorial) -->
+                <a href="00-placement-test-solutions.html" class="lesson-card placement-card">
+                    <div class="lesson-number placement">&#128214;</div>
+                    <div class="lesson-content">
+                        <div class="lesson-type placement">Placement Test — Solutions <span class="placement-flag">Study Guide</span></div>
+                        <div class="lesson-title">All 30 Questions Explained, Story by Story</div>
+                        <div class="lesson-description">
+                            Every placement-test question explained in very simple language with memory diagrams and analogies — one page each. Printable in A4. Read this after taking the test.
+                        </div>
+                    </div>
+                    <div class="lesson-meta">
+                        <span class="lesson-tag placement-tag">30 Explanations</span>
+                        <span class="lesson-tag">Printable A4</span>
+                        <span class="lesson-arrow">&#8594;</span>
+                    </div>
+                </a>
+
                 <!-- Lesson 1: 1D Arrays Introduction -->
                 <a href="01-1d-arrays.html" class="lesson-card">
                     <div class="lesson-number tutorial">1</div>
@@ -604,8 +679,8 @@
                 <span class="arrow">&#8592;</span>
                 <span>Back to Course</span>
             </a>
-            <a href="01-1d-arrays.html" class="nav-btn">
-                <span>Start Learning</span>
+            <a href="00-placement-test.html" class="nav-btn">
+                <span>Start with Placement Test</span>
                 <span class="arrow">&#8594;</span>
             </a>
         </nav>

@@ -1,0 +1,2110 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اختبار تحديد المستوى — مشروح خطوة بخطوة | CPCS203 الوحدة 01</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;500;600;700&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        :root {
+            --primary-color:#2563eb; --primary-light:#3b82f6; --primary-dark:#1d4ed8;
+            --secondary-color:#7c3aed; --success-color:#059669; --warning-color:#d97706;
+            --danger-color:#dc2626; --dark-color:#1f2937; --light-color:#f3f4f6;
+            --gray-color:#6b7280; --teal-color:#0d9488; --pink-color:#db2777;
+        }
+        body { font-family:"Noto Naskh Arabic","Cairo","Amiri","Segoe UI",Tahoma,Arial,sans-serif; line-height:2; color:var(--dark-color); background:linear-gradient(135deg,#1e40af 0%,#3b82f6 50%,#7c3aed 100%); min-height:100vh; padding:20px; }
+
+        /* ═══ Arabic / RTL adjustments (code & diagrams stay LTR) ═══ */
+        .code-block, .stmt-line, .ptrdiag, .a2, .compare-row, .arr-cells, pre, code, .tag-out, .addr-chip { direction:ltr; }
+        .code-block { text-align:left; }
+        .narrative, .stmt-body, .stmt-body p, .key-concept, .important-box, .info-box, .success-box, .analogy-box, .step-body, li { text-align:right; }
+        /* move the coloured accent bar to the RIGHT for RTL */
+        .narrative { border-left:none; border-right:5px solid var(--primary-color); border-radius:15px 0 0 15px; }
+        .key-concept { border-left:none; border-right:5px solid var(--warning-color); border-radius:10px 0 0 10px; }
+        .important-box { border-left:none; border-right:5px solid var(--danger-color); border-radius:10px 0 0 10px; }
+        .info-box { border-left:none; border-right:5px solid var(--primary-color); border-radius:10px 0 0 10px; }
+        .success-box { border-left:none; border-right:5px solid var(--success-color); border-radius:10px 0 0 10px; }
+        .compare-col.good { border-left:none; }
+        ul, ol { padding-right:1.5rem; padding-left:0; }
+        code { font-family:"Courier New",monospace; }
+        .toc-grid a { border-left:none !important; border-right:4px solid var(--gray-color); }
+        .stmt-head { flex-direction:row; }
+        .a2-dimnote, .pv-caption { text-align:right; }
+        .en { direction:ltr; unicode-bidi:embed; font-family:"Courier New",monospace; }
+        .container { max-width:1000px; margin:0 auto; background:white; border-radius:20px; box-shadow:0 25px 50px -12px rgba(0,0,0,.25); overflow:hidden; }
+        .header { background:linear-gradient(135deg,var(--primary-color),var(--secondary-color)); color:white; padding:45px 40px; text-align:center; }
+        .header .module-badge { display:inline-block; background:rgba(255,255,255,.2); border:2px solid rgba(255,255,255,.4); border-radius:30px; padding:6px 20px; font-size:.85rem; letter-spacing:2px; text-transform:uppercase; margin-bottom:18px; }
+        .header h1 { font-size:2.4rem; margin-bottom:10px; text-shadow:2px 2px 4px rgba(0,0,0,.2); }
+        .header .subtitle { font-size:1.1rem; opacity:.92; margin-bottom:20px; }
+        .header .topics-pill-row { display:flex; justify-content:center; flex-wrap:wrap; gap:10px; margin-top:10px; }
+        .topic-pill { background:rgba(255,255,255,.18); border:1px solid rgba(255,255,255,.35); border-radius:20px; padding:5px 16px; font-size:.82rem; }
+
+        .toc { background:linear-gradient(135deg,#f0f4ff,#e8ecff); border-left:5px solid var(--primary-color); margin:30px 40px; border-radius:0 15px 15px 0; padding:25px 30px; }
+        .toc-title { font-size:1.1rem; font-weight:bold; color:var(--primary-color); margin-bottom:14px; }
+        .toc-legend { display:flex; flex-wrap:wrap; gap:14px; margin-bottom:16px; font-size:.82rem; }
+        .toc-legend span { display:inline-flex; align-items:center; gap:6px; }
+        .toc-dot { width:12px; height:12px; border-radius:50%; display:inline-block; }
+        .toc-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); gap:8px; }
+        .toc-grid a { display:block; text-decoration:none; color:var(--dark-color); font-size:.85rem; padding:7px 12px; border-radius:8px; background:white; border:1px solid #e2e8f0; border-left:4px solid var(--gray-color); transition:transform .15s,box-shadow .15s; }
+        .toc-grid a:hover { transform:translateX(3px); box-shadow:0 3px 10px rgba(0,0,0,.08); }
+        .toc-grid a b { color:var(--gray-color); }
+
+        .content { padding:10px 40px 40px; }
+
+        /* one question = one printable page */
+        .qsection { margin-bottom:55px; padding-top:10px; }
+        .q-head { display:flex; align-items:center; gap:14px; margin-bottom:6px; }
+        .q-num { color:white; width:64px; height:46px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:1.15rem; font-weight:bold; flex-shrink:0; letter-spacing:1px; }
+        .q-cat { font-size:.72rem; font-weight:bold; text-transform:uppercase; letter-spacing:1.5px; padding:5px 12px; border-radius:20px; }
+        .q-title { font-size:1.5rem; margin:6px 0 18px; padding-bottom:10px; border-bottom:3px solid; font-weight:bold; }
+
+        /* category theming */
+        .cat-prim .q-num{background:linear-gradient(135deg,#2563eb,#3b82f6)} .cat-prim .q-cat{background:#dbeafe;color:#1d4ed8} .cat-prim .q-title{border-color:#2563eb;color:#1d4ed8}
+        .cat-arr  .q-num{background:linear-gradient(135deg,#7c3aed,#a78bfa)} .cat-arr .q-cat{background:#ede9fe;color:#6d28d9}  .cat-arr .q-title{border-color:#7c3aed;color:#6d28d9}
+        .cat-ref  .q-num{background:linear-gradient(135deg,#db2777,#f472b6)} .cat-ref .q-cat{background:#fce7f3;color:#be185d}  .cat-ref .q-title{border-color:#db2777;color:#be185d}
+        .cat-pass .q-num{background:linear-gradient(135deg,#059669,#0d9488)} .cat-pass .q-cat{background:#d1fae5;color:#047857}  .cat-pass .q-title{border-color:#059669;color:#047857}
+
+        .narrative { background:linear-gradient(135deg,#f0f4ff,#e8ecff); border-left:5px solid var(--primary-color); padding:20px 26px; margin:18px 0; border-radius:0 15px 15px 0; font-size:1rem; line-height:1.95; }
+        .narrative p { margin-bottom:12px; } .narrative p:last-child { margin-bottom:0; }
+        .key-concept { background:linear-gradient(135deg,#fef3c7,#fde68a); border-left:5px solid var(--warning-color); padding:18px 24px; margin:18px 0; border-radius:0 10px 10px 0; }
+        .key-concept-title { font-weight:bold; color:var(--warning-color); margin-bottom:8px; font-size:1.02rem; }
+        .important-box { background:linear-gradient(135deg,#fee2e2,#fecaca); border-left:5px solid var(--danger-color); padding:18px 24px; margin:18px 0; border-radius:0 10px 10px 0; }
+        .important-box-title { font-weight:bold; color:var(--danger-color); margin-bottom:8px; font-size:1.02rem; }
+        .info-box { background:linear-gradient(135deg,#dbeafe,#bfdbfe); border-left:5px solid var(--primary-color); padding:18px 24px; margin:18px 0; border-radius:0 10px 10px 0; }
+        .info-box-title { font-weight:bold; color:var(--primary-color); margin-bottom:8px; font-size:1.02rem; }
+        .success-box { background:linear-gradient(135deg,#d1fae5,#a7f3d0); border-left:5px solid var(--success-color); padding:18px 24px; margin:18px 0; border-radius:0 10px 10px 0; }
+        .success-box-title { font-weight:bold; color:var(--success-color); margin-bottom:8px; font-size:1.08rem; }
+        .analogy-box { background:linear-gradient(135deg,#f0fdf4,#dcfce7); border:2px dashed var(--success-color); border-radius:15px; padding:22px; margin:18px 0; }
+        .analogy-title { font-weight:bold; color:var(--success-color); font-size:1.02rem; margin-bottom:10px; }
+
+        .code-block { background:#1e1e1e; color:#d4d4d4; padding:20px 22px; border-radius:10px; margin:0 0 18px; overflow-x:auto; font-family:'Consolas','Monaco',monospace; font-size:.94rem; line-height:1.7; white-space:pre; }
+        .code-block .keyword{color:#569cd6} .code-block .type{color:#4ec9b0} .code-block .string{color:#ce9178} .code-block .number{color:#b5cea8} .code-block .comment{color:#6a9955;font-style:italic} .code-block .method{color:#dcdcaa} .code-block .cls{color:#4ec9b0} .code-block .out{color:#f8f8f8}
+
+        /* memory visualization */
+        .memory-vis { display:flex; justify-content:center; align-items:center; flex-wrap:wrap; gap:22px; margin:22px 0; }
+        .mem-arrow { font-size:1.8rem; color:var(--gray-color); }
+        .mem-zone-label { font-size:.7rem; text-transform:uppercase; letter-spacing:1px; color:var(--gray-color); text-align:center; margin-bottom:6px; font-weight:bold; }
+        .var-box { border:2px solid #bfdbfe; border-radius:10px; background:white; min-width:120px; box-shadow:0 2px 8px rgba(0,0,0,.05); }
+        .var-box .vb-name { background:#eff6ff; color:#1d4ed8; text-align:center; font-family:'Consolas',monospace; padding:7px; font-weight:bold; border-bottom:1px solid #dbeafe; }
+        .var-box .vb-val { padding:12px; text-align:center; font-family:'Consolas',monospace; font-size:1.3rem; font-weight:bold; color:#1e3a8a; }
+        .var-box.vb-green{border-color:#bbf7d0} .var-box.vb-green .vb-name{background:#f0fdf4;color:#047857;border-bottom-color:#dcfce7}
+        .var-box.vb-pink{border-color:#fbcfe8} .var-box.vb-pink .vb-name{background:#fdf2f8;color:#be185d;border-bottom-color:#fce7f3}
+        .var-box.vb-gray{border-color:#e2e8f0} .var-box.vb-gray .vb-name{background:#f8fafc;color:#64748b;border-bottom-color:#eef2f6}
+
+        .arr-obj { border:2px solid #ddd6fe; border-radius:10px; background:white; box-shadow:0 2px 8px rgba(0,0,0,.05); overflow:hidden; }
+        .arr-obj .ao-title { background:#f5f3ff; color:#6d28d9; font-family:'Consolas',monospace; font-size:.75rem; text-align:center; padding:5px 10px; border-bottom:1px solid #ede9fe; }
+        .arr-cells { display:flex; }
+        .arr-cell { border-right:1px solid #e5e7eb; padding:10px 0; width:52px; text-align:center; font-family:'Consolas',monospace; }
+        .arr-cell:last-child { border-right:none; }
+        .arr-cell .idx { display:block; font-size:.66rem; color:var(--gray-color); margin-bottom:3px; }
+        .arr-cell .val { font-size:1.15rem; font-weight:bold; color:#6d28d9; }
+        .arr-cell.changed { background:#fef4f4; } .arr-cell.changed .val{ color:#c0504d; }
+
+        .ptr { font-family:'Consolas',monospace; color:var(--pink-color); font-weight:bold; }
+        .tag-out { display:inline-block; background:#1e1e1e; color:#4ade80; font-family:'Consolas',monospace; padding:2px 10px; border-radius:6px; font-weight:bold; }
+
+        /* ── Stack / Heap "scene" for reference diagrams ── */
+        .scene { display:flex; align-items:stretch; margin:24px 0; border:1.5px solid #e8edf3; border-radius:14px; overflow:hidden; box-shadow:0 2px 10px rgba(0,0,0,.04); }
+        .scene .zone { padding:16px 18px; display:flex; flex-direction:column; }
+        .scene .zone.stack { background:#f7faff; border-right:2px dashed #dbe2ea; min-width:210px; }
+        .scene .zone.heap { background:#fdfbff; flex:1; }
+        .zone-title { font-size:.72rem; font-weight:bold; letter-spacing:1.5px; text-transform:uppercase; margin-bottom:6px; text-align:center; }
+        .zone-sub { font-size:.66rem; color:var(--gray-color); text-align:center; margin-bottom:14px; font-style:italic; }
+        .zone.stack .zone-title { color:#3b82f6; } .zone.heap .zone-title { color:#8b5cf6; }
+        .zone-body { display:flex; flex-direction:column; gap:18px; justify-content:center; flex:1; }
+        .point-arrow { font-family:'Consolas',monospace; color:#be185d; font-weight:bold; text-align:center; font-size:.82rem; }
+
+        /* address chip — the "reference value" a variable stores */
+        .addr-chip { display:inline-block; background:#fdf2f8; color:#be185d; border:1px solid #f9c9de; border-radius:6px; padding:1px 8px; font-family:'Consolas',monospace; font-weight:bold; font-size:.95rem; }
+        .var-box .vb-val .addr-chip { font-size:1rem; }
+        .var-box.vb-empty .vb-val { color:#9ca3af; font-style:italic; font-size:.9rem; }
+
+        /* a heap array nobody points to anymore → garbage */
+        .arr-obj.garbage { opacity:.6; }
+        .arr-obj.garbage .ao-title { background:#f1f5f9; color:#64748b; border-bottom-color:#e2e8f0; }
+        .garbage-note { color:#6b7280; font-style:italic; font-size:.78rem; text-align:center; margin-top:6px; }
+        .heap-addr-tag { font-family:'Consolas',monospace; font-size:.7rem; color:#8b5cf6; font-weight:bold; text-align:center; margin-bottom:4px; }
+        .steps { counter-reset:step; margin:18px 0; display:flex; flex-direction:column; gap:12px; }
+        .step { display:flex; gap:14px; align-items:flex-start; background:#fbfcfe; border:1.5px solid #eef1f6; border-radius:12px; padding:14px 18px; }
+        .step::before { counter-increment:step; content:counter(step); background:#f5f3ff; color:#7c3aed; border:1.5px solid #ddd6fe; width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:bold; flex-shrink:0; }
+        .step-body { flex:1; }
+        .step-title { font-weight:bold; color:#7c3aed; margin-bottom:3px; }
+
+        /* ── statement-by-statement teaching blocks ── */
+        .stmt { border:1.5px solid #e6ebf2; border-radius:12px; margin:20px 0; overflow:hidden; background:white; }
+        .stmt-head { background:#f5f8fc; padding:11px 16px; border-bottom:1.5px solid #e6ebf2; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+        .stmt-badge { background:#eef2ff; color:#4f46e5; border:1px solid #e0e7ff; border-radius:20px; padding:3px 12px; font-size:.72rem; font-weight:bold; letter-spacing:.5px; text-transform:uppercase; }
+        .stmt-line { font-family:'Consolas',monospace; font-weight:bold; color:#0f172a; font-size:.95rem; }
+        .stmt-body { padding:16px 20px; }
+        .stmt-body p { margin-bottom:10px; } .stmt-body p:last-child { margin-bottom:0; }
+
+        /* ── clean pointer diagram: variable → array ── */
+        .ptrdiag { display:flex; align-items:center; justify-content:center; gap:0; flex-wrap:wrap; margin:16px 0; padding:18px 14px; background:#fbfcfe; border:1px dashed #d8e0ea; border-radius:12px; }
+        .ptrdiag.two { display:grid; grid-template-columns:auto auto auto; grid-template-rows:auto auto; align-items:center; justify-items:center; column-gap:0; row-gap:16px; }
+        .ptrdiag.two .pd-array { grid-column:3; grid-row:1 / span 2; }
+        .pvar { border:2px solid #cddcf5; border-radius:9px; background:white; min-width:104px; box-shadow:0 1px 4px rgba(0,0,0,.04); }
+        .pvar .pv-name { background:#eff5ff; color:#1d4ed8; font-family:'Consolas',monospace; font-weight:bold; padding:6px; text-align:center; border-bottom:1px solid #dce9fb; }
+        .pv-slot { padding:11px 10px; text-align:center; font-family:'Consolas',monospace; font-weight:bold; font-size:.92rem; }
+        .pv-slot.isnull { color:#94a3b8; font-style:italic; font-weight:normal; }
+        .pv-slot.isref { color:#be185d; }
+        .pv-caption { font-size:.68rem; color:var(--gray-color); text-align:center; margin-top:6px; font-style:italic; }
+        /* the drawn arrow */
+        .pconn { display:flex; align-items:center; }
+        .pconn .pline { width:54px; height:2.5px; background:#f4a6c6; }
+        .pconn .phead { width:0; height:0; border-left:9px solid #f4a6c6; border-top:6px solid transparent; border-bottom:6px solid transparent; }
+        .ptrdiag.two .pconn { padding:0 4px; }
+        .pd-label { font-size:.7rem; color:#be185d; font-weight:bold; text-align:center; font-family:'Consolas',monospace; }
+
+        /* ── 2D array: grid variable → points DOWN onto the outer column (1st dim) → each cell points right to a SEPARATE row (2nd dim) ── */
+        .a2 { display:flex; flex-direction:column; align-items:flex-start; margin:18px 0; padding:20px 18px; background:#fbfcfe; border:1px dashed #d8e0ea; border-radius:12px; overflow-x:auto; }
+        .a2-head { display:flex; flex-direction:column; align-items:center; width:76px; margin-left:29px; }
+        .a2-head .pvar { min-width:0; width:100%; }
+        .a2-down { color:#be185d; font-size:1.5rem; line-height:1.15; }
+        .a2-lines { display:flex; flex-direction:column; }
+        .a2-line { display:flex; align-items:stretch; }
+        .a2-index { display:flex; align-items:center; justify-content:flex-end; width:22px; margin-right:7px; font-family:'Consolas',monospace; font-size:.76rem; color:var(--gray-color); font-weight:bold; }
+        .a2-outcell { width:76px; box-sizing:border-box; display:flex; align-items:center; justify-content:center; padding:8px; background:#f5f3ff; border:2px solid #ddd6fe; border-top-width:1px; border-bottom-width:1px; font-family:'Consolas',monospace; }
+        .a2-line:first-child .a2-outcell { border-top-width:2px; border-radius:9px 9px 0 0; }
+        .a2-line:last-child .a2-outcell { border-bottom-width:2px; border-radius:0 0 9px 9px; }
+        .a2-arrow { display:flex; align-items:center; margin:0 12px; color:#f0a4c4; font-weight:bold; font-size:1.15rem; }
+        .a2-rowlabel { display:flex; align-items:center; margin-left:12px; font-size:.72rem; color:var(--gray-color); font-style:italic; }
+        .a2-dimnote { font-size:.72rem; color:var(--gray-color); margin-top:12px; line-height:1.9; }
+        .a2-dimnote b { color:#7c3aed; }
+        /* reference-value labels + separate arrays scattered in memory */
+        .a2-outerwrap { display:flex; flex-direction:column; align-items:flex-start; }
+        .a2-addr { font-family:'Consolas',monospace; font-size:.64rem; font-weight:bold; color:#be185d; text-align:center; letter-spacing:.5px; }
+        .a2-addr-outer { width:76px; margin-left:29px; margin-bottom:3px; }
+        .a2-rowwrap { display:flex; flex-direction:column; align-self:center; margin:16px 0; }
+        .a2-rowcells { display:flex; align-self:center; margin:0; border:2px solid #c9bbf3; border-radius:8px; overflow:hidden; box-shadow:0 2px 7px rgba(0,0,0,.08); }
+        .a2-rowwrap .a2-addr { margin-bottom:3px; }
+
+        .compare-row { display:flex; gap:18px; flex-wrap:wrap; margin:18px 0; }
+        .compare-col { flex:1; min-width:230px; border-radius:12px; padding:16px 18px; }
+        .compare-col.good { background:linear-gradient(135deg,#d1fae5,#a7f3d0); border:2px solid var(--success-color); }
+        .compare-col.bad  { background:linear-gradient(135deg,#fee2e2,#fecaca); border:2px solid var(--danger-color); }
+        .compare-col h4 { margin-bottom:8px; }
+        .compare-col.good h4{color:var(--success-color)} .compare-col.bad h4{color:var(--danger-color)}
+
+        code { background:#eef2ff; color:#4338ca; padding:1px 6px; border-radius:5px; font-family:'Consolas',monospace; font-size:.9em; }
+
+        .nav-buttons { display:flex; justify-content:space-between; padding:30px 40px; background:var(--light-color); border-top:2px solid #e5e7eb; }
+        .nav-btn { padding:9px 16px; border-radius:10px; text-decoration:none; font-weight:bold; font-size:.82rem; white-space:nowrap; transition:transform .2s,box-shadow .2s; }
+        .nav-btn:hover { transform:translateY(-2px); box-shadow:0 4px 12px rgba(0,0,0,.15); }
+        .nav-btn.prev { background:white; color:var(--primary-color); border:2px solid var(--primary-color); }
+        .nav-btn.next { background:linear-gradient(135deg,var(--primary-color),var(--secondary-color)); color:white; }
+        .nav-btn.home { background:white; color:var(--secondary-color); border:2px solid var(--secondary-color); }
+
+        @media(max-width:600px){ .header h1{font-size:1.6rem} .content{padding:10px 18px 30px} .toc{margin:20px} .nav-buttons{flex-direction:column;gap:12px} }
+
+        /* ═══ PRINT / A4 ═══ */
+        @media print {
+            body { background:white; padding:0; }
+            .container { box-shadow:none; border-radius:0; max-width:100%; }
+            .no-print { display:none !important; }
+            .qsection { page-break-before:always; break-before:page; margin-bottom:0; padding-top:0; }
+            .qsection:first-of-type { page-break-before:auto; }
+            .header, .toc { page-break-after:always; }
+            .code-block { white-space:pre-wrap; }
+            .narrative,.key-concept,.important-box,.info-box,.success-box,.analogy-box,.code-block,.memory-vis { page-break-inside:avoid; }
+            @page { size:A4; margin:14mm 12mm; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <div class="nav-buttons no-print">
+        <a href="00-placement-test.html" class="nav-btn prev">↩ الرجوع إلى الاختبار</a>
+        <a href="index.html" class="nav-btn home">🏠 صفحة الوحدة 1</a>
+        <a href="00-placement-test-solutions.html" class="nav-btn next">🇬🇧 English</a>
+    </div>
+
+    <div class="header">
+        <div class="module-badge">CPCS203 &nbsp;·&nbsp; الوحدة 01 &nbsp;·&nbsp; حلول اختبار تحديد المستوى</div>
+        <h1>🧭 اختبار تحديد المستوى — مشروح قصةً بقصة</h1>
+        <p class="subtitle">جميع الأسئلة الثلاثين، كل سؤال في صفحة — بلغة بسيطة جدًا، مع رسومات لذاكرة الحاسب</p>
+        <div class="topics-pill-row">
+            <span class="topic-pill">📦 القيم الأساسية (Primitive)</span>
+            <span class="topic-pill">🧱 التعريف · الإنشاء · التهيئة</span>
+            <span class="topic-pill">🔗 المراجع والأسماء المستعارة</span>
+            <span class="topic-pill">📮 التمرير بالقيمة مقابل المرجع</span>
+        </div>
+    </div>
+
+    <div class="toc">
+        <div class="toc-title">📋 الأسئلة الثلاثون</div>
+        <div class="toc-legend">
+            <span><i class="toc-dot" style="background:#2563eb"></i> الأنواع الأساسية (1–6)</span>
+            <span><i class="toc-dot" style="background:#7c3aed"></i> المصفوفات: التعريف/الإنشاء/التهيئة (7–14)</span>
+            <span><i class="toc-dot" style="background:#db2777"></i> المراجع والأسماء المستعارة (15–22)</span>
+            <span><i class="toc-dot" style="background:#059669"></i> تمرير المعطيات إلى الدوال (23–30)</span>
+        </div>
+        <div class="toc-grid">
+            <a href="#q1"  style="border-right-color:#2563eb"><b>س1</b> — صندوق يحمل قيمة</a>
+            <a href="#q2"  style="border-right-color:#2563eb"><b>س2</b> — القسمة الصحيحة (5 / 2)</a>
+            <a href="#q3"  style="border-right-color:#2563eb"><b>س3</b> — الباقي: باقي القسمة (5 % 2)</a>
+            <a href="#q4"  style="border-right-color:#2563eb"><b>س4</b> — فخّ <span class="en">double = 5/2</span></a>
+            <a href="#q5"  style="border-right-color:#2563eb"><b>س5</b> — نسخ متغيّر أساسي (y = x)</a>
+            <a href="#q6"  style="border-right-color:#2563eb"><b>س6</b> — متى يعني <span class="en">+</span> «دمج النصوص»</a>
+            <a href="#q7"  style="border-right-color:#7c3aed"><b>س7</b> — <span class="en">new int[3]</span>: الافتراضي 0</a>
+            <a href="#q8"  style="border-right-color:#7c3aed"><b>س8</b> — ماذا يوجد داخل مصفوفة جديدة؟</a>
+            <a href="#q9"  style="border-right-color:#7c3aed"><b>س9</b> — الافتراضي لـ <span class="en">boolean</span> = false</a>
+            <a href="#q10" style="border-right-color:#7c3aed"><b>س10</b> — الافتراضي لـ <span class="en">String</span> = null</a>
+            <a href="#q11" style="border-right-color:#7c3aed"><b>س11</b> — <span class="en">.length</span> للمصفوفة</a>
+            <a href="#q12" style="border-right-color:#7c3aed"><b>س12</b> — تجاوز حدود المصفوفة</a>
+            <a href="#q13" style="border-right-color:#7c3aed"><b>س13</b> — العدّ يبدأ من صفر</a>
+            <a href="#q14" style="border-right-color:#7c3aed"><b>س14</b> — طباعة المصفوفة نفسها</a>
+            <a href="#q15" style="border-right-color:#db2777"><b>س15</b> — مصفوفتان: <span class="en">==</span> تعطي false</a>
+            <a href="#q16" style="border-right-color:#db2777"><b>س16</b> — <span class="en">.equals()</span> على المصفوفات</a>
+            <a href="#q17" style="border-right-color:#db2777"><b>س17</b> — <span class="en">Arrays.equals()</span>: المحتويات</a>
+            <a href="#q18" style="border-right-color:#db2777"><b>س18</b> — الأسماء المستعارة (b = a)</a>
+            <a href="#q19" style="border-right-color:#db2777"><b>س19</b> — العنوان نفسه: <span class="en">==</span> تعطي true</a>
+            <a href="#q20" style="border-right-color:#db2777"><b>س20</b> — كسر الاسم المستعار</a>
+            <a href="#q21" style="border-right-color:#db2777"><b>س21</b> — المصفوفة ثنائية البعد مراجع</a>
+            <a href="#q22" style="border-right-color:#db2777"><b>س22</b> — <span class="en">null</span> ← NullPointer</a>
+            <a href="#q23" style="border-right-color:#059669"><b>س23</b> — تمرير متغيّر أساسي</a>
+            <a href="#q24" style="border-right-color:#059669"><b>س24</b> — تمرير مصفوفة (تعديل عنصر)</a>
+            <a href="#q25" style="border-right-color:#059669"><b>س25</b> — إعادة إسناد المعامل</a>
+            <a href="#q26" style="border-right-color:#059669"><b>س26</b> — لماذا يفشل <span class="en">swap()</span></a>
+            <a href="#q27" style="border-right-color:#059669"><b>س27</b> — تجاهل القيمة المُعادة</a>
+            <a href="#q28" style="border-right-color:#059669"><b>س28</b> — النصوص داخل دالة</a>
+            <a href="#q29" style="border-right-color:#059669"><b>س29</b> — تمرير عنصر واحد</a>
+            <a href="#q30" style="border-right-color:#059669"><b>س30</b> — الخاتمة الكبرى</a>
+        </div>
+    </div>
+
+    <div class="content">
+<!-- ═══════════════ Q1 ═══════════════ -->
+<div class="qsection cat-prim" id="q1">
+    <div class="q-head"><div class="q-num">Q1</div><div class="q-cat">الأنواع الأساسية</div></div>
+    <div class="q-title">قراءة متغيّر وتحديثه</div>
+    <div class="code-block"><span class="type">int</span> x = <span class="number">5</span>;
+x = x + <span class="number">3</span>;
+System.out.<span class="method">println</span>(x);</div>
+
+    <div class="narrative">
+        <p>لنقرأ هذا البرنامج كما نحلّه على السبورة — <strong>جملةً جملة</strong> — ونرسم ما يحمله المتغيّر بعد كل سطر.</p>
+    </div>
+
+    <!-- Statement 1 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 1</span><span class="stmt-line">int x = 5;</span></div>
+        <div class="stmt-body">
+            <p>هذه <strong>تعريف</strong> مع <strong>تهيئة</strong> في آنٍ واحد. الجزء <code>int x</code> يُنشئ متغيّرًا اسمه <code>x</code>. وللأنواع الأساسية مثل <code>int</code> يحمل المتغيّر <em>القيمة نفسها</em> مباشرة. أمّا <code>= 5</code> فيُخزِّن القيمة 5 بداخله.</p>
+            <div class="ptrdiag"><div class="pvar"><div class="pv-name">x</div><div class="pv-slot">5</div></div></div>
+        </div>
+    </div>
+
+    <!-- Statement 2 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 2</span><span class="stmt-line">x = x + 3;</span></div>
+        <div class="stmt-body">
+            <p>هذه <strong>عملية إسناد</strong>. تحسب جافا دائمًا العبارة التي بعد علامة الإسناد <code>=</code> أولًا (وهي <code>x + 3</code>): تقرأ القيمة الحالية داخل <code>x</code> (وهي 5)، تضيف 3 فتصبح 8، ثم تخزّن الناتج في <code>x</code> بدلًا من القيمة القديمة.</p>
+            <div class="ptrdiag"><div class="pvar"><div class="pv-name">x</div><div class="pv-slot">8</div></div></div>
+        </div>
+    </div>
+
+    <!-- Statement 3 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 3</span><span class="stmt-line">System.out.println(x);</span></div>
+        <div class="stmt-body">
+            <p>يطبع هذا المحتوى الحالي للمتغيّر <code>x</code>، وهو الآن <strong>8</strong>.</p>
+        </div>
+    </div>
+
+    <div class="success-box">
+        <div class="success-box-title">✅ الإجابة: 8</div>
+        المتغيّر من نوع أساسي يحمل القيمة نفسها. نقرأ القيمة القديمة، نحسب، ثم نخزّن القيمة الجديدة في المتغيّر نفسه.
+    </div>
+</div>
+
+<!-- ═══════════════ Q2 ═══════════════ -->
+<div class="qsection cat-prim" id="q2">
+    <div class="q-head"><div class="q-num">Q2</div><div class="q-cat">الأنواع الأساسية</div></div>
+    <div class="q-title">القسمة الصحيحة — أين ذهب الـ .5؟</div>
+    <div class="code-block"><span class="type">int</span> a = <span class="number">5</span>;
+<span class="type">int</span> b = <span class="number">2</span>;
+System.out.<span class="method">println</span>(a / b);</div>
+
+    <div class="narrative">
+        <p>لنقرأ هذا البرنامج <strong>جملةً جملة</strong>.</p>
+    </div>
+
+    <!-- Statement 1 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 1</span><span class="stmt-line">int a = 5;</span></div>
+        <div class="stmt-body">
+            <p>تعريف وتهيئة متغيّر من نوع <code>int</code> اسمه <code>a</code> يحمل القيمة 5.</p>
+            <div class="ptrdiag"><div class="pvar"><div class="pv-name">a</div><div class="pv-slot">5</div></div></div>
+        </div>
+    </div>
+
+    <!-- Statement 2 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 2</span><span class="stmt-line">int b = 2;</span></div>
+        <div class="stmt-body">
+            <p>متغيّر ثانٍ من نوع <code>int</code> اسمه <code>b</code> يحمل القيمة 2.</p>
+            <div class="ptrdiag"><div class="pvar"><div class="pv-name">b</div><div class="pv-slot">2</div></div></div>
+        </div>
+    </div>
+
+    <!-- Statement 3 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 3</span><span class="stmt-line">System.out.println(a / b);</span></div>
+        <div class="stmt-body">
+            <p>تحسب جافا <code>a / b</code>. والقاعدة المهمة: عندما يكون <strong>الطرفان من نوع <code>int</code></strong> تستخدم جافا <strong>القسمة الصحيحة</strong> — تحتفظ بالجزء الصحيح فقط و<em>تُهمِل</em> الكسر (دون تقريب).</p>
+            <p>إذن 5 ÷ 2 = 2.5، لكن الـ <code>.5</code> يُلقى، فتكون النتيجة <strong>2</strong>.</p>
+        </div>
+    </div>
+
+    <div class="success-box">
+        <div class="success-box-title">✅ الإجابة: 2</div>
+        <code>int / int</code> ينتج <code>int</code>. 5 ÷ 2 = 2.5، لكن الـ <code>.5</code> يُهمَل ← <strong>2</strong>.
+    </div>
+    <div class="important-box">
+        <div class="important-box-title">⚠️ خطأ شائع جدًا</div>
+        يتوقّع الطلاب 2.5. وللحصول فعلًا على 2.5 يجب أن يكون أحد الطرفين عددًا عشريًا: <code>5.0 / 2</code>، أو نحوّل أحدهما: <code>(double) a / b</code>.
+    </div>
+</div>
+
+<!-- ═══════════════ Q3 ═══════════════ -->
+<div class="qsection cat-prim" id="q3">
+    <div class="q-head"><div class="q-num">Q3</div><div class="q-cat">الأنواع الأساسية</div></div>
+    <div class="q-title">الباقي: عامل باقي القسمة %</div>
+    <div class="code-block"><span class="type">int</span> a = <span class="number">5</span>;
+<span class="type">int</span> b = <span class="number">2</span>;
+System.out.<span class="method">println</span>(a % b);</div>
+
+    <div class="narrative">
+        <p>لنقرأ هذا البرنامج <strong>جملةً جملة</strong>.</p>
+    </div>
+
+    <!-- Statement 1 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 1</span><span class="stmt-line">int a = 5;</span></div>
+        <div class="stmt-body">
+            <p>متغيّر <code>int</code> اسمه <code>a</code> يحمل القيمة 5.</p>
+            <div class="ptrdiag"><div class="pvar"><div class="pv-name">a</div><div class="pv-slot">5</div></div></div>
+        </div>
+    </div>
+
+    <!-- Statement 2 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 2</span><span class="stmt-line">int b = 2;</span></div>
+        <div class="stmt-body">
+            <p>متغيّر <code>int</code> اسمه <code>b</code> يحمل القيمة 2.</p>
+            <div class="ptrdiag"><div class="pvar"><div class="pv-name">b</div><div class="pv-slot">2</div></div></div>
+        </div>
+    </div>
+
+    <!-- Statement 3 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 3</span><span class="stmt-line">System.out.println(a % b);</span></div>
+        <div class="stmt-body">
+            <p>العامل <code>%</code> يعطي <strong>الباقي</strong> بعد القسمة (ويُسمّى <em>باقي القسمة</em>). نقسم 5 على 2: يدخل 2 مرتين (يستهلك 4)، ويتبقّى <strong>1</strong>.</p>
+            <p>إذن <code>5 % 2</code> يساوي <strong>1</strong>.</p>
+        </div>
+    </div>
+
+    <div class="success-box">
+        <div class="success-box-title">✅ الإجابة: 1</div>
+        <code>%</code> يعطي <strong>الباقي</strong> بعد القسمة. 5 = (2 × 2) + <strong>1</strong>.
+    </div>
+    <div class="key-concept">
+        <div class="key-concept-title">💡 حيلة مفيدة جدًا</div>
+        <code>n % 2</code> يساوي 0 عندما يكون <strong>n زوجيًا</strong>، ويساوي 1 عندما يكون <strong>n فرديًا</strong>. نستخدم <code>%</code> كثيرًا لاختبار القابلية للقسمة وللالتفاف الدائري (مثل ساعات الساعة: <code>13 % 12 = 1</code>).
+    </div>
+</div>
+
+<!-- ═══════════════ Q4 ═══════════════ -->
+<div class="qsection cat-prim" id="q4">
+    <div class="q-head"><div class="q-num">Q4</div><div class="q-cat">الأنواع الأساسية</div></div>
+    <div class="q-title">فخّ <code>double = 5 / 2</code> الشهير</div>
+    <div class="code-block"><span class="type">double</span> result = <span class="number">5</span> / <span class="number">2</span>;
+System.out.<span class="method">println</span>(result);</div>
+
+    <div class="narrative">
+        <p>لنقرأ هذا البرنامج <strong>جملةً جملة</strong> — والمفاجأة مخبّأة في السطر الأول.</p>
+    </div>
+
+    <!-- Statement 1 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 1</span><span class="stmt-line">double result = 5 / 2;</span></div>
+        <div class="stmt-body">
+            <p>تحسب جافا دائمًا العبارة التي بعد علامة <code>=</code> أولًا، ثم تخزّن الناتج في المتغيّر. إذن هناك خطوتان:</p>
+            <p><strong>الخطوة 1 — حساب <code>5 / 2</code>.</strong> كلٌّ من 5 و2 من نوع <code>int</code>، لذا تستخدم جافا <strong>القسمة الصحيحة</strong> وتحصل على <strong>2</strong> (الـ <code>.5</code> فُقد هنا بالفعل).</p>
+            <p><strong>الخطوة 2 — التخزين في <code>double</code>.</strong> توضع القيمة 2 في <code>result</code>، وكونها <code>double</code> تصبح <strong>2.0</strong>.</p>
+            <p>الفخّ: نوع المتغيّر (على يسار <code>=</code>) لا يغيّر طريقة حساب العبارة (على يمين <code>=</code>). لقد فُقد الـ <code>.5</code> في الخطوة 1 بالفعل.</p>
+            <div class="ptrdiag"><div class="pvar"><div class="pv-name">result</div><div class="pv-slot">2.0</div></div></div>
+        </div>
+    </div>
+
+    <!-- Statement 2 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 2</span><span class="stmt-line">System.out.println(result);</span></div>
+        <div class="stmt-body">
+            <p>يطبع محتوى <code>result</code>، وهو <strong>2.0</strong>.</p>
+        </div>
+    </div>
+
+    <div class="compare-row">
+        <div class="compare-col bad"><h4>❌ <code>double r = 5 / 2;</code></h4>حساب صحيح أولًا ← 2، ثم يُخزَّن ← <span class="tag-out">2.0</span></div>
+        <div class="compare-col good"><h4>✅ <code>double r = 5.0 / 2;</code></h4>حساب عشري ← 2.5، ثم يُخزَّن ← <span class="tag-out">2.5</span></div>
+    </div>
+
+    <div class="success-box">
+        <div class="success-box-title">✅ الإجابة: 2.0</div>
+        يُحسب الطرف الأيمن كـ <code>int / int = 2</code>، ثم يُوسَّع بعد ذلك إلى <code>double</code> ← <strong>2.0</strong>.
+    </div>
+</div>
+
+<!-- ═══════════════ Q5 ═══════════════ -->
+<div class="qsection cat-prim" id="q5">
+    <div class="q-head"><div class="q-num">Q5</div><div class="q-cat">الأنواع الأساسية</div></div>
+    <div class="q-title">نسخ متغيّر من نوع أساسي</div>
+    <div class="code-block"><span class="type">int</span> x = <span class="number">5</span>;
+<span class="type">int</span> y = x;
+y = <span class="number">10</span>;
+System.out.<span class="method">println</span>(x);</div>
+
+    <div class="narrative">
+        <p>لنقرأ هذا البرنامج <strong>جملةً جملة</strong> ونرسم ما يحمله كلّ متغيّر.</p>
+    </div>
+
+    <!-- Statement 1 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 1</span><span class="stmt-line">int x = 5;</span></div>
+        <div class="stmt-body">
+            <p>متغيّر <code>int</code> اسمه <code>x</code> يحمل القيمة 5.</p>
+            <div class="ptrdiag"><div class="pvar"><div class="pv-name">x</div><div class="pv-slot">5</div></div></div>
+        </div>
+    </div>
+
+    <!-- Statement 2 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 2</span><span class="stmt-line">int y = x;</span></div>
+        <div class="stmt-body">
+            <p><code>int y</code> تعريفٌ لمتغيّر جديد. وعلامة <code>=</code> عملية إسناد: خذ محتوى <code>x</code> وضعه في <code>y</code>. فما محتوى <code>x</code>؟ للأنواع الأساسية هو <strong>القيمة نفسها</strong> — العدد 5.</p>
+            <p>إذن يُنسخ العدد 5 إلى <code>y</code>. أصبح لكلّ متغيّر نسخته المستقلة؛ وهما غير مرتبطين إطلاقًا.</p>
+            <div class="ptrdiag">
+                <div class="pvar"><div class="pv-name">x</div><div class="pv-slot">5</div></div>
+                <div class="pvar" style="margin-left:24px"><div class="pv-name">y</div><div class="pv-slot">5</div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statement 3 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 3</span><span class="stmt-line">y = 10;</span></div>
+        <div class="stmt-body">
+            <p>يخزّن هذا 10 في <code>y</code>. وبما أنّ <code>y</code> صندوق مستقل، يتغيّر <code>y</code> فقط. أمّا <code>x</code> فلم يُمَسّ ولا يزال يحمل 5.</p>
+            <div class="ptrdiag">
+                <div class="pvar"><div class="pv-name">x</div><div class="pv-slot">5</div></div>
+                <div class="pvar" style="margin-left:24px"><div class="pv-name">y</div><div class="pv-slot">10</div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statement 4 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 4</span><span class="stmt-line">System.out.println(x);</span></div>
+        <div class="stmt-body">
+            <p>يطبع محتوى <code>x</code>، وهو لا يزال <strong>5</strong>.</p>
+        </div>
+    </div>
+
+    <div class="success-box">
+        <div class="success-box-title">✅ الإجابة: 5</div>
+        للأنواع الأساسية، الإسناد <strong>ينسخ القيمة</strong>. يحتفظ كلّ متغيّر بنسخته المستقلة، لذا تغيير <code>y</code> لا يؤثّر أبدًا على <code>x</code>.
+    </div>
+</div>
+
+<!-- ═══════════════ Q6 ═══════════════ -->
+<div class="qsection cat-prim" id="q6">
+    <div class="q-head"><div class="q-num">Q6</div><div class="q-cat">الأنواع الأساسية</div></div>
+    <div class="q-title">متى يعني <code>+</code> «الجمع» ومتى يعني «دمج النصوص»</div>
+    <div class="code-block">System.out.<span class="method">println</span>(<span class="number">1</span> + <span class="number">2</span> + <span class="string">"3"</span>);
+System.out.<span class="method">println</span>(<span class="string">"1"</span> + <span class="number">2</span> + <span class="number">3</span>);</div>
+
+    <div class="narrative">
+        <p>القاعدة الأساسية: تقرأ جافا <code>+</code> <strong>من اليسار إلى اليمين</strong> خطوةً خطوة. بين عددين يقوم <code>+</code> بـ<em>الجمع</em>. أمّا إذا كان أحد الطرفين نصًّا <code>String</code> (بين علامتَي اقتباس) فإنّ <code>+</code> <em>يدمج النصوص</em> (وتُسمّى concatenation). لنقرأ كلّ جملة خطوة بخطوة.</p>
+    </div>
+
+    <!-- Statement 1 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 1</span><span class="stmt-line">System.out.println(1 + 2 + "3");</span></div>
+        <div class="stmt-body">
+            <p><strong>الخطوة 1:</strong> <code>1 + 2</code> — كلاهما عددان ← جمع ← <strong>3</strong>.</p>
+            <p><strong>الخطوة 2:</strong> <code>3 + "3"</code> — الآن أحد الطرفين نص ← دمج ← <strong>"33"</strong>.</p>
+            <div class="ptrdiag" style="font-family:'Consolas',monospace;font-weight:bold;color:#0f172a">1 + 2 + "3"  →  3 + "3"  →  <span style="color:#0f766e">"33"</span></div>
+        </div>
+    </div>
+
+    <!-- Statement 2 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 2</span><span class="stmt-line">System.out.println("1" + 2 + 3);</span></div>
+        <div class="stmt-body">
+            <p><strong>الخطوة 1:</strong> <code>"1" + 2</code> — يبدأ بنص ← دمج ← <strong>"12"</strong>.</p>
+            <p><strong>الخطوة 2:</strong> <code>"12" + 3</code> — لا يزال نصًّا ← دمج ← <strong>"123"</strong>.</p>
+            <div class="ptrdiag" style="font-family:'Consolas',monospace;font-weight:bold;color:#0f172a">"1" + 2 + 3  →  "12" + 3  →  <span style="color:#0f766e">"123"</span></div>
+        </div>
+    </div>
+
+    <div class="success-box">
+        <div class="success-box-title">✅ الإجابة: 33  and  123</div>
+        الرموز نفسها لكن ترتيب مختلف — لأنّه بمجرّد ظهور نص <code>String</code> يصبح كلّ <code>+</code> بعده دمجًا للنصوص.
+    </div>
+    <div class="key-concept">
+        <div class="key-concept-title">💡 تذكّر</div>
+        ترتيب القراءة مهم. استخدم الأقواس عندما تقصد الحساب: <code>"Sum = " + (1 + 2)</code> يطبع <code>Sum = 3</code> وليس <code>Sum = 12</code>.
+    </div>
+</div>
+<!-- ═══════════════ Q7 ═══════════════ -->
+<div class="qsection cat-arr" id="q7">
+    <div class="q-head"><div class="q-num">Q7</div><div class="q-cat">المصفوفات: التعريف · الإنشاء · التهيئة</div></div>
+    <div class="q-title">تعريف المصفوفة وإنشاؤها وتهيئتها</div>
+    <div class="code-block"><span class="type">int</span>[] marks = <span class="keyword">new</span> <span class="type">int</span>[<span class="number">3</span>];
+System.out.<span class="method">println</span>(marks[<span class="number">0</span>]);</div>
+
+    <div class="narrative">
+        <p>لنقرأ هذا البرنامج <strong>جملةً جملة</strong>. الجملة الأولى تقوم بثلاث مهام في صمت — التعريف والإنشاء والتهيئة — لذا سنرسم كلّ واحدة منها.</p>
+    </div>
+
+    <!-- Statement 1 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 1</span><span class="stmt-line">int[] marks = new int[3];</span></div>
+        <div class="stmt-body">
+            <p><strong>1) التعريف.</strong> الجزء <code>int[] marks</code> يُنشئ متغيّرًا اسمه <code>marks</code>. هذا النوع من المتغيّرات <strong>مرجع</strong>: مُعَدٌّ ليحمل <em>عنوان مصفوفة</em>، لا الأعداد نفسها. وقبل إنشاء أيّ مصفوفة يحمل <code>null</code> — أي لا شيء:</p>
+            <div class="ptrdiag">
+                <div class="pvar"><div class="pv-name">marks</div><div class="pv-slot isnull">null</div></div>
+                <div class="pv-caption" style="margin-left:14px;max-width:280px">لم يُنفَّذ سوى <code>int[] marks</code> حتى الآن — المتغيّر موجود، لكن لم تُنشأ أيّ مصفوفة، لذا لا يشير إلى شيء.</div>
+            </div>
+
+            <p><strong>2) الإنشاء.</strong> الجزء <code>new int[3]</code> يطلب من جافا بناء مصفوفة حقيقية من 3 أعداد صحيحة في الذاكرة. <strong>3) التهيئة.</strong> وعند إنشاء المصفوفة بهذه الطريقة تملأ جافا كلّ خانة تلقائيًا بالقيمة الافتراضية، وهي للنوع <code>int</code> تساوي <strong>0</strong>.</p>
+            <p>بعد ذلك تضع جافا <strong>مرجع تلك المصفوفة المُنشأة</strong> في <code>marks</code>. فيصبح <code>marks</code> الآن يشير إلى المصفوفة:</p>
+            <div class="ptrdiag">
+                <div class="pvar"><div class="pv-name">marks</div><div class="pv-slot isref">● مرجع</div></div>
+                <span class="pconn"><span class="pline"></span><span class="phead"></span></span>
+                <div class="arr-obj pd-array"><div class="ao-title">المصفوفة (أنشأها <code>new</code>)</div><div class="arr-cells">
+                    <div class="arr-cell"><span class="idx">[0]</span><span class="val">0</span></div>
+                    <div class="arr-cell"><span class="idx">[1]</span><span class="val">0</span></div>
+                    <div class="arr-cell"><span class="idx">[2]</span><span class="val">0</span></div>
+                </div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statement 2 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 2</span><span class="stmt-line">System.out.println(marks[0]);</span></div>
+        <div class="stmt-body">
+            <p>يتبع هذا المرجعَ الموجود في <code>marks</code> إلى المصفوفة، ويقرأ القيمة عند الفهرس <code>[0]</code>، وهي القيمة الافتراضية <strong>0</strong>.</p>
+        </div>
+    </div>
+
+    <div class="info-box">
+        <div class="info-box-title">✅ مَن يُنشئ المصفوفة ومرجعها فعلًا؟</div>
+        <p><strong>نظام التشغيل</strong> <u>لا</u> يوزّع عنوانًا لكلّ مصفوفة. نظام التشغيل يعطي جافا كتلة واحدة كبيرة من الذاكرة عند تشغيل البرنامج. بعد ذلك تقرّر <strong>آلة جافا الافتراضية (JVM)</strong> بنفسها مكان كلّ مصفوفة جديدة وتنتج مرجعها. أنت لا ترى العنوان الحقيقي ولا تختاره — الـ JVM تديره. وعندما لا يشير أيّ متغيّر إلى مصفوفة، يقوم <strong>جامع المهملات (garbage collector)</strong> في الـ JVM بتحرير تلك الذاكرة تلقائيًا.</p>
+    </div>
+
+    <div class="success-box">
+        <div class="success-box-title">✅ الإجابة: 0</div>
+        المصفوفة <code>int</code> المُنشأة حديثًا تُهيَّأ بالقيمة <strong>0</strong> في كلّ خانة، لذا <code>marks[0]</code> يساوي 0.
+    </div>
+</div>
+
+<!-- ═══════════════ Q8 ═══════════════ -->
+<div class="qsection cat-arr" id="q8">
+    <div class="q-head"><div class="q-num">Q8</div><div class="q-cat">المصفوفات: التعريف · الإنشاء · التهيئة</div></div>
+    <div class="q-title">ماذا يوجد داخل مصفوفة جديدة تمامًا؟</div>
+    <div class="code-block"><span class="type">int</span>[] marks = <span class="keyword">new</span> <span class="type">int</span>[<span class="number">3</span>];
+System.out.<span class="method">println</span>(marks[<span class="number">0</span>] + <span class="string">","</span> + marks[<span class="number">1</span>] + <span class="string">","</span> + marks[<span class="number">2</span>]);</div>
+
+    <div class="narrative">
+        <p>لنقرأ هذا البرنامج <strong>جملةً جملة</strong>.</p>
+    </div>
+
+    <!-- Statement 1 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 1</span><span class="stmt-line">int[] marks = new int[3];</span></div>
+        <div class="stmt-body">
+            <p>الجزء <code>int[] marks</code> يُعرّف متغيّرًا مرجعيًّا. والجزء <code>new int[3]</code> يُنشئ مصفوفة حقيقية من 3 أعداد صحيحة، وتُهيّئ جافا كلّ خانة بالقيمة الافتراضية للنوع <code>int</code> وهي <strong>0</strong>. ويُخزَّن مرجع تلك المصفوفة في <code>marks</code>:</p>
+            <div class="ptrdiag">
+                <div class="pvar"><div class="pv-name">marks</div><div class="pv-slot isref">● مرجع</div></div>
+                <span class="pconn"><span class="pline"></span><span class="phead"></span></span>
+                <div class="arr-obj pd-array"><div class="ao-title">المصفوفة المُنشأة</div><div class="arr-cells">
+                    <div class="arr-cell"><span class="idx">[0]</span><span class="val">0</span></div>
+                    <div class="arr-cell"><span class="idx">[1]</span><span class="val">0</span></div>
+                    <div class="arr-cell"><span class="idx">[2]</span><span class="val">0</span></div>
+                </div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statement 2 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 2</span><span class="stmt-line">System.out.println(marks[0] + "," + marks[1] + "," + marks[2]);</span></div>
+        <div class="stmt-body">
+            <p>يقرأ هذا الخانات الثلاث — كلٌّ منها 0 — ويربطها بفواصل، فيطبع <strong>0,0,0</strong>.</p>
+        </div>
+    </div>
+
+    <div class="success-box">
+        <div class="success-box-title">✅ الإجابة: 0,0,0</div>
+        الإنشاء يحجز الخانات <em>ويملؤها</em> بالقيمة الافتراضية 0.
+    </div>
+    <div class="important-box">
+        <div class="important-box-title">🧠 المفهوم الخاطئ الذي يجب تجنّبه</div>
+        يظنّ كثير من الطلاب أنّ <code>new int[3]</code> «فارغة». وهي ليست كذلك — بل ثلاثة أصفار حقيقية، جاهزة للقراءة أو للكتابة فوقها.
+    </div>
+</div>
+
+<!-- ═══════════════ Q9 ═══════════════ -->
+<div class="qsection cat-arr" id="q9">
+    <div class="q-head"><div class="q-num">Q9</div><div class="q-cat">المصفوفات: التعريف · الإنشاء · التهيئة</div></div>
+    <div class="q-title">القيمة الافتراضية لمصفوفة <code>boolean</code></div>
+    <div class="code-block"><span class="type">boolean</span>[] flags = <span class="keyword">new</span> <span class="type">boolean</span>[<span class="number">2</span>];
+System.out.<span class="method">println</span>(flags[<span class="number">0</span>]);</div>
+
+    <div class="narrative">
+        <p>لنقرأ هذا البرنامج <strong>جملةً جملة</strong>.</p>
+    </div>
+
+    <!-- Statement 1 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 1</span><span class="stmt-line">boolean[] flags = new boolean[2];</span></div>
+        <div class="stmt-body">
+            <p>الجزء <code>new boolean[2]</code> يُنشئ مصفوفة من قيمتين منطقيّتين. وتُهيّئ جافا كلّ خانة بالقيمة الافتراضية للنوع <code>boolean</code> وهي <strong>false</strong>. ويُخزَّن المرجع في <code>flags</code>:</p>
+            <div class="ptrdiag">
+                <div class="pvar"><div class="pv-name">flags</div><div class="pv-slot isref">● مرجع</div></div>
+                <span class="pconn"><span class="pline"></span><span class="phead"></span></span>
+                <div class="arr-obj pd-array"><div class="ao-title">المصفوفة المُنشأة</div><div class="arr-cells">
+                    <div class="arr-cell" style="width:64px"><span class="idx">[0]</span><span class="val">false</span></div>
+                    <div class="arr-cell" style="width:64px"><span class="idx">[1]</span><span class="val">false</span></div>
+                </div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statement 2 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 2</span><span class="stmt-line">System.out.println(flags[0]);</span></div>
+        <div class="stmt-body">
+            <p>يقرأ هذا الخانة <code>[0]</code>، وتحمل القيمة الافتراضية <strong>false</strong>.</p>
+        </div>
+    </div>
+
+    <div class="key-concept">
+        <div class="key-concept-title">📋 جدول القيم الافتراضية (احفظه!)</div>
+        <table style="width:100%;border-collapse:collapse;margin-top:8px;font-family:'Consolas',monospace">
+          <tr style="background:#fef3c7"><td style="padding:6px 10px">النوع</td><td style="padding:6px 10px">الافتراضي</td></tr>
+          <tr><td style="padding:6px 10px">int, long, short, byte</td><td style="padding:6px 10px"><b>0</b></td></tr>
+          <tr><td style="padding:6px 10px">double, float</td><td style="padding:6px 10px"><b>0.0</b></td></tr>
+          <tr><td style="padding:6px 10px">char</td><td style="padding:6px 10px"><b>' '</b> (غير مرئي)</td></tr>
+          <tr><td style="padding:6px 10px">boolean</td><td style="padding:6px 10px"><b>false</b></td></tr>
+          <tr><td style="padding:6px 10px">أيّ كائن (String، مصفوفات…)</td><td style="padding:6px 10px"><b>null</b></td></tr>
+        </table>
+    </div>
+
+    <div class="success-box">
+        <div class="success-box-title">✅ الإجابة: false</div>
+        القيمة الافتراضية للنوع <code>boolean</code> هي <strong>false</strong>.
+    </div>
+</div>
+
+<!-- ═══════════════ Q10 ═══════════════ -->
+<div class="qsection cat-arr" id="q10">
+    <div class="q-head"><div class="q-num">Q10</div><div class="q-cat">المصفوفات: التعريف · الإنشاء · التهيئة</div></div>
+    <div class="q-title">القيمة الافتراضية داخل مصفوفة <code>String</code></div>
+    <div class="code-block"><span class="type">String</span>[] names = <span class="keyword">new</span> <span class="type">String</span>[<span class="number">2</span>];
+System.out.<span class="method">println</span>(names[<span class="number">0</span>]);</div>
+
+    <div class="narrative">
+        <p>لنقرأ هذا البرنامج <strong>جملةً جملة</strong>. الفكرة الأساسية: النوع <code>String</code> ليس نوعًا أساسيًا — بل هو <em>كائن</em>، لذا تحمل كلّ خانة <strong>مرجعًا</strong> لا نصًّا مباشرة.</p>
+    </div>
+
+    <!-- Statement 1 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 1</span><span class="stmt-line">String[] names = new String[2];</span></div>
+        <div class="stmt-body">
+            <p>الجزء <code>new String[2]</code> يُنشئ مصفوفة من خانتين. كلّ خانة مُعَدّة لتحمل مرجع كائن <code>String</code> — لكننا لم نُنشئ أيّ نص بعد. لذا تُهيّئ جافا كلّ خانة بالقيمة الافتراضية للكائنات وهي <strong>null</strong> («لا يشير إلى شيء بعد»). وهذه <u>ليست</u> نصًّا فارغًا <code>""</code> — بل «لا مرجع إطلاقًا».</p>
+            <div class="ptrdiag">
+                <div class="pvar"><div class="pv-name">names</div><div class="pv-slot isref">● مرجع</div></div>
+                <span class="pconn"><span class="pline"></span><span class="phead"></span></span>
+                <div class="arr-obj pd-array"><div class="ao-title">المصفوفة المُنشأة</div><div class="arr-cells">
+                    <div class="arr-cell" style="width:64px"><span class="idx">[0]</span><span class="val" style="color:#be185d">null</span></div>
+                    <div class="arr-cell" style="width:64px"><span class="idx">[1]</span><span class="val" style="color:#be185d">null</span></div>
+                </div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statement 2 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 2</span><span class="stmt-line">System.out.println(names[0]);</span></div>
+        <div class="stmt-body">
+            <p>يقرأ هذا الخانة <code>[0]</code>، وتحمل <strong>null</strong>، فيطبع <code>null</code>.</p>
+        </div>
+    </div>
+
+    <div class="success-box">
+        <div class="success-box-title">✅ الإجابة: null</div>
+        خانات الكائنات قيمتها الافتراضية <strong>null</strong> — أي «لا تشير إلى شيء بعد»، وليست نصًّا فارغًا.
+    </div>
+    <div class="important-box">
+        <div class="important-box-title">⚠️ انتبه للخطر</div>
+        استدعاء دالة على خانة قيمتها null — مثل <code>names[0].length()</code> — يوقف البرنامج بخطأ <b>NullPointerException</b>، لأنّه لا يوجد كائن هناك لتُنفَّذ عليه الدالة.
+    </div>
+</div>
+
+<!-- ═══════════════ Q11 ═══════════════ -->
+<div class="qsection cat-arr" id="q11">
+    <div class="q-head"><div class="q-num">Q11</div><div class="q-cat">المصفوفات: التعريف · الإنشاء · التهيئة</div></div>
+    <div class="q-title">ما حجم المصفوفة؟ <code>.length</code></div>
+    <div class="code-block"><span class="type">int</span>[] marks = <span class="keyword">new</span> <span class="type">int</span>[<span class="number">5</span>];
+System.out.<span class="method">println</span>(marks.length);</div>
+
+    <div class="narrative">
+        <p>لنقرأ هذا البرنامج <strong>جملةً جملة</strong>.</p>
+    </div>
+
+    <!-- Statement 1 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 1</span><span class="stmt-line">int[] marks = new int[5];</span></div>
+        <div class="stmt-body">
+            <p>الجزء <code>new int[5]</code> يُنشئ مصفوفة من 5 أعداد صحيحة (كلّها بقيمة افتراضية 0)، ويشير إليها <code>marks</code>. والفهارس الصالحة هي <code>[0] [1] [2] [3] [4]</code>:</p>
+            <div class="ptrdiag">
+                <div class="pvar"><div class="pv-name">marks</div><div class="pv-slot isref">● مرجع</div></div>
+                <span class="pconn"><span class="pline"></span><span class="phead"></span></span>
+                <div class="arr-obj pd-array"><div class="ao-title">int[5]</div><div class="arr-cells">
+                    <div class="arr-cell"><span class="idx">[0]</span><span class="val">0</span></div>
+                    <div class="arr-cell"><span class="idx">[1]</span><span class="val">0</span></div>
+                    <div class="arr-cell"><span class="idx">[2]</span><span class="val">0</span></div>
+                    <div class="arr-cell"><span class="idx">[3]</span><span class="val">0</span></div>
+                    <div class="arr-cell"><span class="idx">[4]</span><span class="val">0</span></div>
+                </div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statement 2 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 2</span><span class="stmt-line">System.out.println(marks.length);</span></div>
+        <div class="stmt-body">
+            <p><code>.length</code> يعطي <strong>عدد الخانات</strong> التي أُنشئت بها المصفوفة — أي الحجم، لا آخر فهرس. أُنشئت المصفوفة بـ 5 خانات، فيطبع <strong>5</strong>.</p>
+        </div>
+    </div>
+
+    <div class="success-box">
+        <div class="success-box-title">✅ الإجابة: 5</div>
+        <code>.length</code> هو عدد الخانات = <strong>5</strong>.
+    </div>
+    <div class="key-concept">
+        <div class="key-concept-title">💡 أمران يسهل الخلط بينهما</div>
+        المصفوفات تستخدم <code>marks.length</code> — وهو <strong>حقل، بلا أقواس</strong>.<br>
+        النصوص تستخدم <code>text.length()</code> — وهي <strong>دالة، بأقواس</strong>. الكلمة نفسها لكن بعلامات مختلفة!
+    </div>
+</div>
+
+<!-- ═══════════════ Q12 ═══════════════ -->
+<div class="qsection cat-arr" id="q12">
+    <div class="q-head"><div class="q-num">Q12</div><div class="q-cat">المصفوفات: التعريف · الإنشاء · التهيئة</div></div>
+    <div class="q-title">محاولة الوصول إلى خانة غير موجودة</div>
+    <div class="code-block"><span class="type">int</span>[] marks = <span class="keyword">new</span> <span class="type">int</span>[<span class="number">5</span>];
+System.out.<span class="method">println</span>(marks[<span class="number">5</span>]);</div>
+
+    <div class="narrative">
+        <p>لنقرأ هذا البرنامج <strong>جملةً جملة</strong>.</p>
+    </div>
+
+    <!-- Statement 1 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 1</span><span class="stmt-line">int[] marks = new int[5];</span></div>
+        <div class="stmt-body">
+            <p>يُنشئ هذا مصفوفة من 5 أعداد صحيحة. الفهارس الصالحة هي <code>0, 1, 2, 3, 4</code> — ولا يوجد فهرس رقمه 5:</p>
+            <div class="ptrdiag">
+                <div class="pvar"><div class="pv-name">marks</div><div class="pv-slot isref">● مرجع</div></div>
+                <span class="pconn"><span class="pline"></span><span class="phead"></span></span>
+                <div class="arr-obj pd-array"><div class="ao-title">int[5] — آخر فهرس صالح هو 4</div><div class="arr-cells">
+                    <div class="arr-cell"><span class="idx">[0]</span><span class="val">0</span></div>
+                    <div class="arr-cell"><span class="idx">[1]</span><span class="val">0</span></div>
+                    <div class="arr-cell"><span class="idx">[2]</span><span class="val">0</span></div>
+                    <div class="arr-cell"><span class="idx">[3]</span><span class="val">0</span></div>
+                    <div class="arr-cell"><span class="idx">[4]</span><span class="val">0</span></div>
+                    <div class="arr-cell changed"><span class="idx">[5]</span><span class="val">✗</span></div>
+                </div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statement 2 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 2</span><span class="stmt-line">System.out.println(marks[5]);</span></div>
+        <div class="stmt-body">
+            <p>نحاول قراءة الفهرس <code>5</code>، لكنه غير موجود (تنتهي المصفوفة عند الفهرس 4). فتوقف جافا البرنامج بخطأ <strong>ArrayIndexOutOfBoundsException</strong>. لاحظ أنّ الكود <em>يُترجَم</em> بنجاح — الخطأ يحدث فقط <em>أثناء التشغيل</em>، لأنّ جافا لا تستطيع معرفة أنّ الفهرس خاطئ إلا عندما ترى القيمة الفعلية 5.</p>
+        </div>
+    </div>
+
+    <div class="success-box">
+        <div class="success-box-title">✅ الإجابة: ArrayIndexOutOfBoundsException (أثناء التشغيل)</div>
+        الفهارس الصالحة هي <code>0 .. length-1</code>. الفهرس 5 خارج الحدود ← تُطلق الـ JVM الاستثناء أثناء التشغيل.
+    </div>
+</div>
+
+<!-- ═══════════════ Q13 ═══════════════ -->
+<div class="qsection cat-arr" id="q13">
+    <div class="q-head"><div class="q-num">Q13</div><div class="q-cat">المصفوفات: التعريف · الإنشاء · التهيئة</div></div>
+    <div class="q-title">العدّ يبدأ من صفر</div>
+    <div class="code-block"><span class="type">int</span>[] a = <span class="keyword">new</span> <span class="type">int</span>[] { <span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span> };
+System.out.<span class="method">println</span>(a[<span class="number">1</span>]);</div>
+
+    <div class="narrative">
+        <p>لنقرأ هذا البرنامج <strong>جملةً جملة</strong>.</p>
+    </div>
+
+    <!-- Statement 1 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 1</span><span class="stmt-line">int[] a = new int[]{10, 20, 30};</span></div>
+        <div class="stmt-body">
+            <p>يُعرّف هذا <code>a</code>، ويُنشئ مصفوفة بـ <code>new int[]</code>، ويهيّئها بالقيم 10 و20 و30. ويُخزَّن المرجع في <code>a</code>. والعادة المهمة: مواضع المصفوفة <strong>تبدأ من 0</strong>، فالفهرس <code>[0]</code> هو العنصر الأول:</p>
+            <div class="ptrdiag">
+                <div class="pvar"><div class="pv-name">a</div><div class="pv-slot isref">● مرجع</div></div>
+                <span class="pconn"><span class="pline"></span><span class="phead"></span></span>
+                <div class="arr-obj pd-array"><div class="ao-title">المصفوفة المُنشأة</div><div class="arr-cells">
+                    <div class="arr-cell"><span class="idx">[0]</span><span class="val">10</span></div>
+                    <div class="arr-cell"><span class="idx">[1]</span><span class="val">20</span></div>
+                    <div class="arr-cell"><span class="idx">[2]</span><span class="val">30</span></div>
+                </div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statement 2 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 2</span><span class="stmt-line">System.out.println(a[1]);</span></div>
+        <div class="stmt-body">
+            <p>الفهرس <code>[1]</code> هو العنصر <strong>الثاني</strong> (لأنّ العدّ يبدأ من 0): <code>[0]</code>=10، <code>[1]</code>=20، <code>[2]</code>=30. فيطبع <strong>20</strong>.</p>
+            <div class="ptrdiag">
+                <div class="arr-obj pd-array"><div class="ao-title">قراءة a[1]</div><div class="arr-cells">
+                    <div class="arr-cell"><span class="idx">[0]</span><span class="val">10</span></div>
+                    <div class="arr-cell changed"><span class="idx">[1] ←</span><span class="val">20</span></div>
+                    <div class="arr-cell"><span class="idx">[2]</span><span class="val">30</span></div>
+                </div></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="success-box">
+        <div class="success-box-title">✅ الإجابة: 20</div>
+        الفهرسة تبدأ من صفر، لذا <code>a[1]</code> هو العنصر <strong>الثاني</strong> = 20.
+    </div>
+</div>
+
+<!-- ═══════════════ Q14 ═══════════════ -->
+<div class="qsection cat-arr" id="q14">
+    <div class="q-head"><div class="q-num">Q14</div><div class="q-cat">المصفوفات: التعريف · الإنشاء · التهيئة</div></div>
+    <div class="q-title">طباعة متغيّر المصفوفة نفسه</div>
+    <div class="code-block"><span class="type">int</span>[] marks = <span class="keyword">new</span> <span class="type">int</span>[] { <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span> };
+System.out.<span class="method">println</span>(marks);</div>
+
+    <div class="narrative">
+        <p>لنقرأ هذا البرنامج <strong>جملةً جملة</strong>.</p>
+    </div>
+
+    <!-- Statement 1 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 1</span><span class="stmt-line">int[] marks = new int[]{1, 2, 3};</span></div>
+        <div class="stmt-body">
+            <p>يُنشئ هذا مصفوفة تحمل 1 و2 و3، ويخزّن <strong>مرجعها</strong> في <code>marks</code>. تذكّر: <code>marks</code> لا يحمل الأعداد — بل يحمل المرجع الذي يشير إلى المصفوفة.</p>
+            <div class="ptrdiag">
+                <div class="pvar"><div class="pv-name">marks</div><div class="pv-slot isref">● مرجع</div></div>
+                <span class="pconn"><span class="pline"></span><span class="phead"></span></span>
+                <div class="arr-obj pd-array"><div class="ao-title">المصفوفة</div><div class="arr-cells">
+                    <div class="arr-cell"><span class="idx">[0]</span><span class="val">1</span></div>
+                    <div class="arr-cell"><span class="idx">[1]</span><span class="val">2</span></div>
+                    <div class="arr-cell"><span class="idx">[2]</span><span class="val">3</span></div>
+                </div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statement 2 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 2</span><span class="stmt-line">System.out.println(marks);</span></div>
+        <div class="stmt-body">
+            <p>نطبع <code>marks</code> نفسه — وهو <strong>المرجع</strong>، لا المحتويات. لذا تطبع جافا شيئًا مثل <code>[I@1b6d3586</code>. ولنقرأ هذا النص: <code>[I</code> تعني «مصفوفة من <code>int</code>»، و<code>@</code> تعني «عند»، و<code>1b6d3586</code> رمز تستخدمه الـ JVM لتمثيل ذلك الكائن. إنه يُظهر المرجع، لا القيم 1 و2 و3 أبدًا.</p>
+        </div>
+    </div>
+
+    <div class="success-box">
+        <div class="success-box-title">✅ الإجابة: something like [I@1b6d3586</div>
+        طباعة المصفوفة تطبع <strong>مرجعها</strong>، لا محتوياتها.
+    </div>
+    <div class="key-concept">
+        <div class="key-concept-title">💡 لرؤية المحتويات</div>
+        استخدم <code>Arrays.toString(marks)</code> ← يطبع <code>[1, 2, 3]</code>. (وتذكّر <code>import java.util.Arrays;</code>.)
+    </div>
+</div>
+<!-- ═══════════════ Q15 ═══════════════ -->
+<div class="qsection cat-ref" id="q15">
+    <div class="q-head"><div class="q-num">Q15</div><div class="q-cat">المراجع والأسماء المستعارة</div></div>
+    <div class="q-title">مصفوفتان بالقيم نفسها — هل <code>==</code> تعطي true؟</div>
+    <div class="code-block"><span class="type">int</span>[] a = <span class="keyword">new</span> <span class="type">int</span>[] { <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span> };
+<span class="type">int</span>[] b = <span class="keyword">new</span> <span class="type">int</span>[] { <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span> };
+System.out.<span class="method">println</span>(a == b);</div>
+
+    <div class="narrative">
+        <p>لنقرأ هذا البرنامج <strong>جملةً جملة</strong>.</p>
+    </div>
+
+    <!-- Statement 1 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 1</span><span class="stmt-line">int[] a = new int[]{1, 2, 3};</span></div>
+        <div class="stmt-body">
+            <p>يبني <code>new</code> مصفوفة حقيقية، ويُمنح <code>a</code> مرجعها:</p>
+            <div class="ptrdiag">
+                <div class="pvar"><div class="pv-name">a</div><div class="pv-slot isref">● مرجع</div></div>
+                <span class="pconn"><span class="pline"></span><span class="phead"></span></span>
+                <div class="arr-obj pd-array"><div class="ao-title">المصفوفة الأولى</div><div class="arr-cells">
+                    <div class="arr-cell"><span class="idx">[0]</span><span class="val">1</span></div><div class="arr-cell"><span class="idx">[1]</span><span class="val">2</span></div><div class="arr-cell"><span class="idx">[2]</span><span class="val">3</span></div>
+                </div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statement 2 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 2</span><span class="stmt-line">int[] b = new int[]{1, 2, 3};</span></div>
+        <div class="stmt-body">
+            <p>هذا <em>new</em> ثانٍ، لذا تبني جافا <strong>مصفوفة منفصلة تمامًا</strong>، ويأخذ <code>b</code> مرجع تلك الجديدة. ومع أنّ القيم تبدو متطابقة، فهذه مصفوفة مختلفة بمرجع مختلف:</p>
+            <div class="ptrdiag">
+                <div class="pvar"><div class="pv-name">b</div><div class="pv-slot isref">● مرجع</div></div>
+                <span class="pconn"><span class="pline"></span><span class="phead"></span></span>
+                <div class="arr-obj pd-array"><div class="ao-title">المصفوفة الثانية (مختلفة)</div><div class="arr-cells">
+                    <div class="arr-cell"><span class="idx">[0]</span><span class="val">1</span></div><div class="arr-cell"><span class="idx">[1]</span><span class="val">2</span></div><div class="arr-cell"><span class="idx">[2]</span><span class="val">3</span></div>
+                </div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statement 3 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 3</span><span class="stmt-line">System.out.println(a == b);</span></div>
+        <div class="stmt-body">
+            <p>العامل <code>==</code> يقارن <strong>محتوى <code>a</code></strong> بـ<strong>محتوى <code>b</code></strong> — أي يقارن المرجعين. وهو <em>لا</em> ينظر إلى القيم بالداخل. وبما أنّ <code>a</code> و<code>b</code> يشيران إلى مصفوفتين مختلفتين، فمرجعاهما مختلفان، لذا النتيجة <strong>false</strong>.</p>
+        </div>
+    </div>
+
+    <div class="success-box">
+        <div class="success-box-title">✅ الإجابة: false</div>
+        <code>==</code> يقارن <strong>المراجع</strong>، لا القيم بالداخل. المصفوفتان المُنشأتان بشكل منفصل لهما مرجعان مختلفان.
+    </div>
+</div>
+
+<!-- ═══════════════ Q16 ═══════════════ -->
+<div class="qsection cat-ref" id="q16">
+    <div class="q-head"><div class="q-num">Q16</div><div class="q-cat">المراجع والأسماء المستعارة</div></div>
+    <div class="q-title">هل <code>.equals()</code> تفيد مع المصفوفات؟</div>
+    <div class="code-block"><span class="type">int</span>[] a = <span class="keyword">new</span> <span class="type">int</span>[] { <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span> };
+<span class="type">int</span>[] b = <span class="keyword">new</span> <span class="type">int</span>[] { <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span> };
+System.out.<span class="method">println</span>(a.<span class="method">equals</span>(b));</div>
+
+    <div class="narrative">
+        <p>لنقرأ هذا البرنامج <strong>جملةً جملة</strong>.</p>
+    </div>
+
+    <!-- Statement 1 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 1</span><span class="stmt-line">int[] a = new int[]{1, 2, 3};</span></div>
+        <div class="stmt-body">
+            <p>تُبنى مصفوفة حقيقية ويحمل <code>a</code> مرجعها:</p>
+            <div class="ptrdiag">
+                <div class="pvar"><div class="pv-name">a</div><div class="pv-slot isref">● مرجع</div></div>
+                <span class="pconn"><span class="pline"></span><span class="phead"></span></span>
+                <div class="arr-obj pd-array"><div class="ao-title">المصفوفة الأولى</div><div class="arr-cells">
+                    <div class="arr-cell"><span class="idx">[0]</span><span class="val">1</span></div><div class="arr-cell"><span class="idx">[1]</span><span class="val">2</span></div><div class="arr-cell"><span class="idx">[2]</span><span class="val">3</span></div>
+                </div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statement 2 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 2</span><span class="stmt-line">int[] b = new int[]{1, 2, 3};</span></div>
+        <div class="stmt-body">
+            <p>يبني <code>new</code> ثانٍ مصفوفة منفصلة، ويحمل <code>b</code> مرجع تلك المصفوفة المختلفة:</p>
+            <div class="ptrdiag">
+                <div class="pvar"><div class="pv-name">b</div><div class="pv-slot isref">● مرجع</div></div>
+                <span class="pconn"><span class="pline"></span><span class="phead"></span></span>
+                <div class="arr-obj pd-array"><div class="ao-title">المصفوفة الثانية (مختلفة)</div><div class="arr-cells">
+                    <div class="arr-cell"><span class="idx">[0]</span><span class="val">1</span></div><div class="arr-cell"><span class="idx">[1]</span><span class="val">2</span></div><div class="arr-cell"><span class="idx">[2]</span><span class="val">3</span></div>
+                </div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statement 3 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 3</span><span class="stmt-line">System.out.println(a.equals(b));</span></div>
+        <div class="stmt-body">
+            <p>لدى كثير من الكائنات، تقارن <code>.equals()</code> المحتويات (مثلًا <code>String</code> تقارن الأحرف). لكنّ المصفوفة <strong>لا</strong> توفّر <code>.equals()</code> خاصة بها، فتستخدم النسخة الافتراضية التي تقارن <strong>المراجع</strong> فقط — تمامًا مثل <code>==</code>. والمرجعان مختلفان، لذا النتيجة <strong>false</strong>.</p>
+        </div>
+    </div>
+
+    <div class="success-box">
+        <div class="success-box-title">✅ الإجابة: false</div>
+        المصفوفات لا توفّر <code>.equals()</code> خاصة بها، لذا تتصرّف مثل <code>==</code> وتقارن المراجع ← false.
+    </div>
+    <div class="important-box">
+        <div class="important-box-title">⚠️ لا تنخدع</div>
+        للمصفوفات، تعطي <code>==</code> و<code>.equals()</code> <em>الإجابة نفسها</em> (المبنية على المرجع). ولا واحدة منهما تقارن القيم بالداخل.
+    </div>
+</div>
+
+<!-- ═══════════════ Q17 ═══════════════ -->
+<div class="qsection cat-ref" id="q17">
+    <div class="q-head"><div class="q-num">Q17</div><div class="q-cat">المراجع والأسماء المستعارة</div></div>
+    <div class="q-title">الطريقة الصحيحة: <code>Arrays.equals()</code></div>
+    <div class="code-block"><span class="keyword">import</span> java.util.Arrays;
+...
+<span class="type">int</span>[] a = <span class="keyword">new</span> <span class="type">int</span>[] { <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span> };
+<span class="type">int</span>[] b = <span class="keyword">new</span> <span class="type">int</span>[] { <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span> };
+System.out.<span class="method">println</span>(Arrays.<span class="method">equals</span>(a, b));</div>
+
+    <div class="narrative">
+        <p>لنقرأ هذا البرنامج <strong>جملةً جملة</strong>.</p>
+    </div>
+
+    <!-- Statement 1 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 1</span><span class="stmt-line">int[] a = new int[]{1, 2, 3};</span></div>
+        <div class="stmt-body">
+            <p>تُبنى مصفوفة حقيقية ويحمل <code>a</code> مرجعها:</p>
+            <div class="ptrdiag">
+                <div class="pvar"><div class="pv-name">a</div><div class="pv-slot isref">● مرجع</div></div>
+                <span class="pconn"><span class="pline"></span><span class="phead"></span></span>
+                <div class="arr-obj pd-array"><div class="ao-title">المصفوفة الأولى</div><div class="arr-cells">
+                    <div class="arr-cell"><span class="idx">[0]</span><span class="val">1</span></div><div class="arr-cell"><span class="idx">[1]</span><span class="val">2</span></div><div class="arr-cell"><span class="idx">[2]</span><span class="val">3</span></div>
+                </div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statement 2 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 2</span><span class="stmt-line">int[] b = new int[]{1, 2, 3};</span></div>
+        <div class="stmt-body">
+            <p>تُبنى مصفوفة منفصلة ويحمل <code>b</code> مرجعها:</p>
+            <div class="ptrdiag">
+                <div class="pvar"><div class="pv-name">b</div><div class="pv-slot isref">● مرجع</div></div>
+                <span class="pconn"><span class="pline"></span><span class="phead"></span></span>
+                <div class="arr-obj pd-array"><div class="ao-title">المصفوفة الثانية (مختلفة)</div><div class="arr-cells">
+                    <div class="arr-cell"><span class="idx">[0]</span><span class="val">1</span></div><div class="arr-cell"><span class="idx">[1]</span><span class="val">2</span></div><div class="arr-cell"><span class="idx">[2]</span><span class="val">3</span></div>
+                </div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statement 3 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 3</span><span class="stmt-line">System.out.println(Arrays.equals(a, b));</span></div>
+        <div class="stmt-body">
+            <p><code>Arrays.equals(a, b)</code> دالة مساعدة خاصة تفعل ما نريده فعلًا: تمرّ على <strong>المصفوفتين عنصرًا عنصرًا</strong> — هل الطول نفسه؟ وهل القيمة نفسها عند كلّ فهرس؟ — وتخبرنا بالحقيقة عن <em>المحتويات</em>. وكلتا المصفوفتين تحمل 1 و2 و3، لذا النتيجة <strong>true</strong>.</p>
+        </div>
+    </div>
+
+    <div class="compare-row">
+        <div class="compare-col bad"><h4>تقارن المرجع</h4><code>a == b</code><br><code>a.equals(b)</code><br>→ <span class="tag-out">false</span></div>
+        <div class="compare-col good"><h4>تقارن المحتويات</h4><code>Arrays.equals(a, b)</code><br>→ <span class="tag-out">true</span></div>
+    </div>
+
+    <div class="success-box">
+        <div class="success-box-title">✅ الإجابة: true</div>
+        <code>Arrays.equals()</code> تقارن القيم بالداخل. استخدمها كلّما أردت «هل تحمل المصفوفتان القيم نفسها؟».
+    </div>
+</div>
+
+<!-- ═══════════════ Q18 ═══════════════ -->
+<div class="qsection cat-ref" id="q18">
+    <div class="q-head"><div class="q-num">Q18</div><div class="q-cat">المراجع والأسماء المستعارة</div></div>
+    <div class="q-title">الأسماء المستعارة: اسمان لمصفوفة واحدة</div>
+    <div class="code-block"><span class="type">int</span>[] a = <span class="keyword">new</span> <span class="type">int</span>[] { <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span> };
+<span class="type">int</span>[] b = a;
+b[<span class="number">0</span>] = <span class="number">99</span>;
+System.out.<span class="method">println</span>(a[<span class="number">0</span>]);</div>
+
+    <div class="narrative">
+        <p>هذه الفكرة الأصعب على الطلاب، لذا لنقرأها <strong>جملةً جملة</strong> ونرسم بعناية بعد كلّ سطر.</p>
+    </div>
+
+    <!-- Statement 1 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 1</span><span class="stmt-line">int[] a = new int[]{1, 2, 3};</span></div>
+        <div class="stmt-body">
+            <p>يبني <code>new</code> المصفوفة، ويُمنح <code>a</code> <strong>مرجعها</strong>:</p>
+            <div class="ptrdiag">
+                <div class="pvar"><div class="pv-name">a</div><div class="pv-slot isref">● مرجع</div></div>
+                <span class="pconn"><span class="pline"></span><span class="phead"></span></span>
+                <div class="arr-obj pd-array"><div class="ao-title">المصفوفة</div><div class="arr-cells">
+                    <div class="arr-cell"><span class="idx">[0]</span><span class="val">1</span></div><div class="arr-cell"><span class="idx">[1]</span><span class="val">2</span></div><div class="arr-cell"><span class="idx">[2]</span><span class="val">3</span></div>
+                </div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statement 2 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 2</span><span class="stmt-line">int[] b = a;</span></div>
+        <div class="stmt-body">
+            <p>الجزء <code>int[] b</code> يُعرّف متغيّرًا مرجعيًّا جديدًا. وعلامة <code>=</code> عملية إسناد: خذ محتوى <code>a</code> وضعه في <code>b</code>. فما محتوى <code>a</code>؟ إنه <strong>مرجع المصفوفة</strong> — لا الأعداد.</p>
+            <p>إذن يُنسخ ذلك المرجع إلى <code>b</code>. <u>لا تُبنى أيّ مصفوفة جديدة.</u> والآن يحمل <code>a</code> و<code>b</code> المرجع نفسه، فكلاهما يشير إلى <strong>المصفوفة الواحدة نفسها</strong>:</p>
+            <div class="ptrdiag two">
+                <div class="pvar"><div class="pv-name">a</div><div class="pv-slot isref">● مرجع</div></div>
+                <span class="pconn"><span class="pline"></span><span class="phead"></span></span>
+                <div class="arr-obj pd-array"><div class="ao-title">المصفوفة نفسها</div><div class="arr-cells">
+                    <div class="arr-cell"><span class="idx">[0]</span><span class="val">1</span></div><div class="arr-cell"><span class="idx">[1]</span><span class="val">2</span></div><div class="arr-cell"><span class="idx">[2]</span><span class="val">3</span></div>
+                </div></div>
+                <div class="pvar"><div class="pv-name">b</div><div class="pv-slot isref">● مرجع</div></div>
+                <span class="pconn"><span class="pline"></span><span class="phead"></span></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statement 3 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 3</span><span class="stmt-line">b[0] = 99;</span></div>
+        <div class="stmt-body">
+            <p>يتبع هذا مرجع <code>b</code> إلى المصفوفة ويكتب 99 في الخانة <code>[0]</code>. وبما أنّ <code>a</code> يشير إلى المصفوفة <em>نفسها</em>، يرى <code>a</code> هذا التغيير أيضًا — فليس هناك سوى مصفوفة واحدة:</p>
+            <div class="ptrdiag two">
+                <div class="pvar"><div class="pv-name">a</div><div class="pv-slot isref">● مرجع</div></div>
+                <span class="pconn"><span class="pline"></span><span class="phead"></span></span>
+                <div class="arr-obj pd-array"><div class="ao-title">المصفوفة نفسها (بعد التغيير)</div><div class="arr-cells">
+                    <div class="arr-cell changed"><span class="idx">[0]</span><span class="val">99</span></div><div class="arr-cell"><span class="idx">[1]</span><span class="val">2</span></div><div class="arr-cell"><span class="idx">[2]</span><span class="val">3</span></div>
+                </div></div>
+                <div class="pvar"><div class="pv-name">b</div><div class="pv-slot isref">● مرجع</div></div>
+                <span class="pconn"><span class="pline"></span><span class="phead"></span></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statement 4 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 4</span><span class="stmt-line">System.out.println(a[0]);</span></div>
+        <div class="stmt-body">
+            <p>يقرأ هذا الخانة <code>[0]</code> من المصفوفة التي يشير إليها <code>a</code>، وهي الآن <strong>99</strong>.</p>
+        </div>
+    </div>
+
+    <div class="key-concept">
+        <div class="key-concept-title">📖 مصطلحات جديدة: المرجع والاسم المستعار</div>
+        القيمة التي يحملها المتغيّر وتشير إلى كائن تُسمّى <strong>مرجعًا</strong>. وعندما يحمل متغيّران المرجع نفسه نقول إنّهما <strong>اسمان مستعاران</strong> — اسمان لكائن واحد. والعبارة <code>b = a</code> تنسخ المرجع، لا المصفوفة التي خلفه.
+    </div>
+
+    <div class="success-box">
+        <div class="success-box-title">✅ الإجابة: 99</div>
+        <code>b = a</code> تجعل <code>a</code> و<code>b</code> يشيران إلى المصفوفة نفسها، لذا تغييرها عبر <code>b</code> يظهر عبر <code>a</code>.
+    </div>
+</div>
+
+<!-- ═══════════════ Q19 ═══════════════ -->
+<div class="qsection cat-ref" id="q19">
+    <div class="q-head"><div class="q-num">Q19</div><div class="q-cat">المراجع والأسماء المستعارة</div></div>
+    <div class="q-title">مقارنة متغيّري مصفوفة بـ <code>==</code></div>
+    <div class="code-block"><span class="type">int</span>[] a = <span class="keyword">new</span> <span class="type">int</span>[] { <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span> };
+<span class="type">int</span>[] b = a;
+System.out.<span class="method">println</span>(a == b);</div>
+
+    <div class="narrative">
+        <p>لنقرأ هذا البرنامج كما نحلّه على السبورة — <strong>جملةً جملة</strong> — ونرسم ما يحدث بعد كلّ سطر.</p>
+    </div>
+
+    <!-- Statement 1 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 1</span><span class="stmt-line">int[] a = new int[]{1, 2, 3};</span></div>
+        <div class="stmt-body">
+            <p>هذه الجملة الواحدة تقوم فعليًّا بـ<strong>ثلاثة أمور</strong>:</p>
+            <p><strong>1) التعريف</strong> — الجزء <code>int[] a</code> يُنشئ متغيّرًا في الذاكرة اسمه <code>a</code>. هذا النوع من المتغيّرات <strong>مرجع</strong>: مُعَدٌّ ليحمل <em>عنوان مصفوفة</em>، لا الأعداد نفسها. وفي هذه اللحظة، قبل إنشاء أيّ مصفوفة، يحمل <code>null</code> — أي لا شيء:</p>
+
+            <div class="ptrdiag">
+                <div class="pvar"><div class="pv-name">a</div><div class="pv-slot isnull">null</div></div>
+                <div class="pd-caption pv-caption" style="margin-left:14px;max-width:260px">لم يُنفَّذ سوى <code>int[] a</code> حتى الآن — المتغيّر موجود لكن لم تُنشأ أيّ مصفوفة، لذا لا يشير إلى شيء.</div>
+            </div>
+
+            <p><strong>2) الإنشاء</strong> — الجزء <code>new int[...]</code> يطلب من جافا بناء مصفوفة من ثلاثة أعداد صحيحة في الذاكرة. <strong>3) التهيئة</strong> — الجزء <code>{1, 2, 3}</code> يملأ تلك المصفوفة الجديدة بالقيم 1 و2 و3.</p>
+            <p>بعد ذلك تضع جافا <strong>مرجع تلك المصفوفة المُنشأة</strong> في المتغيّر <code>a</code>. فيصبح <code>a</code> الآن يحمل المرجع، ونرسمه يشير إلى المصفوفة:</p>
+
+            <div class="ptrdiag">
+                <div class="pvar"><div class="pv-name">a</div><div class="pv-slot isref">● مرجع</div></div>
+                <span class="pconn"><span class="pline"></span><span class="phead"></span></span>
+                <div class="arr-obj pd-array"><div class="ao-title">المصفوفة (أنشأها <code>new</code>)</div><div class="arr-cells">
+                    <div class="arr-cell"><span class="idx">[0]</span><span class="val">1</span></div>
+                    <div class="arr-cell"><span class="idx">[1]</span><span class="val">2</span></div>
+                    <div class="arr-cell"><span class="idx">[2]</span><span class="val">3</span></div>
+                </div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statement 2 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 2</span><span class="stmt-line">int[] b = a;</span></div>
+        <div class="stmt-body">
+            <p>أولًا، <code>int[] b</code> <strong>تعريف</strong> — يُنشئ متغيّرًا مرجعيًّا جديدًا اسمه <code>b</code>.</p>
+            <p>ثمّ علامة <code>=</code> هي <strong>إسناد</strong>. والإسناد يعني: <em>خذ محتوى <code>a</code> وضعه في <code>b</code></em>. فالسؤال الحقيقي هو — <strong>ما محتوى <code>a</code>؟</strong></p>
+            <p>محتوى <code>a</code> هو <strong>مرجع المصفوفة التي أُنشئت</strong> في الجملة 1. فيُنسخ ذلك المرجع إلى <code>b</code>. لا تُبنى أيّ مصفوفة جديدة — نسخنا المرجع فقط. والآن يحمل <code>b</code> المرجع نفسه الذي في <code>a</code>، لذا <strong>كلاهما يشير إلى المصفوفة الواحدة نفسها</strong>:</p>
+
+            <div class="ptrdiag two">
+                <div class="pvar"><div class="pv-name">a</div><div class="pv-slot isref">● مرجع</div></div>
+                <span class="pconn"><span class="pline"></span><span class="phead"></span></span>
+                <div class="arr-obj pd-array"><div class="ao-title">المصفوفة نفسها</div><div class="arr-cells">
+                    <div class="arr-cell"><span class="idx">[0]</span><span class="val">1</span></div>
+                    <div class="arr-cell"><span class="idx">[1]</span><span class="val">2</span></div>
+                    <div class="arr-cell"><span class="idx">[2]</span><span class="val">3</span></div>
+                </div></div>
+                <div class="pvar"><div class="pv-name">b</div><div class="pv-slot isref">● مرجع</div></div>
+                <span class="pconn"><span class="pline"></span><span class="phead"></span></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statement 3 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 3</span><span class="stmt-line">System.out.println(a == b);</span></div>
+        <div class="stmt-body">
+            <p>العامل <code>==</code> <strong>يقارن محتوى <code>a</code> بمحتوى <code>b</code></strong>.</p>
+            <p>ما محتوى <code>a</code>؟ مرجع المصفوفة المُنشأة. وما محتوى <code>b</code>؟ <em>المرجع نفسه</em>. مرجعان متطابقان ← يشيران إلى المصفوفة نفسها ← تكون المقارنة <strong>true</strong>.</p>
+            <div class="ptrdiag" style="font-family:'Consolas',monospace;font-weight:bold;color:#0f766e;justify-content:center;font-size:1.05rem">
+                محتوى a  &nbsp;(● مرجع)&nbsp;  ==  &nbsp;محتوى b  &nbsp;(● المرجع نفسه)&nbsp;  ←  true
+            </div>
+        </div>
+    </div>
+
+    <div class="success-box">
+        <div class="success-box-title">✅ الإجابة: true</div>
+        يحمل <code>a</code> و<code>b</code> المرجع نفسه، لذا يقارن <code>==</code> مرجعين متساويين وتكون النتيجة <strong>true</strong>.
+    </div>
+</div>
+
+<!-- ═══════════════ Q20 ═══════════════ -->
+<div class="qsection cat-ref" id="q20">
+    <div class="q-head"><div class="q-num">Q20</div><div class="q-cat">المراجع والأسماء المستعارة</div></div>
+    <div class="q-title">كسر الاسم المستعار</div>
+    <div class="code-block"><span class="type">int</span>[] a = <span class="keyword">new</span> <span class="type">int</span>[] { <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span> };
+<span class="type">int</span>[] b = a;
+b = <span class="keyword">new</span> <span class="type">int</span>[] { <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span> };
+System.out.<span class="method">println</span>(a == b);</div>
+
+    <div class="narrative">
+        <p>لنقرأ هذا البرنامج <strong>جملةً جملة</strong>.</p>
+    </div>
+
+    <!-- Statement 1 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 1</span><span class="stmt-line">int[] a = new int[]{1, 2, 3};</span></div>
+        <div class="stmt-body">
+            <p>تُبنى مصفوفة أولى، ويحمل <code>a</code> مرجعها:</p>
+            <div class="ptrdiag">
+                <div class="pvar"><div class="pv-name">a</div><div class="pv-slot isref">● مرجع</div></div>
+                <span class="pconn"><span class="pline"></span><span class="phead"></span></span>
+                <div class="arr-obj pd-array"><div class="ao-title">المصفوفة الأولى</div><div class="arr-cells">
+                    <div class="arr-cell"><span class="idx">[0]</span><span class="val">1</span></div><div class="arr-cell"><span class="idx">[1]</span><span class="val">2</span></div><div class="arr-cell"><span class="idx">[2]</span><span class="val">3</span></div>
+                </div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statement 2 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 2</span><span class="stmt-line">int[] b = a;</span></div>
+        <div class="stmt-body">
+            <p>يُنسخ محتوى <code>a</code> (مرجعه) إلى <code>b</code>، لذا يشير كلاهما الآن إلى المصفوفة الأولى نفسها:</p>
+            <div class="ptrdiag two">
+                <div class="pvar"><div class="pv-name">a</div><div class="pv-slot isref">● مرجع</div></div>
+                <span class="pconn"><span class="pline"></span><span class="phead"></span></span>
+                <div class="arr-obj pd-array"><div class="ao-title">المصفوفة الأولى</div><div class="arr-cells">
+                    <div class="arr-cell"><span class="idx">[0]</span><span class="val">1</span></div><div class="arr-cell"><span class="idx">[1]</span><span class="val">2</span></div><div class="arr-cell"><span class="idx">[2]</span><span class="val">3</span></div>
+                </div></div>
+                <div class="pvar"><div class="pv-name">b</div><div class="pv-slot isref">● مرجع</div></div>
+                <span class="pconn"><span class="pline"></span><span class="phead"></span></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statement 3 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 3</span><span class="stmt-line">b = new int[]{1, 2, 3};</span></div>
+        <div class="stmt-body">
+            <p>يبني هذا <strong>مصفوفة جديدة تمامًا</strong> ويخزّن مرجعها في <code>b</code>. فيشير <code>b</code> الآن إلى مكان آخر. لاحظ أنّنا <em>لم</em> نمسّ <code>a</code> — فهو لا يزال يشير إلى المصفوفة الأولى. والمتغيّران الآن يشيران إلى مصفوفتين مختلفتين:</p>
+            <div class="ptrdiag">
+                <div class="pvar"><div class="pv-name">a</div><div class="pv-slot isref">● مرجع</div></div>
+                <span class="pconn"><span class="pline"></span><span class="phead"></span></span>
+                <div class="arr-obj pd-array"><div class="ao-title">المصفوفة الأولى</div><div class="arr-cells">
+                    <div class="arr-cell"><span class="idx">[0]</span><span class="val">1</span></div><div class="arr-cell"><span class="idx">[1]</span><span class="val">2</span></div><div class="arr-cell"><span class="idx">[2]</span><span class="val">3</span></div>
+                </div></div>
+            </div>
+            <div class="ptrdiag">
+                <div class="pvar"><div class="pv-name">b</div><div class="pv-slot isref">● مرجع</div></div>
+                <span class="pconn"><span class="pline"></span><span class="phead"></span></span>
+                <div class="arr-obj pd-array"><div class="ao-title">مصفوفة جديدة (مختلفة)</div><div class="arr-cells">
+                    <div class="arr-cell"><span class="idx">[0]</span><span class="val">1</span></div><div class="arr-cell"><span class="idx">[1]</span><span class="val">2</span></div><div class="arr-cell"><span class="idx">[2]</span><span class="val">3</span></div>
+                </div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statement 4 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 4</span><span class="stmt-line">System.out.println(a == b);</span></div>
+        <div class="stmt-body">
+            <p>يقارن <code>==</code> المرجع في <code>a</code> بالمرجع في <code>b</code>. وهما الآن يشيران إلى مصفوفتين مختلفتين، لذا النتيجة <strong>false</strong>.</p>
+        </div>
+    </div>
+
+    <div class="success-box">
+        <div class="success-box-title">✅ الإجابة: false</div>
+        إسناد مصفوفة <code>new</code> إلى <code>b</code> يعيد توجيهه. فيُكسر الاسم المستعار؛ ويختلف المرجعان.
+    </div>
+
+    <div class="info-box">
+        <div class="info-box-title">🗑️ إضافة: متى تصبح المصفوفة «مهملات»؟</div>
+        <p>تبقى المصفوفة في الذاكرة ما دام <em>متغيّر واحد على الأقل</em> يحمل مرجعها. وفي اللحظة التي <strong>لا يشير فيها أيّ متغيّر إليها</strong> تصبح غير قابلة للوصول — فيحذفها <strong>جامع المهملات</strong> في الـ JVM تلقائيًا لتحرير الذاكرة. أنت لا تحذف المصفوفات يدويًا في جافا أبدًا. مثلًا، إذا أُعيد توجيه <code>a</code> لاحقًا إلى مصفوفة أخرى بينما لا يشير أحد آخر إلى الأولى، تُلقى تلك المصفوفة الأولى:</p>
+        <div class="ptrdiag">
+            <div class="arr-obj garbage pd-array"><div class="ao-title">مصفوفة لا يشير إليها أيّ سهم</div><div class="arr-cells">
+                <div class="arr-cell"><span class="idx">[0]</span><span class="val">1</span></div><div class="arr-cell"><span class="idx">[1]</span><span class="val">2</span></div><div class="arr-cell"><span class="idx">[2]</span><span class="val">3</span></div>
+            </div></div>
+            <div class="pv-caption" style="margin-left:14px;max-width:240px">🗑️ لا يشير إليها أيّ متغيّر ← يحرّرها جامع المهملات تلقائيًا.</div>
+        </div>
+    </div>
+
+    <div class="key-concept">
+        <div class="key-concept-title">💡 تمييز مهم أبقِه واضحًا</div>
+        <code>b[0] = 99</code> تعدّل <em>المصفوفة نفسها</em> (كلّ من يشير إليها يرى التغيير).<br>
+        <code>b = new int[]{…}</code> تغيّر فقط <em>المرجع المخزّن في b</em> (لا يتأثّر أحد آخر).
+    </div>
+</div>
+
+<!-- ═══════════════ Q21 ═══════════════ -->
+<div class="qsection cat-ref" id="q21">
+    <div class="q-head"><div class="q-num">Q21</div><div class="q-cat">المراجع والأسماء المستعارة</div></div>
+    <div class="q-title">المصفوفة ثنائية البعد هي مصفوفة من مراجع لمصفوفات</div>
+    <div class="code-block"><span class="type">int</span>[][] grid = <span class="keyword">new</span> <span class="type">int</span>[][] { { <span class="number">1</span>, <span class="number">2</span> }, { <span class="number">3</span>, <span class="number">4</span> } };
+<span class="type">int</span>[] row = grid[<span class="number">0</span>];
+row[<span class="number">1</span>] = <span class="number">99</span>;
+System.out.<span class="method">println</span>(grid[<span class="number">0</span>][<span class="number">1</span>]);</div>
+
+    <div class="narrative">
+        <p>لنقرأ هذا البرنامج <strong>جملةً جملة</strong>. الفكرة الأساسية: المصفوفة ثنائية البعد هي في الحقيقة مصفوفة عناصرها <em>مراجع</em> لمصفوفات أخرى منفصلة.</p>
+    </div>
+
+    <!-- Statement 1 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 1</span><span class="stmt-line">int[][] grid = new int[][]{ {1,2}, {3,4} };</span></div>
+        <div class="stmt-body">
+            <p>هكذا تبدو المصفوفة ثنائية البعد حقًّا. المتغيّر <code>grid</code> يحمل عنوان <strong>المصفوفة الخارجية</strong> — العمود الرأسي (هذا هو البعد الأول). وكلّ عنصر في تلك المصفوفة الخارجية لا يحمل أعدادًا؛ بل يحمل <strong>عنوان مصفوفة أخرى منفصلة</strong>. وتلك المصفوفات الداخلية (البعد الثاني) تعيش وحدها في مكان ما من الذاكرة. وفهرس كلّ عنصر مكتوب <em>خارج</em> الخانة على اليسار:</p>
+
+            <div class="a2">
+                <div class="a2-head">
+                    <div class="pvar"><div class="pv-name">grid</div><div class="pv-slot"><span class="addr-chip">X0</span></div></div>
+                    <div class="a2-down">▼</div>
+                </div>
+                <div class="a2-outerwrap">
+                    <div class="a2-addr a2-addr-outer">X0</div>
+                    <div class="a2-lines">
+                        <div class="a2-line">
+                            <span class="a2-index">0</span>
+                            <div class="a2-outcell"><span class="addr-chip">Y0</span></div>
+                            <span class="a2-arrow">⟶</span>
+                            <div class="a2-rowwrap">
+                                <div class="a2-addr">Y0</div>
+                                <div class="a2-rowcells">
+                                    <div class="arr-cell"><span class="idx">[0]</span><span class="val">1</span></div>
+                                    <div class="arr-cell"><span class="idx">[1]</span><span class="val">2</span></div>
+                                </div>
+                            </div>
+                            <span class="a2-rowlabel">مصفوفة (int[2]) عند Y0</span>
+                        </div>
+                        <div class="a2-line">
+                            <span class="a2-index">1</span>
+                            <div class="a2-outcell"><span class="addr-chip">Y1</span></div>
+                            <span class="a2-arrow">⟶</span>
+                            <div class="a2-rowwrap">
+                                <div class="a2-addr">Y1</div>
+                                <div class="a2-rowcells">
+                                    <div class="arr-cell"><span class="idx">[0]</span><span class="val">3</span></div>
+                                    <div class="arr-cell"><span class="idx">[1]</span><span class="val">4</span></div>
+                                </div>
+                            </div>
+                            <span class="a2-rowlabel">مصفوفة (int[2]) عند Y1</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="a2-dimnote">
+                    <b>تتبّع العناوين:</b> يحمل <code>grid</code> العنوان <span class="addr-chip">X0</span> — عنوان المصفوفة الخارجية. والعنصر <b>0</b> من تلك المصفوفة يحمل <span class="addr-chip">Y0</span>، والعنصر <b>1</b> يحمل <span class="addr-chip">Y1</span>. وكلٌّ من هذين عنوانُ مصفوفة <em>منفصلة</em>. وعنوان كلّ مصفوفة مكتوب فوقها لتطابق بينهما: العنصر <b>0</b> يحمل Y0 ← المصفوفة عند Y0.<br>
+                    <b>المصفوفتان الداخليتان كائنان منفصلان.</b> يمكن أن تكونا في <em>أيّ مكان</em> في الذاكرة — وليستا بجوار بعضهما. ولا يربطهما سوى عنوانَيهما (Y0 وY1) المخزّنَين داخل المصفوفة الخارجية.<br>
+                    <b>قراءة <code>grid[0][1]</code>:</b> العنصر 0 من المصفوفة الخارجية يحمل Y0 ← اذهب إلى المصفوفة عند Y0 ← خذ الفهرس <code>[1]</code> ← 2.<br>
+                    <b>ملاحظة:</b> X0 وY0 وY1 أسماء مختصرة افتراضية. وهي في الواقع عناوين ذاكرة ستّ عشرية (مثل <code>0x7A3F</code>) تختارها الـ JVM. وهذه الفكرة نفسها — خانة تخزّن <em>عنوان مصفوفة أخرى</em> — هي طريقة عمل <b>القائمة المرتبطة (linked list)</b> في هياكل البيانات.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statement 2 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 2</span><span class="stmt-line">int[] row = grid[0];</span></div>
+        <div class="stmt-body">
+            <p>يُمنح <code>row</code> محتوى <code>grid[0]</code>. فما ذلك المحتوى؟ إنه العنوان <span class="addr-chip">Y0</span>. فالمتغيّر <code>row</code> الآن يحمل أيضًا <span class="addr-chip">Y0</span>، ويشير كلٌّ من <code>row</code> و<code>grid[0]</code> إلى المصفوفة <strong>نفسها</strong> (التي عند Y0):</p>
+            <div class="ptrdiag two">
+                <div class="pvar"><div class="pv-name">grid[0]</div><div class="pv-slot"><span class="addr-chip">Y0</span></div></div>
+                <span class="pconn"><span class="pline"></span><span class="phead"></span></span>
+                <div class="arr-obj pd-array"><div class="ao-title">المصفوفة عند Y0 (مشتركة)</div><div class="arr-cells">
+                    <div class="arr-cell"><span class="idx">[0]</span><span class="val">1</span></div><div class="arr-cell"><span class="idx">[1]</span><span class="val">2</span></div>
+                </div></div>
+                <div class="pvar"><div class="pv-name">row</div><div class="pv-slot"><span class="addr-chip">Y0</span></div></div>
+                <span class="pconn"><span class="pline"></span><span class="phead"></span></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statement 3 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 3</span><span class="stmt-line">row[1] = 99;</span></div>
+        <div class="stmt-body">
+            <p>يكتب هذا 99 في الخانة <code>[1]</code> من المصفوفة التي يشير إليها <code>row</code>. وبما أنّ <code>grid[0]</code> يحمل العنوان نفسه، يصبح <code>grid[0][1]</code> يساوي 99 أيضًا. وهذا هو الهيكل كاملًا بعد التغيير (المتغيّر <code>row</code> يحمل ببساطة العنوان نفسه، Y0):</p>
+            <div class="a2">
+                <div class="a2-head">
+                    <div class="pvar"><div class="pv-name">grid</div><div class="pv-slot"><span class="addr-chip">X0</span></div></div>
+                    <div class="a2-down">▼</div>
+                </div>
+                <div class="a2-outerwrap">
+                    <div class="a2-addr a2-addr-outer">X0</div>
+                    <div class="a2-lines">
+                        <div class="a2-line">
+                            <span class="a2-index">0</span>
+                            <div class="a2-outcell"><span class="addr-chip">Y0</span></div>
+                            <span class="a2-arrow">⟶</span>
+                            <div class="a2-rowwrap">
+                                <div class="a2-addr">Y0 &nbsp;(المتغيّر <code>row</code> يحمل Y0 أيضًا)</div>
+                                <div class="a2-rowcells">
+                                    <div class="arr-cell"><span class="idx">[0]</span><span class="val">1</span></div>
+                                    <div class="arr-cell changed"><span class="idx">[1]</span><span class="val">99</span></div>
+                                </div>
+                            </div>
+                            <span class="a2-rowlabel">المصفوفة عند Y0</span>
+                        </div>
+                        <div class="a2-line">
+                            <span class="a2-index">1</span>
+                            <div class="a2-outcell"><span class="addr-chip">Y1</span></div>
+                            <span class="a2-arrow">⟶</span>
+                            <div class="a2-rowwrap">
+                                <div class="a2-addr">Y1</div>
+                                <div class="a2-rowcells">
+                                    <div class="arr-cell"><span class="idx">[0]</span><span class="val">3</span></div>
+                                    <div class="arr-cell"><span class="idx">[1]</span><span class="val">4</span></div>
+                                </div>
+                            </div>
+                            <span class="a2-rowlabel">المصفوفة عند Y1</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="a2-dimnote">
+                    لأنّ المتغيّر <code>row</code> يحمل أيضًا <span class="addr-chip">Y0</span> (العنوان نفسه المخزّن في الفهرس 0 من المصفوفة الخارجية)، فإنّ كتابة <code>row[1] = 99</code> تغيّر المصفوفة الوحيدة عند Y0 — لذا يصبح <code>grid[0][1]</code> يساوي 99 أيضًا.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statement 4 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 4</span><span class="stmt-line">System.out.println(grid[0][1]);</span></div>
+        <div class="stmt-body">
+            <p>يقرأ هذا المصفوفة عند الفهرس 0 (التي عند Y0)، الخانة <code>[1]</code>، وهي الآن <strong>99</strong>.</p>
+        </div>
+    </div>
+
+    <div class="success-box">
+        <div class="success-box-title">✅ الإجابة: 99</div>
+        يحمل <code>grid[0]</code> والمتغيّر <code>row</code> العنوان نفسه، لذا التغيير عبر أحدهما يظهر عبر الآخر.
+    </div>
+    <div class="key-concept">
+        <div class="key-concept-title">💡 لمحة عن الغد</div>
+        لأنّ كلّ مصفوفة داخلية كائن منفصل بعنوانه الخاص، يمكن أن تكون للمصفوفات <em>أطوال مختلفة</em> — وهكذا تعمل <strong>المصفوفات المتعرّجة (ragged)</strong> التي ستقابلها في الدرس 4.
+    </div>
+</div>
+
+<!-- ═══════════════ Q22 ═══════════════ -->
+<div class="qsection cat-ref" id="q22">
+    <div class="q-head"><div class="q-num">Q22</div><div class="q-cat">المراجع والأسماء المستعارة</div></div>
+    <div class="q-title">طلب طول «لا شيء» ← NullPointerException</div>
+    <div class="code-block"><span class="type">int</span>[] a = <span class="keyword">new</span> <span class="type">int</span>[] { <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span> };
+a = <span class="keyword">null</span>;
+System.out.<span class="method">println</span>(a.length);</div>
+
+    <div class="narrative">
+        <p>لنقرأ هذا البرنامج <strong>جملةً جملة</strong>.</p>
+    </div>
+
+    <!-- Statement 1 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 1</span><span class="stmt-line">int[] a = new int[]{1, 2, 3};</span></div>
+        <div class="stmt-body">
+            <p>تُبنى مصفوفة ويحمل <code>a</code> مرجعها:</p>
+            <div class="ptrdiag">
+                <div class="pvar"><div class="pv-name">a</div><div class="pv-slot isref">● مرجع</div></div>
+                <span class="pconn"><span class="pline"></span><span class="phead"></span></span>
+                <div class="arr-obj pd-array"><div class="ao-title">المصفوفة</div><div class="arr-cells">
+                    <div class="arr-cell"><span class="idx">[0]</span><span class="val">1</span></div><div class="arr-cell"><span class="idx">[1]</span><span class="val">2</span></div><div class="arr-cell"><span class="idx">[2]</span><span class="val">3</span></div>
+                </div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statement 2 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 2</span><span class="stmt-line">a = null;</span></div>
+        <div class="stmt-body">
+            <p><code>null</code> تعني «لا مرجع». وهذا يمحو المرجع الموجود داخل <code>a</code>، فيشير <code>a</code> الآن إلى <strong>لا شيء إطلاقًا</strong>:</p>
+            <div class="ptrdiag">
+                <div class="pvar"><div class="pv-name">a</div><div class="pv-slot isnull">null</div></div>
+                <div class="pv-caption" style="margin-left:14px;max-width:240px"><code>a</code> لا يشير إلى أيّ مصفوفة. (وإذا لم يشر أحد آخر إلى المصفوفة القديمة، حرّرها جامع المهملات.)</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statement 3 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 3</span><span class="stmt-line">System.out.println(a.length);</span></div>
+        <div class="stmt-body">
+            <p><code>a.length</code> يسأل «ما حجم المصفوفة التي يشير إليها <code>a</code>؟» لكن <code>a</code> لا يشير إلى شيء — فلا توجد مصفوفة لقياسها. لذا توقف جافا البرنامج بخطأ <strong>NullPointerException</strong>، وهو أشهر خطأ زمن تشغيل في جافا.</p>
+        </div>
+    </div>
+
+    <div class="success-box">
+        <div class="success-box-title">✅ الإجابة: NullPointerException (أثناء التشغيل)</div>
+        لا يمكنك طلب <code>.length</code> (أو استدعاء أيّ دالة) على مرجع <code>null</code>.
+    </div>
+    <div class="key-concept">
+        <div class="key-concept-title">💡 المرجع والمصفوفة شيئان مختلفان</div>
+        قد يوجد <em>المتغيّر</em> بينما يشير إلى <em>لا مصفوفة</em> (<code>null</code>). تأكّد دائمًا أنّ المرجع يشير فعلًا إلى شيء قبل استخدامه.
+    </div>
+</div>
+<!-- ═══════════════ Q23 ═══════════════ -->
+<div class="qsection cat-pass" id="q23">
+    <div class="q-head"><div class="q-num">Q23</div><div class="q-cat">تمرير المعطيات إلى الدوال</div></div>
+    <div class="q-title">تمرير متغيّر أساسي إلى دالة</div>
+    <div class="code-block"><span class="keyword">static void</span> <span class="method">change</span>(<span class="type">int</span> x) { x = <span class="number">100</span>; }
+
+<span class="comment">// in main:</span>
+<span class="type">int</span> n = <span class="number">5</span>;
+<span class="method">change</span>(n);
+System.out.<span class="method">println</span>(n);</div>
+
+    <div class="narrative">
+        <p>لنقرأ <code>main</code> <strong>جملةً جملة</strong>. القاعدة التي نتذكّرها: جافا <strong>تمرّر دائمًا نسخة</strong> إلى الدالة.</p>
+    </div>
+
+    <!-- Statement 1 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 1</span><span class="stmt-line">int n = 5;</span></div>
+        <div class="stmt-body">
+            <p>متغيّر <code>int</code> اسمه <code>n</code> يحمل القيمة 5.</p>
+            <div class="ptrdiag"><div class="pvar"><div class="pv-name">n</div><div class="pv-slot">5</div></div></div>
+        </div>
+    </div>
+
+    <!-- Statement 2 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 2</span><span class="stmt-line">change(n);</span></div>
+        <div class="stmt-body">
+            <p>يستدعي هذا الدالة. وللأنواع الأساسية تنسخ جافا <strong>قيمة</strong> <code>n</code> (وهي 5) إلى المعامل <code>x</code>. فيكون <code>x</code> صندوقًا مستقلًا يحمل نسخته الخاصة.</p>
+            <p>وداخل الدالة، تغيّر <code>x = 100</code> تلك النسخة فقط. أمّا <code>n</code> في <code>main</code> فصندوق مختلف لا يتأثّر:</p>
+            <div class="ptrdiag">
+                <div class="pvar"><div class="pv-name">n (في main)</div><div class="pv-slot">5</div></div>
+                <div class="pvar" style="margin-left:24px"><div class="pv-name">x (نسخة الدالة)</div><div class="pv-slot">100</div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statement 3 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 3</span><span class="stmt-line">System.out.println(n);</span></div>
+        <div class="stmt-body">
+            <p>يطبع هذا محتوى <code>n</code>، وهو لا يزال <strong>5</strong>.</p>
+        </div>
+    </div>
+
+    <div class="success-box">
+        <div class="success-box-title">✅ الإجابة: 5</div>
+        يُمرَّر النوع الأساسي كـ<strong>نسخة من قيمته</strong>. ولا تستطيع الدالة تغيير متغيّر المُستدعي.
+    </div>
+</div>
+
+<!-- ═══════════════ Q24 ═══════════════ -->
+<div class="qsection cat-pass" id="q24">
+    <div class="q-head"><div class="q-num">Q24</div><div class="q-cat">تمرير المعطيات إلى الدوال</div></div>
+    <div class="q-title">تمرير مصفوفة — وتغيير عنصر</div>
+    <div class="code-block"><span class="keyword">static void</span> <span class="method">change</span>(<span class="type">int</span>[] arr) { arr[<span class="number">0</span>] = <span class="number">100</span>; }
+
+<span class="comment">// in main:</span>
+<span class="type">int</span>[] a = <span class="keyword">new</span> <span class="type">int</span>[] { <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span> };
+<span class="method">change</span>(a);
+System.out.<span class="method">println</span>(a[<span class="number">0</span>]);</div>
+
+    <div class="narrative">
+        <p>لنقرأ <code>main</code> <strong>جملةً جملة</strong>. جافا تمرّر دائمًا نسخة — لكن للمصفوفة تكون القيمة المنسوخة هي <strong>المرجع</strong>.</p>
+    </div>
+
+    <!-- Statement 1 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 1</span><span class="stmt-line">int[] a = new int[]{1, 2, 3};</span></div>
+        <div class="stmt-body">
+            <p>تُبنى مصفوفة ويحمل <code>a</code> مرجعها:</p>
+            <div class="ptrdiag">
+                <div class="pvar"><div class="pv-name">a</div><div class="pv-slot isref">● مرجع</div></div>
+                <span class="pconn"><span class="pline"></span><span class="phead"></span></span>
+                <div class="arr-obj pd-array"><div class="ao-title">المصفوفة</div><div class="arr-cells">
+                    <div class="arr-cell"><span class="idx">[0]</span><span class="val">1</span></div><div class="arr-cell"><span class="idx">[1]</span><span class="val">2</span></div><div class="arr-cell"><span class="idx">[2]</span><span class="val">3</span></div>
+                </div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statement 2 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 2</span><span class="stmt-line">change(a);</span></div>
+        <div class="stmt-body">
+            <p>تنسخ جافا <strong>مرجع</strong> <code>a</code> إلى المعامل <code>arr</code>. ونسخ المرجع لا ينسخ المصفوفة — لذا يشير <code>a</code> و<code>arr</code> إلى <strong>المصفوفة الواحدة نفسها</strong>.</p>
+            <p>وداخل الدالة، تتبع <code>arr[0] = 100</code> ذلك المرجع إلى المصفوفة وتعدّل الخانة <code>[0]</code>. وبما أنّها المصفوفة نفسها، يرى <code>a</code> التغيير:</p>
+            <div class="ptrdiag two">
+                <div class="pvar"><div class="pv-name">a (في main)</div><div class="pv-slot isref">● مرجع</div></div>
+                <span class="pconn"><span class="pline"></span><span class="phead"></span></span>
+                <div class="arr-obj pd-array"><div class="ao-title">المصفوفة نفسها (بعد التغيير)</div><div class="arr-cells">
+                    <div class="arr-cell changed"><span class="idx">[0]</span><span class="val">100</span></div><div class="arr-cell"><span class="idx">[1]</span><span class="val">2</span></div><div class="arr-cell"><span class="idx">[2]</span><span class="val">3</span></div>
+                </div></div>
+                <div class="pvar"><div class="pv-name">arr (في الدالة)</div><div class="pv-slot isref">● مرجع</div></div>
+                <span class="pconn"><span class="pline"></span><span class="phead"></span></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statement 3 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 3</span><span class="stmt-line">System.out.println(a[0]);</span></div>
+        <div class="stmt-body">
+            <p>يقرأ هذا الخانة <code>[0]</code> من المصفوفة التي يشير إليها <code>a</code>، وهي الآن <strong>100</strong>.</p>
+        </div>
+    </div>
+
+    <div class="success-box">
+        <div class="success-box-title">✅ الإجابة: 100</div>
+        تتشارك الدالة المصفوفة نفسها، لذا يظهر تعديل عناصرها للمُستدعي. ولهذا <em>تبدو</em> المصفوفات وكأنّها «تُمرَّر بالمرجع».
+    </div>
+</div>
+
+<!-- ═══════════════ Q25 ═══════════════ -->
+<div class="qsection cat-pass" id="q25">
+    <div class="q-head"><div class="q-num">Q25</div><div class="q-cat">تمرير المعطيات إلى الدوال</div></div>
+    <div class="q-title">الحالة الدقيقة: إعادة إسناد المعامل</div>
+    <div class="code-block"><span class="keyword">static void</span> <span class="method">change</span>(<span class="type">int</span>[] arr) {
+    arr = <span class="keyword">new</span> <span class="type">int</span>[] { <span class="number">9</span>, <span class="number">9</span>, <span class="number">9</span> };
+}
+<span class="comment">// in main:</span>
+<span class="type">int</span>[] a = <span class="keyword">new</span> <span class="type">int</span>[] { <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span> };
+<span class="method">change</span>(a);
+System.out.<span class="method">println</span>(a[<span class="number">0</span>]);</div>
+
+    <div class="narrative">
+        <p>لنقرأ <code>main</code> <strong>جملةً جملة</strong>.</p>
+    </div>
+
+    <!-- Statement 1 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 1</span><span class="stmt-line">int[] a = new int[]{1, 2, 3};</span></div>
+        <div class="stmt-body">
+            <p>تُبنى مصفوفة ويحمل <code>a</code> مرجعها:</p>
+            <div class="ptrdiag">
+                <div class="pvar"><div class="pv-name">a</div><div class="pv-slot isref">● مرجع</div></div>
+                <span class="pconn"><span class="pline"></span><span class="phead"></span></span>
+                <div class="arr-obj pd-array"><div class="ao-title">المصفوفة</div><div class="arr-cells">
+                    <div class="arr-cell"><span class="idx">[0]</span><span class="val">1</span></div><div class="arr-cell"><span class="idx">[1]</span><span class="val">2</span></div><div class="arr-cell"><span class="idx">[2]</span><span class="val">3</span></div>
+                </div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statement 2 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 2</span><span class="stmt-line">change(a);</span></div>
+        <div class="stmt-body">
+            <p>تنسخ جافا مرجع <code>a</code> إلى المعامل <code>arr</code>، فيشير كلاهما في البداية إلى المصفوفة نفسها. ثم داخل الدالة، تبني <code>arr = new int[]{9,9,9}</code> <strong>مصفوفة جديدة تمامًا</strong> وتخزّن مرجعها في <code>arr</code>. وهذا يغيّر فقط <em>نسخة الدالة</em> من المرجع — أمّا <code>a</code> في <code>main</code> فلا يزال يشير إلى المصفوفة الأصلية.</p>
+            <div class="ptrdiag">
+                <div class="pvar"><div class="pv-name">a (في main)</div><div class="pv-slot isref">● مرجع</div></div>
+                <span class="pconn"><span class="pline"></span><span class="phead"></span></span>
+                <div class="arr-obj pd-array"><div class="ao-title">المصفوفة الأصلية (دون تغيير)</div><div class="arr-cells">
+                    <div class="arr-cell"><span class="idx">[0]</span><span class="val">1</span></div><div class="arr-cell"><span class="idx">[1]</span><span class="val">2</span></div><div class="arr-cell"><span class="idx">[2]</span><span class="val">3</span></div>
+                </div></div>
+            </div>
+            <div class="ptrdiag">
+                <div class="pvar"><div class="pv-name">arr (في الدالة)</div><div class="pv-slot isref">● مرجع</div></div>
+                <span class="pconn"><span class="pline"></span><span class="phead"></span></span>
+                <div class="arr-obj pd-array"><div class="ao-title">مصفوفة الدالة الجديدة (تُلغى عند انتهاء الدالة)</div><div class="arr-cells">
+                    <div class="arr-cell"><span class="idx">[0]</span><span class="val">9</span></div><div class="arr-cell"><span class="idx">[1]</span><span class="val">9</span></div><div class="arr-cell"><span class="idx">[2]</span><span class="val">9</span></div>
+                </div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statement 3 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 3</span><span class="stmt-line">System.out.println(a[0]);</span></div>
+        <div class="stmt-body">
+            <p>يقرأ هذا الخانة <code>[0]</code> من المصفوفة التي لا يزال يشير إليها <code>a</code> (الأصلية)، وهي <strong>1</strong>.</p>
+        </div>
+    </div>
+
+    <div class="compare-row">
+        <div class="compare-col good"><h4>✅ تعديل عنصر</h4><code>arr[0] = 100;</code><br>يعدّل المصفوفة <b>المشتركة</b> ← يرى المُستدعي <span class="tag-out">100</span></div>
+        <div class="compare-col bad"><h4>❌ إعادة إسناد المعامل</h4><code>arr = new int[]{…};</code><br>يعيد توجيه <b>النسخة المحلية</b> فقط ← المُستدعي دون تغيير <span class="tag-out">1</span></div>
+    </div>
+
+    <div class="success-box">
+        <div class="success-box-title">✅ الإجابة: 1</div>
+        إعادة إسناد المعامل تغيّر فقط مرجع الدالة المحلي. ولتغيير مصفوفة المُستدعي يجب تعديل <em>عناصرها</em>، لا إعادة ربط المعامل.
+    </div>
+    <div class="important-box">
+        <div class="important-box-title">🧠 الجملة المفتاحية</div>
+        <strong>عدّل المصفوفة عبر المعامل ← يراه المُستدعي. أعد إسناد المعامل نفسه ← لا يراه المُستدعي.</strong>
+    </div>
+</div>
+
+<!-- ═══════════════ Q26 ═══════════════ -->
+<div class="qsection cat-pass" id="q26">
+    <div class="q-head"><div class="q-num">Q26</div><div class="q-cat">تمرير المعطيات إلى الدوال</div></div>
+    <div class="q-title">لماذا لا يمكنك تبديل عددين بدالة</div>
+    <div class="code-block"><span class="keyword">static void</span> <span class="method">swap</span>(<span class="type">int</span> x, <span class="type">int</span> y) {
+    <span class="type">int</span> t = x; x = y; y = t;
+}
+<span class="comment">// in main:</span>
+<span class="type">int</span> a = <span class="number">1</span>;
+<span class="type">int</span> b = <span class="number">2</span>;
+<span class="method">swap</span>(a, b);
+System.out.<span class="method">println</span>(a + <span class="string">" "</span> + b);</div>
+
+    <div class="narrative">
+        <p>لنقرأ <code>main</code> <strong>جملةً جملة</strong>.</p>
+    </div>
+
+    <!-- Statement 1 & 2 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملتان 1 و 2</span><span class="stmt-line">int a = 1;  int b = 2;</span></div>
+        <div class="stmt-body">
+            <p>متغيّران من نوع <code>int</code> يحملان القيمتين 1 و2.</p>
+            <div class="ptrdiag">
+                <div class="pvar"><div class="pv-name">a</div><div class="pv-slot">1</div></div>
+                <div class="pvar" style="margin-left:24px"><div class="pv-name">b</div><div class="pv-slot">2</div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statement 3 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 3</span><span class="stmt-line">swap(a, b);</span></div>
+        <div class="stmt-body">
+            <p>لأنّها أنواع أساسية، تنسخ جافا <strong>قيمتَي</strong> <code>a</code> و<code>b</code> إلى المعاملين <code>x</code> و<code>y</code>. وداخل الدالة تبدّل الدالة <em>نسختيها الخاصّتين</em>: يصبح <code>x</code> يساوي 2 و<code>y</code> يساوي 1. لكنّ <code>a</code> و<code>b</code> في <code>main</code> صندوقان مستقلّان لا يُمسّان أبدًا:</p>
+            <div class="ptrdiag">
+                <div class="pvar"><div class="pv-name">a (في main)</div><div class="pv-slot">1</div></div>
+                <div class="pvar" style="margin-left:16px"><div class="pv-name">b (في main)</div><div class="pv-slot">2</div></div>
+                <div class="pvar" style="margin-left:32px"><div class="pv-name">x (نسخة)</div><div class="pv-slot">2</div></div>
+                <div class="pvar" style="margin-left:16px"><div class="pv-name">y (نسخة)</div><div class="pv-slot">1</div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statement 4 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 4</span><span class="stmt-line">System.out.println(a + " " + b);</span></div>
+        <div class="stmt-body">
+            <p>يبقى <code>a</code> و<code>b</code> في <code>main</code> دون تغيير، فيطبع <strong>1 2</strong>.</p>
+        </div>
+    </div>
+
+    <div class="success-box">
+        <div class="success-box-title">✅ الإجابة: 1 2</div>
+        لا يمكنك تبديل قيمتين أساسيتين عبر دالة في جافا — لا تُبدَّل سوى نسختَي الدالة الخاصّتين.
+    </div>
+    <div class="key-concept">
+        <div class="key-concept-title">💡 إذن كيف نبدّل فعلًا؟</div>
+        بدّلهما في مكانهما: أعِد القيم، أو بدّل <em>عنصرَي مصفوفة</em> (المصفوفة المُمرَّرة إلى دالة مشتركة، لذا تبديل عناصرها ينجح فعلًا).
+    </div>
+</div>
+
+<!-- ═══════════════ Q27 ═══════════════ -->
+<div class="qsection cat-pass" id="q27">
+    <div class="q-head"><div class="q-num">Q27</div><div class="q-cat">تمرير المعطيات إلى الدوال</div></div>
+    <div class="q-title">إهدار القيمة المُعادة</div>
+    <div class="code-block"><span class="keyword">static int</span> <span class="method">addTen</span>(<span class="type">int</span> x) { <span class="keyword">return</span> x + <span class="number">10</span>; }
+
+<span class="comment">// in main:</span>
+<span class="type">int</span> n = <span class="number">5</span>;
+<span class="method">addTen</span>(n);
+System.out.<span class="method">println</span>(n);</div>
+
+    <div class="narrative">
+        <p>لنقرأ <code>main</code> <strong>جملةً جملة</strong>.</p>
+    </div>
+
+    <!-- Statement 1 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 1</span><span class="stmt-line">int n = 5;</span></div>
+        <div class="stmt-body">
+            <p>متغيّر <code>int</code> اسمه <code>n</code> يحمل القيمة 5.</p>
+            <div class="ptrdiag"><div class="pvar"><div class="pv-name">n</div><div class="pv-slot">5</div></div></div>
+        </div>
+    </div>
+
+    <!-- Statement 2 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 2</span><span class="stmt-line">addTen(n);</span></div>
+        <div class="stmt-body">
+            <p>تحسب الدالة 5 + 10 = 15 و<em>تُعيدها</em>. لكن انظر بعناية إلى سطر الاستدعاء: القيمة المُعادة 15 <strong>لا تُخزَّن في أيّ مكان</strong> — لا توجد علامة <code>=</code> لالتقاطها. فتُهدر الـ 15 ببساطة. كما أنّ <code>n</code> مُرِّر بالقيمة (نسخة)، لذا لم يتغيّر أيضًا.</p>
+            <div class="ptrdiag"><div class="pvar"><div class="pv-name">n</div><div class="pv-slot">5</div></div></div>
+        </div>
+    </div>
+
+    <!-- Statement 3 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 3</span><span class="stmt-line">System.out.println(n);</span></div>
+        <div class="stmt-body">
+            <p>يطبع هذا محتوى <code>n</code>، وهو لا يزال <strong>5</strong>.</p>
+        </div>
+    </div>
+
+    <div class="compare-row">
+        <div class="compare-col bad"><h4>❌ تجاهل النتيجة</h4><code>addTen(n);</code><br>يبقى n <span class="tag-out">5</span></div>
+        <div class="compare-col good"><h4>✅ التقاط النتيجة</h4><code>n = addTen(n);</code><br>يصبح n <span class="tag-out">15</span></div>
+    </div>
+
+    <div class="success-box">
+        <div class="success-box-title">✅ الإجابة: 5</div>
+        يجب <strong>تخزين القيمة المُعادة أو استخدامها</strong>. واستدعاء الدالة دون إسناد نتيجتها لا يغيّر شيئًا.
+    </div>
+</div>
+
+<!-- ═══════════════ Q28 ═══════════════ -->
+<div class="qsection cat-pass" id="q28">
+    <div class="q-head"><div class="q-num">Q28</div><div class="q-cat">تمرير المعطيات إلى الدوال</div></div>
+    <div class="q-title">النصوص داخل دالة</div>
+    <div class="code-block"><span class="keyword">static void</span> <span class="method">change</span>(<span class="type">String</span> s) { s = <span class="string">"changed"</span>; }
+
+<span class="comment">// in main:</span>
+<span class="type">String</span> msg = <span class="string">"hello"</span>;
+<span class="method">change</span>(msg);
+System.out.<span class="method">println</span>(msg);</div>
+
+    <div class="narrative">
+        <p>لنقرأ <code>main</code> <strong>جملةً جملة</strong>. الفكرة الأساسية: <code>String</code> كائن، لذا يحمل متغيّر <code>String</code> <strong>مرجعًا</strong>، لا النص مباشرة.</p>
+    </div>
+
+    <!-- Statement 1 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 1</span><span class="stmt-line">String msg = "hello";</span></div>
+        <div class="stmt-body">
+            <p>يحمل <code>msg</code> مرجع كائن نصّي <code>"hello"</code>:</p>
+            <div class="ptrdiag">
+                <div class="pvar"><div class="pv-name">msg</div><div class="pv-slot isref">● مرجع</div></div>
+                <span class="pconn"><span class="pline"></span><span class="phead"></span></span>
+                <div class="arr-obj pd-array"><div class="ao-title">كائن String</div><div class="arr-cells"><div class="arr-cell" style="width:auto;padding:10px 16px"><span class="val">"hello"</span></div></div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statement 2 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 2</span><span class="stmt-line">change(msg);</span></div>
+        <div class="stmt-body">
+            <p>تنسخ جافا مرجع <code>msg</code> إلى المعامل <code>s</code>. ثم تجعل <code>s = "changed"</code> <em>نسخة الدالة الخاصة</em> تشير إلى نصّ مختلف. أمّا <code>msg</code> في <code>main</code> فلا يزال يشير إلى <code>"hello"</code>:</p>
+            <div class="ptrdiag">
+                <div class="pvar"><div class="pv-name">msg (في main)</div><div class="pv-slot isref">● مرجع</div></div>
+                <span class="pconn"><span class="pline"></span><span class="phead"></span></span>
+                <div class="arr-obj pd-array"><div class="ao-title">"hello" (دون تغيير)</div><div class="arr-cells"><div class="arr-cell" style="width:auto;padding:10px 16px"><span class="val">"hello"</span></div></div></div>
+            </div>
+            <div class="ptrdiag">
+                <div class="pvar"><div class="pv-name">s (في الدالة)</div><div class="pv-slot isref">● مرجع</div></div>
+                <span class="pconn"><span class="pline"></span><span class="phead"></span></span>
+                <div class="arr-obj pd-array"><div class="ao-title">"changed" (خاصّة بالدالة)</div><div class="arr-cells"><div class="arr-cell" style="width:auto;padding:10px 16px"><span class="val">"changed"</span></div></div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statement 3 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 3</span><span class="stmt-line">System.out.println(msg);</span></div>
+        <div class="stmt-body">
+            <p>لا يزال <code>msg</code> يشير إلى <code>"hello"</code>، فيطبع <strong>hello</strong>.</p>
+        </div>
+    </div>
+
+    <div class="success-box">
+        <div class="success-box-title">✅ الإجابة: hello</div>
+        إعادة إسناد المعامل تغيّر فقط نسخة الدالة المحلية من المرجع؛ ويبقى <code>msg</code> لدى المُستدعي دون مساس. (كما أنّ <code>String</code> غير قابل للتغيير، فلا يمكن تغيير نصّه في مكانه أصلًا.)
+    </div>
+</div>
+
+<!-- ═══════════════ Q29 ═══════════════ -->
+<div class="qsection cat-pass" id="q29">
+    <div class="q-head"><div class="q-num">Q29</div><div class="q-cat">تمرير المعطيات إلى الدوال</div></div>
+    <div class="q-title">تمرير عنصر واحد لا المصفوفة كاملة</div>
+    <div class="code-block"><span class="keyword">static void</span> <span class="method">change</span>(<span class="type">int</span> v) { v = <span class="number">100</span>; }
+
+<span class="comment">// in main:</span>
+<span class="type">int</span>[] a = <span class="keyword">new</span> <span class="type">int</span>[] { <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span> };
+<span class="method">change</span>(a[<span class="number">0</span>]);
+System.out.<span class="method">println</span>(a[<span class="number">0</span>]);</div>
+
+    <div class="narrative">
+        <p>لنقرأ <code>main</code> <strong>جملةً جملة</strong>، ولنقرأ استدعاء الدالة بعناية شديدة.</p>
+    </div>
+
+    <!-- Statement 1 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 1</span><span class="stmt-line">int[] a = new int[]{1, 2, 3};</span></div>
+        <div class="stmt-body">
+            <p>تُبنى مصفوفة ويحمل <code>a</code> مرجعها:</p>
+            <div class="ptrdiag">
+                <div class="pvar"><div class="pv-name">a</div><div class="pv-slot isref">● مرجع</div></div>
+                <span class="pconn"><span class="pline"></span><span class="phead"></span></span>
+                <div class="arr-obj pd-array"><div class="ao-title">المصفوفة</div><div class="arr-cells">
+                    <div class="arr-cell"><span class="idx">[0]</span><span class="val">1</span></div><div class="arr-cell"><span class="idx">[1]</span><span class="val">2</span></div><div class="arr-cell"><span class="idx">[2]</span><span class="val">3</span></div>
+                </div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statement 2 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 2</span><span class="stmt-line">change(a[0]);</span></div>
+        <div class="stmt-body">
+            <p>انظر بعناية إلى ما يُمرَّر: ليس <code>a</code> (المصفوفة كاملة) بل <code>a[0]</code> — عنصر واحد. والعنصر <code>int</code> الواحد <strong>قيمة أساسية</strong> (هنا 1). فتنسخ جافا تلك القيمة إلى المعامل <code>v</code>. وداخل الدالة تغيّر <code>v = 100</code> تلك النسخة فقط؛ ولا تُمَسّ المصفوفة:</p>
+            <div class="ptrdiag">
+                <div class="arr-obj pd-array"><div class="ao-title">المصفوفة (دون تغيير)</div><div class="arr-cells">
+                    <div class="arr-cell"><span class="idx">[0]</span><span class="val">1</span></div><div class="arr-cell"><span class="idx">[1]</span><span class="val">2</span></div><div class="arr-cell"><span class="idx">[2]</span><span class="val">3</span></div>
+                </div></div>
+                <div class="pvar" style="margin-left:24px"><div class="pv-name">v (نسخة)</div><div class="pv-slot">100</div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statement 3 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 3</span><span class="stmt-line">System.out.println(a[0]);</span></div>
+        <div class="stmt-body">
+            <p>الخانة <code>[0]</code> من المصفوفة لا تزال <strong>1</strong>.</p>
+        </div>
+    </div>
+
+    <div class="compare-row">
+        <div class="compare-col bad"><h4>تمرير عنصر واحد <code>a[0]</code></h4>ينسخ القيمة ← المصفوفة دون تغيير <span class="tag-out">1</span></div>
+        <div class="compare-col good"><h4>تمرير المصفوفة كاملة <code>a</code></h4>يتشارك المصفوفة ← يتغيّر العنصر <span class="tag-out">100</span></div>
+    </div>
+
+    <div class="success-box">
+        <div class="success-box-title">✅ الإجابة: 1</div>
+        <code>a[0]</code> قيمة أساسية، لذا تُنسخ قيمتها فقط. أمّا تمرير المصفوفة كاملة فسيكون مختلفًا.
+    </div>
+</div>
+
+<!-- ═══════════════ Q30 ═══════════════ -->
+<div class="qsection cat-pass" id="q30">
+    <div class="q-head"><div class="q-num">Q30</div><div class="q-cat">تمرير المعطيات إلى الدوال · الخاتمة</div></div>
+    <div class="q-title">كل شيء دفعة واحدة 🏆</div>
+    <div class="code-block"><span class="keyword">static void</span> <span class="method">process</span>(<span class="type">int</span>[] arr, <span class="type">int</span> x) {
+    arr[<span class="number">0</span>] = x;                  <span class="comment">// (1) mutate shared array</span>
+    arr = <span class="keyword">new</span> <span class="type">int</span>[]{ <span class="number">7</span>, <span class="number">8</span> };   <span class="comment">// (2) reassign local copy</span>
+    x = <span class="number">50</span>;                     <span class="comment">// (3) change local copy</span>
+}
+<span class="comment">// in main:</span>
+<span class="type">int</span>[] a = <span class="keyword">new</span> <span class="type">int</span>[] { <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span> };
+<span class="type">int</span> n = <span class="number">9</span>;
+<span class="method">process</span>(a, n);
+System.out.<span class="method">println</span>(a[<span class="number">0</span>] + <span class="string">" "</span> + n);</div>
+
+    <div class="narrative">
+        <p>هذا السؤال الأخير يجمع كلّ ما يتعلّق بتمرير الأنواع الأساسية والمصفوفات إلى الدوال. لنقرأه <strong>جملةً جملة</strong>.</p>
+    </div>
+
+    <!-- Statement 1 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 1</span><span class="stmt-line">int[] a = new int[]{1, 2, 3};</span></div>
+        <div class="stmt-body">
+            <p>تُبنى مصفوفة ويحمل <code>a</code> مرجعها:</p>
+            <div class="ptrdiag">
+                <div class="pvar"><div class="pv-name">a</div><div class="pv-slot isref">● مرجع</div></div>
+                <span class="pconn"><span class="pline"></span><span class="phead"></span></span>
+                <div class="arr-obj pd-array"><div class="ao-title">المصفوفة</div><div class="arr-cells">
+                    <div class="arr-cell"><span class="idx">[0]</span><span class="val">1</span></div><div class="arr-cell"><span class="idx">[1]</span><span class="val">2</span></div><div class="arr-cell"><span class="idx">[2]</span><span class="val">3</span></div>
+                </div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statement 2 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 2</span><span class="stmt-line">int n = 9;</span></div>
+        <div class="stmt-body">
+            <p>متغيّر <code>int</code> اسمه <code>n</code> يحمل القيمة 9.</p>
+            <div class="ptrdiag"><div class="pvar"><div class="pv-name">n</div><div class="pv-slot">9</div></div></div>
+        </div>
+    </div>
+
+    <!-- Statement 3 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 3</span><span class="stmt-line">process(a, n);</span></div>
+        <div class="stmt-body">
+            <p>تنسخ جافا مرجع <code>a</code> إلى <code>arr</code> (فيتشارك <code>arr</code> المصفوفة)، وتنسخ قيمة <code>n</code> إلى <code>x</code>. والآن تنفّذ الدالة أسطرها الثلاثة:</p>
+            <p><strong>السطر (1) <code>arr[0] = x;</code></strong> — <code>arr</code> يشير إلى المصفوفة المشتركة، و<code>x</code> يساوي 9. فيعدّل هذا <strong>المصفوفة المشتركة</strong> ← يصبح <code>a[0]</code> يساوي 9. ✅ <em>هذا التغيير يبقى.</em></p>
+            <p><strong>السطر (2) <code>arr = new int[]{7, 8};</code></strong> — يعيد توجيه <code>arr</code> الخاص بالدالة فقط إلى مصفوفة جديدة. ولا يتأثّر <code>a</code> في <code>main</code>. ✗ <em>لا أثر على المُستدعي.</em></p>
+            <p><strong>السطر (3) <code>x = 50;</code></strong> — يغيّر فقط نسخة الدالة الخاصة من العدد. ولا يتأثّر <code>n</code> في <code>main</code>. ✗ <em>لا أثر على المُستدعي.</em></p>
+            <div class="ptrdiag">
+                <div class="pvar"><div class="pv-name">a (في main)</div><div class="pv-slot isref">● مرجع</div></div>
+                <span class="pconn"><span class="pline"></span><span class="phead"></span></span>
+                <div class="arr-obj pd-array"><div class="ao-title">المصفوفة المشتركة (عدّلها السطر 1)</div><div class="arr-cells">
+                    <div class="arr-cell changed"><span class="idx">[0]</span><span class="val">9</span></div><div class="arr-cell"><span class="idx">[1]</span><span class="val">2</span></div><div class="arr-cell"><span class="idx">[2]</span><span class="val">3</span></div>
+                </div></div>
+                <div class="pvar" style="margin-left:24px"><div class="pv-name">n (في main)</div><div class="pv-slot">9</div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statement 4 -->
+    <div class="stmt">
+        <div class="stmt-head"><span class="stmt-badge">الجملة 4</span><span class="stmt-line">System.out.println(a[0] + " " + n);</span></div>
+        <div class="stmt-body">
+            <p><code>a[0]</code> يساوي 9 (من السطر 1)، و<code>n</code> لا يزال 9 (لم يتغيّر). فيطبع <strong>9 9</strong>.</p>
+        </div>
+    </div>
+
+    <div class="success-box">
+        <div class="success-box-title">✅ الإجابة: 9 9</div>
+        تعديل المصفوفة المشتركة (السطر 1) يبقى؛ أمّا إعادة إسناد المعاملات (السطران 2 و3) فلا يصل إلى المُستدعي أبدًا.
+    </div>
+    <div class="key-concept">
+        <div class="key-concept-title">🎓 الفكرة الوحيدة التي تحملها إلى محاضرة الغد</div>
+        <p><strong>المتغيّر الأساسي</strong> يحمل القيمة ← تمريره يصنع نسخة مستقلة.<br>
+        <strong>متغيّر المصفوفة</strong> يحمل مرجعًا ← تمريره يتشارك المصفوفة نفسها.<br>
+        يمكنك تغيير <em>محتويات</em> مصفوفة مشتركة من داخل دالة، لكن إعادة إسناد المعامل نفسه لا تؤثّر أبدًا على متغيّر المُستدعي.</p>
+    </div>
+</div>
+<!-- END QUESTIONS -->
+    </div><!-- /content -->
+
+    <div class="nav-buttons no-print">
+        <a href="00-placement-test.html" class="nav-btn prev">↩ الرجوع إلى الاختبار</a>
+        <a href="index.html" class="nav-btn home">🏠 صفحة الوحدة 1</a>
+        <a href="00-placement-test-solutions.html" class="nav-btn next">🇬🇧 English</a>
+    </div>
+
+</div><!-- /container -->
+</body>
+</html>

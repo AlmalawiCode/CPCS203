@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CPCS 203 — Placement Test: Primitives, Arrays &amp; References</title>
+<style>
+  :root{
+    --bg:#0f172a; --panel:#1e293b; --panel2:#273449;
+    --ink:#e2e8f0; --muted:#94a3b8; --line:#334155;
+    --accent:#38bdf8; --accent2:#818cf8;
+    --ok:#22c55e; --okbg:#052e1a; --bad:#ef4444; --badbg:#3a0d0d;
+    --warn:#f59e0b;
+    --code:#0b1120;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:linear-gradient(160deg,#0b1120,#0f172a 40%,#111a30);
+    color:var(--ink); line-height:1.55; min-height:100vh;
+  }
+  code,pre,.mono{font-family:"SF Mono",Menlo,Consolas,"Liberation Mono",monospace}
+  .wrap{max-width:860px;margin:0 auto;padding:28px 20px 80px}
+
+  header.hero{
+    text-align:center;padding:34px 20px;border:1px solid var(--line);
+    border-radius:18px;background:radial-gradient(120% 120% at 50% 0%,#1b2942,#111a30);
+    margin-bottom:22px;
+  }
+  header.hero h1{margin:0 0 6px;font-size:26px;letter-spacing:.3px}
+  header.hero p{margin:4px 0;color:var(--muted);font-size:14.5px}
+  .badge{display:inline-block;background:var(--panel2);border:1px solid var(--line);
+    color:var(--accent);border-radius:999px;padding:4px 12px;font-size:12px;margin:8px 4px 0;font-weight:600}
+
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:22px;margin-bottom:18px;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+
+  /* Progress */
+  .progressbar{height:10px;background:#0b1120;border-radius:999px;overflow:hidden;border:1px solid var(--line)}
+  .progressbar > i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .35s ease}
+  .metaline{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font-size:13px;color:var(--muted)}
+  .cat-chip{font-weight:700;color:var(--accent2)}
+
+  .qnum{font-size:13px;color:var(--muted);font-weight:700;letter-spacing:.5px;text-transform:uppercase}
+  .qtext{font-size:18px;margin:6px 0 14px;font-weight:600}
+
+  pre.code{background:var(--code);border:1px solid #1e2a44;border-radius:12px;padding:16px 18px;overflow:auto;font-size:14px;margin:0 0 16px;position:relative}
+  pre.code .k{color:#c792ea}      /* keyword */
+  pre.code .t{color:#82aaff}      /* type */
+  pre.code .s{color:#c3e88d}      /* string */
+  pre.code .n{color:#f78c6c}      /* number */
+  pre.code .c{color:#5b6b86;font-style:italic} /* comment */
+  pre.code .m{color:#ffcb6b}      /* method/print */
+
+  .options{display:grid;gap:10px}
+  .opt{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border:1px solid var(--line);
+    border-radius:12px;background:var(--panel2);cursor:pointer;transition:.15s;font-size:15px}
+  .opt:hover{border-color:var(--accent);transform:translateY(-1px)}
+  .opt .key{flex:0 0 26px;height:26px;border-radius:8px;background:#0b1120;border:1px solid var(--line);
+    display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;color:var(--accent)}
+  .opt.correct{border-color:var(--ok);background:var(--okbg)}
+  .opt.wrong{border-color:var(--bad);background:var(--badbg)}
+  .opt.disabled{cursor:default;opacity:.85}
+  .opt.disabled:hover{transform:none;border-color:var(--line)}
+  .opt.correct:hover,.opt.wrong:hover{transform:none}
+
+  .explain{margin-top:14px;padding:14px 16px;border-radius:12px;background:#0b1120;border-left:4px solid var(--accent);display:none;font-size:14.5px}
+  .explain.show{display:block;animation:fade .3s ease}
+  .explain h4{margin:0 0 6px;color:var(--accent);font-size:14px;text-transform:uppercase;letter-spacing:.5px}
+  .explain.ok{border-left-color:var(--ok)} .explain.ok h4{color:var(--ok)}
+  .explain.no{border-left-color:var(--bad)} .explain.no h4{color:var(--bad)}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1}}
+
+  .nav{display:flex;justify-content:space-between;gap:10px;margin-top:18px}
+  button{font:inherit;cursor:pointer;border-radius:10px;border:1px solid var(--line);
+    background:var(--panel2);color:var(--ink);padding:11px 20px;font-weight:600;transition:.15s}
+  button:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
+  button:disabled{opacity:.4;cursor:not-allowed}
+  button.primary{background:linear-gradient(90deg,var(--accent),var(--accent2));color:#08111f;border:none}
+  button.primary:hover{filter:brightness(1.08);color:#08111f}
+
+  /* Report */
+  #report{display:none}
+  .score-hero{text-align:center;padding:10px 0 4px}
+  .score-num{font-size:52px;font-weight:800;background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .score-sub{color:var(--muted)}
+  .verdict{font-size:20px;font-weight:700;margin:6px 0}
+
+  .catgrid{display:grid;gap:14px;margin-top:8px}
+  .catrow{border:1px solid var(--line);border-radius:12px;padding:14px 16px;background:var(--panel2)}
+  .catrow .top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
+  .catrow .name{font-weight:700}
+  .catrow .frac{font-size:13px;color:var(--muted)}
+  .bar{height:9px;background:#0b1120;border-radius:999px;overflow:hidden;border:1px solid var(--line)}
+  .bar > i{display:block;height:100%}
+  .lvl{font-size:12.5px;margin-top:8px;color:var(--muted)}
+  .tag{display:inline-block;padding:2px 9px;border-radius:999px;font-size:11.5px;font-weight:700;margin-left:6px}
+  .tag.strong{background:var(--okbg);color:var(--ok);border:1px solid var(--ok)}
+  .tag.mid{background:#3a2c05;color:var(--warn);border:1px solid var(--warn)}
+  .tag.weak{background:var(--badbg);color:var(--bad);border:1px solid var(--bad)}
+
+  .advice{margin-top:18px;padding:16px 18px;border-radius:12px;background:#0b1120;border:1px solid var(--line)}
+  .advice h3{margin:0 0 10px;color:var(--accent)}
+  .advice ul{margin:6px 0 0;padding-left:20px}
+  .advice li{margin:6px 0}
+
+  .review-item{border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:8px 0;font-size:14px;background:var(--panel2)}
+  .review-item .r-q{font-weight:600;margin-bottom:3px}
+  .review-item .r-a{font-size:13px}
+  .r-ok{color:var(--ok)} .r-no{color:var(--bad)}
+
+  .print-btn{margin-top:16px}
+  footer{text-align:center;color:var(--muted);font-size:12.5px;margin-top:20px}
+  @media print{body{background:#fff;color:#000}.card,.catrow,.advice{border-color:#ccc}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div style="margin-bottom:14px">
+    <a href="index.html" style="color:#94a3b8;text-decoration:none;font-size:13.5px">&larr; Back to Module 1: Multidimensional Arrays</a>
+  </div>
+
+  <header class="hero">
+    <h1>🧪 CPCS 203 — Placement Test</h1>
+    <p><strong>Object-Oriented Programming</strong> · Diagnostic before Multi-Dimensional Arrays</p>
+    <p>Topics: Primitive Data Types · Arrays (declare / create / initialize) · References &amp; Aliasing · Pass-by-Value vs Pass-by-Reference · Methods</p>
+    <div>
+      <span class="badge">30 Questions</span>
+      <span class="badge">Java</span>
+      <span class="badge">"What is the output?"</span>
+      <span class="badge">Instant feedback + report</span>
+    </div>
+  </header>
+
+  <!-- START SCREEN -->
+  <div class="card" id="start">
+    <h2 style="margin-top:0">Before you begin 👇</h2>
+    <p style="color:var(--muted)">Read each program <em>carefully</em> and predict the output <strong>in your head first</strong>, then choose. After you answer, you'll see whether you were right and <em>why</em> — this is where the real learning happens. At the end you get a personalized report showing exactly which concepts to study tonight.</p>
+    <ul style="color:var(--muted)">
+      <li>There is no time limit. Think like the computer.</li>
+      <li>Every question is "what is the output?" (or "what happens?").</li>
+      <li>Don't guess randomly — a wrong answer with a good reason teaches more than a lucky guess.</li>
+    </ul>
+    <div style="text-align:center;margin-top:16px">
+      <button class="primary" style="font-size:17px;padding:13px 34px" onclick="startTest()">Start the test →</button>
+    </div>
+  </div>
+
+  <!-- QUIZ -->
+  <div class="card" id="quiz" style="display:none">
+    <div class="metaline">
+      <span>Question <b id="curNum">1</b> / <b id="total">30</b></span>
+      <span class="cat-chip" id="curCat">Primitives</span>
+    </div>
+    <div class="progressbar"><i id="prog"></i></div>
+
+    <div style="margin-top:18px">
+      <div class="qnum" id="qLabel">Question 1</div>
+      <div class="qtext" id="qText"></div>
+      <pre class="code" id="qCode"></pre>
+      <div class="options" id="qOptions"></div>
+      <div class="explain" id="qExplain"></div>
+    </div>
+
+    <div class="nav">
+      <button id="prevBtn" onclick="prevQ()" disabled>← Previous</button>
+      <button id="nextBtn" class="primary" onclick="nextQ()" disabled>Next →</button>
+    </div>
+  </div>
+
+  <!-- REPORT -->
+  <div class="card" id="report">
+    <div class="score-hero">
+      <div class="score-num" id="rScore">0 / 30</div>
+      <div class="score-sub" id="rPct"></div>
+      <div class="verdict" id="rVerdict"></div>
+    </div>
+
+    <h3 style="margin-bottom:8px">📊 Results by concept</h3>
+    <div class="catgrid" id="rCats"></div>
+
+    <div class="advice" id="rAdvice"></div>
+
+    <h3 style="margin:22px 0 6px">🔍 Full review</h3>
+    <div id="rReview"></div>
+
+    <div class="advice" style="border-color:var(--accent);text-align:center">
+      <h3 style="margin:0 0 8px">📖 Now study every question — story by story</h3>
+      <p style="color:var(--muted);margin:0 0 14px">Don't just check your score. Open the full tutorial: each of the 30 questions is explained in simple language, with memory diagrams. Printable in A4.</p>
+      <a href="00-placement-test-solutions.html" style="display:inline-block;background:linear-gradient(90deg,var(--accent),var(--accent2));color:#08111f;font-weight:700;text-decoration:none;padding:13px 26px;border-radius:10px">Open the Explained Tutorial →</a>
+    </div>
+
+    <div style="text-align:center">
+      <button class="primary print-btn" onclick="window.print()">🖨️ Print / Save as PDF</button>
+      <button class="print-btn" onclick="location.reload()">↺ Retake</button>
+    </div>
+  </div>
+
+  <footer>CPCS 203 · Faculty of Computing &amp; IT · Diagnostic placement test</footer>
+</div>
+
+<script>
+/* ---------- QUESTION BANK ---------- */
+/* categories: PRIM, ARRDECL, REF, PASS */
+const CATS = {
+  PRIM:   {name:"Primitive Data Types",           color:"#38bdf8"},
+  ARRDECL:{name:"Arrays: declare / create / init",color:"#a78bfa"},
+  REF:    {name:"References, Aliasing & Equality", color:"#f472b6"},
+  PASS:   {name:"Pass-by-Value vs Reference & Methods", color:"#34d399"}
+};
+
+const Q = [
+/* ===== A. PRIMITIVES (1-6) ===== */
+{cat:"PRIM", text:"What is the output?",
+ code:`<span class="t">int</span> x = <span class="n">5</span>;
+x = x + <span class="n">3</span>;
+System.out.println(x);`,
+ options:["5","8","53","Compile error"], correct:1,
+ exp:"<b>x</b> holds the value 5, then 5 + 3 = 8 is stored back into x. A primitive variable holds the actual value."},
+
+{cat:"PRIM", text:"What is the output?",
+ code:`<span class="t">int</span> a = <span class="n">5</span>, b = <span class="n">2</span>;
+System.out.println(a / b);`,
+ options:["2.5","2","3","2.0"], correct:1,
+ exp:"<b>int / int = int</b>. The fractional part is truncated (not rounded): 5 / 2 = 2. This is one of the most common CPCS 202 mistakes."},
+
+{cat:"PRIM", text:"What is the output?",
+ code:`<span class="t">int</span> a = <span class="n">5</span>, b = <span class="n">2</span>;
+System.out.println(a % b);`,
+ options:["1","2","2.5","0"], correct:0,
+ exp:"<b>%</b> is the remainder (modulus) operator. 5 divided by 2 leaves a remainder of 1."},
+
+{cat:"PRIM", text:"What is the output?",
+ code:`<span class="t">double</span> result = <span class="n">5</span> / <span class="n">2</span>;
+System.out.println(result);`,
+ options:["2.5","2.0","2","5.0"], correct:1,
+ exp:"Classic trap! The right side <b>5 / 2</b> is computed first as integer division = 2. Only <em>then</em> is it stored in a double, becoming 2.0. The type of the destination does NOT change how the expression is evaluated. To get 2.5 you'd need <code>5.0 / 2</code>."},
+
+{cat:"PRIM", text:"What is the output?",
+ code:`<span class="t">int</span> x = <span class="n">5</span>;
+<span class="t">int</span> y = x;   <span class="c">// copy the value</span>
+y = <span class="n">10</span>;
+System.out.println(x);`,
+ options:["10","5","0","Compile error"], correct:1,
+ exp:"For <b>primitives, assignment copies the value</b>. <code>y = x</code> gives y its own copy (5). Changing y to 10 does not touch x. This is the mental model you must break when we reach arrays."},
+
+{cat:"PRIM", text:"What is the output?",
+ code:`System.out.println(<span class="n">1</span> + <span class="n">2</span> + <span class="s">"3"</span>);
+System.out.println(<span class="s">"1"</span> + <span class="n">2</span> + <span class="n">3</span>);`,
+ options:["33 and 123","6 and 6","33 and 6","15 and 123"], correct:0,
+ exp:"Java evaluates <b>left to right</b>. Line 1: 1+2 = 3 (numbers), then 3 + \"3\" = \"33\" (string join). Line 2: \"1\"+2 = \"12\", then \"12\"+3 = \"123\". Once a String appears, <code>+</code> becomes concatenation."},
+
+/* ===== B. ARRAY DECLARE / CREATE / INIT (7-14) ===== */
+{cat:"ARRDECL", text:"What is the output?",
+ code:`<span class="t">int</span>[] marks = <span class="k">new</span> <span class="t">int</span>[<span class="n">3</span>];
+System.out.println(marks[<span class="n">0</span>]);`,
+ options:["null","0","garbage / random","Compile error"], correct:1,
+ exp:"When you <b>create</b> an int array with <code>new</code>, every element is auto-initialized to its default. For <code>int</code> that default is <b>0</b> (not garbage, unlike C++)."},
+
+{cat:"ARRDECL", text:"An <code>int[]</code> is created with <code>new int[3]</code> but no values are assigned. What does it contain?",
+ code:`<span class="t">int</span>[] marks = <span class="k">new</span> <span class="t">int</span>[<span class="n">3</span>];
+System.out.println(marks[<span class="n">0</span>] + <span class="s">","</span> + marks[<span class="n">1</span>] + <span class="s">","</span> + marks[<span class="n">2</span>]);`,
+ options:["null,null,null","0,0,0","empty","3,3,3"], correct:1,
+ exp:"Creation reserves 3 slots and fills them with the default value 0. So the physical array is <b>[0, 0, 0]</b> — it already exists in memory, ready to use."},
+
+{cat:"ARRDECL", text:"What is the output? (default value of a boolean array)",
+ code:`<span class="t">boolean</span>[] flags = <span class="k">new</span> <span class="t">boolean</span>[<span class="n">2</span>];
+System.out.println(flags[<span class="n">0</span>]);`,
+ options:["true","false","0","null"], correct:1,
+ exp:"Default for <code>boolean</code> is <b>false</b>. (Defaults: numbers → 0 / 0.0, boolean → false, objects/String → null.)"},
+
+{cat:"ARRDECL", text:"What is the output? (default value inside a String array)",
+ code:`<span class="t">String</span>[] names = <span class="k">new</span> <span class="t">String</span>[<span class="n">2</span>];
+System.out.println(names[<span class="n">0</span>]);`,
+ options:['""  (empty text)',"null","0","Compile error"], correct:1,
+ exp:"A String is an <b>object</b> (reference type). The default for any object reference is <b>null</b> — meaning \"points to nothing yet\", NOT an empty string."},
+
+{cat:"ARRDECL", text:"What is the output?",
+ code:`<span class="t">int</span>[] marks = <span class="k">new</span> <span class="t">int</span>[<span class="n">5</span>];
+System.out.println(marks.length);`,
+ options:["4","5","0","6"], correct:1,
+ exp:"<code>.length</code> gives the number of slots the array was created with = <b>5</b>. Note: it's a field (no parentheses), unlike <code>String.length()</code>."},
+
+{cat:"ARRDECL", text:"What happens when this runs?",
+ code:`<span class="t">int</span>[] marks = <span class="k">new</span> <span class="t">int</span>[<span class="n">5</span>];  <span class="c">// valid indexes 0..4</span>
+System.out.println(marks[<span class="n">5</span>]);`,
+ options:["Prints 0","Prints null","ArrayIndexOutOfBoundsException at runtime","Compile error"], correct:2,
+ exp:"Valid indexes are 0 to length-1 (0..4). Index 5 does not exist, so Java throws an <b>ArrayIndexOutOfBoundsException</b> at runtime (it compiles fine — the JVM catches it while running)."},
+
+{cat:"ARRDECL", text:"What is the output? (array literal initialization)",
+ code:`<span class="t">int</span>[] a = { <span class="n">10</span>, <span class="n">20</span>, <span class="n">30</span> };
+System.out.println(a[<span class="n">1</span>]);`,
+ options:["10","20","30","1"], correct:1,
+ exp:"The literal <code>{10,20,30}</code> declares, creates AND initializes in one step. Indexing is zero-based, so <code>a[1]</code> is the <b>second</b> element = 20."},
+
+{cat:"ARRDECL", text:"What is printed? (printing the array variable itself)",
+ code:`<span class="t">int</span>[] marks = { <span class="n">1</span>, <span class="n">2</span>, <span class="n">3</span> };
+System.out.println(marks);`,
+ options:["[1, 2, 3]","1 2 3","Something like [I@1b6d3586","6"], correct:2,
+ exp:"Huge concept! The variable <code>marks</code> does NOT hold the numbers — it holds a <b>reference</b> (an address). Printing it shows the type + hashcode (e.g. <code>[I@1b6d3586</code>), not the contents. To see contents use <code>Arrays.toString(marks)</code>."},
+
+/* ===== C. REFERENCES / ALIASING / EQUALITY (15-22) ===== */
+{cat:"REF", text:"What is the output?",
+ code:`<span class="t">int</span>[] a = { <span class="n">1</span>, <span class="n">2</span>, <span class="n">3</span> };
+<span class="t">int</span>[] b = { <span class="n">1</span>, <span class="n">2</span>, <span class="n">3</span> };
+System.out.println(a == b);`,
+ options:["true","false","Compile error","1"], correct:1,
+ exp:"Two <code>new</code> arrays are two <b>different objects</b> in memory, even with identical contents. <code>==</code> on arrays compares <b>references (addresses)</b>, not contents — different addresses → <b>false</b>."},
+
+{cat:"REF", text:"What is the output?",
+ code:`<span class="t">int</span>[] a = { <span class="n">1</span>, <span class="n">2</span>, <span class="n">3</span> };
+<span class="t">int</span>[] b = { <span class="n">1</span>, <span class="n">2</span>, <span class="n">3</span> };
+System.out.println(a.equals(b));`,
+ options:["true","false","Prints contents","Compile error"], correct:1,
+ exp:"Arrays do NOT override <code>equals()</code>, so <code>a.equals(b)</code> falls back to Object's version, which is the same as <code>==</code> (reference comparison) → <b>false</b>."},
+
+{cat:"REF", text:"What is the output?",
+ code:`<span class="k">import</span> java.util.Arrays;
+<span class="t">int</span>[] a = { <span class="n">1</span>, <span class="n">2</span>, <span class="n">3</span> };
+<span class="t">int</span>[] b = { <span class="n">1</span>, <span class="n">2</span>, <span class="n">3</span> };
+System.out.println(Arrays.equals(a, b));`,
+ options:["true","false","Compile error","[I@..."], correct:0,
+ exp:"<code>Arrays.equals()</code> is the correct way to compare <b>contents</b>. It checks length + every element → same values → <b>true</b>. Remember: use this, not <code>==</code>, to compare array contents."},
+
+{cat:"REF", text:"What is the output?",
+ code:`<span class="t">int</span>[] a = { <span class="n">1</span>, <span class="n">2</span>, <span class="n">3</span> };
+<span class="t">int</span>[] b = a;      <span class="c">// alias</span>
+b[<span class="n">0</span>] = <span class="n">99</span>;
+System.out.println(a[<span class="n">0</span>]);`,
+ options:["1","99","0","Compile error"], correct:1,
+ exp:"<code>b = a</code> copies the <b>reference</b>, not the array. Now a and b point to the <b>same</b> physical array (aliases). Changing <code>b[0]</code> changes <code>a[0]</code> → <b>99</b>. This is the key difference from primitives."},
+
+{cat:"REF", text:"What is the output?",
+ code:`<span class="t">int</span>[] a = { <span class="n">1</span>, <span class="n">2</span>, <span class="n">3</span> };
+<span class="t">int</span>[] b = a;
+System.out.println(a == b);`,
+ options:["true","false","Compile error","1"], correct:0,
+ exp:"Here b was assigned <em>from</em> a, so both hold the <b>same reference</b>. <code>==</code> compares references → same address → <b>true</b>. (Contrast with Q15 where each array was created separately.)"},
+
+{cat:"REF", text:"What is the output?",
+ code:`<span class="t">int</span>[] a = { <span class="n">1</span>, <span class="n">2</span>, <span class="n">3</span> };
+<span class="t">int</span>[] b = a;
+b = <span class="k">new</span> <span class="t">int</span>[]{ <span class="n">1</span>, <span class="n">2</span>, <span class="n">3</span> };  <span class="c">// b now points elsewhere</span>
+System.out.println(a == b);`,
+ options:["true","false","Compile error","depends"], correct:1,
+ exp:"First b aliased a. Then <code>b = new int[]{...}</code> makes b point to a <b>brand-new</b> array. a still points to the original. Different objects → <code>==</code> is <b>false</b>. Reassigning the reference breaks the alias."},
+
+{cat:"REF", text:"What is the output?",
+ code:`<span class="t">int</span>[][] grid = { { <span class="n">1</span>, <span class="n">2</span> }, { <span class="n">3</span>, <span class="n">4</span> } };
+<span class="t">int</span>[] row = grid[<span class="n">0</span>];
+row[<span class="n">1</span>] = <span class="n">99</span>;
+System.out.println(grid[<span class="n">0</span>][<span class="n">1</span>]);`,
+ options:["2","99","4","Compile error"], correct:1,
+ exp:"A 2D array is an <b>array of references to rows</b>. <code>row = grid[0]</code> aliases the first row object. Editing <code>row[1]</code> edits <code>grid[0][1]</code> → <b>99</b>. (Preview of tomorrow's multi-dimensional arrays!)"},
+
+{cat:"REF", text:"What happens when this runs?",
+ code:`<span class="t">int</span>[] a = { <span class="n">1</span>, <span class="n">2</span>, <span class="n">3</span> };
+a = <span class="k">null</span>;
+System.out.println(a.length);`,
+ options:["3","0","NullPointerException at runtime","Compile error"], correct:2,
+ exp:"<code>a = null</code> means a points to <b>nothing</b>. Asking for <code>.length</code> on nothing throws a <b>NullPointerException</b>. A reference variable and the object it points to are two different things."},
+
+/* ===== D. PASS BY VALUE vs REFERENCE / METHODS (23-30) ===== */
+{cat:"PASS", text:"What is the output?",
+ code:`<span class="k">static void</span> <span class="m">change</span>(<span class="t">int</span> x) { x = <span class="n">100</span>; }
+
+<span class="c">// in main:</span>
+<span class="t">int</span> n = <span class="n">5</span>;
+<span class="m">change</span>(n);
+System.out.println(n);`,
+ options:["100","5","0","Compile error"], correct:1,
+ exp:"Java is <b>always pass-by-value</b>. For a primitive, the method gets a <b>copy</b> of the value. Changing the parameter x does nothing to n back in main → <b>5</b>."},
+
+{cat:"PASS", text:"What is the output?",
+ code:`<span class="k">static void</span> <span class="m">change</span>(<span class="t">int</span>[] arr) { arr[<span class="n">0</span>] = <span class="n">100</span>; }
+
+<span class="c">// in main:</span>
+<span class="t">int</span>[] a = { <span class="n">1</span>, <span class="n">2</span>, <span class="n">3</span> };
+<span class="m">change</span>(a);
+System.out.println(a[<span class="n">0</span>]);`,
+ options:["1","100","0","Compile error"], correct:1,
+ exp:"The method receives a <b>copy of the reference</b> — but that copy points to the <b>same array</b>. So <code>arr[0]=100</code> modifies the real array → <b>100</b>. This is why arrays <em>seem</em> to be passed by reference."},
+
+{cat:"PASS", text:"What is the output?",
+ code:`<span class="k">static void</span> <span class="m">change</span>(<span class="t">int</span>[] arr) {
+    arr = <span class="k">new</span> <span class="t">int</span>[]{ <span class="n">9</span>, <span class="n">9</span>, <span class="n">9</span> };  <span class="c">// reassign local copy</span>
+}
+<span class="c">// in main:</span>
+<span class="t">int</span>[] a = { <span class="n">1</span>, <span class="n">2</span>, <span class="n">3</span> };
+<span class="m">change</span>(a);
+System.out.println(a[<span class="n">0</span>]);`,
+ options:["9","1","100","Compile error"], correct:1,
+ exp:"Subtle but crucial! The parameter <code>arr</code> is a <b>copy of the reference</b>. Reassigning it to a new array only changes the <b>local copy</b> — a in main still points to the original {1,2,3} → <b>1</b>. Mutating elements works; reassigning the parameter does not."},
+
+{cat:"PASS", text:"What is the output? (trying to swap two ints via a method)",
+ code:`<span class="k">static void</span> <span class="m">swap</span>(<span class="t">int</span> x, <span class="t">int</span> y) {
+    <span class="t">int</span> t = x; x = y; y = t;
+}
+<span class="c">// in main:</span>
+<span class="t">int</span> a = <span class="n">1</span>, b = <span class="n">2</span>;
+<span class="m">swap</span>(a, b);
+System.out.println(a + <span class="s">" "</span> + b);`,
+ options:["2 1","1 2","0 0","Compile error"], correct:1,
+ exp:"The method swaps its own copies x and y, but a and b in main are untouched → <b>1 2</b>. You cannot swap two primitives through a method in Java. (You <em>can</em> swap two array elements, because the array is shared.)"},
+
+{cat:"PASS", text:"What is the output?",
+ code:`<span class="k">static int</span> <span class="m">addTen</span>(<span class="t">int</span> x) { <span class="k">return</span> x + <span class="n">10</span>; }
+
+<span class="c">// in main:</span>
+<span class="t">int</span> n = <span class="n">5</span>;
+<span class="m">addTen</span>(n);      <span class="c">// result ignored!</span>
+System.out.println(n);`,
+ options:["15","5","10","Compile error"], correct:1,
+ exp:"The method returns 15, but the caller <b>ignores the return value</b> (it's not stored). n is unchanged → <b>5</b>. To keep it you must write <code>n = addTen(n);</code>."},
+
+{cat:"PASS", text:"What is the output? (String is immutable)",
+ code:`<span class="k">static void</span> <span class="m">change</span>(<span class="t">String</span> s) { s = <span class="s">"changed"</span>; }
+
+<span class="c">// in main:</span>
+<span class="t">String</span> msg = <span class="s">"hello"</span>;
+<span class="m">change</span>(msg);
+System.out.println(msg);`,
+ options:["changed","hello","null","Compile error"], correct:1,
+ exp:"Even though String is an object, the method only reassigns its <b>local copy</b> of the reference — just like Q25. msg in main still points to \"hello\" → <b>hello</b>. (Strings are also immutable, so they can never be changed in place anyway.)"},
+
+{cat:"PASS", text:"What is the output? (passing a single element, not the array)",
+ code:`<span class="k">static void</span> <span class="m">change</span>(<span class="t">int</span> v) { v = <span class="n">100</span>; }
+
+<span class="c">// in main:</span>
+<span class="t">int</span>[] a = { <span class="n">1</span>, <span class="n">2</span>, <span class="n">3</span> };
+<span class="m">change</span>(a[<span class="n">0</span>]);
+System.out.println(a[<span class="n">0</span>]);`,
+ options:["100","1","0","Compile error"], correct:1,
+ exp:"<code>a[0]</code> is an <b>int</b> (a primitive), so only its value is copied into the method. The array element itself is not shared → stays <b>1</b>. Passing the whole array would be different (see Q24)."},
+
+{cat:"PASS", text:"What is the final output? (combines everything)",
+ code:`<span class="k">static void</span> <span class="m">process</span>(<span class="t">int</span>[] arr, <span class="t">int</span> x) {
+    arr[<span class="n">0</span>] = x;              <span class="c">// mutate shared array</span>
+    arr = <span class="k">new</span> <span class="t">int</span>[]{ <span class="n">7</span>, <span class="n">8</span> }; <span class="c">// reassign local copy</span>
+    x = <span class="n">50</span>;                 <span class="c">// change local copy</span>
+}
+<span class="c">// in main:</span>
+<span class="t">int</span>[] a = { <span class="n">1</span>, <span class="n">2</span>, <span class="n">3</span> };
+<span class="t">int</span> n = <span class="n">9</span>;
+<span class="m">process</span>(a, n);
+System.out.println(a[<span class="n">0</span>] + <span class="s">" "</span> + n);`,
+ options:["7 50","9 9","9 50","1 9"], correct:1,
+ exp:"Step by step: <code>arr[0]=x</code> sets the shared array's first element to 9 ✓ (survives). Then <code>arr = new int[]{7,8}</code> only rebinds the local copy — a is unaffected. <code>x=50</code> only changes the local copy of n. Back in main: <code>a[0]</code> = 9, <code>n</code> = 9 → <b>9 9</b>. Mutation through a shared reference persists; reassigning parameters never does."}
+];
+
+/* ---------- ENGINE ---------- */
+const total = Q.length;
+let cur = 0;
+const answers = new Array(total).fill(null); // stores chosen index
+
+document.getElementById('total').textContent = total;
+
+function startTest(){
+  document.getElementById('start').style.display='none';
+  document.getElementById('quiz').style.display='block';
+  render();
+}
+
+function letter(i){return String.fromCharCode(65+i);}
+
+function render(){
+  const q = Q[cur];
+  document.getElementById('curNum').textContent = cur+1;
+  document.getElementById('curCat').textContent = CATS[q.cat].name;
+  document.getElementById('curCat').style.color = CATS[q.cat].color;
+  document.getElementById('prog').style.width = ((cur)/total*100)+'%';
+  document.getElementById('qLabel').textContent = 'Question '+(cur+1);
+  document.getElementById('qText').innerHTML = q.text;
+  document.getElementById('qCode').innerHTML = q.code;
+
+  const optWrap = document.getElementById('qOptions');
+  optWrap.innerHTML='';
+  const chosen = answers[cur];
+  q.options.forEach((opt,i)=>{
+    const div=document.createElement('div');
+    div.className='opt';
+    div.innerHTML=`<span class="key">${letter(i)}</span><span>${opt}</span>`;
+    if(chosen!==null){
+      div.classList.add('disabled');
+      if(i===q.correct) div.classList.add('correct');
+      if(i===chosen && chosen!==q.correct) div.classList.add('wrong');
+    } else {
+      div.onclick=()=>choose(i);
+    }
+    optWrap.appendChild(div);
+  });
+
+  const ex=document.getElementById('qExplain');
+  if(chosen!==null){
+    showExplain(chosen===q.correct);
+  } else {
+    ex.className='explain';
+    ex.innerHTML='';
+  }
+
+  document.getElementById('prevBtn').disabled = (cur===0);
+  const nextBtn=document.getElementById('nextBtn');
+  nextBtn.disabled = (chosen===null);
+  nextBtn.textContent = (cur===total-1) ? 'See my report →' : 'Next →';
+}
+
+function choose(i){
+  answers[cur]=i;
+  render();
+}
+
+function showExplain(isRight){
+  const q=Q[cur];
+  const ex=document.getElementById('qExplain');
+  ex.className='explain show '+(isRight?'ok':'no');
+  ex.innerHTML=`<h4>${isRight?'✓ Correct':'✗ Not quite'}</h4>
+    ${!isRight?`<p style="margin:0 0 8px">Correct answer: <b>${letter(q.correct)}) ${q.options[q.correct]}</b></p>`:''}
+    <div>${q.exp}</div>`;
+}
+
+function nextQ(){
+  if(cur===total-1){ buildReport(); return; }
+  cur++; render();
+}
+function prevQ(){ if(cur>0){cur--; render();} }
+
+/* ---------- REPORT ---------- */
+function buildReport(){
+  document.getElementById('quiz').style.display='none';
+  const rep=document.getElementById('report');
+  rep.style.display='block';
+  window.scrollTo({top:0,behavior:'smooth'});
+
+  let score=0;
+  const byCat={};
+  Object.keys(CATS).forEach(c=>byCat[c]={correct:0,total:0});
+
+  Q.forEach((q,i)=>{
+    byCat[q.cat].total++;
+    if(answers[i]===q.correct){score++; byCat[q.cat].correct++;}
+  });
+
+  const pct=Math.round(score/total*100);
+  document.getElementById('rScore').textContent=`${score} / ${total}`;
+  document.getElementById('rPct').textContent=`${pct}% correct`;
+
+  let verdict, vcolor;
+  if(pct>=85){verdict="Excellent — you understand references solidly. 🎯";vcolor="var(--ok)";}
+  else if(pct>=65){verdict="Good foundation — a few gaps to close before class. 👍";vcolor="var(--accent)";}
+  else if(pct>=45){verdict="Partial understanding — review the flagged topics tonight. ⚠️";vcolor="var(--warn)";}
+  else {verdict="Needs review — let's rebuild the reference model from scratch. 📚";vcolor="var(--bad)";}
+  const v=document.getElementById('rVerdict');
+  v.textContent=verdict; v.style.color=vcolor;
+
+  // category cards
+  const grid=document.getElementById('rCats');
+  grid.innerHTML='';
+  Object.keys(CATS).forEach(c=>{
+    const d=byCat[c]; const p=d.total?Math.round(d.correct/d.total*100):0;
+    let tag,tagcls,barcol;
+    if(p>=80){tag="Strong";tagcls="strong";barcol="var(--ok)";}
+    else if(p>=50){tag="Developing";tagcls="mid";barcol="var(--warn)";}
+    else {tag="Needs work";tagcls="weak";barcol="var(--bad)";}
+    const row=document.createElement('div');
+    row.className='catrow';
+    row.innerHTML=`
+      <div class="top">
+        <span class="name" style="color:${CATS[c].color}">${CATS[c].name}<span class="tag ${tagcls}">${tag}</span></span>
+        <span class="frac">${d.correct} / ${d.total}</span>
+      </div>
+      <div class="bar"><i style="width:${p}%;background:${barcol}"></i></div>
+      <div class="lvl">${catAdvice(c,p)}</div>`;
+    grid.appendChild(row);
+  });
+
+  // overall advice
+  const weak=Object.keys(CATS).filter(c=>{const d=byCat[c];return d.total && d.correct/d.total<0.6;});
+  const adv=document.getElementById('rAdvice');
+  let html=`<h3>📌 Your study plan for tonight</h3>`;
+  if(weak.length===0){
+    html+=`<p>You're in great shape. Do a quick skim of the concepts below and come to class ready to extend everything into <b>multi-dimensional arrays</b>.</p>`;
+  } else {
+    html+=`<p>Focus your review on these areas — they are the exact building blocks for tomorrow's lecture:</p><ul>`;
+    weak.forEach(c=>{ html+=`<li><b style="color:${CATS[c].color}">${CATS[c].name}</b> — ${catFix(c)}</li>`; });
+    html+=`</ul>`;
+  }
+  html+=`<h3 style="margin-top:16px">🧠 The one big idea</h3>
+  <ul>
+    <li><b>Primitive variables hold the value itself.</b> Copying or passing them copies the value — the original is safe.</li>
+    <li><b>Array/object variables hold only a reference (an address).</b> Copying or passing them copies the address — both names point to the <em>same</em> object.</li>
+    <li><b>Java is always pass-by-value</b> — but for arrays, the "value" being copied is the reference, so you can still change the shared object's contents (not rebind the caller's variable).</li>
+  </ul>`;
+  adv.innerHTML=html;
+
+  // full review
+  const rev=document.getElementById('rReview');
+  rev.innerHTML='';
+  Q.forEach((q,i)=>{
+    const right=answers[i]===q.correct;
+    const item=document.createElement('div');
+    item.className='review-item';
+    item.innerHTML=`
+      <div class="r-q">Q${i+1}. <span style="color:${CATS[q.cat].color};font-size:12px">[${CATS[q.cat].name}]</span></div>
+      <div class="r-a ${right?'r-ok':'r-no'}">${right?'✓':'✗'} Your answer: ${answers[i]!==null?q.options[answers[i]]:'—'}
+      ${right?'':`<br>✓ Correct: <b>${q.options[q.correct]}</b>`}</div>`;
+    rev.appendChild(item);
+  });
+}
+
+function catAdvice(c,p){
+  const good = p>=80;
+  const map={
+    PRIM: good?"Solid on values, integer division and type rules.":"Revisit integer vs double division and value-copy semantics.",
+    ARRDECL: good?"You know declare vs create vs initialize and default values.":"Re-study: declaring is NOT creating; created arrays hold defaults; printing an array shows a reference, not contents.",
+    REF: good?"You correctly separate reference from object, and == from contents.":"Re-study: == compares addresses; use Arrays.equals for contents; aliasing means shared object.",
+    PASS: good?"You mastered pass-by-value, mutation vs reassignment.":"Re-study: mutating a shared array persists; reassigning a parameter does not; primitives never change."
+  };
+  return map[c];
+}
+function catFix(c){
+  const map={
+    PRIM:"trace values on paper; watch <code>int/int</code> truncation and <code>double d = 5/2;</code>.",
+    ARRDECL:"draw the difference between the variable box and the physical array; memorize default values (0, false, null).",
+    REF:"draw two boxes for two arrays and one box shared by two aliases; practice == vs Arrays.equals.",
+    PASS:"draw the copied reference arrow into a method; mutation reaches the object, reassignment stays local."
+  };
+  return map[c];
+}
+</script>
+</body>
+</html>
