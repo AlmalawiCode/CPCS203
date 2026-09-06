@@ -136,30 +136,31 @@
   #quiz .cat-chip{font-weight:800;}
   #quiz .progressbar{height:clamp(8px,1vh,14px);flex:0 0 auto;}
 
-  /* the question is the focus: fills remaining height, vertically centred */
-  #qBody{flex:1 1 auto;min-height:0;overflow:auto;
+  /* the question is the focus: fills remaining height, vertically centred.
+     sizes are capped so a full question (code + 4 options) fits one screen */
+  #qBody{flex:1 1 auto;min-height:0;overflow:hidden;
          display:flex;flex-direction:column;justify-content:center;padding:1.4vh 0;}
-  #quiz .qnum{font-size:clamp(14px,1.4vw,20px);margin-bottom:.35em;}
-  #quiz .qtext{font-size:clamp(24px,3vw,44px);line-height:1.25;font-weight:700;margin:.15em 0 .55em;}
+  #quiz .qnum{font-size:clamp(13px,1.2vw,18px);margin-bottom:.3em;}
+  #quiz .qtext{font-size:clamp(20px,2.2vw,32px);line-height:1.2;font-weight:700;margin:.1em 0 .45em;}
 
   #quiz pre.code{
-    font-size:clamp(18px,2.25vw,34px);line-height:1.5;border-radius:14px;
-    padding:clamp(14px,2vh,26px) clamp(18px,2vw,30px);margin:0 0 .6em;
+    font-size:clamp(15px,1.6vw,24px);line-height:1.4;border-radius:12px;
+    padding:clamp(10px,1.4vh,18px) clamp(14px,1.6vw,24px);margin:0 0 .5em;
     box-shadow:0 4px 18px rgba(30,41,59,.06);
   }
 
-  #quiz .options{gap:clamp(10px,1.5vh,18px);}
+  #quiz .options{gap:clamp(8px,1.1vh,14px);}
   #quiz .opt{
-    font-size:clamp(18px,2.1vw,30px);
-    padding:clamp(12px,1.5vh,20px) clamp(16px,1.5vw,24px);
+    font-size:clamp(15px,1.5vw,22px);
+    padding:clamp(9px,1.1vh,15px) clamp(14px,1.3vw,22px);
     align-items:center;
   }
   #quiz .opt .key{
-    flex:0 0 clamp(30px,3vw,46px);height:clamp(30px,3vw,46px);
-    font-size:clamp(15px,1.5vw,22px);
+    flex:0 0 clamp(26px,2.4vw,38px);height:clamp(26px,2.4vw,38px);
+    font-size:clamp(13px,1.3vw,19px);
   }
 
-  #quiz .explain{font-size:clamp(16px,1.75vw,24px);margin-top:clamp(10px,1.5vh,18px);}
+  #quiz .explain{font-size:clamp(14px,1.5vw,20px);margin-top:clamp(8px,1.2vh,14px);}
 
   #quiz .nav{flex:0 0 auto;margin-top:clamp(10px,1.6vh,20px);}
   #quiz .nav button{
@@ -562,7 +563,20 @@ function render(){
   nextBtn.disabled = false;
   nextBtn.textContent = (cur===total-1) ? 'See my report →' : 'Next →';
   document.getElementById('qBody').scrollTop = 0;
+  fitQuestion();
 }
+
+// Scale the question down if it is still taller than the screen, so it always
+// fits on one projector screen without a scrollbar.
+function fitQuestion(){
+  const box=document.getElementById('qBody');
+  box.style.zoom='1';
+  let z=1, guard=0;
+  while(box.scrollHeight > box.clientHeight + 1 && z>0.55 && guard<20){
+    z-=0.04; box.style.zoom=z.toFixed(2); guard++;
+  }
+}
+window.addEventListener('resize', ()=>{ if(document.body.classList.contains('testing')) fitQuestion(); });
 
 function choose(i){
   answers[cur]=i;
