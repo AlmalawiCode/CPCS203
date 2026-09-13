@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>الأسبوع 1: المصفوفات المتعرجة (Ragged Arrays) في جافا | CPCS203</title>
+    <title>الأسبوع 1: المصفوفات غير المنتظمة (Ragged Arrays) في جافا | CPCS203</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
     <style>
         * {
@@ -542,7 +542,7 @@
                 <span class="separator">&#8249;</span>
                 <a href="index-ar.html">الوحدة 1: المصفوفات</a>
                 <span class="separator">&#8249;</span>
-                <span class="current">المصفوفات المتعرجة</span>
+                <span class="current">المصفوفات غير المنتظمة</span>
             </div>
             <div class="lesson-nav">
                 <a href="03-2d-3d-arrays-ar.html">السابق &rarr;</a>
@@ -552,7 +552,7 @@
 
         <!-- Header -->
         <div class="header">
-            <h1>المصفوفات المتعرجة (Ragged / Jagged Arrays) في جافا</h1>
+            <h1>المصفوفات غير المنتظمة (Ragged / Jagged Arrays) في جافا</h1>
             <p class="subtitle">عندما لا يكون على المصفوفات أن تكون مستطيلة!</p>
             <div class="course-info">
                 <strong>CPCS203</strong> - البرمجة كائنية التوجه (Object-Oriented Programming) | الأسبوع 1
@@ -701,12 +701,12 @@
                     </ul>
                 </div>
 
-                <h3 style="color: var(--success-color); margin-top: 30px;">الحل: المصفوفات المتعرجة!</h3>
+                <h3 style="color: var(--success-color); margin-top: 30px;">الحل: المصفوفات غير المنتظمة!</h3>
 
                 <div class="success-box">
                     <div class="success-box-title">تذكّر: المصفوفة ثنائية الأبعاد = مصفوفة من المصفوفات!</div>
                     <p>بما أن المصفوفة ثنائية الأبعاد هي في الحقيقة <strong>مصفوفة من المراجع (References)</strong>، حيث يشير كل مرجع إلى <strong>مصفوفة أحادية البعد منفصلة</strong>، فإنه يمكننا جعل كل مصفوفة أحادية البعد <strong>بحجم مختلف!</strong></p>
-                    <p style="margin-top: 10px;">وهذا ما يُسمى <strong>مصفوفة متعرجة (Ragged Array)</strong> (أو Jagged Array) - فـ"الحواف" ليست مستقيمة كالمستطيل!</p>
+                    <p style="margin-top: 10px;">وهذا ما يُسمى <strong>مصفوفة غير منتظمة (Ragged Array)</strong> (أو Jagged Array) - فـ"الحواف" ليست مستقيمة كالمستطيل!</p>
                 </div>
             </div>
 
@@ -714,16 +714,16 @@
             <div class="section">
                 <h2 class="section-title">
                     <span class="section-number">2</span>
-                    فهم المصفوفات المتعرجة
+                    فهم المصفوفات غير المنتظمة
                 </h2>
 
                 <div class="key-concept">
                     <div class="key-concept-title">التعريف</div>
-                    <p>المصفوفة <strong>المتعرجة (Ragged Array)</strong> هي مصفوفة ثنائية الأبعاد يمكن أن يحتوي فيها كل صف على <strong>عدد مختلف من الأعمدة</strong>. وهذا ممكن لأن المصفوفة ثنائية الأبعاد في جافا هي مصفوفة من مصفوفات أحادية البعد مستقلة - يمكن إنشاء كل واحدة منها بحجمها الخاص!</p>
+                    <p>المصفوفة <strong>غير المنتظمة (Ragged Array)</strong> هي مصفوفة ثنائية الأبعاد يمكن أن يحتوي فيها كل صف على <strong>عدد مختلف من الأعمدة</strong>. وهذا ممكن لأن المصفوفة ثنائية الأبعاد في جافا هي مصفوفة من مصفوفات أحادية البعد مستقلة - يمكن إنشاء كل واحدة منها بحجمها الخاص!</p>
                 </div>
 
                 <div class="visual-container">
-                    <div class="visual-title">المصفوفة المتعرجة: كل طالب لديه بالضبط المقررات التي يحتاجها!</div>
+                    <div class="visual-title">المصفوفة غير المنتظمة: كل طالب لديه بالضبط المقررات التي يحتاجها!</div>
                     <svg width="100%" height="350" viewBox="0 0 750 350">
                         <!-- Definitions -->
                         <defs>
@@ -842,7 +842,7 @@
                         <p style="font-size: 1.5rem; margin-top: 10px;"><strong>8 خلايا مهدرة (33%)</strong></p>
                     </div>
                     <div class="comparison-box good">
-                        <div class="comparison-title">مصفوفة متعرجة</div>
+                        <div class="comparison-title">مصفوفة غير منتظمة</div>
                         <p>5 + 2 + 3 + 6 = <strong>16 خلية</strong> مخصَّصة</p>
                         <p>الـ16 جميعها مستخدمة</p>
                         <p style="font-size: 1.5rem; margin-top: 10px;"><strong>0 خلية مهدرة (0%)</strong></p>
@@ -854,10 +854,10 @@
             <div class="section">
                 <h2 class="section-title">
                     <span class="section-number">3</span>
-                    إنشاء مصفوفات متعرجة ثنائية الأبعاد
+                    إنشاء مصفوفات غير منتظمة ثنائية الأبعاد
                 </h2>
 
-                <p>توجد طريقتان لإنشاء المصفوفات المتعرجة:</p>
+                <p>توجد طريقتان لإنشاء المصفوفات غير المنتظمة:</p>
 
                 <h3 style="color: var(--warning-color); margin-top: 25px;">الطريقة 1: خطوة بخطوة (الأكثر وضوحًا)</h3>
 
@@ -967,12 +967,12 @@
             <div class="section">
                 <h2 class="section-title">
                     <span class="section-number">4</span>
-                    التعامل مع المصفوفات المتعرجة
+                    التعامل مع المصفوفات غير المنتظمة
                 </h2>
 
                 <div class="key-concept">
                     <div class="key-concept-title">مهم: كل صف له طول مختلف!</div>
-                    <p>عند المرور على مصفوفة متعرجة، يجب أن تستخدم <code class="code-inline">array[i].length</code> لكل صف، وليس عدد أعمدة ثابتًا!</p>
+                    <p>عند المرور على مصفوفة غير منتظمة، يجب أن تستخدم <code class="code-inline">array[i].length</code> لكل صف، وليس عدد أعمدة ثابتًا!</p>
                 </div>
 
                 <div class="code-block">
@@ -1041,7 +1041,7 @@
             <div class="section">
                 <h2 class="section-title">
                     <span class="section-number">5</span>
-                    المصفوفات المتعرجة ثلاثية الأبعاد
+                    المصفوفات غير المنتظمة ثلاثية الأبعاد
                 </h2>
 
                 <div class="story-box">
@@ -1056,7 +1056,7 @@
                     </ul>
                 </div>
 
-                <p>يمكن للمصفوفة المتعرجة ثلاثية الأبعاد أن تتعامل مع هذا بشكل مثالي - إذ يمكن أن يكون لكل بُعد أحجام مختلفة!</p>
+                <p>يمكن للمصفوفة غير المنتظمة ثلاثية الأبعاد أن تتعامل مع هذا بشكل مثالي - إذ يمكن أن يكون لكل بُعد أحجام مختلفة!</p>
 
                 <div class="code-block">
                     <div class="code-header">
@@ -1084,7 +1084,7 @@
                 </div>
 
                 <div class="visual-container">
-                    <div class="visual-title">مصفوفة متعرجة ثلاثية الأبعاد: university[2][?][?] - لكل مستوى أحجام مختلفة!</div>
+                    <div class="visual-title">مصفوفة غير منتظمة ثلاثية الأبعاد: university[2][?][?] - لكل مستوى أحجام مختلفة!</div>
                     <svg width="100%" height="450" viewBox="0 0 850 450">
                         <defs>
                             <marker id="arr3r" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
@@ -1261,11 +1261,11 @@
                 <div class="key-concept">
                     <div class="key-concept-title">النقاط الرئيسية</div>
                     <ol>
-                        <li><strong>المصفوفات المتعرجة توفّر الذاكرة</strong> بتخصيص المساحة المطلوبة فعليًا فقط</li>
-                        <li><strong>المصفوفات المتعرجة ممكنة</strong> لأن المصفوفات متعددة الأبعاد في جافا هي "مصفوفات من مصفوفات" - كل مصفوفة داخلية مستقلة</li>
+                        <li><strong>المصفوفات غير المنتظمة توفّر الذاكرة</strong> بتخصيص المساحة المطلوبة فعليًا فقط</li>
+                        <li><strong>المصفوفات غير المنتظمة ممكنة</strong> لأن المصفوفات متعددة الأبعاد في جافا هي "مصفوفات من مصفوفات" - كل مصفوفة داخلية مستقلة</li>
                         <li><strong>استخدم دائمًا <code class="code-inline">array[i].length</code></strong> عند المرور - فكل صف قد يكون بحجم مختلف!</li>
-                        <li><strong>أنشئ المصفوفات المتعرجة خطوة بخطوة:</strong> أنشئ أولًا مصفوفة المراجع، ثم أنشئ كل صف بحجمه الخاص</li>
-                        <li><strong>المصفوفات المتعرجة ثلاثية الأبعاد</strong> تتيح مرونة أكبر - إذ يمكن أن يكون لكل بُعد أحجام مختلفة</li>
+                        <li><strong>أنشئ المصفوفات غير المنتظمة خطوة بخطوة:</strong> أنشئ أولًا مصفوفة المراجع، ثم أنشئ كل صف بحجمه الخاص</li>
+                        <li><strong>المصفوفات غير المنتظمة ثلاثية الأبعاد</strong> تتيح مرونة أكبر - إذ يمكن أن يكون لكل بُعد أحجام مختلفة</li>
                     </ol>
                 </div>
 
@@ -1282,7 +1282,7 @@
 
                 <div class="important-box">
                     <div class="important-box-title">الصلة بهياكل البيانات</div>
-                    <p>فهم المصفوفات المتعرجة تحضير ممتاز لـ<strong>القوائم المترابطة (Linked Lists)</strong> و<strong>الرسوم البيانية (Graphs)</strong> في مادة هياكل البيانات! فهذه الهياكل تستخدم أيضًا مفهوم العُقد (Nodes) المتصلة بواسطة مراجع، حيث يمكن أن يكون لكل عقدة عدد مختلف من الاتصالات.</p>
+                    <p>فهم المصفوفات غير المنتظمة تحضير ممتاز لـ<strong>القوائم المترابطة (Linked Lists)</strong> و<strong>الرسوم البيانية (Graphs)</strong> في مادة هياكل البيانات! فهذه الهياكل تستخدم أيضًا مفهوم العُقد (Nodes) المتصلة بواسطة مراجع، حيث يمكن أن يكون لكل عقدة عدد مختلف من الاتصالات.</p>
                 </div>
             </div>
         </div>
@@ -1296,7 +1296,7 @@
         <!-- Footer -->
         <div class="footer">
             <p><strong>CPCS203</strong> - البرمجة كائنية التوجه (Object-Oriented Programming)</p>
-            <p>الوحدة 1: المصفوفات المتعرجة</p>
+            <p>الوحدة 1: المصفوفات غير المنتظمة</p>
             <p>إعداد د. المعلوي</p>
         </div>
     </div>

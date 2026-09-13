@@ -1115,7 +1115,7 @@
 
             <!-- SECTION 2: Ragged Arrays -->
             <div class="section-divider">
-                <span>الجزء 2: المصفوفات المتعرجة (Ragged Arrays) - برهان على "مصفوفة من المصفوفات"!</span>
+                <span>الجزء 2: المصفوفات غير المنتظمة (Ragged Arrays) - برهان على "مصفوفة من المصفوفات"!</span>
             </div>
 
             <!-- Question 6 -->
@@ -1137,7 +1137,7 @@
                     <div class="feedback-text"></div>
                 </div>
                 <div class="visual-explanation" id="visual6">
-                    <div class="visual-title">لماذا تُعدّ المصفوفات المتعرجة ممكنة: كل مصفوفة 1D مستقلة!</div>
+                    <div class="visual-title">لماذا تُعدّ المصفوفات غير المنتظمة ممكنة: كل مصفوفة 1D مستقلة!</div>
                     <svg width="100%" height="180" viewBox="0 0 550 180">
                         <!-- Main reference array (vertical) -->
                         <text x="30" y="25" fill="#7c3aed" font-weight="bold" font-size="13">ragged</text>
@@ -1254,7 +1254,7 @@
                     <span class="question-type">تتبّع الكود</span>
                 </div>
                 <div class="question-text">
-                    باستخدام المصفوفة المتعرجة نفسها، ما قيمة <code>ragged[1][3]</code>؟
+                    باستخدام المصفوفة غير المنتظمة نفسها، ما قيمة <code>ragged[1][3]</code>؟
                 </div>
                 <div class="options">
                     <div class="option" onclick="selectOption(8, 'a')">
@@ -1664,7 +1664,7 @@
 
         <!-- Bottom Navigation -->
         <nav class="bottom-nav">
-            <a href="04-ragged-arrays-ar.html" class="prev-lesson">السابق: المصفوفات المتعرجة &rarr;</a>
+            <a href="04-ragged-arrays-ar.html" class="prev-lesson">السابق: المصفوفات غير المنتظمة &rarr;</a>
             <a href="index-ar.html">&larr; العودة إلى الوحدة 1</a>
         </nav>
 
@@ -1693,7 +1693,7 @@
             12: { correct: '3', explanation: 'صحيح! التعبير building[0][1] يعطينا المصفوفة أحادية البعد {4, 5, 6}. وقيمة .length لها هي 3.' },
             13: { correct: 'c', explanation: 'صحيح! تضيف الحلقة matrix[i][i] لقيم i=0,1,2. فيُحصَل على: matrix[0][0]=1، وmatrix[1][1]=5، وmatrix[2][2]=9. المجموع = 1+5+9 = 15.' },
             14: { correct: 'b', explanation: 'صحيح! تضيف الحلقة طول كل مصفوفة أحادية البعد: 1 + 2 + 3 = 6 عناصر إجمالًا.' },
-            15: { correct: 'false', explanation: 'صحيح! المصفوفة ثنائية البعد في لغة Java ليست متصلة (contiguous). فهي مصفوفة من المراجع، حيث يشير كل مرجع إلى مصفوفة أحادية البعد منفصلة مخزّنة في مكان آخر من الذاكرة. لهذا السبب تستطيع Java أن تدعم المصفوفات المتعرجة!', hasVisual: true }
+            15: { correct: 'false', explanation: 'صحيح! المصفوفة ثنائية البعد في لغة Java ليست متصلة (contiguous). فهي مصفوفة من المراجع، حيث يشير كل مرجع إلى مصفوفة أحادية البعد منفصلة مخزّنة في مكان آخر من الذاكرة. لهذا السبب تستطيع Java أن تدعم المصفوفات غير المنتظمة!', hasVisual: true }
         };
 
         // Fill-in-the-blank questions

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>قراءة المصفوفات المتعرجة ثلاثية الأبعاد (3D Ragged Arrays) من ملف في جافا | CPCS203</title>
+    <title>قراءة المصفوفات غير المنتظمة ثلاثية الأبعاد (3D Ragged Arrays) من ملف في جافا | CPCS203</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
     <style>
         * {
@@ -578,7 +578,7 @@
     <div class="container">
         <!-- Header -->
         <div class="header">
-            <h1>قراءة المصفوفات المتعرجة ثلاثية الأبعاد من ملف</h1>
+            <h1>قراءة المصفوفات غير المنتظمة ثلاثية الأبعاد من ملف</h1>
             <p class="subtitle">بنية القسم ← الطلاب ← المقررات</p>
             <div class="course-info">CPCS203 - هياكل البيانات</div>
         </div>
@@ -589,12 +589,12 @@
             <div class="section">
                 <h2 class="section-title">
                     <span class="section-number">1</span>
-                    ما هي المصفوفة المتعرجة ثلاثية الأبعاد؟
+                    ما هي المصفوفة غير المنتظمة ثلاثية الأبعاد؟
                 </h2>
 
                 <div class="key-concept">
-                    <div class="key-concept-title">تعريف المصفوفة المتعرجة ثلاثية الأبعاد</div>
-                    <p><strong>المصفوفة المتعرجة ثلاثية الأبعاد (3D Ragged Array)</strong> هي مصفوفة ثلاثية الأبعاد حيث:</p>
+                    <div class="key-concept-title">تعريف المصفوفة غير المنتظمة ثلاثية الأبعاد</div>
+                    <p><strong>المصفوفة غير المنتظمة ثلاثية الأبعاد (3D Ragged Array)</strong> هي مصفوفة ثلاثية الأبعاد حيث:</p>
                     <ul style="margin-top: 10px; margin-right: 20px;">
                         <li>يمكن أن يكون لكل <strong>قسم</strong> عدد مختلف من <strong>الطلاب</strong></li>
                         <li>يمكن أن يكون لكل <strong>طالب</strong> عدد مختلف من <strong>المقررات</strong></li>
@@ -644,11 +644,11 @@
             <div class="section">
                 <h2 class="section-title">
                     <span class="section-number">2</span>
-                    تصوّر المصفوفة المتعرجة ثلاثية الأبعاد
+                    تصوّر المصفوفة غير المنتظمة ثلاثية الأبعاد
                 </h2>
 
                 <div class="array-3d-visual">
-                    <div class="array-3d-title">المصفوفة المتعرجة ثلاثية الأبعاد: marks[3][?][?] - كل بُعد متعرّج (RAGGED)!</div>
+                    <div class="array-3d-title">المصفوفة غير المنتظمة ثلاثية الأبعاد: marks[3][?][?] - كل بُعد متعرّج (RAGGED)!</div>
 
                     <!-- CS Department -->
                     <div class="dept-container cs">
@@ -824,7 +824,7 @@
                 </div>
 
                 <div class="dept-box is">
-                    <div class="dept-box-title">الخطوة 3: إنشاء المصفوفة المتعرجة ثلاثية الأبعاد</div>
+                    <div class="dept-box-title">الخطوة 3: إنشاء المصفوفة غير المنتظمة ثلاثية الأبعاد</div>
                     <p><code class="code-inline">int[][][] marks = new int[numDepartments][][];</code></p>
                     <p style="margin-top: 10px;">هذا يُنشئ: <code class="code-inline">[null, null, null]</code> - مجرد 3 خانات فارغة للأقسام</p>
                 </div>
@@ -1064,7 +1064,7 @@
                 </div>
 
                 <!-- Part 3: Creating the 3D Array -->
-                <h3 style="color: var(--primary-color); margin-top: 30px; margin-bottom: 15px;">الجزء 3: إنشاء المصفوفة المتعرجة ثلاثية الأبعاد (السطر 30)</h3>
+                <h3 style="color: var(--primary-color); margin-top: 30px; margin-bottom: 15px;">الجزء 3: إنشاء المصفوفة غير المنتظمة ثلاثية الأبعاد (السطر 30)</h3>
 
                 <div class="key-concept">
                     <div class="key-concept-title">السطر 30: <code class="code-inline">int[][][] marks = new int[numDepartments][][];</code></div>
@@ -1333,7 +1333,7 @@ Department 2 (IS):
                 </h2>
 
                 <div class="key-concept">
-                    <div class="key-concept-title">ملخّص - المصفوفة المتعرجة ثلاثية الأبعاد</div>
+                    <div class="key-concept-title">ملخّص - المصفوفة غير المنتظمة ثلاثية الأبعاد</div>
                     <ul style="margin-right: 20px; margin-top: 10px;">
                         <li><strong>التصريح:</strong> <code class="code-inline">int[][][] marks = new int[numDepts][][];</code> - البُعد الأول فقط!</li>
                         <li><strong>إنشاء مصفوفة ثنائية لكل قسم:</strong> <code class="code-inline">marks[d] = new int[studentsPerDept[d]][];</code></li>
@@ -1349,7 +1349,7 @@ Department 2 (IS):
                 </div>
 
                 <div class="success-box">
-                    <div class="success-box-title">مقارنة المصفوفات المتعرجة ثنائية الأبعاد مقابل ثلاثية الأبعاد</div>
+                    <div class="success-box-title">مقارنة المصفوفات غير المنتظمة ثنائية الأبعاد مقابل ثلاثية الأبعاد</div>
                     <table style="width: 100%; border-collapse: collapse; margin-top: 15px;">
                         <tr style="background: rgba(255,255,255,0.5);">
                             <th style="padding: 10px; border: 1px solid #059669;">الخاصية</th>
@@ -1378,7 +1378,7 @@ Department 2 (IS):
 
         <!-- Bottom Navigation -->
         <nav class="bottom-nav">
-            <a href="06-ragged-array-file-reading-ar.html" class="prev-link">السابق: المصفوفات المتعرجة ثنائية الأبعاد &rarr;</a>
+            <a href="06-ragged-array-file-reading-ar.html" class="prev-link">السابق: المصفوفات غير المنتظمة ثنائية الأبعاد &rarr;</a>
             <a href="03-2d-3d-arrays-ar.html" class="back-link">&larr; العودة إلى المصفوفات ثنائية وثلاثية الأبعاد</a>
         </nav>
 
