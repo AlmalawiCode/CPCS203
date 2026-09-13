@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lesson 4: Writing Files with PrintWriter | CPCS203</title>
+    <title>الدرس 4 — الكتابة إلى الملفات باستخدام PrintWriter | الوحدة 3: الإدخال والإخراج للملفات | CPCS203</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -25,7 +26,7 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Tajawal', 'Amiri', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.8;
             color: var(--dark-color);
             background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
@@ -159,10 +160,10 @@
         /* Story Box */
         .story-box {
             background: linear-gradient(135deg, #fefce8, #fef9c3);
-            border-left: 5px solid var(--primary-color);
+            border-right: 5px solid var(--primary-color);
             padding: 25px 30px;
             margin: 20px 0;
-            border-radius: 0 15px 15px 0;
+            border-radius: 15px 0 0 15px;
             font-style: italic;
         }
 
@@ -174,10 +175,10 @@
         /* Key Concept Box */
         .key-concept {
             background: linear-gradient(135deg, #fef3c7, #fde68a);
-            border-left: 5px solid var(--primary-color);
+            border-right: 5px solid var(--primary-color);
             padding: 20px 25px;
             margin: 20px 0;
-            border-radius: 0 10px 10px 0;
+            border-radius: 10px 0 0 10px;
         }
 
         .key-concept-title {
@@ -190,10 +191,10 @@
         /* Warning Box */
         .warning-box {
             background: linear-gradient(135deg, #fee2e2, #fecaca);
-            border-left: 5px solid var(--danger-color);
+            border-right: 5px solid var(--danger-color);
             padding: 20px 25px;
             margin: 20px 0;
-            border-radius: 0 10px 10px 0;
+            border-radius: 10px 0 0 10px;
         }
 
         .warning-title {
@@ -205,10 +206,10 @@
         /* Info Box */
         .info-box {
             background: linear-gradient(135deg, #dbeafe, #bfdbfe);
-            border-left: 5px solid #2563eb;
+            border-right: 5px solid #2563eb;
             padding: 20px 25px;
             margin: 20px 0;
-            border-radius: 0 10px 10px 0;
+            border-radius: 10px 0 0 10px;
         }
 
         .info-box-title {
@@ -220,10 +221,10 @@
         /* Success Box */
         .success-box {
             background: linear-gradient(135deg, #d1fae5, #a7f3d0);
-            border-left: 5px solid var(--success-color);
+            border-right: 5px solid var(--success-color);
             padding: 20px 25px;
             margin: 20px 0;
-            border-radius: 0 10px 10px 0;
+            border-radius: 10px 0 0 10px;
         }
 
         .success-title {
@@ -244,6 +245,8 @@
             font-size: 0.95rem;
             line-height: 1.6;
             white-space: pre-wrap;
+            direction: ltr;
+            text-align: left;
         }
 
         .code-block .keyword {
@@ -269,6 +272,8 @@
         .code-block .number {
             color: #b5cea8;
         }
+
+        code, .code-inline { direction: ltr; unicode-bidi: embed; }
 
         .code-inline {
             background: #fef3c7;
@@ -306,6 +311,8 @@
             padding: 20px;
             font-family: 'Consolas', monospace;
             line-height: 1.8;
+            direction: ltr;
+            text-align: left;
         }
 
         /* Comparison Visual */
@@ -420,6 +427,7 @@
             padding: 10px;
             background: #fef3c7;
             border-radius: 5px;
+            direction: ltr;
         }
 
         /* Methods Table */
@@ -437,7 +445,7 @@
             background: var(--primary-color);
             color: white;
             padding: 15px;
-            text-align: left;
+            text-align: right;
         }
 
         .methods-table td {
@@ -537,7 +545,7 @@
         .lang-switch {
             position: fixed;
             top: 20px;
-            right: 20px;
+            left: 20px;
             z-index: 1000;
             padding: 10px 20px;
             background: linear-gradient(135deg, var(--primary-light), var(--secondary-color));
@@ -554,6 +562,8 @@
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(245,158,11,.6);
         }
+
+        ul { margin-right: 20px; }
 
         /* Responsive */
         @media (max-width: 768px) {
@@ -594,29 +604,29 @@
     </style>
 </head>
 <body>
-    <a href="04-writing-printwriter-ar.html" class="lang-switch">&#127760; العربية</a>
+    <a href="04-writing-printwriter.html" class="lang-switch">English &#127760;</a>
     <div class="container">
         <!-- Navigation Breadcrumb -->
         <nav class="nav-breadcrumb">
             <div class="breadcrumb">
                 <a href="../index.html">CPCS203</a>
-                <span class="separator">&#8250;</span>
-                <a href="index.html">Module 3: File I/O</a>
-                <span class="separator">&#8250;</span>
-                <span class="current">Writing with PrintWriter</span>
+                <span class="separator">&#8249;</span>
+                <a href="index-ar.html">الوحدة 3: الإدخال والإخراج للملفات</a>
+                <span class="separator">&#8249;</span>
+                <span class="current">الكتابة باستخدام PrintWriter</span>
             </div>
             <div class="lesson-nav">
-                <a href="03-reading-scanner.html">&#8249; Previous</a>
-                <a href="05-exercises.html">Next &#8250;</a>
+                <a href="03-reading-scanner-ar.html">&rarr; السابق</a>
+                <a href="05-exercises-ar.html">التالي &larr;</a>
             </div>
         </nav>
 
         <!-- Header -->
         <div class="header">
-            <h1>Writing Files with PrintWriter</h1>
-            <p class="subtitle">Saving Data Permanently to Files</p>
+            <h1>الكتابة إلى الملفات باستخدام PrintWriter</h1>
+            <p class="subtitle">حفظ البيانات في الملفات بشكل دائم</p>
             <div class="course-info">
-                <strong>Module 3</strong> &bull; Lesson 4 of 5
+                <strong>الوحدة 3</strong> &bull; الدرس 4 من 5
             </div>
         </div>
 
@@ -625,22 +635,22 @@
             <div class="section">
                 <h2 class="section-title">
                     <span class="section-number">1</span>
-                    PrintWriter: Your Magic Pen
+                    PrintWriter: قلمك السحري
                 </h2>
 
                 <div class="story-box">
-                    <p><span class="story-character">The teacher</span> took out a magic pen called <code class="code-inline">PrintWriter</code>.</p>
-                    <p>"This," they said, "lets us write text into a file, just like <code class="code-inline">System.out.print</code> writes text to the screen."</p>
+                    <p><span class="story-character">أخرج المعلّم</span> قلمًا سحريًا يُسمى <code class="code-inline">PrintWriter</code>.</p>
+                    <p>وقال: "هذا يتيح لنا كتابة النص داخل ملف، تمامًا كما يكتب <code class="code-inline">System.out.print</code> النص على الشاشة."</p>
                 </div>
 
                 <div class="key-concept">
-                    <div class="key-concept-title">Key Insight</div>
-                    <p>Just as we use <code class="code-inline">System.out.println()</code> to print to the console, we use <code class="code-inline">PrintWriter</code> to "print" to a file. The methods are almost identical!</p>
+                    <div class="key-concept-title">الفكرة الأساسية</div>
+                    <p>تمامًا كما نستخدم <code class="code-inline">System.out.println()</code> للطباعة على الطرفية (Console)، نستخدم <code class="code-inline">PrintWriter</code> "للطباعة" في ملف. والدوال متطابقة تقريبًا!</p>
                 </div>
 
                 <div class="comparison-visual">
                     <div class="comparison-item">
-                        <div class="comparison-item-title">Writing to Console</div>
+                        <div class="comparison-item-title">الكتابة إلى الطرفية (Console)</div>
                         <div class="code-block" style="font-size: 0.85rem; margin: 10px 0;">
 System.out.println(
     <span class="string">"Hello!"</span>
@@ -652,7 +662,7 @@ System.out.print(
                         </div>
                     </div>
                     <div class="comparison-item">
-                        <div class="comparison-item-title">Writing to File</div>
+                        <div class="comparison-item-title">الكتابة إلى ملف</div>
                         <div class="code-block" style="font-size: 0.85rem; margin: 10px 0;">
 <span class="variable">writer</span>.println(
     <span class="string">"Hello!"</span>
@@ -670,10 +680,10 @@ System.out.print(
             <div class="section">
                 <h2 class="section-title">
                     <span class="section-number">2</span>
-                    Creating a PrintWriter
+                    إنشاء كائن PrintWriter
                 </h2>
 
-                <p>There are several ways to create a PrintWriter:</p>
+                <p>هناك عدة طرق لإنشاء كائن PrintWriter:</p>
 
                 <div class="code-block">
 <span class="keyword">import</span> java.io.File;
@@ -704,8 +714,8 @@ System.out.print(
                 </div>
 
                 <div class="info-box">
-                    <div class="info-box-title">File Creation</div>
-                    <p>If the file doesn't exist, PrintWriter will <strong>create it</strong>. If it does exist, PrintWriter will <strong>overwrite it</strong> (erasing old content)!</p>
+                    <div class="info-box-title">إنشاء الملف</div>
+                    <p>إذا لم يكن الملف موجودًا، فإن PrintWriter سيقوم <strong>بإنشائه</strong>. أما إذا كان موجودًا بالفعل، فإن PrintWriter سيقوم <strong>بالكتابة فوقه</strong> (ممّا يمحو المحتوى القديم)!</p>
                 </div>
             </div>
 
@@ -713,41 +723,41 @@ System.out.print(
             <div class="section">
                 <h2 class="section-title">
                     <span class="section-number">3</span>
-                    PrintWriter Methods
+                    دوال PrintWriter
                 </h2>
 
                 <table class="methods-table">
                     <thead>
                         <tr>
-                            <th>Method</th>
-                            <th>Description</th>
+                            <th>الدالة</th>
+                            <th>الوصف</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td><code>print(data)</code></td>
-                            <td>Writes data without a newline at the end</td>
+                            <td>تكتب البيانات دون إضافة سطر جديد في النهاية</td>
                         </tr>
                         <tr>
                             <td><code>println(data)</code></td>
-                            <td>Writes data followed by a newline</td>
+                            <td>تكتب البيانات متبوعةً بسطر جديد</td>
                         </tr>
                         <tr>
                             <td><code>printf(format, args)</code></td>
-                            <td>Writes formatted output (like C's printf)</td>
+                            <td>تكتب مخرجات منسّقة (مثل printf في لغة C)</td>
                         </tr>
                         <tr>
                             <td><code>flush()</code></td>
-                            <td>Forces buffered data to be written to file</td>
+                            <td>تفرض كتابة البيانات المخزّنة مؤقتًا إلى الملف</td>
                         </tr>
                         <tr>
                             <td><code>close()</code></td>
-                            <td>Flushes and closes the writer</td>
+                            <td>تفرغ المخزن المؤقت ثم تغلق الكاتب (writer)</td>
                         </tr>
                     </tbody>
                 </table>
 
-                <h3 style="color: var(--primary-color); margin-top: 30px;">Example: Using Different Write Methods</h3>
+                <h3 style="color: var(--primary-color); margin-top: 30px;">مثال: استخدام دوال الكتابة المختلفة</h3>
 
                 <div class="code-block">
 <span class="type">PrintWriter</span> <span class="variable">writer</span> = <span class="keyword">new</span> <span class="type">PrintWriter</span>(<span class="string">"output.txt"</span>);
@@ -788,69 +798,69 @@ Ahmed scored 95 points
             <div class="section">
                 <h2 class="section-title">
                     <span class="section-number">4</span>
-                    Why Must We Close or Flush?
+                    لماذا يجب أن نغلق أو نفرّغ المخزن؟
                 </h2>
 
                 <div class="story-box">
-                    <p><span class="story-character">The teacher shared this secret:</span> "When you write data to a file, Java might keep some of that data in a temporary area called a <strong>buffer</strong>. This makes writing more efficient."</p>
-                    <p>"But if you never say 'write everything to the file now' (by closing or flushing), the data could stay in that buffer and <strong>never appear in the actual file</strong>!"</p>
+                    <p><span class="story-character">أفشى المعلّم هذا السر:</span> "عندما تكتب بيانات إلى ملف، قد تحتفظ Java ببعض تلك البيانات في منطقة مؤقتة تُسمى <strong>المخزن المؤقت (Buffer)</strong>. وهذا يجعل الكتابة أكثر كفاءة."</p>
+                    <p>"لكن إن لم تقل أبدًا 'اكتب كل شيء إلى الملف الآن' (عبر الإغلاق أو التفريغ)، فقد تبقى البيانات في ذلك المخزن المؤقت و<strong>لا تظهر أبدًا في الملف الفعلي</strong>!"</p>
                 </div>
 
                 <div class="buffer-visual">
-                    <div class="buffer-title">Understanding the Buffer</div>
+                    <div class="buffer-title">فهم المخزن المؤقت (Buffer)</div>
                     <div class="buffer-container">
                         <div class="buffer-box">
-                            <div class="buffer-label">Your Code Writes:</div>
+                            <div class="buffer-label">شيفرتك تكتب:</div>
                             <div class="buffer-content">writer.println("Hello")</div>
                         </div>
                         <div class="flow-arrow">&#8594;</div>
                         <div class="buffer-box" style="border-color: var(--warning-color);">
-                            <div class="buffer-label">Buffer (Memory):</div>
+                            <div class="buffer-label">المخزن المؤقت (الذاكرة):</div>
                             <div class="buffer-content" style="background: #fef3c7;">"Hello\n"</div>
                         </div>
                         <div class="flow-arrow">&#8594;</div>
                         <div class="buffer-box" style="border-color: var(--success-color);">
-                            <div class="buffer-label">File (Disk):</div>
+                            <div class="buffer-label">الملف (القرص):</div>
                             <div class="buffer-content" style="background: #d1fae5;">After close()/flush()</div>
                         </div>
                     </div>
                 </div>
 
                 <div class="warning-box">
-                    <div class="warning-title">Common Mistake!</div>
-                    <p>If you forget to call <code class="code-inline">close()</code>, your file might be <strong>empty</strong> or <strong>incomplete</strong>! The data is sitting in the buffer, waiting to be written.</p>
+                    <div class="warning-title">خطأ شائع!</div>
+                    <p>إذا نسيت استدعاء <code class="code-inline">close()</code>، فقد يكون ملفك <strong>فارغًا</strong> أو <strong>غير مكتمل</strong>! فالبيانات لا تزال قابعة في المخزن المؤقت، تنتظر أن تُكتب.</p>
                 </div>
 
                 <div class="flow-diagram">
                     <div class="flow-box">
                         <div class="flow-box-icon">&#128187;</div>
-                        <div class="flow-box-title">Java Program</div>
+                        <div class="flow-box-title">برنامج Java</div>
                         <div class="flow-box-desc">writer.println()</div>
                     </div>
                     <div class="flow-arrow">&#8594;</div>
                     <div class="flow-box" style="background: #fef3c7;">
                         <div class="flow-box-icon">&#128230;</div>
-                        <div class="flow-box-title">Buffer</div>
-                        <div class="flow-box-desc">Temporary storage</div>
+                        <div class="flow-box-title">المخزن المؤقت (Buffer)</div>
+                        <div class="flow-box-desc">تخزين مؤقت</div>
                     </div>
                     <div class="flow-arrow">&#8594;</div>
                     <div class="flow-box">
                         <div class="flow-box-icon">&#9881;</div>
-                        <div class="flow-box-title">OS Kernel</div>
-                        <div class="flow-box-desc">System calls</div>
+                        <div class="flow-box-title">نواة نظام التشغيل (OS Kernel)</div>
+                        <div class="flow-box-desc">استدعاءات النظام (System calls)</div>
                     </div>
                     <div class="flow-arrow">&#8594;</div>
                     <div class="flow-box" style="border-color: var(--success-color);">
                         <div class="flow-box-icon">&#128190;</div>
-                        <div class="flow-box-title">Disk</div>
-                        <div class="flow-box-desc">Permanent storage</div>
+                        <div class="flow-box-title">القرص (Disk)</div>
+                        <div class="flow-box-desc">تخزين دائم</div>
                     </div>
                 </div>
 
                 <div class="info-box">
-                    <div class="info-box-title">Behind the Scenes</div>
-                    <p>When a Java program wants to write data to the hard disk, it eventually calls <strong>system calls</strong> provided by the operating system. Java's I/O classes talk to the JVM, which invokes the OS's file I/O system calls (like <code class="code-inline">write()</code> on Linux or <code class="code-inline">WriteFile()</code> on Windows). These system calls pass data to the OS kernel, which interacts with the file system and disk driver.</p>
-                    <p style="margin-top: 10px;"><em>Note: The deep details will be covered in Operating Systems course.</em></p>
+                    <div class="info-box-title">خلف الكواليس</div>
+                    <p>عندما يريد برنامج Java كتابة بيانات إلى القرص الصلب، فإنه يستدعي في النهاية <strong>استدعاءات النظام (System Calls)</strong> التي يوفّرها نظام التشغيل. تتخاطب أصناف الإدخال/الإخراج في Java مع الآلة الافتراضية (JVM)، التي تستدعي بدورها استدعاءات نظام الإدخال/الإخراج للملفات الخاصة بنظام التشغيل (مثل <code class="code-inline">write()</code> على Linux أو <code class="code-inline">WriteFile()</code> على Windows). تمرّر استدعاءات النظام هذه البيانات إلى نواة نظام التشغيل (OS Kernel)، التي تتفاعل مع نظام الملفات ومشغّل القرص (Disk Driver).</p>
+                    <p style="margin-top: 10px;"><em>ملاحظة: ستُغطّى التفاصيل الدقيقة في مقرر أنظمة التشغيل.</em></p>
                 </div>
             </div>
 
@@ -858,10 +868,10 @@ Ahmed scored 95 points
             <div class="section">
                 <h2 class="section-title">
                     <span class="section-number">5</span>
-                    Complete Example: Student Grade Report
+                    مثال متكامل: تقرير درجات الطلاب
                 </h2>
 
-                <p>Let's write a program that creates a grade report file:</p>
+                <p>دعونا نكتب برنامجًا يُنشئ ملف تقرير للدرجات:</p>
 
                 <div class="code-block">
 <span class="keyword">import</span> java.io.PrintWriter;
@@ -935,10 +945,10 @@ Class Average: 85.00<br>
             <div class="section">
                 <h2 class="section-title">
                     <span class="section-number">6</span>
-                    Reading and Writing Together
+                    القراءة والكتابة معًا
                 </h2>
 
-                <p>Often, you'll need to read from one file and write to another:</p>
+                <p>كثيرًا ما تحتاج إلى القراءة من ملف والكتابة إلى ملف آخر:</p>
 
                 <div class="code-block">
 <span class="keyword">import</span> java.io.File;
@@ -990,8 +1000,8 @@ Class Average: 85.00<br>
                 </div>
 
                 <div class="success-box">
-                    <div class="success-title">Best Practice</div>
-                    <p>Always close your readers and writers when done. A good pattern is to close them in the <strong>reverse order</strong> of opening (close writer first, then reader).</p>
+                    <div class="success-title">أفضل ممارسة</div>
+                    <p>أغلق دائمًا كائنات القراءة والكتابة عند الانتهاء منها. من الأنماط الجيدة أن تغلقها <strong>بالترتيب العكسي</strong> لفتحها (أغلق الكاتب writer أولًا، ثم القارئ reader).</p>
                 </div>
             </div>
 
@@ -999,60 +1009,60 @@ Class Average: 85.00<br>
             <div class="section">
                 <h2 class="section-title">
                     <span class="section-number">7</span>
-                    Summary
+                    الخلاصة
                 </h2>
 
                 <div class="summary-box">
-                    <div class="summary-title">Key Takeaways</div>
+                    <div class="summary-title">أهم النقاط</div>
                     <ul class="summary-list">
                         <li>
                             <span class="check">&#10003;</span>
-                            <span><strong>PrintWriter</strong> writes text to files like System.out writes to console.</span>
+                            <span><strong>PrintWriter</strong> يكتب النص إلى الملفات مثلما يكتب System.out إلى الطرفية.</span>
                         </li>
                         <li>
                             <span class="check">&#10003;</span>
-                            <span>Use <strong>print()</strong>, <strong>println()</strong>, and <strong>printf()</strong> to write data.</span>
+                            <span>استخدم <strong>print()</strong> و<strong>println()</strong> و<strong>printf()</strong> لكتابة البيانات.</span>
                         </li>
                         <li>
                             <span class="check">&#10003;</span>
-                            <span>Data is <strong>buffered</strong> - stored temporarily before writing to disk.</span>
+                            <span>تُخزَّن البيانات <strong>مؤقتًا</strong> - أي تُحفظ بشكل مؤقت قبل كتابتها إلى القرص.</span>
                         </li>
                         <li>
                             <span class="check">&#10003;</span>
-                            <span><strong>Always close()</strong> the writer to ensure data is saved!</span>
+                            <span><strong>أغلق دائمًا close()</strong> الكاتب لضمان حفظ البيانات!</span>
                         </li>
                         <li>
                             <span class="check">&#10003;</span>
-                            <span>PrintWriter creates new files or <strong>overwrites</strong> existing ones.</span>
+                            <span>ينشئ PrintWriter ملفات جديدة أو <strong>يكتب فوق</strong> الملفات الموجودة.</span>
                         </li>
                     </ul>
                 </div>
 
                 <div class="story-box">
-                    <p><span class="story-character">And so, the student learned:</span></p>
-                    <ul style="margin-left: 20px; margin-top: 10px;">
-                        <li>Files store data even when programs stop running</li>
-                        <li>The File class lets us explore file properties</li>
-                        <li>Scanner reads from files like it reads from keyboard</li>
-                        <li>PrintWriter writes to files like System.out writes to screen</li>
-                        <li><strong>Always close your writers to save data correctly!</strong></li>
+                    <p><span class="story-character">وهكذا تعلّم الطالب:</span></p>
+                    <ul style="margin-right: 20px; margin-top: 10px;">
+                        <li>الملفات تحفظ البيانات حتى بعد توقف البرامج عن العمل</li>
+                        <li>يتيح لنا الصنف File استكشاف خصائص الملف</li>
+                        <li>يقرأ Scanner من الملفات كما يقرأ من لوحة المفاتيح</li>
+                        <li>يكتب PrintWriter إلى الملفات مثلما يكتب System.out إلى الشاشة</li>
+                        <li><strong>أغلق دائمًا كائنات الكتابة لحفظ البيانات بشكل صحيح!</strong></li>
                     </ul>
-                    <p style="margin-top: 15px; text-align: center;"><strong>End of the Tale!</strong></p>
+                    <p style="margin-top: 15px; text-align: center;"><strong>نهاية الحكاية!</strong></p>
                 </div>
             </div>
         </div>
 
         <!-- Bottom Navigation -->
         <nav class="bottom-nav">
-            <a href="03-reading-scanner.html" class="prev-lesson">&#8249; Previous: Reading with Scanner</a>
-            <a href="05-exercises.html">Next: Exercises &#8250;</a>
+            <a href="03-reading-scanner-ar.html" class="prev-lesson">&rarr; السابق: القراءة باستخدام Scanner</a>
+            <a href="05-exercises-ar.html">التالي: التمارين &larr;</a>
         </nav>
 
         <!-- Footer -->
         <div class="footer">
-            <p><strong>CPCS203</strong> - Object-Oriented Programming</p>
-            <p>Module 3: File I/O &bull; Lesson 4</p>
-            <p>Prepared by Dr. Almalawi</p>
+            <p><strong>CPCS203</strong> - البرمجة الكائنية التوجه</p>
+            <p>الوحدة 3: الإدخال والإخراج للملفات &bull; الدرس 4</p>
+            <p>إعداد د. المعلوي</p>
         </div>
     </div>
 </body>

@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Week 1: Ragged Arrays in Java | CPCS203</title>
+    <title>الأسبوع 1: المصفوفات المتعرجة (Ragged Arrays) في جافا | CPCS203</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -22,7 +23,7 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Tajawal', 'Amiri', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.8;
             color: var(--dark-color);
             background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
@@ -126,10 +127,10 @@
         /* Key Concept Box */
         .key-concept {
             background: linear-gradient(135deg, #dbeafe, #bfdbfe);
-            border-left: 5px solid var(--secondary-color);
+            border-right: 5px solid var(--secondary-color);
             padding: 20px 25px;
             margin: 20px 0;
-            border-radius: 0 10px 10px 0;
+            border-radius: 10px 0 0 10px;
         }
 
         .key-concept-title {
@@ -142,10 +143,10 @@
         /* Important Box */
         .important-box {
             background: linear-gradient(135deg, #fee2e2, #fecaca);
-            border-left: 5px solid var(--danger-color);
+            border-right: 5px solid var(--danger-color);
             padding: 20px 25px;
             margin: 20px 0;
-            border-radius: 0 10px 10px 0;
+            border-radius: 10px 0 0 10px;
         }
 
         .important-box-title {
@@ -158,10 +159,10 @@
         /* Success Box */
         .success-box {
             background: linear-gradient(135deg, #d1fae5, #a7f3d0);
-            border-left: 5px solid var(--success-color);
+            border-right: 5px solid var(--success-color);
             padding: 20px 25px;
             margin: 20px 0;
-            border-radius: 0 10px 10px 0;
+            border-radius: 10px 0 0 10px;
         }
 
         .success-box-title {
@@ -201,12 +202,14 @@
         .code-title {
             color: #9ca3af;
             font-size: 0.85rem;
-            margin-left: 10px;
+            margin-right: 10px;
         }
 
         .code-content {
             padding: 20px;
             overflow-x: auto;
+            direction: ltr;
+            text-align: left;
         }
 
         .code-content pre {
@@ -242,6 +245,7 @@
         .bracket { color: #ffd700; }
         .operator { color: #d4d4d4; }
 
+        code, .code-inline { direction: ltr; unicode-bidi: embed; }
         .code-inline {
             background: #e5e7eb;
             padding: 2px 8px;
@@ -368,7 +372,7 @@
 
         /* Lists */
         ul, ol {
-            margin: 15px 0 15px 25px;
+            margin: 15px 25px 15px 0;
         }
 
         li {
@@ -524,34 +528,34 @@
             background: linear-gradient(135deg, #64748b, #475569);
         }
 
-        .lang-switch { position: fixed; top: 20px; right: 20px; z-index: 1000; padding: 10px 20px; background: linear-gradient(135deg, var(--warning-color), #b45309); color: white; text-decoration: none; border-radius: 30px; font-weight: 700; font-size: 0.9rem; box-shadow: 0 4px 14px rgba(217,119,6,.4); transition: transform .2s, box-shadow .2s; }
+        .lang-switch { position: fixed; top: 20px; left: 20px; z-index: 1000; padding: 10px 20px; background: linear-gradient(135deg, var(--warning-color), #b45309); color: white; text-decoration: none; border-radius: 30px; font-weight: 700; font-size: 0.9rem; box-shadow: 0 4px 14px rgba(217,119,6,.4); transition: transform .2s, box-shadow .2s; }
         .lang-switch:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(217,119,6,.6); }
     </style>
 </head>
 <body>
-    <a href="04-ragged-arrays-ar.html" class="lang-switch">&#127760; العربية</a>
+    <a href="04-ragged-arrays.html" class="lang-switch">English &#127760;</a>
     <div class="container">
         <!-- Navigation Breadcrumb -->
         <nav class="nav-breadcrumb">
             <div class="breadcrumb">
                 <a href="../index.html">CPCS203</a>
-                <span class="separator">›</span>
-                <a href="index.html">Module 1: Arrays</a>
-                <span class="separator">›</span>
-                <span class="current">Ragged Arrays</span>
+                <span class="separator">&#8249;</span>
+                <a href="index-ar.html">الوحدة 1: المصفوفات</a>
+                <span class="separator">&#8249;</span>
+                <span class="current">المصفوفات المتعرجة</span>
             </div>
             <div class="lesson-nav">
-                <a href="03-2d-3d-arrays.html">‹ Previous</a>
-                <a href="05-2d-3d-exercises.html">Next: 2D/3D Exercises ›</a>
+                <a href="03-2d-3d-arrays-ar.html">السابق &rarr;</a>
+                <a href="05-2d-3d-exercises-ar.html">&larr; التالي: تمارين المصفوفات ثنائية/ثلاثية الأبعاد</a>
             </div>
         </nav>
 
         <!-- Header -->
         <div class="header">
-            <h1>Ragged (Jagged) Arrays in Java</h1>
-            <p class="subtitle">When Arrays Don't Have to Be Rectangular!</p>
+            <h1>المصفوفات المتعرجة (Ragged / Jagged Arrays) في جافا</h1>
+            <p class="subtitle">عندما لا يكون على المصفوفات أن تكون مستطيلة!</p>
             <div class="course-info">
-                <strong>CPCS203</strong> - Object-Oriented Programming | Week 1
+                <strong>CPCS203</strong> - البرمجة كائنية التوجه (Object-Oriented Programming) | الأسبوع 1
             </div>
         </div>
 
@@ -560,27 +564,27 @@
             <div class="section">
                 <h2 class="section-title">
                     <span class="section-number">1</span>
-                    The Story: A University Registration Problem
+                    القصة: مشكلة تسجيل في جامعة
                 </h2>
 
                 <div class="story-box">
                     <div class="story-title">
                         <span class="story-icon">&#127891;</span>
-                        The Scenario
+                        السيناريو
                     </div>
-                    <p>You are building a registration system for King Abdulaziz University. You need to store the courses each student is enrolled in. Here's the challenge:</p>
+                    <p>أنت تبني نظام تسجيل لجامعة الملك عبدالعزيز. تحتاج إلى تخزين المقررات المسجَّل فيها كل طالب. وإليك التحدي:</p>
                     <ul style="margin-top: 15px;">
-                        <li><strong>Ahmed</strong> is a full-time student taking <strong>5 courses</strong></li>
-                        <li><strong>Sara</strong> is working part-time and taking only <strong>2 courses</strong></li>
-                        <li><strong>Mohammed</strong> is in his final semester with just <strong>3 courses</strong></li>
-                        <li><strong>Fatima</strong> is an ambitious student taking <strong>6 courses</strong></li>
+                        <li><strong>أحمد</strong> طالب متفرغ يدرس <strong>5 مقررات</strong></li>
+                        <li><strong>سارة</strong> تعمل بدوام جزئي وتدرس <strong>مقررين فقط</strong></li>
+                        <li><strong>محمد</strong> في فصله الأخير ويدرس <strong>3 مقررات فقط</strong></li>
+                        <li><strong>فاطمة</strong> طالبة طموحة تدرس <strong>6 مقررات</strong></li>
                     </ul>
-                    <p style="margin-top: 15px;"><strong>How do you store this data efficiently?</strong></p>
+                    <p style="margin-top: 15px;"><strong>كيف تخزّن هذه البيانات بكفاءة؟</strong></p>
                 </div>
 
-                <h3 style="color: var(--danger-color); margin-top: 30px;">Approach 1: Using a Regular 2D Array</h3>
+                <h3 style="color: var(--danger-color); margin-top: 30px;">الطريقة الأولى: استخدام مصفوفة ثنائية الأبعاد عادية</h3>
 
-                <p>Your first thought might be: "I'll create a 2D array with enough columns for the maximum number of courses!"</p>
+                <p>قد تكون فكرتك الأولى: "سأنشئ مصفوفة ثنائية الأبعاد بأعمدة كافية للحد الأقصى من عدد المقررات!"</p>
 
                 <div class="code-block">
                     <div class="code-header">
@@ -606,7 +610,7 @@
                 </div>
 
                 <div class="visual-container">
-                    <div class="visual-title">Regular 2D Array: Lots of Wasted Space!</div>
+                    <div class="visual-title">مصفوفة ثنائية الأبعاد عادية: الكثير من المساحة المهدرة!</div>
                     <svg width="100%" height="280" viewBox="0 0 700 280">
                         <!-- Column headers -->
                         <text x="140" y="30" text-anchor="middle" font-size="11" fill="#6b7280">[0]</text>
@@ -689,20 +693,20 @@
                 </div>
 
                 <div class="important-box">
-                    <div class="important-box-title">The Problem with Regular 2D Arrays</div>
+                    <div class="important-box-title">مشكلة المصفوفات ثنائية الأبعاد العادية</div>
                     <ul>
-                        <li><strong>Memory waste:</strong> We allocated 24 cells (4×6) but only used 16. That's <strong>33% wasted memory!</strong></li>
-                        <li><strong>Confusion:</strong> How do we know which cells are "real" data and which are just empty?</li>
-                        <li><strong>Scalability:</strong> What if one student takes 10 courses? We'd need to make ALL rows have 10 columns!</li>
+                        <li><strong>إهدار الذاكرة:</strong> خصّصنا 24 خلية (4×6) لكننا استخدمنا 16 فقط. أي <strong>33% من الذاكرة مهدرة!</strong></li>
+                        <li><strong>الالتباس:</strong> كيف نعرف أي الخلايا بيانات "حقيقية" وأيها مجرد خلايا فارغة؟</li>
+                        <li><strong>قابلية التوسع:</strong> ماذا لو أخذ طالب واحد 10 مقررات؟ سنضطر لجعل جميع الصفوف تحتوي على 10 أعمدة!</li>
                     </ul>
                 </div>
 
-                <h3 style="color: var(--success-color); margin-top: 30px;">The Solution: Ragged Arrays!</h3>
+                <h3 style="color: var(--success-color); margin-top: 30px;">الحل: المصفوفات المتعرجة!</h3>
 
                 <div class="success-box">
-                    <div class="success-box-title">Remember: 2D Array = Array of Arrays!</div>
-                    <p>Since a 2D array is actually an <strong>array of references</strong>, where each reference points to a <strong>separate 1D array</strong>, we can make each 1D array a <strong>different size!</strong></p>
-                    <p style="margin-top: 10px;">This is called a <strong>Ragged Array</strong> (or Jagged Array) - the "edges" are not straight like a rectangle!</p>
+                    <div class="success-box-title">تذكّر: المصفوفة ثنائية الأبعاد = مصفوفة من المصفوفات!</div>
+                    <p>بما أن المصفوفة ثنائية الأبعاد هي في الحقيقة <strong>مصفوفة من المراجع (References)</strong>، حيث يشير كل مرجع إلى <strong>مصفوفة أحادية البعد منفصلة</strong>، فإنه يمكننا جعل كل مصفوفة أحادية البعد <strong>بحجم مختلف!</strong></p>
+                    <p style="margin-top: 10px;">وهذا ما يُسمى <strong>مصفوفة متعرجة (Ragged Array)</strong> (أو Jagged Array) - فـ"الحواف" ليست مستقيمة كالمستطيل!</p>
                 </div>
             </div>
 
@@ -710,16 +714,16 @@
             <div class="section">
                 <h2 class="section-title">
                     <span class="section-number">2</span>
-                    Understanding Ragged Arrays
+                    فهم المصفوفات المتعرجة
                 </h2>
 
                 <div class="key-concept">
-                    <div class="key-concept-title">Definition</div>
-                    <p>A <strong>Ragged Array</strong> is a 2D array where each row can have a <strong>different number of columns</strong>. This is possible because in Java, a 2D array is an array of independent 1D arrays - each can be created with its own size!</p>
+                    <div class="key-concept-title">التعريف</div>
+                    <p>المصفوفة <strong>المتعرجة (Ragged Array)</strong> هي مصفوفة ثنائية الأبعاد يمكن أن يحتوي فيها كل صف على <strong>عدد مختلف من الأعمدة</strong>. وهذا ممكن لأن المصفوفة ثنائية الأبعاد في جافا هي مصفوفة من مصفوفات أحادية البعد مستقلة - يمكن إنشاء كل واحدة منها بحجمها الخاص!</p>
                 </div>
 
                 <div class="visual-container">
-                    <div class="visual-title">Ragged Array: Each Student Has Exactly the Courses They Need!</div>
+                    <div class="visual-title">المصفوفة المتعرجة: كل طالب لديه بالضبط المقررات التي يحتاجها!</div>
                     <svg width="100%" height="350" viewBox="0 0 750 350">
                         <!-- Definitions -->
                         <defs>
@@ -832,16 +836,16 @@
 
                 <div class="comparison-container">
                     <div class="comparison-box bad">
-                        <div class="comparison-title">Regular 2D Array</div>
-                        <p>4 × 6 = <strong>24 cells</strong> allocated</p>
-                        <p>Only 16 used</p>
-                        <p style="font-size: 1.5rem; margin-top: 10px;"><strong>8 cells wasted (33%)</strong></p>
+                        <div class="comparison-title">مصفوفة ثنائية الأبعاد عادية</div>
+                        <p>4 × 6 = <strong>24 خلية</strong> مخصَّصة</p>
+                        <p>16 فقط مستخدمة</p>
+                        <p style="font-size: 1.5rem; margin-top: 10px;"><strong>8 خلايا مهدرة (33%)</strong></p>
                     </div>
                     <div class="comparison-box good">
-                        <div class="comparison-title">Ragged Array</div>
-                        <p>5 + 2 + 3 + 6 = <strong>16 cells</strong> allocated</p>
-                        <p>All 16 used</p>
-                        <p style="font-size: 1.5rem; margin-top: 10px;"><strong>0 cells wasted (0%)</strong></p>
+                        <div class="comparison-title">مصفوفة متعرجة</div>
+                        <p>5 + 2 + 3 + 6 = <strong>16 خلية</strong> مخصَّصة</p>
+                        <p>الـ16 جميعها مستخدمة</p>
+                        <p style="font-size: 1.5rem; margin-top: 10px;"><strong>0 خلية مهدرة (0%)</strong></p>
                     </div>
                 </div>
             </div>
@@ -850,17 +854,17 @@
             <div class="section">
                 <h2 class="section-title">
                     <span class="section-number">3</span>
-                    Creating 2D Ragged Arrays
+                    إنشاء مصفوفات متعرجة ثنائية الأبعاد
                 </h2>
 
-                <p>There are two ways to create ragged arrays:</p>
+                <p>توجد طريقتان لإنشاء المصفوفات المتعرجة:</p>
 
-                <h3 style="color: var(--warning-color); margin-top: 25px;">Method 1: Step by Step (Most Clear)</h3>
+                <h3 style="color: var(--warning-color); margin-top: 25px;">الطريقة 1: خطوة بخطوة (الأكثر وضوحًا)</h3>
 
                 <div class="step-container">
                     <div class="step-header">
                         <div class="step-number-big">1</div>
-                        <div class="step-title">Create the Array of References Only</div>
+                        <div class="step-title">إنشاء مصفوفة المراجع فقط</div>
                     </div>
                     <div class="code-block">
                         <div class="code-header">
@@ -885,7 +889,7 @@
                 <div class="step-container">
                     <div class="step-header">
                         <div class="step-number-big">2</div>
-                        <div class="step-title">Create Each Row with Different Sizes</div>
+                        <div class="step-title">إنشاء كل صف بحجم مختلف</div>
                     </div>
                     <div class="code-block">
                         <div class="code-header">
@@ -913,7 +917,7 @@
                 <div class="step-container">
                     <div class="step-header">
                         <div class="step-number-big">3</div>
-                        <div class="step-title">Fill in the Data</div>
+                        <div class="step-title">تعبئة البيانات</div>
                     </div>
                     <div class="code-block">
                         <div class="code-header">
@@ -939,7 +943,7 @@
                     </div>
                 </div>
 
-                <h3 style="color: var(--warning-color); margin-top: 35px;">Method 2: Direct Initialization (Shorthand)</h3>
+                <h3 style="color: var(--warning-color); margin-top: 35px;">الطريقة 2: التهيئة المباشرة (اختصار)</h3>
 
                 <div class="code-block">
                     <div class="code-header">
@@ -963,12 +967,12 @@
             <div class="section">
                 <h2 class="section-title">
                     <span class="section-number">4</span>
-                    Working with Ragged Arrays
+                    التعامل مع المصفوفات المتعرجة
                 </h2>
 
                 <div class="key-concept">
-                    <div class="key-concept-title">Important: Each Row Has Different Length!</div>
-                    <p>When iterating through a ragged array, you must use <code class="code-inline">array[i].length</code> for each row, NOT a fixed column size!</p>
+                    <div class="key-concept-title">مهم: كل صف له طول مختلف!</div>
+                    <p>عند المرور على مصفوفة متعرجة، يجب أن تستخدم <code class="code-inline">array[i].length</code> لكل صف، وليس عدد أعمدة ثابتًا!</p>
                 </div>
 
                 <div class="code-block">
@@ -1002,8 +1006,8 @@
                 </div>
 
                 <div class="visual-container">
-                    <div class="visual-title">Output</div>
-                    <div style="background: #1e1e1e; color: #d4d4d4; padding: 20px; border-radius: 8px; font-family: Consolas, monospace; font-size: 0.9rem;">
+                    <div class="visual-title">المخرجات</div>
+                    <div style="background: #1e1e1e; color: #d4d4d4; padding: 20px; border-radius: 8px; font-family: Consolas, monospace; font-size: 0.9rem; direction: ltr; text-align: left;">
                         Ahmed is taking 5 courses:<br>
                         &nbsp;&nbsp;- CPCS203<br>
                         &nbsp;&nbsp;- CPCS204<br>
@@ -1028,8 +1032,8 @@
                 </div>
 
                 <div class="important-box">
-                    <div class="important-box-title">Common Mistake!</div>
-                    <p>If you try to access an index that doesn't exist (e.g., <code class="code-inline">courses[1][4]</code> when Sara only has 2 courses), you will get an <strong>ArrayIndexOutOfBoundsException</strong>!</p>
+                    <div class="important-box-title">خطأ شائع!</div>
+                    <p>إذا حاولت الوصول إلى فهرس غير موجود (مثل <code class="code-inline">courses[1][4]</code> بينما سارة لديها مقرران فقط)، فسوف تحصل على <strong>ArrayIndexOutOfBoundsException</strong>!</p>
                 </div>
             </div>
 
@@ -1037,22 +1041,22 @@
             <div class="section">
                 <h2 class="section-title">
                     <span class="section-number">5</span>
-                    3D Ragged Arrays
+                    المصفوفات المتعرجة ثلاثية الأبعاد
                 </h2>
 
                 <div class="story-box">
                     <div class="story-title">
                         <span class="story-icon">&#127979;</span>
-                        Extended Scenario: Multiple Departments
+                        سيناريو موسَّع: أقسام متعددة
                     </div>
-                    <p>Now imagine the university has <strong>multiple departments</strong>, each with a <strong>different number of students</strong>, and each student takes a <strong>different number of courses</strong>:</p>
+                    <p>تخيّل الآن أن للجامعة <strong>أقسامًا متعددة</strong>، لكل قسم <strong>عدد مختلف من الطلاب</strong>، وكل طالب يدرس <strong>عددًا مختلفًا من المقررات</strong>:</p>
                     <ul style="margin-top: 15px;">
-                        <li><strong>Computer Science Department:</strong> 2 students (Ahmed: 3 courses, Sara: 2 courses)</li>
-                        <li><strong>Mathematics Department:</strong> 3 students (Ali: 4 courses, Nora: 2 courses, Omar: 3 courses)</li>
+                        <li><strong>قسم علوم الحاسب:</strong> طالبان (أحمد: 3 مقررات، سارة: مقرران)</li>
+                        <li><strong>قسم الرياضيات:</strong> 3 طلاب (علي: 4 مقررات، نورة: مقرران، عمر: 3 مقررات)</li>
                     </ul>
                 </div>
 
-                <p>A 3D ragged array can handle this perfectly - each dimension can have different sizes!</p>
+                <p>يمكن للمصفوفة المتعرجة ثلاثية الأبعاد أن تتعامل مع هذا بشكل مثالي - إذ يمكن أن يكون لكل بُعد أحجام مختلفة!</p>
 
                 <div class="code-block">
                     <div class="code-header">
@@ -1080,7 +1084,7 @@
                 </div>
 
                 <div class="visual-container">
-                    <div class="visual-title">3D Ragged Array: university[2][?][?] - Each Level Has Different Sizes!</div>
+                    <div class="visual-title">مصفوفة متعرجة ثلاثية الأبعاد: university[2][?][?] - لكل مستوى أحجام مختلفة!</div>
                     <svg width="100%" height="450" viewBox="0 0 850 450">
                         <defs>
                             <marker id="arr3r" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
@@ -1251,49 +1255,49 @@
             <div class="section">
                 <h2 class="section-title">
                     <span class="section-number">6</span>
-                    Summary
+                    الخلاصة
                 </h2>
 
                 <div class="key-concept">
-                    <div class="key-concept-title">Key Takeaways</div>
+                    <div class="key-concept-title">النقاط الرئيسية</div>
                     <ol>
-                        <li><strong>Ragged arrays save memory</strong> by only allocating the space that's actually needed</li>
-                        <li><strong>Ragged arrays are possible</strong> because multi-dimensional arrays in Java are "arrays of arrays" - each inner array is independent</li>
-                        <li><strong>Always use <code class="code-inline">array[i].length</code></strong> when iterating - each row can have different size!</li>
-                        <li><strong>Create ragged arrays step-by-step:</strong> First create the array of references, then create each row with its own size</li>
-                        <li><strong>3D ragged arrays</strong> allow even more flexibility - every dimension can have different sizes</li>
+                        <li><strong>المصفوفات المتعرجة توفّر الذاكرة</strong> بتخصيص المساحة المطلوبة فعليًا فقط</li>
+                        <li><strong>المصفوفات المتعرجة ممكنة</strong> لأن المصفوفات متعددة الأبعاد في جافا هي "مصفوفات من مصفوفات" - كل مصفوفة داخلية مستقلة</li>
+                        <li><strong>استخدم دائمًا <code class="code-inline">array[i].length</code></strong> عند المرور - فكل صف قد يكون بحجم مختلف!</li>
+                        <li><strong>أنشئ المصفوفات المتعرجة خطوة بخطوة:</strong> أنشئ أولًا مصفوفة المراجع، ثم أنشئ كل صف بحجمه الخاص</li>
+                        <li><strong>المصفوفات المتعرجة ثلاثية الأبعاد</strong> تتيح مرونة أكبر - إذ يمكن أن يكون لكل بُعد أحجام مختلفة</li>
                     </ol>
                 </div>
 
                 <div class="success-box">
-                    <div class="success-box-title">Real-World Applications</div>
+                    <div class="success-box-title">تطبيقات من الواقع</div>
                     <ul>
-                        <li><strong>Student registration systems</strong> - different students, different courses</li>
-                        <li><strong>Social media</strong> - different users have different numbers of friends/followers</li>
-                        <li><strong>E-commerce</strong> - different orders have different numbers of items</li>
-                        <li><strong>Game development</strong> - different levels have different map sizes</li>
-                        <li><strong>Text processing</strong> - different paragraphs have different numbers of words</li>
+                        <li><strong>أنظمة تسجيل الطلاب</strong> - طلاب مختلفون، مقررات مختلفة</li>
+                        <li><strong>وسائل التواصل الاجتماعي</strong> - لكل مستخدم عدد مختلف من الأصدقاء/المتابعين</li>
+                        <li><strong>التجارة الإلكترونية</strong> - لكل طلب عدد مختلف من العناصر</li>
+                        <li><strong>تطوير الألعاب</strong> - لكل مرحلة حجم خريطة مختلف</li>
+                        <li><strong>معالجة النصوص</strong> - لكل فقرة عدد مختلف من الكلمات</li>
                     </ul>
                 </div>
 
                 <div class="important-box">
-                    <div class="important-box-title">Connection to Data Structures</div>
-                    <p>Understanding ragged arrays is excellent preparation for <strong>linked lists</strong> and <strong>graphs</strong> in Data Structures! These structures also use the concept of nodes connected by references, where each node can have a different number of connections.</p>
+                    <div class="important-box-title">الصلة بهياكل البيانات</div>
+                    <p>فهم المصفوفات المتعرجة تحضير ممتاز لـ<strong>القوائم المترابطة (Linked Lists)</strong> و<strong>الرسوم البيانية (Graphs)</strong> في مادة هياكل البيانات! فهذه الهياكل تستخدم أيضًا مفهوم العُقد (Nodes) المتصلة بواسطة مراجع، حيث يمكن أن يكون لكل عقدة عدد مختلف من الاتصالات.</p>
                 </div>
             </div>
         </div>
 
         <!-- Bottom Navigation -->
         <nav class="bottom-nav">
-            <a href="03-2d-3d-arrays.html" class="prev-lesson">‹ Previous: 2D & 3D Arrays</a>
-            <a href="05-2d-3d-exercises.html">Next: 2D/3D Exercises ›</a>
+            <a href="03-2d-3d-arrays-ar.html" class="prev-lesson">السابق: المصفوفات ثنائية وثلاثية الأبعاد &rarr;</a>
+            <a href="05-2d-3d-exercises-ar.html">&larr; التالي: تمارين المصفوفات ثنائية/ثلاثية الأبعاد</a>
         </nav>
 
         <!-- Footer -->
         <div class="footer">
-            <p><strong>CPCS203</strong> - Object-Oriented Programming</p>
-            <p>Module 1: Ragged Arrays</p>
-            <p>Prepared by Dr. Almalawi</p>
+            <p><strong>CPCS203</strong> - البرمجة كائنية التوجه (Object-Oriented Programming)</p>
+            <p>الوحدة 1: المصفوفات المتعرجة</p>
+            <p>إعداد د. المعلوي</p>
         </div>
     </div>
 </body>

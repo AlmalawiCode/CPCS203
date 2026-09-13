@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Week 1 Exercises: 2D and 3D Arrays | CPCS203</title>
+    <title>تمارين الأسبوع 1: المصفوفات ثنائية وثلاثية الأبعاد (2D and 3D Arrays) | CPCS203</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -22,7 +23,7 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Tajawal', 'Amiri', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.8;
             color: var(--dark-color);
             background: linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%);
@@ -78,10 +79,10 @@
         /* Instructions */
         .instructions {
             background: linear-gradient(135deg, #fef3c7, #fde68a);
-            border-left: 5px solid var(--warning-color);
+            border-right: 5px solid var(--warning-color);
             padding: 20px 25px;
             margin-bottom: 30px;
-            border-radius: 0 10px 10px 0;
+            border-radius: 10px 0 0 10px;
         }
 
         .instructions h3 {
@@ -153,6 +154,7 @@
             margin: 15px 0;
             overflow: hidden;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            direction: ltr; text-align: left;
         }
 
         .code-header {
@@ -216,6 +218,8 @@
         .class-name { color: #4ec9b0; }
         .bracket { color: #ffd700; }
         .operator { color: #d4d4d4; }
+
+        code, .code-inline { direction: ltr; unicode-bidi: embed; }
 
         /* Options */
         .options {
@@ -372,13 +376,13 @@
 
         .feedback.correct {
             background: #d1fae5;
-            border-left: 4px solid var(--success-color);
+            border-right: 4px solid var(--success-color);
             color: var(--success-color);
         }
 
         .feedback.incorrect {
             background: #fee2e2;
-            border-left: 4px solid var(--danger-color);
+            border-right: 4px solid var(--danger-color);
             color: var(--danger-color);
         }
 
@@ -740,57 +744,59 @@
             background: linear-gradient(135deg, #64748b, #475569);
         }
 
-        .lang-switch { position: fixed; top: 20px; right: 20px; z-index: 1000; padding: 10px 20px; background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); color: white; text-decoration: none; border-radius: 30px; font-weight: 700; font-size: 0.9rem; box-shadow: 0 4px 14px rgba(124,58,237,.4); transition: transform .2s, box-shadow .2s; }
+        .lang-switch { position: fixed; top: 20px; left: 20px; z-index: 1000; padding: 10px 20px; background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); color: white; text-decoration: none; border-radius: 30px; font-weight: 700; font-size: 0.9rem; box-shadow: 0 4px 14px rgba(124,58,237,.4); transition: transform .2s, box-shadow .2s; }
         .lang-switch:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(124,58,237,.6); }
+
+        ol { margin-right: 20px; }
     </style>
 </head>
 <body>
-    <a href="05-2d-3d-exercises-ar.html" class="lang-switch">&#127760; العربية</a>
+    <a href="05-2d-3d-exercises.html" class="lang-switch">English &#127760;</a>
     <div class="container">
         <!-- Navigation Breadcrumb -->
         <nav class="nav-breadcrumb">
             <div class="breadcrumb">
                 <a href="../index.html">CPCS203</a>
-                <span class="separator">›</span>
-                <a href="index.html">Module 1: Arrays</a>
-                <span class="separator">›</span>
-                <span class="current">2D/3D Exercises</span>
+                <span class="separator">&#8249;</span>
+                <a href="index-ar.html">الوحدة 1: المصفوفات</a>
+                <span class="separator">&#8249;</span>
+                <span class="current">تمارين ثنائية/ثلاثية الأبعاد</span>
             </div>
             <div class="lesson-nav">
-                <a href="04-ragged-arrays.html">‹ Previous</a>
-                <a href="#" class="disabled">Module Complete</a>
+                <a href="04-ragged-arrays-ar.html">السابق &rarr;</a>
+                <a href="#" class="disabled">اكتملت الوحدة</a>
             </div>
         </nav>
 
         <!-- Header -->
         <div class="header">
-            <h1>2D & 3D Arrays Exercises</h1>
-            <p class="subtitle">Test Your Understanding of Multi-Dimensional Arrays</p>
+            <h1>تمارين المصفوفات ثنائية وثلاثية الأبعاد</h1>
+            <p class="subtitle">اختبر فهمك للمصفوفات متعددة الأبعاد (Multi-Dimensional Arrays)</p>
             <div class="score-display">
-                Score: <span id="current-score">0</span> / <span id="total-score">15</span>
+                النتيجة: <span id="current-score">0</span> / <span id="total-score">15</span>
             </div>
         </div>
 
         <div class="content">
             <!-- Instructions -->
             <div class="instructions">
-                <h3>Instructions</h3>
-                <p>Answer all questions to test your understanding of 2D and 3D arrays. Remember: <strong>The computer only understands 1D arrays!</strong> A 2D array is an <strong>array of arrays</strong> - an array of references where each reference points to a 1D array.</p>
+                <h3>التعليمات</h3>
+                <p>أجب عن جميع الأسئلة لاختبار فهمك للمصفوفات ثنائية وثلاثية الأبعاد. تذكّر: <strong>الحاسوب لا يفهم سوى المصفوفات أحادية البعد (1D Arrays)!</strong> فالمصفوفة ثنائية البعد هي <strong>مصفوفة من المصفوفات (array of arrays)</strong> - مصفوفة من المراجع (references) حيث يشير كل مرجع إلى مصفوفة أحادية البعد.</p>
             </div>
 
             <!-- SECTION 1: 2D Array Basics -->
             <div class="section-divider">
-                <span>Part 1: 2D Arrays (Array of Arrays)</span>
+                <span>الجزء 1: المصفوفات ثنائية البعد (مصفوفة من المصفوفات)</span>
             </div>
 
             <!-- Question 1 -->
             <div class="question-card" id="q1">
                 <div class="question-header">
                     <div class="question-number">1</div>
-                    <span class="question-type">Multiple Choice</span>
+                    <span class="question-type">اختيار من متعدد</span>
                 </div>
                 <div class="question-text">
-                    What does this declaration create? Think in terms of "array of arrays".
+                    ماذا ينشئ هذا الإعلان؟ فكّر بمنطق "مصفوفة من المصفوفات".
                 </div>
                 <div class="code-block">
                     <div class="code-header">
@@ -806,19 +812,19 @@
                 <div class="options">
                     <div class="option" onclick="selectOption(1, 'a')">
                         <input type="radio" name="q1" id="q1a">
-                        <label for="q1a">An array of 4 references, each pointing to a 1D array of 3 integers</label>
+                        <label for="q1a">مصفوفة من 4 مراجع، يشير كلٌّ منها إلى مصفوفة أحادية البعد تحتوي على 3 أعداد صحيحة</label>
                     </div>
                     <div class="option" onclick="selectOption(1, 'b')">
                         <input type="radio" name="q1" id="q1b">
-                        <label for="q1b">An array of 3 references, each pointing to a 1D array of 4 integers</label>
+                        <label for="q1b">مصفوفة من 3 مراجع، يشير كلٌّ منها إلى مصفوفة أحادية البعد تحتوي على 4 أعداد صحيحة</label>
                     </div>
                     <div class="option" onclick="selectOption(1, 'c')">
                         <input type="radio" name="q1" id="q1c">
-                        <label for="q1c">A single 1D array with 12 elements</label>
+                        <label for="q1c">مصفوفة أحادية البعد واحدة تحتوي على 12 عنصرًا</label>
                     </div>
                     <div class="option" onclick="selectOption(1, 'd')">
                         <input type="radio" name="q1" id="q1d">
-                        <label for="q1d">A 3D array</label>
+                        <label for="q1d">مصفوفة ثلاثية البعد</label>
                     </div>
                 </div>
                 <input type="hidden" id="answer1" value="">
@@ -827,7 +833,7 @@
                     <div class="feedback-text"></div>
                 </div>
                 <div class="visual-explanation" id="visual1">
-                    <div class="visual-title">Understanding: Array of Arrays Structure</div>
+                    <div class="visual-title">الفهم: بنية "مصفوفة من المصفوفات"</div>
                     <svg width="100%" height="200" viewBox="0 0 600 200">
                         <!-- Main reference array (vertical) -->
                         <text x="30" y="30" fill="#7c3aed" font-weight="bold" font-size="14">matrix</text>
@@ -872,18 +878,18 @@
                         <text x="302" y="138" text-anchor="middle" fill="#059669" font-size="11">0</text>
 
                         <!-- Labels -->
-                        <text x="370" y="55" fill="#1f2937" font-size="13">← 4 elements</text>
-                        <text x="370" y="75" fill="#1f2937" font-size="13">← 4 elements</text>
-                        <text x="370" y="140" fill="#1f2937" font-size="13">← 4 elements</text>
+                        <text x="370" y="55" fill="#1f2937" font-size="13">&#8592; 4 عناصر</text>
+                        <text x="370" y="75" fill="#1f2937" font-size="13">&#8592; 4 عناصر</text>
+                        <text x="370" y="140" fill="#1f2937" font-size="13">&#8592; 4 عناصر</text>
 
                         <!-- Legend -->
                         <rect x="400" y="100" width="20" height="20" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/>
-                        <text x="425" y="115" fill="#1f2937" font-size="11">= Reference</text>
+                        <text x="425" y="115" fill="#1f2937" font-size="11">= مرجع (Reference)</text>
                         <rect x="400" y="125" width="20" height="20" fill="#d1fae5" stroke="#059669" stroke-width="2"/>
-                        <text x="425" y="140" fill="#1f2937" font-size="11">= Data (int)</text>
+                        <text x="425" y="140" fill="#1f2937" font-size="11">= بيانات (int)</text>
 
-                        <text x="50" y="175" fill="#7c3aed" font-size="11">3 references</text>
-                        <text x="200" y="175" fill="#059669" font-size="11">Each → 1D array of 4 integers</text>
+                        <text x="50" y="175" fill="#7c3aed" font-size="11">3 مراجع</text>
+                        <text x="200" y="175" fill="#059669" font-size="11">كلٌّ &#8592; مصفوفة 1D من 4 أعداد صحيحة</text>
 
                         <defs>
                             <marker id="arrowhead1" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
@@ -892,17 +898,17 @@
                         </defs>
                     </svg>
                 </div>
-                <button class="check-btn" onclick="checkAnswer(1)">Check Answer</button>
+                <button class="check-btn" onclick="checkAnswer(1)">تحقق من الإجابة</button>
             </div>
 
             <!-- Question 2 -->
             <div class="question-card" id="q2">
                 <div class="question-header">
                     <div class="question-number">2</div>
-                    <span class="question-type">Code Tracing</span>
+                    <span class="question-type">تتبّع الكود</span>
                 </div>
                 <div class="question-text">
-                    Given this 2D array, what is the value of <code>arr[1][2]</code>?
+                    بالنظر إلى هذه المصفوفة ثنائية البعد، ما قيمة <code>arr[1][2]</code>؟
                 </div>
                 <div class="code-block">
                     <div class="code-header">
@@ -920,7 +926,7 @@
                     </div>
                 </div>
                 <div class="visual-array">
-                    <div style="text-align: center; margin-bottom: 15px; color: #7c3aed; font-weight: bold;">Array of Arrays Structure</div>
+                    <div style="text-align: center; margin-bottom: 15px; color: #7c3aed; font-weight: bold;">بنية "مصفوفة من المصفوفات"</div>
                     <svg width="100%" height="180" viewBox="0 0 550 180">
                         <!-- Main reference array (vertical) -->
                         <text x="30" y="25" fill="#7c3aed" font-weight="bold" font-size="13">arr</text>
@@ -970,12 +976,12 @@
                         <text x="265" y="128" text-anchor="middle" fill="#059669" font-size="12">120</text>
 
                         <!-- Explanation -->
-                        <text x="320" y="60" fill="#1f2937" font-size="12">arr[1] → gives the 1D array</text>
-                        <text x="320" y="80" fill="#d97706" font-size="12" font-weight="bold">arr[1][2] → element at index 2</text>
+                        <text x="320" y="60" fill="#1f2937" font-size="12">arr[1] &#8592; يعطي المصفوفة 1D</text>
+                        <text x="320" y="80" fill="#d97706" font-size="12" font-weight="bold">arr[1][2] &#8592; العنصر عند الفهرس 2</text>
                         <text x="320" y="100" fill="#d97706" font-size="14" font-weight="bold">= 70</text>
 
-                        <text x="45" y="160" fill="#7c3aed" font-size="11">References</text>
-                        <text x="180" y="160" fill="#059669" font-size="11">1D Arrays (actual data)</text>
+                        <text x="45" y="160" fill="#7c3aed" font-size="11">المراجع</text>
+                        <text x="180" y="160" fill="#059669" font-size="11">المصفوفات 1D (البيانات الفعلية)</text>
 
                         <defs>
                             <marker id="arrowhead2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
@@ -1010,17 +1016,17 @@
                     <div class="feedback-title"></div>
                     <div class="feedback-text"></div>
                 </div>
-                <button class="check-btn" onclick="checkAnswer(2)">Check Answer</button>
+                <button class="check-btn" onclick="checkAnswer(2)">تحقق من الإجابة</button>
             </div>
 
             <!-- Question 3 -->
             <div class="question-card" id="q3">
                 <div class="question-header">
                     <div class="question-number">3</div>
-                    <span class="question-type">Fill in the Blank</span>
+                    <span class="question-type">أكمل الفراغ</span>
                 </div>
                 <div class="question-text">
-                    Using the same array from Question 2, what is the value of <code>arr.length</code>?
+                    باستخدام المصفوفة نفسها من السؤال 2، ما قيمة <code>arr.length</code>؟
                 </div>
                 <div class="fill-blank">
                     <span><code>arr.length</code> = </span>
@@ -1030,17 +1036,17 @@
                     <div class="feedback-title"></div>
                     <div class="feedback-text"></div>
                 </div>
-                <button class="check-btn" onclick="checkAnswer(3)">Check Answer</button>
+                <button class="check-btn" onclick="checkAnswer(3)">تحقق من الإجابة</button>
             </div>
 
             <!-- Question 4 -->
             <div class="question-card" id="q4">
                 <div class="question-header">
                     <div class="question-number">4</div>
-                    <span class="question-type">Fill in the Blank</span>
+                    <span class="question-type">أكمل الفراغ</span>
                 </div>
                 <div class="question-text">
-                    Using the same array, what is the value of <code>arr[0].length</code>?
+                    باستخدام المصفوفة نفسها، ما قيمة <code>arr[0].length</code>؟
                 </div>
                 <div class="fill-blank">
                     <span><code>arr[0].length</code> = </span>
@@ -1050,17 +1056,17 @@
                     <div class="feedback-title"></div>
                     <div class="feedback-text"></div>
                 </div>
-                <button class="check-btn" onclick="checkAnswer(4)">Check Answer</button>
+                <button class="check-btn" onclick="checkAnswer(4)">تحقق من الإجابة</button>
             </div>
 
             <!-- Question 5 -->
             <div class="question-card" id="q5">
                 <div class="question-header">
                     <div class="question-number">5</div>
-                    <span class="question-type">Code Tracing</span>
+                    <span class="question-type">تتبّع الكود</span>
                 </div>
                 <div class="question-text">
-                    What is the output of this code?
+                    ما ناتج هذا الكود؟
                 </div>
                 <div class="code-block">
                     <div class="code-header">
@@ -1104,26 +1110,26 @@
                     <div class="feedback-title"></div>
                     <div class="feedback-text"></div>
                 </div>
-                <button class="check-btn" onclick="checkAnswer(5)">Check Answer</button>
+                <button class="check-btn" onclick="checkAnswer(5)">تحقق من الإجابة</button>
             </div>
 
             <!-- SECTION 2: Ragged Arrays -->
             <div class="section-divider">
-                <span>Part 2: Ragged Arrays (Proof of Array of Arrays!)</span>
+                <span>الجزء 2: المصفوفات المتعرجة (Ragged Arrays) - برهان على "مصفوفة من المصفوفات"!</span>
             </div>
 
             <!-- Question 6 -->
             <div class="question-card" id="q6">
                 <div class="question-header">
                     <div class="question-number">6</div>
-                    <span class="question-type">True / False</span>
+                    <span class="question-type">صح / خطأ</span>
                 </div>
                 <div class="question-text">
-                    In Java, all "rows" in a 2D array must have the same number of elements.
+                    في لغة Java، يجب أن تحتوي جميع "الصفوف" في المصفوفة ثنائية البعد على العدد نفسه من العناصر.
                 </div>
                 <div class="tf-options">
-                    <div class="tf-option true" onclick="selectTF(6, 'true')">TRUE</div>
-                    <div class="tf-option false" onclick="selectTF(6, 'false')">FALSE</div>
+                    <div class="tf-option true" onclick="selectTF(6, 'true')">صح</div>
+                    <div class="tf-option false" onclick="selectTF(6, 'false')">خطأ</div>
                 </div>
                 <input type="hidden" id="answer6" value="">
                 <div class="feedback" id="feedback6">
@@ -1131,7 +1137,7 @@
                     <div class="feedback-text"></div>
                 </div>
                 <div class="visual-explanation" id="visual6">
-                    <div class="visual-title">Why Ragged Arrays Are Possible: Each 1D Array is Independent!</div>
+                    <div class="visual-title">لماذا تُعدّ المصفوفات المتعرجة ممكنة: كل مصفوفة 1D مستقلة!</div>
                     <svg width="100%" height="180" viewBox="0 0 550 180">
                         <!-- Main reference array (vertical) -->
                         <text x="30" y="25" fill="#7c3aed" font-weight="bold" font-size="13">ragged</text>
@@ -1152,7 +1158,7 @@
                         <rect x="165" y="35" width="40" height="35" fill="#d1fae5" stroke="#059669" stroke-width="2"/>
                         <text x="145" y="58" text-anchor="middle" fill="#059669" font-size="12">1</text>
                         <text x="185" y="58" text-anchor="middle" fill="#059669" font-size="12">2</text>
-                        <text x="230" y="58" fill="#d97706" font-size="11" font-weight="bold">← 2 elements</text>
+                        <text x="230" y="58" fill="#d97706" font-size="11" font-weight="bold">&#8592; عنصران</text>
 
                         <rect x="125" y="70" width="40" height="35" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
                         <rect x="165" y="70" width="40" height="35" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
@@ -1162,7 +1168,7 @@
                         <text x="185" y="93" text-anchor="middle" fill="#92400e" font-size="12">4</text>
                         <text x="225" y="93" text-anchor="middle" fill="#92400e" font-size="12">5</text>
                         <text x="265" y="93" text-anchor="middle" fill="#92400e" font-size="12">6</text>
-                        <text x="310" y="93" fill="#d97706" font-size="11" font-weight="bold">← 4 elements</text>
+                        <text x="310" y="93" fill="#d97706" font-size="11" font-weight="bold">&#8592; 4 عناصر</text>
 
                         <rect x="125" y="105" width="40" height="35" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
                         <rect x="165" y="105" width="40" height="35" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
@@ -1170,16 +1176,16 @@
                         <text x="145" y="128" text-anchor="middle" fill="#1e40af" font-size="12">7</text>
                         <text x="185" y="128" text-anchor="middle" fill="#1e40af" font-size="12">8</text>
                         <text x="225" y="128" text-anchor="middle" fill="#1e40af" font-size="12">9</text>
-                        <text x="270" y="128" fill="#2563eb" font-size="11" font-weight="bold">← 3 elements</text>
+                        <text x="270" y="128" fill="#2563eb" font-size="11" font-weight="bold">&#8592; 3 عناصر</text>
 
                         <!-- Key insight -->
                         <rect x="350" y="50" width="180" height="80" fill="#fef3c7" stroke="#d97706" stroke-width="2" rx="8"/>
-                        <text x="440" y="75" text-anchor="middle" fill="#92400e" font-size="12" font-weight="bold">Each reference points</text>
-                        <text x="440" y="95" text-anchor="middle" fill="#92400e" font-size="12" font-weight="bold">to an INDEPENDENT</text>
-                        <text x="440" y="115" text-anchor="middle" fill="#92400e" font-size="12" font-weight="bold">1D array!</text>
+                        <text x="440" y="75" text-anchor="middle" fill="#92400e" font-size="12" font-weight="bold">كل مرجع يشير</text>
+                        <text x="440" y="95" text-anchor="middle" fill="#92400e" font-size="12" font-weight="bold">إلى مصفوفة 1D</text>
+                        <text x="440" y="115" text-anchor="middle" fill="#92400e" font-size="12" font-weight="bold">مستقلة!</text>
 
-                        <text x="45" y="165" fill="#7c3aed" font-size="11">References</text>
-                        <text x="180" y="165" fill="#059669" font-size="11">Different sized 1D arrays</text>
+                        <text x="45" y="165" fill="#7c3aed" font-size="11">المراجع</text>
+                        <text x="180" y="165" fill="#059669" font-size="11">مصفوفات 1D بأحجام مختلفة</text>
 
                         <defs>
                             <marker id="arrowhead6" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
@@ -1188,17 +1194,17 @@
                         </defs>
                     </svg>
                 </div>
-                <button class="check-btn" onclick="checkAnswer(6)">Check Answer</button>
+                <button class="check-btn" onclick="checkAnswer(6)">تحقق من الإجابة</button>
             </div>
 
             <!-- Question 7 -->
             <div class="question-card" id="q7">
                 <div class="question-header">
                     <div class="question-number">7</div>
-                    <span class="question-type">Code Tracing</span>
+                    <span class="question-type">تتبّع الكود</span>
                 </div>
                 <div class="question-text">
-                    What is the value of <code>ragged[2].length</code>?
+                    ما قيمة <code>ragged[2].length</code>؟
                 </div>
                 <div class="code-block">
                     <div class="code-header">
@@ -1238,17 +1244,17 @@
                     <div class="feedback-title"></div>
                     <div class="feedback-text"></div>
                 </div>
-                <button class="check-btn" onclick="checkAnswer(7)">Check Answer</button>
+                <button class="check-btn" onclick="checkAnswer(7)">تحقق من الإجابة</button>
             </div>
 
             <!-- Question 8 -->
             <div class="question-card" id="q8">
                 <div class="question-header">
                     <div class="question-number">8</div>
-                    <span class="question-type">Code Tracing</span>
+                    <span class="question-type">تتبّع الكود</span>
                 </div>
                 <div class="question-text">
-                    Using the same ragged array, what is <code>ragged[1][3]</code>?
+                    باستخدام المصفوفة المتعرجة نفسها، ما قيمة <code>ragged[1][3]</code>؟
                 </div>
                 <div class="options">
                     <div class="option" onclick="selectOption(8, 'a')">
@@ -1273,22 +1279,22 @@
                     <div class="feedback-title"></div>
                     <div class="feedback-text"></div>
                 </div>
-                <button class="check-btn" onclick="checkAnswer(8)">Check Answer</button>
+                <button class="check-btn" onclick="checkAnswer(8)">تحقق من الإجابة</button>
             </div>
 
             <!-- SECTION 3: 3D Arrays -->
             <div class="section-divider">
-                <span>Part 3: 3D Arrays (Array of 2D Arrays)</span>
+                <span>الجزء 3: المصفوفات ثلاثية البعد (مصفوفة من المصفوفات ثنائية البعد)</span>
             </div>
 
             <!-- Question 9 -->
             <div class="question-card" id="q9">
                 <div class="question-header">
                     <div class="question-number">9</div>
-                    <span class="question-type">Multiple Choice</span>
+                    <span class="question-type">اختيار من متعدد</span>
                 </div>
                 <div class="question-text">
-                    What does this declaration create?
+                    ماذا ينشئ هذا الإعلان؟
                 </div>
                 <div class="code-block">
                     <div class="code-header">
@@ -1304,19 +1310,19 @@
                 <div class="options">
                     <div class="option" onclick="selectOption(9, 'a')">
                         <input type="radio" name="q9" id="q9a">
-                        <label for="q9a">2 layers, each with 3 rows and 4 columns (total: 24 elements)</label>
+                        <label for="q9a">طبقتان (layers)، تحتوي كل واحدة على 3 صفوف و4 أعمدة (الإجمالي: 24 عنصرًا)</label>
                     </div>
                     <div class="option" onclick="selectOption(9, 'b')">
                         <input type="radio" name="q9" id="q9b">
-                        <label for="q9b">3 layers, each with 2 rows and 4 columns</label>
+                        <label for="q9b">3 طبقات، تحتوي كل واحدة على صفين و4 أعمدة</label>
                     </div>
                     <div class="option" onclick="selectOption(9, 'c')">
                         <input type="radio" name="q9" id="q9c">
-                        <label for="q9c">4 layers, each with 3 rows and 2 columns</label>
+                        <label for="q9c">4 طبقات، تحتوي كل واحدة على 3 صفوف وعمودين</label>
                     </div>
                     <div class="option" onclick="selectOption(9, 'd')">
                         <input type="radio" name="q9" id="q9d">
-                        <label for="q9d">A 2D array with 3×4 elements</label>
+                        <label for="q9d">مصفوفة ثنائية البعد بها 3×4 عناصر</label>
                     </div>
                 </div>
                 <input type="hidden" id="answer9" value="">
@@ -1324,17 +1330,17 @@
                     <div class="feedback-title"></div>
                     <div class="feedback-text"></div>
                 </div>
-                <button class="check-btn" onclick="checkAnswer(9)">Check Answer</button>
+                <button class="check-btn" onclick="checkAnswer(9)">تحقق من الإجابة</button>
             </div>
 
             <!-- Question 10 -->
             <div class="question-card" id="q10">
                 <div class="question-header">
                     <div class="question-number">10</div>
-                    <span class="question-type">Code Tracing</span>
+                    <span class="question-type">تتبّع الكود</span>
                 </div>
                 <div class="question-text">
-                    What is the value of <code>building[1][0][2]</code>?
+                    ما قيمة <code>building[1][0][2]</code>؟
                 </div>
                 <div class="code-block">
                     <div class="code-header">
@@ -1381,17 +1387,17 @@
                     <div class="feedback-title"></div>
                     <div class="feedback-text"></div>
                 </div>
-                <button class="check-btn" onclick="checkAnswer(10)">Check Answer</button>
+                <button class="check-btn" onclick="checkAnswer(10)">تحقق من الإجابة</button>
             </div>
 
             <!-- Question 11 -->
             <div class="question-card" id="q11">
                 <div class="question-header">
                     <div class="question-number">11</div>
-                    <span class="question-type">Fill in the Blank</span>
+                    <span class="question-type">أكمل الفراغ</span>
                 </div>
                 <div class="question-text">
-                    Using the same building array, what is <code>building.length</code>?
+                    باستخدام مصفوفة building نفسها، ما قيمة <code>building.length</code>؟
                 </div>
                 <div class="fill-blank">
                     <span><code>building.length</code> = </span>
@@ -1401,17 +1407,17 @@
                     <div class="feedback-title"></div>
                     <div class="feedback-text"></div>
                 </div>
-                <button class="check-btn" onclick="checkAnswer(11)">Check Answer</button>
+                <button class="check-btn" onclick="checkAnswer(11)">تحقق من الإجابة</button>
             </div>
 
             <!-- Question 12 -->
             <div class="question-card" id="q12">
                 <div class="question-header">
                     <div class="question-number">12</div>
-                    <span class="question-type">Fill in the Blank</span>
+                    <span class="question-type">أكمل الفراغ</span>
                 </div>
                 <div class="question-text">
-                    Using the same building array, what is <code>building[0][1].length</code>?
+                    باستخدام مصفوفة building نفسها، ما قيمة <code>building[0][1].length</code>؟
                 </div>
                 <div class="fill-blank">
                     <span><code>building[0][1].length</code> = </span>
@@ -1421,22 +1427,22 @@
                     <div class="feedback-title"></div>
                     <div class="feedback-text"></div>
                 </div>
-                <button class="check-btn" onclick="checkAnswer(12)">Check Answer</button>
+                <button class="check-btn" onclick="checkAnswer(12)">تحقق من الإجابة</button>
             </div>
 
             <!-- SECTION 4: Advanced Questions -->
             <div class="section-divider">
-                <span>Part 4: Advanced Questions</span>
+                <span>الجزء 4: أسئلة متقدمة</span>
             </div>
 
             <!-- Question 13 -->
             <div class="question-card" id="q13">
                 <div class="question-header">
                     <div class="question-number">13</div>
-                    <span class="question-type">Code Tracing</span>
+                    <span class="question-type">تتبّع الكود</span>
                 </div>
                 <div class="question-text">
-                    What is the output of this code?
+                    ما ناتج هذا الكود؟
                 </div>
                 <div class="code-block">
                     <div class="code-header">
@@ -1483,17 +1489,17 @@
                     <div class="feedback-title"></div>
                     <div class="feedback-text"></div>
                 </div>
-                <button class="check-btn" onclick="checkAnswer(13)">Check Answer</button>
+                <button class="check-btn" onclick="checkAnswer(13)">تحقق من الإجابة</button>
             </div>
 
             <!-- Question 14 -->
             <div class="question-card" id="q14">
                 <div class="question-header">
                     <div class="question-number">14</div>
-                    <span class="question-type">Code Tracing</span>
+                    <span class="question-type">تتبّع الكود</span>
                 </div>
                 <div class="question-text">
-                    What is the output of this code?
+                    ما ناتج هذا الكود؟
                 </div>
                 <div class="code-block">
                     <div class="code-header">
@@ -1540,21 +1546,21 @@
                     <div class="feedback-title"></div>
                     <div class="feedback-text"></div>
                 </div>
-                <button class="check-btn" onclick="checkAnswer(14)">Check Answer</button>
+                <button class="check-btn" onclick="checkAnswer(14)">تحقق من الإجابة</button>
             </div>
 
             <!-- Question 15 -->
             <div class="question-card" id="q15">
                 <div class="question-header">
                     <div class="question-number">15</div>
-                    <span class="question-type">True / False</span>
+                    <span class="question-type">صح / خطأ</span>
                 </div>
                 <div class="question-text">
-                    A 2D array in Java is stored as a single contiguous block of memory (all elements next to each other).
+                    تُخزَّن المصفوفة ثنائية البعد في لغة Java ككتلة واحدة متصلة من الذاكرة (contiguous) بحيث تكون جميع العناصر متجاورة.
                 </div>
                 <div class="tf-options">
-                    <div class="tf-option true" onclick="selectTF(15, 'true')">TRUE</div>
-                    <div class="tf-option false" onclick="selectTF(15, 'false')">FALSE</div>
+                    <div class="tf-option true" onclick="selectTF(15, 'true')">صح</div>
+                    <div class="tf-option false" onclick="selectTF(15, 'false')">خطأ</div>
                 </div>
                 <input type="hidden" id="answer15" value="">
                 <div class="feedback" id="feedback15">
@@ -1562,7 +1568,7 @@
                     <div class="feedback-text"></div>
                 </div>
                 <div class="visual-explanation" id="visual15">
-                    <div class="visual-title">Memory Layout: Why 2D Arrays Are NOT Contiguous</div>
+                    <div class="visual-title">تخطيط الذاكرة: لماذا لا تكون المصفوفات ثنائية البعد متصلة</div>
                     <svg width="100%" height="280" viewBox="0 0 600 280">
                         <!-- Stack Section -->
                         <rect x="20" y="30" width="150" height="100" fill="#fee2e2" stroke="#dc2626" stroke-width="2" rx="10"/>
@@ -1578,10 +1584,10 @@
 
                         <!-- Heap Section -->
                         <rect x="220" y="30" width="360" height="230" fill="#d1fae5" stroke="#059669" stroke-width="2" rx="10"/>
-                        <text x="400" y="25" text-anchor="middle" fill="#059669" font-weight="bold" font-size="14">HEAP (Objects stored at different locations)</text>
+                        <text x="400" y="25" text-anchor="middle" fill="#059669" font-weight="bold" font-size="14">HEAP (الكائنات مُخزَّنة في مواقع مختلفة)</text>
 
                         <!-- Reference array -->
-                        <text x="240" y="60" fill="#7c3aed" font-size="11">0x1000 (Reference Array)</text>
+                        <text x="240" y="60" fill="#7c3aed" font-size="11">0x1000 (مصفوفة المراجع)</text>
                         <rect x="240" y="65" width="60" height="25" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/>
                         <rect x="240" y="90" width="60" height="25" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/>
                         <rect x="240" y="115" width="60" height="25" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/>
@@ -1604,7 +1610,7 @@
                         <text x="462" y="82" text-anchor="middle" fill="#065f46" font-size="10">3</text>
 
                         <!-- 1D Array 2 (at different location!) -->
-                        <text x="360" y="130" fill="#059669" font-size="10">0x3500 (different location!)</text>
+                        <text x="360" y="130" fill="#059669" font-size="10">0x3500 (موقع مختلف!)</text>
                         <rect x="360" y="135" width="35" height="25" fill="#a7f3d0" stroke="#059669" stroke-width="2"/>
                         <rect x="395" y="135" width="35" height="25" fill="#a7f3d0" stroke="#059669" stroke-width="2"/>
                         <rect x="430" y="135" width="35" height="25" fill="#a7f3d0" stroke="#059669" stroke-width="2"/>
@@ -1613,7 +1619,7 @@
                         <text x="447" y="152" text-anchor="middle" fill="#065f46" font-size="10">6</text>
 
                         <!-- 1D Array 3 (at yet another location!) -->
-                        <text x="375" y="185" fill="#059669" font-size="10">0x4200 (yet another location!)</text>
+                        <text x="375" y="185" fill="#059669" font-size="10">0x4200 (موقع آخر مختلف!)</text>
                         <rect x="375" y="190" width="35" height="25" fill="#a7f3d0" stroke="#059669" stroke-width="2"/>
                         <rect x="410" y="190" width="35" height="25" fill="#a7f3d0" stroke="#059669" stroke-width="2"/>
                         <rect x="445" y="190" width="35" height="25" fill="#a7f3d0" stroke="#059669" stroke-width="2"/>
@@ -1623,7 +1629,7 @@
 
                         <!-- Key insight -->
                         <rect x="240" y="230" width="320" height="25" fill="#fef3c7" stroke="#d97706" stroke-width="2" rx="5"/>
-                        <text x="400" y="247" text-anchor="middle" fill="#92400e" font-size="11" font-weight="bold">Each 1D array is a SEPARATE object at a DIFFERENT memory location!</text>
+                        <text x="400" y="247" text-anchor="middle" fill="#92400e" font-size="11" font-weight="bold">كل مصفوفة 1D كائن مستقل في موقع ذاكرة مختلف!</text>
 
                         <defs>
                             <marker id="arrowhead15" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
@@ -1632,62 +1638,62 @@
                         </defs>
                     </svg>
                 </div>
-                <button class="check-btn" onclick="checkAnswer(15)">Check Answer</button>
+                <button class="check-btn" onclick="checkAnswer(15)">تحقق من الإجابة</button>
             </div>
 
             <!-- Submit All Button -->
-            <button class="submit-all-btn" onclick="submitAll()">Submit All Answers</button>
+            <button class="submit-all-btn" onclick="submitAll()">أرسل جميع الإجابات</button>
 
             <!-- Results Section -->
             <div class="results-section" id="results">
-                <div class="results-title">Your Results</div>
+                <div class="results-title">نتائجك</div>
                 <div class="results-score" id="final-score">0%</div>
                 <div class="results-message" id="results-message"></div>
                 <div class="results-breakdown">
                     <div class="breakdown-item correct">
-                        <strong id="correct-count">0</strong> Correct
+                        <strong id="correct-count">0</strong> صحيحة
                     </div>
                     <div class="breakdown-item incorrect">
-                        <strong id="incorrect-count">0</strong> Incorrect
+                        <strong id="incorrect-count">0</strong> خاطئة
                     </div>
                 </div>
             </div>
 
-            <button class="reset-btn" onclick="resetQuiz()">Reset Quiz</button>
+            <button class="reset-btn" onclick="resetQuiz()">إعادة تعيين الاختبار</button>
         </div>
 
         <!-- Bottom Navigation -->
         <nav class="bottom-nav">
-            <a href="04-ragged-arrays.html" class="prev-lesson">‹ Previous: Ragged Arrays</a>
-            <a href="index.html">Back to Module 1 ›</a>
+            <a href="04-ragged-arrays-ar.html" class="prev-lesson">السابق: المصفوفات المتعرجة &rarr;</a>
+            <a href="index-ar.html">&larr; العودة إلى الوحدة 1</a>
         </nav>
 
         <!-- Footer -->
         <div class="footer">
-            <p><strong>CPCS203</strong> - Object-Oriented Programming</p>
-            <p>Module 1: 2D & 3D Array Exercises</p>
-            <p>Prepared by Dr. Almalawi</p>
+            <p><strong>CPCS203</strong> - البرمجة الكائنية التوجه (Object-Oriented Programming)</p>
+            <p>الوحدة 1: تمارين المصفوفات ثنائية وثلاثية الأبعاد</p>
+            <p>إعداد د. الملَوي</p>
         </div>
     </div>
 
     <script>
         // Correct answers
         const answers = {
-            1: { correct: 'b', explanation: 'Correct! new int[3][4] creates an array of 3 references, where each reference points to a 1D array containing 4 integers. Remember: the computer only understands 1D arrays - a 2D array is an array of arrays!', hasVisual: true },
-            2: { correct: 'b', explanation: 'Correct! arr[1] gives us the 1D array at index 1 (which is {50, 60, 70, 80}). Then [2] gives us the element at index 2 of that 1D array, which is 70.' },
-            3: { correct: '3', explanation: 'Correct! arr.length returns 3 because arr is an array of 3 references. Each reference points to a separate 1D array.' },
-            4: { correct: '4', explanation: 'Correct! arr[0] returns the first 1D array {10, 20, 30, 40}. The .length of this 1D array is 4.' },
-            5: { correct: 'b', explanation: 'Correct! lastRow = 2-1 = 1, lastCol = 3-1 = 2. arr[1][2] = 6 (the last element of the last 1D array).' },
-            6: { correct: 'false', explanation: 'Correct! Because a 2D array is an "array of arrays", each 1D array can have a different length. The reference array just stores pointers to independent 1D arrays - they don\'t have to be the same size!', hasVisual: true },
-            7: { correct: 'b', explanation: 'Correct! ragged[2] gives us the 1D array {7, 8, 9}, which has 3 elements. So ragged[2].length = 3.' },
-            8: { correct: 'b', explanation: 'Correct! ragged[1] gives us the 1D array {3, 4, 5, 6}. Index [3] gives us element at position 3, which is 6.' },
-            9: { correct: 'a', explanation: 'Correct! A 3D array is an "array of 2D arrays". new int[2][3][4] creates 2 references to 2D arrays, where each 2D array has 3 references to 1D arrays of 4 elements. Total = 2 × 3 × 4 = 24.' },
-            10: { correct: 'c', explanation: 'Correct! building[1] gives the 2D array (Layer 1). building[1][0] gives the 1D array {7,8,9}. building[1][0][2] gives element at index 2 = 9.' },
-            11: { correct: '2', explanation: 'Correct! building.length returns 2 because building is an array of 2 references (each pointing to a 2D array).' },
-            12: { correct: '3', explanation: 'Correct! building[0][1] gives us the 1D array {4, 5, 6}. Its .length is 3.' },
-            13: { correct: 'c', explanation: 'Correct! The loop adds matrix[i][i] for i=0,1,2. This gets: matrix[0][0]=1, matrix[1][1]=5, matrix[2][2]=9. Sum = 1+5+9 = 15.' },
-            14: { correct: 'b', explanation: 'Correct! The loop adds the length of each 1D array: 1 + 2 + 3 = 6 total elements.' },
-            15: { correct: 'false', explanation: 'Correct! A 2D array in Java is NOT contiguous. It\'s an array of references, where each reference points to a separate 1D array stored somewhere else in memory. This is why Java can have ragged arrays!', hasVisual: true }
+            1: { correct: 'b', explanation: 'صحيح! التعليمة new int[3][4] تنشئ مصفوفة من 3 مراجع، حيث يشير كل مرجع إلى مصفوفة أحادية البعد تحتوي على 4 أعداد صحيحة. تذكّر: الحاسوب لا يفهم سوى المصفوفات أحادية البعد - فالمصفوفة ثنائية البعد هي مصفوفة من المصفوفات!', hasVisual: true },
+            2: { correct: 'b', explanation: 'صحيح! التعبير arr[1] يعطينا المصفوفة أحادية البعد عند الفهرس 1 (وهي {50, 60, 70, 80}). ثم يعطينا [2] العنصر عند الفهرس 2 من تلك المصفوفة، وهو 70.' },
+            3: { correct: '3', explanation: 'صحيح! التعبير arr.length يُرجِع 3 لأن arr مصفوفة من 3 مراجع. يشير كل مرجع إلى مصفوفة أحادية البعد منفصلة.' },
+            4: { correct: '4', explanation: 'صحيح! التعبير arr[0] يُرجِع المصفوفة أحادية البعد الأولى {10, 20, 30, 40}. وقيمة .length لهذه المصفوفة أحادية البعد هي 4.' },
+            5: { correct: 'b', explanation: 'صحيح! lastRow = 2-1 = 1، وlastCol = 3-1 = 2. إذن arr[1][2] = 6 (العنصر الأخير في المصفوفة أحادية البعد الأخيرة).' },
+            6: { correct: 'false', explanation: 'صحيح! لأن المصفوفة ثنائية البعد هي "مصفوفة من المصفوفات"، فإن كل مصفوفة أحادية البعد يمكن أن يكون لها طول مختلف. مصفوفة المراجع تخزّن فقط مؤشرات إلى مصفوفات أحادية البعد مستقلة - وليس من الضروري أن تكون بالحجم نفسه!', hasVisual: true },
+            7: { correct: 'b', explanation: 'صحيح! التعبير ragged[2] يعطينا المصفوفة أحادية البعد {7, 8, 9}، وهي تحتوي على 3 عناصر. إذن ragged[2].length = 3.' },
+            8: { correct: 'b', explanation: 'صحيح! التعبير ragged[1] يعطينا المصفوفة أحادية البعد {3, 4, 5, 6}. والفهرس [3] يعطينا العنصر في الموضع 3، وهو 6.' },
+            9: { correct: 'a', explanation: 'صحيح! المصفوفة ثلاثية البعد هي "مصفوفة من المصفوفات ثنائية البعد". التعليمة new int[2][3][4] تنشئ مرجعين إلى مصفوفتين ثنائيتي البعد، حيث تحتوي كل مصفوفة ثنائية البعد على 3 مراجع إلى مصفوفات أحادية البعد من 4 عناصر. الإجمالي = 2 × 3 × 4 = 24.' },
+            10: { correct: 'c', explanation: 'صحيح! التعبير building[1] يعطي المصفوفة ثنائية البعد (الطبقة 1). وbuilding[1][0] يعطي المصفوفة أحادية البعد {7,8,9}. وbuilding[1][0][2] يعطي العنصر عند الفهرس 2 = 9.' },
+            11: { correct: '2', explanation: 'صحيح! التعبير building.length يُرجِع 2 لأن building مصفوفة من مرجعين (يشير كلٌّ منهما إلى مصفوفة ثنائية البعد).' },
+            12: { correct: '3', explanation: 'صحيح! التعبير building[0][1] يعطينا المصفوفة أحادية البعد {4, 5, 6}. وقيمة .length لها هي 3.' },
+            13: { correct: 'c', explanation: 'صحيح! تضيف الحلقة matrix[i][i] لقيم i=0,1,2. فيُحصَل على: matrix[0][0]=1، وmatrix[1][1]=5، وmatrix[2][2]=9. المجموع = 1+5+9 = 15.' },
+            14: { correct: 'b', explanation: 'صحيح! تضيف الحلقة طول كل مصفوفة أحادية البعد: 1 + 2 + 3 = 6 عناصر إجمالًا.' },
+            15: { correct: 'false', explanation: 'صحيح! المصفوفة ثنائية البعد في لغة Java ليست متصلة (contiguous). فهي مصفوفة من المراجع، حيث يشير كل مرجع إلى مصفوفة أحادية البعد منفصلة مخزّنة في مكان آخر من الذاكرة. لهذا السبب تستطيع Java أن تدعم المصفوفات المتعرجة!', hasVisual: true }
         };
 
         // Fill-in-the-blank questions
@@ -1732,7 +1738,7 @@
             }
 
             if (!userAnswer) {
-                alert('Please provide an answer first!');
+                alert('يرجى تقديم إجابة أولًا!');
                 return;
             }
 
@@ -1748,12 +1754,12 @@
             if (isCorrect) {
                 card.classList.add('correct');
                 feedback.classList.add('correct', 'show');
-                feedbackTitle.textContent = '✓ Correct!';
+                feedbackTitle.textContent = '✓ صحيح!';
                 score++;
             } else {
                 card.classList.add('incorrect');
                 feedback.classList.add('incorrect', 'show');
-                feedbackTitle.textContent = '✗ Incorrect';
+                feedbackTitle.textContent = '✗ خطأ';
             }
 
             feedbackText.textContent = answers[qNum].explanation;
@@ -1811,13 +1817,13 @@
 
             let message = '';
             if (percentage >= 90) {
-                message = 'Excellent! You have mastered 2D and 3D arrays!';
+                message = 'ممتاز! لقد أتقنت المصفوفات ثنائية وثلاثية الأبعاد!';
             } else if (percentage >= 70) {
-                message = 'Good job! Review the questions you missed to strengthen your understanding.';
+                message = 'أحسنت! راجع الأسئلة التي أخطأت فيها لتعزيز فهمك.';
             } else if (percentage >= 50) {
-                message = 'Keep practicing! Focus on array indexing and dimensions.';
+                message = 'واصل التدريب! ركّز على فهرسة المصفوفات وأبعادها.';
             } else {
-                message = 'Please review the lecture material on multi-dimensional arrays and try again.';
+                message = 'يرجى مراجعة مادة المحاضرة حول المصفوفات متعددة الأبعاد ثم المحاولة مرة أخرى.';
             }
 
             document.getElementById('results-message').textContent = message;

@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lesson 3: Reading Files with Scanner | CPCS203</title>
+    <title>الدرس 3: قراءة الملفات باستخدام Scanner | CPCS203</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -25,7 +26,7 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Tajawal', 'Amiri', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.8;
             color: var(--dark-color);
             background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
@@ -159,10 +160,10 @@
         /* Story Box */
         .story-box {
             background: linear-gradient(135deg, #fefce8, #fef9c3);
-            border-left: 5px solid var(--primary-color);
+            border-right: 5px solid var(--primary-color);
             padding: 25px 30px;
             margin: 20px 0;
-            border-radius: 0 15px 15px 0;
+            border-radius: 15px 0 0 15px;
             font-style: italic;
         }
 
@@ -174,10 +175,10 @@
         /* Key Concept Box */
         .key-concept {
             background: linear-gradient(135deg, #fef3c7, #fde68a);
-            border-left: 5px solid var(--primary-color);
+            border-right: 5px solid var(--primary-color);
             padding: 20px 25px;
             margin: 20px 0;
-            border-radius: 0 10px 10px 0;
+            border-radius: 10px 0 0 10px;
         }
 
         .key-concept-title {
@@ -190,10 +191,10 @@
         /* Warning Box */
         .warning-box {
             background: linear-gradient(135deg, #fee2e2, #fecaca);
-            border-left: 5px solid var(--danger-color);
+            border-right: 5px solid var(--danger-color);
             padding: 20px 25px;
             margin: 20px 0;
-            border-radius: 0 10px 10px 0;
+            border-radius: 10px 0 0 10px;
         }
 
         .warning-title {
@@ -205,10 +206,10 @@
         /* Info Box */
         .info-box {
             background: linear-gradient(135deg, #dbeafe, #bfdbfe);
-            border-left: 5px solid #2563eb;
+            border-right: 5px solid #2563eb;
             padding: 20px 25px;
             margin: 20px 0;
-            border-radius: 0 10px 10px 0;
+            border-radius: 10px 0 0 10px;
         }
 
         .info-box-title {
@@ -220,10 +221,10 @@
         /* Success Box */
         .success-box {
             background: linear-gradient(135deg, #d1fae5, #a7f3d0);
-            border-left: 5px solid var(--success-color);
+            border-right: 5px solid var(--success-color);
             padding: 20px 25px;
             margin: 20px 0;
-            border-radius: 0 10px 10px 0;
+            border-radius: 10px 0 0 10px;
         }
 
         .success-title {
@@ -244,6 +245,8 @@
             font-size: 0.95rem;
             line-height: 1.6;
             white-space: pre-wrap;
+            direction: ltr;
+            text-align: left;
         }
 
         .code-block .keyword {
@@ -269,6 +272,8 @@
         .code-block .number {
             color: #b5cea8;
         }
+
+        code, .code-inline { direction: ltr; unicode-bidi: embed; }
 
         .code-inline {
             background: #fef3c7;
@@ -306,6 +311,8 @@
             padding: 20px;
             font-family: 'Consolas', monospace;
             line-height: 1.8;
+            direction: ltr;
+            text-align: left;
         }
 
         /* Comparison Visual */
@@ -345,7 +352,7 @@
             background: var(--primary-color);
             color: white;
             padding: 15px;
-            text-align: left;
+            text-align: right;
         }
 
         .methods-table td {
@@ -482,7 +489,7 @@
         .lang-switch {
             position: fixed;
             top: 20px;
-            right: 20px;
+            left: 20px;
             z-index: 1000;
             padding: 10px 20px;
             background: linear-gradient(135deg, var(--primary-light), var(--secondary-color));
@@ -499,6 +506,9 @@
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(245,158,11,.6);
         }
+
+        ol { margin-right: 20px; }
+        ul { margin-right: 20px; }
 
         /* Responsive */
         @media (max-width: 768px) {
@@ -535,29 +545,29 @@
     </style>
 </head>
 <body>
-    <a href="03-reading-scanner-ar.html" class="lang-switch">&#127760; العربية</a>
+    <a href="03-reading-scanner.html" class="lang-switch">English &#127760;</a>
     <div class="container">
         <!-- Navigation Breadcrumb -->
         <nav class="nav-breadcrumb">
             <div class="breadcrumb">
                 <a href="../index.html">CPCS203</a>
-                <span class="separator">&#8250;</span>
-                <a href="index.html">Module 3: File I/O</a>
-                <span class="separator">&#8250;</span>
-                <span class="current">Reading with Scanner</span>
+                <span class="separator">&#8249;</span>
+                <a href="index-ar.html">الوحدة 3: إدخال وإخراج الملفات (File I/O)</a>
+                <span class="separator">&#8249;</span>
+                <span class="current">القراءة باستخدام Scanner</span>
             </div>
             <div class="lesson-nav">
-                <a href="02-file-class.html">&#8249; Previous</a>
-                <a href="04-writing-printwriter.html">Next &#8250;</a>
+                <a href="02-file-class-ar.html">&rarr; السابق</a>
+                <a href="04-writing-printwriter-ar.html">التالي &larr;</a>
             </div>
         </nav>
 
         <!-- Header -->
         <div class="header">
-            <h1>Reading Files with Scanner</h1>
-            <p class="subtitle">Using the Familiar Scanner Class for File Input</p>
+            <h1>قراءة الملفات باستخدام Scanner</h1>
+            <p class="subtitle">استخدام صنف Scanner المألوف لإدخال الملفات</p>
             <div class="course-info">
-                <strong>Module 3</strong> &bull; Lesson 3 of 5
+                <strong>الوحدة 3</strong> &bull; الدرس 3 من 5
             </div>
         </div>
 
@@ -566,21 +576,21 @@
             <div class="section">
                 <h2 class="section-title">
                     <span class="section-number">1</span>
-                    Scanner: Your Old Friend
+                    Scanner: صديقك القديم
                 </h2>
 
                 <div class="story-box">
-                    <p><span class="story-character">The teacher</span> held up the <code class="code-inline">Scanner</code> and said, "You've used Scanner before to read input from the keyboard. Now, you can hand the File object to Scanner, and it will read text from that file instead!"</p>
+                    <p><span class="story-character">رفع المعلم</span> صنف <code class="code-inline">Scanner</code> وقال: "لقد استخدمت Scanner من قبل لقراءة الإدخال من لوحة المفاتيح. الآن يمكنك أن تسلّم كائن الملف (File) إلى Scanner، فيقرأ النص من ذلك الملف بدلًا من ذلك!"</p>
                 </div>
 
                 <div class="key-concept">
-                    <div class="key-concept-title">Key Insight</div>
-                    <p>We've used <code class="code-inline">Scanner</code> before with <code class="code-inline">System.in</code> to read from the keyboard. Now, we'll use the <strong>same Scanner</strong> but give it a <strong>File object</strong> instead!</p>
+                    <div class="key-concept-title">الفكرة الأساسية</div>
+                    <p>لقد استخدمنا <code class="code-inline">Scanner</code> من قبل مع <code class="code-inline">System.in</code> للقراءة من لوحة المفاتيح. الآن سنستخدم <strong>الـ Scanner نفسه</strong> لكن نعطيه <strong>كائن ملف (File object)</strong> بدلًا من ذلك!</p>
                 </div>
 
                 <div class="comparison-visual">
                     <div class="comparison-item">
-                        <div class="comparison-item-title">Reading from Keyboard</div>
+                        <div class="comparison-item-title">القراءة من لوحة المفاتيح</div>
                         <div class="code-block" style="font-size: 0.85rem; margin: 10px 0;">
 <span class="type">Scanner</span> <span class="variable">input</span> = <span class="keyword">new</span> <span class="type">Scanner</span>(
     System.in
@@ -590,7 +600,7 @@
                         </div>
                     </div>
                     <div class="comparison-item">
-                        <div class="comparison-item-title">Reading from File</div>
+                        <div class="comparison-item-title">القراءة من ملف</div>
                         <div class="code-block" style="font-size: 0.85rem; margin: 10px 0;">
 <span class="type">File</span> <span class="variable">myFile</span> = <span class="keyword">new</span> <span class="type">File</span>(
     <span class="string">"data.txt"</span>
@@ -610,10 +620,10 @@
             <div class="section">
                 <h2 class="section-title">
                     <span class="section-number">2</span>
-                    Creating a Scanner for Files
+                    إنشاء Scanner للملفات
                 </h2>
 
-                <p>Here's the basic syntax to read from a file:</p>
+                <p>إليك الصيغة الأساسية للقراءة من ملف:</p>
 
                 <div class="code-block">
 <span class="keyword">import</span> java.io.File;
@@ -645,7 +655,7 @@
 
                 <div class="warning-box">
                     <div class="warning-title">FileNotFoundException</div>
-                    <p>When creating a Scanner with a File, Java requires us to handle the possibility that the file doesn't exist. We use <code class="code-inline">try-catch</code> to handle this.</p>
+                    <p>عند إنشاء Scanner مع ملف (File)، تُلزمنا Java بمعالجة احتمال عدم وجود الملف. نستخدم <code class="code-inline">try-catch</code> لمعالجة ذلك.</p>
                 </div>
             </div>
 
@@ -653,59 +663,59 @@
             <div class="section">
                 <h2 class="section-title">
                     <span class="section-number">3</span>
-                    Scanner Reading Methods
+                    توابع القراءة في Scanner
                 </h2>
 
-                <p>The same methods you used for keyboard input work for file input:</p>
+                <p>التوابع نفسها التي استخدمتها لإدخال لوحة المفاتيح تعمل مع إدخال الملفات:</p>
 
                 <table class="methods-table">
                     <thead>
                         <tr>
-                            <th>Method</th>
-                            <th>Returns</th>
-                            <th>Description</th>
+                            <th>التابع (Method)</th>
+                            <th>القيمة المُرجعة (Returns)</th>
+                            <th>الوصف</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td><code>next()</code></td>
                             <td>String</td>
-                            <td>Reads the next word (token, stops at whitespace)</td>
+                            <td>يقرأ الكلمة التالية (رمز مميز - token، يتوقف عند المسافة البيضاء)</td>
                         </tr>
                         <tr>
                             <td><code>nextLine()</code></td>
                             <td>String</td>
-                            <td>Reads the entire line (until newline)</td>
+                            <td>يقرأ السطر كاملًا (حتى سطر جديد)</td>
                         </tr>
                         <tr>
                             <td><code>nextInt()</code></td>
                             <td>int</td>
-                            <td>Reads the next integer</td>
+                            <td>يقرأ العدد الصحيح التالي</td>
                         </tr>
                         <tr>
                             <td><code>nextDouble()</code></td>
                             <td>double</td>
-                            <td>Reads the next decimal number</td>
+                            <td>يقرأ العدد العشري التالي</td>
                         </tr>
                         <tr>
                             <td><code>nextBoolean()</code></td>
                             <td>boolean</td>
-                            <td>Reads true or false</td>
+                            <td>يقرأ true أو false</td>
                         </tr>
                         <tr>
                             <td><code>hasNext()</code></td>
                             <td>boolean</td>
-                            <td>Returns true if there's more data</td>
+                            <td>يُرجع true إذا كان هناك المزيد من البيانات</td>
                         </tr>
                         <tr>
                             <td><code>hasNextLine()</code></td>
                             <td>boolean</td>
-                            <td>Returns true if there's another line</td>
+                            <td>يُرجع true إذا كان هناك سطر آخر</td>
                         </tr>
                         <tr>
                             <td><code>hasNextInt()</code></td>
                             <td>boolean</td>
-                            <td>Returns true if next token is an integer</td>
+                            <td>يُرجع true إذا كان الرمز المميز التالي عددًا صحيحًا</td>
                         </tr>
                     </tbody>
                 </table>
@@ -715,10 +725,10 @@
             <div class="section">
                 <h2 class="section-title">
                     <span class="section-number">4</span>
-                    Reading an Entire File
+                    قراءة ملف كامل
                 </h2>
 
-                <p>To read all lines in a file, use a <code class="code-inline">while</code> loop with <code class="code-inline">hasNextLine()</code>:</p>
+                <p>لقراءة جميع الأسطر في ملف، استخدم حلقة <code class="code-inline">while</code> مع <code class="code-inline">hasNextLine()</code>:</p>
 
                 <div class="file-content-box">
                     <div class="file-header">
@@ -760,7 +770,7 @@ Fatima 95
                 </div>
 
                 <div class="info-box">
-                    <div class="info-box-title">Output</div>
+                    <div class="info-box-title">المخرجات (Output)</div>
                     <div class="code-block" style="background: #f8fafc; color: var(--dark-color);">
 Ahmed 85
 Sara 92
@@ -774,10 +784,10 @@ Fatima 95
             <div class="section">
                 <h2 class="section-title">
                     <span class="section-number">5</span>
-                    Reading Specific Data Types
+                    قراءة أنواع بيانات محددة
                 </h2>
 
-                <p>You can read individual tokens of different types:</p>
+                <p>يمكنك قراءة رموز مميزة (tokens) مفردة من أنواع مختلفة:</p>
 
                 <div class="file-content-box">
                     <div class="file-header">
@@ -824,7 +834,7 @@ Mohammed 78
                 </div>
 
                 <div class="success-box">
-                    <div class="success-title">Output</div>
+                    <div class="success-title">المخرجات (Output)</div>
                     <div class="code-block" style="background: #f8fafc; color: var(--dark-color);">
 Ahmed scored 85 points
 Sara scored 92 points
@@ -837,28 +847,28 @@ Mohammed scored 78 points
             <div class="section">
                 <h2 class="section-title">
                     <span class="section-number">6</span>
-                    Always Close the Scanner!
+                    أغلق الـ Scanner دائمًا!
                 </h2>
 
                 <div class="key-concept">
-                    <div class="key-concept-title">Why Close?</div>
-                    <p>When you open a file for reading, the operating system allocates resources. If you don't close the Scanner, these resources remain locked and can cause problems - especially if you try to modify the file later!</p>
+                    <div class="key-concept-title">لماذا الإغلاق؟</div>
+                    <p>عند فتح ملف للقراءة، يخصص نظام التشغيل موارد. إذا لم تغلق الـ Scanner، تبقى هذه الموارد محجوزة وقد تسبب مشاكل - خاصة إذا حاولت تعديل الملف لاحقًا!</p>
                 </div>
 
                 <div class="flow-diagram">
                     <div class="flow-box">
                         <div class="flow-box-icon">&#128194;</div>
-                        <div class="flow-box-title">Open File</div>
+                        <div class="flow-box-title">افتح الملف</div>
                     </div>
                     <div class="flow-arrow">&#8594;</div>
                     <div class="flow-box">
                         <div class="flow-box-icon">&#128214;</div>
-                        <div class="flow-box-title">Read Data</div>
+                        <div class="flow-box-title">اقرأ البيانات</div>
                     </div>
                     <div class="flow-arrow">&#8594;</div>
                     <div class="flow-box" style="border-color: var(--success-color); background: #d1fae5;">
                         <div class="flow-box-icon">&#9989;</div>
-                        <div class="flow-box-title" style="color: var(--success-color);">Close Scanner</div>
+                        <div class="flow-box-title" style="color: var(--success-color);">أغلق الـ Scanner</div>
                     </div>
                 </div>
 
@@ -868,8 +878,8 @@ Mohammed scored 78 points
                 </div>
 
                 <div class="info-box">
-                    <div class="info-box-title">Good Practice</div>
-                    <p>Always close your Scanner in a <code class="code-inline">finally</code> block or use try-with-resources (which automatically closes):</p>
+                    <div class="info-box-title">ممارسة جيدة</div>
+                    <p>أغلق الـ Scanner دائمًا في كتلة <code class="code-inline">finally</code> أو استخدم try-with-resources (التي تُغلق تلقائيًا):</p>
                     <div class="code-block" style="font-size: 0.85rem;">
 <span class="comment">// Try-with-resources: Automatically closes!</span>
 <span class="keyword">try</span> (<span class="type">Scanner</span> <span class="variable">reader</span> = <span class="keyword">new</span> <span class="type">Scanner</span>(<span class="keyword">new</span> <span class="type">File</span>(<span class="string">"data.txt"</span>))) {
@@ -885,10 +895,10 @@ Mohammed scored 78 points
             <div class="section">
                 <h2 class="section-title">
                     <span class="section-number">7</span>
-                    Complete Example
+                    مثال كامل
                 </h2>
 
-                <p>Let's put it all together with a practical example:</p>
+                <p>دعونا نجمع كل شيء معًا في مثال عملي:</p>
 
                 <div class="file-content-box">
                     <div class="file-header">
@@ -903,7 +913,7 @@ Mohammed 78 82 80
                     </div>
                 </div>
 
-                <p style="margin-top: 15px;">The first line tells us there are 3 students. Each following line has a name and 3 test scores.</p>
+                <p style="margin-top: 15px;">يخبرنا السطر الأول بوجود 3 طلاب. كل سطر يليه يحتوي على اسم و3 درجات اختبارات.</p>
 
                 <div class="code-block">
 <span class="keyword">import</span> java.io.File;
@@ -947,7 +957,7 @@ Mohammed 78 82 80
                 </div>
 
                 <div class="success-box">
-                    <div class="success-title">Output</div>
+                    <div class="success-title">المخرجات (Output)</div>
                     <div class="code-block" style="background: #f8fafc; color: var(--dark-color);">
 Processing 3 students...
 
@@ -962,57 +972,57 @@ Mohammed: Average = 80.0
             <div class="section">
                 <h2 class="section-title">
                     <span class="section-number">8</span>
-                    Summary
+                    الخلاصة
                 </h2>
 
                 <div class="summary-box">
-                    <div class="summary-title">Key Takeaways</div>
+                    <div class="summary-title">النقاط الرئيسية</div>
                     <ul class="summary-list">
                         <li>
                             <span class="check">&#10003;</span>
-                            <span><strong>Scanner</strong> can read from files the same way it reads from keyboard.</span>
+                            <span>يستطيع <strong>Scanner</strong> القراءة من الملفات بالطريقة نفسها التي يقرأ بها من لوحة المفاتيح.</span>
                         </li>
                         <li>
                             <span class="check">&#10003;</span>
-                            <span>Pass a <strong>File object</strong> to Scanner instead of System.in.</span>
+                            <span>مرّر <strong>كائن ملف (File object)</strong> إلى Scanner بدلًا من System.in.</span>
                         </li>
                         <li>
                             <span class="check">&#10003;</span>
-                            <span>Use <strong>hasNextLine()</strong> or <strong>hasNext()</strong> to check for more data.</span>
+                            <span>استخدم <strong>hasNextLine()</strong> أو <strong>hasNext()</strong> للتحقق من وجود المزيد من البيانات.</span>
                         </li>
                         <li>
                             <span class="check">&#10003;</span>
-                            <span>Use <strong>next(), nextLine(), nextInt(), nextDouble()</strong> to read data.</span>
+                            <span>استخدم <strong>next(), nextLine(), nextInt(), nextDouble()</strong> لقراءة البيانات.</span>
                         </li>
                         <li>
                             <span class="check">&#10003;</span>
-                            <span><strong>Always close()</strong> the Scanner when done reading!</span>
+                            <span><strong>أغلق دائمًا close()</strong> الـ Scanner عند الانتهاء من القراءة!</span>
                         </li>
                         <li>
                             <span class="check">&#10003;</span>
-                            <span>Handle <strong>FileNotFoundException</strong> with try-catch.</span>
+                            <span>عالج <strong>FileNotFoundException</strong> باستخدام try-catch.</span>
                         </li>
                     </ul>
                 </div>
 
                 <div class="story-box">
-                    <p><span class="story-character">The student exclaimed,</span> "Reading is easy! But how do I save data to a file?"</p>
-                    <p><span class="story-character">The teacher replied,</span> "That's where PrintWriter comes in - let's learn about writing files next!"</p>
+                    <p><span class="story-character">هتف الطالب:</span> "القراءة سهلة! لكن كيف أحفظ البيانات في ملف؟"</p>
+                    <p><span class="story-character">أجاب المعلم:</span> "هنا يأتي دور PrintWriter - دعونا نتعلم عن كتابة الملفات في الدرس التالي!"</p>
                 </div>
             </div>
         </div>
 
         <!-- Bottom Navigation -->
         <nav class="bottom-nav">
-            <a href="02-file-class.html" class="prev-lesson">&#8249; Previous: File Class</a>
-            <a href="04-writing-printwriter.html">Next: Writing with PrintWriter &#8250;</a>
+            <a href="02-file-class-ar.html" class="prev-lesson">&rarr; السابق: صنف File</a>
+            <a href="04-writing-printwriter-ar.html">التالي: الكتابة باستخدام PrintWriter &larr;</a>
         </nav>
 
         <!-- Footer -->
         <div class="footer">
-            <p><strong>CPCS203</strong> - Object-Oriented Programming</p>
-            <p>Module 3: File I/O &bull; Lesson 3</p>
-            <p>Prepared by Dr. Almalawi</p>
+            <p><strong>CPCS203</strong> - البرمجة كائنية التوجه (Object-Oriented Programming)</p>
+            <p>الوحدة 3: إدخال وإخراج الملفات (File I/O) &bull; الدرس 3</p>
+            <p>إعداد د. المعلوي</p>
         </div>
     </div>
 </body>

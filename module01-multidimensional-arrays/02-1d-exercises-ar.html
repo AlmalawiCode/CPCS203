@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Week 1 Exercises: Arrays & Reference Variables | CPCS203</title>
+    <title>تمارين الأسبوع 1: المصفوفات والمتغيرات المرجعية (Arrays & Reference Variables) | CPCS203</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -22,7 +23,7 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Tajawal', 'Amiri', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.8;
             color: var(--dark-color);
             background: linear-gradient(135deg, #059669 0%, #047857 100%);
@@ -78,10 +79,10 @@
         /* Instructions */
         .instructions {
             background: linear-gradient(135deg, #fef3c7, #fde68a);
-            border-left: 5px solid var(--warning-color);
+            border-right: 5px solid var(--warning-color);
             padding: 20px 25px;
             margin-bottom: 30px;
-            border-radius: 0 10px 10px 0;
+            border-radius: 10px 0 0 10px;
         }
 
         .instructions h3 {
@@ -153,6 +154,8 @@
             margin: 15px 0;
             overflow: hidden;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            direction: ltr;
+            text-align: left;
         }
 
         .code-header {
@@ -216,6 +219,9 @@
         .class-name { color: #4ec9b0; }
         .bracket { color: #ffd700; }
         .operator { color: #d4d4d4; }
+
+        /* Inline code stays LTR */
+        code, .code-inline { direction: ltr; unicode-bidi: embed; }
 
         /* Options */
         .options {
@@ -373,13 +379,13 @@
 
         .feedback.correct {
             background: #d1fae5;
-            border-left: 4px solid var(--success-color);
+            border-right: 4px solid var(--success-color);
             color: var(--success-color);
         }
 
         .feedback.incorrect {
             background: #fee2e2;
-            border-left: 4px solid var(--danger-color);
+            border-right: 4px solid var(--danger-color);
             color: var(--danger-color);
         }
 
@@ -463,6 +469,7 @@
         .array-visual {
             display: inline-flex;
             margin-top: 10px;
+            direction: ltr;
         }
 
         .arr-cell {
@@ -808,6 +815,7 @@
         .heap-cells {
             display: flex;
             gap: 0;
+            direction: ltr;
         }
 
         .heap-cell {
@@ -915,15 +923,15 @@
             align-items: flex-start;
             gap: 15px;
             background: linear-gradient(135deg, #fef3c7, #fde68a);
-            border-left: 5px solid var(--warning-color);
+            border-right: 5px solid var(--warning-color);
             padding: 20px;
-            border-radius: 0 12px 12px 0;
+            border-radius: 12px 0 0 12px;
             margin-top: 20px;
         }
 
         .key-insight.success {
             background: linear-gradient(135deg, #d1fae5, #a7f3d0);
-            border-left-color: #059669;
+            border-right-color: #059669;
         }
 
         .insight-icon {
@@ -946,9 +954,9 @@
         /* Tip Box */
         .tip-box {
             background: linear-gradient(135deg, #dbeafe, #bfdbfe);
-            border-left: 5px solid var(--primary-color);
+            border-right: 5px solid var(--primary-color);
             padding: 15px 20px;
-            border-radius: 0 12px 12px 0;
+            border-radius: 12px 0 0 12px;
             margin-top: 15px;
             color: var(--dark-color);
         }
@@ -964,9 +972,9 @@
         /* Warning Box */
         .warning-box {
             background: linear-gradient(135deg, #fef3c7, #fde68a);
-            border-left: 5px solid var(--warning-color);
+            border-right: 5px solid var(--warning-color);
             padding: 15px 20px;
-            border-radius: 0 12px 12px 0;
+            border-radius: 12px 0 0 12px;
             margin-top: 15px;
             color: var(--dark-color);
         }
@@ -1089,7 +1097,7 @@
         .lang-switch {
             position: fixed;
             top: 20px;
-            right: 20px;
+            left: 20px;
             z-index: 1000;
             padding: 10px 20px;
             background: linear-gradient(135deg, var(--success-color), #047857);
@@ -1109,111 +1117,111 @@
     </style>
 </head>
 <body>
-    <a href="02-1d-exercises-ar.html" class="lang-switch">&#127760; العربية</a>
+    <a href="02-1d-exercises.html" class="lang-switch">English &#127760;</a>
     <div class="container">
         <!-- Navigation Breadcrumb -->
         <nav class="nav-breadcrumb">
             <div class="breadcrumb">
                 <a href="../index.html">CPCS203</a>
-                <span class="separator">›</span>
-                <a href="index.html">Module 1: Arrays</a>
-                <span class="separator">›</span>
-                <span class="current">1D Exercises</span>
+                <span class="separator">&#8249;</span>
+                <a href="index-ar.html">الوحدة 1: المصفوفات</a>
+                <span class="separator">&#8249;</span>
+                <span class="current">تمارين المصفوفات أحادية البعد</span>
             </div>
             <div class="lesson-nav">
-                <a href="01-1d-arrays.html">‹ Previous</a>
-                <a href="03-2d-3d-arrays.html">Next: 2D/3D Arrays ›</a>
+                <a href="01-1d-arrays-ar.html">&rarr; السابق</a>
+                <a href="03-2d-3d-arrays-ar.html">التالي: المصفوفات ثنائية/ثلاثية البعد &larr;</a>
             </div>
         </nav>
 
         <!-- Header -->
         <div class="header">
-            <h1>1D Array Exercises</h1>
-            <p class="subtitle">Test Your Understanding: Primitive vs Reference Variables</p>
+            <h1>تمارين المصفوفات أحادية البعد (1D Arrays)</h1>
+            <p class="subtitle">اختبر فهمك: المتغيرات البدائية مقابل المرجعية (Primitive vs Reference Variables)</p>
             <div class="score-display">
-                Score: <span id="current-score">0</span> / <span id="total-score">15</span>
+                النتيجة: <span id="current-score">0</span> / <span id="total-score">15</span>
             </div>
         </div>
 
         <div class="content">
             <!-- Instructions -->
             <div class="instructions">
-                <h3>Instructions</h3>
-                <p>Answer all questions to test your understanding of arrays and the difference between primitive and reference variables. Click "Check Answer" after each question or "Submit All Answers" at the end.</p>
+                <h3>التعليمات</h3>
+                <p>أجب عن جميع الأسئلة لاختبار فهمك للمصفوفات وللفرق بين المتغيرات البدائية (Primitive) والمتغيرات المرجعية (Reference). اضغط على "تحقق من الإجابة" بعد كل سؤال، أو "إرسال جميع الإجابات" في النهاية.</p>
             </div>
 
             <!-- SECTION 1: Primitive vs Reference Basics -->
             <div class="section-divider">
-                <span>Part 1: Basic Concepts</span>
+                <span>الجزء 1: المفاهيم الأساسية</span>
             </div>
 
             <!-- Question 1: True/False -->
             <div class="question-card" id="q1">
                 <div class="question-header">
                     <div class="question-number">1</div>
-                    <span class="question-type">True / False</span>
+                    <span class="question-type">صواب / خطأ</span>
                 </div>
                 <div class="question-text">
-                    A primitive variable stores the actual value directly in memory.
+                    المتغير البدائي (Primitive) يخزّن القيمة الفعلية مباشرةً في الذاكرة.
                 </div>
                 <div class="tf-options">
-                    <div class="tf-option true" onclick="selectTF(1, 'true')">TRUE</div>
-                    <div class="tf-option false" onclick="selectTF(1, 'false')">FALSE</div>
+                    <div class="tf-option true" onclick="selectTF(1, 'true')">صواب</div>
+                    <div class="tf-option false" onclick="selectTF(1, 'false')">خطأ</div>
                 </div>
                 <input type="hidden" id="answer1" value="">
                 <div class="feedback" id="feedback1">
                     <div class="feedback-title"></div>
                     <div class="feedback-text"></div>
                 </div>
-                <button class="check-btn" onclick="checkAnswer(1)">Check Answer</button>
+                <button class="check-btn" onclick="checkAnswer(1)">تحقق من الإجابة</button>
             </div>
 
             <!-- Question 2: True/False -->
             <div class="question-card" id="q2">
                 <div class="question-header">
                     <div class="question-number">2</div>
-                    <span class="question-type">True / False</span>
+                    <span class="question-type">صواب / خطأ</span>
                 </div>
                 <div class="question-text">
-                    A reference variable (like an array variable) stores the actual data of the array directly.
+                    المتغير المرجعي (Reference)، مثل متغير المصفوفة، يخزّن بيانات المصفوفة الفعلية مباشرةً.
                 </div>
                 <div class="tf-options">
-                    <div class="tf-option true" onclick="selectTF(2, 'true')">TRUE</div>
-                    <div class="tf-option false" onclick="selectTF(2, 'false')">FALSE</div>
+                    <div class="tf-option true" onclick="selectTF(2, 'true')">صواب</div>
+                    <div class="tf-option false" onclick="selectTF(2, 'false')">خطأ</div>
                 </div>
                 <input type="hidden" id="answer2" value="">
                 <div class="feedback" id="feedback2">
                     <div class="feedback-title"></div>
                     <div class="feedback-text"></div>
                 </div>
-                <button class="check-btn" onclick="checkAnswer(2)">Check Answer</button>
+                <button class="check-btn" onclick="checkAnswer(2)">تحقق من الإجابة</button>
             </div>
 
             <!-- Question 3: Multiple Choice -->
             <div class="question-card" id="q3">
                 <div class="question-header">
                     <div class="question-number">3</div>
-                    <span class="question-type">Multiple Choice</span>
+                    <span class="question-type">اختيار من متعدد</span>
                 </div>
                 <div class="question-text">
-                    What does a reference variable store?
+                    ماذا يخزّن المتغير المرجعي (Reference)؟
                 </div>
                 <div class="options">
                     <div class="option" onclick="selectOption(3, 'a')">
                         <input type="radio" name="q3" id="q3a">
-                        <label for="q3a">The actual data values</label>
+                        <label for="q3a">قيم البيانات الفعلية</label>
                     </div>
                     <div class="option" onclick="selectOption(3, 'b')">
                         <input type="radio" name="q3" id="q3b">
-                        <label for="q3b">The memory address (reference) pointing to the actual data</label>
+                        <label for="q3b">عنوان الذاكرة (المرجع) الذي يشير إلى البيانات الفعلية</label>
                     </div>
                     <div class="option" onclick="selectOption(3, 'c')">
                         <input type="radio" name="q3" id="q3c">
-                        <label for="q3c">A copy of the data</label>
+                        <label for="q3c">نسخة من البيانات</label>
                     </div>
                     <div class="option" onclick="selectOption(3, 'd')">
                         <input type="radio" name="q3" id="q3d">
-                        <label for="q3d">Nothing until initialized</label>
+                        <label for="q3d">لا شيء حتى تتم التهيئة</label>
                     </div>
                 </div>
                 <input type="hidden" id="answer3" value="">
@@ -1221,17 +1229,17 @@
                     <div class="feedback-title"></div>
                     <div class="feedback-text"></div>
                 </div>
-                <button class="check-btn" onclick="checkAnswer(3)">Check Answer</button>
+                <button class="check-btn" onclick="checkAnswer(3)">تحقق من الإجابة</button>
             </div>
 
             <!-- Question 4: Multiple Choice -->
             <div class="question-card" id="q4">
                 <div class="question-header">
                     <div class="question-number">4</div>
-                    <span class="question-type">Multiple Choice</span>
+                    <span class="question-type">اختيار من متعدد</span>
                 </div>
                 <div class="question-text">
-                    Which of the following is NOT a primitive data type in Java?
+                    أيٌّ مما يلي ليس نوع بيانات بدائيًّا (Primitive) في لغة Java؟
                 </div>
                 <div class="options">
                     <div class="option" onclick="selectOption(4, 'a')">
@@ -1256,22 +1264,22 @@
                     <div class="feedback-title"></div>
                     <div class="feedback-text"></div>
                 </div>
-                <button class="check-btn" onclick="checkAnswer(4)">Check Answer</button>
+                <button class="check-btn" onclick="checkAnswer(4)">تحقق من الإجابة</button>
             </div>
 
             <!-- SECTION 2: Comparing Variables -->
             <div class="section-divider">
-                <span>Part 2: Comparing Variables</span>
+                <span>الجزء 2: مقارنة المتغيرات</span>
             </div>
 
             <!-- Question 5: Code Tracing - Primitives -->
             <div class="question-card" id="q5">
                 <div class="question-header">
                     <div class="question-number">5</div>
-                    <span class="question-type">Code Tracing</span>
+                    <span class="question-type">تتبّع الكود</span>
                 </div>
                 <div class="question-text">
-                    What is the output of the following code?
+                    ما ناتج الكود التالي؟
                 </div>
                 <div class="code-block">
                     <div class="code-header">
@@ -1302,11 +1310,11 @@
                     </div>
                     <div class="option" onclick="selectOption(5, 'c')">
                         <input type="radio" name="q5" id="q5c">
-                        <label for="q5c">Compilation Error</label>
+                        <label for="q5c">خطأ في الترجمة (Compilation Error)</label>
                     </div>
                     <div class="option" onclick="selectOption(5, 'd')">
                         <input type="radio" name="q5" id="q5d">
-                        <label for="q5d">Runtime Error</label>
+                        <label for="q5d">خطأ أثناء التشغيل (Runtime Error)</label>
                     </div>
                 </div>
                 <input type="hidden" id="answer5" value="">
@@ -1314,17 +1322,17 @@
                     <div class="feedback-title"></div>
                     <div class="feedback-text"></div>
                 </div>
-                <button class="check-btn" onclick="checkAnswer(5)">Check Answer</button>
+                <button class="check-btn" onclick="checkAnswer(5)">تحقق من الإجابة</button>
             </div>
 
             <!-- Question 6: Code Tracing - Arrays Comparison -->
             <div class="question-card" id="q6">
                 <div class="question-header">
                     <div class="question-number">6</div>
-                    <span class="question-type">Code Tracing</span>
+                    <span class="question-type">تتبّع الكود</span>
                 </div>
                 <div class="question-text">
-                    What is the output of the following code?
+                    ما ناتج الكود التالي؟
                 </div>
                 <div class="code-block">
                     <div class="code-header">
@@ -1355,11 +1363,11 @@
                     </div>
                     <div class="option" onclick="selectOption(6, 'c')">
                         <input type="radio" name="q6" id="q6c">
-                        <label for="q6c">Compilation Error</label>
+                        <label for="q6c">خطأ في الترجمة (Compilation Error)</label>
                     </div>
                     <div class="option" onclick="selectOption(6, 'd')">
                         <input type="radio" name="q6" id="q6d">
-                        <label for="q6d">Runtime Error</label>
+                        <label for="q6d">خطأ أثناء التشغيل (Runtime Error)</label>
                     </div>
                 </div>
                 <input type="hidden" id="answer6" value="">
@@ -1368,11 +1376,11 @@
                     <div class="feedback-text"></div>
                     <!-- Visual Explanation - Shows after answer -->
                     <div class="visual-explanation" id="visual6">
-                        <div class="visual-title">Why are they NOT equal? Let's visualize!</div>
-                        <div class="visual-subtitle">Even though both arrays contain {1, 2, 3}, they are stored in <strong>different locations</strong> in memory:</div>
+                        <div class="visual-title">لماذا هما غير متساويين؟ دعونا نتخيّل ذلك!</div>
+                        <div class="visual-subtitle">رغم أن كلتا المصفوفتين تحتويان على {1, 2, 3}، إلا أنهما مخزَّنتان في <strong>مواقع مختلفة</strong> في الذاكرة:</div>
                         <div class="dual-memory-visual">
                             <div class="memory-column">
-                                <div class="memory-label-top">Stack Memory</div>
+                                <div class="memory-label-top">ذاكرة المكدّس (Stack)</div>
                                 <div class="ref-box arr1-box">
                                     <div class="ref-name">arr1</div>
                                     <div class="ref-value">0x1A2B</div>
@@ -1410,7 +1418,7 @@
                                 </div>
                             </div>
                             <div class="memory-column">
-                                <div class="memory-label-top">Heap Memory</div>
+                                <div class="memory-label-top">ذاكرة الكومة (Heap)</div>
                                 <div class="heap-array arr1-heap">
                                     <div class="heap-address">Address: 0x1A2B</div>
                                     <div class="heap-cells">
@@ -1432,25 +1440,25 @@
                         <div class="key-insight">
                             <div class="insight-icon">💡</div>
                             <div class="insight-text">
-                                <strong>Key Insight:</strong> The <code>==</code> operator compares the <strong>memory addresses (references)</strong>, NOT the values inside the arrays! Since arr1 and arr2 point to different locations (0x1A2B vs 0x5C7D), they are NOT equal.
+                                <strong>فكرة أساسية:</strong> يقارن المُعامل <code>==</code> بين <strong>عناوين الذاكرة (المراجع)</strong>، وليس بين القيم الموجودة داخل المصفوفات! وبما أن arr1 و arr2 يشيران إلى موقعين مختلفين (0x1A2B مقابل 0x5C7D)، فهما غير متساويين.
                             </div>
                         </div>
                         <div class="tip-box">
-                            <strong>To compare array contents:</strong> Use <code>Arrays.equals(arr1, arr2)</code> which returns <code>true</code> because the values are the same.
+                            <strong>لمقارنة محتويات المصفوفة:</strong> استخدم <code>Arrays.equals(arr1, arr2)</code> التي تُرجع <code>true</code> لأن القيم متطابقة.
                         </div>
                     </div>
                 </div>
-                <button class="check-btn" onclick="checkAnswer(6)">Check Answer</button>
+                <button class="check-btn" onclick="checkAnswer(6)">تحقق من الإجابة</button>
             </div>
 
             <!-- Question 7: Code Tracing - Same Reference -->
             <div class="question-card" id="q7">
                 <div class="question-header">
                     <div class="question-number">7</div>
-                    <span class="question-type">Code Tracing</span>
+                    <span class="question-type">تتبّع الكود</span>
                 </div>
                 <div class="question-text">
-                    What is the output of the following code?
+                    ما ناتج الكود التالي؟
                 </div>
                 <div class="code-block">
                     <div class="code-header">
@@ -1481,11 +1489,11 @@
                     </div>
                     <div class="option" onclick="selectOption(7, 'c')">
                         <input type="radio" name="q7" id="q7c">
-                        <label for="q7c">Compilation Error</label>
+                        <label for="q7c">خطأ في الترجمة (Compilation Error)</label>
                     </div>
                     <div class="option" onclick="selectOption(7, 'd')">
                         <input type="radio" name="q7" id="q7d">
-                        <label for="q7d">Runtime Error</label>
+                        <label for="q7d">خطأ أثناء التشغيل (Runtime Error)</label>
                     </div>
                 </div>
                 <input type="hidden" id="answer7" value="">
@@ -1494,11 +1502,11 @@
                     <div class="feedback-text"></div>
                     <!-- Visual Explanation - Shows after answer -->
                     <div class="visual-explanation" id="visual7">
-                        <div class="visual-title">Why ARE they equal? Let's visualize!</div>
-                        <div class="visual-subtitle">When we write <code>arr2 = arr1</code>, we copy the <strong>reference (address)</strong>, not the array. Both now point to the <strong>SAME</strong> array:</div>
+                        <div class="visual-title">لماذا هما متساويان؟ دعونا نتخيّل ذلك!</div>
+                        <div class="visual-subtitle">عندما نكتب <code>arr2 = arr1</code>، فإننا ننسخ <strong>المرجع (العنوان)</strong>، وليس المصفوفة. والآن يشير كلاهما إلى <strong>المصفوفة نفسها</strong>:</div>
                         <div class="single-memory-visual">
                             <div class="memory-column">
-                                <div class="memory-label-top">Stack Memory</div>
+                                <div class="memory-label-top">ذاكرة المكدّس (Stack)</div>
                                 <div class="ref-box shared-box">
                                     <div class="ref-name">arr1</div>
                                     <div class="ref-value same">0x1A2B</div>
@@ -1527,7 +1535,7 @@
                                 </svg>
                             </div>
                             <div class="memory-column">
-                                <div class="memory-label-top">Heap Memory</div>
+                                <div class="memory-label-top">ذاكرة الكومة (Heap)</div>
                                 <div class="heap-array shared-heap">
                                     <div class="heap-address success">Address: 0x1A2B (SAME!)</div>
                                     <div class="heap-cells">
@@ -1535,37 +1543,37 @@
                                         <div class="heap-cell success"><span class="idx">[1]</span><span class="val">2</span></div>
                                         <div class="heap-cell success"><span class="idx">[2]</span><span class="val">3</span></div>
                                     </div>
-                                    <div class="shared-label">Only ONE array exists!</div>
+                                    <div class="shared-label">توجد مصفوفة واحدة فقط!</div>
                                 </div>
                             </div>
                         </div>
                         <div class="key-insight success">
                             <div class="insight-icon">💡</div>
                             <div class="insight-text">
-                                <strong>Key Insight:</strong> Both <code>arr1</code> and <code>arr2</code> hold the <strong>same address</strong> (0x1A2B). The <code>==</code> operator compares these addresses, and since they are identical, the result is <code>true</code>!
+                                <strong>فكرة أساسية:</strong> يحمل كلٌّ من <code>arr1</code> و <code>arr2</code> <strong>العنوان نفسه</strong> (0x1A2B). ويقارن المُعامل <code>==</code> بين هذين العنوانين، وبما أنهما متطابقان، تكون النتيجة <code>true</code>!
                             </div>
                         </div>
                         <div class="warning-box">
-                            <strong>Important:</strong> Since both variables point to the same array, changing <code>arr2[0]</code> will also change <code>arr1[0]</code>! They share the same data.
+                            <strong>مهم:</strong> بما أن كلا المتغيرين يشيران إلى المصفوفة نفسها، فإن تغيير <code>arr2[0]</code> سيغيّر أيضًا <code>arr1[0]</code>! فهما يتشاركان البيانات نفسها.
                         </div>
                     </div>
                 </div>
-                <button class="check-btn" onclick="checkAnswer(7)">Check Answer</button>
+                <button class="check-btn" onclick="checkAnswer(7)">تحقق من الإجابة</button>
             </div>
 
             <!-- SECTION 3: Pass by Value vs Reference -->
             <div class="section-divider">
-                <span>Part 3: Pass by Value vs Reference</span>
+                <span>الجزء 3: التمرير بالقيمة مقابل التمرير بالمرجع (Pass by Value vs Reference)</span>
             </div>
 
             <!-- Question 8: Pass by Value -->
             <div class="question-card" id="q8">
                 <div class="question-header">
                     <div class="question-number">8</div>
-                    <span class="question-type">Code Tracing</span>
+                    <span class="question-type">تتبّع الكود</span>
                 </div>
                 <div class="question-text">
-                    What is the value of <code>x</code> after calling the method?
+                    ما قيمة <code>x</code> بعد استدعاء الدالة (method)؟
                 </div>
                 <div class="code-block">
                     <div class="code-header">
@@ -1601,7 +1609,7 @@
                     </div>
                     <div class="option" onclick="selectOption(8, 'd')">
                         <input type="radio" name="q8" id="q8d">
-                        <label for="q8d">Compilation Error</label>
+                        <label for="q8d">خطأ في الترجمة (Compilation Error)</label>
                     </div>
                 </div>
                 <input type="hidden" id="answer8" value="">
@@ -1609,17 +1617,17 @@
                     <div class="feedback-title"></div>
                     <div class="feedback-text"></div>
                 </div>
-                <button class="check-btn" onclick="checkAnswer(8)">Check Answer</button>
+                <button class="check-btn" onclick="checkAnswer(8)">تحقق من الإجابة</button>
             </div>
 
             <!-- Question 9: Pass by Reference -->
             <div class="question-card" id="q9">
                 <div class="question-header">
                     <div class="question-number">9</div>
-                    <span class="question-type">Code Tracing</span>
+                    <span class="question-type">تتبّع الكود</span>
                 </div>
                 <div class="question-text">
-                    What is the value of <code>arr[0]</code> after calling the method?
+                    ما قيمة <code>arr[0]</code> بعد استدعاء الدالة (method)؟
                 </div>
                 <div class="code-block">
                     <div class="code-header">
@@ -1655,7 +1663,7 @@
                     </div>
                     <div class="option" onclick="selectOption(9, 'd')">
                         <input type="radio" name="q9" id="q9d">
-                        <label for="q9d">Compilation Error</label>
+                        <label for="q9d">خطأ في الترجمة (Compilation Error)</label>
                     </div>
                 </div>
                 <input type="hidden" id="answer9" value="">
@@ -1663,34 +1671,34 @@
                     <div class="feedback-title"></div>
                     <div class="feedback-text"></div>
                 </div>
-                <button class="check-btn" onclick="checkAnswer(9)">Check Answer</button>
+                <button class="check-btn" onclick="checkAnswer(9)">تحقق من الإجابة</button>
             </div>
 
             <!-- Question 10: Understanding Why -->
             <div class="question-card" id="q10">
                 <div class="question-header">
                     <div class="question-number">10</div>
-                    <span class="question-type">Multiple Choice</span>
+                    <span class="question-type">اختيار من متعدد</span>
                 </div>
                 <div class="question-text">
-                    In Question 8, the value of <code>x</code> remained <code>5</code>. In Question 9, the value of <code>arr[0]</code> changed to <code>100</code>. Why is this?
+                    في السؤال 8، بقيت قيمة <code>x</code> تساوي <code>5</code>. وفي السؤال 9، تغيّرت قيمة <code>arr[0]</code> إلى <code>100</code>. لماذا حدث ذلك؟
                 </div>
                 <div class="options">
                     <div class="option" onclick="selectOption(10, 'a')">
                         <input type="radio" name="q10" id="q10a">
-                        <label for="q10a">Arrays are mutable, primitives are not</label>
+                        <label for="q10a">المصفوفات قابلة للتغيير (mutable) بينما القيم البدائية ليست كذلك</label>
                     </div>
                     <div class="option" onclick="selectOption(10, 'b')">
                         <input type="radio" name="q10" id="q10b">
-                        <label for="q10b">Primitives pass a copy of the value; arrays pass a copy of the reference (address) pointing to the same data</label>
+                        <label for="q10b">القيم البدائية تمرِّر نسخة من القيمة؛ أما المصفوفات فتمرِّر نسخة من المرجع (العنوان) الذي يشير إلى البيانات نفسها</label>
                     </div>
                     <div class="option" onclick="selectOption(10, 'c')">
                         <input type="radio" name="q10" id="q10c">
-                        <label for="q10c">The method names are different</label>
+                        <label for="q10c">أسماء الدوال (methods) مختلفة</label>
                     </div>
                     <div class="option" onclick="selectOption(10, 'd')">
                         <input type="radio" name="q10" id="q10d">
-                        <label for="q10d">Java has a bug with primitive types</label>
+                        <label for="q10d">توجد علّة (bug) في لغة Java مع الأنواع البدائية</label>
                     </div>
                 </div>
                 <input type="hidden" id="answer10" value="">
@@ -1698,22 +1706,22 @@
                     <div class="feedback-title"></div>
                     <div class="feedback-text"></div>
                 </div>
-                <button class="check-btn" onclick="checkAnswer(10)">Check Answer</button>
+                <button class="check-btn" onclick="checkAnswer(10)">تحقق من الإجابة</button>
             </div>
 
             <!-- SECTION 4: Array Manipulation -->
             <div class="section-divider">
-                <span>Part 4: Array Manipulation</span>
+                <span>الجزء 4: التعامل مع المصفوفات</span>
             </div>
 
             <!-- Question 11: Shared Reference -->
             <div class="question-card" id="q11">
                 <div class="question-header">
                     <div class="question-number">11</div>
-                    <span class="question-type">Code Tracing</span>
+                    <span class="question-type">تتبّع الكود</span>
                 </div>
                 <div class="question-text">
-                    What are the values of <code>a[0]</code> and <code>b[0]</code> after running this code?
+                    ما قيمتا <code>a[0]</code> و <code>b[0]</code> بعد تشغيل هذا الكود؟
                 </div>
                 <div class="code-block">
                     <div class="code-header">
@@ -1754,17 +1762,17 @@
                     <div class="feedback-title"></div>
                     <div class="feedback-text"></div>
                 </div>
-                <button class="check-btn" onclick="checkAnswer(11)">Check Answer</button>
+                <button class="check-btn" onclick="checkAnswer(11)">تحقق من الإجابة</button>
             </div>
 
             <!-- Question 12: Fill in the Blank -->
             <div class="question-card" id="q12">
                 <div class="question-header">
                     <div class="question-number">12</div>
-                    <span class="question-type">Fill in the Blank</span>
+                    <span class="question-type">أكمل الفراغ</span>
                 </div>
                 <div class="question-text">
-                    After running this code, what is the value printed?
+                    بعد تشغيل هذا الكود، ما القيمة التي تُطبع؟
                 </div>
                 <div class="code-block">
                     <div class="code-header">
@@ -1780,24 +1788,24 @@
                     </div>
                 </div>
                 <div class="fill-blank">
-                    <span>The output is:</span>
+                    <span>الناتج هو:</span>
                     <input type="text" id="fillAnswer12" placeholder="?">
                 </div>
                 <div class="feedback" id="feedback12">
                     <div class="feedback-title"></div>
                     <div class="feedback-text"></div>
                 </div>
-                <button class="check-btn" onclick="checkAnswer(12)">Check Answer</button>
+                <button class="check-btn" onclick="checkAnswer(12)">تحقق من الإجابة</button>
             </div>
 
             <!-- Question 13: Declaration vs Creation -->
             <div class="question-card" id="q13">
                 <div class="question-header">
                     <div class="question-number">13</div>
-                    <span class="question-type">True / False</span>
+                    <span class="question-type">صواب / خطأ</span>
                 </div>
                 <div class="question-text">
-                    The following code creates an array in memory:
+                    الكود التالي يُنشئ مصفوفة في الذاكرة:
                 </div>
                 <div class="code-block">
                     <div class="code-header">
@@ -1811,30 +1819,30 @@
                     </div>
                 </div>
                 <div class="tf-options">
-                    <div class="tf-option true" onclick="selectTF(13, 'true')">TRUE</div>
-                    <div class="tf-option false" onclick="selectTF(13, 'false')">FALSE</div>
+                    <div class="tf-option true" onclick="selectTF(13, 'true')">صواب</div>
+                    <div class="tf-option false" onclick="selectTF(13, 'false')">خطأ</div>
                 </div>
                 <input type="hidden" id="answer13" value="">
                 <div class="feedback" id="feedback13">
                     <div class="feedback-title"></div>
                     <div class="feedback-text"></div>
                 </div>
-                <button class="check-btn" onclick="checkAnswer(13)">Check Answer</button>
+                <button class="check-btn" onclick="checkAnswer(13)">تحقق من الإجابة</button>
             </div>
 
             <!-- Question 14: Memory Understanding -->
             <div class="question-card" id="q14">
                 <div class="question-header">
                     <div class="question-number">14</div>
-                    <span class="question-type">Multiple Choice</span>
+                    <span class="question-type">اختيار من متعدد</span>
                 </div>
                 <div class="question-text">
-                    Look at this memory diagram. What does this represent?
+                    انظر إلى مخطط الذاكرة هذا. ماذا يمثّل؟
                 </div>
                 <div class="memory-visual">
                     <div class="memory-boxes">
                         <div>
-                            <div style="font-size: 0.85rem; color: #6b7280; margin-bottom: 10px;">Stack Memory</div>
+                            <div style="font-size: 0.85rem; color: #6b7280; margin-bottom: 10px;">ذاكرة المكدّس (Stack)</div>
                             <div class="mem-box">
                                 <div class="mem-name">arr</div>
                                 <div class="mem-value">0x1A2B</div>
@@ -1842,7 +1850,7 @@
                         </div>
                         <div class="arrow-right">→</div>
                         <div>
-                            <div style="font-size: 0.85rem; color: #6b7280; margin-bottom: 10px;">Heap Memory (0x1A2B)</div>
+                            <div style="font-size: 0.85rem; color: #6b7280; margin-bottom: 10px;">ذاكرة الكومة (Heap) — 0x1A2B</div>
                             <div class="array-visual">
                                 <div class="arr-cell">
                                     <div class="arr-index">[0]</div>
@@ -1863,19 +1871,19 @@
                 <div class="options">
                     <div class="option" onclick="selectOption(14, 'a')">
                         <input type="radio" name="q14" id="q14a">
-                        <label for="q14a">The array data is stored in the variable <code>arr</code></label>
+                        <label for="q14a">بيانات المصفوفة مخزَّنة داخل المتغير <code>arr</code></label>
                     </div>
                     <div class="option" onclick="selectOption(14, 'b')">
                         <input type="radio" name="q14" id="q14b">
-                        <label for="q14b">The variable <code>arr</code> holds the address <code>0x1A2B</code> which points to the actual array in heap memory</label>
+                        <label for="q14b">المتغير <code>arr</code> يحمل العنوان <code>0x1A2B</code> الذي يشير إلى المصفوفة الفعلية في ذاكرة الكومة (Heap)</label>
                     </div>
                     <div class="option" onclick="selectOption(14, 'c')">
                         <input type="radio" name="q14" id="q14c">
-                        <label for="q14c">The array is stored in two different locations</label>
+                        <label for="q14c">المصفوفة مخزَّنة في موقعين مختلفين</label>
                     </div>
                     <div class="option" onclick="selectOption(14, 'd')">
                         <input type="radio" name="q14" id="q14d">
-                        <label for="q14d">This is a 2D array</label>
+                        <label for="q14d">هذه مصفوفة ثنائية البعد (2D)</label>
                     </div>
                 </div>
                 <input type="hidden" id="answer14" value="">
@@ -1883,17 +1891,17 @@
                     <div class="feedback-title"></div>
                     <div class="feedback-text"></div>
                 </div>
-                <button class="check-btn" onclick="checkAnswer(14)">Check Answer</button>
+                <button class="check-btn" onclick="checkAnswer(14)">تحقق من الإجابة</button>
             </div>
 
             <!-- Question 15: Complex Scenario -->
             <div class="question-card" id="q15">
                 <div class="question-header">
                     <div class="question-number">15</div>
-                    <span class="question-type">Code Tracing</span>
+                    <span class="question-type">تتبّع الكود</span>
                 </div>
                 <div class="question-text">
-                    What is the final output of this code?
+                    ما الناتج النهائي لهذا الكود؟
                 </div>
                 <div class="code-block">
                     <div class="code-header">
@@ -1935,62 +1943,62 @@
                     <div class="feedback-title"></div>
                     <div class="feedback-text"></div>
                 </div>
-                <button class="check-btn" onclick="checkAnswer(15)">Check Answer</button>
+                <button class="check-btn" onclick="checkAnswer(15)">تحقق من الإجابة</button>
             </div>
 
             <!-- Submit All Button -->
-            <button class="submit-all-btn" onclick="submitAll()">Submit All Answers</button>
+            <button class="submit-all-btn" onclick="submitAll()">إرسال جميع الإجابات</button>
 
             <!-- Results Section -->
             <div class="results-section" id="results">
-                <div class="results-title">Your Results</div>
+                <div class="results-title">نتيجتك</div>
                 <div class="results-score" id="final-score">0%</div>
                 <div class="results-message" id="results-message"></div>
                 <div class="results-breakdown">
                     <div class="breakdown-item correct">
-                        <strong id="correct-count">0</strong> Correct
+                        <strong id="correct-count">0</strong> صحيحة
                     </div>
                     <div class="breakdown-item incorrect">
-                        <strong id="incorrect-count">0</strong> Incorrect
+                        <strong id="incorrect-count">0</strong> خاطئة
                     </div>
                 </div>
             </div>
 
-            <button class="reset-btn" onclick="resetQuiz()">Reset Quiz</button>
+            <button class="reset-btn" onclick="resetQuiz()">إعادة تعيين الاختبار</button>
         </div>
 
         <!-- Bottom Navigation -->
         <nav class="bottom-nav">
-            <a href="01-1d-arrays.html" class="prev-lesson">‹ Previous: 1D Arrays</a>
-            <a href="03-2d-3d-arrays.html">Next: 2D & 3D Arrays ›</a>
+            <a href="01-1d-arrays-ar.html" class="prev-lesson">&rarr; السابق: المصفوفات أحادية البعد</a>
+            <a href="03-2d-3d-arrays-ar.html">التالي: المصفوفات ثنائية وثلاثية البعد &larr;</a>
         </nav>
 
         <!-- Footer -->
         <div class="footer">
-            <p><strong>CPCS203</strong> - Object-Oriented Programming</p>
-            <p>Module 1: Arrays - 1D Exercises</p>
-            <p>Prepared by Dr. Almalawi</p>
+            <p><strong>CPCS203</strong> - البرمجة الكائنية التوجه</p>
+            <p>الوحدة 1: المصفوفات - تمارين المصفوفات أحادية البعد</p>
+            <p>إعداد د. الملاوي</p>
         </div>
     </div>
 
     <script>
         // Correct answers
         const answers = {
-            1: { correct: 'true', explanation: 'Correct! Primitive variables (int, double, boolean, etc.) store the actual value directly in memory.' },
-            2: { correct: 'false', explanation: 'Correct! A reference variable does NOT store the actual data. It stores the memory ADDRESS (reference) pointing to where the data is stored in heap memory.' },
-            3: { correct: 'b', explanation: 'Correct! A reference variable stores the memory address (reference) that points to where the actual data is located in heap memory.' },
-            4: { correct: 'b', explanation: 'Correct! String is NOT a primitive data type. It is a reference type (a class). The 8 primitive types are: byte, short, int, long, float, double, char, boolean.' },
-            5: { correct: 'a', explanation: 'Correct! For primitives, the == operator compares the actual values. Since both a and b have the value 10, they are equal.' },
-            6: { correct: 'b', explanation: 'Correct! Even though arr1 and arr2 contain the same values {1,2,3}, they are TWO DIFFERENT arrays in memory. The == operator compares their memory addresses (references), which are different!' },
-            7: { correct: 'a', explanation: 'Correct! When we write arr2 = arr1, we copy the reference (address). Now both variables point to the SAME array in memory. So arr1 == arr2 is true because they have the same address.' },
-            8: { correct: 'a', explanation: 'Correct! With primitives, Java passes a COPY of the value. The method receives a copy (num = 5), changes the copy to 100, but the original x remains 5. This is called "pass by value".' },
-            9: { correct: 'b', explanation: 'Correct! With arrays, Java passes a copy of the REFERENCE (address). Both arr and nums point to the SAME array in memory. When the method changes nums[0], it changes the actual array, so arr[0] becomes 100.' },
-            10: { correct: 'b', explanation: 'Correct! This is the key concept: Primitives pass a copy of the value (changes don\'t affect original). Arrays/Objects pass a copy of the reference - both the original and the copy point to the SAME data in memory!' },
-            11: { correct: 'b', explanation: 'Correct! Since b = a copies the reference, both a and b point to the SAME array. When we change b[0] to 99, we\'re changing the shared array. So both a[0] and b[0] are 99.' },
-            12: { correct: '0', explanation: 'Correct! When you create an array with new int[5], all elements are automatically initialized to the default value for int, which is 0.' },
-            13: { correct: 'false', explanation: 'Correct! The line "int[] arr;" only DECLARES a reference variable. It does NOT create an array in memory. The variable arr holds null at this point. You need "new int[size]" to actually create the array.' },
-            14: { correct: 'b', explanation: 'Correct! This diagram shows how reference variables work: The variable arr in stack memory holds an address (0x1A2B), and this address points to where the actual array data is stored in heap memory.' },
-            15: { correct: 'c', explanation: 'Correct! x and y share the SAME array (y = x copies the reference). z is a DIFFERENT array (created with new values). When y[1] = 50 changes the shared array, x[1] also becomes 50. But z[1] remains 2 because z is a separate array.' }
+            1: { correct: 'true', explanation: 'صحيح! المتغيرات البدائية (int، double، boolean، إلخ) تخزّن القيمة الفعلية مباشرةً في الذاكرة.' },
+            2: { correct: 'false', explanation: 'صحيح! المتغير المرجعي لا يخزّن البيانات الفعلية، بل يخزّن عنوان الذاكرة (المرجع) الذي يشير إلى موضع تخزين البيانات في ذاكرة الكومة (Heap).' },
+            3: { correct: 'b', explanation: 'صحيح! يخزّن المتغير المرجعي عنوان الذاكرة (المرجع) الذي يشير إلى موضع البيانات الفعلية في ذاكرة الكومة (Heap).' },
+            4: { correct: 'b', explanation: 'صحيح! النوع String ليس نوعًا بدائيًّا، بل هو نوع مرجعي (صنف class). الأنواع البدائية الثمانية هي: byte، short، int، long، float، double، char، boolean.' },
+            5: { correct: 'a', explanation: 'صحيح! في حالة الأنواع البدائية، يقارن المُعامل == بين القيم الفعلية. وبما أن قيمة كلٍّ من a و b تساوي 10، فهما متساويان.' },
+            6: { correct: 'b', explanation: 'صحيح! رغم أن arr1 و arr2 يحتويان على القيم نفسها {1,2,3}، إلا أنهما مصفوفتان مختلفتان في الذاكرة. ويقارن المُعامل == بين عنواني الذاكرة (المرجعين) وهما مختلفان!' },
+            7: { correct: 'a', explanation: 'صحيح! عندما نكتب arr2 = arr1، فإننا ننسخ المرجع (العنوان). والآن يشير كلا المتغيرين إلى المصفوفة نفسها في الذاكرة. لذا فإن arr1 == arr2 يساوي true لأن لهما العنوان نفسه.' },
+            8: { correct: 'a', explanation: 'صحيح! مع الأنواع البدائية، تمرِّر Java نسخة من القيمة. تستقبل الدالة نسخة (num = 5)، وتغيّر النسخة إلى 100، لكن قيمة x الأصلية تبقى 5. وهذا ما يُسمى "التمرير بالقيمة" (pass by value).' },
+            9: { correct: 'b', explanation: 'صحيح! مع المصفوفات، تمرِّر Java نسخة من المرجع (العنوان). يشير كلٌّ من arr و nums إلى المصفوفة نفسها في الذاكرة. وعندما تغيّر الدالة قيمة nums[0]، فإنها تغيّر المصفوفة الفعلية، فتصبح arr[0] تساوي 100.' },
+            10: { correct: 'b', explanation: 'صحيح! هذا هو المفهوم الأساسي: الأنواع البدائية تمرِّر نسخة من القيمة (فلا تؤثر التغييرات على الأصل). أما المصفوفات/الكائنات فتمرِّر نسخة من المرجع، حيث يشير كلٌّ من الأصل والنسخة إلى البيانات نفسها في الذاكرة!' },
+            11: { correct: 'b', explanation: 'صحيح! بما أن b = a تنسخ المرجع، فإن كلًّا من a و b يشيران إلى المصفوفة نفسها. وعندما نغيّر b[0] إلى 99، فإننا نغيّر المصفوفة المشتركة. لذا تكون قيمتا a[0] و b[0] كلتاهما 99.' },
+            12: { correct: '0', explanation: 'صحيح! عند إنشاء مصفوفة باستخدام new int[5]، تتم تهيئة جميع العناصر تلقائيًّا إلى القيمة الافتراضية للنوع int، وهي 0.' },
+            13: { correct: 'false', explanation: 'صحيح! السطر "int[] arr;" يُعلن (declare) فقط عن متغير مرجعي. ولا يُنشئ مصفوفة في الذاكرة. يحمل المتغير arr القيمة null في هذه المرحلة. وتحتاج إلى "new int[size]" لإنشاء المصفوفة فعليًّا.' },
+            14: { correct: 'b', explanation: 'صحيح! يوضّح هذا المخطط كيفية عمل المتغيرات المرجعية: يحمل المتغير arr في ذاكرة المكدّس (Stack) عنوانًا (0x1A2B)، ويشير هذا العنوان إلى موضع تخزين بيانات المصفوفة الفعلية في ذاكرة الكومة (Heap).' },
+            15: { correct: 'c', explanation: 'صحيح! يتشارك x و y المصفوفة نفسها (فالسطر y = x ينسخ المرجع). أما z فهي مصفوفة مختلفة (أُنشئت بقيم جديدة). وعندما يغيّر y[1] = 50 المصفوفة المشتركة، تصبح x[1] أيضًا 50. لكن z[1] تبقى 2 لأن z مصفوفة منفصلة.' }
         };
 
         let score = 0;
@@ -2036,7 +2044,7 @@
             }
 
             if (!userAnswer) {
-                alert('Please select an answer first!');
+                alert('الرجاء اختيار إجابة أولاً!');
                 return;
             }
 
@@ -2053,12 +2061,12 @@
             if (isCorrect) {
                 card.classList.add('correct');
                 feedback.classList.add('correct', 'show');
-                feedbackTitle.textContent = '✓ Correct!';
+                feedbackTitle.textContent = '✓ صحيح!';
                 score++;
             } else {
                 card.classList.add('incorrect');
                 feedback.classList.add('incorrect', 'show');
-                feedbackTitle.textContent = '✗ Incorrect';
+                feedbackTitle.textContent = '✗ خطأ';
             }
 
             feedbackText.textContent = answers[qNum].explanation;
@@ -2122,13 +2130,13 @@
 
             let message = '';
             if (percentage >= 90) {
-                message = 'Excellent! You have a strong understanding of reference vs primitive variables!';
+                message = 'ممتاز! لديك فهم قوي للفرق بين المتغيرات المرجعية والبدائية!';
             } else if (percentage >= 70) {
-                message = 'Good job! Review the questions you missed to strengthen your understanding.';
+                message = 'أحسنت! راجع الأسئلة التي أخطأت فيها لتعزيز فهمك.';
             } else if (percentage >= 50) {
-                message = 'Keep practicing! Focus on understanding how references work differently from primitives.';
+                message = 'واصل التدريب! ركّز على فهم كيفية اختلاف عمل المراجع عن الأنواع البدائية.';
             } else {
-                message = 'Please review the lecture material on primitive vs reference variables and try again.';
+                message = 'الرجاء مراجعة مادة المحاضرة حول المتغيرات البدائية مقابل المرجعية والمحاولة مرة أخرى.';
             }
 
             document.getElementById('results-message').textContent = message;

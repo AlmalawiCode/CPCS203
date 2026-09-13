@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Module 3: File I/O | CPCS203</title>
+    <title>الوحدة 3: الإدخال والإخراج من الملفات (File I/O) | CPCS203</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -25,7 +26,7 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Tajawal', 'Amiri', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
             color: var(--dark-color);
             background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
@@ -36,7 +37,7 @@
         .lang-switch {
             position: fixed;
             top: 20px;
-            right: 20px;
+            left: 20px;
             z-index: 1000;
             padding: 10px 20px;
             background: linear-gradient(135deg, var(--primary-light), var(--secondary-color));
@@ -222,7 +223,7 @@
             justify-content: center;
             font-weight: bold;
             font-size: 1.2rem;
-            margin-right: 20px;
+            margin-left: 20px;
             flex-shrink: 0;
         }
 
@@ -273,7 +274,7 @@
             display: flex;
             align-items: center;
             gap: 15px;
-            margin-left: 20px;
+            margin-right: 20px;
         }
 
         .lesson-tag {
@@ -398,11 +399,11 @@
             }
 
             .lesson-number {
-                margin-right: 0;
+                margin-left: 0;
             }
 
             .lesson-meta {
-                margin-left: 0;
+                margin-right: 0;
                 justify-content: center;
             }
 
@@ -414,33 +415,33 @@
     </style>
 </head>
 <body>
-    <a href="index-ar.html" class="lang-switch">&#127760; العربية</a>
+    <a href="index.html" class="lang-switch">English &#127760;</a>
 
     <!-- Header -->
     <header class="header">
         <nav class="breadcrumb">
             <a href="../index.html">CPCS203</a>
-            <span>&#8250;</span>
-            <span>Module 3</span>
+            <span>&#8249;</span>
+            <span>الوحدة 3</span>
         </nav>
-        <div class="header-title">File I/O</div>
+        <div class="header-title">الإدخال والإخراج من الملفات (File I/O)</div>
     </header>
 
     <!-- Hero Section -->
     <section class="hero">
-        <div class="module-badge">Module 3 &bull; Chapter 12</div>
-        <h1>File I/O</h1>
-        <p class="chapter">Reading and Writing Files in Java</p>
+        <div class="module-badge">الوحدة 3 &bull; الفصل 12</div>
+        <h1>الإدخال والإخراج من الملفات (File I/O)</h1>
+        <p class="chapter">قراءة الملفات والكتابة إليها في لغة Java</p>
         <p class="description">
-            Learn how to store data permanently using files. Master the File class,
-            Scanner for reading, and PrintWriter for writing - essential skills for real-world applications!
+            تعلّم كيفية تخزين البيانات بشكل دائم باستخدام الملفات. أتقن صنف File،
+            وأداة Scanner للقراءة، وأداة PrintWriter للكتابة - وهي مهارات أساسية للتطبيقات الواقعية!
         </p>
 
         <!-- Progress -->
         <div class="progress-section">
             <div class="progress-header">
-                <span>Module Progress</span>
-                <span>5 Lessons</span>
+                <span>تقدّم الوحدة</span>
+                <span>5 دروس</span>
             </div>
             <div class="progress-bar">
                 <div class="progress-fill" style="width: 100%;"></div>
@@ -453,92 +454,92 @@
         <!-- Learning Path -->
         <div class="learning-path">
             <div class="path-header">
-                <div class="path-title">Learning Path</div>
-                <div class="path-count">5 Lessons</div>
+                <div class="path-title">مسار التعلّم</div>
+                <div class="path-count">5 دروس</div>
             </div>
 
             <div class="lessons-list">
                 <!-- Lesson 1: Introduction to Files -->
-                <a href="01-intro-files.html" class="lesson-card">
+                <a href="01-intro-files-ar.html" class="lesson-card">
                     <div class="lesson-number tutorial">1</div>
                     <div class="lesson-content">
-                        <div class="lesson-type tutorial">Tutorial</div>
-                        <div class="lesson-title">Introduction to Files</div>
+                        <div class="lesson-type tutorial">درس تعليمي</div>
+                        <div class="lesson-title">مقدمة عن الملفات</div>
                         <div class="lesson-description">
-                            What is a file? Why do we need files? Understanding the difference between text-based and binary files.
+                            ما هو الملف؟ ولماذا نحتاج إلى الملفات؟ فهم الفرق بين الملفات النصية (Text-based) والملفات الثنائية (Binary).
                         </div>
                     </div>
                     <div class="lesson-meta">
-                        <span class="lesson-tag">Fundamentals</span>
-                        <span class="lesson-tag">File Types</span>
-                        <span class="lesson-arrow">&#8594;</span>
+                        <span class="lesson-tag">الأساسيات</span>
+                        <span class="lesson-tag">أنواع الملفات</span>
+                        <span class="lesson-arrow">&#8592;</span>
                     </div>
                 </a>
 
                 <!-- Lesson 2: The File Class -->
-                <a href="02-file-class.html" class="lesson-card">
+                <a href="02-file-class-ar.html" class="lesson-card">
                     <div class="lesson-number tutorial">2</div>
                     <div class="lesson-content">
-                        <div class="lesson-type tutorial">Tutorial</div>
-                        <div class="lesson-title">The File Class</div>
+                        <div class="lesson-type tutorial">درس تعليمي</div>
+                        <div class="lesson-title">صنف File</div>
                         <div class="lesson-description">
-                            Creating File objects, understanding absolute vs relative paths, and checking if files exist.
+                            إنشاء كائنات File، وفهم المسارات المطلقة (Absolute) مقابل المسارات النسبية (Relative)، والتحقق من وجود الملفات.
                         </div>
                     </div>
                     <div class="lesson-meta">
-                        <span class="lesson-tag">File Class</span>
-                        <span class="lesson-tag">Paths</span>
-                        <span class="lesson-arrow">&#8594;</span>
+                        <span class="lesson-tag">صنف File</span>
+                        <span class="lesson-tag">المسارات</span>
+                        <span class="lesson-arrow">&#8592;</span>
                     </div>
                 </a>
 
                 <!-- Lesson 3: Reading Files with Scanner -->
-                <a href="03-reading-scanner.html" class="lesson-card">
+                <a href="03-reading-scanner-ar.html" class="lesson-card">
                     <div class="lesson-number tutorial">3</div>
                     <div class="lesson-content">
-                        <div class="lesson-type tutorial">Tutorial</div>
-                        <div class="lesson-title">Reading Files with Scanner</div>
+                        <div class="lesson-type tutorial">درس تعليمي</div>
+                        <div class="lesson-title">قراءة الملفات باستخدام Scanner</div>
                         <div class="lesson-description">
-                            Using Scanner to read from files. Methods like next(), nextLine(), nextInt(), and reading entire files.
+                            استخدام Scanner للقراءة من الملفات. توابع مثل next() و nextLine() و nextInt()، وقراءة الملفات كاملة.
                         </div>
                     </div>
                     <div class="lesson-meta">
                         <span class="lesson-tag">Scanner</span>
-                        <span class="lesson-tag">Reading</span>
-                        <span class="lesson-arrow">&#8594;</span>
+                        <span class="lesson-tag">القراءة</span>
+                        <span class="lesson-arrow">&#8592;</span>
                     </div>
                 </a>
 
                 <!-- Lesson 4: Writing Files with PrintWriter -->
-                <a href="04-writing-printwriter.html" class="lesson-card">
+                <a href="04-writing-printwriter-ar.html" class="lesson-card">
                     <div class="lesson-number tutorial">4</div>
                     <div class="lesson-content">
-                        <div class="lesson-type tutorial">Tutorial</div>
-                        <div class="lesson-title">Writing Files with PrintWriter</div>
+                        <div class="lesson-type tutorial">درس تعليمي</div>
+                        <div class="lesson-title">الكتابة إلى الملفات باستخدام PrintWriter</div>
                         <div class="lesson-description">
-                            Using PrintWriter to write to files. Understanding buffers, why we must close files, and how data reaches the disk.
+                            استخدام PrintWriter للكتابة إلى الملفات. فهم المخازن المؤقتة (Buffers)، ولماذا يجب علينا إغلاق الملفات، وكيف تصل البيانات إلى القرص.
                         </div>
                     </div>
                     <div class="lesson-meta">
                         <span class="lesson-tag">PrintWriter</span>
-                        <span class="lesson-tag">Buffers</span>
-                        <span class="lesson-arrow">&#8594;</span>
+                        <span class="lesson-tag">المخازن المؤقتة</span>
+                        <span class="lesson-arrow">&#8592;</span>
                     </div>
                 </a>
 
                 <!-- Lesson 5: Exercises -->
-                <a href="05-exercises.html" class="lesson-card">
+                <a href="05-exercises-ar.html" class="lesson-card">
                     <div class="lesson-number exercise">5</div>
                     <div class="lesson-content">
-                        <div class="lesson-type exercise">Exercises</div>
-                        <div class="lesson-title">File I/O Exercises</div>
+                        <div class="lesson-type exercise">تمارين</div>
+                        <div class="lesson-title">تمارين الإدخال والإخراج من الملفات</div>
                         <div class="lesson-description">
-                            10 interactive questions testing your understanding of File class, Scanner, PrintWriter, and file handling concepts.
+                            10 أسئلة تفاعلية تختبر فهمك لصنف File وأداة Scanner وأداة PrintWriter ومفاهيم التعامل مع الملفات.
                         </div>
                     </div>
                     <div class="lesson-meta">
-                        <span class="lesson-tag">10 Questions</span>
-                        <span class="lesson-arrow">&#8594;</span>
+                        <span class="lesson-tag">10 أسئلة</span>
+                        <span class="lesson-arrow">&#8592;</span>
                     </div>
                 </a>
             </div>
@@ -548,33 +549,33 @@
         <section class="concepts-section">
             <h2 class="section-title">
                 <span>&#128218;</span>
-                Key Concepts You'll Learn
+                المفاهيم الأساسية التي ستتعلّمها
             </h2>
             <div class="concepts-grid">
                 <div class="concept-card">
                     <div class="concept-icon">&#128196;</div>
-                    <div class="concept-title">File Class</div>
-                    <div class="concept-description">Create File objects that represent files on your computer's storage.</div>
+                    <div class="concept-title">صنف File</div>
+                    <div class="concept-description">إنشاء كائنات File التي تمثّل الملفات الموجودة على وسيط التخزين في حاسوبك.</div>
                 </div>
                 <div class="concept-card">
                     <div class="concept-icon">&#128194;</div>
-                    <div class="concept-title">Paths</div>
-                    <div class="concept-description">Understand absolute paths vs relative paths and when to use each.</div>
+                    <div class="concept-title">المسارات</div>
+                    <div class="concept-description">فهم المسارات المطلقة (Absolute) مقابل المسارات النسبية (Relative) ومتى تستخدم كلًّا منها.</div>
                 </div>
                 <div class="concept-card">
                     <div class="concept-icon">&#128214;</div>
-                    <div class="concept-title">Scanner for Reading</div>
-                    <div class="concept-description">Read data from files using the familiar Scanner class.</div>
+                    <div class="concept-title">Scanner للقراءة</div>
+                    <div class="concept-description">قراءة البيانات من الملفات باستخدام صنف Scanner المألوف.</div>
                 </div>
                 <div class="concept-card">
                     <div class="concept-icon">&#9999;</div>
-                    <div class="concept-title">PrintWriter for Writing</div>
-                    <div class="concept-description">Write data to files just like printing to the console.</div>
+                    <div class="concept-title">PrintWriter للكتابة</div>
+                    <div class="concept-description">كتابة البيانات إلى الملفات تمامًا كما تطبع إلى الطرفية (Console).</div>
                 </div>
                 <div class="concept-card">
                     <div class="concept-icon">&#128190;</div>
-                    <div class="concept-title">Buffers & Flushing</div>
-                    <div class="concept-description">Learn why closing files is critical and how data reaches the disk.</div>
+                    <div class="concept-title">المخازن المؤقتة والتفريغ (Buffers &amp; Flushing)</div>
+                    <div class="concept-description">تعلّم لماذا يُعدّ إغلاق الملفات أمرًا بالغ الأهمية وكيف تصل البيانات إلى القرص.</div>
                 </div>
             </div>
         </section>
@@ -582,21 +583,21 @@
         <!-- Navigation -->
         <nav class="navigation">
             <a href="../index.html" class="nav-btn">
-                <span class="arrow">&#8592;</span>
-                <span>Back to Course</span>
-            </a>
-            <a href="01-intro-files.html" class="nav-btn">
-                <span>Start Learning</span>
                 <span class="arrow">&#8594;</span>
+                <span>العودة إلى المقرر</span>
+            </a>
+            <a href="01-intro-files-ar.html" class="nav-btn">
+                <span>ابدأ التعلّم</span>
+                <span class="arrow">&#8592;</span>
             </a>
         </nav>
     </main>
 
     <!-- Footer -->
     <footer class="footer">
-        <p><strong>CPCS203</strong> - Object-Oriented Programming</p>
-        <p>Module 3: File I/O</p>
-        <p>Prepared by Dr. Almalawi</p>
+        <p><strong>CPCS203</strong> - البرمجة الكائنية التوجه</p>
+        <p>الوحدة 3: الإدخال والإخراج من الملفات (File I/O)</p>
+        <p>إعداد الدكتور المعلوي</p>
     </footer>
 </body>
 </html>

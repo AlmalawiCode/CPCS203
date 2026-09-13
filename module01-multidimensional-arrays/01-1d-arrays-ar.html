@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Week 1: Introduction to Arrays in Java | CPCS203</title>
+    <title>الأسبوع 1: مقدمة في المصفوفات (Arrays) في جافا | CPCS203</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -25,7 +26,7 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Tajawal', 'Amiri', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.8;
             color: var(--dark-color);
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -106,10 +107,10 @@
         /* Key Concept Box */
         .key-concept {
             background: linear-gradient(135deg, #fef3c7, #fde68a);
-            border-left: 5px solid var(--warning-color);
+            border-right: 5px solid var(--warning-color);
             padding: 20px 25px;
             margin: 20px 0;
-            border-radius: 0 10px 10px 0;
+            border-radius: 10px 0 0 10px;
         }
 
         .key-concept-title {
@@ -122,10 +123,10 @@
         /* Important Box */
         .important-box {
             background: linear-gradient(135deg, #fee2e2, #fecaca);
-            border-left: 5px solid var(--danger-color);
+            border-right: 5px solid var(--danger-color);
             padding: 20px 25px;
             margin: 20px 0;
-            border-radius: 0 10px 10px 0;
+            border-radius: 10px 0 0 10px;
         }
 
         .important-box-title {
@@ -138,19 +139,19 @@
         /* Info Box */
         .info-box {
             background: linear-gradient(135deg, #dbeafe, #bfdbfe);
-            border-left: 5px solid var(--primary-color);
+            border-right: 5px solid var(--primary-color);
             padding: 20px 25px;
             margin: 20px 0;
-            border-radius: 0 10px 10px 0;
+            border-radius: 10px 0 0 10px;
         }
 
         /* Success Box */
         .success-box {
             background: linear-gradient(135deg, #d1fae5, #a7f3d0);
-            border-left: 5px solid var(--success-color);
+            border-right: 5px solid var(--success-color);
             padding: 20px 25px;
             margin: 20px 0;
-            border-radius: 0 10px 10px 0;
+            border-radius: 10px 0 0 10px;
         }
 
         /* Code Blocks */
@@ -165,6 +166,8 @@
             font-size: 0.95rem;
             line-height: 1.6;
             white-space: pre-wrap;
+            direction: ltr;
+            text-align: left;
         }
 
         .code-block .keyword {
@@ -190,6 +193,8 @@
         .code-block .variable {
             color: #9cdcfe;
         }
+
+        code, .code-inline { direction: ltr; unicode-bidi: embed; }
 
         .code-inline {
             background: #e5e7eb;
@@ -520,7 +525,7 @@
 
         /* Lists */
         ul, ol {
-            margin: 15px 0 15px 25px;
+            margin: 15px 25px 15px 0;
         }
 
         li {
@@ -581,7 +586,7 @@
             background: white;
             padding: 15px;
             border-radius: 10px;
-            border-left: 4px solid var(--secondary-color);
+            border-right: 4px solid var(--secondary-color);
         }
 
         /* Footer */
@@ -720,7 +725,7 @@
         .lang-switch {
             position: fixed;
             top: 20px;
-            right: 20px;
+            left: 20px;
             z-index: 1000;
             padding: 10px 20px;
             background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
@@ -740,29 +745,29 @@
     </style>
 </head>
 <body>
-    <a href="01-1d-arrays-ar.html" class="lang-switch">&#127760; العربية</a>
+    <a href="01-1d-arrays.html" class="lang-switch">English &#127760;</a>
     <div class="container">
         <!-- Navigation Breadcrumb -->
         <nav class="nav-breadcrumb">
             <div class="breadcrumb">
                 <a href="../index.html">CPCS203</a>
-                <span class="separator">›</span>
-                <a href="index.html">Module 1: Arrays</a>
-                <span class="separator">›</span>
-                <span class="current">1D Arrays</span>
+                <span class="separator">&#8249;</span>
+                <a href="index-ar.html">الوحدة 1: المصفوفات (Arrays)</a>
+                <span class="separator">&#8249;</span>
+                <span class="current">المصفوفات أحادية البعد (1D Arrays)</span>
             </div>
             <div class="lesson-nav">
-                <a href="#" class="disabled">‹ Previous</a>
-                <a href="02-1d-exercises.html">Next: 1D Exercises ›</a>
+                <a href="#" class="disabled">السابق &rarr;</a>
+                <a href="02-1d-exercises-ar.html">&larr; التالي: تمارين المصفوفات أحادية البعد</a>
             </div>
         </nav>
 
         <!-- Header -->
         <div class="header">
-            <h1>Introduction to Arrays in Java</h1>
-            <p class="subtitle">Understanding Memory, Data Types, and Array Fundamentals</p>
+            <h1>مقدمة في المصفوفات (Arrays) في جافا</h1>
+            <p class="subtitle">فهم الذاكرة وأنواع البيانات وأساسيات المصفوفات</p>
             <div class="course-info">
-                <strong>CPCS203</strong> - Object-Oriented Programming | Week 1
+                <strong>CPCS203</strong> - البرمجة الكائنية التوجه | الأسبوع 1
             </div>
         </div>
 
@@ -771,29 +776,29 @@
             <div class="section">
                 <h2 class="section-title">
                     <span class="section-number">1</span>
-                    What is a Program?
+                    ما هو البرنامج؟
                 </h2>
 
-                <p>Before we learn about arrays, we must understand the fundamentals. A program consists of two essential components:</p>
+                <p>قبل أن نتعلم المصفوفات (Arrays)، لا بد أن نفهم الأساسيات. يتكوّن البرنامج من مكوّنين جوهريين:</p>
 
                 <div class="memory-visualization">
-                    <div class="memory-title">Components of a Program</div>
+                    <div class="memory-title">مكوّنات البرنامج</div>
                     <div class="memory-container">
                         <div class="variable-box" style="background: linear-gradient(135deg, #fef3c7, #fde68a); border-color: var(--warning-color);">
-                            <div class="variable-name" style="color: var(--warning-color);">Instructions</div>
-                            <div class="variable-type">What to do (Code)</div>
+                            <div class="variable-name" style="color: var(--warning-color);">التعليمات (Instructions)</div>
+                            <div class="variable-type">ما الذي يجب فعله (الشيفرة)</div>
                         </div>
                         <div style="font-size: 2rem; color: var(--dark-color); display: flex; align-items: center;">+</div>
                         <div class="variable-box" style="background: linear-gradient(135deg, #d1fae5, #a7f3d0); border-color: var(--success-color);">
-                            <div class="variable-name" style="color: var(--success-color);">Data</div>
-                            <div class="variable-type">What to work with</div>
+                            <div class="variable-name" style="color: var(--success-color);">البيانات (Data)</div>
+                            <div class="variable-type">ما الذي نعمل عليه</div>
                         </div>
                     </div>
                 </div>
 
                 <div class="key-concept">
-                    <div class="key-concept-title">Key Question: Where is Data Stored?</div>
-                    <p>Data is stored in the <strong>memory (RAM)</strong>. But how exactly is it stored? This leads us to understanding <strong>data types</strong>.</p>
+                    <div class="key-concept-title">سؤال جوهري: أين تُخزّن البيانات؟</div>
+                    <p>تُخزّن البيانات في <strong>الذاكرة (RAM)</strong>. لكن كيف تُخزّن بالضبط؟ يقودنا هذا إلى فهم <strong>أنواع البيانات (Data Types)</strong>.</p>
                 </div>
             </div>
 
@@ -801,65 +806,65 @@
             <div class="section">
                 <h2 class="section-title">
                     <span class="section-number">2</span>
-                    Data Types in Java
+                    أنواع البيانات (Data Types) في جافا
                 </h2>
 
-                <p>In Java, data can be stored in two categories of data types:</p>
+                <p>في جافا، يمكن تخزين البيانات ضمن فئتين من أنواع البيانات:</p>
 
                 <div class="comparison-container">
                     <div class="comparison-box good">
-                        <div class="comparison-title">Primitive Data Types</div>
-                        <p>Store the <strong>actual value</strong> directly in memory</p>
-                        <p style="margin-top: 10px;"><em>8 types in Java</em></p>
+                        <div class="comparison-title">الأنواع البدائية (Primitive Data Types)</div>
+                        <p>تخزّن <strong>القيمة الفعلية</strong> مباشرةً في الذاكرة</p>
+                        <p style="margin-top: 10px;"><em>8 أنواع في جافا</em></p>
                     </div>
                     <div class="comparison-box" style="background: linear-gradient(135deg, #dbeafe, #bfdbfe); border: 2px solid var(--primary-color);">
-                        <div class="comparison-title" style="color: var(--primary-color);">Reference Data Types</div>
-                        <p>Store the <strong>address (reference)</strong> to the actual data</p>
-                        <p style="margin-top: 10px;"><em>Arrays, Strings, Objects</em></p>
+                        <div class="comparison-title" style="color: var(--primary-color);">الأنواع المرجعية (Reference Data Types)</div>
+                        <p>تخزّن <strong>العنوان (المرجع)</strong> المؤدي إلى البيانات الفعلية</p>
+                        <p style="margin-top: 10px;"><em>المصفوفات والنصوص والكائنات (Arrays, Strings, Objects)</em></p>
                     </div>
                 </div>
 
-                <h3 style="margin-top: 30px; color: var(--primary-color);">The 8 Primitive Data Types</h3>
+                <h3 style="margin-top: 30px; color: var(--primary-color);">الأنواع البدائية الثمانية</h3>
 
                 <div class="types-grid">
                     <div class="type-card">
                         <div class="type-name">byte</div>
-                        <div class="type-size">1 byte (8 bits)</div>
+                        <div class="type-size">1 بايت (8 بت)</div>
                         <div class="type-example">-128 to 127</div>
                     </div>
                     <div class="type-card">
                         <div class="type-name">short</div>
-                        <div class="type-size">2 bytes (16 bits)</div>
+                        <div class="type-size">2 بايت (16 بت)</div>
                         <div class="type-example">-32,768 to 32,767</div>
                     </div>
                     <div class="type-card">
                         <div class="type-name">int</div>
-                        <div class="type-size">4 bytes (32 bits)</div>
+                        <div class="type-size">4 بايت (32 بت)</div>
                         <div class="type-example">-2.1B to 2.1B</div>
                     </div>
                     <div class="type-card">
                         <div class="type-name">long</div>
-                        <div class="type-size">8 bytes (64 bits)</div>
-                        <div class="type-example">Very large numbers</div>
+                        <div class="type-size">8 بايت (64 بت)</div>
+                        <div class="type-example">أعداد كبيرة جدًا</div>
                     </div>
                     <div class="type-card">
                         <div class="type-name">float</div>
-                        <div class="type-size">4 bytes (32 bits)</div>
+                        <div class="type-size">4 بايت (32 بت)</div>
                         <div class="type-example">3.14f</div>
                     </div>
                     <div class="type-card">
                         <div class="type-name">double</div>
-                        <div class="type-size">8 bytes (64 bits)</div>
+                        <div class="type-size">8 بايت (64 بت)</div>
                         <div class="type-example">3.14159265359</div>
                     </div>
                     <div class="type-card">
                         <div class="type-name">char</div>
-                        <div class="type-size">2 bytes (16 bits)</div>
+                        <div class="type-size">2 بايت (16 بت)</div>
                         <div class="type-example">'A', 'B', '1'</div>
                     </div>
                     <div class="type-card">
                         <div class="type-name">boolean</div>
-                        <div class="type-size">1 bit</div>
+                        <div class="type-size">1 بت</div>
                         <div class="type-example">true / false</div>
                     </div>
                 </div>
@@ -881,9 +886,9 @@
                 </div>
 
                 <div class="info-box">
-                    <p><strong>What about String?</strong></p>
-                    <p><span class="code-inline">String</span> is <strong>NOT</strong> a primitive data type! It is a <strong>reference type</strong>.</p>
-                    <p style="margin-top: 10px;"><em>We will discuss this in detail in the coming weeks.</em></p>
+                    <p><strong>ماذا عن String؟</strong></p>
+                    <p><span class="code-inline">String</span> <strong>ليس</strong> نوعًا بدائيًا! بل هو <strong>نوع مرجعي (reference type)</strong>.</p>
+                    <p style="margin-top: 10px;"><em>سنناقش هذا بالتفصيل في الأسابيع القادمة.</em></p>
                 </div>
             </div>
 
@@ -891,19 +896,19 @@
             <div class="section">
                 <h2 class="section-title">
                     <span class="section-number">3</span>
-                    Why Do We Need Arrays?
+                    لماذا نحتاج إلى المصفوفات (Arrays)؟
                 </h2>
 
-                <p>Let's consider a real scenario:</p>
+                <p>دعونا نتأمّل سيناريو واقعيًا:</p>
 
                 <div class="key-concept">
-                    <div class="key-concept-title">Scenario: Store Student Ages</div>
-                    <p>You need to store the ages of <strong>100 students</strong> in your program. How would you do it?</p>
+                    <div class="key-concept-title">سيناريو: تخزين أعمار الطلاب</div>
+                    <p>تحتاج إلى تخزين أعمار <strong>100 طالب</strong> في برنامجك. كيف ستفعل ذلك؟</p>
                 </div>
 
                 <div class="comparison-container">
                     <div class="comparison-box bad">
-                        <div class="comparison-title">Without Arrays</div>
+                        <div class="comparison-title">بدون مصفوفات</div>
                         <div class="code-block" style="text-align: left; font-size: 0.85rem;">
 <span class="keyword">int</span> <span class="variable">age1</span> = <span class="number">20</span>;
 <span class="keyword">int</span> <span class="variable">age2</span> = <span class="number">21</span>;
@@ -912,10 +917,10 @@
 <span class="comment">// ... 96 more lines!</span>
 <span class="keyword">int</span> <span class="variable">age100</span> = <span class="number">20</span>;
                         </div>
-                        <p style="margin-top: 10px; color: var(--danger-color);">100 variables! Hard to manage!</p>
+                        <p style="margin-top: 10px; color: var(--danger-color);">100 متغيّر! يصعب التحكم بها!</p>
                     </div>
                     <div class="comparison-box good">
-                        <div class="comparison-title">With Arrays</div>
+                        <div class="comparison-title">مع المصفوفات</div>
                         <div class="code-block" style="text-align: left; font-size: 0.85rem;">
 <span class="keyword">int</span>[] <span class="variable">ages</span>;
 
@@ -924,13 +929,13 @@
 <span class="comment">// One variable to manage</span>
 <span class="comment">// all 100 ages!</span>
                         </div>
-                        <p style="margin-top: 10px; color: var(--success-color);">One handle for 100 values!</p>
+                        <p style="margin-top: 10px; color: var(--success-color);">مقبض واحد لـ 100 قيمة!</p>
                     </div>
                 </div>
 
                 <div class="success-box">
-                    <p><strong>Solution: Arrays!</strong></p>
-                    <p>An array is a <strong>single variable</strong> that can store <strong>multiple values</strong> of the same type in <strong>contiguous memory locations</strong>.</p>
+                    <p><strong>الحل: المصفوفات (Arrays)!</strong></p>
+                    <p>المصفوفة هي <strong>متغيّر واحد</strong> يمكنه تخزين <strong>قيم متعددة</strong> من النوع نفسه في <strong>مواقع ذاكرة متجاورة</strong>.</p>
                 </div>
             </div>
 
@@ -938,11 +943,11 @@
             <div class="section">
                 <h2 class="section-title">
                     <span class="section-number">4</span>
-                    What is an Array?
+                    ما هي المصفوفة (Array)؟
                 </h2>
 
                 <div class="memory-visualization">
-                    <div class="memory-title">Array: A Series of Contiguous Memory Locations</div>
+                    <div class="memory-title">المصفوفة: سلسلة من مواقع الذاكرة المتجاورة</div>
                     <div style="text-align: center;">
                         <div class="array-visual" style="display: inline-flex;">
                             <div class="array-cell">
@@ -966,50 +971,50 @@
                                 <div class="array-value">20</div>
                             </div>
                         </div>
-                        <p style="margin-top: 15px; color: #6b7280;">Memory addresses are consecutive (contiguous)</p>
+                        <p style="margin-top: 15px; color: #6b7280;">عناوين الذاكرة متتالية (متجاورة)</p>
                     </div>
                 </div>
 
-                <h3 style="color: var(--primary-color); margin-top: 30px;">Characteristics of Arrays</h3>
+                <h3 style="color: var(--primary-color); margin-top: 30px;">خصائص المصفوفات</h3>
 
                 <div class="steps-container">
                     <div class="step">
                         <div class="step-number">1</div>
                         <div class="step-content">
-                            <div class="step-title">Homogeneous (Same Type)</div>
-                            <p>An array can only store elements of <strong>ONE data type</strong>. You cannot mix integers and strings in the same array.</p>
+                            <div class="step-title">متجانسة (نوع واحد)</div>
+                            <p>يمكن للمصفوفة تخزين عناصر من <strong>نوع بيانات واحد فقط</strong>. لا يمكنك خلط الأعداد الصحيحة والنصوص في المصفوفة نفسها.</p>
                         </div>
                     </div>
                     <div class="step">
                         <div class="step-number">2</div>
                         <div class="step-content">
-                            <div class="step-title">Fixed Size</div>
-                            <p>Once an array is created, its <strong>size cannot be changed</strong>. You must know the size before creating it.</p>
+                            <div class="step-title">حجم ثابت</div>
+                            <p>بمجرد إنشاء المصفوفة، <strong>لا يمكن تغيير حجمها</strong>. يجب أن تعرف الحجم قبل إنشائها.</p>
                         </div>
                     </div>
                     <div class="step">
                         <div class="step-number">3</div>
                         <div class="step-content">
-                            <div class="step-title">Contiguous Memory</div>
-                            <p>Elements are stored in <strong>adjacent memory locations</strong>, making access very <strong>efficient</strong> (using offset calculation).</p>
+                            <div class="step-title">ذاكرة متجاورة</div>
+                            <p>تُخزّن العناصر في <strong>مواقع ذاكرة متلاصقة</strong>، مما يجعل الوصول إليها <strong>فعّالًا</strong> جدًا (باستخدام حساب الإزاحة).</p>
                         </div>
                     </div>
                     <div class="step">
                         <div class="step-number">4</div>
                         <div class="step-content">
-                            <div class="step-title">Zero-Based Indexing</div>
-                            <p>The first element is at index <strong>0</strong>, not 1. An array of size 5 has indices 0, 1, 2, 3, 4.</p>
+                            <div class="step-title">الترقيم يبدأ من الصفر</div>
+                            <p>يقع العنصر الأول عند الفهرس <strong>0</strong>، وليس 1. فمصفوفة حجمها 5 لها الفهارس 0 و1 و2 و3 و4.</p>
                         </div>
                     </div>
                 </div>
 
                 <div class="info-box" style="margin-top: 20px;">
-                    <p><strong>Why is contiguous memory efficient?</strong></p>
-                    <p>When you access <code class="code-inline">ages[3]</code>, the computer calculates:</p>
+                    <p><strong>لماذا تكون الذاكرة المتجاورة فعّالة؟</strong></p>
+                    <p>عندما تصل إلى <code class="code-inline">ages[3]</code>، يحسب الحاسوب:</p>
                     <p style="text-align: center; margin-top: 10px; font-family: monospace;">
                         address = base_address + (index × size_of_element)
                     </p>
-                    <p style="margin-top: 10px;"><em>You will learn more about this in Operating Systems (Memory Management).</em></p>
+                    <p style="margin-top: 10px;"><em>ستتعلم المزيد عن هذا في مقرر أنظمة التشغيل (إدارة الذاكرة).</em></p>
                 </div>
             </div>
 
@@ -1017,20 +1022,20 @@
             <div class="section">
                 <h2 class="section-title">
                     <span class="section-number">5</span>
-                    The Three Essential Steps
+                    الخطوات الثلاث الأساسية
                 </h2>
 
                 <div class="important-box">
-                    <div class="important-box-title">Critical Understanding</div>
-                    <p>Many students confuse these three steps. Understanding them is <strong>essential for Data Structures</strong>!</p>
+                    <div class="important-box-title">فهم بالغ الأهمية</div>
+                    <p>يخلط كثير من الطلاب بين هذه الخطوات الثلاث. فهمها <strong>ضروري لمقرر هياكل البيانات</strong>!</p>
                 </div>
 
                 <!-- Step 1: Declaration -->
                 <div class="step" style="margin-top: 25px;">
                     <div class="step-number">1</div>
                     <div class="step-content">
-                        <div class="step-title">Declaration</div>
-                        <p>Creating a <strong>reference variable</strong> that will hold the address of the array.</p>
+                        <div class="step-title">التصريح (Declaration)</div>
+                        <p>إنشاء <strong>متغيّر مرجعي (reference variable)</strong> سيحمل عنوان المصفوفة.</p>
                         <div class="code-block">
 <span class="keyword">int</span>[] <span class="variable">ages</span>;
 <span class="comment">// Declares a reference variable</span>
@@ -1039,10 +1044,10 @@
                 </div>
 
                 <div class="memory-visualization">
-                    <div class="memory-title">After Declaration: Reference Variable Created</div>
+                    <div class="memory-title">بعد التصريح: أُنشئ المتغيّر المرجعي</div>
                     <div class="memory-container">
                         <div class="memory-section">
-                            <div class="memory-section-title">Stack Memory</div>
+                            <div class="memory-section-title">ذاكرة المكدّس (Stack)</div>
                             <div class="variable-box">
                                 <div class="variable-name">ages</div>
                                 <div class="variable-value"><span class="null-value">null</span></div>
@@ -1050,25 +1055,25 @@
                             </div>
                         </div>
                         <div class="memory-section">
-                            <div class="memory-section-title">Heap Memory</div>
+                            <div class="memory-section-title">ذاكرة الكومة (Heap)</div>
                             <div style="padding: 30px; color: #9ca3af; border: 2px dashed #d1d5db; border-radius: 10px;">
-                                No array created yet
+                                لم تُنشأ أي مصفوفة بعد
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="important-box">
-                    <div class="important-box-title">Important!</div>
-                    <p>The reference variable <code class="code-inline">ages</code> does <strong>NOT</strong> contain the array data! It only holds the <strong>address (reference)</strong> to where the array will be stored. Currently, it holds <code class="code-inline">null</code> (nothing).</p>
+                    <div class="important-box-title">مهم!</div>
+                    <p>المتغيّر المرجعي <code class="code-inline">ages</code> <strong>لا</strong> يحتوي على بيانات المصفوفة! إنه يحمل فقط <strong>العنوان (المرجع)</strong> المؤدي إلى المكان الذي ستُخزّن فيه المصفوفة. حاليًا، يحمل القيمة <code class="code-inline">null</code> (لا شيء).</p>
                 </div>
 
                 <!-- Step 2: Creation -->
                 <div class="step" style="margin-top: 25px;">
                     <div class="step-number">2</div>
                     <div class="step-content">
-                        <div class="step-title">Creation (Instantiation)</div>
-                        <p>Allocating memory for the actual array using the <code class="code-inline">new</code> keyword.</p>
+                        <div class="step-title">الإنشاء (Creation / Instantiation)</div>
+                        <p>تخصيص ذاكرة للمصفوفة الفعلية باستخدام الكلمة المفتاحية <code class="code-inline">new</code>.</p>
                         <div class="code-block">
 <span class="variable">ages</span> = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">5</span>];
 <span class="comment">// Creates array of 5 integers</span>
@@ -1077,10 +1082,10 @@
                 </div>
 
                 <div class="memory-visualization">
-                    <div class="memory-title">After Creation: Array Allocated in Heap Memory</div>
+                    <div class="memory-title">بعد الإنشاء: خُصّصت المصفوفة في ذاكرة الكومة (Heap)</div>
                     <div class="memory-container">
                         <div class="memory-section">
-                            <div class="memory-section-title">Stack Memory</div>
+                            <div class="memory-section-title">ذاكرة المكدّس (Stack)</div>
                             <div class="variable-box">
                                 <div class="variable-name">ages</div>
                                 <div class="variable-value"><span class="address-value">0x7A3F</span></div>
@@ -1091,7 +1096,7 @@
                             <div class="arrow-line"></div>
                         </div>
                         <div class="memory-section">
-                            <div class="memory-section-title">Heap Memory (Address: 0x7A3F)</div>
+                            <div class="memory-section-title">ذاكرة الكومة (Heap) (العنوان: 0x7A3F)</div>
                             <div class="array-visual">
                                 <div class="array-cell">
                                     <div class="array-index">[0]</div>
@@ -1119,13 +1124,13 @@
                 </div>
 
                 <div class="info-box">
-                    <p><strong>Default Values:</strong> When an array is created, all elements are initialized to default values:</p>
+                    <p><strong>القيم الافتراضية:</strong> عند إنشاء المصفوفة، تُهيّأ جميع عناصرها بقيم افتراضية:</p>
                     <ul>
-                        <li><code class="code-inline">int</code>, <code class="code-inline">short</code>, <code class="code-inline">byte</code>, <code class="code-inline">long</code> → <strong>0</strong></li>
-                        <li><code class="code-inline">float</code>, <code class="code-inline">double</code> → <strong>0.0</strong></li>
-                        <li><code class="code-inline">boolean</code> → <strong>false</strong></li>
-                        <li><code class="code-inline">char</code> → <strong>'\u0000'</strong> (null character)</li>
-                        <li>Reference types → <strong>null</strong></li>
+                        <li><code class="code-inline">int</code> و<code class="code-inline">short</code> و<code class="code-inline">byte</code> و<code class="code-inline">long</code> ← <strong>0</strong></li>
+                        <li><code class="code-inline">float</code> و<code class="code-inline">double</code> ← <strong>0.0</strong></li>
+                        <li><code class="code-inline">boolean</code> ← <strong>false</strong></li>
+                        <li><code class="code-inline">char</code> ← <strong>' '</strong> (المحرف الفارغ)</li>
+                        <li>الأنواع المرجعية ← <strong>null</strong></li>
                     </ul>
                 </div>
 
@@ -1133,8 +1138,8 @@
                 <div class="step" style="margin-top: 25px;">
                     <div class="step-number">3</div>
                     <div class="step-content">
-                        <div class="step-title">Initialization</div>
-                        <p>Assigning actual values to the array elements.</p>
+                        <div class="step-title">التهيئة (Initialization)</div>
+                        <p>إسناد قيم فعلية إلى عناصر المصفوفة.</p>
                         <div class="code-block">
 <span class="variable">ages</span>[<span class="number">0</span>] = <span class="number">20</span>;
 <span class="variable">ages</span>[<span class="number">1</span>] = <span class="number">21</span>;
@@ -1146,10 +1151,10 @@
                 </div>
 
                 <div class="memory-visualization">
-                    <div class="memory-title">After Initialization: Array Contains Our Values</div>
+                    <div class="memory-title">بعد التهيئة: تحتوي المصفوفة على قيمنا</div>
                     <div class="memory-container">
                         <div class="memory-section">
-                            <div class="memory-section-title">Stack Memory</div>
+                            <div class="memory-section-title">ذاكرة المكدّس (Stack)</div>
                             <div class="variable-box">
                                 <div class="variable-name">ages</div>
                                 <div class="variable-value"><span class="address-value">0x7A3F</span></div>
@@ -1160,7 +1165,7 @@
                             <div class="arrow-line"></div>
                         </div>
                         <div class="memory-section">
-                            <div class="memory-section-title">Heap Memory (Address: 0x7A3F)</div>
+                            <div class="memory-section-title">ذاكرة الكومة (Heap) (العنوان: 0x7A3F)</div>
                             <div class="array-visual">
                                 <div class="array-cell">
                                     <div class="array-index">[0]</div>
@@ -1188,8 +1193,8 @@
                 </div>
 
                 <!-- Shorthand Syntax -->
-                <h3 style="color: var(--primary-color); margin-top: 30px;">Shorthand Syntax</h3>
-                <p>You can combine all three steps in one line:</p>
+                <h3 style="color: var(--primary-color); margin-top: 30px;">الصيغة المختصرة</h3>
+                <p>يمكنك دمج الخطوات الثلاث كلها في سطر واحد:</p>
 
                 <div class="code-block">
 <span class="comment">// Method 1: Declaration + Creation + Initialization</span>
@@ -1216,15 +1221,15 @@
             <div class="section">
                 <h2 class="section-title">
                     <span class="section-number">6</span>
-                    Understanding Reference Variables
+                    فهم المتغيّرات المرجعية (Reference Variables)
                 </h2>
 
                 <div class="important-box">
-                    <div class="important-box-title">Critical for Data Structures!</div>
-                    <p>Understanding reference variables is <strong>absolutely essential</strong> for your Data Structures course. Pay close attention to this section!</p>
+                    <div class="important-box-title">جوهري لمقرر هياكل البيانات!</div>
+                    <p>فهم المتغيّرات المرجعية <strong>ضروري تمامًا</strong> لمقرر هياكل البيانات لديك. انتبه جيدًا لهذا القسم!</p>
                 </div>
 
-                <p>Let's see what happens when we assign one array variable to another:</p>
+                <p>دعونا نرى ما الذي يحدث عندما نُسند متغيّر مصفوفة إلى آخر:</p>
 
                 <div class="code-block">
 <span class="keyword">int</span>[] <span class="variable">ages</span> = {
@@ -1238,10 +1243,10 @@
                 </div>
 
                 <div class="memory-visualization">
-                    <div class="memory-title">Two References, ONE Array!</div>
+                    <div class="memory-title">مرجعان، ومصفوفة واحدة فقط!</div>
                     <div class="memory-container">
                         <div class="memory-section">
-                            <div class="memory-section-title">Stack Memory</div>
+                            <div class="memory-section-title">ذاكرة المكدّس (Stack)</div>
                             <div style="display: flex; flex-direction: column; gap: 15px;">
                                 <div class="variable-box">
                                     <div class="variable-name">ages</div>
@@ -1257,7 +1262,7 @@
                             <div class="arrow-line"></div>
                         </div>
                         <div class="memory-section">
-                            <div class="memory-section-title">Heap Memory (0x7A3F)</div>
+                            <div class="memory-section-title">ذاكرة الكومة (Heap) (0x7A3F)</div>
                             <div class="array-visual">
                                 <div class="array-cell">
                                     <div class="array-index">[0]</div>
@@ -1277,8 +1282,8 @@
                 </div>
 
                 <div class="key-concept">
-                    <div class="key-concept-title">Key Understanding</div>
-                    <p>Both <code class="code-inline">ages</code> and <code class="code-inline">scores</code> point to the <strong>SAME</strong> array in memory! If you change <code class="code-inline">scores[0]</code>, the value of <code class="code-inline">ages[0]</code> also changes because they reference the same data.</p>
+                    <div class="key-concept-title">فهم أساسي</div>
+                    <p>كلٌّ من <code class="code-inline">ages</code> و<code class="code-inline">scores</code> يشير إلى <strong>المصفوفة نفسها</strong> في الذاكرة! فإذا غيّرت <code class="code-inline">scores[0]</code>، تتغيّر أيضًا قيمة <code class="code-inline">ages[0]</code> لأنهما يشيران إلى البيانات نفسها.</p>
                 </div>
 
                 <div class="code-block">
@@ -1296,15 +1301,15 @@ System.out.println(<span class="variable">scores</span>[<span class="number">0</
             <div class="section">
                 <h2 class="section-title">
                     <span class="section-number">7</span>
-                    Pass by Value vs Pass by Reference
+                    التمرير بالقيمة مقابل التمرير بالمرجع (Pass by Value vs Pass by Reference)
                 </h2>
 
-                <p>Understanding how data is passed to methods is crucial for writing correct programs.</p>
+                <p>فهم كيفية تمرير البيانات إلى الدوال (Methods) أمر بالغ الأهمية لكتابة برامج صحيحة.</p>
 
                 <div class="pass-comparison">
                     <!-- Pass by Value -->
                     <div class="pass-box value">
-                        <div class="pass-title">Pass by Value (Primitives)</div>
+                        <div class="pass-title">التمرير بالقيمة (الأنواع البدائية)</div>
 
                         <div class="code-block" style="font-size: 0.8rem;">
 <span class="keyword">public class</span> <span class="type">Test</span> {
@@ -1324,21 +1329,21 @@ System.out.println(<span class="variable">scores</span>[<span class="number">0</
 
                         <div class="memory-row">
                             <div class="memory-block">
-                                <div class="memory-label">Original</div>
+                                <div class="memory-label">الأصل</div>
                                 <div class="memory-cell original">age = 20</div>
                             </div>
                             <div class="memory-block">
-                                <div class="memory-label">Copy (in method)</div>
+                                <div class="memory-label">النسخة (داخل الدالة)</div>
                                 <div class="memory-cell copy">x = 20 → 100</div>
                             </div>
                         </div>
 
-                        <p style="margin-top: 15px; font-size: 0.9rem;">A <strong>copy</strong> of the value is passed. Changes to the copy don't affect the original.</p>
+                        <p style="margin-top: 15px; font-size: 0.9rem;">تُمرّر <strong>نسخة</strong> من القيمة. والتغييرات على النسخة لا تؤثر في الأصل.</p>
                     </div>
 
                     <!-- Pass by Reference -->
                     <div class="pass-box reference">
-                        <div class="pass-title">Pass by Reference (Arrays)</div>
+                        <div class="pass-title">التمرير بالمرجع (المصفوفات)</div>
 
                         <div class="code-block" style="font-size: 0.8rem;">
 <span class="keyword">public class</span> <span class="type">Test</span> {
@@ -1358,26 +1363,26 @@ System.out.println(<span class="variable">scores</span>[<span class="number">0</
 
                         <div class="memory-row">
                             <div class="memory-block">
-                                <div class="memory-label">ages (reference)</div>
+                                <div class="memory-label">ages (مرجع)</div>
                                 <div class="memory-cell original">0x7A3F</div>
                             </div>
                             <div class="memory-block">
-                                <div class="memory-label">arr (copy of ref)</div>
+                                <div class="memory-label">arr (نسخة من المرجع)</div>
                                 <div class="memory-cell copy">0x7A3F</div>
                             </div>
                         </div>
-                        <div style="text-align: center; margin: 10px 0;">↓ Both point to ↓</div>
+                        <div style="text-align: center; margin: 10px 0;">↓ كلاهما يشير إلى ↓</div>
                         <div class="memory-cell shared" style="text-align: center;">[100, 21]</div>
 
-                        <p style="margin-top: 15px; font-size: 0.9rem;">The <strong>reference (address)</strong> is copied. Both point to the <strong>same</strong> array!</p>
+                        <p style="margin-top: 15px; font-size: 0.9rem;">يُنسخ <strong>المرجع (العنوان)</strong>. وكلاهما يشير إلى <strong>المصفوفة نفسها</strong>!</p>
                     </div>
                 </div>
 
                 <div class="success-box">
-                    <p><strong>Key Takeaway:</strong></p>
+                    <p><strong>الخلاصة الأساسية:</strong></p>
                     <ul>
-                        <li><strong>Primitives:</strong> The actual value is copied. Original is safe.</li>
-                        <li><strong>Arrays/Objects:</strong> The reference is copied. Both variables access the same data!</li>
+                        <li><strong>الأنواع البدائية:</strong> تُنسخ القيمة الفعلية. والأصل يبقى آمنًا.</li>
+                        <li><strong>المصفوفات/الكائنات:</strong> يُنسخ المرجع. وكلا المتغيّرين يصل إلى البيانات نفسها!</li>
                     </ul>
                 </div>
             </div>
@@ -1386,39 +1391,39 @@ System.out.println(<span class="variable">scores</span>[<span class="number">0</
             <div class="section">
                 <h2 class="section-title">
                     <span class="section-number">8</span>
-                    Summary & What's Next
+                    الملخّص وما هو التالي
                 </h2>
 
                 <div class="key-concept">
-                    <div class="key-concept-title">Key Takeaways from Today</div>
+                    <div class="key-concept-title">أهم النقاط المستفادة اليوم</div>
                     <ol>
-                        <li>Programs consist of <strong>instructions</strong> and <strong>data</strong></li>
-                        <li>Data types: <strong>Primitive</strong> (8 types) vs <strong>Reference</strong> (arrays, objects)</li>
-                        <li>Arrays store <strong>multiple values</strong> of the <strong>same type</strong> in <strong>contiguous memory</strong></li>
-                        <li>Three steps: <strong>Declaration</strong> → <strong>Creation</strong> → <strong>Initialization</strong></li>
-                        <li>Reference variables hold <strong>addresses</strong>, not actual data</li>
-                        <li><strong>Pass by Value</strong> copies values; <strong>Pass by Reference</strong> shares the same data</li>
+                        <li>تتكوّن البرامج من <strong>تعليمات</strong> و<strong>بيانات</strong></li>
+                        <li>أنواع البيانات: <strong>بدائية</strong> (8 أنواع) مقابل <strong>مرجعية</strong> (المصفوفات والكائنات)</li>
+                        <li>تخزّن المصفوفات <strong>قيمًا متعددة</strong> من <strong>النوع نفسه</strong> في <strong>ذاكرة متجاورة</strong></li>
+                        <li>ثلاث خطوات: <strong>التصريح</strong> ← <strong>الإنشاء</strong> ← <strong>التهيئة</strong></li>
+                        <li>تحمل المتغيّرات المرجعية <strong>عناوين</strong>، وليست بيانات فعلية</li>
+                        <li><strong>التمرير بالقيمة</strong> ينسخ القيم؛ و<strong>التمرير بالمرجع</strong> يشارك البيانات نفسها</li>
                     </ol>
                 </div>
 
                 <div class="preview-section">
-                    <div class="preview-title">Coming Next: Multi-Dimensional Arrays</div>
+                    <div class="preview-title">التالي: المصفوفات متعددة الأبعاد (Multi-Dimensional Arrays)</div>
                     <div class="preview-items">
                         <div class="preview-item">
-                            <strong>2D Arrays</strong>
-                            <p>Arrays of arrays (like a table/matrix)</p>
+                            <strong>المصفوفات ثنائية البعد (2D Arrays)</strong>
+                            <p>مصفوفات من المصفوفات (مثل جدول/مصفوفة رياضية)</p>
                         </div>
                         <div class="preview-item">
-                            <strong>3D Arrays</strong>
-                            <p>Arrays of 2D arrays (like a cube)</p>
+                            <strong>المصفوفات ثلاثية البعد (3D Arrays)</strong>
+                            <p>مصفوفات من مصفوفات ثنائية البعد (مثل مكعّب)</p>
                         </div>
                         <div class="preview-item">
-                            <strong>Ragged 2D Arrays</strong>
-                            <p>Rows with different lengths</p>
+                            <strong>المصفوفات ثنائية البعد المتعرّجة (Ragged 2D Arrays)</strong>
+                            <p>صفوف بأطوال مختلفة</p>
                         </div>
                         <div class="preview-item">
-                            <strong>Ragged 3D Arrays</strong>
-                            <p>Irregular multi-dimensional structures</p>
+                            <strong>المصفوفات ثلاثية البعد المتعرّجة (Ragged 3D Arrays)</strong>
+                            <p>هياكل متعددة الأبعاد غير منتظمة</p>
                         </div>
                     </div>
                 </div>
@@ -1427,15 +1432,15 @@ System.out.println(<span class="variable">scores</span>[<span class="number">0</
 
         <!-- Bottom Navigation -->
         <nav class="bottom-nav">
-            <a href="#" class="prev-lesson disabled">‹ Previous Lesson</a>
-            <a href="02-1d-exercises.html">Next: 1D Array Exercises ›</a>
+            <a href="#" class="prev-lesson disabled">الدرس السابق &rarr;</a>
+            <a href="02-1d-exercises-ar.html">&larr; التالي: تمارين المصفوفات أحادية البعد</a>
         </nav>
 
         <!-- Footer -->
         <div class="footer">
-            <p><strong>CPCS203</strong> - Object-Oriented Programming</p>
-            <p>Module 1: Arrays</p>
-            <p>Prepared by Dr. Almalawi</p>
+            <p><strong>CPCS203</strong> - البرمجة الكائنية التوجه</p>
+            <p>الوحدة 1: المصفوفات (Arrays)</p>
+            <p>إعداد د. المعلوي</p>
         </div>
     </div>
 </body>

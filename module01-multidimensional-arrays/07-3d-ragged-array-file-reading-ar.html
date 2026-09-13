@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reading 3D Ragged Arrays from a File in Java | CPCS203</title>
+    <title>قراءة المصفوفات المتعرجة ثلاثية الأبعاد (3D Ragged Arrays) من ملف في جافا | CPCS203</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -25,7 +26,7 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Tajawal', 'Amiri', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.8;
             color: var(--dark-color);
             background: linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%);
@@ -106,10 +107,10 @@
         /* Key Concept Box */
         .key-concept {
             background: linear-gradient(135deg, #fef3c7, #fde68a);
-            border-left: 5px solid var(--warning-color);
+            border-right: 5px solid var(--warning-color);
             padding: 20px 25px;
             margin: 20px 0;
-            border-radius: 0 10px 10px 0;
+            border-radius: 10px 0 0 10px;
         }
 
         .key-concept-title {
@@ -122,10 +123,10 @@
         /* Info Box */
         .info-box {
             background: linear-gradient(135deg, #dbeafe, #bfdbfe);
-            border-left: 5px solid var(--secondary-color);
+            border-right: 5px solid var(--secondary-color);
             padding: 20px 25px;
             margin: 20px 0;
-            border-radius: 0 10px 10px 0;
+            border-radius: 10px 0 0 10px;
         }
 
         .info-box-title {
@@ -138,10 +139,10 @@
         /* Success Box */
         .success-box {
             background: linear-gradient(135deg, #d1fae5, #a7f3d0);
-            border-left: 5px solid var(--success-color);
+            border-right: 5px solid var(--success-color);
             padding: 20px 25px;
             margin: 20px 0;
-            border-radius: 0 10px 10px 0;
+            border-radius: 10px 0 0 10px;
         }
 
         .success-box-title {
@@ -155,22 +156,22 @@
         .dept-box {
             padding: 20px 25px;
             margin: 20px 0;
-            border-radius: 0 10px 10px 0;
+            border-radius: 10px 0 0 10px;
         }
 
         .dept-box.cs {
             background: linear-gradient(135deg, #dbeafe, #bfdbfe);
-            border-left: 5px solid var(--cs-color);
+            border-right: 5px solid var(--cs-color);
         }
 
         .dept-box.it {
             background: linear-gradient(135deg, #fef3c7, #fde68a);
-            border-left: 5px solid var(--it-color);
+            border-right: 5px solid var(--it-color);
         }
 
         .dept-box.is {
             background: linear-gradient(135deg, #d1fae5, #a7f3d0);
-            border-left: 5px solid var(--is-color);
+            border-right: 5px solid var(--is-color);
         }
 
         .dept-box-title {
@@ -190,6 +191,7 @@
             margin: 20px 0;
             overflow: hidden;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            direction: ltr; text-align: left;
         }
 
         .code-header {
@@ -254,6 +256,8 @@
         .bracket { color: #ffd700; }
         .operator { color: #d4d4d4; }
 
+        code, .code-inline { direction: ltr; unicode-bidi: embed; }
+
         .code-inline {
             background: #e5e7eb;
             padding: 2px 8px;
@@ -287,6 +291,7 @@
             font-family: 'Consolas', 'Monaco', monospace;
             font-size: 1rem;
             line-height: 1.8;
+            direction: ltr; text-align: left;
         }
 
         .file-line {
@@ -527,7 +532,7 @@
         .lang-switch {
             position: fixed;
             top: 20px;
-            right: 20px;
+            left: 20px;
             z-index: 1000;
             padding: 10px 20px;
             background: linear-gradient(135deg, var(--warning-color), #f59e0b);
@@ -544,6 +549,9 @@
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(217,119,6,.6);
         }
+
+        ol { margin-right: 20px; }
+        ul { margin-right: 20px; }
 
         /* Responsive */
         @media (max-width: 768px) {
@@ -566,13 +574,13 @@
     </style>
 </head>
 <body>
-    <a href="07-3d-ragged-array-file-reading-ar.html" class="lang-switch">&#127760; العربية</a>
+    <a href="07-3d-ragged-array-file-reading.html" class="lang-switch">English &#127760;</a>
     <div class="container">
         <!-- Header -->
         <div class="header">
-            <h1>Reading 3D Ragged Arrays from a File</h1>
-            <p class="subtitle">Department → Students → Courses Structure</p>
-            <div class="course-info">CPCS203 - Data Structures</div>
+            <h1>قراءة المصفوفات المتعرجة ثلاثية الأبعاد من ملف</h1>
+            <p class="subtitle">بنية القسم ← الطلاب ← المقررات</p>
+            <div class="course-info">CPCS203 - هياكل البيانات</div>
         </div>
 
         <!-- Content -->
@@ -581,53 +589,53 @@
             <div class="section">
                 <h2 class="section-title">
                     <span class="section-number">1</span>
-                    What is a 3D Ragged Array?
+                    ما هي المصفوفة المتعرجة ثلاثية الأبعاد؟
                 </h2>
 
                 <div class="key-concept">
-                    <div class="key-concept-title">3D Ragged Array Definition</div>
-                    <p>A <strong>3D ragged array</strong> is a three-dimensional array where:</p>
-                    <ul style="margin-top: 10px; margin-left: 20px;">
-                        <li>Each <strong>department</strong> can have a different number of <strong>students</strong></li>
-                        <li>Each <strong>student</strong> can have a different number of <strong>courses</strong></li>
+                    <div class="key-concept-title">تعريف المصفوفة المتعرجة ثلاثية الأبعاد</div>
+                    <p><strong>المصفوفة المتعرجة ثلاثية الأبعاد (3D Ragged Array)</strong> هي مصفوفة ثلاثية الأبعاد حيث:</p>
+                    <ul style="margin-top: 10px; margin-right: 20px;">
+                        <li>يمكن أن يكون لكل <strong>قسم</strong> عدد مختلف من <strong>الطلاب</strong></li>
+                        <li>يمكن أن يكون لكل <strong>طالب</strong> عدد مختلف من <strong>المقررات</strong></li>
                     </ul>
-                    <p style="margin-top: 15px;">This is perfect for real-world university data!</p>
+                    <p style="margin-top: 15px;">هذا مثالي لبيانات الجامعات في العالم الحقيقي!</p>
                 </div>
 
-                <h3 style="color: var(--primary-color); margin-top: 25px; margin-bottom: 15px;">Our Scenario: University Departments</h3>
+                <h3 style="color: var(--primary-color); margin-top: 25px; margin-bottom: 15px;">السيناريو لدينا: أقسام الجامعة</h3>
 
-                <p>We have <strong>3 departments</strong>, each identified by an index:</p>
+                <p>لدينا <strong>3 أقسام</strong>، يُعرَّف كل منها بفهرس (index):</p>
 
                 <table class="index-table">
                     <tr>
-                        <th>Index</th>
-                        <th>Department Name</th>
-                        <th>Abbreviation</th>
+                        <th>الفهرس</th>
+                        <th>اسم القسم</th>
+                        <th>الاختصار</th>
                     </tr>
                     <tr>
                         <td><code class="code-inline">0</code></td>
-                        <td>Computer Science</td>
+                        <td>علوم الحاسب (Computer Science)</td>
                         <td style="color: var(--cs-color); font-weight: bold;">CS</td>
                     </tr>
                     <tr>
                         <td><code class="code-inline">1</code></td>
-                        <td>Information Technology</td>
+                        <td>تقنية المعلومات (Information Technology)</td>
                         <td style="color: var(--it-color); font-weight: bold;">IT</td>
                     </tr>
                     <tr>
                         <td><code class="code-inline">2</code></td>
-                        <td>Information Systems</td>
+                        <td>نظم المعلومات (Information Systems)</td>
                         <td style="color: var(--is-color); font-weight: bold;">IS</td>
                     </tr>
                 </table>
 
                 <div class="info-box">
-                    <div class="info-box-title">Array Structure</div>
+                    <div class="info-box-title">بنية المصفوفة</div>
                     <p><code class="code-inline">marks[department][student][course]</code></p>
-                    <ul style="margin-top: 10px; margin-left: 20px;">
-                        <li><strong>First index</strong>: Which department (0=CS, 1=IT, 2=IS)</li>
-                        <li><strong>Second index</strong>: Which student in that department</li>
-                        <li><strong>Third index</strong>: Which course mark for that student</li>
+                    <ul style="margin-top: 10px; margin-right: 20px;">
+                        <li><strong>الفهرس الأول</strong>: أي قسم (0=CS، 1=IT، 2=IS)</li>
+                        <li><strong>الفهرس الثاني</strong>: أي طالب في ذلك القسم</li>
+                        <li><strong>الفهرس الثالث</strong>: أي درجة مقرر لذلك الطالب</li>
                     </ul>
                 </div>
             </div>
@@ -636,15 +644,15 @@
             <div class="section">
                 <h2 class="section-title">
                     <span class="section-number">2</span>
-                    Visualizing the 3D Ragged Array
+                    تصوّر المصفوفة المتعرجة ثلاثية الأبعاد
                 </h2>
 
                 <div class="array-3d-visual">
-                    <div class="array-3d-title">3D Ragged Array: marks[3][?][?] - Each dimension is RAGGED!</div>
+                    <div class="array-3d-title">المصفوفة المتعرجة ثلاثية الأبعاد: marks[3][?][?] - كل بُعد متعرّج (RAGGED)!</div>
 
                     <!-- CS Department -->
                     <div class="dept-container cs">
-                        <div class="dept-label cs">Department 0 (CS) - 2 Students</div>
+                        <div class="dept-label cs">القسم 0 (CS) - طالبان (2)</div>
                         <div class="student-row">
                             <div class="student-label">Student 0:</div>
                             <div class="course-cells">
@@ -652,7 +660,7 @@
                                 <div class="course-cell">90</div>
                                 <div class="course-cell">78</div>
                             </div>
-                            <span style="color: #6b7280; font-size: 0.85rem;">← 3 courses</span>
+                            <span style="color: #6b7280; font-size: 0.85rem;">← 3 مقررات</span>
                         </div>
                         <div class="student-row">
                             <div class="student-label">Student 1:</div>
@@ -662,20 +670,20 @@
                                 <div class="course-cell">88</div>
                                 <div class="course-cell">92</div>
                             </div>
-                            <span style="color: #6b7280; font-size: 0.85rem;">← 4 courses</span>
+                            <span style="color: #6b7280; font-size: 0.85rem;">← 4 مقررات</span>
                         </div>
                     </div>
 
                     <!-- IT Department -->
                     <div class="dept-container it">
-                        <div class="dept-label it">Department 1 (IT) - 3 Students</div>
+                        <div class="dept-label it">القسم 1 (IT) - 3 طلاب</div>
                         <div class="student-row">
                             <div class="student-label">Student 0:</div>
                             <div class="course-cells">
                                 <div class="course-cell">75</div>
                                 <div class="course-cell">80</div>
                             </div>
-                            <span style="color: #6b7280; font-size: 0.85rem;">← 2 courses</span>
+                            <span style="color: #6b7280; font-size: 0.85rem;">← مقرران (2)</span>
                         </div>
                         <div class="student-row">
                             <div class="student-label">Student 1:</div>
@@ -686,7 +694,7 @@
                                 <div class="course-cell">90</div>
                                 <div class="course-cell">78</div>
                             </div>
-                            <span style="color: #6b7280; font-size: 0.85rem;">← 5 courses</span>
+                            <span style="color: #6b7280; font-size: 0.85rem;">← 5 مقررات</span>
                         </div>
                         <div class="student-row">
                             <div class="student-label">Student 2:</div>
@@ -695,13 +703,13 @@
                                 <div class="course-cell">75</div>
                                 <div class="course-cell">80</div>
                             </div>
-                            <span style="color: #6b7280; font-size: 0.85rem;">← 3 courses</span>
+                            <span style="color: #6b7280; font-size: 0.85rem;">← 3 مقررات</span>
                         </div>
                     </div>
 
                     <!-- IS Department -->
                     <div class="dept-container is">
-                        <div class="dept-label is">Department 2 (IS) - 2 Students</div>
+                        <div class="dept-label is">القسم 2 (IS) - طالبان (2)</div>
                         <div class="student-row">
                             <div class="student-label">Student 0:</div>
                             <div class="course-cells">
@@ -709,7 +717,7 @@
                                 <div class="course-cell">88</div>
                                 <div class="course-cell">92</div>
                             </div>
-                            <span style="color: #6b7280; font-size: 0.85rem;">← 3 courses</span>
+                            <span style="color: #6b7280; font-size: 0.85rem;">← 3 مقررات</span>
                         </div>
                         <div class="student-row">
                             <div class="student-label">Student 1:</div>
@@ -717,16 +725,16 @@
                                 <div class="course-cell">80</div>
                                 <div class="course-cell">85</div>
                             </div>
-                            <span style="color: #6b7280; font-size: 0.85rem;">← 2 courses</span>
+                            <span style="color: #6b7280; font-size: 0.85rem;">← مقرران (2)</span>
                         </div>
                     </div>
                 </div>
 
                 <div class="key-concept">
-                    <div class="key-concept-title">Why is it "Ragged" at TWO Levels?</div>
-                    <ul style="margin-top: 10px; margin-left: 20px;">
-                        <li><strong>Level 1 (Departments → Students):</strong> CS has 2 students, IT has 3 students, IS has 2 students</li>
-                        <li><strong>Level 2 (Students → Courses):</strong> Each student has a different number of courses (2, 3, 4, or 5)</li>
+                    <div class="key-concept-title">لماذا هي "متعرّجة" على مستويين؟</div>
+                    <ul style="margin-top: 10px; margin-right: 20px;">
+                        <li><strong>المستوى 1 (الأقسام ← الطلاب):</strong> قسم CS فيه طالبان، وقسم IT فيه 3 طلاب، وقسم IS فيه طالبان</li>
+                        <li><strong>المستوى 2 (الطلاب ← المقررات):</strong> لكل طالب عدد مختلف من المقررات (2 أو 3 أو 4 أو 5)</li>
                     </ul>
                 </div>
             </div>
@@ -735,10 +743,10 @@
             <div class="section">
                 <h2 class="section-title">
                     <span class="section-number">3</span>
-                    File Format Overview
+                    نظرة عامة على تنسيق الملف
                 </h2>
 
-                <p>Our input file <code class="code-inline">departments.txt</code> has this structure:</p>
+                <p>ملف الإدخال لدينا <code class="code-inline">departments.txt</code> له هذه البنية:</p>
 
                 <div class="file-format-box">
                     <div class="file-format-title">departments.txt</div>
@@ -783,16 +791,16 @@
                 </div>
 
                 <div class="key-concept">
-                    <div class="key-concept-title">File Structure Explained</div>
-                    <ul style="margin-top: 10px; margin-left: 20px;">
-                        <li><strong>Line 1:</strong> Number of departments (<code class="code-inline">3</code>)</li>
-                        <li><strong>Line 2:</strong> Number of students in EACH department (<code class="code-inline">2 3 2</code> means CS=2, IT=3, IS=2)</li>
-                        <li><strong>Remaining lines:</strong> One line per student with their course marks (variable length!)</li>
+                    <div class="key-concept-title">شرح بنية الملف</div>
+                    <ul style="margin-top: 10px; margin-right: 20px;">
+                        <li><strong>السطر 1:</strong> عدد الأقسام (<code class="code-inline">3</code>)</li>
+                        <li><strong>السطر 2:</strong> عدد الطلاب في كل قسم (<code class="code-inline">2 3 2</code> تعني CS=2، IT=3، IS=2)</li>
+                        <li><strong>الأسطر المتبقية:</strong> سطر واحد لكل طالب يحتوي على درجات مقرراته (بطول متغيّر!)</li>
                     </ul>
                 </div>
 
                 <div class="info-box">
-                    <div class="info-box-title">How Many Lines Total?</div>
+                    <div class="info-box-title">كم عدد الأسطر إجمالاً؟</div>
                     <p><code class="code-inline">2 (header lines) + 2 (CS students) + 3 (IT students) + 2 (IS students) = 9 lines</code></p>
                 </div>
             </div>
@@ -801,44 +809,44 @@
             <div class="section">
                 <h2 class="section-title">
                     <span class="section-number">4</span>
-                    Reading Algorithm: Step by Step
+                    خوارزمية القراءة: خطوة بخطوة
                 </h2>
 
                 <div class="dept-box cs">
-                    <div class="dept-box-title">Step 1: Read Number of Departments</div>
-                    <p>Read line 1 → <code class="code-inline">numDepartments = 3</code></p>
+                    <div class="dept-box-title">الخطوة 1: قراءة عدد الأقسام</div>
+                    <p>اقرأ السطر 1 ← <code class="code-inline">numDepartments = 3</code></p>
                 </div>
 
                 <div class="dept-box it">
-                    <div class="dept-box-title">Step 2: Read Students Per Department</div>
-                    <p>Read line 2 → <code class="code-inline">"2 3 2"</code></p>
-                    <p>Split and convert → <code class="code-inline">studentsPerDept = {2, 3, 2}</code></p>
+                    <div class="dept-box-title">الخطوة 2: قراءة عدد الطلاب لكل قسم</div>
+                    <p>اقرأ السطر 2 ← <code class="code-inline">"2 3 2"</code></p>
+                    <p>قسّم وحوّل ← <code class="code-inline">studentsPerDept = {2, 3, 2}</code></p>
                 </div>
 
                 <div class="dept-box is">
-                    <div class="dept-box-title">Step 3: Create the 3D Ragged Array</div>
+                    <div class="dept-box-title">الخطوة 3: إنشاء المصفوفة المتعرجة ثلاثية الأبعاد</div>
                     <p><code class="code-inline">int[][][] marks = new int[numDepartments][][];</code></p>
-                    <p style="margin-top: 10px;">This creates: <code class="code-inline">[null, null, null]</code> - just 3 empty slots for departments</p>
+                    <p style="margin-top: 10px;">هذا يُنشئ: <code class="code-inline">[null, null, null]</code> - مجرد 3 خانات فارغة للأقسام</p>
                 </div>
 
                 <div class="key-concept">
-                    <div class="key-concept-title">Step 4: For Each Department (Outer Loop)</div>
-                    <p>Create a 2D array for students:</p>
+                    <div class="key-concept-title">الخطوة 4: لكل قسم (الحلقة الخارجية)</div>
+                    <p>أنشئ مصفوفة ثنائية الأبعاد للطلاب:</p>
                     <p><code class="code-inline">marks[d] = new int[studentsPerDept[d]][];</code></p>
                     <div style="margin-top: 15px;">
-                        <p><strong>For d=0 (CS):</strong> <code class="code-inline">marks[0] = new int[2][];</code> → creates space for 2 students</p>
-                        <p><strong>For d=1 (IT):</strong> <code class="code-inline">marks[1] = new int[3][];</code> → creates space for 3 students</p>
-                        <p><strong>For d=2 (IS):</strong> <code class="code-inline">marks[2] = new int[2][];</code> → creates space for 2 students</p>
+                        <p><strong>عند d=0 (CS):</strong> <code class="code-inline">marks[0] = new int[2][];</code> ← يُنشئ مساحة لطالبين</p>
+                        <p><strong>عند d=1 (IT):</strong> <code class="code-inline">marks[1] = new int[3][];</code> ← يُنشئ مساحة لـ 3 طلاب</p>
+                        <p><strong>عند d=2 (IS):</strong> <code class="code-inline">marks[2] = new int[2][];</code> ← يُنشئ مساحة لطالبين</p>
                     </div>
                 </div>
 
                 <div class="info-box">
-                    <div class="info-box-title">Step 5: For Each Student (Inner Loop)</div>
-                    <ul style="margin-top: 10px; margin-left: 20px;">
-                        <li>Read the entire line as a string</li>
-                        <li>Split on whitespace using <code class="code-inline">split("\\s+")</code></li>
-                        <li>Convert each token to <code class="code-inline">int</code></li>
-                        <li>Assign to <code class="code-inline">marks[d][s]</code></li>
+                    <div class="info-box-title">الخطوة 5: لكل طالب (الحلقة الداخلية)</div>
+                    <ul style="margin-top: 10px; margin-right: 20px;">
+                        <li>اقرأ السطر بأكمله كسلسلة نصية (string)</li>
+                        <li>قسّمه عند المسافات البيضاء باستخدام <code class="code-inline">split("\\s+")</code></li>
+                        <li>حوّل كل رمز (token) إلى <code class="code-inline">int</code></li>
+                        <li>أسنده إلى <code class="code-inline">marks[d][s]</code></li>
                     </ul>
                 </div>
             </div>
@@ -847,29 +855,29 @@
             <div class="section">
                 <h2 class="section-title">
                     <span class="section-number">5</span>
-                    Download Files
+                    تنزيل الملفات
                 </h2>
 
-                <p>Download both files to run the example. Place them in the <strong>same folder</strong>!</p>
+                <p>نزّل كلا الملفين لتشغيل المثال. ضعهما في <strong>المجلد نفسه</strong>!</p>
 
                 <div class="download-section">
                     <button class="download-btn java" onclick="downloadJavaFile()">
                         <span class="download-icon">&#9997;</span>
-                        Download Ragged3DReader.java
+                        تنزيل Ragged3DReader.java
                     </button>
                     <button class="download-btn txt" onclick="downloadTextFile()">
                         <span class="download-icon">&#128196;</span>
-                        Download departments.txt
+                        تنزيل departments.txt
                     </button>
                 </div>
 
                 <div class="success-box">
-                    <div class="success-box-title">How to Run</div>
-                    <ol style="margin-left: 20px; margin-top: 10px;">
-                        <li>Download both files to the same folder</li>
-                        <li>Open a terminal/command prompt in that folder</li>
-                        <li>Compile: <code class="code-inline">javac Ragged3DReader.java</code></li>
-                        <li>Run: <code class="code-inline">java Ragged3DReader</code></li>
+                    <div class="success-box-title">كيفية التشغيل</div>
+                    <ol style="margin-right: 20px; margin-top: 10px;">
+                        <li>نزّل كلا الملفين إلى المجلد نفسه</li>
+                        <li>افتح الطرفية/موجّه الأوامر (terminal/command prompt) في ذلك المجلد</li>
+                        <li>الترجمة (Compile): <code class="code-inline">javac Ragged3DReader.java</code></li>
+                        <li>التشغيل (Run): <code class="code-inline">java Ragged3DReader</code></li>
                     </ol>
                 </div>
             </div>
@@ -878,7 +886,7 @@
             <div class="section">
                 <h2 class="section-title">
                     <span class="section-number">6</span>
-                    Complete Java Code
+                    كود جافا الكامل
                 </h2>
 
                 <div class="code-block">
@@ -979,23 +987,23 @@
             <div class="section">
                 <h2 class="section-title">
                     <span class="section-number">7</span>
-                    Code Explanation - Line by Line
+                    شرح الكود - سطراً بسطر
                 </h2>
 
-                <p>Let's go through every line of the code so you understand exactly how to write it yourself!</p>
+                <p>دعونا نستعرض كل سطر من الكود حتى تفهم بالضبط كيف تكتبه بنفسك!</p>
 
                 <!-- Part 1: Setup -->
-                <h3 style="color: var(--primary-color); margin-top: 30px; margin-bottom: 15px;">Part 1: Setup and Department Names (Lines 1-13)</h3>
+                <h3 style="color: var(--primary-color); margin-top: 30px; margin-bottom: 15px;">الجزء 1: الإعداد وأسماء الأقسام (الأسطر 1-13)</h3>
 
                 <div class="info-box">
-                    <div class="info-box-title">Lines 2-4: Import Statements</div>
-                    <p>Same as 2D version - we need <code class="code-inline">File</code>, <code class="code-inline">FileNotFoundException</code>, and <code class="code-inline">Scanner</code>.</p>
+                    <div class="info-box-title">الأسطر 2-4: عبارات الاستيراد (Import Statements)</div>
+                    <p>مثل النسخة ثنائية الأبعاد - نحتاج إلى <code class="code-inline">File</code> و <code class="code-inline">FileNotFoundException</code> و <code class="code-inline">Scanner</code>.</p>
                 </div>
 
                 <div class="key-concept">
-                    <div class="key-concept-title">Line 9: <code class="code-inline">String[] deptNames = {"CS", "IT", "IS"};</code></div>
-                    <p><strong>What it does:</strong> Creates an array to map index numbers to department names.</p>
-                    <p style="margin-top: 10px;"><strong>Why we need it:</strong> The file uses indices (0, 1, 2), but we want to display meaningful names.</p>
+                    <div class="key-concept-title">السطر 9: <code class="code-inline">String[] deptNames = {"CS", "IT", "IS"};</code></div>
+                    <p><strong>ماذا يفعل:</strong> يُنشئ مصفوفة لربط أرقام الفهارس بأسماء الأقسام.</p>
+                    <p style="margin-top: 10px;"><strong>لماذا نحتاجه:</strong> الملف يستخدم الفهارس (0، 1، 2)، لكننا نريد عرض أسماء ذات معنى.</p>
                     <div class="highlight-box" style="margin-top: 15px;">
                         <code class="code-inline">deptNames[0] = "CS"</code><br>
                         <code class="code-inline">deptNames[1] = "IT"</code><br>
@@ -1004,274 +1012,274 @@
                 </div>
 
                 <div class="info-box">
-                    <div class="info-box-title">Line 13: <code class="code-inline">Scanner fileReader = new Scanner(new File("departments.txt"));</code></div>
-                    <p><strong>What it does:</strong> Opens the file "departments.txt" for reading.</p>
-                    <p style="margin-top: 10px;"><strong>Remember:</strong> The file must be in the same folder as the Java file!</p>
+                    <div class="info-box-title">السطر 13: <code class="code-inline">Scanner fileReader = new Scanner(new File("departments.txt"));</code></div>
+                    <p><strong>ماذا يفعل:</strong> يفتح الملف "departments.txt" للقراءة.</p>
+                    <p style="margin-top: 10px;"><strong>تذكّر:</strong> يجب أن يكون الملف في المجلد نفسه الذي يوجد فيه ملف جافا!</p>
                 </div>
 
                 <!-- Part 2: Reading Header Lines -->
-                <h3 style="color: var(--primary-color); margin-top: 30px; margin-bottom: 15px;">Part 2: Reading the Header Lines (Lines 15-26)</h3>
+                <h3 style="color: var(--primary-color); margin-top: 30px; margin-bottom: 15px;">الجزء 2: قراءة أسطر الترويسة (الأسطر 15-26)</h3>
 
                 <div class="key-concept">
-                    <div class="key-concept-title">Line 16: <code class="code-inline">int numDepartments = Integer.parseInt(fileReader.nextLine().trim());</code></div>
-                    <p><strong>What it does:</strong> Reads line 1 of the file and converts it to an integer.</p>
-                    <p style="margin-top: 10px;"><strong>Step by step:</strong></p>
-                    <ol style="margin-left: 20px; margin-top: 10px;">
-                        <li><code class="code-inline">fileReader.nextLine()</code> → reads <code class="code-inline">"3"</code></li>
-                        <li><code class="code-inline">.trim()</code> → removes any extra spaces</li>
-                        <li><code class="code-inline">Integer.parseInt()</code> → converts to integer <code class="code-inline">3</code></li>
+                    <div class="key-concept-title">السطر 16: <code class="code-inline">int numDepartments = Integer.parseInt(fileReader.nextLine().trim());</code></div>
+                    <p><strong>ماذا يفعل:</strong> يقرأ السطر 1 من الملف ويحوّله إلى عدد صحيح.</p>
+                    <p style="margin-top: 10px;"><strong>خطوة بخطوة:</strong></p>
+                    <ol style="margin-right: 20px; margin-top: 10px;">
+                        <li><code class="code-inline">fileReader.nextLine()</code> ← يقرأ <code class="code-inline">"3"</code></li>
+                        <li><code class="code-inline">.trim()</code> ← يزيل أي مسافات إضافية</li>
+                        <li><code class="code-inline">Integer.parseInt()</code> ← يحوّل إلى العدد الصحيح <code class="code-inline">3</code></li>
                     </ol>
                     <div class="highlight-box" style="margin-top: 15px;">
-                        <strong>After this line:</strong> <code class="code-inline">numDepartments = 3</code>
+                        <strong>بعد هذا السطر:</strong> <code class="code-inline">numDepartments = 3</code>
                     </div>
                 </div>
 
                 <div class="key-concept">
-                    <div class="key-concept-title">Lines 19-20: Reading Students Per Department</div>
+                    <div class="key-concept-title">الأسطر 19-20: قراءة عدد الطلاب لكل قسم</div>
                     <p><code class="code-inline">String studentsLine = fileReader.nextLine().trim();</code></p>
                     <p><code class="code-inline">String[] studentTokens = studentsLine.split("\\s+");</code></p>
-                    <p style="margin-top: 10px;"><strong>What it does:</strong></p>
-                    <ol style="margin-left: 20px; margin-top: 10px;">
-                        <li>Line 19: Reads <code class="code-inline">"2 3 2"</code> from the file</li>
-                        <li>Line 20: Splits by whitespace → <code class="code-inline">{"2", "3", "2"}</code></li>
+                    <p style="margin-top: 10px;"><strong>ماذا يفعل:</strong></p>
+                    <ol style="margin-right: 20px; margin-top: 10px;">
+                        <li>السطر 19: يقرأ <code class="code-inline">"2 3 2"</code> من الملف</li>
+                        <li>السطر 20: يقسّم عند المسافات البيضاء ← <code class="code-inline">{"2", "3", "2"}</code></li>
                     </ol>
                     <div class="highlight-box" style="margin-top: 15px;">
-                        <code class="code-inline">studentTokens[0] = "2"</code> (CS has 2 students)<br>
-                        <code class="code-inline">studentTokens[1] = "3"</code> (IT has 3 students)<br>
-                        <code class="code-inline">studentTokens[2] = "2"</code> (IS has 2 students)
+                        <code class="code-inline">studentTokens[0] = "2"</code> (قسم CS فيه طالبان)<br>
+                        <code class="code-inline">studentTokens[1] = "3"</code> (قسم IT فيه 3 طلاب)<br>
+                        <code class="code-inline">studentTokens[2] = "2"</code> (قسم IS فيه طالبان)
                     </div>
                 </div>
 
                 <div class="info-box">
-                    <div class="info-box-title">Lines 23-26: Converting to Integer Array</div>
+                    <div class="info-box-title">الأسطر 23-26: التحويل إلى مصفوفة أعداد صحيحة</div>
                     <p><code class="code-inline">int[] studentsPerDept = new int[numDepartments];</code></p>
                     <p><code class="code-inline">for (int d = 0; d < numDepartments; d++) {</code></p>
                     <p><code class="code-inline">&nbsp;&nbsp;&nbsp;&nbsp;studentsPerDept[d] = Integer.parseInt(studentTokens[d]);</code></p>
                     <p><code class="code-inline">}</code></p>
-                    <p style="margin-top: 10px;"><strong>What it does:</strong> Converts string tokens to integers.</p>
+                    <p style="margin-top: 10px;"><strong>ماذا يفعل:</strong> يحوّل الرموز النصية (string tokens) إلى أعداد صحيحة.</p>
                     <div class="highlight-box" style="margin-top: 15px;">
-                        <strong>After this loop:</strong><br>
+                        <strong>بعد هذه الحلقة:</strong><br>
                         <code class="code-inline">studentsPerDept = {2, 3, 2}</code>
                     </div>
                 </div>
 
                 <!-- Part 3: Creating the 3D Array -->
-                <h3 style="color: var(--primary-color); margin-top: 30px; margin-bottom: 15px;">Part 3: Creating the 3D Ragged Array (Line 30)</h3>
+                <h3 style="color: var(--primary-color); margin-top: 30px; margin-bottom: 15px;">الجزء 3: إنشاء المصفوفة المتعرجة ثلاثية الأبعاد (السطر 30)</h3>
 
                 <div class="key-concept">
-                    <div class="key-concept-title">Line 30: <code class="code-inline">int[][][] marks = new int[numDepartments][][];</code></div>
-                    <p><strong>What it does:</strong> Creates a 3D array with ONLY the first dimension specified!</p>
-                    <p style="margin-top: 10px;"><strong>Notice:</strong> <code class="code-inline">[][]</code> are empty - we don't know students or courses yet!</p>
+                    <div class="key-concept-title">السطر 30: <code class="code-inline">int[][][] marks = new int[numDepartments][][];</code></div>
+                    <p><strong>ماذا يفعل:</strong> يُنشئ مصفوفة ثلاثية الأبعاد بتحديد البُعد الأول فقط!</p>
+                    <p style="margin-top: 10px;"><strong>لاحظ:</strong> <code class="code-inline">[][]</code> فارغة - لا نعرف بعدُ عدد الطلاب أو المقررات!</p>
                     <div class="highlight-box" style="margin-top: 15px;">
-                        <strong>Memory visualization:</strong><br>
-                        <code class="code-inline">marks[0] = null</code> (will hold CS students)<br>
-                        <code class="code-inline">marks[1] = null</code> (will hold IT students)<br>
-                        <code class="code-inline">marks[2] = null</code> (will hold IS students)
+                        <strong>تصوّر الذاكرة:</strong><br>
+                        <code class="code-inline">marks[0] = null</code> (ستحمل طلاب CS)<br>
+                        <code class="code-inline">marks[1] = null</code> (ستحمل طلاب IT)<br>
+                        <code class="code-inline">marks[2] = null</code> (ستحمل طلاب IS)
                     </div>
                 </div>
 
                 <!-- Part 4: The Outer Loop -->
-                <h3 style="color: var(--primary-color); margin-top: 30px; margin-bottom: 15px;">Part 4: Outer Loop - For Each Department (Lines 33-56)</h3>
+                <h3 style="color: var(--primary-color); margin-top: 30px; margin-bottom: 15px;">الجزء 4: الحلقة الخارجية - لكل قسم (الأسطر 33-56)</h3>
 
                 <div class="info-box">
-                    <div class="info-box-title">Line 33: <code class="code-inline">for (int d = 0; d < numDepartments; d++) {</code></div>
-                    <p><strong>What it does:</strong> Loops through each department (d = 0, 1, 2).</p>
-                    <p style="margin-top: 10px;"><strong>Variable naming:</strong> <code class="code-inline">d</code> for "department"</p>
+                    <div class="info-box-title">السطر 33: <code class="code-inline">for (int d = 0; d < numDepartments; d++) {</code></div>
+                    <p><strong>ماذا يفعل:</strong> يمرّ عبر كل قسم (d = 0، 1، 2).</p>
+                    <p style="margin-top: 10px;"><strong>تسمية المتغيّر:</strong> <code class="code-inline">d</code> اختصاراً لـ "department" (القسم)</p>
                 </div>
 
                 <div class="key-concept">
-                    <div class="key-concept-title">Line 35: <code class="code-inline">marks[d] = new int[studentsPerDept[d]][];</code></div>
-                    <p><strong>What it does:</strong> Creates a 2D array for this department's students.</p>
-                    <p style="margin-top: 10px;"><strong>This is KEY!</strong> Each department gets a different number of student slots:</p>
+                    <div class="key-concept-title">السطر 35: <code class="code-inline">marks[d] = new int[studentsPerDept[d]][];</code></div>
+                    <p><strong>ماذا يفعل:</strong> يُنشئ مصفوفة ثنائية الأبعاد لطلاب هذا القسم.</p>
+                    <p style="margin-top: 10px;"><strong>هذا هو المفتاح!</strong> يحصل كل قسم على عدد مختلف من خانات الطلاب:</p>
                     <div class="highlight-box" style="margin-top: 15px;">
-                        <strong>When d=0 (CS):</strong> <code class="code-inline">marks[0] = new int[2][];</code> → 2 student slots<br>
-                        <strong>When d=1 (IT):</strong> <code class="code-inline">marks[1] = new int[3][];</code> → 3 student slots<br>
-                        <strong>When d=2 (IS):</strong> <code class="code-inline">marks[2] = new int[2][];</code> → 2 student slots
+                        <strong>عندما d=0 (CS):</strong> <code class="code-inline">marks[0] = new int[2][];</code> ← خانتان للطلاب<br>
+                        <strong>عندما d=1 (IT):</strong> <code class="code-inline">marks[1] = new int[3][];</code> ← 3 خانات للطلاب<br>
+                        <strong>عندما d=2 (IS):</strong> <code class="code-inline">marks[2] = new int[2][];</code> ← خانتان للطلاب
                     </div>
-                    <p style="margin-top: 15px;"><strong>Note:</strong> The <code class="code-inline">[]</code> at the end is still empty - each student's courses will vary!</p>
+                    <p style="margin-top: 15px;"><strong>ملاحظة:</strong> الـ <code class="code-inline">[]</code> في النهاية لا تزال فارغة - مقررات كل طالب ستتغيّر!</p>
                 </div>
 
                 <!-- Part 5: The Inner Loop -->
-                <h3 style="color: var(--primary-color); margin-top: 30px; margin-bottom: 15px;">Part 5: Inner Loop - For Each Student (Lines 38-55)</h3>
+                <h3 style="color: var(--primary-color); margin-top: 30px; margin-bottom: 15px;">الجزء 5: الحلقة الداخلية - لكل طالب (الأسطر 38-55)</h3>
 
                 <div class="info-box">
-                    <div class="info-box-title">Line 38: <code class="code-inline">for (int s = 0; s < studentsPerDept[d]; s++) {</code></div>
-                    <p><strong>What it does:</strong> Loops through each student in department <code class="code-inline">d</code>.</p>
-                    <p style="margin-top: 10px;"><strong>Variable naming:</strong> <code class="code-inline">s</code> for "student"</p>
-                    <p style="margin-top: 10px;"><strong>Notice:</strong> The loop limit is <code class="code-inline">studentsPerDept[d]</code> - different for each department!</p>
+                    <div class="info-box-title">السطر 38: <code class="code-inline">for (int s = 0; s < studentsPerDept[d]; s++) {</code></div>
+                    <p><strong>ماذا يفعل:</strong> يمرّ عبر كل طالب في القسم <code class="code-inline">d</code>.</p>
+                    <p style="margin-top: 10px;"><strong>تسمية المتغيّر:</strong> <code class="code-inline">s</code> اختصاراً لـ "student" (الطالب)</p>
+                    <p style="margin-top: 10px;"><strong>لاحظ:</strong> حدّ الحلقة هو <code class="code-inline">studentsPerDept[d]</code> - مختلف لكل قسم!</p>
                     <div class="highlight-box" style="margin-top: 15px;">
-                        <strong>For CS (d=0):</strong> loops s = 0, 1 (2 students)<br>
-                        <strong>For IT (d=1):</strong> loops s = 0, 1, 2 (3 students)<br>
-                        <strong>For IS (d=2):</strong> loops s = 0, 1 (2 students)
+                        <strong>لقسم CS (d=0):</strong> يمرّ s = 0، 1 (طالبان)<br>
+                        <strong>لقسم IT (d=1):</strong> يمرّ s = 0، 1، 2 (3 طلاب)<br>
+                        <strong>لقسم IS (d=2):</strong> يمرّ s = 0، 1 (طالبان)
                     </div>
                 </div>
 
                 <div class="key-concept">
-                    <div class="key-concept-title">Line 40: <code class="code-inline">String line = fileReader.nextLine().trim();</code></div>
-                    <p><strong>What it does:</strong> Reads the next line from the file (one student's marks).</p>
+                    <div class="key-concept-title">السطر 40: <code class="code-inline">String line = fileReader.nextLine().trim();</code></div>
+                    <p><strong>ماذا يفعل:</strong> يقرأ السطر التالي من الملف (درجات طالب واحد).</p>
                     <div class="highlight-box" style="margin-top: 15px;">
-                        <strong>Example (first iteration d=0, s=0):</strong><br>
-                        Reads: <code class="code-inline">"85 90 78"</code> (CS Student 0's marks)
+                        <strong>مثال (التكرار الأول d=0، s=0):</strong><br>
+                        يقرأ: <code class="code-inline">"85 90 78"</code> (درجات الطالب 0 في قسم CS)
                     </div>
                 </div>
 
                 <div class="info-box">
-                    <div class="info-box-title">Line 43: <code class="code-inline">String[] tokens = line.split("\\s+");</code></div>
-                    <p><strong>What it does:</strong> Splits the line by whitespace.</p>
+                    <div class="info-box-title">السطر 43: <code class="code-inline">String[] tokens = line.split("\\s+");</code></div>
+                    <p><strong>ماذا يفعل:</strong> يقسّم السطر عند المسافات البيضاء.</p>
                     <div class="highlight-box" style="margin-top: 15px;">
-                        <strong>Example:</strong><br>
-                        Input: <code class="code-inline">"85 90 78"</code><br>
-                        Result: <code class="code-inline">tokens = {"85", "90", "78"}</code><br>
-                        <code class="code-inline">tokens.length = 3</code> (this student has 3 courses)
+                        <strong>مثال:</strong><br>
+                        الإدخال: <code class="code-inline">"85 90 78"</code><br>
+                        النتيجة: <code class="code-inline">tokens = {"85", "90", "78"}</code><br>
+                        <code class="code-inline">tokens.length = 3</code> (هذا الطالب لديه 3 مقررات)
                     </div>
                 </div>
 
                 <div class="key-concept">
-                    <div class="key-concept-title">Line 46: <code class="code-inline">int[] courses = new int[tokens.length];</code></div>
-                    <p><strong>What it does:</strong> Creates a 1D array with the EXACT number of courses for this student.</p>
-                    <p style="margin-top: 10px;"><strong>Why <code class="code-inline">tokens.length</code>?</strong> The number of tokens tells us how many courses!</p>
+                    <div class="key-concept-title">السطر 46: <code class="code-inline">int[] courses = new int[tokens.length];</code></div>
+                    <p><strong>ماذا يفعل:</strong> يُنشئ مصفوفة أحادية البعد بالعدد الدقيق للمقررات لهذا الطالب.</p>
+                    <p style="margin-top: 10px;"><strong>لماذا <code class="code-inline">tokens.length</code>؟</strong> عدد الرموز (tokens) يخبرنا بعدد المقررات!</p>
                     <div class="highlight-box" style="margin-top: 15px;">
-                        <strong>Different students, different sizes:</strong><br>
-                        CS Student 0: <code class="code-inline">tokens.length = 3</code> → <code class="code-inline">courses = new int[3]</code><br>
-                        CS Student 1: <code class="code-inline">tokens.length = 4</code> → <code class="code-inline">courses = new int[4]</code><br>
-                        IT Student 1: <code class="code-inline">tokens.length = 5</code> → <code class="code-inline">courses = new int[5]</code>
+                        <strong>طلاب مختلفون، أحجام مختلفة:</strong><br>
+                        CS Student 0: <code class="code-inline">tokens.length = 3</code> ← <code class="code-inline">courses = new int[3]</code><br>
+                        CS Student 1: <code class="code-inline">tokens.length = 4</code> ← <code class="code-inline">courses = new int[4]</code><br>
+                        IT Student 1: <code class="code-inline">tokens.length = 5</code> ← <code class="code-inline">courses = new int[5]</code>
                     </div>
                 </div>
 
                 <div class="info-box">
-                    <div class="info-box-title">Lines 49-51: Converting Tokens to Integers</div>
+                    <div class="info-box-title">الأسطر 49-51: تحويل الرموز إلى أعداد صحيحة</div>
                     <p><code class="code-inline">for (int c = 0; c < tokens.length; c++) {</code></p>
                     <p><code class="code-inline">&nbsp;&nbsp;&nbsp;&nbsp;courses[c] = Integer.parseInt(tokens[c]);</code></p>
                     <p><code class="code-inline">}</code></p>
-                    <p style="margin-top: 10px;"><strong>Variable naming:</strong> <code class="code-inline">c</code> for "course"</p>
-                    <p style="margin-top: 10px;"><strong>What it does:</strong> Converts each string mark to an integer.</p>
+                    <p style="margin-top: 10px;"><strong>تسمية المتغيّر:</strong> <code class="code-inline">c</code> اختصاراً لـ "course" (المقرر)</p>
+                    <p style="margin-top: 10px;"><strong>ماذا يفعل:</strong> يحوّل كل درجة نصية إلى عدد صحيح.</p>
                     <div class="highlight-box" style="margin-top: 15px;">
-                        <strong>Example:</strong><br>
-                        <code class="code-inline">tokens[0] = "85"</code> → <code class="code-inline">courses[0] = 85</code><br>
-                        <code class="code-inline">tokens[1] = "90"</code> → <code class="code-inline">courses[1] = 90</code><br>
-                        <code class="code-inline">tokens[2] = "78"</code> → <code class="code-inline">courses[2] = 78</code>
+                        <strong>مثال:</strong><br>
+                        <code class="code-inline">tokens[0] = "85"</code> ← <code class="code-inline">courses[0] = 85</code><br>
+                        <code class="code-inline">tokens[1] = "90"</code> ← <code class="code-inline">courses[1] = 90</code><br>
+                        <code class="code-inline">tokens[2] = "78"</code> ← <code class="code-inline">courses[2] = 78</code>
                     </div>
                 </div>
 
                 <div class="key-concept">
-                    <div class="key-concept-title">Line 54: <code class="code-inline">marks[d][s] = courses;</code></div>
-                    <p><strong>What it does:</strong> Assigns the courses array to the correct position in our 3D array.</p>
-                    <p style="margin-top: 10px;"><strong>This is the FINAL assignment!</strong></p>
+                    <div class="key-concept-title">السطر 54: <code class="code-inline">marks[d][s] = courses;</code></div>
+                    <p><strong>ماذا يفعل:</strong> يُسند مصفوفة المقررات إلى الموضع الصحيح في مصفوفتنا ثلاثية الأبعاد.</p>
+                    <p style="margin-top: 10px;"><strong>هذا هو الإسناد النهائي!</strong></p>
                     <div class="highlight-box" style="margin-top: 15px;">
-                        <strong>Example (d=0, s=0):</strong><br>
+                        <strong>مثال (d=0، s=0):</strong><br>
                         <code class="code-inline">marks[0][0] = {85, 90, 78}</code><br><br>
-                        <strong>Meaning:</strong> Department 0 (CS), Student 0, has marks 85, 90, 78
+                        <strong>المعنى:</strong> القسم 0 (CS)، الطالب 0، لديه الدرجات 85، 90، 78
                     </div>
                 </div>
 
                 <!-- Part 6: Printing -->
-                <h3 style="color: var(--primary-color); margin-top: 30px; margin-bottom: 15px;">Part 6: Printing the 3D Array (Lines 61-76)</h3>
+                <h3 style="color: var(--primary-color); margin-top: 30px; margin-bottom: 15px;">الجزء 6: طباعة المصفوفة ثلاثية الأبعاد (الأسطر 61-76)</h3>
 
                 <div class="info-box">
-                    <div class="info-box-title">Line 65: <code class="code-inline">for (int d = 0; d < marks.length; d++) {</code></div>
-                    <p><strong>What it does:</strong> Outer loop through departments.</p>
-                    <p style="margin-top: 10px;"><code class="code-inline">marks.length</code> = 3 (number of departments)</p>
+                    <div class="info-box-title">السطر 65: <code class="code-inline">for (int d = 0; d < marks.length; d++) {</code></div>
+                    <p><strong>ماذا يفعل:</strong> الحلقة الخارجية عبر الأقسام.</p>
+                    <p style="margin-top: 10px;"><code class="code-inline">marks.length</code> = 3 (عدد الأقسام)</p>
                 </div>
 
                 <div class="info-box">
-                    <div class="info-box-title">Line 66: <code class="code-inline">System.out.println("\nDepartment " + d + " (" + deptNames[d] + "):");</code></div>
-                    <p><strong>What it does:</strong> Prints department header with name.</p>
-                    <p style="margin-top: 10px;"><strong>Example output:</strong> <code class="code-inline">Department 0 (CS):</code></p>
+                    <div class="info-box-title">السطر 66: <code class="code-inline">System.out.println("\nDepartment " + d + " (" + deptNames[d] + "):");</code></div>
+                    <p><strong>ماذا يفعل:</strong> يطبع ترويسة القسم مع الاسم.</p>
+                    <p style="margin-top: 10px;"><strong>مثال على المخرجات:</strong> <code class="code-inline">Department 0 (CS):</code></p>
                 </div>
 
                 <div class="info-box">
-                    <div class="info-box-title">Line 68: <code class="code-inline">for (int s = 0; s < marks[d].length; s++) {</code></div>
-                    <p><strong>What it does:</strong> Middle loop through students in department <code class="code-inline">d</code>.</p>
-                    <p style="margin-top: 10px;"><code class="code-inline">marks[d].length</code> = number of students in that department (varies!)</p>
+                    <div class="info-box-title">السطر 68: <code class="code-inline">for (int s = 0; s < marks[d].length; s++) {</code></div>
+                    <p><strong>ماذا يفعل:</strong> الحلقة الوسطى عبر الطلاب في القسم <code class="code-inline">d</code>.</p>
+                    <p style="margin-top: 10px;"><code class="code-inline">marks[d].length</code> = عدد الطلاب في ذلك القسم (متغيّر!)</p>
                 </div>
 
                 <div class="info-box">
-                    <div class="info-box-title">Line 71: <code class="code-inline">for (int mark : marks[d][s]) {</code></div>
-                    <p><strong>What it does:</strong> Inner loop through courses for student <code class="code-inline">s</code>.</p>
-                    <p style="margin-top: 10px;"><strong>Enhanced for-loop:</strong> Automatically handles different course counts!</p>
-                    <p style="margin-top: 10px;"><code class="code-inline">marks[d][s]</code> = the 1D array of marks for this student</p>
+                    <div class="info-box-title">السطر 71: <code class="code-inline">for (int mark : marks[d][s]) {</code></div>
+                    <p><strong>ماذا يفعل:</strong> الحلقة الداخلية عبر مقررات الطالب <code class="code-inline">s</code>.</p>
+                    <p style="margin-top: 10px;"><strong>الحلقة المحسّنة (Enhanced for-loop):</strong> تتعامل تلقائياً مع أعداد المقررات المختلفة!</p>
+                    <p style="margin-top: 10px;"><code class="code-inline">marks[d][s]</code> = المصفوفة أحادية البعد للدرجات لهذا الطالب</p>
                 </div>
 
                 <div class="info-box">
-                    <div class="info-box-title">Line 74: <code class="code-inline">System.out.println("(" + marks[d][s].length + " courses)");</code></div>
-                    <p><strong>What it does:</strong> Prints how many courses each student has.</p>
-                    <p style="margin-top: 10px;"><code class="code-inline">marks[d][s].length</code> = number of courses for this specific student</p>
+                    <div class="info-box-title">السطر 74: <code class="code-inline">System.out.println("(" + marks[d][s].length + " courses)");</code></div>
+                    <p><strong>ماذا يفعل:</strong> يطبع كم مقرراً لدى كل طالب.</p>
+                    <p style="margin-top: 10px;"><code class="code-inline">marks[d][s].length</code> = عدد المقررات لهذا الطالب المحدّد</p>
                 </div>
 
                 <!-- Complete Trace -->
-                <h3 style="color: var(--primary-color); margin-top: 30px; margin-bottom: 15px;">Complete Execution Trace</h3>
+                <h3 style="color: var(--primary-color); margin-top: 30px; margin-bottom: 15px;">التتبّع الكامل للتنفيذ</h3>
 
                 <div class="success-box">
-                    <div class="success-box-title">Step-by-Step with departments.txt</div>
+                    <div class="success-box-title">خطوة بخطوة مع departments.txt</div>
                     <table style="width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 0.9rem;">
                         <tr style="background: rgba(255,255,255,0.5);">
-                            <th style="padding: 8px; border: 1px solid #059669; text-align: left;">Step</th>
-                            <th style="padding: 8px; border: 1px solid #059669; text-align: left;">Action</th>
-                            <th style="padding: 8px; border: 1px solid #059669; text-align: left;">Result</th>
+                            <th style="padding: 8px; border: 1px solid #059669; text-align: right;">الخطوة</th>
+                            <th style="padding: 8px; border: 1px solid #059669; text-align: right;">الإجراء</th>
+                            <th style="padding: 8px; border: 1px solid #059669; text-align: right;">النتيجة</th>
                         </tr>
                         <tr>
                             <td style="padding: 8px; border: 1px solid #059669;">1</td>
-                            <td style="padding: 8px; border: 1px solid #059669;">Read "3"</td>
+                            <td style="padding: 8px; border: 1px solid #059669;">قراءة "3"</td>
                             <td style="padding: 8px; border: 1px solid #059669;"><code class="code-inline">numDepartments = 3</code></td>
                         </tr>
                         <tr style="background: rgba(255,255,255,0.3);">
                             <td style="padding: 8px; border: 1px solid #059669;">2</td>
-                            <td style="padding: 8px; border: 1px solid #059669;">Read "2 3 2"</td>
+                            <td style="padding: 8px; border: 1px solid #059669;">قراءة "2 3 2"</td>
                             <td style="padding: 8px; border: 1px solid #059669;"><code class="code-inline">studentsPerDept = {2, 3, 2}</code></td>
                         </tr>
                         <tr>
                             <td style="padding: 8px; border: 1px solid #059669;">3</td>
-                            <td style="padding: 8px; border: 1px solid #059669;">Create 3D array</td>
+                            <td style="padding: 8px; border: 1px solid #059669;">إنشاء المصفوفة ثلاثية الأبعاد</td>
                             <td style="padding: 8px; border: 1px solid #059669;"><code class="code-inline">marks = [null, null, null]</code></td>
                         </tr>
                         <tr style="background: rgba(37,99,235,0.1);">
                             <td style="padding: 8px; border: 1px solid #059669;">4</td>
-                            <td style="padding: 8px; border: 1px solid #059669;">d=0: Create CS array</td>
+                            <td style="padding: 8px; border: 1px solid #059669;">d=0: إنشاء مصفوفة CS</td>
                             <td style="padding: 8px; border: 1px solid #059669;"><code class="code-inline">marks[0] = [null, null]</code></td>
                         </tr>
                         <tr style="background: rgba(37,99,235,0.2);">
                             <td style="padding: 8px; border: 1px solid #059669;">5</td>
-                            <td style="padding: 8px; border: 1px solid #059669;">d=0,s=0: Read "85 90 78"</td>
+                            <td style="padding: 8px; border: 1px solid #059669;">d=0,s=0: قراءة "85 90 78"</td>
                             <td style="padding: 8px; border: 1px solid #059669;"><code class="code-inline">marks[0][0] = {85, 90, 78}</code></td>
                         </tr>
                         <tr style="background: rgba(37,99,235,0.1);">
                             <td style="padding: 8px; border: 1px solid #059669;">6</td>
-                            <td style="padding: 8px; border: 1px solid #059669;">d=0,s=1: Read "90 85 88 92"</td>
+                            <td style="padding: 8px; border: 1px solid #059669;">d=0,s=1: قراءة "90 85 88 92"</td>
                             <td style="padding: 8px; border: 1px solid #059669;"><code class="code-inline">marks[0][1] = {90, 85, 88, 92}</code></td>
                         </tr>
                         <tr style="background: rgba(217,119,6,0.1);">
                             <td style="padding: 8px; border: 1px solid #059669;">7</td>
-                            <td style="padding: 8px; border: 1px solid #059669;">d=1: Create IT array</td>
+                            <td style="padding: 8px; border: 1px solid #059669;">d=1: إنشاء مصفوفة IT</td>
                             <td style="padding: 8px; border: 1px solid #059669;"><code class="code-inline">marks[1] = [null, null, null]</code></td>
                         </tr>
                         <tr style="background: rgba(217,119,6,0.2);">
                             <td style="padding: 8px; border: 1px solid #059669;">8</td>
-                            <td style="padding: 8px; border: 1px solid #059669;">d=1,s=0: Read "75 80"</td>
+                            <td style="padding: 8px; border: 1px solid #059669;">d=1,s=0: قراءة "75 80"</td>
                             <td style="padding: 8px; border: 1px solid #059669;"><code class="code-inline">marks[1][0] = {75, 80}</code></td>
                         </tr>
                         <tr style="background: rgba(217,119,6,0.1);">
                             <td style="padding: 8px; border: 1px solid #059669;">9</td>
-                            <td style="padding: 8px; border: 1px solid #059669;">d=1,s=1: Read "88 92 85 90 78"</td>
+                            <td style="padding: 8px; border: 1px solid #059669;">d=1,s=1: قراءة "88 92 85 90 78"</td>
                             <td style="padding: 8px; border: 1px solid #059669;"><code class="code-inline">marks[1][1] = {88,92,85,90,78}</code></td>
                         </tr>
                         <tr style="background: rgba(217,119,6,0.2);">
                             <td style="padding: 8px; border: 1px solid #059669;">10</td>
-                            <td style="padding: 8px; border: 1px solid #059669;">d=1,s=2: Read "70 75 80"</td>
+                            <td style="padding: 8px; border: 1px solid #059669;">d=1,s=2: قراءة "70 75 80"</td>
                             <td style="padding: 8px; border: 1px solid #059669;"><code class="code-inline">marks[1][2] = {70, 75, 80}</code></td>
                         </tr>
                         <tr style="background: rgba(5,150,105,0.1);">
                             <td style="padding: 8px; border: 1px solid #059669;">11</td>
-                            <td style="padding: 8px; border: 1px solid #059669;">d=2: Create IS array</td>
+                            <td style="padding: 8px; border: 1px solid #059669;">d=2: إنشاء مصفوفة IS</td>
                             <td style="padding: 8px; border: 1px solid #059669;"><code class="code-inline">marks[2] = [null, null]</code></td>
                         </tr>
                         <tr style="background: rgba(5,150,105,0.2);">
                             <td style="padding: 8px; border: 1px solid #059669;">12</td>
-                            <td style="padding: 8px; border: 1px solid #059669;">d=2,s=0: Read "95 88 92"</td>
+                            <td style="padding: 8px; border: 1px solid #059669;">d=2,s=0: قراءة "95 88 92"</td>
                             <td style="padding: 8px; border: 1px solid #059669;"><code class="code-inline">marks[2][0] = {95, 88, 92}</code></td>
                         </tr>
                         <tr style="background: rgba(5,150,105,0.1);">
                             <td style="padding: 8px; border: 1px solid #059669;">13</td>
-                            <td style="padding: 8px; border: 1px solid #059669;">d=2,s=1: Read "80 85"</td>
+                            <td style="padding: 8px; border: 1px solid #059669;">d=2,s=1: قراءة "80 85"</td>
                             <td style="padding: 8px; border: 1px solid #059669;"><code class="code-inline">marks[2][1] = {80, 85}</code></td>
                         </tr>
                     </table>
@@ -1282,7 +1290,7 @@
             <div class="section">
                 <h2 class="section-title">
                     <span class="section-number">8</span>
-                    Expected Output
+                    المخرجات المتوقّعة
                 </h2>
 
                 <div class="code-block">
@@ -1312,8 +1320,8 @@ Department 2 (IS):
                 </div>
 
                 <div class="success-box">
-                    <div class="success-box-title">Success!</div>
-                    <p>Each department has a different number of students, and each student has a different number of courses. No wasted memory - every array is exactly the size it needs to be!</p>
+                    <div class="success-box-title">نجح الأمر!</div>
+                    <p>لكل قسم عدد مختلف من الطلاب، ولكل طالب عدد مختلف من المقررات. لا هدر في الذاكرة - كل مصفوفة بالحجم الذي تحتاجه بالضبط!</p>
                 </div>
             </div>
 
@@ -1321,47 +1329,47 @@ Department 2 (IS):
             <div class="section">
                 <h2 class="section-title">
                     <span class="section-number">9</span>
-                    Key Takeaways
+                    الخلاصات الأساسية
                 </h2>
 
                 <div class="key-concept">
-                    <div class="key-concept-title">Summary - 3D Ragged Array</div>
-                    <ul style="margin-left: 20px; margin-top: 10px;">
-                        <li><strong>Declaration:</strong> <code class="code-inline">int[][][] marks = new int[numDepts][][];</code> - only first dimension!</li>
-                        <li><strong>Create 2D for each department:</strong> <code class="code-inline">marks[d] = new int[studentsPerDept[d]][];</code></li>
-                        <li><strong>Create 1D for each student:</strong> Let <code class="code-inline">split()</code> determine the size</li>
-                        <li><strong>Assign:</strong> <code class="code-inline">marks[d][s] = courses;</code></li>
+                    <div class="key-concept-title">ملخّص - المصفوفة المتعرجة ثلاثية الأبعاد</div>
+                    <ul style="margin-right: 20px; margin-top: 10px;">
+                        <li><strong>التصريح:</strong> <code class="code-inline">int[][][] marks = new int[numDepts][][];</code> - البُعد الأول فقط!</li>
+                        <li><strong>إنشاء مصفوفة ثنائية لكل قسم:</strong> <code class="code-inline">marks[d] = new int[studentsPerDept[d]][];</code></li>
+                        <li><strong>إنشاء مصفوفة أحادية لكل طالب:</strong> دع <code class="code-inline">split()</code> يحدّد الحجم</li>
+                        <li><strong>الإسناد:</strong> <code class="code-inline">marks[d][s] = courses;</code></li>
                     </ul>
                 </div>
 
                 <div class="info-box">
-                    <div class="info-box-title">Access Pattern</div>
+                    <div class="info-box-title">نمط الوصول</div>
                     <p><code class="code-inline">marks[department][student][course]</code></p>
-                    <p style="margin-top: 10px;"><strong>Example:</strong> <code class="code-inline">marks[1][2][0]</code> = IT department, Student 2, Course 0 = <code class="code-inline">70</code></p>
+                    <p style="margin-top: 10px;"><strong>مثال:</strong> <code class="code-inline">marks[1][2][0]</code> = قسم IT، الطالب 2، المقرر 0 = <code class="code-inline">70</code></p>
                 </div>
 
                 <div class="success-box">
-                    <div class="success-box-title">Comparing 2D vs 3D Ragged Arrays</div>
+                    <div class="success-box-title">مقارنة المصفوفات المتعرجة ثنائية الأبعاد مقابل ثلاثية الأبعاد</div>
                     <table style="width: 100%; border-collapse: collapse; margin-top: 15px;">
                         <tr style="background: rgba(255,255,255,0.5);">
-                            <th style="padding: 10px; border: 1px solid #059669;">Feature</th>
-                            <th style="padding: 10px; border: 1px solid #059669;">2D Ragged</th>
-                            <th style="padding: 10px; border: 1px solid #059669;">3D Ragged</th>
+                            <th style="padding: 10px; border: 1px solid #059669;">الخاصية</th>
+                            <th style="padding: 10px; border: 1px solid #059669;">متعرّجة ثنائية الأبعاد</th>
+                            <th style="padding: 10px; border: 1px solid #059669;">متعرّجة ثلاثية الأبعاد</th>
                         </tr>
                         <tr>
-                            <td style="padding: 10px; border: 1px solid #059669;">Declaration</td>
+                            <td style="padding: 10px; border: 1px solid #059669;">التصريح</td>
                             <td style="padding: 10px; border: 1px solid #059669;"><code class="code-inline">int[n][]</code></td>
                             <td style="padding: 10px; border: 1px solid #059669;"><code class="code-inline">int[n][][]</code></td>
                         </tr>
                         <tr style="background: rgba(255,255,255,0.3);">
-                            <td style="padding: 10px; border: 1px solid #059669;">Loops needed</td>
-                            <td style="padding: 10px; border: 1px solid #059669;">1 (students)</td>
-                            <td style="padding: 10px; border: 1px solid #059669;">2 (departments + students)</td>
+                            <td style="padding: 10px; border: 1px solid #059669;">الحلقات المطلوبة</td>
+                            <td style="padding: 10px; border: 1px solid #059669;">1 (الطلاب)</td>
+                            <td style="padding: 10px; border: 1px solid #059669;">2 (الأقسام + الطلاب)</td>
                         </tr>
                         <tr>
-                            <td style="padding: 10px; border: 1px solid #059669;">Header lines</td>
-                            <td style="padding: 10px; border: 1px solid #059669;">1 (count)</td>
-                            <td style="padding: 10px; border: 1px solid #059669;">2 (count + sizes)</td>
+                            <td style="padding: 10px; border: 1px solid #059669;">أسطر الترويسة</td>
+                            <td style="padding: 10px; border: 1px solid #059669;">1 (العدد)</td>
+                            <td style="padding: 10px; border: 1px solid #059669;">2 (العدد + الأحجام)</td>
                         </tr>
                     </table>
                 </div>
@@ -1370,13 +1378,13 @@ Department 2 (IS):
 
         <!-- Bottom Navigation -->
         <nav class="bottom-nav">
-            <a href="06-ragged-array-file-reading.html" class="prev-link">‹ Previous: 2D Ragged Arrays</a>
-            <a href="03-2d-3d-arrays.html" class="back-link">Back to 2D & 3D Arrays ›</a>
+            <a href="06-ragged-array-file-reading-ar.html" class="prev-link">السابق: المصفوفات المتعرجة ثنائية الأبعاد &rarr;</a>
+            <a href="03-2d-3d-arrays-ar.html" class="back-link">&larr; العودة إلى المصفوفات ثنائية وثلاثية الأبعاد</a>
         </nav>
 
         <!-- Footer -->
         <div class="footer">
-            <p>CPCS203 - Data Structures | King Abdulaziz University</p>
+            <p>CPCS203 - هياكل البيانات | جامعة الملك عبدالعزيز</p>
         </div>
     </div>
 

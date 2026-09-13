@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Week 1: 2D and 3D Arrays in Java | CPCS203</title>
+    <title>الأسبوع 1: المصفوفات ثنائية وثلاثية الأبعاد (2D and 3D Arrays) في جافا | CPCS203</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -25,7 +26,7 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Tajawal', 'Amiri', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.8;
             color: var(--dark-color);
             background: linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%);
@@ -106,10 +107,10 @@
         /* Key Concept Box */
         .key-concept {
             background: linear-gradient(135deg, #fef3c7, #fde68a);
-            border-left: 5px solid var(--warning-color);
+            border-right: 5px solid var(--warning-color);
             padding: 20px 25px;
             margin: 20px 0;
-            border-radius: 0 10px 10px 0;
+            border-radius: 10px 0 0 10px;
         }
 
         .key-concept-title {
@@ -122,10 +123,10 @@
         /* Important Box */
         .important-box {
             background: linear-gradient(135deg, #fee2e2, #fecaca);
-            border-left: 5px solid var(--danger-color);
+            border-right: 5px solid var(--danger-color);
             padding: 20px 25px;
             margin: 20px 0;
-            border-radius: 0 10px 10px 0;
+            border-radius: 10px 0 0 10px;
         }
 
         .important-box-title {
@@ -138,19 +139,19 @@
         /* Info Box */
         .info-box {
             background: linear-gradient(135deg, #dbeafe, #bfdbfe);
-            border-left: 5px solid var(--secondary-color);
+            border-right: 5px solid var(--secondary-color);
             padding: 20px 25px;
             margin: 20px 0;
-            border-radius: 0 10px 10px 0;
+            border-radius: 10px 0 0 10px;
         }
 
         /* Success Box */
         .success-box {
             background: linear-gradient(135deg, #d1fae5, #a7f3d0);
-            border-left: 5px solid var(--success-color);
+            border-right: 5px solid var(--success-color);
             padding: 20px 25px;
             margin: 20px 0;
-            border-radius: 0 10px 10px 0;
+            border-radius: 10px 0 0 10px;
         }
 
         /* Code Block - IDE Style */
@@ -160,6 +161,8 @@
             margin: 20px 0;
             overflow: hidden;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            direction: ltr;
+            text-align: left;
         }
 
         .code-header {
@@ -224,6 +227,8 @@
         .bracket { color: #ffd700; }
         .operator { color: #d4d4d4; }
 
+        code, .code-inline { direction: ltr; unicode-bidi: embed; }
+
         .code-inline {
             background: #e5e7eb;
             padding: 2px 8px;
@@ -277,6 +282,8 @@
             font-family: 'Consolas', monospace;
             font-weight: bold;
             color: var(--dark-color);
+            direction: ltr;
+            text-align: left;
         }
 
         .array-cells {
@@ -649,7 +656,7 @@
 
         /* Lists */
         ul, ol {
-            margin: 15px 0 15px 25px;
+            margin: 15px 25px 15px 0;
         }
 
         li {
@@ -712,6 +719,7 @@
             gap: 10px;
             flex-wrap: wrap;
             font-size: 1.2rem;
+            direction: ltr;
         }
 
         .access-part {
@@ -853,34 +861,34 @@
             background: linear-gradient(135deg, #64748b, #475569);
         }
 
-        .lang-switch { position: fixed; top: 20px; right: 20px; z-index: 1000; padding: 10px 20px; background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); color: white; text-decoration: none; border-radius: 30px; font-weight: 700; font-size: 0.9rem; box-shadow: 0 4px 14px rgba(124,58,237,.4); transition: transform .2s, box-shadow .2s; }
+        .lang-switch { position: fixed; top: 20px; left: 20px; z-index: 1000; padding: 10px 20px; background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); color: white; text-decoration: none; border-radius: 30px; font-weight: 700; font-size: 0.9rem; box-shadow: 0 4px 14px rgba(124,58,237,.4); transition: transform .2s, box-shadow .2s; }
         .lang-switch:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(124,58,237,.6); }
     </style>
 </head>
 <body>
-    <a href="03-2d-3d-arrays-ar.html" class="lang-switch">&#127760; العربية</a>
+    <a href="03-2d-3d-arrays.html" class="lang-switch">English &#127760;</a>
     <div class="container">
         <!-- Navigation Breadcrumb -->
         <nav class="nav-breadcrumb">
             <div class="breadcrumb">
                 <a href="../index.html">CPCS203</a>
-                <span class="separator">›</span>
-                <a href="index.html">Module 1: Arrays</a>
-                <span class="separator">›</span>
-                <span class="current">2D & 3D Arrays</span>
+                <span class="separator">&#8249;</span>
+                <a href="index-ar.html">الوحدة 1: المصفوفات</a>
+                <span class="separator">&#8249;</span>
+                <span class="current">المصفوفات ثنائية وثلاثية الأبعاد</span>
             </div>
             <div class="lesson-nav">
-                <a href="02-1d-exercises.html">‹ Previous</a>
-                <a href="04-ragged-arrays.html">Next: Ragged Arrays ›</a>
+                <a href="02-1d-exercises-ar.html">السابق &rarr;</a>
+                <a href="04-ragged-arrays-ar.html">&larr; التالي: المصفوفات المتعرجة</a>
             </div>
         </nav>
 
         <!-- Header -->
         <div class="header">
-            <h1>2D and 3D Arrays in Java</h1>
-            <p class="subtitle">Understanding Array of Arrays - The Computer Science Way</p>
+            <h1>المصفوفات ثنائية وثلاثية الأبعاد في جافا</h1>
+            <p class="subtitle">فهم مصفوفة المصفوفات (Array of Arrays) - على طريقة علوم الحاسب</p>
             <div class="course-info">
-                <strong>CPCS203</strong> - Object-Oriented Programming | Week 1
+                <strong>CPCS203</strong> - البرمجة الكائنية التوجه | الأسبوع 1
             </div>
         </div>
 
@@ -889,14 +897,14 @@
             <div class="section">
                 <h2 class="section-title">
                     <span class="section-number">1</span>
-                    The Problem: Storing Student Marks
+                    المشكلة: تخزين درجات الطلاب
                 </h2>
 
-                <p>Imagine you are building a system to store marks for <strong>3 students</strong> in <strong>4 courses</strong>. How would you store this data?</p>
+                <p>تخيّل أنك تبني نظامًا لتخزين درجات <strong>3 طلاب</strong> في <strong>4 مقررات</strong>. كيف ستخزّن هذه البيانات؟</p>
 
-                <h3 style="color: var(--danger-color); margin-top: 25px;">Approach 1: Using Separate Variables</h3>
+                <h3 style="color: var(--danger-color); margin-top: 25px;">الأسلوب الأول: استخدام متغيرات منفصلة</h3>
 
-                <p>You could create a variable for each student's mark in each course:</p>
+                <p>يمكنك إنشاء متغير لكل درجة طالب في كل مقرر:</p>
 
                 <div class="variables-grid">
                     <div class="var-box">S1C1<div class="var-label">Student1, Course1</div></div>
@@ -914,13 +922,13 @@
                 </div>
 
                 <div class="important-box">
-                    <div class="important-box-title">Problem!</div>
-                    <p>This requires <strong>3 × 4 = 12 variables!</strong> What if you have 100 students and 10 courses? That's <strong>1000 variables!</strong> This is completely impractical.</p>
+                    <div class="important-box-title">مشكلة!</div>
+                    <p>هذا يتطلب <strong>3 × 4 = 12 متغيرًا!</strong> ماذا لو كان لديك 100 طالب و10 مقررات؟ سيكون ذلك <strong>1000 متغير!</strong> هذا غير عملي على الإطلاق.</p>
                 </div>
 
-                <h3 style="color: var(--warning-color); margin-top: 25px;">Approach 2: Using Separate Arrays</h3>
+                <h3 style="color: var(--warning-color); margin-top: 25px;">الأسلوب الثاني: استخدام مصفوفات منفصلة</h3>
 
-                <p>A better idea: Create one array for each student to hold their course marks:</p>
+                <p>فكرة أفضل: أنشئ مصفوفة واحدة لكل طالب لتحتوي على درجات مقرراته:</p>
 
                 <div class="separate-arrays">
                     <div class="separate-array-row">
@@ -953,15 +961,15 @@
                 </div>
 
                 <div class="important-box">
-                    <div class="important-box-title">Still a Problem!</div>
-                    <p>This is better, but what if you have <strong>100 students?</strong> You would need <strong>100 separate array variables!</strong> This is the same problem as before - too many variables to manage.</p>
+                    <div class="important-box-title">لا تزال مشكلة!</div>
+                    <p>هذا أفضل، لكن ماذا لو كان لديك <strong>100 طالب؟</strong> ستحتاج إلى <strong>100 متغير مصفوفة منفصل!</strong> هذه هي المشكلة نفسها كما في السابق - عدد كبير جدًا من المتغيرات يصعب إدارتها.</p>
                 </div>
 
-                <h3 style="color: var(--success-color); margin-top: 25px;">The Solution: Array of Arrays</h3>
+                <h3 style="color: var(--success-color); margin-top: 25px;">الحل: مصفوفة المصفوفات (Array of Arrays)</h3>
 
                 <div class="success-box">
-                    <p><strong>What if we could have ONE array that contains all the student arrays?</strong></p>
-                    <p>This is exactly what a 2D array is - an <strong>array of arrays!</strong></p>
+                    <p><strong>ماذا لو استطعنا الحصول على مصفوفة واحدة تحتوي على جميع مصفوفات الطلاب؟</strong></p>
+                    <p>هذا هو بالضبط ما تعنيه المصفوفة ثنائية الأبعاد (2D array) - إنها <strong>مصفوفة من المصفوفات!</strong></p>
                 </div>
             </div>
 
@@ -969,16 +977,16 @@
             <div class="section">
                 <h2 class="section-title">
                     <span class="section-number">2</span>
-                    The Computer Only Understands 1D Arrays!
+                    الحاسب لا يفهم إلا المصفوفات أحادية البعد!
                 </h2>
 
                 <div class="key-concept">
-                    <div class="key-concept-title">Critical Understanding for Data Structures!</div>
-                    <p>The computer does <strong>NOT</strong> understand 2D or 3D arrays directly. The computer only understands <strong>single-dimensional (1D) arrays</strong>.</p>
-                    <p style="margin-top: 10px;">A "2D array" in Java is actually an <strong>array of references</strong>, where each reference points to another 1D array!</p>
+                    <div class="key-concept-title">فهم بالغ الأهمية لهياكل البيانات!</div>
+                    <p>الحاسب <strong>لا</strong> يفهم المصفوفات ثنائية أو ثلاثية الأبعاد مباشرةً. الحاسب لا يفهم إلا <strong>المصفوفات أحادية البعد (1D)</strong>.</p>
+                    <p style="margin-top: 10px;">إن "المصفوفة ثنائية الأبعاد" في جافا هي في الحقيقة <strong>مصفوفة من المراجع (references)</strong>، حيث يشير كل مرجع إلى مصفوفة أحادية البعد أخرى!</p>
                 </div>
 
-                <p>Let's visualize how a 2D array is actually structured in memory:</p>
+                <p>دعونا نتصوّر كيف تُبنى المصفوفة ثنائية الأبعاد فعليًا في الذاكرة:</p>
 
                 <div class="array-of-arrays-container">
                     <div class="aoa-title">2D Array: marks[3][4] - An Array of Arrays</div>
@@ -1106,11 +1114,11 @@
                 </div>
 
                 <div class="info-box">
-                    <p><strong>Understanding the Structure:</strong></p>
+                    <p><strong>فهم البنية:</strong></p>
                     <ul>
-                        <li>The <strong>first dimension</strong> (vertical) is an array that stores <strong>references (addresses)</strong></li>
-                        <li>Each reference points to a <strong>separate 1D array</strong> (the actual data)</li>
-                        <li>The <strong>second dimension</strong> arrays can be stored <strong>anywhere in memory</strong> - they don't need to be next to each other!</li>
+                        <li><strong>البعد الأول</strong> (العمودي) هو مصفوفة تخزّن <strong>المراجع (العناوين)</strong></li>
+                        <li>يشير كل مرجع إلى <strong>مصفوفة أحادية البعد منفصلة</strong> (البيانات الفعلية)</li>
+                        <li>يمكن تخزين مصفوفات <strong>البعد الثاني</strong> في <strong>أي مكان في الذاكرة</strong> - لا حاجة لأن تكون متجاورة!</li>
                     </ul>
                 </div>
             </div>
@@ -1119,16 +1127,16 @@
             <div class="section">
                 <h2 class="section-title">
                     <span class="section-number">3</span>
-                    Creating a 2D Array: Step by Step
+                    إنشاء مصفوفة ثنائية الأبعاد: خطوة بخطوة
                 </h2>
 
-                <p>Let's see how a 2D array is created in three steps:</p>
+                <p>دعونا نرى كيف تُنشأ المصفوفة ثنائية الأبعاد في ثلاث خطوات:</p>
 
                 <!-- Step 1: Declaration -->
                 <div class="step-container">
                     <div class="step-header">
                         <div class="step-number-big">1</div>
-                        <div class="step-title">Declaration - Create the Reference Variable</div>
+                        <div class="step-title">الإعلان (Declaration) - إنشاء متغير المرجع</div>
                     </div>
 
                     <div class="step-visual">
@@ -1144,7 +1152,7 @@
 <pre><span class="line"><span class="line-number">1</span><span class="keyword">int</span><span class="bracket">[][]</span> <span class="variable">marks</span>;  <span class="comment">// Only declaration</span></span></pre>
                                 </div>
                             </div>
-                            <p>This creates a <strong>reference variable</strong> called <code class="code-inline">marks</code>. It currently holds <code class="code-inline">null</code> - no array exists yet!</p>
+                            <p>هذا ينشئ <strong>متغير مرجع (reference variable)</strong> اسمه <code class="code-inline">marks</code>. وهو يحمل حاليًا القيمة <code class="code-inline">null</code> - لا توجد أي مصفوفة بعد!</p>
                         </div>
                         <div class="step-diagram">
                             <div class="memory-box reference">
@@ -1159,7 +1167,7 @@
                 <div class="step-container">
                     <div class="step-header">
                         <div class="step-number-big">2</div>
-                        <div class="step-title">Create the First Dimension (Array of References)</div>
+                        <div class="step-title">إنشاء البعد الأول (مصفوفة المراجع)</div>
                     </div>
 
                     <div class="step-visual">
@@ -1175,7 +1183,7 @@
 <pre><span class="line"><span class="line-number">1</span><span class="keyword">int</span><span class="bracket">[][]</span> <span class="variable">marks</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="keyword">int</span><span class="bracket">[</span><span class="number">3</span><span class="bracket">][]</span>;  <span class="comment">// Create first dimension only</span></span></pre>
                                 </div>
                             </div>
-                            <p>This creates an array of <strong>3 references</strong>. Each reference is currently <code class="code-inline">null</code> - no data arrays exist yet!</p>
+                            <p>هذا ينشئ مصفوفة من <strong>3 مراجع</strong>. كل مرجع يساوي حاليًا <code class="code-inline">null</code> - لا توجد أي مصفوفات بيانات بعد!</p>
                         </div>
                         <div class="step-diagram">
                             <div style="display: flex; align-items: center; gap: 20px;">
@@ -1205,7 +1213,7 @@
                 <div class="step-container">
                     <div class="step-header">
                         <div class="step-number-big">3</div>
-                        <div class="step-title">Create the Second Dimension (Data Arrays)</div>
+                        <div class="step-title">إنشاء البعد الثاني (مصفوفات البيانات)</div>
                     </div>
 
                     <div class="step-visual">
@@ -1224,7 +1232,7 @@
 <span class="line"><span class="line-number">4</span><span class="variable">marks</span><span class="bracket">[</span><span class="number">2</span><span class="bracket">]</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="keyword">int</span><span class="bracket">[</span><span class="number">4</span><span class="bracket">]</span>;  <span class="comment">// Array for student 2</span></span></pre>
                                 </div>
                             </div>
-                            <p>Now we create the actual data arrays! Each <code class="code-inline">marks[i]</code> now points to a real array of 4 integers.</p>
+                            <p>الآن ننشئ مصفوفات البيانات الفعلية! كل <code class="code-inline">marks[i]</code> يشير الآن إلى مصفوفة حقيقية من 4 أعداد صحيحة.</p>
                         </div>
                         <div class="step-diagram">
                             <div style="text-align: center;">
@@ -1234,7 +1242,7 @@
                     </div>
                 </div>
 
-                <h3 style="color: var(--primary-color); margin-top: 30px;">Shorthand: All in One Line</h3>
+                <h3 style="color: var(--primary-color); margin-top: 30px;">الاختصار: كل ذلك في سطر واحد</h3>
 
                 <div class="code-block">
                     <div class="code-header">
@@ -1261,10 +1269,10 @@
             <div class="section">
                 <h2 class="section-title">
                     <span class="section-number">4</span>
-                    Accessing Elements in a 2D Array
+                    الوصول إلى العناصر في المصفوفة ثنائية الأبعاد
                 </h2>
 
-                <p>To access an element, you need <strong>two indices</strong>:</p>
+                <p>للوصول إلى عنصر، تحتاج إلى <strong>دليلين (indices)</strong>:</p>
 
                 <div class="access-visual">
                     <div class="access-formula">
@@ -1277,8 +1285,8 @@
                         <div class="access-bracket">]</div>
                     </div>
                     <div class="access-labels">
-                        <div class="access-label"><strong>i</strong> = which array (student)</div>
-                        <div class="access-label"><strong>j</strong> = which element in that array (course)</div>
+                        <div class="access-label"><strong>i</strong> = أي مصفوفة (طالب)</div>
+                        <div class="access-label"><strong>j</strong> = أي عنصر في تلك المصفوفة (مقرر)</div>
                     </div>
                 </div>
 
@@ -1308,10 +1316,10 @@
                 </div>
 
                 <div class="key-concept">
-                    <div class="key-concept-title">Understanding .length</div>
+                    <div class="key-concept-title">فهم ‎.length</div>
                     <ul>
-                        <li><code class="code-inline">marks.length</code> = number of arrays (first dimension) = 3</li>
-                        <li><code class="code-inline">marks[i].length</code> = size of array i (second dimension) = 4</li>
+                        <li><code class="code-inline">marks.length</code> = عدد المصفوفات (البعد الأول) = 3</li>
+                        <li><code class="code-inline">marks[i].length</code> = حجم المصفوفة i (البعد الثاني) = 4</li>
                     </ul>
                 </div>
             </div>
@@ -1320,20 +1328,20 @@
             <div class="section">
                 <h2 class="section-title">
                     <span class="section-number">5</span>
-                    3D Arrays: Array of Arrays of Arrays
+                    المصفوفات ثلاثية الأبعاد: مصفوفة من مصفوفات من مصفوفات
                 </h2>
 
-                <p>Following the same logic, a <strong>3D array</strong> is an <strong>array of 2D arrays</strong>, which means it's an <strong>array of arrays of arrays!</strong></p>
+                <p>باتباع المنطق نفسه، فإن <strong>المصفوفة ثلاثية الأبعاد (3D array)</strong> هي <strong>مصفوفة من المصفوفات ثنائية الأبعاد</strong>، ما يعني أنها <strong>مصفوفة من مصفوفات من مصفوفات!</strong></p>
 
                 <div class="key-concept">
-                    <div class="key-concept-title">Real-World Example</div>
-                    <p>Imagine you need to store marks for <strong>multiple semesters</strong>:</p>
+                    <div class="key-concept-title">مثال من الواقع</div>
+                    <p>تخيّل أنك تحتاج إلى تخزين درجات <strong>عدة فصول دراسية</strong>:</p>
                     <ul>
-                        <li>2 semesters</li>
-                        <li>3 students per semester</li>
-                        <li>4 courses per student</li>
+                        <li>فصلان دراسيان</li>
+                        <li>3 طلاب لكل فصل</li>
+                        <li>4 مقررات لكل طالب</li>
                     </ul>
-                    <p>This is 2 × 3 × 4 = <strong>24 values</strong> organized in a 3D structure!</p>
+                    <p>هذا يساوي 2 × 3 × 4 = <strong>24 قيمة</strong> منظمة في بنية ثلاثية الأبعاد!</p>
                 </div>
 
                 <div class="code-block">
@@ -1365,7 +1373,7 @@
                     </div>
                 </div>
 
-                <h3 style="color: var(--primary-color); margin-top: 30px;">Visualizing 3D Array Structure</h3>
+                <h3 style="color: var(--primary-color); margin-top: 30px;">تصوّر بنية المصفوفة ثلاثية الأبعاد</h3>
 
                 <div class="array-3d-container">
                     <div class="aoa-title">3D Array: allMarks[2][3][4] - Array of 2D Arrays (Array of Arrays of Arrays!)</div>
@@ -1591,7 +1599,7 @@
                     </svg>
                 </div>
 
-                <h3 style="color: var(--primary-color); margin-top: 30px;">Accessing 3D Array Elements</h3>
+                <h3 style="color: var(--primary-color); margin-top: 30px;">الوصول إلى عناصر المصفوفة ثلاثية الأبعاد</h3>
 
                 <div class="access-visual">
                     <div class="access-formula">
@@ -1607,9 +1615,9 @@
                         <div class="access-bracket">]</div>
                     </div>
                     <div class="access-labels">
-                        <div class="access-label"><strong>sem</strong> = which semester</div>
-                        <div class="access-label"><strong>stu</strong> = which student</div>
-                        <div class="access-label"><strong>course</strong> = which course</div>
+                        <div class="access-label"><strong>sem</strong> = أي فصل دراسي</div>
+                        <div class="access-label"><strong>stu</strong> = أي طالب</div>
+                        <div class="access-label"><strong>course</strong> = أي مقرر</div>
                     </div>
                 </div>
 
@@ -1636,38 +1644,38 @@
             <div class="section">
                 <h2 class="section-title">
                     <span class="section-number">6</span>
-                    Summary
+                    الخلاصة
                 </h2>
 
                 <div class="key-concept">
-                    <div class="key-concept-title">Key Takeaways for Data Structures</div>
+                    <div class="key-concept-title">النقاط الأساسية لهياكل البيانات</div>
                     <ol>
-                        <li><strong>The computer only understands 1D arrays</strong> - there is no "true" 2D or 3D array in memory</li>
-                        <li><strong>2D array = Array of Arrays</strong> - the first dimension holds references to 1D arrays</li>
-                        <li><strong>3D array = Array of 2D Arrays</strong> - the first dimension holds references to 2D arrays</li>
-                        <li><strong>Each dimension is created separately</strong> - understanding this is crucial for data structures</li>
-                        <li><strong>The arrays can be anywhere in memory</strong> - they are connected by references, not by being physically adjacent</li>
+                        <li><strong>الحاسب لا يفهم إلا المصفوفات أحادية البعد</strong> - لا توجد مصفوفة ثنائية أو ثلاثية الأبعاد "حقيقية" في الذاكرة</li>
+                        <li><strong>المصفوفة ثنائية الأبعاد = مصفوفة من المصفوفات</strong> - البعد الأول يحمل مراجع إلى مصفوفات أحادية البعد</li>
+                        <li><strong>المصفوفة ثلاثية الأبعاد = مصفوفة من المصفوفات ثنائية الأبعاد</strong> - البعد الأول يحمل مراجع إلى مصفوفات ثنائية الأبعاد</li>
+                        <li><strong>كل بعد يُنشأ على حدة</strong> - فهم هذا أمر بالغ الأهمية لهياكل البيانات</li>
+                        <li><strong>يمكن أن تكون المصفوفات في أي مكان في الذاكرة</strong> - فهي مرتبطة بالمراجع، وليس بكونها متجاورة فعليًا</li>
                     </ol>
                 </div>
 
                 <div class="success-box">
-                    <p><strong>Why This Matters for Data Structures:</strong></p>
-                    <p>When you study linked lists, trees, and graphs next semester, you'll see that they all work on the same principle - elements connected by references, not by being next to each other in memory. Understanding "array of arrays" is your first step toward mastering these concepts!</p>
+                    <p><strong>لماذا يهم هذا في هياكل البيانات:</strong></p>
+                    <p>عندما تدرس القوائم المتصلة (linked lists) والأشجار (trees) والرسوم البيانية (graphs) في الفصل القادم، ستجد أنها جميعًا تعمل على المبدأ نفسه - عناصر مرتبطة بالمراجع، وليس بكونها متجاورة في الذاكرة. إن فهم "مصفوفة المصفوفات" هو خطوتك الأولى نحو إتقان هذه المفاهيم!</p>
                 </div>
             </div>
         </div>
 
         <!-- Bottom Navigation -->
         <nav class="bottom-nav">
-            <a href="02-1d-exercises.html" class="prev-lesson">‹ Previous: 1D Exercises</a>
-            <a href="04-ragged-arrays.html">Next: Ragged Arrays ›</a>
+            <a href="02-1d-exercises-ar.html" class="prev-lesson">تمارين أحادية البعد &rarr;</a>
+            <a href="04-ragged-arrays-ar.html">&larr; التالي: المصفوفات المتعرجة</a>
         </nav>
 
         <!-- Footer -->
         <div class="footer">
-            <p><strong>CPCS203</strong> - Object-Oriented Programming</p>
-            <p>Module 1: 2D and 3D Arrays</p>
-            <p>Prepared by Dr. Almalawi</p>
+            <p><strong>CPCS203</strong> - البرمجة الكائنية التوجه</p>
+            <p>الوحدة 1: المصفوفات ثنائية وثلاثية الأبعاد</p>
+            <p>إعداد د. الملولي</p>
         </div>
     </div>
 </body>

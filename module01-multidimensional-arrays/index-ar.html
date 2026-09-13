@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Module 1: Multidimensional Arrays | CPCS203</title>
+    <title>الوحدة 1: المصفوفات متعددة الأبعاد (Multidimensional Arrays) | CPCS203</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -25,7 +26,7 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Tajawal', 'Amiri', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
             color: var(--dark-color);
             background: linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%);
@@ -33,7 +34,7 @@
         }
 
         /* Language Switch */
-        .lang-switch { position: fixed; top: 20px; right: 20px; z-index: 1000; padding: 10px 20px; background: linear-gradient(135deg, var(--primary-color), var(--primary-dark)); color: white; text-decoration: none; border-radius: 30px; font-weight: 700; font-size: 0.9rem; box-shadow: 0 4px 14px rgba(124,58,237,.4); transition: transform .2s, box-shadow .2s; }
+        .lang-switch { position: fixed; top: 20px; left: 20px; z-index: 1000; padding: 10px 20px; background: linear-gradient(135deg, var(--primary-color), var(--primary-dark)); color: white; text-decoration: none; border-radius: 30px; font-weight: 700; font-size: 0.9rem; box-shadow: 0 4px 14px rgba(124,58,237,.4); transition: transform .2s, box-shadow .2s; }
         .lang-switch:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(124,58,237,.6); }
 
         /* Header */
@@ -204,7 +205,7 @@
             justify-content: center;
             font-weight: bold;
             font-size: 1.2rem;
-            margin-right: 20px;
+            margin-left: 20px;
             flex-shrink: 0;
         }
 
@@ -257,7 +258,7 @@
             letter-spacing: 0.5px;
             padding: 3px 8px;
             border-radius: 6px;
-            margin-left: 8px;
+            margin-right: 8px;
             vertical-align: middle;
         }
 
@@ -306,7 +307,7 @@
             display: flex;
             align-items: center;
             gap: 15px;
-            margin-left: 20px;
+            margin-right: 20px;
         }
 
         .lesson-tag {
@@ -431,11 +432,11 @@
             }
 
             .lesson-number {
-                margin-right: 0;
+                margin-left: 0;
             }
 
             .lesson-meta {
-                margin-left: 0;
+                margin-right: 0;
                 justify-content: center;
             }
 
@@ -447,33 +448,33 @@
     </style>
 </head>
 <body>
-    <a href="index-ar.html" class="lang-switch">&#127760; العربية</a>
+    <a href="index.html" class="lang-switch">English &#127760;</a>
 
     <!-- Header -->
     <header class="header">
         <nav class="breadcrumb">
             <a href="../index.html">CPCS203</a>
-            <span>&#8250;</span>
-            <span>Module 1</span>
+            <span>&#8249;</span>
+            <span>الوحدة 1</span>
         </nav>
-        <div class="header-title">Multidimensional Arrays</div>
+        <div class="header-title">المصفوفات متعددة الأبعاد</div>
     </header>
 
     <!-- Hero Section -->
     <section class="hero">
-        <div class="module-badge">Module 1 &bull; Chapter 8</div>
-        <h1>Multidimensional Arrays</h1>
-        <p class="chapter">Understanding Arrays as "Array of Arrays"</p>
+        <div class="module-badge">الوحدة 1 &bull; الفصل 8</div>
+        <h1>المصفوفات متعددة الأبعاد</h1>
+        <p class="chapter">فهم المصفوفات باعتبارها "مصفوفة من المصفوفات"</p>
         <p class="description">
-            Learn how the computer truly understands arrays - from 1D arrays and references,
-            to 2D, 3D, and ragged arrays. Master the foundation for Data Structures!
+            تعلّم كيف يفهم الحاسوب المصفوفات فهمًا حقيقيًا — بدءًا من المصفوفات أحادية البعد (1D Arrays) والمراجع (References)،
+            وصولًا إلى المصفوفات ثنائية وثلاثية الأبعاد والمصفوفات المتعرجة (Ragged Arrays). أتقن الأساس الذي تُبنى عليه هياكل البيانات!
         </p>
 
         <!-- Progress -->
         <div class="progress-section">
             <div class="progress-header">
-                <span>Module Progress</span>
-                <span>Placement Test + 7 Lessons</span>
+                <span>تقدّم الوحدة</span>
+                <span>اختبار تحديد المستوى + 7 دروس</span>
             </div>
             <div class="progress-bar">
                 <div class="progress-fill" style="width: 100%;"></div>
@@ -486,159 +487,159 @@
         <!-- Learning Path -->
         <div class="learning-path">
             <div class="path-header">
-                <div class="path-title">Learning Path</div>
-                <div class="path-count">Placement Test + 7 Lessons</div>
+                <div class="path-title">مسار التعلّم</div>
+                <div class="path-count">اختبار تحديد المستوى + 7 دروس</div>
             </div>
 
             <div class="lessons-list">
                 <!-- Lesson 0: Placement Test (take before starting) -->
-                <a href="00-placement-test.html" class="lesson-card placement-card">
+                <a href="00-placement-test-ar.html" class="lesson-card placement-card">
                     <div class="lesson-number placement">&#129514;</div>
                     <div class="lesson-content">
-                        <div class="lesson-type placement">Placement Test <span class="placement-flag">Start Here First</span></div>
-                        <div class="lesson-title">Fundamentals Check: Primitives, Arrays &amp; References</div>
+                        <div class="lesson-type placement">اختبار تحديد المستوى <span class="placement-flag">ابدأ من هنا أولًا</span></div>
+                        <div class="lesson-title">فحص الأساسيات: الأنواع البدائية والمصفوفات والمراجع</div>
                         <div class="lesson-description">
-                            30 "What is the output?" questions from CPCS202, easy to hard: primitive values, array declare/create/initialize, references &amp; aliasing, and pass-by-value vs pass-by-reference. Get an instant diagnostic report before the lecture.
+                            30 سؤالًا من نوع "ما هو الناتج؟" مأخوذة من مقرر CPCS202، تتدرّج من السهل إلى الصعب: القيم البدائية (Primitives)، وإعلان المصفوفات وإنشاؤها وتهيئتها، والمراجع والأسماء البديلة (Aliasing)، والتمرير بالقيمة مقابل التمرير بالمرجع (Pass-by-value vs Pass-by-reference). احصل على تقرير تشخيصي فوري قبل المحاضرة.
                         </div>
                     </div>
                     <div class="lesson-meta">
-                        <span class="lesson-tag placement-tag">30 Questions</span>
-                        <span class="lesson-tag">Diagnostic Report</span>
-                        <span class="lesson-arrow">&#8594;</span>
+                        <span class="lesson-tag placement-tag">30 سؤالًا</span>
+                        <span class="lesson-tag">تقرير تشخيصي</span>
+                        <span class="lesson-arrow">&#8592;</span>
                     </div>
                 </a>
 
                 <!-- Placement Test Solutions (companion tutorial) -->
-                <a href="00-placement-test-solutions.html" class="lesson-card placement-card">
+                <a href="00-placement-test-solutions-ar.html" class="lesson-card placement-card">
                     <div class="lesson-number placement">&#128214;</div>
                     <div class="lesson-content">
-                        <div class="lesson-type placement">Placement Test — Solutions <span class="placement-flag">Study Guide</span></div>
-                        <div class="lesson-title">All 30 Questions Explained, Story by Story</div>
+                        <div class="lesson-type placement">اختبار تحديد المستوى — الحلول <span class="placement-flag">دليل الدراسة</span></div>
+                        <div class="lesson-title">شرح جميع الأسئلة الثلاثين، سؤالًا سؤالًا</div>
                         <div class="lesson-description">
-                            Every placement-test question explained in very simple language with memory diagrams and analogies — one page each. Printable in A4. Read this after taking the test.
+                            شرح كل سؤال من أسئلة اختبار تحديد المستوى بلغة بسيطة جدًا مع مخططات للذاكرة وتشبيهات توضيحية — صفحة لكل سؤال. قابل للطباعة بحجم A4. اقرأ هذا بعد أداء الاختبار.
                         </div>
                     </div>
                     <div class="lesson-meta">
-                        <span class="lesson-tag placement-tag">30 Explanations</span>
-                        <span class="lesson-tag">Printable A4</span>
-                        <span class="lesson-arrow">&#8594;</span>
+                        <span class="lesson-tag placement-tag">30 شرحًا</span>
+                        <span class="lesson-tag">قابل للطباعة A4</span>
+                        <span class="lesson-arrow">&#8592;</span>
                     </div>
                 </a>
 
                 <!-- Lesson 1: 1D Arrays Introduction -->
-                <a href="01-1d-arrays.html" class="lesson-card">
+                <a href="01-1d-arrays-ar.html" class="lesson-card">
                     <div class="lesson-number tutorial">1</div>
                     <div class="lesson-content">
-                        <div class="lesson-type tutorial">Tutorial</div>
-                        <div class="lesson-title">Introduction to Arrays</div>
+                        <div class="lesson-type tutorial">درس تعليمي</div>
+                        <div class="lesson-title">مقدمة في المصفوفات</div>
                         <div class="lesson-description">
-                            What is a program? Primitive vs Reference types. Why we need arrays. Declaration, creation, and initialization.
+                            ما هو البرنامج؟ الأنواع البدائية مقابل الأنواع المرجعية. لماذا نحتاج إلى المصفوفات. الإعلان والإنشاء والتهيئة.
                         </div>
                     </div>
                     <div class="lesson-meta">
-                        <span class="lesson-tag">1D Arrays</span>
-                        <span class="lesson-tag">References</span>
-                        <span class="lesson-arrow">&#8594;</span>
+                        <span class="lesson-tag">المصفوفات أحادية البعد</span>
+                        <span class="lesson-tag">المراجع</span>
+                        <span class="lesson-arrow">&#8592;</span>
                     </div>
                 </a>
 
                 <!-- Lesson 2: 1D Exercises -->
-                <a href="02-1d-exercises.html" class="lesson-card">
+                <a href="02-1d-exercises-ar.html" class="lesson-card">
                     <div class="lesson-number exercise">2</div>
                     <div class="lesson-content">
-                        <div class="lesson-type exercise">Exercises</div>
-                        <div class="lesson-title">1D Arrays Exercises</div>
+                        <div class="lesson-type exercise">تمارين</div>
+                        <div class="lesson-title">تمارين على المصفوفات أحادية البعد</div>
                         <div class="lesson-description">
-                            15 interactive questions testing your understanding of primitive vs reference variables, array manipulation, and pass by value/reference.
+                            15 سؤالًا تفاعليًا تختبر فهمك للمتغيرات البدائية مقابل المرجعية، والتعامل مع المصفوفات، والتمرير بالقيمة أو بالمرجع.
                         </div>
                     </div>
                     <div class="lesson-meta">
-                        <span class="lesson-tag">15 Questions</span>
-                        <span class="lesson-arrow">&#8594;</span>
+                        <span class="lesson-tag">15 سؤالًا</span>
+                        <span class="lesson-arrow">&#8592;</span>
                     </div>
                 </a>
 
                 <!-- Lesson 3: 2D and 3D Arrays -->
-                <a href="03-2d-3d-arrays.html" class="lesson-card">
+                <a href="03-2d-3d-arrays-ar.html" class="lesson-card">
                     <div class="lesson-number tutorial">3</div>
                     <div class="lesson-content">
-                        <div class="lesson-type tutorial">Tutorial</div>
-                        <div class="lesson-title">2D and 3D Arrays</div>
+                        <div class="lesson-type tutorial">درس تعليمي</div>
+                        <div class="lesson-title">المصفوفات ثنائية وثلاثية الأبعاد</div>
                         <div class="lesson-description">
-                            The computer only understands 1D arrays! Learn how 2D arrays are "array of arrays" and 3D arrays are "array of 2D arrays".
+                            الحاسوب لا يفهم سوى المصفوفات أحادية البعد! تعلّم كيف أن المصفوفات ثنائية الأبعاد هي "مصفوفة من المصفوفات"، والمصفوفات ثلاثية الأبعاد هي "مصفوفة من مصفوفات ثنائية الأبعاد".
                         </div>
                     </div>
                     <div class="lesson-meta">
-                        <span class="lesson-tag">Array of Arrays</span>
-                        <span class="lesson-tag">Memory</span>
-                        <span class="lesson-arrow">&#8594;</span>
+                        <span class="lesson-tag">مصفوفة من المصفوفات</span>
+                        <span class="lesson-tag">الذاكرة</span>
+                        <span class="lesson-arrow">&#8592;</span>
                     </div>
                 </a>
 
                 <!-- Lesson 4: Ragged Arrays -->
-                <a href="04-ragged-arrays.html" class="lesson-card">
+                <a href="04-ragged-arrays-ar.html" class="lesson-card">
                     <div class="lesson-number tutorial">4</div>
                     <div class="lesson-content">
-                        <div class="lesson-type tutorial">Tutorial</div>
-                        <div class="lesson-title">Ragged (Jagged) Arrays</div>
+                        <div class="lesson-type tutorial">درس تعليمي</div>
+                        <div class="lesson-title">المصفوفات المتعرجة (Ragged / Jagged Arrays)</div>
                         <div class="lesson-description">
-                            Why ragged arrays exist and when to use them. Creating arrays where each row has different number of columns.
+                            لماذا توجد المصفوفات المتعرجة ومتى نستخدمها. إنشاء مصفوفات يكون فيها لكل صف عدد مختلف من الأعمدة.
                         </div>
                     </div>
                     <div class="lesson-meta">
-                        <span class="lesson-tag">Ragged Arrays</span>
-                        <span class="lesson-tag">Memory Efficiency</span>
-                        <span class="lesson-arrow">&#8594;</span>
+                        <span class="lesson-tag">المصفوفات المتعرجة</span>
+                        <span class="lesson-tag">كفاءة الذاكرة</span>
+                        <span class="lesson-arrow">&#8592;</span>
                     </div>
                 </a>
 
                 <!-- Lesson 5: 2D/3D Exercises -->
-                <a href="05-2d-3d-exercises.html" class="lesson-card">
+                <a href="05-2d-3d-exercises-ar.html" class="lesson-card">
                     <div class="lesson-number exercise">5</div>
                     <div class="lesson-content">
-                        <div class="lesson-type exercise">Exercises</div>
-                        <div class="lesson-title">2D and 3D Arrays Exercises</div>
+                        <div class="lesson-type exercise">تمارين</div>
+                        <div class="lesson-title">تمارين على المصفوفات ثنائية وثلاثية الأبعاد</div>
                         <div class="lesson-description">
-                            15 interactive questions covering 2D arrays, 3D arrays, ragged arrays, and the array of arrays concept.
+                            15 سؤالًا تفاعليًا تغطي المصفوفات ثنائية الأبعاد وثلاثية الأبعاد والمصفوفات المتعرجة ومفهوم مصفوفة من المصفوفات.
                         </div>
                     </div>
                     <div class="lesson-meta">
-                        <span class="lesson-tag">15 Questions</span>
-                        <span class="lesson-arrow">&#8594;</span>
+                        <span class="lesson-tag">15 سؤالًا</span>
+                        <span class="lesson-arrow">&#8592;</span>
                     </div>
                 </a>
 
                 <!-- Lesson 6: Reading 2D Ragged Arrays from File -->
-                <a href="06-ragged-array-file-reading.html" class="lesson-card">
+                <a href="06-ragged-array-file-reading-ar.html" class="lesson-card">
                     <div class="lesson-number practical">6</div>
                     <div class="lesson-content">
-                        <div class="lesson-type practical">Practical</div>
-                        <div class="lesson-title">Reading 2D Ragged Arrays from File</div>
+                        <div class="lesson-type practical">تطبيقي</div>
+                        <div class="lesson-title">قراءة المصفوفات المتعرجة ثنائية الأبعاد من ملف</div>
                         <div class="lesson-description">
-                            Learn to read variable-length student marks from a text file using nextLine() and split(). Includes downloadable Java code and data file.
+                            تعلّم قراءة درجات الطلاب متغيّرة الطول من ملف نصي باستخدام nextLine() و split(). يتضمّن كود Java وملف بيانات قابلين للتنزيل.
                         </div>
                     </div>
                     <div class="lesson-meta">
-                        <span class="lesson-tag">File I/O</span>
-                        <span class="lesson-tag">Downloadable</span>
-                        <span class="lesson-arrow">&#8594;</span>
+                        <span class="lesson-tag">إدخال/إخراج الملفات</span>
+                        <span class="lesson-tag">قابل للتنزيل</span>
+                        <span class="lesson-arrow">&#8592;</span>
                     </div>
                 </a>
 
                 <!-- Lesson 7: Reading 3D Ragged Arrays from File -->
-                <a href="07-3d-ragged-array-file-reading.html" class="lesson-card">
+                <a href="07-3d-ragged-array-file-reading-ar.html" class="lesson-card">
                     <div class="lesson-number practical">7</div>
                     <div class="lesson-content">
-                        <div class="lesson-type practical">Practical</div>
-                        <div class="lesson-title">Reading 3D Ragged Arrays from File</div>
+                        <div class="lesson-type practical">تطبيقي</div>
+                        <div class="lesson-title">قراءة المصفوفات المتعرجة ثلاثية الأبعاد من ملف</div>
                         <div class="lesson-description">
-                            Build on 2D skills to read a Department → Students → Courses structure (CS, IT, IS) from file. Complete line-by-line explanation.
+                            استفد من مهارات المصفوفات ثنائية الأبعاد لقراءة هيكل قسم ← طلاب ← مقررات (CS, IT, IS) من ملف. شرح كامل سطرًا سطرًا.
                         </div>
                     </div>
                     <div class="lesson-meta">
-                        <span class="lesson-tag">3D Arrays</span>
-                        <span class="lesson-tag">Downloadable</span>
-                        <span class="lesson-arrow">&#8594;</span>
+                        <span class="lesson-tag">المصفوفات ثلاثية الأبعاد</span>
+                        <span class="lesson-tag">قابل للتنزيل</span>
+                        <span class="lesson-arrow">&#8592;</span>
                     </div>
                 </a>
             </div>
@@ -648,33 +649,33 @@
         <section class="concepts-section">
             <h2 class="section-title">
                 <span>&#128218;</span>
-                Key Concepts You'll Learn
+                المفاهيم الأساسية التي ستتعلّمها
             </h2>
             <div class="concepts-grid">
                 <div class="concept-card">
                     <div class="concept-icon">&#128204;</div>
-                    <div class="concept-title">Reference Variables</div>
-                    <div class="concept-description">Understand how arrays are stored via references, not directly in variables.</div>
+                    <div class="concept-title">المتغيرات المرجعية (Reference Variables)</div>
+                    <div class="concept-description">افهم كيف تُخزَّن المصفوفات عبر المراجع، وليس مباشرةً داخل المتغيرات.</div>
                 </div>
                 <div class="concept-card">
                     <div class="concept-icon">&#128202;</div>
-                    <div class="concept-title">Array of Arrays</div>
-                    <div class="concept-description">2D and 3D arrays are NOT tables - they're arrays pointing to other arrays!</div>
+                    <div class="concept-title">مصفوفة من المصفوفات</div>
+                    <div class="concept-description">المصفوفات ثنائية وثلاثية الأبعاد ليست جداول — إنها مصفوفات تشير إلى مصفوفات أخرى!</div>
                 </div>
                 <div class="concept-card">
                     <div class="concept-icon">&#128200;</div>
-                    <div class="concept-title">Memory Layout</div>
-                    <div class="concept-description">Visualize how arrays are stored in Stack and Heap memory.</div>
+                    <div class="concept-title">تخطيط الذاكرة (Memory Layout)</div>
+                    <div class="concept-description">تصوّر كيف تُخزَّن المصفوفات في ذاكرة المكدّس (Stack) والكومة (Heap).</div>
                 </div>
                 <div class="concept-card">
                     <div class="concept-icon">&#9986;</div>
-                    <div class="concept-title">Ragged Arrays</div>
-                    <div class="concept-description">Create flexible arrays where each row can have different sizes.</div>
+                    <div class="concept-title">المصفوفات المتعرجة (Ragged Arrays)</div>
+                    <div class="concept-description">أنشئ مصفوفات مرنة يمكن أن يختلف فيها حجم كل صف.</div>
                 </div>
                 <div class="concept-card">
                     <div class="concept-icon">&#128196;</div>
-                    <div class="concept-title">Reading from Files</div>
-                    <div class="concept-description">Load ragged arrays from text files using Scanner, nextLine(), and split().</div>
+                    <div class="concept-title">القراءة من الملفات</div>
+                    <div class="concept-description">حمّل المصفوفات المتعرجة من ملفات نصية باستخدام Scanner و nextLine() و split().</div>
                 </div>
             </div>
         </section>
@@ -682,21 +683,21 @@
         <!-- Navigation -->
         <nav class="navigation">
             <a href="../index.html" class="nav-btn">
-                <span class="arrow">&#8592;</span>
-                <span>Back to Course</span>
-            </a>
-            <a href="00-placement-test.html" class="nav-btn">
-                <span>Start with Placement Test</span>
                 <span class="arrow">&#8594;</span>
+                <span>العودة إلى المقرر</span>
+            </a>
+            <a href="00-placement-test-ar.html" class="nav-btn">
+                <span>ابدأ باختبار تحديد المستوى</span>
+                <span class="arrow">&#8592;</span>
             </a>
         </nav>
     </main>
 
     <!-- Footer -->
     <footer class="footer">
-        <p><strong>CPCS203</strong> - Object-Oriented Programming</p>
-        <p>Module 1: Multidimensional Arrays</p>
-        <p>Prepared by Dr. Almalawi</p>
+        <p><strong>CPCS203</strong> - البرمجة الشيئية</p>
+        <p>الوحدة 1: المصفوفات متعددة الأبعاد</p>
+        <p>إعداد د. الملولي</p>
     </footer>
 </body>
 </html>

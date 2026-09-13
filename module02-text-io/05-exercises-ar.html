@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lesson 5: File I/O Exercises | CPCS203</title>
+    <title>الدرس 5: تمارين الإدخال والإخراج على الملفات (File I/O Exercises) | CPCS203</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -23,7 +24,7 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Tajawal', 'Amiri', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.8;
             color: var(--dark-color);
             background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
@@ -221,6 +222,8 @@
             font-size: 0.9rem;
             line-height: 1.6;
             white-space: pre-wrap;
+            direction: ltr;
+            text-align: left;
         }
 
         .code-block .keyword {
@@ -251,6 +254,8 @@
             font-size: 0.9rem;
             color: var(--primary-dark);
         }
+
+        code, .code-inline { direction: ltr; unicode-bidi: embed; }
 
         /* Options */
         .options {
@@ -294,7 +299,7 @@
             height: 22px;
             border: 2px solid #d1d5db;
             border-radius: 50%;
-            margin-right: 15px;
+            margin-left: 15px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -351,13 +356,13 @@
 
         .feedback.correct {
             background: #d1fae5;
-            border-left: 4px solid var(--success-color);
+            border-right: 4px solid var(--success-color);
             display: block;
         }
 
         .feedback.incorrect {
             background: #fee2e2;
-            border-left: 4px solid var(--danger-color);
+            border-right: 4px solid var(--danger-color);
             display: block;
         }
 
@@ -487,7 +492,7 @@
             padding: 20px;
         }
 
-        .lang-switch { position: fixed; top: 20px; right: 20px; z-index: 1000; padding: 10px 20px; background: linear-gradient(135deg, var(--primary-light), var(--primary-color)); color: white; text-decoration: none; border-radius: 30px; font-weight: 700; font-size: 0.9rem; box-shadow: 0 4px 14px rgba(245,158,11,.4); transition: transform .2s, box-shadow .2s; }
+        .lang-switch { position: fixed; top: 20px; left: 20px; z-index: 1000; padding: 10px 20px; background: linear-gradient(135deg, var(--primary-light), var(--primary-color)); color: white; text-decoration: none; border-radius: 30px; font-weight: 700; font-size: 0.9rem; box-shadow: 0 4px 14px rgba(245,158,11,.4); transition: transform .2s, box-shadow .2s; }
         .lang-switch:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(245,158,11,.6); }
 
         /* Responsive */
@@ -513,36 +518,36 @@
     </style>
 </head>
 <body>
-    <a href="05-exercises-ar.html" class="lang-switch">&#127760; العربية</a>
+    <a href="05-exercises.html" class="lang-switch">English &#127760;</a>
     <div class="container">
         <!-- Navigation Breadcrumb -->
         <nav class="nav-breadcrumb">
             <div class="breadcrumb">
                 <a href="../index.html">CPCS203</a>
-                <span class="separator">&#8250;</span>
-                <a href="index.html">Module 3: File I/O</a>
-                <span class="separator">&#8250;</span>
-                <span class="current">Exercises</span>
+                <span class="separator">&#8249;</span>
+                <a href="index-ar.html">الوحدة 3: الإدخال والإخراج على الملفات</a>
+                <span class="separator">&#8249;</span>
+                <span class="current">التمارين</span>
             </div>
             <div class="lesson-nav">
-                <a href="04-writing-printwriter.html">&#8249; Previous</a>
+                <a href="04-writing-printwriter-ar.html">&rarr; السابق</a>
             </div>
         </nav>
 
         <!-- Header -->
         <div class="header">
-            <h1>File I/O Exercises</h1>
-            <p class="subtitle">Test Your Understanding</p>
+            <h1>تمارين الإدخال والإخراج على الملفات</h1>
+            <p class="subtitle">اختبر فهمك</p>
             <div class="course-info">
-                <strong>Module 3</strong> &bull; Lesson 5 of 5
+                <strong>الوحدة 3</strong> &bull; الدرس 5 من 5
             </div>
         </div>
 
         <!-- Progress -->
         <div class="progress-section">
             <div class="progress-header">
-                <span>Progress</span>
-                <span id="progress-text">0 / 10 Questions</span>
+                <span>التقدّم</span>
+                <span id="progress-text">0 / 10 أسئلة</span>
             </div>
             <div class="progress-bar">
                 <div class="progress-fill" id="progress-fill"></div>
@@ -554,32 +559,32 @@
             <div class="question-card" id="q1">
                 <div class="question-header">
                     <div class="question-number">1</div>
-                    <div class="question-type">Concept</div>
+                    <div class="question-type">مفهوم</div>
                 </div>
                 <div class="question-body">
                     <div class="question-text">
-                        What is the main difference between storing data in <strong>RAM</strong> vs storing data in a <strong>file</strong>?
+                        ما الفرق الرئيسي بين تخزين البيانات في <strong>الذاكرة (RAM)</strong> وتخزين البيانات في <strong>ملف (file)</strong>؟
                     </div>
                     <div class="options">
                         <div class="option" data-answer="a">
                             <div class="option-radio"></div>
-                            <div class="option-text">RAM is faster but files are more secure</div>
+                            <div class="option-text">الذاكرة (RAM) أسرع لكن الملفات أكثر أمانًا</div>
                         </div>
                         <div class="option" data-answer="b">
                             <div class="option-radio"></div>
-                            <div class="option-text">RAM data is temporary (lost when program ends), file data is permanent</div>
+                            <div class="option-text">بيانات الذاكرة (RAM) مؤقتة (تُفقد عند انتهاء البرنامج)، أما بيانات الملف فدائمة</div>
                         </div>
                         <div class="option" data-answer="c">
                             <div class="option-radio"></div>
-                            <div class="option-text">Files can only store text, RAM can store any data type</div>
+                            <div class="option-text">الملفات تخزّن النصوص فقط، بينما الذاكرة (RAM) تخزّن أي نوع من البيانات</div>
                         </div>
                         <div class="option" data-answer="d">
                             <div class="option-radio"></div>
-                            <div class="option-text">There is no difference, they are the same</div>
+                            <div class="option-text">لا يوجد فرق، فهما الشيء نفسه</div>
                         </div>
                     </div>
                     <div class="feedback"></div>
-                    <button class="submit-btn" onclick="checkAnswer(1, 'b', 'RAM (memory) is temporary - data is lost when the program terminates. Files provide permanent storage on disk that persists even after the program ends.')">Check Answer</button>
+                    <button class="submit-btn" onclick="checkAnswer(1, 'b', 'الذاكرة (RAM) مؤقتة - تُفقد البيانات عند انتهاء البرنامج. أما الملفات فتوفّر تخزينًا دائمًا على القرص يبقى حتى بعد انتهاء البرنامج.')">تحقّق من الإجابة</button>
                 </div>
             </div>
 
@@ -587,32 +592,32 @@
             <div class="question-card" id="q2">
                 <div class="question-header">
                     <div class="question-number">2</div>
-                    <div class="question-type">File Types</div>
+                    <div class="question-type">أنواع الملفات</div>
                 </div>
                 <div class="question-body">
                     <div class="question-text">
-                        Which of the following is a <strong>text-based</strong> (human readable) file?
+                        أيٌّ مما يلي يُعدّ ملفًا <strong>نصيًا</strong> (قابلًا للقراءة من الإنسان)؟
                     </div>
                     <div class="options">
                         <div class="option" data-answer="a">
                             <div class="option-radio"></div>
-                            <div class="option-text">.exe (executable program)</div>
+                            <div class="option-text">‏.exe (برنامج تنفيذي)</div>
                         </div>
                         <div class="option" data-answer="b">
                             <div class="option-radio"></div>
-                            <div class="option-text">.png (image file)</div>
+                            <div class="option-text">‏.png (ملف صورة)</div>
                         </div>
                         <div class="option" data-answer="c">
                             <div class="option-radio"></div>
-                            <div class="option-text">.java (Java source code)</div>
+                            <div class="option-text">‏.java (شيفرة مصدرية بلغة Java)</div>
                         </div>
                         <div class="option" data-answer="d">
                             <div class="option-radio"></div>
-                            <div class="option-text">.mp3 (audio file)</div>
+                            <div class="option-text">‏.mp3 (ملف صوتي)</div>
                         </div>
                     </div>
                     <div class="feedback"></div>
-                    <button class="submit-btn" onclick="checkAnswer(2, 'c', 'Java source files (.java) are text files - you can open them in Notepad and read the code. Files like .exe, .png, and .mp3 are binary files.')">Check Answer</button>
+                    <button class="submit-btn" onclick="checkAnswer(2, 'c', 'ملفات شيفرة Java المصدرية (.java) ملفات نصية - يمكنك فتحها في المفكرة (Notepad) وقراءة الشيفرة. أما الملفات مثل ‏.exe و‏.png و‏.mp3 فهي ملفات ثنائية (binary).')">تحقّق من الإجابة</button>
                 </div>
             </div>
 
@@ -620,11 +625,11 @@
             <div class="question-card" id="q3">
                 <div class="question-header">
                     <div class="question-number">3</div>
-                    <div class="question-type">File Class</div>
+                    <div class="question-type">الصنف File</div>
                 </div>
                 <div class="question-body">
                     <div class="question-text">
-                        What does this code do?
+                        ماذا تفعل هذه الشيفرة؟
                     </div>
                     <div class="code-block">
 <span class="type">File</span> <span class="variable">myFile</span> = <span class="keyword">new</span> <span class="type">File</span>(
@@ -634,23 +639,23 @@
                     <div class="options">
                         <div class="option" data-answer="a">
                             <div class="option-radio"></div>
-                            <div class="option-text">Creates a new file called "data.txt" on the disk</div>
+                            <div class="option-text">تُنشئ ملفًا جديدًا باسم "data.txt" على القرص</div>
                         </div>
                         <div class="option" data-answer="b">
                             <div class="option-radio"></div>
-                            <div class="option-text">Opens and reads the contents of "data.txt"</div>
+                            <div class="option-text">تفتح محتويات "data.txt" وتقرؤها</div>
                         </div>
                         <div class="option" data-answer="c">
                             <div class="option-radio"></div>
-                            <div class="option-text">Creates a File object that represents the path "data.txt" (file may or may not exist)</div>
+                            <div class="option-text">تُنشئ كائن File يمثّل المسار "data.txt" (قد يكون الملف موجودًا أو غير موجود)</div>
                         </div>
                         <div class="option" data-answer="d">
                             <div class="option-radio"></div>
-                            <div class="option-text">Deletes the file "data.txt" if it exists</div>
+                            <div class="option-text">تحذف الملف "data.txt" إن كان موجودًا</div>
                         </div>
                     </div>
                     <div class="feedback"></div>
-                    <button class="submit-btn" onclick="checkAnswer(3, 'c', 'Creating a File object does NOT create the actual file - it just creates a Java object representing that path. The file may or may not exist on disk.')">Check Answer</button>
+                    <button class="submit-btn" onclick="checkAnswer(3, 'c', 'إنشاء كائن File لا يُنشئ الملف الفعلي - بل يُنشئ فقط كائن Java يمثّل ذلك المسار. وقد يكون الملف موجودًا أو غير موجود على القرص.')">تحقّق من الإجابة</button>
                 </div>
             </div>
 
@@ -658,11 +663,11 @@
             <div class="question-card" id="q4">
                 <div class="question-header">
                     <div class="question-number">4</div>
-                    <div class="question-type">Paths</div>
+                    <div class="question-type">المسارات</div>
                 </div>
                 <div class="question-body">
                     <div class="question-text">
-                        Which is an example of a <strong>relative path</strong>?
+                        أيٌّ مما يلي مثال على <strong>مسار نسبي (relative path)</strong>؟
                     </div>
                     <div class="options">
                         <div class="option" data-answer="a">
@@ -683,7 +688,7 @@
                         </div>
                     </div>
                     <div class="feedback"></div>
-                    <button class="submit-btn" onclick="checkAnswer(4, 'c', 'A relative path is relative to your project folder and doesn\\'t start with a drive letter (C:/) or root (/). \"resources/data.txt\" is relative to where your program runs.')">Check Answer</button>
+                    <button class="submit-btn" onclick="checkAnswer(4, 'c', 'المسار النسبي (relative path) يكون نسبةً إلى مجلد مشروعك ولا يبدأ بحرف قرص (C:/) أو بالجذر (/). فالمسار \"resources/data.txt\" نسبيٌّ إلى مكان تشغيل برنامجك.')">تحقّق من الإجابة</button>
                 </div>
             </div>
 
@@ -691,11 +696,11 @@
             <div class="question-card" id="q5">
                 <div class="question-header">
                     <div class="question-number">5</div>
-                    <div class="question-type">File Methods</div>
+                    <div class="question-type">دوال File</div>
                 </div>
                 <div class="question-body">
                     <div class="question-text">
-                        Which method checks if a file exists on disk?
+                        أي دالة تتحقق من وجود الملف على القرص؟
                     </div>
                     <div class="options">
                         <div class="option" data-answer="a">
@@ -716,7 +721,7 @@
                         </div>
                     </div>
                     <div class="feedback"></div>
-                    <button class="submit-btn" onclick="checkAnswer(5, 'b', 'The exists() method returns true if the file or directory exists on disk. isFile() checks if it\\'s a file (not directory), canRead() checks permissions, length() returns file size.')">Check Answer</button>
+                    <button class="submit-btn" onclick="checkAnswer(5, 'b', 'الدالة exists() تُرجع true إذا كان الملف أو المجلد موجودًا على القرص. أما isFile() فتتحقق مما إذا كان ملفًا (وليس مجلدًا)، وcanRead() تتحقق من الصلاحيات، وlength() تُرجع حجم الملف.')">تحقّق من الإجابة</button>
                 </div>
             </div>
 
@@ -728,7 +733,7 @@
                 </div>
                 <div class="question-body">
                     <div class="question-text">
-                        What exception must be handled when creating a Scanner with a File?
+                        ما الاستثناء (exception) الذي يجب التعامل معه عند إنشاء Scanner باستخدام كائن File؟
                     </div>
                     <div class="options">
                         <div class="option" data-answer="a">
@@ -745,11 +750,11 @@
                         </div>
                         <div class="option" data-answer="d">
                             <div class="option-radio"></div>
-                            <div class="option-text">No exception needs to be handled</div>
+                            <div class="option-text">لا حاجة للتعامل مع أي استثناء</div>
                         </div>
                     </div>
                     <div class="feedback"></div>
-                    <button class="submit-btn" onclick="checkAnswer(6, 'b', 'FileNotFoundException is a checked exception that must be handled when creating a Scanner with a File. The file might not exist when you try to read it.')">Check Answer</button>
+                    <button class="submit-btn" onclick="checkAnswer(6, 'b', 'الاستثناء FileNotFoundException هو استثناء مُتحقَّق منه (checked) يجب التعامل معه عند إنشاء Scanner باستخدام كائن File. فقد لا يكون الملف موجودًا عند محاولة قراءته.')">تحقّق من الإجابة</button>
                 </div>
             </div>
 
@@ -757,32 +762,32 @@
             <div class="question-card" id="q7">
                 <div class="question-header">
                     <div class="question-number">7</div>
-                    <div class="question-type">Scanner Methods</div>
+                    <div class="question-type">دوال Scanner</div>
                 </div>
                 <div class="question-body">
                     <div class="question-text">
-                        What is the difference between <code class="code-inline">next()</code> and <code class="code-inline">nextLine()</code>?
+                        ما الفرق بين <code class="code-inline">next()</code> و<code class="code-inline">nextLine()</code>؟
                     </div>
                     <div class="options">
                         <div class="option" data-answer="a">
                             <div class="option-radio"></div>
-                            <div class="option-text">next() reads a word (token), nextLine() reads the entire line</div>
+                            <div class="option-text">‏next() تقرأ كلمة (رمزًا/token)، بينما nextLine() تقرأ السطر بأكمله</div>
                         </div>
                         <div class="option" data-answer="b">
                             <div class="option-radio"></div>
-                            <div class="option-text">next() reads a line, nextLine() reads a word</div>
+                            <div class="option-text">‏next() تقرأ سطرًا، بينما nextLine() تقرأ كلمة</div>
                         </div>
                         <div class="option" data-answer="c">
                             <div class="option-radio"></div>
-                            <div class="option-text">They are the same, just different names</div>
+                            <div class="option-text">هما نفس الشيء، مجرّد اسمين مختلفين</div>
                         </div>
                         <div class="option" data-answer="d">
                             <div class="option-radio"></div>
-                            <div class="option-text">next() reads integers, nextLine() reads strings</div>
+                            <div class="option-text">‏next() تقرأ الأعداد الصحيحة، بينما nextLine() تقرأ السلاسل النصية</div>
                         </div>
                     </div>
                     <div class="feedback"></div>
-                    <button class="submit-btn" onclick="checkAnswer(7, 'a', 'next() reads the next token (word) stopping at whitespace. nextLine() reads everything until the end of the line (including spaces).')">Check Answer</button>
+                    <button class="submit-btn" onclick="checkAnswer(7, 'a', 'الدالة next() تقرأ الرمز التالي (الكلمة) وتتوقف عند المسافة البيضاء (whitespace). أما nextLine() فتقرأ كل شيء حتى نهاية السطر (بما في ذلك المسافات).')">تحقّق من الإجابة</button>
                 </div>
             </div>
 
@@ -794,28 +799,28 @@
                 </div>
                 <div class="question-body">
                     <div class="question-text">
-                        What happens if you create a PrintWriter for a file that already exists?
+                        ماذا يحدث إذا أنشأت PrintWriter لملف موجود بالفعل؟
                     </div>
                     <div class="options">
                         <div class="option" data-answer="a">
                             <div class="option-radio"></div>
-                            <div class="option-text">An error is thrown</div>
+                            <div class="option-text">يُطلَق خطأ</div>
                         </div>
                         <div class="option" data-answer="b">
                             <div class="option-radio"></div>
-                            <div class="option-text">New content is appended to the end of the file</div>
+                            <div class="option-text">يُضاف المحتوى الجديد إلى نهاية الملف</div>
                         </div>
                         <div class="option" data-answer="c">
                             <div class="option-radio"></div>
-                            <div class="option-text">The existing file is overwritten (old content is erased)</div>
+                            <div class="option-text">يُكتب فوق الملف الموجود (يُمحى المحتوى القديم)</div>
                         </div>
                         <div class="option" data-answer="d">
                             <div class="option-radio"></div>
-                            <div class="option-text">A new file with a different name is created</div>
+                            <div class="option-text">يُنشأ ملف جديد باسم مختلف</div>
                         </div>
                     </div>
                     <div class="feedback"></div>
-                    <button class="submit-btn" onclick="checkAnswer(8, 'c', 'PrintWriter overwrites existing files by default. The old content is erased and replaced with new content. Be careful not to accidentally lose data!')">Check Answer</button>
+                    <button class="submit-btn" onclick="checkAnswer(8, 'c', 'الـ PrintWriter يكتب فوق الملفات الموجودة افتراضيًا. فيُمحى المحتوى القديم ويُستبدل بمحتوى جديد. احذر أن تفقد بياناتك عن غير قصد!')">تحقّق من الإجابة</button>
                 </div>
             </div>
 
@@ -823,32 +828,32 @@
             <div class="question-card" id="q9">
                 <div class="question-header">
                     <div class="question-number">9</div>
-                    <div class="question-type">Buffers</div>
+                    <div class="question-type">المخازن المؤقتة</div>
                 </div>
                 <div class="question-body">
                     <div class="question-text">
-                        Why is it important to call <code class="code-inline">close()</code> on a PrintWriter?
+                        لماذا من المهم استدعاء <code class="code-inline">close()</code> على كائن PrintWriter؟
                     </div>
                     <div class="options">
                         <div class="option" data-answer="a">
                             <div class="option-radio"></div>
-                            <div class="option-text">To delete the file from memory</div>
+                            <div class="option-text">لحذف الملف من الذاكرة</div>
                         </div>
                         <div class="option" data-answer="b">
                             <div class="option-radio"></div>
-                            <div class="option-text">To ensure buffered data is written to the file on disk</div>
+                            <div class="option-text">لضمان كتابة البيانات المخزّنة مؤقتًا (buffered) إلى الملف على القرص</div>
                         </div>
                         <div class="option" data-answer="c">
                             <div class="option-radio"></div>
-                            <div class="option-text">To encrypt the file for security</div>
+                            <div class="option-text">لتشفير الملف من أجل الأمان</div>
                         </div>
                         <div class="option" data-answer="d">
                             <div class="option-radio"></div>
-                            <div class="option-text">It's not important, just a good habit</div>
+                            <div class="option-text">ليس مهمًا، إنما هو عادة جيدة فحسب</div>
                         </div>
                     </div>
                     <div class="feedback"></div>
-                    <button class="submit-btn" onclick="checkAnswer(9, 'b', 'Data is buffered in memory for efficiency. Calling close() (or flush()) ensures all buffered data is actually written to the disk. Without it, your file might be empty or incomplete!')">Check Answer</button>
+                    <button class="submit-btn" onclick="checkAnswer(9, 'b', 'تُخزَّن البيانات مؤقتًا في الذاكرة لأغراض الكفاءة. واستدعاء close() (أو flush()) يضمن كتابة كل البيانات المخزّنة مؤقتًا فعليًا إلى القرص. من دونه قد يكون ملفك فارغًا أو ناقصًا!')">تحقّق من الإجابة</button>
                 </div>
             </div>
 
@@ -856,11 +861,11 @@
             <div class="question-card" id="q10">
                 <div class="question-header">
                     <div class="question-number">10</div>
-                    <div class="question-type">Code Analysis</div>
+                    <div class="question-type">تحليل الشيفرة</div>
                 </div>
                 <div class="question-body">
                     <div class="question-text">
-                        What will be in output.txt after this code runs?
+                        ماذا سيكون محتوى output.txt بعد تشغيل هذه الشيفرة؟
                     </div>
                     <div class="code-block">
 <span class="type">PrintWriter</span> <span class="variable">writer</span> = <span class="keyword">new</span> <span class="type">PrintWriter</span>(
@@ -876,46 +881,46 @@
                     <div class="options">
                         <div class="option" data-answer="a">
                             <div class="option-radio"></div>
-                            <div class="option-text">Hello World Java (all on one line)</div>
+                            <div class="option-text">Hello World Java (كله في سطر واحد)</div>
                         </div>
                         <div class="option" data-answer="b">
                             <div class="option-radio"></div>
-                            <div class="option-text">Hello World (line 1), Java (line 2)</div>
+                            <div class="option-text">Hello World (السطر 1)، Java (السطر 2)</div>
                         </div>
                         <div class="option" data-answer="c">
                             <div class="option-radio"></div>
-                            <div class="option-text">Hello (line 1), World (line 2), Java (line 3)</div>
+                            <div class="option-text">Hello (السطر 1)، World (السطر 2)، Java (السطر 3)</div>
                         </div>
                         <div class="option" data-answer="d">
                             <div class="option-radio"></div>
-                            <div class="option-text">The file will be empty because print doesn't save</div>
+                            <div class="option-text">سيكون الملف فارغًا لأن print لا يحفظ</div>
                         </div>
                     </div>
                     <div class="feedback"></div>
-                    <button class="submit-btn" onclick="checkAnswer(10, 'b', 'print(\"Hello\") writes Hello (no newline), println(\" World\") writes \" World\" then newline, print(\"Java\") writes Java. Result: \"Hello World\" on line 1, \"Java\" on line 2.')">Check Answer</button>
+                    <button class="submit-btn" onclick="checkAnswer(10, 'b', 'الدالة print(\"Hello\") تكتب Hello (بلا سطر جديد)، وprintln(\" World\") تكتب \" World\" ثم سطرًا جديدًا، وprint(\"Java\") تكتب Java. النتيجة: \"Hello World\" في السطر 1، و\"Java\" في السطر 2.')">تحقّق من الإجابة</button>
                 </div>
             </div>
 
             <!-- Results Section -->
             <div class="results-section" id="results">
-                <div class="results-title">Quiz Complete!</div>
+                <div class="results-title">اكتمل الاختبار!</div>
                 <div class="results-score" id="score">0/10</div>
-                <div class="results-message" id="message">Great effort! Review the explanations above.</div>
-                <button class="retry-btn" onclick="resetQuiz()">Try Again</button>
+                <div class="results-message" id="message">جهد رائع! راجع الشروحات أعلاه.</div>
+                <button class="retry-btn" onclick="resetQuiz()">حاول مجددًا</button>
             </div>
         </div>
 
         <!-- Bottom Navigation -->
         <nav class="bottom-nav">
-            <a href="04-writing-printwriter.html" class="prev-lesson">&#8249; Previous: PrintWriter</a>
-            <a href="index.html">Back to Module &#8250;</a>
+            <a href="04-writing-printwriter-ar.html" class="prev-lesson">&#8250; السابق: PrintWriter</a>
+            <a href="index-ar.html">العودة إلى الوحدة &#8249;</a>
         </nav>
 
         <!-- Footer -->
         <div class="footer">
-            <p><strong>CPCS203</strong> - Object-Oriented Programming</p>
-            <p>Module 3: File I/O &bull; Exercises</p>
-            <p>Prepared by Dr. Almalawi</p>
+            <p><strong>CPCS203</strong> - البرمجة الكائنية التوجّه</p>
+            <p>الوحدة 3: الإدخال والإخراج على الملفات &bull; التمارين</p>
+            <p>إعداد د. الملّاوي</p>
         </div>
     </div>
 
@@ -938,7 +943,7 @@
             });
 
             if (!selectedOption) {
-                alert('Please select an answer first!');
+                alert('الرجاء اختيار إجابة أولًا!');
                 return;
             }
 
@@ -957,13 +962,13 @@
                 selectedOption.classList.add('correct');
                 card.classList.add('correct');
                 feedback.className = 'feedback correct';
-                feedback.innerHTML = '<div class="feedback-title">Correct!</div>' + explanation;
+                feedback.innerHTML = '<div class="feedback-title">إجابة صحيحة!</div>' + explanation;
                 correct++;
             } else {
                 selectedOption.classList.add('incorrect');
                 card.classList.add('incorrect');
                 feedback.className = 'feedback incorrect';
-                feedback.innerHTML = '<div class="feedback-title">Incorrect</div>' + explanation;
+                feedback.innerHTML = '<div class="feedback-title">إجابة خاطئة</div>' + explanation;
             }
 
             btn.disabled = true;
@@ -978,7 +983,7 @@
         function updateProgress() {
             const percent = (answered / total) * 100;
             document.getElementById('progress-fill').style.width = percent + '%';
-            document.getElementById('progress-text').textContent = answered + ' / ' + total + ' Questions';
+            document.getElementById('progress-text').textContent = answered + ' / ' + total + ' أسئلة';
         }
 
         function showResults() {
@@ -989,13 +994,13 @@
             scoreEl.textContent = correct + '/' + total;
 
             if (correct === total) {
-                messageEl.textContent = 'Perfect score! You\'ve mastered File I/O!';
+                messageEl.textContent = 'علامة كاملة! لقد أتقنت الإدخال والإخراج على الملفات!';
             } else if (correct >= 8) {
-                messageEl.textContent = 'Excellent work! You understand File I/O well!';
+                messageEl.textContent = 'عمل ممتاز! أنت تفهم الإدخال والإخراج على الملفات جيدًا!';
             } else if (correct >= 6) {
-                messageEl.textContent = 'Good job! Review the topics you missed.';
+                messageEl.textContent = 'أحسنت! راجع المواضيع التي أخطأت فيها.';
             } else {
-                messageEl.textContent = 'Keep practicing! Review the lessons and try again.';
+                messageEl.textContent = 'واصل التدرّب! راجع الدروس وحاول مجددًا.';
             }
 
             results.classList.add('show');
