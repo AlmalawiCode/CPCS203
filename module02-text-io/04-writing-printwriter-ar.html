@@ -826,6 +826,17 @@ Ahmed scored 95 points
                     </div>
                 </div>
 
+                <div class="info-box">
+                    <div class="info-box-title">بدقّة أكبر: مَن يُخزِّن البيانات مؤقتًا؟ (طبقتان)</div>
+                    <p>في الحقيقة هناك <strong>طبقتان</strong> من التخزين المؤقت، وليست طبقة واحدة:</p>
+                    <p><strong>1) مخزن Java (في ذاكرة التطبيق):</strong> أصناف مثل <code class="code-inline">BufferedWriter</code> و<code class="code-inline">PrintWriter</code> تحتفظ بالبيانات في ذاكرة الـ JVM. استدعاء <code class="code-inline">flush()</code> يُفرِّغ هذا المخزن ويُمرِّر البيانات إلى نظام التشغيل — لكنه <strong>لا</strong> يضمن الكتابة على القرص. تقول وثائق Java عن <code class="code-inline">flush()</code>: «flushing the stream guarantees only that bytes previously written to the stream are <em>passed to the operating system</em> for writing; it does not guarantee that they are actually written to a physical device such as a disk drive.»</p>
+                    <p><strong>2) مخزن نظام التشغيل (kernel / page cache):</strong> بعد أن تُمرِّر Java البيانات، يحتفظ بها <strong>نظام التشغيل</strong> في مخازنه قبل كتابتها فعليًا على القرص. لإجبار الكتابة على القرص الفعلي تُستخدَم <code class="code-inline">FileDescriptor.sync()</code> أو <code class="code-inline">FileChannel.force()</code>.</p>
+                    <p>باختصار: <strong>Java تُخزِّن مؤقتًا في ذاكرة التطبيق، ونظام التشغيل يُخزِّن مؤقتًا في نواته</strong>؛ <code class="code-inline">flush()</code> ينقل من الأولى إلى الثاني، و<code class="code-inline">sync()</code>/<code class="code-inline">force()</code> ينقل من الثاني إلى القرص.</p>
+                    <p style="font-size: 0.9rem; opacity: 0.85;">المصدر: توثيق Oracle الرسمي (Java SE API) —
+                        <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/OutputStream.html#flush()" target="_blank" rel="noopener"><code class="code-inline">OutputStream.flush()</code></a>
+                        و<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/FileDescriptor.html#sync()" target="_blank" rel="noopener"><code class="code-inline">FileDescriptor.sync()</code></a>.</p>
+                </div>
+
                 <div class="warning-box">
                     <div class="warning-title">خطأ شائع!</div>
                     <p>إذا نسيت استدعاء <code class="code-inline">close()</code>، فقد يكون ملفك <strong>فارغًا</strong> أو <strong>غير مكتمل</strong>! فالبيانات لا تزال قابعة في المخزن المؤقت، تنتظر أن تُكتب.</p>

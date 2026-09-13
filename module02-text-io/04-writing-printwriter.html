@@ -816,6 +816,17 @@ Ahmed scored 95 points
                     </div>
                 </div>
 
+                <div class="info-box">
+                    <div class="info-box-title">More precisely: who buffers the data? (Two layers)</div>
+                    <p>There are actually <strong>two</strong> layers of buffering, not one:</p>
+                    <p><strong>1) Java's buffer (in application memory):</strong> Classes like <code class="code-inline">BufferedWriter</code> and <code class="code-inline">PrintWriter</code> hold data in the JVM's memory. Calling <code class="code-inline">flush()</code> empties this buffer and hands the data to the operating system — but it does <strong>not</strong> guarantee the data is on disk. The Java docs for <code class="code-inline">flush()</code> state: &ldquo;flushing the stream guarantees only that bytes previously written to the stream are <em>passed to the operating system</em> for writing; it does not guarantee that they are actually written to a physical device such as a disk drive.&rdquo;</p>
+                    <p><strong>2) The operating system's buffer (kernel / page cache):</strong> After Java hands over the data, the <strong>operating system</strong> keeps it in its own buffers before actually writing to disk. To force the write to the physical device, use <code class="code-inline">FileDescriptor.sync()</code> or <code class="code-inline">FileChannel.force()</code>.</p>
+                    <p>In short: <strong>Java buffers in application memory, and the OS buffers in the kernel</strong>; <code class="code-inline">flush()</code> moves data from the first to the second, and <code class="code-inline">sync()</code>/<code class="code-inline">force()</code> moves it from the second to the disk.</p>
+                    <p style="font-size: 0.9rem; opacity: 0.85;">Source: official Oracle documentation (Java SE API) &mdash;
+                        <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/OutputStream.html#flush()" target="_blank" rel="noopener"><code class="code-inline">OutputStream.flush()</code></a>
+                        and <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/FileDescriptor.html#sync()" target="_blank" rel="noopener"><code class="code-inline">FileDescriptor.sync()</code></a>.</p>
+                </div>
+
                 <div class="warning-box">
                     <div class="warning-title">Common Mistake!</div>
                     <p>If you forget to call <code class="code-inline">close()</code>, your file might be <strong>empty</strong> or <strong>incomplete</strong>! The data is sitting in the buffer, waiting to be written.</p>
