@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CPCS-203 &mdash; Text I/O &mdash; Practice Exam (A4 printable)</title>
+<style>
+/* =======================================================================
+   CPCS-203 Programming II — MODULE 2: TEXT I/O — practice exam
+   Print-first, A4. Each question is a CARD. Amber text-I/O module theme.
+   A "Show model answers" toggle turns the same file into an answer key.
+   ======================================================================= */
+@page { size: A4; margin: 16mm 15mm 18mm 15mm; }
+
+:root{
+  --amber:      #d97706;
+  --amber-dark: #b45309;
+  --amber-deep: #7c2d12;
+  --amber-tint: #fff7ed;
+  --ink:        #1f2937;
+  --ink-soft:   #4b5563;
+  --rule:       #e5d5c0;
+  --paper:      #ffffff;
+  --code-bg:    #fdf8f1;
+  --code-rule:  #ecd9c0;
+  --warn:       #b42318;
+  --tag-easy:  #e7f6ec; --tag-easy-i:#1a7f37;
+  --tag-med:   #fef3e0; --tag-med-i: #9a6212;
+  --tag-hard:  #fdeaea; --tag-hard-i:#b42318;
+}
+
+*{ box-sizing:border-box; }
+html,body{
+  margin:0; padding:0;
+  background:#ece7e1;
+  color:var(--ink);
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size:11pt; line-height:1.5;
+}
+body{ padding:14mm 0; }
+
+/* ---- A4 sheet ---- */
+.sheet{
+  background:var(--paper);
+  width:210mm; min-height:297mm;
+  margin:0 auto 10mm;
+  padding:15mm 15mm 18mm;
+  box-shadow:0 3px 14px rgba(31,41,55,.18);
+  position:relative;
+}
+
+/* ---- running head ---- */
+.runhead{
+  display:flex; justify-content:space-between; align-items:flex-end;
+  border-bottom:2px solid var(--amber-dark);
+  padding-bottom:6px; margin-bottom:14px;
+  font-size:9.5pt; color:var(--amber-deep);
+}
+.runhead b{ font-size:10.5pt; }
+
+/* ================= COVER ================= */
+.cover-top{ text-align:center; }
+.cover-top .uni{ font-size:15pt; font-weight:800; color:var(--amber-deep); }
+.cover-top .fac{ font-size:10.5pt; color:var(--ink-soft); margin-top:2px; }
+.cover-rule{ height:2px; background:var(--amber-dark); margin:12px 0; }
+.cover-title{ font-size:22pt; font-weight:800; color:var(--amber); letter-spacing:.5px; }
+.cover-sub{ font-size:13pt; font-weight:600; margin-top:4px; }
+.cover-tag{
+  display:inline-block; margin-top:10px; padding:4px 16px;
+  background:var(--amber-tint); color:var(--amber-dark); border:1px solid var(--amber);
+  border-radius:999px; font-weight:700; font-size:10.5pt;
+}
+
+.id-grid{ margin:22px 0 4px; width:100%; border-collapse:collapse; font-size:11pt; }
+.id-grid td{ padding:9px 6px; }
+.id-grid .lbl{ width:132px; white-space:nowrap; font-weight:700; color:var(--amber-deep); }
+.id-grid .line{ border-bottom:1.4px solid #78716c; }
+
+.instr{
+  margin-top:16px; border:1px solid var(--rule);
+  border-left:5px solid var(--amber); border-radius:8px;
+  background:#fffdf9; padding:12px 16px;
+}
+.instr h3{ margin:0 0 6px; font-size:11.5pt; color:var(--amber-deep); }
+.instr ul{ margin:0; padding-left:18px; }
+.instr li{ margin:3px 0; }
+
+.marks-tbl{ width:100%; border-collapse:collapse; margin-top:18px; font-size:10pt; text-align:center; }
+.marks-tbl th, .marks-tbl td{ border:1px solid var(--rule); padding:6px 4px; }
+.marks-tbl thead th{ background:var(--amber-dark); color:#fff; }
+.marks-tbl .tot{ background:var(--amber-tint); font-weight:800; }
+.marks-tbl thead th.tot{ background:var(--amber-deep); color:#fff; }
+
+/* ================= QUESTION CARD ================= */
+.card{
+  border:1px solid var(--rule); border-radius:10px;
+  margin:0 0 16px; overflow:hidden;
+  break-inside:avoid; page-break-inside:avoid; background:#fff;
+}
+.card-head{
+  display:flex; flex-wrap:wrap; align-items:center; gap:8px;
+  background:linear-gradient(180deg,#fff8ef,#fdeedd);
+  border-bottom:1px solid var(--rule); padding:9px 14px;
+}
+.qno{
+  font-weight:800; color:#fff; background:var(--amber);
+  border-radius:6px; padding:3px 11px; font-size:11pt; letter-spacing:.3px;
+}
+.qtitle{ font-weight:700; font-size:11.5pt; color:var(--amber-deep); flex:1 1 240px; }
+.chips{ display:flex; gap:6px; align-items:center; flex-wrap:wrap; }
+.chip{ font-size:8.5pt; padding:2px 8px; border-radius:999px; font-weight:700; white-space:nowrap; }
+.chip.clo{ background:#fef3c7; color:#92400e; border:1px solid #fcd34d; }
+.chip.so { background:#ecfeff; color:#0e7490; border:1px solid #a5f3fc; }
+.chip.pts{ background:var(--amber-deep); color:#fff; }
+.tag-easy{ background:var(--tag-easy); color:var(--tag-easy-i); border:1px solid var(--tag-easy-i); }
+.tag-med { background:var(--tag-med);  color:var(--tag-med-i);  border:1px solid var(--tag-med-i);  }
+.tag-hard{ background:var(--tag-hard); color:var(--tag-hard-i); border:1px solid var(--tag-hard-i); }
+
+.card-body{ padding:12px 16px 14px; }
+.card-body p{ margin:6px 0; }
+.note{ color:var(--warn); font-style:italic; font-weight:600; font-size:10pt; }
+.hint{ color:var(--ink-soft); font-style:italic; font-size:10pt; }
+.mini{ font-size:9pt; color:#6b7280; }
+
+/* ---- code blocks ---- */
+pre.code{
+  background:var(--code-bg); border:1px solid var(--code-rule);
+  border-left:4px solid var(--amber); border-radius:6px;
+  padding:10px 12px; margin:10px 0; overflow:auto;
+  font-family:'Consolas','DejaVu Sans Mono',monospace; font-size:10pt; line-height:1.5;
+  white-space:pre;
+}
+code.inl{ background:var(--code-bg); border:1px solid var(--code-rule); border-radius:4px;
+  padding:1px 5px; font-family:'Consolas',monospace; font-size:9.8pt; }
+.dots{ letter-spacing:1px; color:#78716c; }
+
+/* ---- text-file illustration ---- */
+.filerow{ display:flex; gap:14px; flex-wrap:wrap; margin:10px 0; }
+.filebox{ border:1.4px solid var(--amber-dark); border-radius:7px;
+  background:#fffdf7; overflow:hidden; min-width:190px; }
+.filebox .fname{ background:var(--amber-dark); color:#fff; font-size:9.5pt;
+  font-weight:700; padding:4px 10px; font-family:'Consolas',monospace; letter-spacing:.3px; }
+.filebox .fbody{ padding:8px 12px; font-family:'Consolas','DejaVu Sans Mono',monospace;
+  font-size:10pt; white-space:pre; line-height:1.55; }
+
+/* ---- answer space ---- */
+.answer-space{ margin-top:10px; }
+.answer-space .lbl{ font-style:italic; color:var(--ink-soft); font-size:10pt; }
+.writeline{ border-bottom:1px solid #a8a29e; height:1.55em; margin-top:.45em; }
+.codebox{ border:1px dashed #a8a29e; border-radius:6px; min-height:120px; margin-top:8px;
+  background:repeating-linear-gradient(#fff,#fff 1.7em,#f6f1ea 1.7em,#f6f1ea calc(1.7em + 1px)); }
+.codebox.tall{ min-height:210px; }
+.codebox.xtall{ min-height:300px; }
+
+/* ---- fill-in tables ---- */
+.fill{ width:100%; border-collapse:collapse; margin-top:8px; font-size:10.5pt; }
+.fill td, .fill th{ border:1px solid var(--rule); padding:7px 8px; }
+.fill th{ background:var(--amber-tint); color:var(--amber-deep); font-size:10pt; }
+.fill td.ans{ background:#fff; width:45%; height:2.6em; }
+.fill td.mono{ font-family:'Consolas',monospace; }
+
+/* ---- model answer block (hidden until toggled) ---- */
+.answer-key{ display:none; }
+body.show-answers .answer-key{ display:block; }
+.answer-key{
+  margin-top:12px; border:1px solid #bbf7d0; border-left:5px solid #16a34a;
+  background:#f0fdf4; border-radius:8px; padding:10px 14px;
+}
+.answer-key .akh{ font-weight:800; color:#15803d; font-size:10.5pt; margin-bottom:4px; }
+.answer-key pre.code{ border-left-color:#16a34a; background:#f3fdf6; border-color:#bbf7d0; }
+.answer-key .val{ color:#166534; font-weight:800; }
+.answer-key .rub{ color:#0e7490; font-size:9.5pt; font-style:italic; }
+.answer-key table.fill th{ background:#dcfce7; color:#15803d; }
+
+/* ---- floating toolbar (screen only) ---- */
+.toolbar{
+  position:fixed; top:14px; right:14px; z-index:50; display:flex; gap:8px;
+  background:#fff; border:1px solid var(--rule); border-radius:10px; padding:8px 10px;
+  box-shadow:0 4px 14px rgba(31,41,55,.18);
+}
+.toolbar button{
+  font:inherit; font-size:10pt; font-weight:700; cursor:pointer;
+  border:1px solid var(--amber); border-radius:7px; padding:7px 12px;
+  background:var(--amber); color:#fff;
+}
+.toolbar button.ghost{ background:#fff; color:var(--amber-dark); }
+.toolbar button:active{ transform:translateY(1px); }
+
+.footline{ text-align:center; margin-top:6px; color:var(--ink-soft); font-size:9.5pt; }
+.endmark{ text-align:center; font-weight:800; color:var(--amber-deep); margin:18px 0 4px; }
+
+/* ================= PRINT ================= */
+@media print{
+  body{ background:#fff; padding:0; }
+  .toolbar{ display:none !important; }
+  .sheet{ box-shadow:none; margin:0; width:auto; min-height:auto; padding:0; }
+  .sheet + .sheet{ page-break-before:always; }
+  .card{ box-shadow:none; }
+}
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <button id="toggleAns" class="ghost">&#128065; Show model answers</button>
+  <button onclick="window.print()">&#128424; Print / Save PDF</button>
+</div>
+
+<!-- =====================================================================
+     COVER PAGE
+     ===================================================================== -->
+
+<section class="sheet cover">
+  <div class="cover-top">
+    <div class="uni">King Abdulaziz University (KAU)</div>
+    <div class="fac">Faculty of Computing and Information Technology &middot; Computer Science Department</div>
+  </div>
+  <div class="cover-rule"></div>
+  <div class="cover-top">
+    <div class="cover-title">CPCS-203 &nbsp;Programming II</div>
+    <div class="cover-sub">Module 2: Text I/O &mdash; Focused Practice Exam</div>
+    <div class="cover-tag">File Class &middot; Scanner &middot; PrintWriter &middot; Buffering</div>
+  </div>
+  <div class="cover-rule"></div>
+
+  <table class="id-grid">
+    <tr><td class="lbl">Student Name:</td><td class="line"></td></tr>
+    <tr><td class="lbl">Student ID:</td><td class="line"></td></tr>
+    <tr>
+      <td class="lbl">Section:</td><td class="line" style="width:35%"></td>
+      <td class="lbl" style="text-align:right;padding-right:14px">Instructor:</td><td class="line"></td>
+    </tr>
+  </table>
+
+  <div class="instr">
+    <h3>Instructions</h3>
+    <ul>
+      <li>This booklet contains <b>11 questions</b> on text input/output only. <b>Total: 80 marks</b> &middot; Suggested time: <b>75 minutes</b>.</li>
+      <li>Answer <b>all</b> questions in the spaces provided. <b>Place your answers in the boxes provided.</b></li>
+      <li>Unless a question says otherwise, assume the three imports
+          <code class="inl">java.io.File</code>, <code class="inl">java.io.FileNotFoundException</code> and
+          <code class="inl">java.util.Scanner</code> are already present, and that <code class="inl">main</code> is declared
+          <code class="inl">throws FileNotFoundException</code>.</li>
+      <li>Several questions share the same data file <code class="inl">scores.txt</code>. Its contents are printed again wherever it is needed.</li>
+      <li>Write clear Java. Partial (per-line) credit is given. <span class="note">Basic syntax slips are not penalised &mdash; wrong logic is.</span></li>
+    </ul>
+  </div>
+
+  <table class="marks-tbl">
+    <thead>
+      <tr><th>Question</th><th>Q1</th><th>Q2</th><th>Q3</th><th>Q4</th><th>Q5</th><th>Q6</th><th>Q7</th><th>Q8</th><th>Q9</th><th>Q10</th><th>Q11</th><th class="tot">Total</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><b>Max Mark</b></td><td>6</td><td>6</td><td>6</td><td>6</td><td>10</td><td>8</td><td>6</td><td>8</td><td>8</td><td>10</td><td>6</td><td class="tot">80</td></tr>
+      <tr><td><b>Obtained</b></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class="tot"></td></tr>
+    </tbody>
+  </table>
+
+  <p class="footline">Topics covered: files vs. memory &middot; the <code class="inl">File</code> class &middot; reading with <code class="inl">Scanner</code> &middot; token types and <code class="inl">nextLine</code> &middot; writing with <code class="inl">PrintWriter</code> &middot; overwrite vs. append &middot; buffering and flushing &middot; whole-program file processing.</p>
+</section>
+
+<!-- ================= PAGE 2 : Q1 ================= -->
+<section class="sheet">
+  <div class="runhead"><span><b>CPCS-203</b> Programming II</span><span>Module 2 &mdash; Text I/O &mdash; Practice Exam &middot; Question 1 of 11</span></div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="qno">Q1</span>
+      <span class="qtitle">Text I/O Concepts (Multiple Choice)</span>
+      <span class="chips">
+        <span class="chip tag-easy">EASY</span>
+        <span class="chip clo">CLO 2</span><span class="chip so">SO-a</span>
+        <span class="chip pts">6 marks &middot; 1 each</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p>Circle the <b>single best</b> answer for each item.</p>
+
+      <p><b>1.</b> A <code class="inl">File</code> object in Java represents:</p>
+      <p>&nbsp;&nbsp;(a) the contents of the file loaded into memory
+         &nbsp;&nbsp; (b) an abstract path name; constructing it does <b>not</b> create anything on disk
+         &nbsp;&nbsp; (c) an already-open stream to the file
+         &nbsp;&nbsp; (d) a folder only</p>
+
+      <p><b>2.</b> Which statement about <code class="inl">FileNotFoundException</code> is correct?</p>
+      <p>&nbsp;&nbsp;(a) it is unchecked, so it may be ignored
+         &nbsp;&nbsp; (b) it is an <code class="inl">Error</code>, not an <code class="inl">Exception</code>
+         &nbsp;&nbsp; (c) it is a <b>checked</b> exception: the code must catch it or declare <code class="inl">throws</code>
+         &nbsp;&nbsp; (d) it is thrown only while writing</p>
+
+      <p><b>3.</b> <code class="inl">new PrintWriter(new File("scores.txt"))</code> is executed and <code class="inl">scores.txt</code> already contains data. What happens?</p>
+      <p>&nbsp;&nbsp;(a) the new text is appended after the old data
+         &nbsp;&nbsp; (b) an exception is thrown because the file exists
+         &nbsp;&nbsp; (c) the old contents are <b>erased</b> &mdash; the file is truncated to length 0
+         &nbsp;&nbsp; (d) a second file <code class="inl">scores1.txt</code> is created</p>
+
+      <p><b>4.</b> Why must <code class="inl">close()</code> (or <code class="inl">flush()</code>) be called on a <code class="inl">PrintWriter</code>?</p>
+      <p>&nbsp;&nbsp;(a) to delete the file from memory
+         &nbsp;&nbsp; (b) to encrypt the file
+         &nbsp;&nbsp; (c) to push text still sitting in the buffer out of the program, otherwise it can be lost
+         &nbsp;&nbsp; (d) it is optional and has no effect at all</p>
+
+      <p><b>5.</b> Which loop guard keeps reading a text file <b>token by token</b> until the end of the file?</p>
+      <p>&nbsp;&nbsp;(a) <code class="inl">while (input.nextLine() != null)</code>
+         &nbsp;&nbsp; (b) <code class="inl">while (input.hasNext())</code>
+         &nbsp;&nbsp; (c) <code class="inl">while (input.next() != EOF)</code>
+         &nbsp;&nbsp; (d) <code class="inl">for (int i = 0; i &lt; input.length(); i++)</code></p>
+
+      <p><b>6.</b> Compared with data held in RAM, data stored in a text file is:</p>
+      <p>&nbsp;&nbsp;(a) faster to access
+         &nbsp;&nbsp; (b) lost as soon as the program ends
+         &nbsp;&nbsp; (c) <b>permanent</b> &mdash; it survives after the program ends
+         &nbsp;&nbsp; (d) restricted to numeric values</p>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q1</div>
+        <p>1:&nbsp;<span class="val">(b)</span> &nbsp; 2:&nbsp;<span class="val">(c)</span> &nbsp; 3:&nbsp;<span class="val">(c)</span> &nbsp; 4:&nbsp;<span class="val">(c)</span> &nbsp; 5:&nbsp;<span class="val">(b)</span> &nbsp; 6:&nbsp;<span class="val">(c)</span></p>
+        <p class="rub">1 mark each. (1) a <code class="inl">File</code> is only a name &mdash; the disk is untouched until a <code class="inl">Scanner</code> or <code class="inl">PrintWriter</code> opens it. (3) the classic trap: opening a <code class="inl">PrintWriter</code> destroys the old file. Use <code class="inl">new PrintWriter(new FileWriter(file, true))</code> to append instead.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PAGE 3 : Q2 ================= -->
+<section class="sheet">
+  <div class="runhead"><span><b>CPCS-203</b> Programming II</span><span>Module 2 &mdash; Text I/O &mdash; Practice Exam &middot; Question 2 of 11</span></div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="qno">Q2</span>
+      <span class="qtitle">Output Tracing &mdash; Reading a File with Scanner</span>
+      <span class="chips">
+        <span class="chip tag-easy">EASY</span>
+        <span class="chip clo">CLO 2</span><span class="chip so">SO-a</span>
+        <span class="chip pts">6 marks &middot; 3 each</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p>The file below sits in the project folder. Each line holds a name and two quiz marks.</p>
+      <div class="filerow">
+        <div class="filebox">
+          <div class="fname">scores.txt</div>
+          <div class="fbody">Mona 12.5 17.0
+Faisal 9.0 14.5
+Lama 15.0 19.5
+Yousef 11.0 8.5</div>
+        </div>
+      </div>
+
+      <p><b>(a)</b> What is printed? <span class="hint">[3 marks]</span></p>
+<pre class="code">Scanner input = new Scanner(new File("scores.txt"));
+int count = 0;
+while (input.hasNext()) {
+    input.next();
+    input.nextDouble();
+    input.nextDouble();
+    count++;
+}
+System.out.println(count);</pre>
+      <div class="answer-space"><span class="lbl">Output:</span><div class="writeline"></div></div>
+
+      <p style="margin-top:12px"><b>(b)</b> What is printed? <span class="hint">[3 marks]</span></p>
+<pre class="code">Scanner input = new Scanner(new File("scores.txt"));
+double total = 0;
+while (input.hasNext()) {
+    input.next();
+    total += input.nextDouble() + input.nextDouble();
+}
+System.out.println(total);</pre>
+      <div class="answer-space"><span class="lbl">Output:</span><div class="writeline"></div></div>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q2</div>
+        <p>(a) the loop consumes exactly one full line per turn, so it runs once per student &rarr; <span class="val">4</span></p>
+        <p>(b) 29.5 + 23.5 + 34.5 + 19.5 = <span class="val">107.0</span></p>
+        <p class="rub">Accept <code class="inl">107.0</code> only &mdash; <code class="inl">total</code> is a <code class="inl">double</code>, so Java prints the decimal point. 3 marks each, no partial credit for an arithmetic slip that shows a correct traversal (give 2).</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PAGE 4 : Q3 ================= -->
+<section class="sheet">
+  <div class="runhead"><span><b>CPCS-203</b> Programming II</span><span>Module 2 &mdash; Text I/O &mdash; Practice Exam &middot; Question 3 of 11</span></div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="qno">Q3</span>
+      <span class="qtitle">The File Class &mdash; Fill in the Results</span>
+      <span class="chips">
+        <span class="chip tag-easy">EASY</span>
+        <span class="chip clo">CLO 2</span><span class="chip so">SO-a</span>
+        <span class="chip pts">6 marks &middot; 1.5 each</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p>The project folder contains <code class="inl">scores.txt</code> (the four-line file of Q2). It does <b>not</b> contain any file called <code class="inl">report.txt</code>, and there is no folder of that name either. The following two lines are executed:</p>
+<pre class="code">File f1 = new File("scores.txt");
+File f2 = new File("report.txt");</pre>
+      <p>Write the value produced by each expression:</p>
+      <table class="fill">
+        <tr><th style="width:55%">Expression</th><th>Result</th></tr>
+        <tr><td class="mono">1.&nbsp; f1.exists()</td><td class="ans"></td></tr>
+        <tr><td class="mono">2.&nbsp; f2.exists()</td><td class="ans"></td></tr>
+        <tr><td class="mono">3.&nbsp; f1.getName()</td><td class="ans"></td></tr>
+        <tr><td class="mono">4.&nbsp; f1.isDirectory()</td><td class="ans"></td></tr>
+      </table>
+      <p class="mini">Remember: constructing <code class="inl">f2</code> did <b>not</b> create <code class="inl">report.txt</code> on the disk.</p>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q3</div>
+        <p>1: <span class="val">true</span> &nbsp;|&nbsp; 2: <span class="val">false</span> &nbsp;|&nbsp; 3: <span class="val">scores.txt</span> &nbsp;|&nbsp; 4: <span class="val">false</span></p>
+        <p class="rub">1.5 marks each. Item 2 is the teaching point: a <code class="inl">File</code> object is just a name, so <code class="inl">exists()</code> is the only way to ask the disk whether anything is really there.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PAGE 5 : Q4 ================= -->
+<section class="sheet">
+  <div class="runhead"><span><b>CPCS-203</b> Programming II</span><span>Module 2 &mdash; Text I/O &mdash; Practice Exam &middot; Question 4 of 11</span></div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="qno">Q4</span>
+      <span class="qtitle">Fill in the Blanks &mdash; Reading scores.txt</span>
+      <span class="chips">
+        <span class="chip tag-med">MEDIUM</span>
+        <span class="chip clo">CLO 2</span><span class="chip so">SO-a</span>
+        <span class="chip pts">6 marks &middot; 1 per blank</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p>The program below is incomplete. It is supposed to read <b>every</b> student from <code class="inl">scores.txt</code> and print a table on the screen. Complete the program by filling in the six blanks.</p>
+<pre class="code">import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
+public class ReadScores {
+    public static void main(String[] args) throws FileNotFoundException {
+
+        File file = new <span class="dots">&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;</span>("scores.txt");        // (1)
+
+        Scanner input = new Scanner(<span class="dots">&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;</span>);          // (2)
+
+        System.out.println("Name\tQuiz1\tQuiz2\tTotal");
+
+        while (input.<span class="dots">&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;</span>()) {                      // (3)
+
+            String name = input.<span class="dots">&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;</span>();             // (4)
+            double q1   = input.<span class="dots">&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;</span>();             // (5)
+            double q2   = input.nextDouble();
+
+            System.out.println(name + "\t" + q1 + "\t" + q2 + "\t" + (q1 + q2));
+        }
+
+        input.<span class="dots">&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;</span>();                               // (6)
+    }
+}</pre>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q4</div>
+        <p>(1) <span class="val">File</span> &nbsp;&middot;&nbsp; (2) <span class="val">file</span> &nbsp;&middot;&nbsp; (3) <span class="val">hasNext</span> &nbsp;&middot;&nbsp; (4) <span class="val">next</span> &nbsp;&middot;&nbsp; (5) <span class="val">nextDouble</span> &nbsp;&middot;&nbsp; (6) <span class="val">close</span></p>
+        <p class="rub">1 mark per blank. Accept <code class="inl">hasNextLine</code> in (3) <b>only</b> if the body is also rewritten to use <code class="inl">nextLine</code>. Blank (2) must be the <code class="inl">File</code> <i>object</i>; writing <code class="inl">"scores.txt"</code> there scans the string itself &mdash; see Q5.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PAGE 6 : Q5 ================= -->
+<section class="sheet">
+  <div class="runhead"><span><b>CPCS-203</b> Programming II</span><span>Module 2 &mdash; Text I/O &mdash; Practice Exam &middot; Question 5 of 11</span></div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="qno">Q5</span>
+      <span class="qtitle">Find the Errors &mdash; File Reading Program</span>
+      <span class="chips">
+        <span class="chip tag-med">MEDIUM</span>
+        <span class="chip clo">CLO 2</span><span class="chip so">SO-a</span>
+        <span class="chip pts">10 marks &middot; 2 per line</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p>The following program is meant to count the students in <code class="inl">scores.txt</code>. It contains <b>five (5) errors</b>
+         &mdash; four of them stop the program compiling, and one compiles perfectly but makes the program read the wrong thing.
+         Write the <b>line number</b> and the <b>correction</b> in the table below.</p>
+<pre class="code"> 1  import java.io.File;
+ 2  import java.io.FileNotFoundException;
+ 3  import java.util.Scanner;
+ 4
+ 5  public class ReadScores {
+ 6      public static void main(String[] args) {
+ 7          File file = new File("scores.txt");
+ 8          Scanner input = new Scanner("scores.txt");
+ 9          int count = 0;
+10          while (input.hasNext) {
+11              String name = input.next();
+12              int q1 = input.nextDouble();
+13              double q2 = input.nextDouble();
+14              count++
+15          }
+16          System.out.println(count + " students were read");
+17          input.close();
+18      }
+19  }</pre>
+      <table class="fill">
+        <tr><th style="width:22%">Line number</th><th>Correction</th></tr>
+        <tr><td style="height:3.0em"></td><td></td></tr>
+        <tr><td style="height:3.0em"></td><td></td></tr>
+        <tr><td style="height:3.0em"></td><td></td></tr>
+        <tr><td style="height:3.0em"></td><td></td></tr>
+        <tr><td style="height:3.0em"></td><td></td></tr>
+      </table>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q5</div>
+        <table class="fill">
+          <tr><th style="width:22%">Line</th><th>Correction</th></tr>
+          <tr><td class="mono">6</td><td>Add <code class="inl">throws FileNotFoundException</code> to the header of <code class="inl">main</code> (or wrap the body in try/catch).</td></tr>
+          <tr><td class="mono">8</td><td>Should be <code class="inl">new Scanner(file)</code>. As written the <code class="inl">Scanner</code> reads the <b>String</b> "scores.txt", not the file.</td></tr>
+          <tr><td class="mono">10</td><td>Should be <code class="inl">input.hasNext()</code> &mdash; the parentheses are missing, so Java looks for a field.</td></tr>
+          <tr><td class="mono">12</td><td>Should be <code class="inl">double q1</code> &mdash; <code class="inl">nextDouble()</code> returns a <code class="inl">double</code> and will not fit an <code class="inl">int</code>.</td></tr>
+          <tr><td class="mono">14</td><td>Missing semicolon: <code class="inl">count++;</code></td></tr>
+        </table>
+        <p class="rub">2 marks per correct line. Line 8 is the key discrimination point: <code class="inl">Scanner(String)</code> is a legal constructor, so the compiler stays silent. At run time the <code class="inl">Scanner</code> finds a single token, the text <code class="inl">scores.txt</code> itself, and then fails on the first <code class="inl">nextDouble()</code> with <code class="inl">NoSuchElementException</code> &mdash; a confusing error a long way from its real cause. Award the 2 marks only if the student names the <code class="inl">File</code> object as the fix.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PAGE 7 : Q6 ================= -->
+<section class="sheet">
+  <div class="runhead"><span><b>CPCS-203</b> Programming II</span><span>Module 2 &mdash; Text I/O &mdash; Practice Exam &middot; Question 6 of 11</span></div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="qno">Q6</span>
+      <span class="qtitle">Complete the Code &mdash; Writing with PrintWriter</span>
+      <span class="chips">
+        <span class="chip tag-med">MEDIUM</span>
+        <span class="chip clo">CLO 2</span><span class="chip so">SO-a</span>
+        <span class="chip pts">8 marks &middot; 2 per blank</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p>Complete the program so that it produces exactly the file shown on the right.</p>
+<pre class="code">import java.io.File;
+import java.io.PrintWriter;
+import java.io.FileNotFoundException;
+
+public class WriteReport {
+    public static void main(String[] args) throws FileNotFoundException {
+
+        String[] names  = {"Mona", "Faisal", "Lama"};
+        double[] totals = {29.5, 23.5, 34.5};
+
+        File file = new File("report.txt");
+
+        if (file.<span class="dots">&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;</span>()) {                             // (1)
+            System.out.println("Warning: report.txt will be overwritten.");
+        }
+
+        PrintWriter out = new <span class="dots">&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;</span>(file);               // (2)
+
+        out.println("Name\tTotal");
+
+        for (int i = 0; i &lt; names.length; i++) {
+            out.<span class="dots">&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;</span>(names[i] + "\t" + totals[i]);    // (3)
+        }
+
+        out.<span class="dots">&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;</span>();                                  // (4)
+    }
+}</pre>
+      <div class="filerow">
+        <div class="filebox">
+          <div class="fname">report.txt (required)</div>
+          <div class="fbody">Name	Total
+Mona	29.5
+Faisal	23.5
+Lama	34.5</div>
+        </div>
+      </div>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q6</div>
+        <p>(1) <span class="val">exists</span> &nbsp;&middot;&nbsp; (2) <span class="val">PrintWriter</span> &nbsp;&middot;&nbsp; (3) <span class="val">println</span> &nbsp;&middot;&nbsp; (4) <span class="val">close</span></p>
+        <p class="rub">2 marks per blank. In (3) <code class="inl">print</code> earns 0 marks &mdash; every record must sit on its own line. In (4) accept <code class="inl">flush</code> for 1 mark only: it pushes the text out but leaves the file open.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PAGE 8 : Q7 ================= -->
+<section class="sheet">
+  <div class="runhead"><span><b>CPCS-203</b> Programming II</span><span>Module 2 &mdash; Text I/O &mdash; Practice Exam &middot; Question 7 of 11</span></div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="qno">Q7</span>
+      <span class="qtitle">Scanner Token Types and nextLine</span>
+      <span class="chips">
+        <span class="chip tag-med">MEDIUM</span>
+        <span class="chip clo">CLO 2</span><span class="chip so">SO-a</span>
+        <span class="chip pts">6 marks &middot; 2 each</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p>A file <code class="inl">file.txt</code> contains exactly <b>one</b> line:</p>
+      <div class="filerow">
+        <div class="filebox">
+          <div class="fname">file.txt</div>
+          <div class="fbody">34.3 57 Java</div>
+        </div>
+      </div>
+      <p>For each fragment, write what is printed, or name the exception that is thrown.</p>
+
+      <p><b>(a)</b> <span class="hint">[2 marks]</span></p>
+<pre class="code">Scanner input = new Scanner(new File("file.txt"));
+double v1 = input.nextDouble();
+int    v2 = input.nextInt();
+String v3 = input.next();
+System.out.println(v1 + " " + v2 + " " + v3);</pre>
+      <div class="answer-space"><span class="lbl">Output:</span><div class="writeline"></div></div>
+
+      <p style="margin-top:10px"><b>(b)</b> <span class="hint">[2 marks]</span></p>
+<pre class="code">Scanner input = new Scanner(new File("file.txt"));
+int v1 = input.nextInt();
+System.out.println(v1);</pre>
+      <div class="answer-space"><span class="lbl">Output:</span><div class="writeline"></div></div>
+
+      <p style="margin-top:10px"><b>(c)</b> <span class="hint">[2 marks]</span></p>
+<pre class="code">Scanner input = new Scanner(new File("file.txt"));
+double v1   = input.nextDouble();
+String rest = input.nextLine();
+System.out.println("[" + rest + "]");</pre>
+      <div class="answer-space"><span class="lbl">Output:</span><div class="writeline"></div></div>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q7</div>
+        <p>(a) <span class="val">34.3 57 Java</span></p>
+        <p>(b) <span class="val">InputMismatchException</span> &mdash; the first token is <code class="inl">34.3</code>, which is not an <code class="inl">int</code>.</p>
+        <p>(c) <span class="val">[ 57 Java]</span> &mdash; note the leading space.</p>
+        <p class="rub">2 marks each. In (c), <code class="inl">nextDouble()</code> stops immediately after <code class="inl">34.3</code>; <code class="inl">nextLine()</code> then returns everything left on that same line, space included. Answers of <code class="inl">[57 Java]</code> without the space score 1.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PAGE 9 : Q8 ================= -->
+<section class="sheet">
+  <div class="runhead"><span><b>CPCS-203</b> Programming II</span><span>Module 2 &mdash; Text I/O &mdash; Practice Exam &middot; Question 8 of 11</span></div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="qno">Q8</span>
+      <span class="qtitle">Write a Method &mdash; Count the Lines Containing a Word</span>
+      <span class="chips">
+        <span class="chip tag-hard">HARD</span>
+        <span class="chip clo">CLO 2</span><span class="chip so">SO-a</span>
+        <span class="chip pts">8 marks</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p>Write a Java method that counts how many <b>lines</b> of a text file contain a given word.
+         The method should accept <b>two</b> parameters &mdash; the file name as a <code class="inl">String</code> and the word as a
+         <code class="inl">String</code> &mdash; and return an <code class="inl">int</code>.
+         If the file does not exist the method must return <b>&minus;1</b> instead of crashing.
+         Also, indicate how to invoke the method from the <code class="inl">main</code> method.</p>
+      <div class="filerow">
+        <div class="filebox">
+          <div class="fname">notes.txt</div>
+          <div class="fbody">Java is fun
+I like Java
+Python is fine</div>
+        </div>
+      </div>
+      <p class="hint">For example, with the file above and the word <code class="inl">"Java"</code>, the method returns <b>2</b>.</p>
+      <div class="answer-space"><span class="lbl">Write your complete method, then the call from main:</span><div class="codebox" style="min-height:135mm"></div></div>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q8</div>
+<pre class="code">public static int countLines(String fileName, String word) {
+    File file = new File(fileName);
+    if (!file.exists())
+        return -1;
+
+    int count = 0;
+    try {
+        Scanner input = new Scanner(file);
+        while (input.hasNextLine()) {
+            String line = input.nextLine();
+            if (line.contains(word))
+                count++;
+        }
+        input.close();
+    } catch (FileNotFoundException e) {
+        return -1;
+    }
+    return count;
+}
+
+// invocation from main:
+System.out.println(countLines("notes.txt", "Java"));</pre>
+        <p class="rub">Rubric: correct signature and return type 2 &middot; <code class="inl">exists()</code> guard returning &minus;1 1.5 &middot; <code class="inl">Scanner</code> built from the <code class="inl">File</code> 1 &middot; <code class="inl">hasNextLine()</code>/<code class="inl">nextLine()</code> loop 1.5 &middot; <code class="inl">contains</code> test and increment 1 &middot; correct call from main 1. A solution that declares <code class="inl">throws FileNotFoundException</code> instead of catching loses the 1.5 guard marks, because it no longer returns &minus;1.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PAGE 10 : Q9 ================= -->
+<section class="sheet">
+  <div class="runhead"><span><b>CPCS-203</b> Programming II</span><span>Module 2 &mdash; Text I/O &mdash; Practice Exam &middot; Question 9 of 11</span></div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="qno">Q9</span>
+      <span class="qtitle">Write a Method &mdash; Filter One File into Another</span>
+      <span class="chips">
+        <span class="chip tag-hard">HARD</span>
+        <span class="chip clo">CLO 2</span><span class="chip so">SO-a</span>
+        <span class="chip pts">8 marks</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p>Write the method</p>
+<pre class="code">public static void filter(String inFile, String outFile, double limit) throws FileNotFoundException</pre>
+      <p>which reads <code class="inl">inFile</code> &mdash; whose lines have the form <code class="inl">name quiz1 quiz2</code>, exactly like
+         <code class="inl">scores.txt</code> &mdash; and writes into <code class="inl">outFile</code> the <b>name only</b> of every student whose
+         total (<code class="inl">quiz1 + quiz2</code>) is <b>greater than or equal to</b> <code class="inl">limit</code>, one name per line.
+         Close both files before returning.</p>
+      <div class="filerow">
+        <div class="filebox">
+          <div class="fname">scores.txt (input)</div>
+          <div class="fbody">Mona 12.5 17.0
+Faisal 9.0 14.5
+Lama 15.0 19.5
+Yousef 11.0 8.5</div>
+        </div>
+        <div class="filebox">
+          <div class="fname">top.txt after filter(&hellip;, 25.0)</div>
+          <div class="fbody">Mona
+Lama</div>
+        </div>
+      </div>
+      <div class="answer-space"><span class="lbl">Write your complete method:</span><div class="codebox" style="min-height:117mm"></div></div>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q9</div>
+<pre class="code">public static void filter(String inFile, String outFile, double limit)
+                                        throws FileNotFoundException {
+    Scanner     input = new Scanner(new File(inFile));
+    PrintWriter out   = new PrintWriter(new File(outFile));
+
+    while (input.hasNext()) {
+        String name  = input.next();
+        double total = input.nextDouble() + input.nextDouble();
+        if (total &gt;= limit)
+            out.println(name);
+    }
+
+    input.close();
+    out.close();
+}</pre>
+        <p class="rub">Rubric: signature with <code class="inl">throws</code> 1.5 &middot; <code class="inl">Scanner</code> on the input file 1 &middot; <code class="inl">PrintWriter</code> on the output file 1 &middot; <code class="inl">hasNext()</code> loop 1.5 &middot; reading all three tokens in the right order 1 &middot; condition and <code class="inl">println</code> 1 &middot; closing <b>both</b> 1. Forgetting <code class="inl">out.close()</code> costs the final mark and, in practice, leaves the output file empty &mdash; see Q11.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PAGE 11 : Q10 ================= -->
+<section class="sheet">
+  <div class="runhead"><span><b>CPCS-203</b> Programming II</span><span>Module 2 &mdash; Text I/O &mdash; Practice Exam &middot; Question 10 of 11</span></div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="qno">Q10</span>
+      <span class="qtitle">Apply Scenario &mdash; Split the Class into Passed and Failed</span>
+      <span class="chips">
+        <span class="chip tag-hard">HARD</span>
+        <span class="chip clo">CLO 2</span><span class="chip so">SO-a</span>
+        <span class="chip pts">10 marks</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p>A teacher keeps the file <code class="inl">scores.txt</code> shown in Q9. Each line is <code class="inl">name quiz1 quiz2</code> and the maximum total is 40.</p>
+      <p>Write a <b>complete Java program</b> in a class called <code class="inl">ExamFinal</code> (imports, class header and <code class="inl">main</code>) that:</p>
+      <ol style="margin:6px 0 8px 18px">
+        <li>reads every student from <code class="inl">scores.txt</code>;</li>
+        <li>writes each student whose total is <b>at least 20</b> into <code class="inl">passed.txt</code>, in the form <code class="inl">name total</code>;</li>
+        <li>writes every other student into <code class="inl">failed.txt</code>, in the same form;</li>
+        <li>prints on the screen: <code class="inl">Passed: n  Failed: m</code></li>
+      </ol>
+      <div class="filerow">
+        <div class="filebox"><div class="fname">passed.txt</div><div class="fbody">Mona 29.5
+Faisal 23.5
+Lama 34.5</div></div>
+        <div class="filebox"><div class="fname">failed.txt</div><div class="fbody">Yousef 19.5</div></div>
+        <div class="filebox"><div class="fname">screen</div><div class="fbody">Passed: 3  Failed: 1</div></div>
+      </div>
+      <div class="answer-space"><span class="lbl">Write your complete program:</span><div class="codebox" style="min-height:116mm"></div></div>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q10</div>
+<pre class="code">import java.io.File;
+import java.io.PrintWriter;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
+public class ExamFinal {
+    public static void main(String[] args) throws FileNotFoundException {
+
+        Scanner     input  = new Scanner(new File("scores.txt"));
+        PrintWriter passed = new PrintWriter(new File("passed.txt"));
+        PrintWriter failed = new PrintWriter(new File("failed.txt"));
+
+        int nPassed = 0, nFailed = 0;
+
+        while (input.hasNext()) {
+            String name  = input.next();
+            double total = input.nextDouble() + input.nextDouble();
+
+            if (total &gt;= 20) {
+                passed.println(name + " " + total);
+                nPassed++;
+            } else {
+                failed.println(name + " " + total);
+                nFailed++;
+            }
+        }
+
+        System.out.println("Passed: " + nPassed + "  Failed: " + nFailed);
+
+        input.close();
+        passed.close();
+        failed.close();
+    }
+}</pre>
+        <p class="rub">Rubric: imports, class header and <code class="inl">main</code> with <code class="inl">throws</code> 1.5 &middot; <code class="inl">Scanner</code> on <code class="inl">scores.txt</code> 1 &middot; <b>two</b> <code class="inl">PrintWriter</code> objects 2 &middot; loop reading name and both marks 2 &middot; if/else routing each record to the right file 2 &middot; two counters and the final screen line 1 &middot; closing all three streams 0.5. Do not deduct for basic syntax errors.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PAGE 12 : Q11 ================= -->
+<section class="sheet">
+  <div class="runhead"><span><b>CPCS-203</b> Programming II</span><span>Module 2 &mdash; Text I/O &mdash; Practice Exam &middot; Question 11 of 11</span></div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="qno">Q11</span>
+      <span class="qtitle">Buffering and Flushing &mdash; Short Answer</span>
+      <span class="chips">
+        <span class="chip tag-med">MEDIUM</span>
+        <span class="chip clo">CLO 2</span><span class="chip so">SO-a</span>
+        <span class="chip pts">6 marks &middot; 3 each</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p><b>(a)</b> A student writes 100 lines with <code class="inl">out.println(...)</code> and the program then ends <b>without</b> calling
+         <code class="inl">out.close()</code>. The file <code class="inl">report.txt</code> is created, but when it is opened it is <b>empty</b>.
+         Explain in one or two sentences why. <span class="hint">[3 marks]</span></p>
+      <div class="answer-space">
+        <div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div>
+      </div>
+
+      <p style="margin-top:14px"><b>(b)</b> A <code class="inl">PrintWriter</code> keeps its own buffer inside the Java program, and the
+         operating system keeps a second buffer of its own. Name the method that empties the <b>Java</b> buffer into the operating system,
+         and state whether calling it guarantees the bytes are already physically on the disk. <span class="hint">[3 marks]</span></p>
+      <div class="answer-space">
+        <div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div>
+      </div>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q11</div>
+        <p><b>(a)</b> <code class="inl">println</code> does not write straight to the disk. The text collects in the
+           <code class="inl">PrintWriter</code>'s in-memory buffer and is only handed on when that buffer fills up or when
+           <code class="inl">flush()</code> or <code class="inl">close()</code> is called. Because neither was called, the buffered text was
+           discarded when the program exited, so the file stayed empty.</p>
+        <p><b>(b)</b> The method is <code class="inl">flush()</code>. <span class="val">No</span> &mdash; it only moves the data from the Java
+           buffer into the operating system's own buffer. The operating system still decides when to write it to the physical disk.</p>
+        <p class="rub">(a) 3 marks: 2 for naming the buffer as the cause, 1 for stating that exiting without <code class="inl">close()</code> loses it. (b) 1.5 for <code class="inl">flush()</code>, 1.5 for correctly saying it does not reach the physical disk. Accept "the OS page cache" as the second layer.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="endmark">&mdash; End of Text I/O Practice Exam &mdash; Good Luck! &mdash;</div>
+  <p class="footline">CPCS-203 Programming II &middot; Module 2: Text I/O &middot; King Abdulaziz University &middot; FCIT</p>
+</section>
+
+<script>
+  var btn = document.getElementById('toggleAns');
+  btn.addEventListener('click', function () {
+    var on = document.body.classList.toggle('show-answers');
+    btn.textContent = on ? '🙈 Hide model answers' : '👁 Show model answers';
+    btn.classList.toggle('ghost', !on);
+  });
+</script>
+</body>
+</html>
