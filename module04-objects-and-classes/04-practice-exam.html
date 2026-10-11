@@ -1,0 +1,1135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Objects &amp; Classes &mdash; Practice Exam (A4 printable)</title>
+<style>
+/* =======================================================================
+   Programming II — MODULE 4: OBJECTS & CLASSES — practice exam
+   Print-first, A4. Each question is a CARD. Blue objects module theme.
+   A "Show model answers" toggle turns the same file into an answer key.
+   ======================================================================= */
+@page { size: A4; margin: 12mm 15mm 14mm 15mm; }
+
+:root{
+  --em:        #2563eb;
+  --em-dark:   #1d4ed8;
+  --em-deep:   #1e3a8a;
+  --em-tint:   #eff6ff;
+  --ink:       #1f2937;
+  --ink-soft:  #4b5563;
+  --rule:      #cbdcf7;
+  --paper:     #ffffff;
+  --code-bg:   #f5f8fe;
+  --code-rule: #d3e0f8;
+  --warn:      #b42318;
+  --tag-easy:  #e7f6ec; --tag-easy-i:#1a7f37;
+  --tag-med:   #fef3e0; --tag-med-i: #9a6212;
+  --tag-hard:  #fdeaea; --tag-hard-i:#b42318;
+}
+
+*{ box-sizing:border-box; }
+html,body{
+  margin:0; padding:0;
+  background:#e5e9f0;
+  color:var(--ink);
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size:11pt; line-height:1.5;
+}
+body{ padding:14mm 0; }
+
+/* ---- A4 sheet ---- */
+.sheet{
+  background:var(--paper);
+  width:210mm; min-height:297mm;
+  margin:0 auto 10mm;
+  padding:15mm 15mm 18mm;
+  box-shadow:0 3px 14px rgba(31,41,55,.18);
+  position:relative;
+}
+
+/* ---- running head ---- */
+.runhead{
+  display:flex; justify-content:space-between; align-items:flex-end;
+  border-bottom:2px solid var(--em-dark);
+  padding-bottom:6px; margin-bottom:14px;
+  font-size:9.5pt; color:var(--em-deep);
+}
+.runhead b{ font-size:10.5pt; }
+
+/* ================= COVER ================= */
+.cover-top{ text-align:center; }
+.cover-rule{ height:2px; background:var(--em-dark); margin:12px 0; }
+.cover-title{ font-size:22pt; font-weight:800; color:var(--em); letter-spacing:.5px; }
+.cover-sub{ font-size:13pt; font-weight:600; margin-top:4px; }
+.cover-tag{
+  display:inline-block; margin-top:10px; padding:4px 16px;
+  background:var(--em-tint); color:var(--em-dark); border:1px solid var(--em);
+  border-radius:999px; font-weight:700; font-size:10.5pt;
+}
+
+.id-grid{ margin:22px 0 4px; width:100%; border-collapse:collapse; font-size:11pt; }
+.id-grid td{ padding:9px 6px; }
+.id-grid .lbl{ width:132px; white-space:nowrap; font-weight:700; color:var(--em-deep); }
+.id-grid .line{ border-bottom:1.4px solid #6b7280; }
+
+.instr{
+  margin-top:16px; border:1px solid var(--rule);
+  border-left:5px solid var(--em); border-radius:8px;
+  background:#fafcff; padding:12px 16px;
+}
+.instr h3{ margin:0 0 6px; font-size:11.5pt; color:var(--em-deep); }
+.instr ul{ margin:0; padding-left:18px; }
+.instr li{ margin:3px 0; }
+
+.marks-tbl{ width:100%; border-collapse:collapse; margin-top:18px; font-size:10pt; text-align:center; }
+.marks-tbl th, .marks-tbl td{ border:1px solid var(--rule); padding:6px 4px; }
+.marks-tbl thead th{ background:var(--em-dark); color:#fff; }
+.marks-tbl .tot{ background:var(--em-tint); font-weight:800; }
+.marks-tbl thead th.tot{ background:var(--em-deep); color:#fff; }
+
+/* ================= QUESTION CARD ================= */
+.card{
+  border:1px solid var(--rule); border-radius:10px;
+  margin:0 0 16px; overflow:hidden;
+  break-inside:avoid; page-break-inside:avoid; background:#fff;
+}
+.card-head{
+  display:flex; flex-wrap:wrap; align-items:center; gap:8px;
+  background:linear-gradient(180deg,#f3f7ff,#e3ecfd);
+  border-bottom:1px solid var(--rule); padding:9px 14px;
+}
+.qno{
+  font-weight:800; color:#fff; background:var(--em);
+  border-radius:6px; padding:3px 11px; font-size:11pt; letter-spacing:.3px;
+}
+.qtitle{ font-weight:700; font-size:11.5pt; color:var(--em-deep); flex:1 1 240px; }
+.chips{ display:flex; gap:6px; align-items:center; flex-wrap:wrap; }
+.chip{ font-size:8.5pt; padding:2px 8px; border-radius:999px; font-weight:700; white-space:nowrap; }
+.chip.clo{ background:#dbeafe; color:#1e40af; border:1px solid #93c5fd; }
+.chip.so { background:#ecfeff; color:#0e7490; border:1px solid #a5f3fc; }
+.chip.pts{ background:var(--em-deep); color:#fff; }
+.tag-easy{ background:var(--tag-easy); color:var(--tag-easy-i); border:1px solid var(--tag-easy-i); }
+.tag-med { background:var(--tag-med);  color:var(--tag-med-i);  border:1px solid var(--tag-med-i);  }
+.tag-hard{ background:var(--tag-hard); color:var(--tag-hard-i); border:1px solid var(--tag-hard-i); }
+
+.card-body{ padding:12px 16px 14px; }
+.card-body p{ margin:6px 0; }
+.note{ color:var(--warn); font-style:italic; font-weight:600; font-size:10pt; }
+.hint{ color:var(--ink-soft); font-style:italic; font-size:10pt; }
+.mini{ font-size:9pt; color:#6b7280; }
+
+/* ---- code blocks ---- */
+pre.code{
+  background:var(--code-bg); border:1px solid var(--code-rule);
+  border-left:4px solid var(--em); border-radius:6px;
+  padding:10px 12px; margin:10px 0; overflow:auto;
+  font-family:'Consolas','DejaVu Sans Mono',monospace; font-size:10pt; line-height:1.5;
+  white-space:pre;
+}
+pre.code.sm{ font-size:9.3pt; line-height:1.42; }
+code.inl{ background:var(--code-bg); border:1px solid var(--code-rule); border-radius:4px;
+  padding:1px 5px; font-family:'Consolas',monospace; font-size:9.8pt; }
+.dots{ letter-spacing:1px; color:#6b7280; }
+.two-col{ display:flex; gap:12px; }
+.two-col > *{ flex:1 1 0; min-width:0; }
+.two-col > .wide{ flex-grow:1.4; }
+.two-col > .narrow{ flex-grow:.65; }
+.two-col > .snug{ flex:0 0 auto; }
+.opts p{ margin:3px 0; }
+.tight .card-body{ font-size:10.5pt; line-height:1.42; }
+.tight .card-body p{ margin:4px 0; }
+.tight .mcq{ margin-bottom:5px; }
+.tight pre.code{ margin:6px 0; }
+.mcq{ display:grid; grid-template-columns:1fr 1fr; gap:2px 18px; margin:2px 0 8px 14px; }
+.mcq.c4{ grid-template-columns:repeat(4, auto); justify-content:start; column-gap:34px; }
+.mcq.c5{ grid-template-columns:repeat(5, auto); justify-content:start; column-gap:26px; }
+
+/* ---- UML class box ---- */
+.uml{ display:inline-block; border:1.6px solid var(--em-deep); margin:10px 0;
+  font-family:'Consolas','DejaVu Sans Mono',monospace; font-size:10pt; background:#fff; min-width:300px; }
+.uml div{ padding:5px 12px; }
+.uml .uml-name{ text-align:center; font-weight:800; background:var(--em-tint); color:var(--em-deep);
+  border-bottom:1.6px solid var(--em-deep); font-family:'Segoe UI',sans-serif; font-size:11pt; }
+.uml .uml-sec{ border-bottom:1.6px solid var(--em-deep); }
+.uml .uml-sec:last-child{ border-bottom:0; }
+.uml .uml-sec span{ display:block; line-height:1.55; }
+.uml u{ text-decoration-thickness:1.4px; }
+.uml-wrap{ display:flex; gap:16px; align-items:flex-start; }
+.need{ border-collapse:collapse; font-size:9.5pt; margin-top:10px; }
+.need td, .need th{ border:1px solid var(--rule); padding:4px 8px; font-family:'Consolas',monospace; }
+.need th{ background:var(--em-tint); color:var(--em-deep); font-family:'Segoe UI',sans-serif; }
+
+/* ---- answer space ---- */
+.answer-space{ margin-top:10px; }
+.answer-space .lbl{ font-style:italic; color:var(--ink-soft); font-size:10pt; }
+.writeline{ border-bottom:1px solid #9ca3af; height:1.55em; margin-top:.45em; }
+.codebox{ border:1px dashed #9ca3af; border-radius:6px; min-height:120px; margin-top:8px;
+  background:repeating-linear-gradient(#fff,#fff 1.7em,#eef2f9 1.7em,#eef2f9 calc(1.7em + 1px)); }
+.drawbox{ border:1px dashed #9ca3af; border-radius:6px; margin-top:8px; position:relative;
+  display:flex; }
+.drawbox .half{ flex:1; padding:6px 10px; font-size:9pt; color:#9ca3af; font-weight:700; letter-spacing:1px; }
+.drawbox .half + .half{ border-left:1px dashed #cbd5e1; }
+
+/* ---- fill-in tables ---- */
+.fill{ width:100%; border-collapse:collapse; margin-top:8px; font-size:10.5pt; }
+.fill td, .fill th{ border:1px solid var(--rule); padding:7px 8px; }
+.fill th{ background:var(--em-tint); color:var(--em-deep); font-size:10pt; }
+.fill td.ans{ background:#fff; width:42%; height:2.6em; }
+.fill td.mono{ font-family:'Consolas',monospace; }
+
+/* ---- model answer block (hidden until toggled) ---- */
+.answer-key{ display:none; }
+body.show-answers .answer-key{ display:block; }
+body.show-answers .card{ break-inside:auto; page-break-inside:auto; }
+body.show-answers .answer-key{ break-inside:avoid; page-break-inside:avoid; }
+.answer-key{
+  margin-top:12px; border:1px solid #bbf7d0; border-left:5px solid #16a34a;
+  background:#f0fdf4; border-radius:8px; padding:10px 14px;
+}
+.answer-key .akh{ font-weight:800; color:#15803d; font-size:10.5pt; margin-bottom:4px; }
+.answer-key pre.code{ border-left-color:#16a34a; background:#f6fdf9; border-color:#bbf7d0; }
+.answer-key .val{ color:#166534; font-weight:800; }
+.answer-key .rub{ color:#0e7490; font-size:9.5pt; font-style:italic; }
+.answer-key table.fill th{ background:#dcfce7; color:#15803d; }
+
+/* ---- floating toolbar (screen only) ---- */
+.toolbar{
+  position:fixed; top:14px; right:14px; z-index:50; display:flex; gap:8px;
+  background:#fff; border:1px solid var(--rule); border-radius:10px; padding:8px 10px;
+  box-shadow:0 4px 14px rgba(31,41,55,.18);
+}
+.toolbar button, .toolbar a{
+  font:inherit; font-size:10pt; font-weight:700; cursor:pointer; text-decoration:none;
+  border:1px solid var(--em); border-radius:7px; padding:7px 12px;
+  background:var(--em); color:#fff;
+}
+.toolbar .ghost{ background:#fff; color:var(--em-dark); }
+.toolbar button:active{ transform:translateY(1px); }
+
+.footline{ text-align:center; margin-top:6px; color:var(--ink-soft); font-size:9.5pt; }
+.endmark{ text-align:center; font-weight:800; color:var(--em-deep); margin:18px 0 4px; }
+
+/* ================= PRINT ================= */
+@media print{
+  body{ background:#fff; padding:0; }
+  .toolbar{ display:none !important; }
+  .sheet{ box-shadow:none; margin:0; width:auto; min-height:auto; padding:0; }
+  .sheet + .sheet{ page-break-before:always; }
+  .card{ box-shadow:none; }
+}
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <a href="03-static-visibility-arrays.html" class="ghost">&#8592; Lesson 3</a>
+  <button id="toggleAns" class="ghost">&#128065; Show model answers</button>
+  <button onclick="window.print()">&#128424; Print / Save PDF</button>
+</div>
+
+<!-- =====================================================================
+     COVER PAGE
+     ===================================================================== -->
+
+<section class="sheet cover">
+  <div class="cover-rule"></div>
+  <div class="cover-top">
+    <div class="cover-title">Programming II</div>
+    <div class="cover-sub">Module 4: Objects &amp; Classes &mdash; Focused Practice Exam</div>
+    <div class="cover-tag">Classes &middot; References &middot; Constructors &amp; this &middot; static &middot; Visibility &middot; Arrays of Objects</div>
+  </div>
+  <div class="cover-rule"></div>
+
+  <table class="id-grid">
+    <tr><td class="lbl">Student Name:</td><td class="line"></td></tr>
+    <tr><td class="lbl">Student ID:</td><td class="line"></td></tr>
+    <tr>
+      <td class="lbl">Section:</td><td class="line" style="width:35%"></td>
+      <td class="lbl" style="text-align:right;padding-right:14px">Instructor:</td><td class="line"></td>
+    </tr>
+  </table>
+
+  <div class="instr">
+    <h3>Instructions</h3>
+    <ul>
+      <li>This booklet contains <b>11 questions</b> on Objects &amp; Classes only. <b>Total: 80 marks</b> &middot; Suggested time: <b>75 minutes</b>.</li>
+      <li>Answer <b>all</b> questions in the spaces provided. <b>Place your answers in the boxes provided.</b></li>
+      <li>When a question shows two classes together, assume <b>each class is saved in its own <code class="inl">.java</code> file</b>
+          in the <b>same package</b>.</li>
+      <li>If a piece of code does not compile, write <b>&ldquo;Compilation error&rdquo;</b> and give the reason in one short sentence.</li>
+      <li>Write clear Java. Partial (per-line) credit is given.
+          <span class="note">Data fields must be private wherever a question asks for encapsulation; public data fields lose the mark for that part.</span></li>
+    </ul>
+  </div>
+
+  <table class="marks-tbl">
+    <thead>
+      <tr><th>Question</th><th>Q1</th><th>Q2</th><th>Q3</th><th>Q4</th><th>Q5</th><th>Q6</th><th>Q7</th><th>Q8</th><th>Q9</th><th>Q10</th><th>Q11</th><th class="tot">Total</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><b>Max Mark</b></td><td>6</td><td>6</td><td>8</td><td>6</td><td>6</td><td>8</td><td>8</td><td>8</td><td>8</td><td>8</td><td>8</td><td class="tot">80</td></tr>
+      <tr><td><b>Obtained</b></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class="tot"></td></tr>
+    </tbody>
+  </table>
+
+  <p class="footline">Topics covered: class vs object &middot; data fields and default values &middot; reference vs primitive variables &middot; the memory state and garbage objects &middot;
+     constructors, the default-constructor rule and <code class="inl">this</code> &middot; static vs instance members &middot; <code class="inl">private</code> / <code class="inl">public</code> and
+     getters/setters &middot; passing objects to methods &middot; UML class diagrams &middot; arrays of objects &middot; garbage collection.</p>
+</section>
+
+<!-- ================= PAGE 2 : Q1 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 4 &mdash; Objects &amp; Classes &mdash; Practice Exam &middot; Question 1 of 11</span></div>
+
+  <div class="card tight">
+    <div class="card-head">
+      <span class="qno">Q1</span>
+      <span class="qtitle">Objects &amp; Classes Concepts (Multiple Choice)</span>
+      <span class="chips">
+        <span class="chip tag-easy">EASY</span>
+        <span class="chip clo">CLO 3</span><span class="chip so">SO-a</span>
+        <span class="chip pts">6 marks &middot; 1 each</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p>Circle the <b>single best</b> answer for each item.</p>
+
+      <p><b>1.</b> &hellip;&hellip;&hellip;&hellip; is a blueprint, template, or prototype that defines and describes the common properties and
+         behaviours for all objects of the same kind.</p>
+      <div class="mcq c5"><span>(a) An object</span><span>(b) A constructor</span><span>(c) A method</span><span>(d) The Java heap</span><span>(e) A class</span></div>
+
+      <p><b>2.</b> Given the class below, which statement placed at <code class="inl">// Line 2</code> prints the value of <code class="inl">i</code>?</p>
+<div class="two-col">
+<pre class="code sm snug">class Exam {
+    private int i;
+
+    public Exam(int i) {
+        this.i = i;
+    }
+
+    public int printI1() {
+        return i;
+    }
+
+    private int printI2() {
+        return i;
+    }
+}</pre>
+<div>
+<pre class="code sm">public static void main(String[] args) {
+    Exam ex1 = new Exam(100);
+    // Line 2
+}</pre>
+      <div class="opts">
+      <p>(a) <code class="inl">System.out.println(ex1.printI2());</code></p>
+      <p>(b) <code class="inl">System.out.println(ex1.i);</code></p>
+      <p>(c) <code class="inl">System.out.println(Exam.printI1());</code></p>
+      <p>(d) <code class="inl">System.out.println(ex1.printI1());</code></p>
+      </div>
+</div>
+</div>
+
+      <p><b>3.</b> A class <code class="inl">Car</code> declares <b>only</b> the constructor <code class="inl">public Car(String model)</code>.
+         The statement <code class="inl">Car c = new Car();</code> in another class will:</p>
+      <div class="mcq">
+        <span>(a) create a car whose model is <code class="inl">null</code></span>
+        <span>(b) cause a compilation error</span>
+        <span>(c) compile, then throw an exception at run time</span>
+        <span>(d) create a car whose model is <code class="inl">""</code></span>
+      </div>
+
+      <p><b>4.</b> After the statement <code class="inl">Circle[] list = new Circle[3];</code> the value stored in <code class="inl">list[0]</code> is:</p>
+      <div class="mcq c4"><span>(a) <code class="inl">0</code></span><span>(b) a Circle object with radius 0</span><span>(c) <code class="inl">null</code></span><span>(d) Compilation error</span></div>
+
+      <p><b>5.</b> An object becomes <b>eligible for garbage collection</b> when:</p>
+      <div class="mcq">
+        <span>(a) the method that created it returns</span>
+        <span>(b) no reference variable points to it any more</span>
+        <span>(c) all of its data fields are set to 0</span>
+        <span>(d) the programmer calls <code class="inl">delete</code> on it</span>
+      </div>
+
+      <p><b>6.</b> Inside a <b>method</b> a local variable is declared as <code class="inl">int total;</code> and then used in <code class="inl">total++;</code>.
+         Inside a <b>class</b> a data field is declared as <code class="inl">private int total;</code>. Which is true?</p>
+      <div class="mcq">
+        <span>(a) both start at 0</span>
+        <span>(b) local: compilation error &middot; field: starts at 0</span>
+        <span>(c) both cause compilation errors</span>
+        <span>(d) local: starts at 0 &middot; field: compilation error</span>
+      </div>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q1</div>
+        <p>1:&nbsp;<span class="val">(e)</span> &nbsp; 2:&nbsp;<span class="val">(d)</span> &nbsp; 3:&nbsp;<span class="val">(b)</span> &nbsp; 4:&nbsp;<span class="val">(c)</span> &nbsp; 5:&nbsp;<span class="val">(b)</span> &nbsp; 6:&nbsp;<span class="val">(b)</span></p>
+        <p class="rub">1 mark each. (2) <code class="inl">printI2</code> and <code class="inl">i</code> are private, and <code class="inl">printI1</code> is an instance method, so it needs an object, not the class name.
+           (3) The free default constructor exists only when the class declares <b>no</b> constructor at all. (4) Array elements of a reference type start as <code class="inl">null</code>; no Circle object has been created yet.
+           (5) Java has no <code class="inl">delete</code>; the JVM reclaims an object automatically once nothing refers to it. (6) Data fields receive default values; local variables never do.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PAGE 3 : Q2 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 4 &mdash; Objects &amp; Classes &mdash; Practice Exam &middot; Question 2 of 11</span></div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="qno">Q2</span>
+      <span class="qtitle">Output Tracing &mdash; Comparing and Copying References</span>
+      <span class="chips">
+        <span class="chip tag-easy">EASY</span>
+        <span class="chip clo">CLO 3</span><span class="chip so">SO-a</span>
+        <span class="chip pts">6 marks &middot; 3 each</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p>Both parts use the class <code class="inl">A</code> below.</p>
+<div class="two-col">
+<pre class="code sm snug">public class A {
+    private int x;
+
+    public A(int x) {
+        this.x = x;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+}</pre>
+<div>
+      <p><b>(a)</b> What is the output? <span class="hint">[3 marks]</span></p>
+<pre class="code sm">A a1 = new A(10);
+A a2 = new A(10);
+System.out.println(a1.getX() == a2.getX());
+System.out.println(a1 == a2);
+a2 = a1;
+a2.setX(99);
+System.out.println(a1.getX());</pre>
+      <div class="answer-space"><span class="lbl">Output:</span><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div></div>
+</div>
+</div>
+
+      <p style="margin-top:12px"><b>(b)</b> What is the output? <span class="hint">[3 marks]</span></p>
+<pre class="code sm">int p = 5;
+int q = p;
+q = q * 2;
+
+A m = new A(5);
+A n = m;
+n.setX(n.getX() * 2);
+
+System.out.println(p + " " + q);
+System.out.println(m.getX() + " " + n.getX());</pre>
+      <div class="answer-space"><span class="lbl">Output:</span><div class="writeline"></div><div class="writeline"></div></div>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q2</div>
+        <p>(a) <span class="val">true</span> / <span class="val">false</span> / <span class="val">99</span></p>
+        <p class="rub">The two objects hold equal values, but <code class="inl">==</code> on references compares addresses, and they are two different objects. After <code class="inl">a2 = a1</code> both names point at the same object, so changing it through <code class="inl">a2</code> is visible through <code class="inl">a1</code>. 1 mark per line.</p>
+        <p>(b) <span class="val">5 10</span> / <span class="val">10 10</span></p>
+        <p class="rub">Primitive assignment copies the <b>value</b>: changing <code class="inl">q</code> leaves <code class="inl">p</code> alone. Reference assignment copies the <b>address</b>: <code class="inl">m</code> and <code class="inl">n</code> are two names for one object. 1.5 marks per line.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PAGE 4 : Q3 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 4 &mdash; Objects &amp; Classes &mdash; Practice Exam &middot; Question 3 of 11</span></div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="qno">Q3</span>
+      <span class="qtitle">Draw the State of Memory &mdash; Referenced and Unreferenced Objects</span>
+      <span class="chips">
+        <span class="chip tag-med">MEDIUM</span>
+        <span class="chip clo">CLO 3</span><span class="chip so">SO-a</span>
+        <span class="chip pts">8 marks</span>
+      </span>
+    </div>
+    <div class="card-body">
+<div class="two-col">
+<pre class="code sm narrow">public class Exam {
+    private int i;
+    public Exam(int i) {
+        this.i = i;
+    }
+    public int getI() {
+        return i;
+    }
+    public void setI(int i) {
+        this.i = i;
+    }
+}</pre>
+<pre class="code sm">public class MemoryExam {
+  public static void main(String[] args) {
+    Exam e1 = new Exam(10);
+    Exam e2 = new Exam(20);
+    Exam e3 = new Exam(30);
+    e2 = e1;
+    e3.setI(e2.getI() + 5);
+    e1 = e3;
+    System.out.println(e1.getI() + " "
+        + e2.getI() + " " + e3.getI());
+  }
+}</pre>
+</div>
+      <p><b>(a)</b> Draw the state of the memory <b>after the program has executed</b>, including referenced and unreferenced objects.
+         Show each reference variable, the object it points to, and the value of <code class="inl">i</code> inside every object.
+         <span class="hint">[4 marks]</span></p>
+      <div class="drawbox" style="min-height:92mm"><div class="half">STACK (reference variables)</div><div class="half">HEAP (objects)</div></div>
+
+      <p style="margin-top:10px"><b>(b)</b> What is the output? <span class="hint">[2 marks]</span></p>
+      <div class="answer-space"><div class="writeline"></div></div>
+
+      <p style="margin-top:10px"><b>(c)</b> How many objects are eligible for garbage collection, and what value of <code class="inl">i</code> does each hold? <span class="hint">[2 marks]</span></p>
+      <div class="answer-space"><div class="writeline"></div></div>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q3</div>
+<pre class="code sm"> STACK                      HEAP
+ e1  ●───┐            ┌──────────────────┐
+         ├───────────►│ Exam   i = 15    │   (was 30; setI made it 15)
+ e3  ●───┘            └──────────────────┘
+                      ┌──────────────────┐
+ e2  ●───────────────►│ Exam   i = 10    │
+                      └──────────────────┘
+                      ┌──────────────────┐
+     (no reference)   │ Exam   i = 20    │   ← unreferenced → garbage
+                      └──────────────────┘</pre>
+        <p>(b) <span class="val">15 10 15</span> &nbsp;&nbsp; (c) <span class="val">One</span> object &mdash; the one holding <span class="val">20</span>.</p>
+        <p class="rub">(a) three objects drawn 1 &middot; <code class="inl">e1</code> and <code class="inl">e3</code> sharing one object 1 &middot; <code class="inl">e2</code> on the 10 object 1 &middot; the 20 object shown unreferenced 1.
+           Note the order: <code class="inl">e2 = e1</code> abandons the 20 object; <code class="inl">setI</code> reads <code class="inl">e2.getI()</code>, which is now 10, so the third object becomes 15; finally <code class="inl">e1 = e3</code> moves <code class="inl">e1</code>, but the 10 object survives because <code class="inl">e2</code> still points at it.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PAGE 5 : Q4 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 4 &mdash; Objects &amp; Classes &mdash; Practice Exam &middot; Question 4 of 11</span></div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="qno">Q4</span>
+      <span class="qtitle">Static vs Instance Variables &mdash; Trace the Output</span>
+      <span class="chips">
+        <span class="chip tag-med">MEDIUM</span>
+        <span class="chip clo">CLO 3</span><span class="chip so">SO-a</span>
+        <span class="chip pts">6 marks &middot; 2 per line</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p>What is the output of the following code?</p>
+<pre class="code">public class Ticket {
+    private static int sold = 100;
+    private int number;
+
+    public Ticket() {
+        sold++;
+        number = sold;
+    }
+    public int getNumber() {
+        return number;
+    }
+    public static int getSold() {
+        return sold;
+    }
+}
+
+public class Stadium {
+    public static void main(String[] args) {
+        Ticket t1 = new Ticket();
+        Ticket t2 = new Ticket();
+        Ticket t3 = t1;
+        Ticket t4 = new Ticket();
+
+        System.out.println(t1.getNumber() + " " + Ticket.getSold());
+        System.out.println(t3.getNumber() + " " + t2.getNumber());
+        System.out.println(t4.getNumber() + " " + t4.getSold());
+    }
+}</pre>
+      <div class="answer-space"><span class="lbl">Output:</span><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div></div>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q4</div>
+<pre class="code">101 103
+101 102
+103 103</pre>
+        <p class="rub">2 marks per line. <code class="inl">sold</code> is <b>static</b>: one copy shared by every Ticket, so it reads 103 everywhere once three objects exist.
+           <code class="inl">number</code> is an <b>instance</b> variable, frozen at the value <code class="inl">sold</code> had when that object was built.
+           <code class="inl">t3 = t1</code> creates <b>no</b> object, so the constructor does not run and <code class="inl">t3</code> shows 101.
+           Calling a static method through an object (<code class="inl">t4.getSold()</code>) is legal, although <code class="inl">Ticket.getSold()</code> is the preferred style.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PAGE 6 : Q5 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 4 &mdash; Objects &amp; Classes &mdash; Practice Exam &middot; Question 5 of 11</span></div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="qno">Q5</span>
+      <span class="qtitle">Constructors and <code class="inl">this</code> &mdash; Output or Compilation Error?</span>
+      <span class="chips">
+        <span class="chip tag-med">MEDIUM</span>
+        <span class="chip clo">CLO 3</span><span class="chip so">SO-a</span>
+        <span class="chip pts">6 marks &middot; 2 each</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p>For each part write the <b>exact output</b>, or write <b>&ldquo;Compilation error&rdquo;</b> and give the reason.</p>
+
+<div class="two-col"><div class="wide">
+      <p><b>(a)</b> <span class="hint">[2 marks]</span></p>
+<pre class="code sm">class Product {
+    String name;
+    int qty;
+    Product() {
+        this("None", 1);
+        System.out.print("A ");
+    }
+    Product(String name, int qty) {
+        this.name = name;
+        this.qty = qty;
+        System.out.print("B ");
+    }
+}
+// in main:
+Product p = new Product();
+System.out.println(p.name + " " + p.qty);</pre>
+      <div class="answer-space"><span class="lbl">Answer:</span><div class="writeline"></div><div class="writeline"></div></div>
+</div><div>
+      <p><b>(b)</b> <span class="hint">[2 marks]</span></p>
+<pre class="code sm">class Box {
+    int size;
+    Box(int size) {
+        size = size;
+    }
+}
+// in main:
+Box b = new Box(7);
+System.out.println(b.size);</pre>
+      <div class="answer-space"><span class="lbl">Answer:</span><div class="writeline"></div></div>
+
+      <p style="margin-top:10px"><b>(c)</b> <span class="hint">[2 marks]</span></p>
+<pre class="code sm">class Car {
+    String model;
+    Car(String model) {
+        this.model = model;
+    }
+}
+// in main:
+Car c = new Car();
+System.out.println(c.model);</pre>
+      <div class="answer-space"><span class="lbl">Answer:</span><div class="writeline"></div><div class="writeline"></div></div>
+</div></div>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q5</div>
+        <p>(a) <span class="val">B A None 1</span> &mdash; <code class="inl">this("None", 1)</code> runs the second constructor <b>first</b> (printing <code class="inl">B </code>), then control returns and <code class="inl">A </code> is printed.</p>
+        <p>(b) <span class="val">0</span> &mdash; inside the constructor the parameter <code class="inl">size</code> <b>shadows</b> the data field, so <code class="inl">size = size</code> assigns the parameter to itself. The field keeps its default 0. The fix is <code class="inl">this.size = size;</code></p>
+        <p>(c) <span class="val">Compilation error</span> &mdash; <code class="inl">Car</code> declares a constructor, so Java does not add a no-arg one, and <code class="inl">new Car()</code> matches nothing.</p>
+        <p class="rub">2 marks each. In (a) award 1 mark for <code class="inl">None 1</code> with the B/A order wrong. In (c) &ldquo;Compilation error&rdquo; alone earns 1 mark; the reason earns the second.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PAGE 7 : Q6 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 4 &mdash; Objects &amp; Classes &mdash; Practice Exam &middot; Question 6 of 11</span></div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="qno">Q6</span>
+      <span class="qtitle">Passing Primitives and Objects to Methods</span>
+      <span class="chips">
+        <span class="chip tag-med">MEDIUM</span>
+        <span class="chip clo">CLO 3</span><span class="chip so">SO-a</span>
+        <span class="chip pts">8 marks &middot; 2 per line</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p>What is the output of the following program (classes <code class="inl">Counter</code> and <code class="inl">PassDemo</code>)?</p>
+<div class="two-col">
+<pre class="code sm snug">public class Counter {
+    private int value;
+
+    public Counter(int value) {
+        this.value = value;
+    }
+    public int getValue() {
+        return value;
+    }
+    public void setValue(int v) {
+        value = v;
+    }
+}</pre>
+<div>
+      <div class="answer-space"><span class="lbl">Output:</span><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div></div>
+</div>
+</div>
+<pre class="code sm">public class PassDemo {
+    static void m1(int n) {
+        n = n + 10;
+    }
+    static void m2(Counter c) {
+        c.setValue(c.getValue() + 10);
+    }
+    static void m3(Counter c) {
+        c = new Counter(500);
+        c.setValue(1);
+    }
+    static Counter m4(Counter c) {
+        c = new Counter(c.getValue() * 2);
+        return c;
+    }
+
+    public static void main(String[] args) {
+        int n = 5;
+        Counter k = new Counter(5);
+        m1(n);
+        System.out.println(n);
+        m2(k);
+        System.out.println(k.getValue());
+        m3(k);
+        System.out.println(k.getValue());
+        Counter z = m4(k);
+        System.out.println(k.getValue() + " " + z.getValue());
+    }
+}</pre>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q6</div>
+<pre class="code">5
+15
+15
+15 30</pre>
+        <p class="rub">2 marks per line. <code class="inl">m1</code> changes a <b>copy</b> of the int. <code class="inl">m2</code> receives a copy of the <b>address</b>, so it changes the caller's object.
+           <code class="inl">m3</code> re-points its own copy of the reference at a brand-new object, so <code class="inl">k</code> is untouched &mdash; this line is the discriminator; most students write 1.
+           <code class="inl">m4</code> also builds a new object but <b>returns</b> it, so <code class="inl">z</code> is 30 while <code class="inl">k</code> stays 15. Mark each line against the student's previous line.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PAGE 8 : Q7 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 4 &mdash; Objects &amp; Classes &mdash; Practice Exam &middot; Question 7 of 11</span></div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="qno">Q7</span>
+      <span class="qtitle">Find the Errors &mdash; The Circle Class</span>
+      <span class="chips">
+        <span class="chip tag-med">MEDIUM</span>
+        <span class="chip clo">CLO 3</span><span class="chip so">SO-a</span>
+        <span class="chip pts">8 marks &middot; 2 per line</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p>The two classes below contain <b>four (4) errors</b>: three stop the program from compiling and one compiles but gives a wrong result.
+         Write the <b>line number</b> and the <b>correction</b> in the table.</p>
+<pre class="code"> 1  public class Circle {
+ 2      private double radius;
+ 3      private static int count = 0;
+ 4
+ 5      public Circle(double radius) {
+ 6          radius = radius;
+ 7          count++;
+ 8      }
+ 9
+10      public static double getArea() {
+11          return radius * radius * Math.PI;
+12      }
+13
+14      public static int getCount() {
+15          return count;
+16      }
+17  }
+18
+19  public class TestCircle {
+20      public static void main(String[] args) {
+21          Circle c1 = new Circle(2.0);
+22          Circle c2 = new Circle();
+23          c1.radius = 5.0;
+24          System.out.println(c1.getArea() + " " + Circle.getCount());
+25      }
+26  }</pre>
+      <table class="fill">
+        <tr><th style="width:22%">Line number</th><th>Correction</th></tr>
+        <tr><td style="height:3.0em"></td><td></td></tr>
+        <tr><td style="height:3.0em"></td><td></td></tr>
+        <tr><td style="height:3.0em"></td><td></td></tr>
+        <tr><td style="height:3.0em"></td><td></td></tr>
+      </table>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q7</div>
+        <table class="fill">
+          <tr><th style="width:22%">Line</th><th>Correction</th></tr>
+          <tr><td class="mono">6</td><td><code class="inl">this.radius = radius;</code> &mdash; the parameter shadows the field, so the field stays 0. This is the <b>logic</b> error: it compiles.</td></tr>
+          <tr><td class="mono">10 (or 11)</td><td>Remove <code class="inl">static</code>: <code class="inl">public double getArea()</code>. A static method has no object, so it cannot use the instance variable <code class="inl">radius</code>.</td></tr>
+          <tr><td class="mono">22</td><td>No no-arg constructor exists. Pass a radius, e.g. <code class="inl">new Circle(3.0)</code> (or add a <code class="inl">public Circle()</code> constructor to the class).</td></tr>
+          <tr><td class="mono">23</td><td><code class="inl">radius</code> is private. Add a setter <code class="inl">setRadius(double r)</code> to <code class="inl">Circle</code> and call <code class="inl">c1.setRadius(5.0);</code></td></tr>
+        </table>
+        <p class="rub">2 marks per correct line. After the four fixes the program prints <code class="inl">78.53981633974483 2</code>. Line 6 is the one students miss because the compiler accepts it.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PAGE 9 : Q8 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 4 &mdash; Objects &amp; Classes &mdash; Practice Exam &middot; Question 8 of 11</span></div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="qno">Q8</span>
+      <span class="qtitle">Translate the UML Class Diagram into Java</span>
+      <span class="chips">
+        <span class="chip tag-hard">HARD</span>
+        <span class="chip clo">CLO 3</span><span class="chip so">SO-c</span>
+        <span class="chip pts">8 marks</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p><b>(a)</b> Translate the following UML class diagram into a Java class definition. Your code must implement all data fields,
+         constructors and methods. <span class="hint">[6 marks]</span></p>
+      <div class="uml-wrap">
+        <div class="uml">
+          <div class="uml-name">BankAccount</div>
+          <div class="uml-sec">
+            <span>- id : int</span>
+            <span>- balance : double</span>
+            <span><u>- totalAccounts : int = 0</u></span>
+          </div>
+          <div class="uml-sec">
+            <span>+ BankAccount()</span>
+            <span>+ BankAccount(id : int, balance : double)</span>
+            <span>+ getId() : int</span>
+            <span>+ getBalance() : double</span>
+            <span>+ deposit(amount : double) : void</span>
+            <span>+ withdraw(amount : double) : boolean</span>
+            <span><u>+ getTotalAccounts() : int</u></span>
+          </div>
+        </div>
+        <div style="flex:1">
+          <p class="mini" style="margin-top:10px"><b>Notes:</b></p>
+          <ul class="mini" style="margin:0;padding-left:16px">
+            <li>The no-arg constructor creates account id <b>1000</b> with balance <b>0</b> by <b>calling the other constructor</b>.</li>
+            <li>Every new account increases <code class="inl">totalAccounts</code> by <b>exactly one</b>.</li>
+            <li><code class="inl">withdraw</code> takes the money and returns <code class="inl">true</code> only if
+                <code class="inl">amount &lt;= balance</code>; otherwise it changes nothing and returns <code class="inl">false</code>.</li>
+          </ul>
+          <table class="need">
+            <tr><th colspan="3">You may need</th></tr>
+            <tr><td>public</td><td>private</td><td>static</td></tr>
+            <tr><td>this</td><td>return</td><td>class</td></tr>
+          </table>
+        </div>
+      </div>
+      <div class="answer-space"><div class="codebox" style="min-height:76mm"></div></div>
+
+      <p style="margin-top:10px"><b>(b)</b> In <code class="inl">main</code>, create an object <code class="inl">myAcc</code> with id <b>2025</b> and balance <b>500.0</b>,
+         deposit <b>250.0</b>, then print its balance and the total number of accounts. <span class="hint">[2 marks]</span></p>
+      <div class="answer-space"><div class="codebox" style="min-height:26mm"></div></div>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q8</div>
+<pre class="code sm">public class BankAccount {
+    private int id;
+    private double balance;
+    private static int totalAccounts = 0;
+
+    public BankAccount() {
+        this(1000, 0.0);
+    }
+    public BankAccount(int id, double balance) {
+        this.id = id;
+        this.balance = balance;
+        totalAccounts++;
+    }
+    public int getId() {
+        return id;
+    }
+    public double getBalance() {
+        return balance;
+    }
+
+    public void deposit(double amount) {
+        balance = balance + amount;
+    }
+    public boolean withdraw(double amount) {
+        if (amount &lt;= balance) {
+            balance = balance - amount;
+            return true;
+        }
+        return false;
+    }
+    public static int getTotalAccounts() {
+        return totalAccounts;
+    }
+}
+
+// (b) in main:
+BankAccount myAcc = new BankAccount(2025, 500.0);
+myAcc.deposit(250.0);
+System.out.println(myAcc.getBalance());       // 750.0
+System.out.println(BankAccount.getTotalAccounts());  // 1</pre>
+        <p class="rub">(a) private fields with <code class="inl">-</code> 1 &middot; underlined field and method made <code class="inl">static</code> 1 &middot; no-arg constructor using <code class="inl">this(1000, 0.0)</code> 1 &middot; two-arg constructor with <code class="inl">this.</code> and the counter 1 &middot; getters and <code class="inl">deposit</code> 1 &middot; <code class="inl">withdraw</code> with the condition and both returns 1.
+           (b) object created 1 &middot; deposit and both prints 1.
+           Watch for <code class="inl">totalAccounts++</code> written in <b>both</b> constructors: since the no-arg constructor calls the other one, every default account would be counted twice &mdash; deduct 0.5.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PAGE 10 : Q9 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 4 &mdash; Objects &amp; Classes &mdash; Practice Exam &middot; Question 9 of 11</span></div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="qno">Q9</span>
+      <span class="qtitle">Complete the Code &mdash; Automatic Student IDs</span>
+      <span class="chips">
+        <span class="chip tag-hard">HARD</span>
+        <span class="chip clo">CLO 3</span><span class="chip so">SO-a</span>
+        <span class="chip pts">8 marks &middot; 2 per blank</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p>Complete the class <code class="inl">Student</code> by filling in the four blanks, so that running <code class="inl">main</code> produces
+         exactly the output shown below. <b>Do not change <code class="inl">main</code>.</b> Each student must receive the next ID automatically.</p>
+<pre class="code">public class Student {
+
+    <span class="dots">&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;</span> int nextId = 1;                   // (1)
+    private int id;
+    private String name;
+
+    public Student() {
+        <span class="dots">&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;</span>                   // (2)
+    }
+
+    public Student(String name) {
+        <span class="dots">&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;</span> = name;                       // (3)
+        id = nextId++;
+    }
+
+    public String <span class="dots">&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;</span> {                         // (4)
+        return id + ": " + name;
+    }
+}
+
+public class Registration {
+    public static void main(String[] args) {
+        Student a = new Student("Sara");
+        Student b = new Student();
+        Student c = new Student("Omar");
+        System.out.println(a.info());
+        System.out.println(b.info());
+        System.out.println(c.info());
+    }
+}</pre>
+      <p><b>Required output:</b></p>
+<pre class="code">1: Sara
+2: Unknown
+3: Omar</pre>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q9</div>
+<pre class="code">private static int nextId = 1;          // (1)
+this("Unknown");                        // (2)
+this.name = name;                       // (3)
+public String info() {                  // (4)</pre>
+        <p class="rub">2 marks per blank. (1) <code class="inl">static</code> is essential &mdash; without it each object has its own <code class="inl">nextId</code> starting at 1 and every student prints ID 1; <code class="inl">private</code> alone earns 0, <code class="inl">static</code> without <code class="inl">private</code> earns 1.5.
+           (2) accept only a <code class="inl">this(...)</code> call, since the ID must still be assigned; <code class="inl">name = "Unknown";</code> alone leaves <code class="inl">b</code> with ID 0. (3) <code class="inl">name = name</code> earns 0 &mdash; shadowing again. (4) the name comes from <code class="inl">main</code>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PAGE 11 : Q10 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 4 &mdash; Objects &amp; Classes &mdash; Practice Exam &middot; Question 10 of 11</span></div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="qno">Q10</span>
+      <span class="qtitle">Write a Method &mdash; Cheapest Product in an Array of Objects</span>
+      <span class="chips">
+        <span class="chip tag-hard">HARD</span>
+        <span class="chip clo">CLO 3</span><span class="chip so">SO-c</span>
+        <span class="chip pts">8 marks</span>
+      </span>
+    </div>
+    <div class="card-body">
+<div class="uml-wrap">
+        <div class="uml" style="min-width:0">
+          <div class="uml-name">Product</div>
+          <div class="uml-sec">
+            <span>- name : String</span>
+            <span>- price : double</span>
+          </div>
+          <div class="uml-sec">
+            <span>+ Product(name : String, price : double)</span>
+            <span>+ getName() : String</span>
+            <span>+ getPrice() : double</span>
+          </div>
+        </div>
+        <div style="flex:1">
+      <p style="margin-top:8px">The class <code class="inl">Product</code> on the left is already written.</p>
+      <p>Write a Java method that finds the <b>cheapest product</b> in an array. The method should accept an array of <code class="inl">Product</code>
+         as input parameter and return a <code class="inl">Product</code>.
+         <span class="note">The array may be only partly filled: some elements may be <code class="inl">null</code>. If the array holds no products, return <code class="inl">null</code>.</span></p>
+        </div>
+      </div>
+      <p class="hint">For example, with the array below the method returns the <code class="inl">Eraser</code> object.
+         Also, indicate how to invoke the method from the <code class="inl">main</code> method and print the name of the cheapest product.</p>
+<pre class="code">Product[] items = new Product[5];
+items[0] = new Product("Pen", 4.5);
+items[1] = new Product("Notebook", 12.0);
+items[3] = new Product("Eraser", 2.0);   // items[2], items[4] are null</pre>
+      <div class="answer-space"><span class="lbl">Write your complete method, then the call from main:</span><div class="codebox" style="min-height:100mm"></div></div>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q10</div>
+<pre class="code">public static Product cheapest(Product[] items) {
+    Product best = null;
+    for (int i = 0; i &lt; items.length; i++) {
+        if (items[i] != null) {
+            if (best == null || items[i].getPrice() &lt; best.getPrice())
+                best = items[i];
+        }
+    }
+    return best;
+}
+
+// invocation from main:
+Product p = cheapest(items);
+if (p != null)
+    System.out.println(p.getName());          // prints Eraser</pre>
+        <p class="rub">Rubric: signature with <code class="inl">Product[]</code> parameter and <code class="inl">Product</code> return type 1.5 &middot; loop over the array 1 &middot; skipping <code class="inl">null</code> elements 2 &middot; comparing prices through <code class="inl">getPrice()</code> (not <code class="inl">.price</code>, which is private) 1.5 &middot; keeping and returning the object, not just the price 1 &middot; call from main 1.</p>
+        <p class="rub">The point of the question: <code class="inl">best = items[0]</code> as a starting value is fragile &mdash; if slot 0 is empty, the first <code class="inl">best.getPrice()</code> throws <code class="inl">NullPointerException</code>. Deduct 1 mark when nulls are not handled.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PAGE 12 : Q11 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 4 &mdash; Objects &amp; Classes &mdash; Practice Exam &middot; Question 11 of 11</span></div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="qno">Q11</span>
+      <span class="qtitle">Apply &mdash; Build the Book Class Step by Step</span>
+      <span class="chips">
+        <span class="chip tag-hard">HARD</span>
+        <span class="chip clo">CLO 3</span><span class="chip so">SO-c</span>
+        <span class="chip pts">8 marks &middot; 1 per step</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p>A bookshop wants to describe the properties and behaviours of its books using a Java class. Follow the steps below.</p>
+      <ol style="margin:4px 0;padding-left:22px;font-size:10.5pt">
+        <li>Create a class named <code class="inl">Book</code> with three variables that can only be accessed <b>within the class</b>:
+            <code class="inl">isbn</code> and <code class="inl">title</code> of type String, and <code class="inl">price</code> of type double.</li>
+        <li>Add a variable <code class="inl">count</code>, <b>shared by all books</b>, that counts how many Book objects have been created.</li>
+        <li>Declare a three-parameter constructor that initialises <code class="inl">isbn</code>, <code class="inl">title</code> and <code class="inl">price</code> and updates <code class="inl">count</code>.</li>
+        <li>Declare a default constructor that <b>invokes</b> the three-parameter constructor with <code class="inl">"000"</code>, <code class="inl">"Untitled"</code> and <code class="inl">0.0</code>.</li>
+        <li>Write getters for <code class="inl">title</code> and <code class="inl">price</code>, and a setter for <code class="inl">price</code> that <b>ignores negative values</b>.</li>
+        <li>Write a method <code class="inl">getCount()</code> that can be called using the class name.</li>
+        <li>In the <code class="inl">main</code> method of a class <code class="inl">BookStore</code>, create an array of size three that can only hold <code class="inl">Book</code> objects;
+            fill it with two books made by the three-parameter constructor and one made by the default constructor.</li>
+        <li>Iterate over the array: raise every price by 10% using the setter and print each title and new price. Finally print the value of <code class="inl">count</code>.</li>
+      </ol>
+      <div class="answer-space"><div class="codebox" style="min-height:96mm"></div></div>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q11</div>
+<pre class="code sm">public class Book {
+    private String isbn;                 // Step 1
+    private String title;
+    private double price;
+    private static int count = 0;        // Step 2
+
+    public Book(String isbn, String title,
+                double price) {          // Step 3
+        this.isbn = isbn;
+        this.title = title;
+        this.price = price;
+        count++;
+    }
+    public Book() {                      // Step 4
+        this("000", "Untitled", 0.0);
+    }
+    public String getTitle() {           // Step 5
+        return title;
+    }
+    public double getPrice() {
+        return price;
+    }
+    public void setPrice(double price) {
+        if (price &gt;= 0)
+            this.price = price;
+    }
+    public static int getCount() {       // Step 6
+        return count;
+    }
+}
+
+public class BookStore {
+  public static void main(String[] args) {
+    Book[] books = new Book[3];              // Step 7
+    books[0] = new Book("111", "Java Basics", 80.0);
+    books[1] = new Book("222", "Data Structures", 120.0);
+    books[2] = new Book();
+
+    for (int i = 0; i &lt; books.length; i++) { // Step 8
+      books[i].setPrice(books[i].getPrice() * 1.10);
+      System.out.println(books[i].getTitle()
+                         + " " + books[i].getPrice());
+    }
+    System.out.println("Books created: "
+                       + Book.getCount());
+  }
+}
+
+/* Output:
+Java Basics 88.0
+Data Structures 132.0
+Untitled 0.0
+Books created: 3          */</pre>
+        <p class="rub">1 mark per step. Step 2 needs <code class="inl">static</code>; Step 4 needs <code class="inl">this(...)</code> as the <b>first</b> statement, and if <code class="inl">count++</code> also appears in the default constructor the count becomes 4 &mdash; lose the Step 4 mark.
+           Step 7: <code class="inl">new Book[3]</code> creates no Book objects; three <code class="inl">new Book(...)</code> calls are still needed, otherwise Step 8 throws <code class="inl">NullPointerException</code>.
+           Step 8: the 10% rise must go <b>through the setter</b>; <code class="inl">books[i].price = &hellip;</code> does not compile from <code class="inl">BookStore</code>.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="endmark">&mdash; End of Objects &amp; Classes Practice Exam &mdash; Good Luck! &mdash;</div>
+  <p class="footline">Module 4: Objects &amp; Classes</p>
+</section>
+
+<script>
+  var btn = document.getElementById('toggleAns');
+  btn.addEventListener('click', function () {
+    var on = document.body.classList.toggle('show-answers');
+    btn.textContent = on ? '🙈 Hide model answers' : '👁 Show model answers';
+    btn.classList.toggle('ghost', !on);
+  });
+</script>
+</body>
+</html>
