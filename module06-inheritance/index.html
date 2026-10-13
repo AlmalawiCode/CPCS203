@@ -963,6 +963,16 @@
         .btn-solution:hover { background: #d97706; transform: translateY(-1px); }
         .btn-solution.revealed { background: #6b7280; }
         .btn-solution.revealed:hover { background: #4b5563; }
+    
+        /* Chapter table of contents */
+        .chapter-toc { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 16px; padding: 22px 26px; margin: 0 0 36px; }
+        .chapter-toc-title { font-size: 1.15rem; font-weight: 800; margin: 0 0 12px; color: #1e293b; }
+        .chapter-toc ol { margin: 0; padding-left: 1.6em; columns: 2; column-gap: 32px; }
+        .chapter-toc li { margin: 0 0 8px; break-inside: avoid; line-height: 1.4; }
+        .chapter-toc a { color: #1d4ed8; text-decoration: none; font-weight: 600; }
+        .chapter-toc a:hover { text-decoration: underline; }
+        .section-title { scroll-margin-top: 20px; }
+        @media (max-width: 700px) { .chapter-toc ol { columns: 1; } .chapter-toc { padding: 18px 16px; } }
     </style>
 </head>
 <body>
@@ -1003,11 +1013,33 @@
 
     <div class="content">
 
+        <!-- Chapter table of contents -->
+        <nav class="chapter-toc" aria-label="Chapter contents">
+            <div class="chapter-toc-title">&#128203; In this chapter &mdash; jump to a topic</div>
+            <ol>
+                <li><a href="#section-1">It Starts with Nature</a></li>
+                <li><a href="#section-2">Why Inheritance in Object-Oriented Programming?</a></li>
+                <li><a href="#section-3">Why is Inheritance Important? Two Powerful Reasons</a></li>
+                <li><a href="#section-4">Reusability — Override: Modify Existing Behaviour</a></li>
+                <li><a href="#section-5">Reusability — Add New Features</a></li>
+                <li><a href="#section-6">Avoid Redundancy — The Maintenance Nightmare</a></li>
+                <li><a href="#section-7">The Motivation is Complete — Now, How?</a></li>
+                <li><a href="#section-8">Practice Begins — Meet Circle and Rectangle</a></li>
+                <li><a href="#section-9">Building the Hierarchy — Shape, Circle, Rectangle</a></li>
+                <li><a href="#section-10">UML — Drawing the Hierarchy</a></li>
+                <li><a href="#section-11">A Surprising Question — Who Has More Data?</a></li>
+                <li><a href="#section-12">Real Example — Private Fields, Constructors, and Inherited Members</a></li>
+                <li><a href="#section-13">Constructor Chain — Why the Superclass Constructor Matters</a></li>
+                <li><a href="#section-14">Tracing a 3-Level Chain — super() Meets this()</a></li>
+            </ol>
+        </nav>
+
+
         <!-- ════════════════════════════════════════════════
              SECTION 1 — THE NATURAL ANALOGY
         ════════════════════════════════════════════════ -->
         <div class="section">
-            <h2 class="section-title">
+            <h2 class="section-title" id="section-1">
                 <span class="section-number">1</span>
                 It Starts with Nature
             </h2>
@@ -1075,7 +1107,7 @@
              SECTION 2 — WHY INHERITANCE IN OOP?
         ════════════════════════════════════════════════ -->
         <div class="section">
-            <h2 class="section-title">
+            <h2 class="section-title" id="section-2">
                 <span class="section-number">2</span>
                 Why Inheritance in Object-Oriented Programming?
             </h2>
@@ -1137,7 +1169,7 @@
              SECTION 3 — WHY INHERITANCE? TWO REASONS
         ════════════════════════════════════════════════ -->
         <div class="section">
-            <h2 class="section-title">
+            <h2 class="section-title" id="section-3">
                 <span class="section-number">3</span>
                 Why is Inheritance Important? Two Powerful Reasons
             </h2>
@@ -1179,7 +1211,7 @@
              SECTION 4 — REUSABILITY: OVERRIDE
         ════════════════════════════════════════════════ -->
         <div class="section">
-            <h2 class="section-title">
+            <h2 class="section-title" id="section-4">
                 <span class="section-number">4</span>
                 Reusability — Override: Modify Existing Behaviour
             </h2>
@@ -1358,7 +1390,7 @@
              SECTION 5 — REUSABILITY: ADD NEW FEATURES
         ════════════════════════════════════════════════ -->
         <div class="section">
-            <h2 class="section-title">
+            <h2 class="section-title" id="section-5">
                 <span class="section-number">5</span>
                 Reusability — Add New Features
             </h2>
@@ -1586,7 +1618,7 @@
              SECTION 6 — AVOID REDUNDANCY
         ════════════════════════════════════════════════ -->
         <div class="section">
-            <h2 class="section-title">
+            <h2 class="section-title" id="section-6">
                 <span class="section-number">6</span>
                 Avoid Redundancy — The Maintenance Nightmare
             </h2>
@@ -1775,7 +1807,7 @@
              SECTION 7 — MOTIVATION SUMMARY & BRIDGE
         ════════════════════════════════════════════════ -->
         <div class="section">
-            <h2 class="section-title">
+            <h2 class="section-title" id="section-7">
                 <span class="section-number">7</span>
                 The Motivation is Complete — Now, How?
             </h2>
@@ -1837,7 +1869,7 @@
              SECTION 8 — PRACTICE: CIRCLE & RECTANGLE
         ════════════════════════════════════════════════ -->
         <div class="section">
-            <h2 class="section-title">
+            <h2 class="section-title" id="section-8">
                 <span class="section-number">8</span>
                 Practice Begins — Meet Circle and Rectangle
             </h2>
@@ -1996,7 +2028,7 @@
              SECTION 9 — BUILDING THE HIERARCHY
         ════════════════════════════════════════════════ -->
         <div class="section">
-            <h2 class="section-title">
+            <h2 class="section-title" id="section-9">
                 <span class="section-number">9</span>
                 Building the Hierarchy — Shape, Circle, Rectangle
             </h2>
@@ -2102,7 +2134,7 @@
              SECTION 10 — UML & TERMINOLOGY
         ════════════════════════════════════════════════ -->
         <div class="section">
-            <h2 class="section-title">
+            <h2 class="section-title" id="section-10">
                 <span class="section-number">10</span>
                 UML — Drawing the Hierarchy
             </h2>
@@ -2197,7 +2229,7 @@
              SECTION 11 — WHO HAS MORE DATA? & ACCESSIBILITY
         ════════════════════════════════════════════════ -->
         <div class="section">
-            <h2 class="section-title">
+            <h2 class="section-title" id="section-11">
                 <span class="section-number">11</span>
                 A Surprising Question — Who Has More Data?
             </h2>
@@ -2378,7 +2410,7 @@
              SECTION 12 — REAL EXAMPLE: PRIVATE FIELDS + CONSTRUCTORS
         ════════════════════════════════════════════════ -->
         <div class="section">
-            <h2 class="section-title">
+            <h2 class="section-title" id="section-12">
                 <span class="section-number">12</span>
                 Real Example — Private Fields, Constructors, and Inherited Members
             </h2>
@@ -2563,7 +2595,7 @@ Perim  : 14.00</div>
              SECTION 13 — CONSTRUCTOR CHAIN
         ════════════════════════════════════════════════ -->
         <div class="section">
-            <h2 class="section-title">
+            <h2 class="section-title" id="section-13">
                 <span class="section-number">13</span>
                 Constructor Chain — Why the Superclass Constructor Matters
             </h2>
@@ -3291,7 +3323,7 @@ Puppy age: 2</div>
              Section 14 — Cross-Class Chaining: super() + this()
              ════════════════════════════════════════════════ -->
         <div class="section">
-            <h2 class="section-title">
+            <h2 class="section-title" id="section-14">
                 <span class="section-number">14</span>
                 Tracing a 3-Level Chain — <code style="font-size:1.3rem;font-weight:900;">super()</code> Meets <code style="font-size:1.3rem;font-weight:900;">this()</code>
             </h2>

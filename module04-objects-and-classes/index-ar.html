@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الوحدة 04 — الكائنات والفئات</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --amber: #f59e0b; --amber-dark: #d97706; --amber-darker: #92400e; --amber-darkest: #78350f; --amber-light: #fef3c7; --amber-lighter: #fffbeb;
+            --orange: #f97316; --orange-dark: #ea580c; --orange-light: #fff7ed;
+            --success: #059669; --success-light: #d1fae5;
+            --info: #2563eb; --info-light: #dbeafe;
+            --violet: #7c3aed; --violet-light: #ede9fe;
+            --red: #ef4444; --red-light: #fee2e2;
+            --dark: #1f2937; --gray: #6b7280; --light: #f9fafb;
+        }
+        body { font-family: 'Tajawal', 'Amiri', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.8; color: var(--dark); background: #f1f5f9; min-height: 100vh; padding: 20px; }
+        .container { max-width: 1000px; margin: 0 auto; background: white; border-radius: 20px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.35); overflow: hidden; }
+
+        /* Language Switch */
+        .lang-switch { position: fixed; top: 20px; left: 20px; z-index: 1000; padding: 10px 20px; background: linear-gradient(135deg, var(--amber), var(--orange)); color: white; text-decoration: none; border-radius: 30px; font-weight: 700; font-size: 0.9rem; box-shadow: 0 4px 14px rgba(245,158,11,.4); transition: transform .2s, box-shadow .2s; }
+        .lang-switch:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(245,158,11,.6); }
+
+        /* Breadcrumb */
+        .nav-breadcrumb { background: linear-gradient(135deg, #78350f, #92400e); padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+        .breadcrumb { display: flex; align-items: center; gap: 8px; color: white; font-size: 0.9rem; }
+        .breadcrumb a { color: #fcd34d; text-decoration: none; transition: color .3s; }
+        .breadcrumb a:hover { color: white; }
+        .breadcrumb .sep { color: #fbbf24; }
+        .breadcrumb .cur { color: #fef3c7; }
+        .lesson-nav { display: flex; gap: 10px; }
+        .lesson-nav a { padding: 8px 16px; background: rgba(255,255,255,.15); color: white; text-decoration: none; border-radius: 20px; font-size: .85rem; transition: background .3s; }
+        .lesson-nav a:hover { background: rgba(255,255,255,.25); }
+
+        /* Hero */
+        .hero { background: linear-gradient(135deg, #d97706, #f59e0b, #f97316, #ef4444); color: white; padding: 50px 40px; text-align: center; position: relative; overflow: hidden; }
+        .hero::before { content: ''; position: absolute; top: -50px; left: -50px; width: 250px; height: 250px; background: rgba(255,255,255,.05); border-radius: 50%; }
+        .hero::after { content: ''; position: absolute; bottom: -80px; right: -40px; width: 300px; height: 300px; background: rgba(255,255,255,.05); border-radius: 50%; }
+        .module-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,.2); border: 1px solid rgba(255,255,255,.4); padding: 8px 22px; border-radius: 30px; font-size: .95rem; font-weight: 600; margin-bottom: 20px; }
+        .module-badge .num { background: white; color: var(--amber-dark); width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; }
+        .hero h1 { font-size: 2.8rem; margin-bottom: 15px; text-shadow: 0 3px 8px rgba(0,0,0,.3); }
+        .hero .subtitle { font-size: 1.2rem; opacity: .9; margin-bottom: 10px; }
+        .hero .message { max-width: 700px; margin: 20px auto 0; font-size: 1rem; opacity: .95; font-style: italic; background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.3); padding: 16px 22px; border-radius: 12px; line-height: 1.9; }
+        .topic-chips { display: flex; justify-content: center; gap: 12px; margin-top: 28px; flex-wrap: wrap; }
+        .topic-chip { padding: 9px 20px; border-radius: 30px; font-weight: 700; font-size: .88rem; border: 2px solid rgba(255,255,255,.5); background: rgba(255,255,255,.12); }
+
+        /* Content */
+        .content { padding: 50px 40px; }
+
+        /* Learning Path */
+        .learning-path { background: white; border-radius: 16px; margin: 0 0 40px; box-shadow: 0 4px 20px rgba(0,0,0,.08); overflow: hidden; border: 1px solid var(--amber-light); }
+        .path-header { background: linear-gradient(135deg, #78350f, #92400e); color: white; padding: 20px 30px; display: flex; justify-content: space-between; align-items: center; }
+        .path-title { font-size: 1.3rem; font-weight: 800; }
+        .path-count { background: rgba(255,255,255,.2); padding: 6px 16px; border-radius: 20px; font-size: .85rem; }
+        .lessons-list { padding: 0; }
+        .lesson-link { display: flex; align-items: center; padding: 20px 30px; text-decoration: none; color: inherit; border-bottom: 1px solid #f3f4f6; transition: background .2s; gap: 20px; }
+        .lesson-link:hover { background: #fffbeb; }
+        .lesson-link:last-child { border-bottom: none; }
+        .lesson-number { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 1.1rem; color: white; flex-shrink: 0; }
+        .lesson-number.tutorial { background: linear-gradient(135deg, #f59e0b, #f97316); }
+        .lesson-number.reveal { background: linear-gradient(135deg, #7c3aed, #8b5cf6); }
+        .lesson-content { flex: 1; }
+        .lesson-type { text-transform: uppercase; font-size: .72rem; font-weight: 800; letter-spacing: 1.5px; color: var(--amber-dark); margin-bottom: 4px; }
+        .lesson-type.reveal-type { color: var(--violet); }
+        .lesson-title { font-size: 1.1rem; font-weight: 700; color: var(--dark); margin-bottom: 4px; }
+        .lesson-desc { font-size: .88rem; color: var(--gray); line-height: 1.6; }
+        .lesson-meta { display: flex; align-items: center; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+        .lesson-tag { background: #f3f4f6; color: var(--gray); padding: 3px 10px; border-radius: 12px; font-size: .75rem; font-weight: 600; }
+        .lesson-arrow { color: #d1d5db; font-size: 1.4rem; flex-shrink: 0; }
+
+        /* Key Concepts */
+        .concepts-title { font-size: 1.5rem; font-weight: 800; color: var(--amber-darkest); margin-bottom: 24px; text-align: center; }
+        .concepts-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-bottom: 40px; }
+        .concept-card { background: white; border: 2px solid var(--amber-light); border-radius: 14px; padding: 24px; text-align: center; transition: transform .2s, box-shadow .2s; }
+        .concept-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,.1); }
+        .concept-icon { font-size: 2rem; margin-bottom: 12px; }
+        .concept-title { font-weight: 800; color: var(--amber-darkest); margin-bottom: 8px; }
+        .concept-desc { font-size: .88rem; color: var(--gray); line-height: 1.6; }
+
+        /* Navigation buttons */
+        .nav-buttons { display: flex; justify-content: center; gap: 20px; margin-top: 10px; }
+        .nav-btn { display: inline-flex; align-items: center; gap: 8px; padding: 14px 32px; border-radius: 30px; font-weight: 700; font-size: 1rem; text-decoration: none; transition: transform .2s, box-shadow .2s; }
+        .nav-btn:hover { transform: translateY(-2px); }
+        .nav-btn.secondary { background: #f3f4f6; color: var(--dark); }
+        .nav-btn.primary { background: linear-gradient(135deg, var(--amber), var(--orange)); color: white; box-shadow: 0 4px 14px rgba(245,158,11,.4); }
+        .nav-btn.primary:hover { box-shadow: 0 6px 20px rgba(245,158,11,.6); }
+
+        /* Footer */
+        .footer { background: linear-gradient(135deg, #78350f, #92400e); color: #fcd34d; padding: 25px 40px; text-align: center; font-size: .85rem; line-height: 1.7; }
+        .footer a { color: #fef3c7; text-decoration: none; }
+
+        code { direction: ltr; unicode-bidi: embed; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            body { padding: 10px; }
+            .hero { padding: 30px 20px; }
+            .hero h1 { font-size: 2rem; }
+            .content { padding: 30px 20px; }
+            .concepts-grid { grid-template-columns: 1fr; }
+            .lesson-link { padding: 15px 20px; gap: 15px; }
+            .nav-buttons { flex-direction: column; align-items: center; }
+            .lang-switch { top: 10px; left: 10px; padding: 8px 14px; font-size: 0.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+<a href="index.html" class="lang-switch">English &#127760;</a>
+
+<div class="container">
+
+    <nav class="nav-breadcrumb">
+        <div class="breadcrumb">
+            <a href="../index.html">&#127968; Object-Oriented Programming</a>
+            <span class="sep">&#8249;</span>
+            <span class="cur">الوحدة 04 — الكائنات والفئات</span>
+        </div>
+        <div class="lesson-nav">
+            <a href="../module03-string/index.html">النصوص (String) &rarr;</a>
+            <a href="../module05-oo-thinking/index-ar.html">&larr; التفكير الكائني</a>
+        </div>
+    </nav>
+
+    <div class="hero">
+        <div class="module-badge">
+            <span class="num">04</span>
+            الوحدة 04 &mdash; الفصل 9
+        </div>
+        <h1>&#128230; الكائنات والفئات (Objects &amp; Classes)</h1>
+        <div class="subtitle">عرّف أنواعك الخاصة: الفئات، الكائنات، المُنشئات، الأعضاء الساكنة والتغليف</div>
+    </div>
+
+    <div class="content">
+        <div class="learning-path">
+            <div class="path-header">
+                <div class="path-title">مسار التعلّم</div>
+                <div class="path-count">4 دروس</div>
+            </div>
+            <div class="lessons-list">
+                <a href="01-intro-to-oop-ar.html" class="lesson-link">
+                    <div class="lesson-number tutorial">1</div>
+                    <div class="lesson-content">
+                        <div class="lesson-type">درس</div>
+                        <div class="lesson-title">مقدمة في البرمجة كائنية التوجه</div>
+                        <div class="lesson-desc">الفرق بين الفئة والكائن، الحقول والدوال، وإنشاء الكائنات باستخدام <code>new</code>.</div>
+                    </div>
+                    <span class="lesson-arrow">&#8592;</span>
+                </a>
+                <a href="02-constructors-and-this-ar.html" class="lesson-link">
+                    <div class="lesson-number tutorial">2</div>
+                    <div class="lesson-content">
+                        <div class="lesson-type">درس</div>
+                        <div class="lesson-title">المُنشئات وكلمة <code>this</code></div>
+                        <div class="lesson-desc">المُنشئ الافتراضي والمُنشئات المتعددة، وسلسلة المُنشئات، وماذا تعني <code>this</code>.</div>
+                    </div>
+                    <span class="lesson-arrow">&#8592;</span>
+                </a>
+                <a href="03-static-visibility-arrays-ar.html" class="lesson-link">
+                    <div class="lesson-number tutorial">3</div>
+                    <div class="lesson-content">
+                        <div class="lesson-type">درس</div>
+                        <div class="lesson-title">Static والمحددات ومصفوفات الكائنات</div>
+                        <div class="lesson-desc">الأعضاء الساكنة مقابل أعضاء الكائن، محددات الوصول، التغليف عبر get/set، ومصفوفات الكائنات.</div>
+                    </div>
+                    <span class="lesson-arrow">&#8592;</span>
+                </a>
+                <a href="04-practice-exam.html" class="lesson-link">
+                    <div class="lesson-number reveal">4</div>
+                    <div class="lesson-content">
+                        <div class="lesson-type reveal-type">اختبار تدريبي</div>
+                        <div class="lesson-title">اختبار تدريبي (قابل للطباعة A4)</div>
+                        <div class="lesson-desc">11 سؤالًا بأسلوب الاختبار على هذه الوحدة فقط (الكائنات والفئات). المحتوى بالإنجليزية.</div>
+                    </div>
+                    <span class="lesson-arrow">&#8592;</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="nav-buttons">
+            <a href="../module03-string/index.html" class="nav-btn secondary">النصوص (String) &rarr;</a>
+            <a href="01-intro-to-oop-ar.html" class="nav-btn primary">ابدأ الدرس 1 &larr;</a>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>Object-Oriented Programming</p>
+        <p>الوحدة 04: الكائنات والفئات &nbsp;&bull;&nbsp; الفصل 9</p>
+        <p>Prepared by Dr. Abdulmohsen Almalwi</p>
+    </footer>
+
+</div>
+
+</body>
+</html>

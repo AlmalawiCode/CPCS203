@@ -592,6 +592,16 @@
         body.projector .speech-who     { color: #4c1d95 !important; }
         body.projector .speech-text    { color: #1f2937 !important; }
         body.projector .speech-text strong { color: #7c3aed !important; }
+    
+        /* Chapter table of contents */
+        .chapter-toc { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 16px; padding: 22px 26px; margin: 0 0 36px; }
+        .chapter-toc-title { font-size: 1.15rem; font-weight: 800; margin: 0 0 12px; color: #1e293b; }
+        .chapter-toc ol { margin: 0; padding-left: 1.6em; columns: 2; column-gap: 32px; }
+        .chapter-toc li { margin: 0 0 8px; break-inside: avoid; line-height: 1.4; }
+        .chapter-toc a { color: #1d4ed8; text-decoration: none; font-weight: 600; }
+        .chapter-toc a:hover { text-decoration: underline; }
+        .section-title { scroll-margin-top: 20px; }
+        @media (max-width: 700px) { .chapter-toc ol { columns: 1; } .chapter-toc { padding: 18px 16px; } }
     </style>
 </head>
 <body>
@@ -638,11 +648,33 @@
     <!-- ── CONTENT ── -->
     <div class="content">
 
+        <!-- Chapter table of contents -->
+        <nav class="chapter-toc" aria-label="Chapter contents">
+            <div class="chapter-toc-title">&#128203; In this chapter &mdash; jump to a topic</div>
+            <ol>
+                <li><a href="#section-1">What Does "Polymorphism" Mean?</a></li>
+                <li><a href="#section-2">Software Is a Universe of Objects</a></li>
+                <li><a href="#section-3">The Biology Lesson — The Power of Categorization</a></li>
+                <li><a href="#section-4">The Problem — Life Without Polymorphism</a></li>
+                <li><a href="#section-5">The Solution — Polymorphism in Action</a></li>
+                <li><a href="#section-6">The Golden Condition for Polymorphism</a></li>
+                <li><a href="#section-7">What Can a Polymorphic Reference See?</a></li>
+                <li><a href="#section-8">The Coffee Cup Analogy</a></li>
+                <li><a href="#section-9">Upcasting &amp; Downcasting</a></li>
+                <li><a href="#section-10">Dynamic Binding — The Engine Behind Polymorphism</a></li>
+                <li><a href="#section-11">Complete Code Example</a></li>
+                <li><a href="#section-12">Array of Objects</a></li>
+                <li><a href="#section-13">ArrayList — The Dynamic Array</a></li>
+                <li><a href="#section-14">&#9733; Summary — What You Learned Today</a></li>
+            </ol>
+        </nav>
+
+
         <!-- ════════════════════════════════════════════════
              SECTION 1 — ETYMOLOGY
              ════════════════════════════════════════════════ -->
         <div class="section">
-            <h2 class="section-title">
+            <h2 class="section-title" id="section-1">
                 <span class="section-number">1</span>
                 What Does "Polymorphism" Mean?
             </h2>
@@ -683,7 +715,7 @@
              SECTION 2 — SOFTWARE = UNIVERSE
              ════════════════════════════════════════════════ -->
         <div class="section">
-            <h2 class="section-title">
+            <h2 class="section-title" id="section-2">
                 <span class="section-number">2</span>
                 Software Is a Universe of Objects
             </h2>
@@ -735,7 +767,7 @@
              SECTION 3 — BIOLOGY LESSON
              ════════════════════════════════════════════════ -->
         <div class="section">
-            <h2 class="section-title">
+            <h2 class="section-title" id="section-3">
                 <span class="section-number">3</span>
                 The Biology Lesson — The Power of Categorization
             </h2>
@@ -807,7 +839,7 @@
              SECTION 4 — THE PROBLEM
              ════════════════════════════════════════════════ -->
         <div class="section">
-            <h2 class="section-title">
+            <h2 class="section-title" id="section-4">
                 <span class="section-number">4</span>
                 The Problem — Life Without Polymorphism
             </h2>
@@ -907,7 +939,7 @@
              SECTION 5 — THE SOLUTION
              ════════════════════════════════════════════════ -->
         <div class="section">
-            <h2 class="section-title">
+            <h2 class="section-title" id="section-5">
                 <span class="section-number">5</span>
                 The Solution — Polymorphism in Action
             </h2>
@@ -1017,7 +1049,7 @@ shapes[<span class="number">5</span>] = <span class="keyword">new</span> <span c
              SECTION 6 — THE GOLDEN CONDITION
              ════════════════════════════════════════════════ -->
         <div class="section">
-            <h2 class="section-title">
+            <h2 class="section-title" id="section-6">
                 <span class="section-number">6</span>
                 The Golden Condition for Polymorphism
             </h2>
@@ -1070,7 +1102,7 @@ shapes[<span class="number">5</span>] = <span class="keyword">new</span> <span c
              SECTION 7 — WHAT CAN YOU SEE?
              ════════════════════════════════════════════════ -->
         <div class="section">
-            <h2 class="section-title">
+            <h2 class="section-title" id="section-7">
                 <span class="section-number">7</span>
                 What Can a Polymorphic Reference See?
             </h2>
@@ -1132,7 +1164,7 @@ s.<span class="method">getDiameter</span>();   <span class="comment">// &#10060;
              SECTION 8 — THE COFFEE CUP ANALOGY
              ════════════════════════════════════════════════ -->
         <div class="section">
-            <h2 class="section-title">
+            <h2 class="section-title" id="section-8">
                 <span class="section-number">8</span>
                 The Coffee Cup Analogy
             </h2>
@@ -1194,7 +1226,7 @@ arabicCup = <span class="keyword">new</span> <span class="class-name">ArabianCof
              SECTION 9 — UPCASTING & DOWNCASTING
              ════════════════════════════════════════════════ -->
         <div class="section">
-            <h2 class="section-title">
+            <h2 class="section-title" id="section-9">
                 <span class="section-number">9</span>
                 Upcasting &amp; Downcasting
             </h2>
@@ -1655,7 +1687,7 @@ arabicCup = <span class="keyword">new</span> <span class="class-name">ArabianCof
              SECTION 10 — DYNAMIC BINDING
              ════════════════════════════════════════════════ -->
         <div class="section">
-            <h2 class="section-title">
+            <h2 class="section-title" id="section-10">
                 <span class="section-number">10</span>
                 Dynamic Binding — The Engine Behind Polymorphism
             </h2>
@@ -2053,7 +2085,7 @@ zoo[<span class="number">3</span>] = <span class="keyword">new</span> <span clas
              SECTION 11 — COMPLETE CODE EXAMPLE
              ════════════════════════════════════════════════ -->
         <div class="section">
-            <h2 class="section-title">
+            <h2 class="section-title" id="section-11">
                 <span class="section-number">11</span>
                 Complete Code Example
             </h2>
@@ -2206,7 +2238,7 @@ Circle diameter: 5.0</div>
              SECTION 12 — ARRAY OF OBJECTS
              ════════════════════════════════════════════════ -->
         <div class="section">
-            <h2 class="section-title">
+            <h2 class="section-title" id="section-12">
                 <span class="section-number">12</span>
                 Array of Objects
             </h2>
@@ -2330,7 +2362,7 @@ students[<span class="number">3</span>] = <span class="keyword">new</span> <span
              SECTION 13 — ARRAYLIST: THE DYNAMIC ARRAY
              ════════════════════════════════════════════════ -->
         <div class="section">
-            <h2 class="section-title">
+            <h2 class="section-title" id="section-13">
                 <span class="section-number">13</span>
                 ArrayList — The Dynamic Array
             </h2>
@@ -2986,7 +3018,7 @@ System.out.<span class="method">println</span>(list);</div>
              SUMMARY
              ════════════════════════════════════════════════ -->
         <div class="section">
-            <h2 class="section-title">
+            <h2 class="section-title" id="section-14">
                 <span class="section-number star">&#9733;</span>
                 Summary — What You Learned Today
             </h2>
