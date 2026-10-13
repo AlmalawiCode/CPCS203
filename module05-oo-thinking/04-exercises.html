@@ -1,0 +1,1190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 05: OO Thinking Exercises</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #4f46e5;
+            --primary-light: #6366f1;
+            --primary-dark: #3730a3;
+            --success-color: #059669;
+            --danger-color: #dc2626;
+            --dark-color: #1f2937;
+            --light-color: #f3f4f6;
+            --gray-color: #6b7280;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.8;
+            color: var(--dark-color);
+            background: linear-gradient(135deg, #4f46e5 0%, #3730a3 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+        }
+
+        /* Navigation Breadcrumb */
+        .nav-breadcrumb {
+            background: linear-gradient(135deg, #92400e, #b45309);
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: white;
+            font-size: 0.9rem;
+        }
+
+        .breadcrumb a {
+            color: #fde68a;
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            color: white;
+        }
+
+        .breadcrumb .separator {
+            color: #d97706;
+        }
+
+        .breadcrumb .current {
+            color: #fef3c7;
+        }
+
+        .lesson-nav a {
+            padding: 8px 16px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            text-decoration: none;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+        }
+
+        .lesson-nav a:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--success-color), #047857);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .header .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .header .course-info {
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 30px;
+            display: inline-block;
+        }
+
+        /* Progress Bar */
+        .progress-section {
+            background: #f8fafc;
+            padding: 20px 40px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+            color: var(--gray-color);
+        }
+
+        .progress-bar {
+            background: #e5e7eb;
+            border-radius: 10px;
+            height: 12px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, var(--success-color), #34d399);
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.5s ease;
+            width: 0%;
+        }
+
+        /* Content */
+        .content {
+            padding: 40px;
+        }
+
+        /* Question Card */
+        .question-card {
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            overflow: hidden;
+            transition: border-color 0.3s;
+        }
+
+        .question-card.correct {
+            border-color: var(--success-color);
+        }
+
+        .question-card.incorrect {
+            border-color: var(--danger-color);
+        }
+
+        .question-header {
+            background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+            padding: 20px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .question-number {
+            background: var(--primary-color);
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .question-type {
+            background: #fef3c7;
+            color: var(--primary-dark);
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .question-body {
+            padding: 25px;
+        }
+
+        .question-text {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            color: var(--dark-color);
+        }
+
+        /* Code in Questions */
+        .code-block {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+        }
+
+        .code-block .keyword {
+            color: #569cd6;
+        }
+
+        .code-block .type {
+            color: #4ec9b0;
+        }
+
+        .code-block .string {
+            color: #ce9178;
+        }
+
+        .code-block .comment {
+            color: #6a9955;
+        }
+
+        .code-block .variable {
+            color: #9cdcfe;
+        }
+
+        .code-inline {
+            background: #f3f4f6;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9rem;
+            color: var(--primary-dark);
+        }
+
+        /* Options */
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .option:hover {
+            border-color: var(--primary-color);
+            background: #fef3c7;
+        }
+
+        .option.selected {
+            border-color: var(--primary-color);
+            background: #fef3c7;
+        }
+
+        .option.correct {
+            border-color: var(--success-color);
+            background: #d1fae5;
+        }
+
+        .option.incorrect {
+            border-color: var(--danger-color);
+            background: #fee2e2;
+        }
+
+        .option-radio {
+            width: 22px;
+            height: 22px;
+            border: 2px solid #d1d5db;
+            border-radius: 50%;
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .option.selected .option-radio {
+            border-color: var(--primary-color);
+        }
+
+        .option.selected .option-radio::after {
+            content: '';
+            width: 12px;
+            height: 12px;
+            background: var(--primary-color);
+            border-radius: 50%;
+        }
+
+        .option.correct .option-radio {
+            border-color: var(--success-color);
+            background: var(--success-color);
+        }
+
+        .option.correct .option-radio::after {
+            content: '✓';
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .option.incorrect .option-radio {
+            border-color: var(--danger-color);
+            background: var(--danger-color);
+        }
+
+        .option.incorrect .option-radio::after {
+            content: '✗';
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .option-text {
+            flex: 1;
+        }
+
+        /* Feedback */
+        .feedback {
+            margin-top: 20px;
+            padding: 15px 20px;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .feedback.correct {
+            background: #d1fae5;
+            border-left: 4px solid var(--success-color);
+            display: block;
+        }
+
+        .feedback.incorrect {
+            background: #fee2e2;
+            border-left: 4px solid var(--danger-color);
+            display: block;
+        }
+
+        .feedback-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .feedback.correct .feedback-title {
+            color: var(--success-color);
+        }
+
+        .feedback.incorrect .feedback-title {
+            color: var(--danger-color);
+        }
+
+        /* Submit Button */
+        .submit-btn {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(217, 119, 6, 0.3);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Results Section */
+        .results-section {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 30px;
+            text-align: center;
+            display: none;
+        }
+
+        .results-section.show {
+            display: block;
+        }
+
+        .results-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-dark);
+            margin-bottom: 15px;
+        }
+
+        .results-score {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .results-message {
+            color: var(--gray-color);
+            margin-bottom: 20px;
+        }
+
+        .retry-btn {
+            background: linear-gradient(135deg, var(--success-color), #047857);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .retry-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            display: flex;
+            justify-content: space-between;
+            padding: 30px 40px;
+            background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .bottom-nav a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px 25px;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .bottom-nav a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(217, 119, 6, 0.3);
+        }
+
+        .bottom-nav .prev-lesson {
+            background: linear-gradient(135deg, #64748b, #475569);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--dark-color);
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .lang-switch { position: fixed; top: 20px; right: 20px; z-index: 1000; padding: 10px 20px; background: linear-gradient(135deg, var(--primary-light), var(--primary-color)); color: white; text-decoration: none; border-radius: 30px; font-weight: 700; font-size: 0.9rem; box-shadow: 0 4px 14px rgba(245,158,11,.4); transition: transform .2s, box-shadow .2s; }
+        .lang-switch:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(245,158,11,.6); }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .nav-breadcrumb {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .bottom-nav {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="04-exercises-ar.html" class="lang-switch">&#127760; العربية</a>
+    <div class="container">
+        <nav class="nav-breadcrumb">
+            <div class="breadcrumb">
+                <a href="../index.html">Object-Oriented Programming</a>
+                <span class="separator">&#8250;</span>
+                <a href="index.html">Module 05: OO Thinking</a>
+                <span class="separator">&#8250;</span>
+                <span class="current">Exercises</span>
+            </div>
+            <div class="lesson-nav">
+                <a href="03-wrapper-biginteger.html">&#8249; Previous: Wrapper Classes &amp; BigInteger</a>
+            </div>
+        </nav>
+
+        <div class="header">
+            <h1>Object-Oriented Thinking: Exercises</h1>
+            <p class="subtitle">Test Your Understanding</p>
+            <div class="course-info"><strong>Module 05</strong> &bull; Immutable Objects &bull; Relationships &bull; Wrapper Classes</div>
+        </div>
+
+        <div class="progress-section">
+            <div class="progress-header">
+                <span>Progress</span>
+                <span id="progress-text">0 / 15 Questions</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+        </div>
+
+        <div class="content">
+            <!-- Question 1 -->
+            <div class="question-card" id="q1" data-correct="c">
+                <div class="question-header">
+                    <div class="question-number">1</div>
+                    <div class="question-type">Immutability</div>
+                </div>
+                <div class="question-body">
+                    <div class="question-text">A class has <strong>all fields private</strong> and <strong>no setter methods</strong>. Which of the following can <em>still</em> make its objects mutable?</div>
+                    <div class="options">
+                        <div class="option" data-answer="a">
+                            <div class="option-radio"></div>
+                            <div class="option-text">A getter that returns an <code>int</code> field</div>
+                        </div>
+                        <div class="option" data-answer="b">
+                            <div class="option-radio"></div>
+                            <div class="option-text">A getter that returns a <code>String</code> field</div>
+                        </div>
+                        <div class="option" data-answer="c">
+                            <div class="option-radio"></div>
+                            <div class="option-text">A getter that returns a reference to an internal <code>int[]</code> array</div>
+                        </div>
+                        <div class="option" data-answer="d">
+                            <div class="option-radio"></div>
+                            <div class="option-text">A constructor that receives parameters</div>
+                        </div>
+                    </div>
+                    <template class="explanation">Returning the real reference to a mutable object (such as an array) lets the caller change the object’s contents without any setter. This is the 3rd rule: <em>no getter may return a reference to a mutable object</em>. Return a defensive copy instead.</template>
+                    <div class="feedback"></div>
+                    <button class="submit-btn" onclick="checkAnswer(1)">Check Answer</button>
+                </div>
+            </div>
+            <!-- Question 2 -->
+            <div class="question-card" id="q2" data-correct="d">
+                <div class="question-header">
+                    <div class="question-number">2</div>
+                    <div class="question-type">Code Output</div>
+                </div>
+                <div class="question-body">
+                    <div class="question-text">What is printed?</div>
+                    <div class="code-block">class Course {
+    private String title;
+    private int[] scores;
+    public Course(String title, int[] scores) { this.title = title; this.scores = scores; }
+    public int[] getScores() { return scores; }
+    public int total() { int t = 0; for (int s : scores) t += s; return t; }
+}
+public class Main {
+    public static void main(String[] args) {
+        Course c = new Course(&quot;CPCS203&quot;, new int[]{10, 20, 30});
+        int[] s = c.getScores();
+        s[0] = 100;
+        System.out.println(c.total());
+    }
+}</div>
+                    <div class="options">
+                        <div class="option" data-answer="a">
+                            <div class="option-radio"></div>
+                            <div class="option-text">60</div>
+                        </div>
+                        <div class="option" data-answer="b">
+                            <div class="option-radio"></div>
+                            <div class="option-text">100</div>
+                        </div>
+                        <div class="option" data-answer="c">
+                            <div class="option-radio"></div>
+                            <div class="option-text">130</div>
+                        </div>
+                        <div class="option" data-answer="d">
+                            <div class="option-radio"></div>
+                            <div class="option-text">150</div>
+                        </div>
+                    </div>
+                    <template class="explanation"><code>getScores()</code> returns the <em>real</em> internal array, so <code>s[0] = 100</code> changes the course’s own scores to {100, 20, 30}. The total is 150. The object was modified without a setter.</template>
+                    <div class="feedback"></div>
+                    <button class="submit-btn" onclick="checkAnswer(2)">Check Answer</button>
+                </div>
+            </div>
+            <!-- Question 3 -->
+            <div class="question-card" id="q3" data-correct="a">
+                <div class="question-header">
+                    <div class="question-number">3</div>
+                    <div class="question-type">Code Output</div>
+                </div>
+                <div class="question-body">
+                    <div class="question-text">Now the class makes <strong>defensive copies</strong> with <code>clone()</code>. What is printed?</div>
+                    <div class="code-block">class Course {
+    private String title;
+    private int[] scores;
+    public Course(String title, int[] scores) { this.title = title; this.scores = scores.clone(); }
+    public int[] getScores() { return scores.clone(); }
+    public int total() { int t = 0; for (int s : scores) t += s; return t; }
+}
+public class Main {
+    public static void main(String[] args) {
+        int[] data = {10, 20, 30};
+        Course c = new Course(&quot;CPCS203&quot;, data);
+        data[1] = 0;
+        int[] s = c.getScores();
+        s[0] = 100;
+        System.out.println(c.total());
+    }
+}</div>
+                    <div class="options">
+                        <div class="option" data-answer="a">
+                            <div class="option-radio"></div>
+                            <div class="option-text">60</div>
+                        </div>
+                        <div class="option" data-answer="b">
+                            <div class="option-radio"></div>
+                            <div class="option-text">50</div>
+                        </div>
+                        <div class="option" data-answer="c">
+                            <div class="option-radio"></div>
+                            <div class="option-text">150</div>
+                        </div>
+                        <div class="option" data-answer="d">
+                            <div class="option-radio"></div>
+                            <div class="option-text">140</div>
+                        </div>
+                    </div>
+                    <template class="explanation">The constructor stores a copy, so changing <code>data[1]</code> afterwards does not affect the object. The getter returns another copy, so <code>s[0] = 100</code> changes only that copy. The internal array stays {10, 20, 30} and the total is 60.</template>
+                    <div class="feedback"></div>
+                    <button class="submit-btn" onclick="checkAnswer(3)">Check Answer</button>
+                </div>
+            </div>
+            <!-- Question 4 -->
+            <div class="question-card" id="q4" data-correct="b">
+                <div class="question-header">
+                    <div class="question-number">4</div>
+                    <div class="question-type">Immutability</div>
+                </div>
+                <div class="question-body">
+                    <div class="question-text">Why is it safe for an immutable class to return its <code>String name</code> field directly from <code>getName()</code>?</div>
+                    <div class="options">
+                        <div class="option" data-answer="a">
+                            <div class="option-radio"></div>
+                            <div class="option-text">Because <code>name</code> is declared <code>private</code></div>
+                        </div>
+                        <div class="option" data-answer="b">
+                            <div class="option-radio"></div>
+                            <div class="option-text">Because <code>String</code> is itself immutable, so the caller cannot change it</div>
+                        </div>
+                        <div class="option" data-answer="c">
+                            <div class="option-radio"></div>
+                            <div class="option-text">Because getters are always read-only in Java</div>
+                        </div>
+                        <div class="option" data-answer="d">
+                            <div class="option-radio"></div>
+                            <div class="option-text">Because Java copies every object returned from a method</div>
+                        </div>
+                    </div>
+                    <template class="explanation">The rule only applies to <em>mutable</em> types. A <code>String</code> cannot be changed after creation, so sharing its reference is safe. If the field were a <code>StringBuilder</code> (mutable), you would have to return a copy.</template>
+                    <div class="feedback"></div>
+                    <button class="submit-btn" onclick="checkAnswer(4)">Check Answer</button>
+                </div>
+            </div>
+            <!-- Question 5 -->
+            <div class="question-card" id="q5" data-correct="c">
+                <div class="question-header">
+                    <div class="question-number">5</div>
+                    <div class="question-type">final & Arrays</div>
+                </div>
+                <div class="question-body">
+                    <div class="question-text">The field is declared <code>private final int[] scores</code>. What is printed?</div>
+                    <div class="code-block">class Course {
+    private final int[] scores;
+    public Course(int[] scores) { this.scores = scores; }
+    public void show() { System.out.println(scores[0] + &quot; &quot; + scores[1]); }
+}
+public class Main {
+    public static void main(String[] args) {
+        int[] data = {5, 7};
+        Course c = new Course(data);
+        data[0] = 9;
+        c.show();
+    }
+}</div>
+                    <div class="options">
+                        <div class="option" data-answer="a">
+                            <div class="option-radio"></div>
+                            <div class="option-text">5 7</div>
+                        </div>
+                        <div class="option" data-answer="b">
+                            <div class="option-radio"></div>
+                            <div class="option-text">Compile error: <code>scores</code> is final</div>
+                        </div>
+                        <div class="option" data-answer="c">
+                            <div class="option-radio"></div>
+                            <div class="option-text">9 7</div>
+                        </div>
+                        <div class="option" data-answer="d">
+                            <div class="option-radio"></div>
+                            <div class="option-text">Runtime exception</div>
+                        </div>
+                    </div>
+                    <template class="explanation"><code>final</code> only stops the <em>reference</em> from being reassigned; the array contents can still change. The constructor stored the caller’s array (no copy), so <code>data[0] = 9</code> also changes the object. Prints <code>9 7</code>. <code>final</code> alone is not enough for immutability.</template>
+                    <div class="feedback"></div>
+                    <button class="submit-btn" onclick="checkAnswer(5)">Check Answer</button>
+                </div>
+            </div>
+            <!-- Question 6 -->
+            <div class="question-card" id="q6" data-correct="a">
+                <div class="question-header">
+                    <div class="question-number">6</div>
+                    <div class="question-type">Relationships</div>
+                </div>
+                <div class="question-body">
+                    <div class="question-text"><code>Student</code> has a method <code>calculateBMI(BMICalculator calc)</code>. The calculator is used inside the method and is <strong>not stored as a field</strong>. What is the relationship between Student and BMICalculator?</div>
+                    <div class="options">
+                        <div class="option" data-answer="a">
+                            <div class="option-radio"></div>
+                            <div class="option-text">Dependency (“uses”)</div>
+                        </div>
+                        <div class="option" data-answer="b">
+                            <div class="option-radio"></div>
+                            <div class="option-text">Aggregation (“has-a”)</div>
+                        </div>
+                        <div class="option" data-answer="c">
+                            <div class="option-radio"></div>
+                            <div class="option-text">Composition (“owns-a”)</div>
+                        </div>
+                        <div class="option" data-answer="d">
+                            <div class="option-radio"></div>
+                            <div class="option-text">Inheritance (“is-a”)</div>
+                        </div>
+                    </div>
+                    <template class="explanation">The BMICalculator is not part of the student’s identity. It is only used temporarily as a method parameter, which is a <strong>dependency</strong>. In UML it is drawn as a dashed arrow.</template>
+                    <div class="feedback"></div>
+                    <button class="submit-btn" onclick="checkAnswer(6)">Check Answer</button>
+                </div>
+            </div>
+            <!-- Question 7 -->
+            <div class="question-card" id="q7" data-correct="b">
+                <div class="question-header">
+                    <div class="question-number">7</div>
+                    <div class="question-type">Relationships</div>
+                </div>
+                <div class="question-body">
+                    <div class="question-text">Look at the constructor below. What is the relationship between <code>Car</code> and <code>Engine</code>?</div>
+                    <div class="code-block">public class Car {
+    private Engine engine;
+
+    public Car(String model) {
+        this.engine = new Engine();   // created here
+    }
+}</div>
+                    <div class="options">
+                        <div class="option" data-answer="a">
+                            <div class="option-radio"></div>
+                            <div class="option-text">Aggregation, because Car has an Engine field</div>
+                        </div>
+                        <div class="option" data-answer="b">
+                            <div class="option-radio"></div>
+                            <div class="option-text">Composition, because the Engine is created inside the Car constructor with <code>new</code></div>
+                        </div>
+                        <div class="option" data-answer="c">
+                            <div class="option-radio"></div>
+                            <div class="option-text">Dependency, because Engine is a different class</div>
+                        </div>
+                        <div class="option" data-answer="d">
+                            <div class="option-radio"></div>
+                            <div class="option-text">Self-aggregation</div>
+                        </div>
+                    </div>
+                    <template class="explanation">The rule from the lesson is <em>where <code>new</code> is written</em>. If <code>new</code> is inside the owner’s constructor, the part is exclusive to that owner and dies with it, which is <strong>composition</strong> (filled diamond ◆).</template>
+                    <div class="feedback"></div>
+                    <button class="submit-btn" onclick="checkAnswer(7)">Check Answer</button>
+                </div>
+            </div>
+            <!-- Question 8 -->
+            <div class="question-card" id="q8" data-correct="c">
+                <div class="question-header">
+                    <div class="question-number">8</div>
+                    <div class="question-type">Relationships</div>
+                </div>
+                <div class="question-body">
+                    <div class="question-text">One <code>Address</code> object is created in <code>main</code> and passed to the constructors of three different <code>Student</code> objects. Which statement is correct?</div>
+                    <div class="options">
+                        <div class="option" data-answer="a">
+                            <div class="option-radio"></div>
+                            <div class="option-text">This is composition. The address is destroyed when any one student is destroyed.</div>
+                        </div>
+                        <div class="option" data-answer="b">
+                            <div class="option-radio"></div>
+                            <div class="option-text">This is dependency, because the address is a constructor parameter.</div>
+                        </div>
+                        <div class="option" data-answer="c">
+                            <div class="option-radio"></div>
+                            <div class="option-text">This is aggregation. The address is shared and survives independently of any one student.</div>
+                        </div>
+                        <div class="option" data-answer="d">
+                            <div class="option-radio"></div>
+                            <div class="option-text">This is not allowed. Each student must have its own Address object.</div>
+                        </div>
+                    </div>
+                    <template class="explanation">The object is created <em>outside</em> and passed in, so it can be shared by many owners and outlives any one of them. That is <strong>aggregation</strong> (open diamond ◇). It is not dependency, because the address is stored as a field.</template>
+                    <div class="feedback"></div>
+                    <button class="submit-btn" onclick="checkAnswer(8)">Check Answer</button>
+                </div>
+            </div>
+            <!-- Question 9 -->
+            <div class="question-card" id="q9" data-correct="d">
+                <div class="question-header">
+                    <div class="question-number">9</div>
+                    <div class="question-type">UML</div>
+                </div>
+                <div class="question-body">
+                    <div class="question-text">In a UML class diagram, which symbol represents <strong>composition</strong>?</div>
+                    <div class="options">
+                        <div class="option" data-answer="a">
+                            <div class="option-radio"></div>
+                            <div class="option-text">A dashed arrow</div>
+                        </div>
+                        <div class="option" data-answer="b">
+                            <div class="option-radio"></div>
+                            <div class="option-text">An open (hollow) diamond ◇</div>
+                        </div>
+                        <div class="option" data-answer="c">
+                            <div class="option-radio"></div>
+                            <div class="option-text">An empty triangle arrowhead △</div>
+                        </div>
+                        <div class="option" data-answer="d">
+                            <div class="option-radio"></div>
+                            <div class="option-text">A filled diamond ◆</div>
+                        </div>
+                    </div>
+                    <template class="explanation">Composition is a filled diamond ◆, aggregation is an open diamond ◇, dependency is a dashed arrow, and inheritance is an empty triangle △.</template>
+                    <div class="feedback"></div>
+                    <button class="submit-btn" onclick="checkAnswer(9)">Check Answer</button>
+                </div>
+            </div>
+            <!-- Question 10 -->
+            <div class="question-card" id="q10" data-correct="a">
+                <div class="question-header">
+                    <div class="question-number">10</div>
+                    <div class="question-type">Self-Aggregation</div>
+                </div>
+                <div class="question-body">
+                    <div class="question-text">Which field declaration inside the <code>Student</code> class is an example of <strong>self-aggregation</strong>?</div>
+                    <div class="options">
+                        <div class="option" data-answer="a">
+                            <div class="option-radio"></div>
+                            <div class="option-text"><code>private Student supervisor;</code></div>
+                        </div>
+                        <div class="option" data-answer="b">
+                            <div class="option-radio"></div>
+                            <div class="option-text"><code>private int supervisorId;</code></div>
+                        </div>
+                        <div class="option" data-answer="c">
+                            <div class="option-radio"></div>
+                            <div class="option-text"><code>private Name name;</code></div>
+                        </div>
+                        <div class="option" data-answer="d">
+                            <div class="option-radio"></div>
+                            <div class="option-text"><code>private static int count;</code></div>
+                        </div>
+                    </div>
+                    <template class="explanation">Self-aggregation means a class has a field of its <em>own</em> type. Storing a whole <code>Student</code> object (not just an ID) gives access to all the supervisor’s details. This idea is the foundation of linked lists.</template>
+                    <div class="feedback"></div>
+                    <button class="submit-btn" onclick="checkAnswer(10)">Check Answer</button>
+                </div>
+            </div>
+            <!-- Question 11 -->
+            <div class="question-card" id="q11" data-correct="b">
+                <div class="question-header">
+                    <div class="question-number">11</div>
+                    <div class="question-type">Multiplicity</div>
+                </div>
+                <div class="question-body">
+                    <div class="question-text">In a UML relationship, what does the multiplicity <code>1..*</code> mean?</div>
+                    <div class="options">
+                        <div class="option" data-answer="a">
+                            <div class="option-radio"></div>
+                            <div class="option-text">Exactly one</div>
+                        </div>
+                        <div class="option" data-answer="b">
+                            <div class="option-radio"></div>
+                            <div class="option-text">One or more</div>
+                        </div>
+                        <div class="option" data-answer="c">
+                            <div class="option-radio"></div>
+                            <div class="option-text">Zero or more</div>
+                        </div>
+                        <div class="option" data-answer="d">
+                            <div class="option-radio"></div>
+                            <div class="option-text">Zero or one</div>
+                        </div>
+                    </div>
+                    <template class="explanation"><code>1..*</code> means at least one, with no upper limit. Compare: <code>1</code> = exactly one, <code>0..1</code> = optional, <code>*</code> or <code>0..*</code> = zero or more.</template>
+                    <div class="feedback"></div>
+                    <button class="submit-btn" onclick="checkAnswer(11)">Check Answer</button>
+                </div>
+            </div>
+            <!-- Question 12 -->
+            <div class="question-card" id="q12" data-correct="c">
+                <div class="question-header">
+                    <div class="question-number">12</div>
+                    <div class="question-type">Wrapper Classes</div>
+                </div>
+                <div class="question-body">
+                    <div class="question-text">What is the name of the automatic conversion in <code>Integer x = 5;</code>?</div>
+                    <div class="options">
+                        <div class="option" data-answer="a">
+                            <div class="option-radio"></div>
+                            <div class="option-text">Auto-unboxing</div>
+                        </div>
+                        <div class="option" data-answer="b">
+                            <div class="option-radio"></div>
+                            <div class="option-text">Casting</div>
+                        </div>
+                        <div class="option" data-answer="c">
+                            <div class="option-radio"></div>
+                            <div class="option-text">Auto-boxing</div>
+                        </div>
+                        <div class="option" data-answer="d">
+                            <div class="option-radio"></div>
+                            <div class="option-text">Parsing</div>
+                        </div>
+                    </div>
+                    <template class="explanation">Converting a primitive (<code>int</code>) into its wrapper object (<code>Integer</code>) automatically is <strong>auto-boxing</strong>. The reverse, as in <code>int y = x;</code>, is auto-unboxing.</template>
+                    <div class="feedback"></div>
+                    <button class="submit-btn" onclick="checkAnswer(12)">Check Answer</button>
+                </div>
+            </div>
+            <!-- Question 13 -->
+            <div class="question-card" id="q13" data-correct="a">
+                <div class="question-header">
+                    <div class="question-number">13</div>
+                    <div class="question-type">Code Output</div>
+                </div>
+                <div class="question-body">
+                    <div class="question-text">What is printed?</div>
+                    <div class="code-block">public class Main {
+    public static void main(String[] args) {
+        Integer a = 7;
+        int b = Integer.parseInt(&quot;12&quot;);
+        System.out.println(a + b);
+        System.out.println(&quot;12&quot; + a);
+    }
+}</div>
+                    <div class="options">
+                        <div class="option" data-answer="a">
+                            <div class="option-radio"></div>
+                            <div class="option-text">19<br>127</div>
+                        </div>
+                        <div class="option" data-answer="b">
+                            <div class="option-radio"></div>
+                            <div class="option-text">127<br>127</div>
+                        </div>
+                        <div class="option" data-answer="c">
+                            <div class="option-radio"></div>
+                            <div class="option-text">19<br>19</div>
+                        </div>
+                        <div class="option" data-answer="d">
+                            <div class="option-radio"></div>
+                            <div class="option-text">712<br>127</div>
+                        </div>
+                    </div>
+                    <template class="explanation"><code>Integer.parseInt("12")</code> gives the int 12, and <code>a</code> is auto-unboxed, so <code>a + b</code> = 19. In <code>"12" + a</code> the left side is a String, so <code>+</code> means concatenation, giving <code>127</code>.</template>
+                    <div class="feedback"></div>
+                    <button class="submit-btn" onclick="checkAnswer(13)">Check Answer</button>
+                </div>
+            </div>
+            <!-- Question 14 -->
+            <div class="question-card" id="q14" data-correct="b">
+                <div class="question-header">
+                    <div class="question-number">14</div>
+                    <div class="question-type">BigInteger</div>
+                </div>
+                <div class="question-body">
+                    <div class="question-text">What happens when this code is compiled?</div>
+                    <div class="code-block">import java.math.BigInteger;
+public class Main {
+    public static void main(String[] args) {
+        BigInteger x = new BigInteger(&quot;100&quot;);
+        BigInteger y = new BigInteger(&quot;25&quot;);
+        BigInteger z = x + y;
+    }
+}</div>
+                    <div class="options">
+                        <div class="option" data-answer="a">
+                            <div class="option-radio"></div>
+                            <div class="option-text">It compiles and <code>z</code> holds 125</div>
+                        </div>
+                        <div class="option" data-answer="b">
+                            <div class="option-radio"></div>
+                            <div class="option-text">Compile error: the <code>+</code> operator cannot be used with <code>BigInteger</code></div>
+                        </div>
+                        <div class="option" data-answer="c">
+                            <div class="option-radio"></div>
+                            <div class="option-text">It compiles but throws an exception at runtime</div>
+                        </div>
+                        <div class="option" data-answer="d">
+                            <div class="option-radio"></div>
+                            <div class="option-text">It compiles and <code>z</code> holds "10025"</div>
+                        </div>
+                    </div>
+                    <template class="explanation"><code>BigInteger</code> and <code>BigDecimal</code> are objects, so arithmetic operators do not work on them. Use their methods instead: <code>x.add(y)</code>, <code>subtract()</code>, <code>multiply()</code>, <code>divide()</code>.</template>
+                    <div class="feedback"></div>
+                    <button class="submit-btn" onclick="checkAnswer(14)">Check Answer</button>
+                </div>
+            </div>
+            <!-- Question 15 -->
+            <div class="question-card" id="q15" data-correct="d">
+                <div class="question-header">
+                    <div class="question-number">15</div>
+                    <div class="question-type">BigDecimal</div>
+                </div>
+                <div class="question-body">
+                    <div class="question-text"><code>System.out.println(1.0 - 0.9);</code> prints <code>0.09999999999999998</code>. What is the recommended solution for exact decimal results, such as money?</div>
+                    <div class="options">
+                        <div class="option" data-answer="a">
+                            <div class="option-radio"></div>
+                            <div class="option-text">Use <code>float</code> instead of <code>double</code></div>
+                        </div>
+                        <div class="option" data-answer="b">
+                            <div class="option-radio"></div>
+                            <div class="option-text">Use <code>Double</code> (the wrapper class)</div>
+                        </div>
+                        <div class="option" data-answer="c">
+                            <div class="option-radio"></div>
+                            <div class="option-text">Use <code>long</code> and divide by 10</div>
+                        </div>
+                        <div class="option" data-answer="d">
+                            <div class="option-radio"></div>
+                            <div class="option-text">Use <code>BigDecimal</code> created from Strings, e.g. <code>new BigDecimal("1.0")</code></div>
+                        </div>
+                    </div>
+                    <template class="explanation"><code>double</code> cannot store some decimals exactly. <code>new BigDecimal("1.0").subtract(new BigDecimal("0.9"))</code> gives exactly <code>0.1</code>, which is why BigDecimal is used in financial calculations.</template>
+                    <div class="feedback"></div>
+                    <button class="submit-btn" onclick="checkAnswer(15)">Check Answer</button>
+                </div>
+            </div>
+
+            <div class="results-section" id="results">
+                <div class="results-title">Quiz Complete!</div>
+                <div class="results-score" id="score">0/15</div>
+                <div class="results-message" id="message"></div>
+                <button class="retry-btn" onclick="resetQuiz()">Try Again</button>
+            </div>
+        </div>
+
+        <nav class="bottom-nav">
+            <a href="03-wrapper-biginteger.html" class="prev-lesson">&#8249; Previous: Wrapper Classes &amp; BigInteger</a>
+            <a href="../module06-inheritance/index.html">Next: Module 06 Inheritance &#8250;</a>
+        </nav>
+
+        <div class="footer">
+            <p><strong>Object-Oriented Programming</strong></p>
+            <p>Module 05: Object-Oriented Thinking &bull; Exercises</p>
+            <p>Prepared by Dr. Almalawi</p>
+        </div>
+    </div>
+
+    <script>
+        let answered = 0;
+        let correct = 0;
+        const total = 15;
+
+        function checkAnswer(questionNum) {
+            const card = document.getElementById('q' + questionNum);
+            const correctAnswer = card.dataset.correct;
+            const explanation = card.querySelector('template.explanation').innerHTML;
+            const options = card.querySelectorAll('.option');
+            const feedback = card.querySelector('.feedback');
+            const btn = card.querySelector('.submit-btn');
+            const selectedOption = card.querySelector('.option.selected');
+
+            if (!selectedOption) {
+                alert('Please select an answer first!');
+                return;
+            }
+
+            const isCorrect = selectedOption.getAttribute('data-answer') === correctAnswer;
+
+            options.forEach(opt => {
+                opt.style.pointerEvents = 'none';
+                if (opt.getAttribute('data-answer') === correctAnswer) {
+                    opt.classList.add('correct');
+                }
+            });
+
+            if (isCorrect) {
+                selectedOption.classList.add('correct');
+                card.classList.add('correct');
+                feedback.className = 'feedback correct';
+                feedback.innerHTML = '<div class="feedback-title">Correct!</div>' + explanation;
+                correct++;
+            } else {
+                selectedOption.classList.add('incorrect');
+                card.classList.add('incorrect');
+                feedback.className = 'feedback incorrect';
+                feedback.innerHTML = '<div class="feedback-title">Incorrect</div>' + explanation;
+            }
+
+            btn.disabled = true;
+            answered++;
+            updateProgress();
+            if (answered === total) showResults();
+        }
+
+        function updateProgress() {
+            document.getElementById('progress-fill').style.width = (answered / total) * 100 + '%';
+            document.getElementById('progress-text').textContent = answered + ' / ' + total + ' Questions';
+        }
+
+        function showResults() {
+            document.getElementById('score').textContent = correct + '/' + total;
+            const msg = document.getElementById('message');
+            const pct = correct / total;
+            if (correct === total) msg.textContent = 'Perfect score! You have mastered this chapter!';
+            else if (pct >= 0.8) msg.textContent = 'Excellent work! You understand this chapter well!';
+            else if (pct >= 0.6) msg.textContent = 'Good job! Review the topics you missed.';
+            else msg.textContent = 'Keep practicing! Review the lessons and try again.';
+            document.getElementById('results').classList.add('show');
+        }
+
+        function resetQuiz() {
+            answered = 0;
+            correct = 0;
+            document.querySelectorAll('.question-card').forEach(card => {
+                card.classList.remove('correct', 'incorrect');
+                card.querySelectorAll('.option').forEach(opt => {
+                    opt.classList.remove('selected', 'correct', 'incorrect');
+                    opt.style.pointerEvents = 'auto';
+                });
+                card.querySelector('.feedback').className = 'feedback';
+                card.querySelector('.submit-btn').disabled = false;
+            });
+            document.getElementById('results').classList.remove('show');
+            updateProgress();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        document.querySelectorAll('.option').forEach(option => {
+            option.addEventListener('click', function () {
+                this.closest('.question-card').querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
+                this.classList.add('selected');
+            });
+        });
+    </script>
+</body>
+</html>

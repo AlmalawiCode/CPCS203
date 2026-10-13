@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الوحدة 05: تمارين التفكير الكائني</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #4f46e5;
+            --primary-light: #6366f1;
+            --primary-dark: #3730a3;
+            --success-color: #059669;
+            --danger-color: #dc2626;
+            --dark-color: #1f2937;
+            --light-color: #f3f4f6;
+            --gray-color: #6b7280;
+        }
+
+        body {
+            font-family: 'Tajawal', 'Amiri', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.8;
+            color: var(--dark-color);
+            background: linear-gradient(135deg, #4f46e5 0%, #3730a3 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+        }
+
+        /* Navigation Breadcrumb */
+        .nav-breadcrumb {
+            background: linear-gradient(135deg, #92400e, #b45309);
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: white;
+            font-size: 0.9rem;
+        }
+
+        .breadcrumb a {
+            color: #fde68a;
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            color: white;
+        }
+
+        .breadcrumb .separator {
+            color: #d97706;
+        }
+
+        .breadcrumb .current {
+            color: #fef3c7;
+        }
+
+        .lesson-nav a {
+            padding: 8px 16px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            text-decoration: none;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+        }
+
+        .lesson-nav a:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--success-color), #047857);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .header .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .header .course-info {
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 30px;
+            display: inline-block;
+        }
+
+        /* Progress Bar */
+        .progress-section {
+            background: #f8fafc;
+            padding: 20px 40px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+            color: var(--gray-color);
+        }
+
+        .progress-bar {
+            background: #e5e7eb;
+            border-radius: 10px;
+            height: 12px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, var(--success-color), #34d399);
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.5s ease;
+            width: 0%;
+        }
+
+        /* Content */
+        .content {
+            padding: 40px;
+        }
+
+        /* Question Card */
+        .question-card {
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            overflow: hidden;
+            transition: border-color 0.3s;
+        }
+
+        .question-card.correct {
+            border-color: var(--success-color);
+        }
+
+        .question-card.incorrect {
+            border-color: var(--danger-color);
+        }
+
+        .question-header {
+            background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+            padding: 20px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .question-number {
+            background: var(--primary-color);
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .question-type {
+            background: #fef3c7;
+            color: var(--primary-dark);
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .question-body {
+            padding: 25px;
+        }
+
+        .question-text {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            color: var(--dark-color);
+        }
+
+        /* Code in Questions */
+        .code-block {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            direction: ltr;
+            text-align: left;
+        }
+
+        .code-block .keyword {
+            color: #569cd6;
+        }
+
+        .code-block .type {
+            color: #4ec9b0;
+        }
+
+        .code-block .string {
+            color: #ce9178;
+        }
+
+        .code-block .comment {
+            color: #6a9955;
+        }
+
+        .code-block .variable {
+            color: #9cdcfe;
+        }
+
+        .code-inline {
+            background: #f3f4f6;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9rem;
+            color: var(--primary-dark);
+        }
+
+        code, .code-inline { direction: ltr; unicode-bidi: isolate; }
+
+        /* Options */
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .option:hover {
+            border-color: var(--primary-color);
+            background: #fef3c7;
+        }
+
+        .option.selected {
+            border-color: var(--primary-color);
+            background: #fef3c7;
+        }
+
+        .option.correct {
+            border-color: var(--success-color);
+            background: #d1fae5;
+        }
+
+        .option.incorrect {
+            border-color: var(--danger-color);
+            background: #fee2e2;
+        }
+
+        .option-radio {
+            width: 22px;
+            height: 22px;
+            border: 2px solid #d1d5db;
+            border-radius: 50%;
+            margin-left: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .option.selected .option-radio {
+            border-color: var(--primary-color);
+        }
+
+        .option.selected .option-radio::after {
+            content: '';
+            width: 12px;
+            height: 12px;
+            background: var(--primary-color);
+            border-radius: 50%;
+        }
+
+        .option.correct .option-radio {
+            border-color: var(--success-color);
+            background: var(--success-color);
+        }
+
+        .option.correct .option-radio::after {
+            content: '✓';
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .option.incorrect .option-radio {
+            border-color: var(--danger-color);
+            background: var(--danger-color);
+        }
+
+        .option.incorrect .option-radio::after {
+            content: '✗';
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .option-text {
+            flex: 1;
+        }
+
+        /* Feedback */
+        .feedback {
+            margin-top: 20px;
+            padding: 15px 20px;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .feedback.correct {
+            background: #d1fae5;
+            border-right: 4px solid var(--success-color);
+            display: block;
+        }
+
+        .feedback.incorrect {
+            background: #fee2e2;
+            border-right: 4px solid var(--danger-color);
+            display: block;
+        }
+
+        .feedback-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .feedback.correct .feedback-title {
+            color: var(--success-color);
+        }
+
+        .feedback.incorrect .feedback-title {
+            color: var(--danger-color);
+        }
+
+        /* Submit Button */
+        .submit-btn {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(217, 119, 6, 0.3);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Results Section */
+        .results-section {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 30px;
+            text-align: center;
+            display: none;
+        }
+
+        .results-section.show {
+            display: block;
+        }
+
+        .results-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-dark);
+            margin-bottom: 15px;
+        }
+
+        .results-score {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .results-message {
+            color: var(--gray-color);
+            margin-bottom: 20px;
+        }
+
+        .retry-btn {
+            background: linear-gradient(135deg, var(--success-color), #047857);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .retry-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            display: flex;
+            justify-content: space-between;
+            padding: 30px 40px;
+            background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .bottom-nav a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px 25px;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .bottom-nav a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(217, 119, 6, 0.3);
+        }
+
+        .bottom-nav .prev-lesson {
+            background: linear-gradient(135deg, #64748b, #475569);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--dark-color);
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .lang-switch { position: fixed; top: 20px; left: 20px; z-index: 1000; padding: 10px 20px; background: linear-gradient(135deg, var(--primary-light), var(--primary-color)); color: white; text-decoration: none; border-radius: 30px; font-weight: 700; font-size: 0.9rem; box-shadow: 0 4px 14px rgba(245,158,11,.4); transition: transform .2s, box-shadow .2s; }
+        .lang-switch:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(245,158,11,.6); }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .nav-breadcrumb {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .bottom-nav {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="04-exercises.html" class="lang-switch">English &#127760;</a>
+    <div class="container">
+        <nav class="nav-breadcrumb">
+            <div class="breadcrumb">
+                <a href="../index.html">Object-Oriented Programming</a>
+                <span class="separator">&#8249;</span>
+                <a href="index-ar.html">الوحدة 05: التفكير الكائني</a>
+                <span class="separator">&#8249;</span>
+                <span class="current">التمارين</span>
+            </div>
+            <div class="lesson-nav">
+                <a href="03-wrapper-biginteger-ar.html">السابق: فئات التغليف و BigInteger &#8250;</a>
+            </div>
+        </nav>
+
+        <div class="header">
+            <h1>التفكير الكائني: تمارين</h1>
+            <p class="subtitle">اختبر فهمك</p>
+            <div class="course-info"><strong>الوحدة 05</strong> &bull; الكائنات غير القابلة للتغيير &bull; العلاقات &bull; أصناف التغليف</div>
+        </div>
+
+        <div class="progress-section">
+            <div class="progress-header">
+                <span>التقدّم</span>
+                <span id="progress-text">0 / 15 أسئلة</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+        </div>
+
+        <div class="content">
+            <!-- Question 1 -->
+            <div class="question-card" id="q1" data-correct="c">
+                <div class="question-header">
+                    <div class="question-number">1</div>
+                    <div class="question-type">عدم القابلية للتغيير</div>
+                </div>
+                <div class="question-body">
+                    <div class="question-text">صنفٌ جميع حقوله <strong>private</strong> ولا يحتوي على <strong>أي دالة setter</strong>. أيٌّ مما يلي يمكن أن يجعل كائناته قابلة للتغيير <em>رغم ذلك</em>؟</div>
+                    <div class="options">
+                        <div class="option" data-answer="a">
+                            <div class="option-radio"></div>
+                            <div class="option-text">دالة getter تُرجع حقلًا من نوع <code>int</code></div>
+                        </div>
+                        <div class="option" data-answer="b">
+                            <div class="option-radio"></div>
+                            <div class="option-text">دالة getter تُرجع حقلًا من نوع <code>String</code></div>
+                        </div>
+                        <div class="option" data-answer="c">
+                            <div class="option-radio"></div>
+                            <div class="option-text">دالة getter تُرجع المرجع الحقيقي لمصفوفة داخلية <code>int[]</code></div>
+                        </div>
+                        <div class="option" data-answer="d">
+                            <div class="option-radio"></div>
+                            <div class="option-text">مُنشئ يستقبل معاملات</div>
+                        </div>
+                    </div>
+                    <template class="explanation">إرجاع المرجع الحقيقي لكائن قابل للتغيير (مثل المصفوفة) يسمح للمستدعي بتعديل محتوى الكائن بدون أي setter. هذه هي القاعدة الثالثة: <em>لا تُرجع أي getter مرجعًا لكائن قابل للتغيير</em>، والحل إرجاع نسخة دفاعية (defensive copy).</template>
+                    <div class="feedback"></div>
+                    <button class="submit-btn" onclick="checkAnswer(1)">تحقّق من الإجابة</button>
+                </div>
+            </div>
+            <!-- Question 2 -->
+            <div class="question-card" id="q2" data-correct="d">
+                <div class="question-header">
+                    <div class="question-number">2</div>
+                    <div class="question-type">ناتج الكود</div>
+                </div>
+                <div class="question-body">
+                    <div class="question-text">ماذا يطبع البرنامج؟</div>
+                    <div class="code-block">class Course {
+    private String title;
+    private int[] scores;
+    public Course(String title, int[] scores) { this.title = title; this.scores = scores; }
+    public int[] getScores() { return scores; }
+    public int total() { int t = 0; for (int s : scores) t += s; return t; }
+}
+public class Main {
+    public static void main(String[] args) {
+        Course c = new Course(&quot;CPCS203&quot;, new int[]{10, 20, 30});
+        int[] s = c.getScores();
+        s[0] = 100;
+        System.out.println(c.total());
+    }
+}</div>
+                    <div class="options">
+                        <div class="option" data-answer="a">
+                            <div class="option-radio"></div>
+                            <div class="option-text">60</div>
+                        </div>
+                        <div class="option" data-answer="b">
+                            <div class="option-radio"></div>
+                            <div class="option-text">100</div>
+                        </div>
+                        <div class="option" data-answer="c">
+                            <div class="option-radio"></div>
+                            <div class="option-text">130</div>
+                        </div>
+                        <div class="option" data-answer="d">
+                            <div class="option-radio"></div>
+                            <div class="option-text">150</div>
+                        </div>
+                    </div>
+                    <template class="explanation">الدالة <code>getScores()</code> تُرجع المصفوفة الداخلية <em>الحقيقية</em>، لذا فإن <code>s[0] = 100</code> يغيّر درجات المقرر نفسها إلى {100, 20, 30} ويصبح المجموع 150. تغيّر الكائن بدون أي setter.</template>
+                    <div class="feedback"></div>
+                    <button class="submit-btn" onclick="checkAnswer(2)">تحقّق من الإجابة</button>
+                </div>
+            </div>
+            <!-- Question 3 -->
+            <div class="question-card" id="q3" data-correct="a">
+                <div class="question-header">
+                    <div class="question-number">3</div>
+                    <div class="question-type">ناتج الكود</div>
+                </div>
+                <div class="question-body">
+                    <div class="question-text">الآن الصنف يصنع <strong>نسخًا دفاعية</strong> باستخدام <code>clone()</code>. ماذا يطبع البرنامج؟</div>
+                    <div class="code-block">class Course {
+    private String title;
+    private int[] scores;
+    public Course(String title, int[] scores) { this.title = title; this.scores = scores.clone(); }
+    public int[] getScores() { return scores.clone(); }
+    public int total() { int t = 0; for (int s : scores) t += s; return t; }
+}
+public class Main {
+    public static void main(String[] args) {
+        int[] data = {10, 20, 30};
+        Course c = new Course(&quot;CPCS203&quot;, data);
+        data[1] = 0;
+        int[] s = c.getScores();
+        s[0] = 100;
+        System.out.println(c.total());
+    }
+}</div>
+                    <div class="options">
+                        <div class="option" data-answer="a">
+                            <div class="option-radio"></div>
+                            <div class="option-text">60</div>
+                        </div>
+                        <div class="option" data-answer="b">
+                            <div class="option-radio"></div>
+                            <div class="option-text">50</div>
+                        </div>
+                        <div class="option" data-answer="c">
+                            <div class="option-radio"></div>
+                            <div class="option-text">150</div>
+                        </div>
+                        <div class="option" data-answer="d">
+                            <div class="option-radio"></div>
+                            <div class="option-text">140</div>
+                        </div>
+                    </div>
+                    <template class="explanation">المُنشئ يخزّن نسخة، فتغيير <code>data[1]</code> بعد ذلك لا يؤثر في الكائن. والـ getter يُرجع نسخة أخرى، فـ <code>s[0] = 100</code> يغيّر النسخة فقط. تبقى المصفوفة الداخلية {10, 20, 30} والمجموع 60.</template>
+                    <div class="feedback"></div>
+                    <button class="submit-btn" onclick="checkAnswer(3)">تحقّق من الإجابة</button>
+                </div>
+            </div>
+            <!-- Question 4 -->
+            <div class="question-card" id="q4" data-correct="b">
+                <div class="question-header">
+                    <div class="question-number">4</div>
+                    <div class="question-type">عدم القابلية للتغيير</div>
+                </div>
+                <div class="question-body">
+                    <div class="question-text">لماذا يكون من الآمن في الصنف غير القابل للتغيير أن تُرجع <code>getName()</code> الحقل <code>String name</code> مباشرة؟</div>
+                    <div class="options">
+                        <div class="option" data-answer="a">
+                            <div class="option-radio"></div>
+                            <div class="option-text">لأن <code>name</code> معرّف كـ <code>private</code></div>
+                        </div>
+                        <div class="option" data-answer="b">
+                            <div class="option-radio"></div>
+                            <div class="option-text">لأن <code>String</code> نفسه غير قابل للتغيير، فلا يستطيع المستدعي تعديله</div>
+                        </div>
+                        <div class="option" data-answer="c">
+                            <div class="option-radio"></div>
+                            <div class="option-text">لأن دوال getter للقراءة فقط دائمًا في Java</div>
+                        </div>
+                        <div class="option" data-answer="d">
+                            <div class="option-radio"></div>
+                            <div class="option-text">لأن Java تنسخ كل كائن تُرجعه دالة</div>
+                        </div>
+                    </div>
+                    <template class="explanation">القاعدة تنطبق فقط على الأنواع <em>القابلة للتغيير</em>. الـ <code>String</code> لا يمكن تعديله بعد إنشائه، لذا مشاركة مرجعه آمنة. لو كان الحقل <code>StringBuilder</code> (قابل للتغيير) لوجب إرجاع نسخة.</template>
+                    <div class="feedback"></div>
+                    <button class="submit-btn" onclick="checkAnswer(4)">تحقّق من الإجابة</button>
+                </div>
+            </div>
+            <!-- Question 5 -->
+            <div class="question-card" id="q5" data-correct="c">
+                <div class="question-header">
+                    <div class="question-number">5</div>
+                    <div class="question-type">final والمصفوفات</div>
+                </div>
+                <div class="question-body">
+                    <div class="question-text">الحقل معرّف هكذا: <code>private final int[] scores</code>. ماذا يطبع البرنامج؟</div>
+                    <div class="code-block">class Course {
+    private final int[] scores;
+    public Course(int[] scores) { this.scores = scores; }
+    public void show() { System.out.println(scores[0] + &quot; &quot; + scores[1]); }
+}
+public class Main {
+    public static void main(String[] args) {
+        int[] data = {5, 7};
+        Course c = new Course(data);
+        data[0] = 9;
+        c.show();
+    }
+}</div>
+                    <div class="options">
+                        <div class="option" data-answer="a">
+                            <div class="option-radio"></div>
+                            <div class="option-text">5 7</div>
+                        </div>
+                        <div class="option" data-answer="b">
+                            <div class="option-radio"></div>
+                            <div class="option-text">خطأ ترجمة: <code>scores</code> معرّف final</div>
+                        </div>
+                        <div class="option" data-answer="c">
+                            <div class="option-radio"></div>
+                            <div class="option-text">9 7</div>
+                        </div>
+                        <div class="option" data-answer="d">
+                            <div class="option-radio"></div>
+                            <div class="option-text">استثناء وقت التشغيل</div>
+                        </div>
+                    </div>
+                    <template class="explanation">الكلمة <code>final</code> تمنع فقط إعادة إسناد <em>المرجع</em>، أما محتوى المصفوفة فيمكن تغييره. المُنشئ خزّن مصفوفة المستدعي نفسها (بدون نسخ)، لذا <code>data[0] = 9</code> يغيّر الكائن أيضًا ويُطبع <code>9 7</code>. إذن <code>final</code> وحدها لا تكفي.</template>
+                    <div class="feedback"></div>
+                    <button class="submit-btn" onclick="checkAnswer(5)">تحقّق من الإجابة</button>
+                </div>
+            </div>
+            <!-- Question 6 -->
+            <div class="question-card" id="q6" data-correct="a">
+                <div class="question-header">
+                    <div class="question-number">6</div>
+                    <div class="question-type">العلاقات</div>
+                </div>
+                <div class="question-body">
+                    <div class="question-text">الصنف <code>Student</code> فيه الدالة <code>calculateBMI(BMICalculator calc)</code>، والحاسبة تُستخدم داخل الدالة فقط و<strong>لا تُخزَّن كحقل</strong>. ما العلاقة بين Student و BMICalculator؟</div>
+                    <div class="options">
+                        <div class="option" data-answer="a">
+                            <div class="option-radio"></div>
+                            <div class="option-text">اعتماد Dependency (“يستخدم”)</div>
+                        </div>
+                        <div class="option" data-answer="b">
+                            <div class="option-radio"></div>
+                            <div class="option-text">تجميع Aggregation (“يملك”)</div>
+                        </div>
+                        <div class="option" data-answer="c">
+                            <div class="option-radio"></div>
+                            <div class="option-text">تركيب Composition (“يمتلك بقوة”)</div>
+                        </div>
+                        <div class="option" data-answer="d">
+                            <div class="option-radio"></div>
+                            <div class="option-text">وراثة Inheritance (“هو نوع من”)</div>
+                        </div>
+                    </div>
+                    <template class="explanation">حاسبة BMI ليست جزءًا من هوية الطالب، بل تُستخدم مؤقتًا كمعامل دالة، وهذا هو <strong>الاعتماد (Dependency)</strong>. يُرسم في UML بسهم متقطع.</template>
+                    <div class="feedback"></div>
+                    <button class="submit-btn" onclick="checkAnswer(6)">تحقّق من الإجابة</button>
+                </div>
+            </div>
+            <!-- Question 7 -->
+            <div class="question-card" id="q7" data-correct="b">
+                <div class="question-header">
+                    <div class="question-number">7</div>
+                    <div class="question-type">العلاقات</div>
+                </div>
+                <div class="question-body">
+                    <div class="question-text">انظر إلى المُنشئ التالي. ما العلاقة بين <code>Car</code> و <code>Engine</code>؟</div>
+                    <div class="code-block">public class Car {
+    private Engine engine;
+
+    public Car(String model) {
+        this.engine = new Engine();   // created here
+    }
+}</div>
+                    <div class="options">
+                        <div class="option" data-answer="a">
+                            <div class="option-radio"></div>
+                            <div class="option-text">تجميع، لأن Car فيه حقل من نوع Engine</div>
+                        </div>
+                        <div class="option" data-answer="b">
+                            <div class="option-radio"></div>
+                            <div class="option-text">تركيب، لأن Engine يُنشأ داخل مُنشئ Car باستخدام <code>new</code></div>
+                        </div>
+                        <div class="option" data-answer="c">
+                            <div class="option-radio"></div>
+                            <div class="option-text">اعتماد، لأن Engine صنف مختلف</div>
+                        </div>
+                        <div class="option" data-answer="d">
+                            <div class="option-radio"></div>
+                            <div class="option-text">تجميع ذاتي (Self-aggregation)</div>
+                        </div>
+                    </div>
+                    <template class="explanation">القاعدة من الدرس: <em>أين كُتبت <code>new</code></em>. إذا كانت داخل مُنشئ المالك فالجزء خاص به ويموت معه، وهذا <strong>تركيب (Composition)</strong> ويُرسم بمعيّن مُعبّأ ◆.</template>
+                    <div class="feedback"></div>
+                    <button class="submit-btn" onclick="checkAnswer(7)">تحقّق من الإجابة</button>
+                </div>
+            </div>
+            <!-- Question 8 -->
+            <div class="question-card" id="q8" data-correct="c">
+                <div class="question-header">
+                    <div class="question-number">8</div>
+                    <div class="question-type">العلاقات</div>
+                </div>
+                <div class="question-body">
+                    <div class="question-text">كائن <code>Address</code> واحد أُنشئ في <code>main</code> ومُرِّر إلى مُنشئات ثلاثة كائنات <code>Student</code> مختلفة. أي العبارات صحيحة؟</div>
+                    <div class="options">
+                        <div class="option" data-answer="a">
+                            <div class="option-radio"></div>
+                            <div class="option-text">هذا تركيب، والعنوان يُحذف عند حذف أي طالب.</div>
+                        </div>
+                        <div class="option" data-answer="b">
+                            <div class="option-radio"></div>
+                            <div class="option-text">هذا اعتماد لأن العنوان معامل في المُنشئ.</div>
+                        </div>
+                        <div class="option" data-answer="c">
+                            <div class="option-radio"></div>
+                            <div class="option-text">هذا تجميع، فالعنوان مشترك ويبقى موجودًا مستقلًا عن أي طالب.</div>
+                        </div>
+                        <div class="option" data-answer="d">
+                            <div class="option-radio"></div>
+                            <div class="option-text">هذا غير مسموح، يجب أن يكون لكل طالب كائن Address خاص.</div>
+                        </div>
+                    </div>
+                    <template class="explanation">الكائن أُنشئ <em>خارجيًا</em> ومُرِّر للداخل، فيمكن مشاركته بين عدة مالكين ويبقى بعد زوال أحدهم، وهذا <strong>تجميع (Aggregation)</strong> ويُرسم بمعيّن مفرّغ ◇. وليس اعتمادًا لأنه مُخزَّن كحقل.</template>
+                    <div class="feedback"></div>
+                    <button class="submit-btn" onclick="checkAnswer(8)">تحقّق من الإجابة</button>
+                </div>
+            </div>
+            <!-- Question 9 -->
+            <div class="question-card" id="q9" data-correct="d">
+                <div class="question-header">
+                    <div class="question-number">9</div>
+                    <div class="question-type">UML</div>
+                </div>
+                <div class="question-body">
+                    <div class="question-text">في مخطط الأصناف UML، أي رمز يمثّل <strong>التركيب (Composition)</strong>؟</div>
+                    <div class="options">
+                        <div class="option" data-answer="a">
+                            <div class="option-radio"></div>
+                            <div class="option-text">سهم متقطع</div>
+                        </div>
+                        <div class="option" data-answer="b">
+                            <div class="option-radio"></div>
+                            <div class="option-text">معيّن مفرّغ ◇</div>
+                        </div>
+                        <div class="option" data-answer="c">
+                            <div class="option-radio"></div>
+                            <div class="option-text">رأس سهم مثلث فارغ △</div>
+                        </div>
+                        <div class="option" data-answer="d">
+                            <div class="option-radio"></div>
+                            <div class="option-text">معيّن مُعبّأ ◆</div>
+                        </div>
+                    </div>
+                    <template class="explanation">التركيب: معيّن مُعبّأ ◆. التجميع: معيّن مفرّغ ◇. الاعتماد: سهم متقطع. الوراثة: مثلث فارغ △.</template>
+                    <div class="feedback"></div>
+                    <button class="submit-btn" onclick="checkAnswer(9)">تحقّق من الإجابة</button>
+                </div>
+            </div>
+            <!-- Question 10 -->
+            <div class="question-card" id="q10" data-correct="a">
+                <div class="question-header">
+                    <div class="question-number">10</div>
+                    <div class="question-type">التجميع الذاتي</div>
+                </div>
+                <div class="question-body">
+                    <div class="question-text">أيّ تعريف حقل داخل الصنف <code>Student</code> يُعدّ مثالًا على <strong>التجميع الذاتي (Self-aggregation)</strong>؟</div>
+                    <div class="options">
+                        <div class="option" data-answer="a">
+                            <div class="option-radio"></div>
+                            <div class="option-text"><code>private Student supervisor;</code></div>
+                        </div>
+                        <div class="option" data-answer="b">
+                            <div class="option-radio"></div>
+                            <div class="option-text"><code>private int supervisorId;</code></div>
+                        </div>
+                        <div class="option" data-answer="c">
+                            <div class="option-radio"></div>
+                            <div class="option-text"><code>private Name name;</code></div>
+                        </div>
+                        <div class="option" data-answer="d">
+                            <div class="option-radio"></div>
+                            <div class="option-text"><code>private static int count;</code></div>
+                        </div>
+                    </div>
+                    <template class="explanation">التجميع الذاتي يعني أن الصنف يحتوي حقلًا من <em>نوعه نفسه</em>. تخزين كائن <code>Student</code> كامل (وليس مجرد رقم) يتيح الوصول لكل تفاصيل المشرف، وهذه الفكرة أساس القوائم المترابطة (Linked Lists).</template>
+                    <div class="feedback"></div>
+                    <button class="submit-btn" onclick="checkAnswer(10)">تحقّق من الإجابة</button>
+                </div>
+            </div>
+            <!-- Question 11 -->
+            <div class="question-card" id="q11" data-correct="b">
+                <div class="question-header">
+                    <div class="question-number">11</div>
+                    <div class="question-type">التعددية</div>
+                </div>
+                <div class="question-body">
+                    <div class="question-text">في علاقة UML، ماذا تعني التعددية <code>1..*</code>؟</div>
+                    <div class="options">
+                        <div class="option" data-answer="a">
+                            <div class="option-radio"></div>
+                            <div class="option-text">واحد بالضبط</div>
+                        </div>
+                        <div class="option" data-answer="b">
+                            <div class="option-radio"></div>
+                            <div class="option-text">واحد أو أكثر</div>
+                        </div>
+                        <div class="option" data-answer="c">
+                            <div class="option-radio"></div>
+                            <div class="option-text">صفر أو أكثر</div>
+                        </div>
+                        <div class="option" data-answer="d">
+                            <div class="option-radio"></div>
+                            <div class="option-text">صفر أو واحد</div>
+                        </div>
+                    </div>
+                    <template class="explanation"><code>1..*</code> تعني واحدًا على الأقل بلا حد أعلى. للمقارنة: <code>1</code> واحد بالضبط، <code>0..1</code> اختياري، <code>*</code> أو <code>0..*</code> صفر أو أكثر.</template>
+                    <div class="feedback"></div>
+                    <button class="submit-btn" onclick="checkAnswer(11)">تحقّق من الإجابة</button>
+                </div>
+            </div>
+            <!-- Question 12 -->
+            <div class="question-card" id="q12" data-correct="c">
+                <div class="question-header">
+                    <div class="question-number">12</div>
+                    <div class="question-type">أصناف التغليف</div>
+                </div>
+                <div class="question-body">
+                    <div class="question-text">ما اسم التحويل التلقائي في <code>Integer x = 5;</code>؟</div>
+                    <div class="options">
+                        <div class="option" data-answer="a">
+                            <div class="option-radio"></div>
+                            <div class="option-text">فك التغليف التلقائي (Auto-unboxing)</div>
+                        </div>
+                        <div class="option" data-answer="b">
+                            <div class="option-radio"></div>
+                            <div class="option-text">التحويل الصريح (Casting)</div>
+                        </div>
+                        <div class="option" data-answer="c">
+                            <div class="option-radio"></div>
+                            <div class="option-text">التغليف التلقائي (Auto-boxing)</div>
+                        </div>
+                        <div class="option" data-answer="d">
+                            <div class="option-radio"></div>
+                            <div class="option-text">التحليل (Parsing)</div>
+                        </div>
+                    </div>
+                    <template class="explanation">تحويل قيمة أولية (<code>int</code>) إلى كائن تغليف (<code>Integer</code>) تلقائيًا يسمى <strong>Auto-boxing</strong>، والعكس مثل <code>int y = x;</code> يسمى Auto-unboxing.</template>
+                    <div class="feedback"></div>
+                    <button class="submit-btn" onclick="checkAnswer(12)">تحقّق من الإجابة</button>
+                </div>
+            </div>
+            <!-- Question 13 -->
+            <div class="question-card" id="q13" data-correct="a">
+                <div class="question-header">
+                    <div class="question-number">13</div>
+                    <div class="question-type">ناتج الكود</div>
+                </div>
+                <div class="question-body">
+                    <div class="question-text">ماذا يطبع البرنامج؟</div>
+                    <div class="code-block">public class Main {
+    public static void main(String[] args) {
+        Integer a = 7;
+        int b = Integer.parseInt(&quot;12&quot;);
+        System.out.println(a + b);
+        System.out.println(&quot;12&quot; + a);
+    }
+}</div>
+                    <div class="options">
+                        <div class="option" data-answer="a">
+                            <div class="option-radio"></div>
+                            <div class="option-text">19<br>127</div>
+                        </div>
+                        <div class="option" data-answer="b">
+                            <div class="option-radio"></div>
+                            <div class="option-text">127<br>127</div>
+                        </div>
+                        <div class="option" data-answer="c">
+                            <div class="option-radio"></div>
+                            <div class="option-text">19<br>19</div>
+                        </div>
+                        <div class="option" data-answer="d">
+                            <div class="option-radio"></div>
+                            <div class="option-text">712<br>127</div>
+                        </div>
+                    </div>
+                    <template class="explanation"><code>Integer.parseInt("12")</code> تُعطي العدد 12، و<code>a</code> يُفك تغليفه تلقائيًا، فيكون <code>a + b</code> = 19. أما في <code>"12" + a</code> فالطرف الأيسر نص، فيصبح <code>+</code> دمجًا للنصوص ويُطبع <code>127</code>.</template>
+                    <div class="feedback"></div>
+                    <button class="submit-btn" onclick="checkAnswer(13)">تحقّق من الإجابة</button>
+                </div>
+            </div>
+            <!-- Question 14 -->
+            <div class="question-card" id="q14" data-correct="b">
+                <div class="question-header">
+                    <div class="question-number">14</div>
+                    <div class="question-type">BigInteger</div>
+                </div>
+                <div class="question-body">
+                    <div class="question-text">ماذا يحدث عند ترجمة هذا الكود؟</div>
+                    <div class="code-block">import java.math.BigInteger;
+public class Main {
+    public static void main(String[] args) {
+        BigInteger x = new BigInteger(&quot;100&quot;);
+        BigInteger y = new BigInteger(&quot;25&quot;);
+        BigInteger z = x + y;
+    }
+}</div>
+                    <div class="options">
+                        <div class="option" data-answer="a">
+                            <div class="option-radio"></div>
+                            <div class="option-text">يُترجم ويحمل <code>z</code> القيمة 125</div>
+                        </div>
+                        <div class="option" data-answer="b">
+                            <div class="option-radio"></div>
+                            <div class="option-text">خطأ ترجمة: لا يمكن استخدام العامل <code>+</code> مع <code>BigInteger</code></div>
+                        </div>
+                        <div class="option" data-answer="c">
+                            <div class="option-radio"></div>
+                            <div class="option-text">يُترجم لكن يرمي استثناءً وقت التشغيل</div>
+                        </div>
+                        <div class="option" data-answer="d">
+                            <div class="option-radio"></div>
+                            <div class="option-text">يُترجم ويحمل <code>z</code> القيمة "10025"</div>
+                        </div>
+                    </div>
+                    <template class="explanation"><code>BigInteger</code> و <code>BigDecimal</code> كائنات، فلا تعمل معها العوامل الحسابية. استخدم دوالها بدلًا من ذلك: <code>x.add(y)</code> و <code>subtract()</code> و <code>multiply()</code> و <code>divide()</code>.</template>
+                    <div class="feedback"></div>
+                    <button class="submit-btn" onclick="checkAnswer(14)">تحقّق من الإجابة</button>
+                </div>
+            </div>
+            <!-- Question 15 -->
+            <div class="question-card" id="q15" data-correct="d">
+                <div class="question-header">
+                    <div class="question-number">15</div>
+                    <div class="question-type">BigDecimal</div>
+                </div>
+                <div class="question-body">
+                    <div class="question-text">الأمر <code>System.out.println(1.0 - 0.9);</code> يطبع <code>0.09999999999999998</code>. ما الحل الموصى به للحصول على نتائج عشرية دقيقة (مثل المبالغ المالية)؟</div>
+                    <div class="options">
+                        <div class="option" data-answer="a">
+                            <div class="option-radio"></div>
+                            <div class="option-text">استخدام <code>float</code> بدل <code>double</code></div>
+                        </div>
+                        <div class="option" data-answer="b">
+                            <div class="option-radio"></div>
+                            <div class="option-text">استخدام صنف التغليف <code>Double</code></div>
+                        </div>
+                        <div class="option" data-answer="c">
+                            <div class="option-radio"></div>
+                            <div class="option-text">استخدام <code>long</code> ثم القسمة على 10</div>
+                        </div>
+                        <div class="option" data-answer="d">
+                            <div class="option-radio"></div>
+                            <div class="option-text">استخدام <code>BigDecimal</code> مُنشأ من نصوص، مثل <code>new BigDecimal("1.0")</code></div>
+                        </div>
+                    </div>
+                    <template class="explanation">النوع <code>double</code> لا يستطيع تمثيل بعض الكسور بدقة. أما <code>new BigDecimal("1.0").subtract(new BigDecimal("0.9"))</code> فتعطي <code>0.1</code> بالضبط، ولهذا يُستخدم BigDecimal في الحسابات المالية.</template>
+                    <div class="feedback"></div>
+                    <button class="submit-btn" onclick="checkAnswer(15)">تحقّق من الإجابة</button>
+                </div>
+            </div>
+
+            <div class="results-section" id="results">
+                <div class="results-title">انتهى الاختبار!</div>
+                <div class="results-score" id="score">0/15</div>
+                <div class="results-message" id="message"></div>
+                <button class="retry-btn" onclick="resetQuiz()">حاول مجددًا</button>
+            </div>
+        </div>
+
+        <nav class="bottom-nav">
+            <a href="03-wrapper-biginteger-ar.html" class="prev-lesson">السابق: فئات التغليف و BigInteger &#8250;</a>
+            <a href="../module06-inheritance/index.html">التالي: الوحدة 06 الوراثة &#8249;</a>
+        </nav>
+
+        <div class="footer">
+            <p><strong>Object-Oriented Programming</strong></p>
+            <p>الوحدة 05: التفكير الكائني &bull; التمارين</p>
+            <p>Prepared by Dr. Almalawi</p>
+        </div>
+    </div>
+
+    <script>
+        let answered = 0;
+        let correct = 0;
+        const total = 15;
+
+        function checkAnswer(questionNum) {
+            const card = document.getElementById('q' + questionNum);
+            const correctAnswer = card.dataset.correct;
+            const explanation = card.querySelector('template.explanation').innerHTML;
+            const options = card.querySelectorAll('.option');
+            const feedback = card.querySelector('.feedback');
+            const btn = card.querySelector('.submit-btn');
+            const selectedOption = card.querySelector('.option.selected');
+
+            if (!selectedOption) {
+                alert('الرجاء اختيار إجابة أولًا!');
+                return;
+            }
+
+            const isCorrect = selectedOption.getAttribute('data-answer') === correctAnswer;
+
+            options.forEach(opt => {
+                opt.style.pointerEvents = 'none';
+                if (opt.getAttribute('data-answer') === correctAnswer) {
+                    opt.classList.add('correct');
+                }
+            });
+
+            if (isCorrect) {
+                selectedOption.classList.add('correct');
+                card.classList.add('correct');
+                feedback.className = 'feedback correct';
+                feedback.innerHTML = '<div class="feedback-title">إجابة صحيحة!</div>' + explanation;
+                correct++;
+            } else {
+                selectedOption.classList.add('incorrect');
+                card.classList.add('incorrect');
+                feedback.className = 'feedback incorrect';
+                feedback.innerHTML = '<div class="feedback-title">إجابة خاطئة</div>' + explanation;
+            }
+
+            btn.disabled = true;
+            answered++;
+            updateProgress();
+            if (answered === total) showResults();
+        }
+
+        function updateProgress() {
+            document.getElementById('progress-fill').style.width = (answered / total) * 100 + '%';
+            document.getElementById('progress-text').textContent = answered + ' / ' + total + ' أسئلة';
+        }
+
+        function showResults() {
+            document.getElementById('score').textContent = correct + '/' + total;
+            const msg = document.getElementById('message');
+            const pct = correct / total;
+            if (correct === total) msg.textContent = 'علامة كاملة! لقد أتقنت هذا الفصل!';
+            else if (pct >= 0.8) msg.textContent = 'عمل ممتاز! أنت تفهم هذا الفصل جيدًا!';
+            else if (pct >= 0.6) msg.textContent = 'أحسنت! راجع المواضيع التي أخطأت فيها.';
+            else msg.textContent = 'واصل التدرّب! راجع الدروس وحاول مجددًا.';
+            document.getElementById('results').classList.add('show');
+        }
+
+        function resetQuiz() {
+            answered = 0;
+            correct = 0;
+            document.querySelectorAll('.question-card').forEach(card => {
+                card.classList.remove('correct', 'incorrect');
+                card.querySelectorAll('.option').forEach(opt => {
+                    opt.classList.remove('selected', 'correct', 'incorrect');
+                    opt.style.pointerEvents = 'auto';
+                });
+                card.querySelector('.feedback').className = 'feedback';
+                card.querySelector('.submit-btn').disabled = false;
+            });
+            document.getElementById('results').classList.remove('show');
+            updateProgress();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        document.querySelectorAll('.option').forEach(option => {
+            option.addEventListener('click', function () {
+                this.closest('.question-card').querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
+                this.classList.add('selected');
+            });
+        });
+    </script>
+</body>
+</html>
