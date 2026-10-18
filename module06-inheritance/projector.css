@@ -1,0 +1,79 @@
+/* ══════════════════════════════════════════════════════════════
+   Projector theme — white background, simple solid colours.
+   Loaded last by every Inheritance page so it overrides the
+   page's own styles. Remove the <link> to get the old look back.
+   ══════════════════════════════════════════════════════════════ */
+
+/* ── Page & frame ─────────────────────────────────── */
+body { background: #ffffff !important; color: #111827 !important; }
+.container { box-shadow: none !important; border: 1px solid #e5e7eb !important; }
+
+/* ── Top breadcrumb bar ───────────────────────────── */
+.nav-breadcrumb { background: #ffffff !important; border-bottom: 2px solid #e5e7eb !important; }
+.nav-breadcrumb, .nav-breadcrumb span, .breadcrumb .sep, .breadcrumb .separator,
+.breadcrumb .cur, .breadcrumb .current { color: #374151 !important; }
+.breadcrumb a { color: #be185d !important; font-weight: 700; }
+.lesson-nav a, .lang-switch {
+    background: #ffffff !important; color: #be185d !important;
+    border: 1.5px solid #be185d !important;
+}
+
+/* ── Hero / header ────────────────────────────────── */
+.hero, .header {
+    background: #ffffff !important; color: #111827 !important;
+    border-bottom: 3px solid #be185d !important;
+}
+.hero::before, .hero::after, .header::before, .header::after { display: none !important; }
+.hero h1, .header h1 { color: #be185d !important; text-shadow: none !important; }
+.hero .subtitle, .header .subtitle, .header .course-info { color: #374151 !important; opacity: 1 !important; }
+.hero .message {
+    background: #ffffff !important; color: #374151 !important;
+    border: 1.5px solid #e5e7eb !important; border-left: 5px solid #be185d !important;
+}
+.hero .pillar-badge, .hero .pillar-chip, .hero .topic-chip {
+    background: #ffffff !important; color: #374151 !important;
+    border: 1.5px solid #d1d5db !important; opacity: 1 !important;
+}
+.hero .pillar-chip.current { border-color: #be185d !important; color: #be185d !important; font-weight: 800; }
+.hero .pillar-chip.done { color: #15803d !important; border-color: #86efac !important; }
+.hero .pillar-badge .num { background: #be185d !important; color: #ffffff !important; }
+
+/* ── Code blocks: light, high-contrast syntax ─────── */
+.code-block {
+    background: #ffffff !important; color: #111827 !important;
+    border: 1.5px solid #cbd5e1 !important;
+}
+.code-block .kw,  .code-block .keyword  { color: #1d4ed8 !important; font-weight: 700; }
+.code-block .tp,  .code-block .type     { color: #0f766e !important; }
+.code-block .str, .code-block .string   { color: #15803d !important; }
+.code-block .num                        { color: #c2410c !important; }
+.code-block .cmt, .code-block .comment  { color: #6b7280 !important; font-style: italic; }
+.code-block .mtd                        { color: #7c3aed !important; }
+.code-block .var, .code-block .variable { color: #111827 !important; }
+.code-block .ann                        { color: #be185d !important; }
+
+/* ── Program output ───────────────────────────────── */
+.terminal {
+    background: #f8fafc !important; color: #111827 !important;
+    border: 1.5px solid #cbd5e1 !important;
+}
+.terminal-header { background: #f1f5f9 !important; border-color: #cbd5e1 !important; }
+.terminal-title { color: #374151 !important; }
+
+/* ── Footer ───────────────────────────────────────── */
+.footer { background: #ffffff !important; color: #374151 !important; border-top: 2px solid #e5e7eb !important; }
+.footer p { opacity: 1 !important; }
+.bottom-nav { background: #ffffff !important; }
+
+/* ── Soft shadows look muddy on a projector ───────── */
+* { text-shadow: none !important; }
+
+/* ── Dark boxes defined by page classes ───────────── */
+.bac-term { background: #f8fafc !important; color: #111827 !important; border: 1.5px solid #cbd5e1 !important; }
+
+/* ── Table header rows: light strip, dark text ────── */
+.compare-table th, .vis-table th, .obj-method-table th, .matrix-table th {
+    background: #f1f5f9 !important; color: #111827 !important; border: 1px solid #cbd5e1 !important;
+}
+.compare-table th.th-overload { color: #5b21b6 !important; }
+.compare-table th.th-override { color: #be185d !important; }

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inheritance — Static Method Hiding</title>
+    <title>Static Methods</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -27,7 +27,7 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.8;
             color: var(--dark);
-            background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%);
+            background: #ec4899;
             min-height: 100vh;
             padding: 20px;
         }
@@ -43,7 +43,7 @@
 
         /* ── Breadcrumb ─────────────────────────────────── */
         .nav-breadcrumb {
-            background: linear-gradient(135deg, #831843, #be185d);
+            background: #831843;
             padding: 15px 40px;
             display: flex;
             justify-content: space-between;
@@ -70,7 +70,7 @@
 
         /* ── Hero ───────────────────────────────────────── */
         .hero {
-            background: linear-gradient(135deg, #ec4899, #8b5cf6, #6366f1);
+            background: #ec4899;
             color: white;
             padding: 50px 40px;
             text-align: center;
@@ -163,7 +163,7 @@
             gap: 12px;
         }
         .section-number {
-            background: linear-gradient(135deg, var(--pink), var(--violet));
+            background: #ec4899;
             color: white;
             width: 42px; height: 42px;
             border-radius: 50%;
@@ -180,7 +180,7 @@
             gap: 10px;
         }
         .sub-badge {
-            background: linear-gradient(135deg, var(--violet), var(--indigo));
+            background: #8b5cf6;
             color: white;
             padding: 4px 14px;
             border-radius: 20px;
@@ -190,7 +190,7 @@
 
         /* ── Callout boxes ──────────────────────────────── */
         .key-box {
-            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            background: #ffffff;
             border-left: 5px solid var(--warning);
             padding: 18px 24px;
             margin: 20px 0;
@@ -199,7 +199,7 @@
         .key-box-title { font-weight: 700; color: var(--warning); margin-bottom: 8px; font-size: 1.05rem; }
 
         .info-box {
-            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            background: #ffffff;
             border-left: 5px solid #2563eb;
             padding: 18px 24px;
             margin: 20px 0;
@@ -207,7 +207,7 @@
         }
 
         .pink-box {
-            background: linear-gradient(135deg, #fce7f3, #fbcfe8);
+            background: #ffffff;
             border-left: 5px solid var(--pink);
             padding: 18px 24px;
             margin: 20px 0;
@@ -216,7 +216,7 @@
         .pink-box-title { font-weight: 700; color: var(--pink-dark); margin-bottom: 8px; font-size: 1.05rem; }
 
         .violet-box {
-            background: linear-gradient(135deg, #ede9fe, #ddd6fe);
+            background: #ffffff;
             border-left: 5px solid var(--violet);
             padding: 18px 24px;
             margin: 20px 0;
@@ -225,7 +225,7 @@
         .violet-box-title { font-weight: 700; color: var(--violet-dark); margin-bottom: 8px; font-size: 1.05rem; }
 
         .success-box {
-            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+            background: #ffffff;
             border-left: 5px solid var(--success);
             padding: 18px 24px;
             margin: 20px 0;
@@ -234,7 +234,7 @@
         .success-box-title { font-weight: 700; color: #065f46; margin-bottom: 8px; font-size: 1.05rem; }
 
         .danger-box {
-            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            background: #ffffff;
             border-left: 5px solid var(--danger);
             padding: 18px 24px;
             margin: 20px 0;
@@ -307,7 +307,7 @@
 
         /* ── Challenge Boxes ──────────────────────────────── */
         .challenge-box {
-            background: #fffbeb; border: 2px solid #f59e0b;
+            background: #ffffff; border: 2px solid #f59e0b;
             border-radius: 14px; margin: 20px 0; overflow: hidden;
         }
         .challenge-header {
@@ -322,8 +322,8 @@
             padding: 4px 14px; border-radius: 20px;
             font-weight: 800; font-size: .85rem; margin: 10px 0 6px;
         }
-        .verdict.ok  { background: #dcfce7; color: #15803d; border: 1.5px solid #86efac; }
-        .verdict.err { background: #fee2e2; color: #991b1b; border: 1.5px solid #fca5a5; }
+        .verdict.ok  { background: #ffffff; color: #15803d; border: 1.5px solid #86efac; }
+        .verdict.err { background: #ffffff; color: #991b1b; border: 1.5px solid #fca5a5; }
         .verdict-explain { font-size: .86rem; color: var(--dark); line-height: 1.7; }
 
         /* ── Challenge show/hide ─────────────────────────── */
@@ -362,7 +362,7 @@
             display: flex;
             justify-content: space-between;
             padding: 30px 40px;
-            background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+            background: #ffffff;
             border-top: 1px solid #e2e8f0;
         }
         .bottom-nav a {
@@ -370,7 +370,7 @@
             align-items: center;
             gap: 10px;
             padding: 15px 28px;
-            background: linear-gradient(135deg, var(--pink), var(--violet));
+            background: #ec4899;
             color: white;
             text-decoration: none;
             border-radius: 12px;
@@ -400,6 +400,7 @@
             .hero h1 { font-size: 1.7rem; }
         }
     </style>
+    <link rel="stylesheet" href="projector.css">
 </head>
 <body>
 <div class="container">
@@ -411,46 +412,31 @@
             <span class="sep">›</span>
             <a href="index.html">Module 6 — Inheritance</a>
             <span class="sep">›</span>
-            <a href="reusability.html">Reusability</a>
-            <span class="sep">›</span>
-            <span class="cur">Static Method Hiding</span>
+            <span class="cur">Lesson 6: Static Methods</span>
         </div>
         <div class="lesson-nav">
-            <a href="reusability.html">← Part 2: Reusability</a>
-            <a href="../module07-polymorphism/index.html">Next: Polymorphism →</a>
+            <a href="05-protected-final-object.html">‹ Lesson 5</a>
+            <a href="07-exercises.html">Lesson 7 ›</a>
         </div>
     </nav>
 
     <!-- ── Hero ──────────────────────────────────────── -->
     <div class="hero">
-        <div class="pillar-badge">
-            <div class="num">6</div>
-            Module 6 — Inheritance — Advanced
-        </div>
-        <h1>Static Method Hiding</h1>
-        <p class="subtitle">Inherited But Not Overridden — A Subtle Distinction</p>
-        <div class="message">
-            You already know that instance methods can be overridden — the child replaces
-            the parent's behaviour at runtime. But <strong>static methods follow different rules</strong>.
-            A child can define a static method with the same name as the parent's,
-            but what happens is called <em>hiding</em>, not overriding.
-            The difference is invisible in the code — but the behaviour is completely opposite.
-            This page is dedicated to understanding exactly why.
-        </div>
-        <div class="topic-chips">
-            <div class="topic-chip">Dynamic Binding</div>
-            <div class="topic-chip">Static Binding</div>
-            <div class="topic-chip">Method Hiding</div>
-            <div class="topic-chip">Reference Type vs Object Type</div>
-        </div>
+        <div class="pillar-badge"><span class="num">6</span> Module 6 — Inheritance · Lesson 6 of 8</div>
+        <h1>Static Methods — Hiding, Not Overriding</h1>
+        <p class="subtitle">Inherited but never overridden</p>
     </div>
 
     <!-- ── Content ────────────────────────────────────── -->
     <div class="content">
 
-        <!-- ════════ Main Section ════════ -->
+        <nav style="border:1.5px solid #e2e8f0;border-radius:14px;padding:18px 24px;margin:0 0 34px;">
+            <div style="font-weight:800;margin-bottom:8px;">&#128203; In this lesson</div>
+            <ol style="margin:0 0 0 22px;"><li><a href="#section-1" style="color:#1d4ed8;font-weight:600;text-decoration:none;">Static Methods &amp;amp; Inheritance — Hiding, Not Overriding</a></li></ol>
+        </nav>
+<!-- ════════ Main Section ════════ -->
         <div class="section">
-            <h2 class="section-title">
+            <h2 class="section-title" id="section-1">
                 <span class="section-number">1</span>
                 Static Methods &amp; Inheritance — Hiding, Not Overriding
             </h2>
@@ -463,10 +449,20 @@
                 and the behaviour is completely different.
             </p>
 
+            <div class="key-box">
+                <div class="key-box-title">&#128218; NOTE — The Rule as Stated in the Lecture</div>
+                <ul style="margin:8px 0 0 22px;">
+                    <li>Like an instance method, a <strong>static method can be inherited</strong> — the child can call it without writing it.</li>
+                    <li>However, a <strong>static method cannot be overridden</strong>.</li>
+                    <li>If a static method defined in the superclass is <strong>redefined</strong> in a subclass, the method defined in the superclass is <strong>hidden</strong>.</li>
+                    <li>The hidden static method can still be invoked using the syntax <code class="code-inline">SuperClassName.staticMethodName()</code>.</li>
+                </ul>
+            </div>
+
             <!-- Contrast grid -->
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:22px 0;">
                 <div style="border-radius:14px;overflow:hidden;border:2px solid #86efac;">
-                    <div style="background:#dcfce7;padding:10px 16px;font-weight:800;color:#166534;font-size:.9rem;">&#9654; Instance Method — Overriding</div>
+                    <div style="background:#ffffff;padding:10px 16px;font-weight:800;color:#166534;font-size:.9rem;">&#9654; Instance Method — Overriding</div>
                     <div style="padding:14px 16px;font-size:.88rem;line-height:1.8;color:#374151;">
                         &#10003; Uses <strong>dynamic binding</strong><br>
                         &#10003; Decision made at <strong>runtime</strong><br>
@@ -475,7 +471,7 @@
                     </div>
                 </div>
                 <div style="border-radius:14px;overflow:hidden;border:2px solid #fca5a5;">
-                    <div style="background:#fee2e2;padding:10px 16px;font-weight:800;color:#991b1b;font-size:.9rem;">&#9654; Static Method — Hiding</div>
+                    <div style="background:#ffffff;padding:10px 16px;font-weight:800;color:#991b1b;font-size:.9rem;">&#9654; Static Method — Hiding</div>
                     <div style="padding:14px 16px;font-size:.88rem;line-height:1.8;color:#374151;">
                         &#10007; Uses <strong>static binding</strong><br>
                         &#10007; Decision made at <strong>compile time</strong><br>
@@ -512,7 +508,7 @@
 
             <!-- Part A: Static via class name -->
             <h3 class="subsection-title" style="margin-top:28px;">
-                <span class="sub-badge" style="background:linear-gradient(135deg,#991b1b,#dc2626);">Step 2A — Static</span>
+                <span class="sub-badge" style="background:#991b1b;">Step 2A — Static</span>
                 Call Static Methods via the Class Name
             </h3>
 
@@ -544,7 +540,7 @@ I am a Dog</div>
 
             <!-- Part B: Instance via object -->
             <h3 class="subsection-title" style="margin-top:32px;">
-                <span class="sub-badge" style="background:linear-gradient(135deg,#15803d,#059669);">Step 2B — Instance</span>
+                <span class="sub-badge" style="background:#15803d;">Step 2B — Instance</span>
                 Call Instance Methods via an Object — Overriding Works Differently
             </h3>
 
@@ -583,7 +579,7 @@ Woof!</div>
 
             <!-- The trap -->
             <h3 class="subsection-title" style="margin-top:32px;">
-                <span class="sub-badge" style="background:linear-gradient(135deg,#92400e,#d97706);">Warning</span>
+                <span class="sub-badge" style="background:#92400e;">Warning</span>
                 What If You Call a Static Method via an Object Reference?
             </h3>
 
@@ -640,7 +636,7 @@ Woof!</div>
             <table style="width:100%;border-collapse:collapse;font-size:.9rem;margin:16px 0;">
                 <thead>
                     <tr>
-                        <th style="background:#374151;color:white;padding:12px 16px;text-align:left;">Aspect</th>
+                        <th style="background:#f1f5f9;color:#111827;padding:12px 16px;text-align:left;">Aspect</th>
                         <th style="background:#15803d;color:white;padding:12px 16px;text-align:left;">Overriding (instance)</th>
                         <th style="background:#991b1b;color:white;padding:12px 16px;text-align:left;">Hiding (static)</th>
                     </tr>
@@ -669,7 +665,7 @@ Woof!</div>
                     <tr>
                         <td style="padding:10px 16px;font-weight:700;">Keyword</td>
                         <td style="padding:10px 16px;color:#15803d;">No keyword</td>
-                        <td style="padding:10px 16px;color:#991b1b;"><code style="background:#fee2e2;padding:2px 6px;border-radius:4px;">static</code></td>
+                        <td style="padding:10px 16px;color:#991b1b;"><code style="background:#ffffff;padding:2px 6px;border-radius:4px;">static</code></td>
                     </tr>
                 </tbody>
             </table>
@@ -680,6 +676,68 @@ Woof!</div>
                 Overriding or Hiding?
             </h3>
 
+            <div class="challenge-box">
+                <div class="challenge-header">&#9996; Challenge — Lecture Slide: Hidden Static Method</div>
+                <div class="challenge-body">
+                    <div class="challenge-q-text">What is the output?</div>
+                    <div class="code-block" style="margin:0 0 12px;"><span class="kw">class</span> <span class="tp">Base</span> {
+    <span class="kw">public</span> <span class="kw">static</span> <span class="kw">void</span> <span class="mtd">fun</span>() {
+        <span class="tp">System</span>.<span class="var">out</span>.<span class="mtd">println</span>(<span class="str">"Base fun"</span>);
+    }
+}
+
+<span class="kw">class</span> <span class="tp">Derived</span> <span class="kw">extends</span> <span class="tp">Base</span> {
+    <span class="kw">public</span> <span class="kw">static</span> <span class="kw">void</span> <span class="mtd">fun</span>() {
+        <span class="tp">System</span>.<span class="var">out</span>.<span class="mtd">println</span>(<span class="str">"Derived fun"</span>);
+    }
+    <span class="kw">public</span> <span class="kw">static</span> <span class="kw">void</span> <span class="mtd">main</span>(<span class="tp">String</span>[] <span class="var">args</span>) {
+        <span class="tp">Derived</span> <span class="var">obj</span> = <span class="kw">new</span> <span class="tp">Derived</span>();
+        <span class="var">obj</span>.<span class="mtd">fun</span>();
+        <span class="tp">Base</span>.<span class="mtd">fun</span>();
+    }
+}</div>
+                    <div class="verdict ok">&#10003; Output: Derived fun / Base fun</div>
+                    <div class="verdict-explain">
+                        <code>obj</code> is declared as <code>Derived</code>, so <code>obj.fun()</code> is resolved at compile time to
+                        <code>Derived.fun()</code> → <strong>Derived fun</strong>.
+                        <code>Base.fun()</code> invokes the <strong>hidden</strong> superclass method through its class name → <strong>Base fun</strong>.
+                    </div>
+                </div>
+            </div>
+
+            <div class="challenge-box">
+                <div class="challenge-header">&#9996; Challenge — Lecture Slide: <code>super.fun()</code> in the Constructor</div>
+                <div class="challenge-body">
+                    <div class="challenge-q-text">What is the output now?</div>
+                    <div class="code-block" style="margin:0 0 12px;"><span class="kw">class</span> <span class="tp">Base</span> {
+    <span class="kw">public</span> <span class="kw">static</span> <span class="kw">void</span> <span class="mtd">fun</span>() {
+        <span class="tp">System</span>.<span class="var">out</span>.<span class="mtd">println</span>(<span class="str">"Base fun"</span>);
+    }
+}
+
+<span class="kw">class</span> <span class="tp">Derived</span> <span class="kw">extends</span> <span class="tp">Base</span> {
+    <span class="tp">Derived</span>() {
+        <span class="kw">super</span>.<span class="mtd">fun</span>();
+    }
+    <span class="kw">public</span> <span class="kw">static</span> <span class="kw">void</span> <span class="mtd">fun</span>() {
+        <span class="tp">System</span>.<span class="var">out</span>.<span class="mtd">println</span>(<span class="str">"Derived fun"</span>);
+    }
+    <span class="kw">public</span> <span class="kw">static</span> <span class="kw">void</span> <span class="mtd">main</span>(<span class="tp">String</span>[] <span class="var">args</span>) {
+        <span class="tp">Derived</span> <span class="var">obj</span> = <span class="kw">new</span> <span class="tp">Derived</span>();
+        <span class="var">obj</span>.<span class="mtd">fun</span>();
+        <span class="tp">Base</span>.<span class="mtd">fun</span>();
+    }
+}</div>
+                    <div class="verdict ok">&#10003; Output: Base fun / Derived fun / Base fun</div>
+                    <div class="verdict-explain">
+                        <strong>1.</strong> <code>new Derived()</code> runs the constructor, which calls <code>super.fun()</code> — the
+                        superclass (hidden) version → <strong>Base fun</strong>.<br>
+                        <strong>2.</strong> <code>obj.fun()</code> → declared type Derived → <strong>Derived fun</strong>.<br>
+                        <strong>3.</strong> <code>Base.fun()</code> → <strong>Base fun</strong>.<br>
+                        (Calling a static method through <code>super.</code> or an object reference compiles, but the class-name form is clearer.)
+                    </div>
+                </div>
+            </div>
             <div class="challenge-box">
                 <div class="challenge-header">&#9996; Challenge — Spot the Trap</div>
                 <div class="challenge-body">
@@ -725,9 +783,10 @@ Woof!</div>
 
     </div><!-- /content -->
 
-    <nav class="bottom-nav">
-        <a href="reusability.html">← Part 2: Reusability</a>
-        <a href="../module07-polymorphism/index.html">Next: Polymorphism →</a>
+    <nav class="bottom-nav" style="gap:12px;flex-wrap:wrap;">
+        <a href="05-protected-final-object.html">‹ Lesson 5: protected, final, the Object Class &amp; Multiple Inheritance</a>
+        <a href="index.html">Module 6 overview</a>
+        <a href="07-exercises.html">Lesson 7: Exercises: Test Your Understanding ›</a>
     </nav>
 
     <div class="footer">

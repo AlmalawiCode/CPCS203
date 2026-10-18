@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inheritance Checklist</title>
+<style>
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #ffffff; color: #111827; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.7; }
+    .wrap { max-width: 1000px; margin: 0 auto; padding: 0 16px 40px; }
+    .topbar { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; padding: 14px 0; border-bottom: 2px solid #e5e7eb; }
+    .topbar a { color: #be185d; font-weight: 700; text-decoration: none; }
+    .navbtns a { display: inline-block; border: 1.5px solid #be185d; border-radius: 20px; padding: 5px 14px; font-size: .88rem; margin-left: 6px; }
+    header { text-align: center; padding: 30px 0 22px; border-bottom: 3px solid #be185d; }
+    h1 { color: #be185d; font-size: 2.3rem; margin: 0 0 6px; }
+    header p { color: #374151; max-width: 760px; margin: 8px auto; }
+    .how { border: 1.5px solid #e5e7eb; border-left: 5px solid #be185d; border-radius: 0 12px 12px 0; padding: 14px 20px; margin: 24px 0; text-align: left; }
+    .how ol { margin: 6px 0 0 20px; padding: 0; }
+    .progress { position: sticky; top: 0; background: #ffffff; z-index: 5; padding: 12px 0; border-bottom: 1px solid #e5e7eb; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+    .bar { flex: 1; min-width: 160px; height: 14px; border: 1.5px solid #cbd5e1; border-radius: 10px; overflow: hidden; }
+    .fill { height: 100%; width: 0; background: #15803d; transition: width .3s; }
+    .count { font-weight: 800; color: #111827; }
+    .tools button { background: #ffffff; border: 1.5px solid #374151; color: #374151; border-radius: 20px; padding: 5px 14px; font-weight: 700; cursor: pointer; margin-left: 6px; }
+    .group h2 { color: #be185d; font-size: 1.35rem; border-bottom: 2px solid #be185d; padding-bottom: 6px; margin: 34px 0 12px; }
+    .item { border: 1.5px solid #e5e7eb; border-radius: 12px; margin: 10px 0; padding: 10px 16px; }
+    .item.done { border-color: #15803d; border-left: 6px solid #15803d; }
+    .row { display: flex; gap: 12px; align-items: flex-start; cursor: pointer; }
+    .row input { width: 22px; height: 22px; margin-top: 3px; accent-color: #15803d; flex-shrink: 0; cursor: pointer; }
+    .num { font-weight: 800; color: #be185d; min-width: 26px; }
+    .txt { flex: 1; font-size: 1.02rem; }
+    .slides { font-size: .78rem; color: #6b7280; border: 1px solid #d1d5db; border-radius: 12px; padding: 1px 9px; white-space: nowrap; height: fit-content; margin-top: 3px; }
+    details { margin: 8px 0 2px 60px; }
+    summary { cursor: pointer; color: #1d4ed8; font-weight: 700; font-size: .92rem; }
+    .q { margin: 8px 0; padding: 10px 14px; border: 1.5px solid #e5e7eb; border-radius: 10px; }
+    details.ans { margin: 6px 0; }
+    details.ans summary { color: #15803d; }
+    .a { margin: 6px 0; padding: 10px 14px; border: 1.5px solid #86efac; border-left: 5px solid #15803d; border-radius: 0 10px 10px 0; }
+    .review { display: inline-block; margin: 4px 0 6px; color: #be185d; font-weight: 700; font-size: .9rem; text-decoration: none; }
+    code { font-family: Consolas, Monaco, monospace; font-size: .92em; color: #9d174d; background: #f3f4f6; padding: 1px 5px; border-radius: 4px; }
+    pre.cb { font-family: Consolas, Monaco, monospace; font-size: .9rem; line-height: 1.6; border: 1.5px solid #cbd5e1; border-radius: 10px; padding: 12px 14px; overflow-x: auto; margin: 6px 0 10px; background: #ffffff; }
+    pre.cb .kw { color: #1d4ed8; font-weight: 700; } pre.cb .tp { color: #0f766e; } pre.cb .str { color: #15803d; }
+    pre.cb .num { color: #c2410c; } pre.cb .cmt { color: #6b7280; font-style: italic; } pre.cb .mtd { color: #7c3aed; } pre.cb .ann { color: #be185d; }
+    .final { text-align: center; margin: 34px 0 10px; padding: 18px; border: 2px solid #15803d; border-radius: 14px; display: none; }
+    .final.show { display: block; }
+    .final b { color: #15803d; font-size: 1.2rem; }
+    footer { text-align: center; color: #374151; border-top: 2px solid #e5e7eb; margin-top: 30px; padding-top: 14px; font-size: .9rem; }
+    @media (max-width: 640px) { details { margin-left: 0; } .slides { display: none; } h1 { font-size: 1.8rem; } }
+    @media print { .progress .tools, .topbar .navbtns { display: none; } details { display: none; } .item { break-inside: avoid; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+    <div class="topbar">
+        <div><a href="../index.html">Object-Oriented Programming</a> › <a href="index.html">Module 6 — Inheritance</a> › Lesson 8: Checklist</div>
+        <div class="navbtns"><a href="index.html">All lessons</a><a href="07-exercises.html">‹ Lesson 7: Exercises</a></div>
+    </div>
+
+    <header>
+        <h1>Inheritance — Am I Ready?</h1>
+        <p>This checklist covers <b>everything in the Chapter 11 lecture slides (Inheritance)</b>.
+        If you can honestly tick every item, you have covered the whole presentation.</p>
+        <div class="how">
+            <b>How to use it</b>
+            <ol>
+                <li>Read the statement. Open <b>“Prove it”</b> and answer the question <b>without looking</b>.</li>
+                <li>Open <b>“Show answer”</b> and compare. Only tick the box if your answer was right.</li>
+                <li>If not, follow <b>“Review in the tutorial”</b>, study that part, and come back.</li>
+            </ol>
+        </div>
+    </header>
+
+    <div class="progress">
+        <span class="count"><span id="done">0</span> / 31 mastered</span>
+        <div class="bar"><div class="fill" id="fill"></div></div>
+        <span class="tools"><button onclick="window.print()">Print</button><button onclick="resetAll()">Reset</button></span>
+    </div>
+
+    <section class="group"><h2>A. What Inheritance Is — and Why We Use It</h2>
+        <div class="item" data-id="i1">
+            <label class="row"><input type="checkbox" id="i1"><span class="num">1</span><span class="txt">I can <b>define inheritance</b> in one sentence and say what the child receives from the parent.</span><span class="slides">Slide 6</span></label>
+            <details>
+                <summary>Prove it — test yourself</summary>
+                <div class="q">Complete: “Inheritance allows a developer to ______ a new class from an ______ one. The child inherits the ______ and ______ of the parent.”</div>
+                <details class="ans"><summary>Show answer</summary><div class="a">…to <b>derive</b> a new class from an <b>existing</b> one. The child inherits the <b>methods</b> and <b>data</b> (fields) of the parent — every <em>accessible</em> member, but <b>never the constructors</b>.</div></details>
+                <a class="review" href="02-superclass-subclass.html#section-3">Review in the tutorial: Lesson 2, §3 &rarr;</a>
+            </details>
+        </div>
+        <div class="item" data-id="i2">
+            <label class="row"><input type="checkbox" id="i2"><span class="num">2</span><span class="txt">I can give <b>all the names</b> of the class at the top and the class at the bottom of a hierarchy.</span><span class="slides">Slide 6</span></label>
+            <details>
+                <summary>Prove it — test yourself</summary>
+                <div class="q">In <code>class Circle extends Shape</code>, give three names for Shape and four names for Circle.</div>
+                <details class="ans"><summary>Show answer</summary><div class="a">Shape: <b>parent class, superclass, base class</b>. Circle: <b>child class, subclass, derived class, extended class</b>.</div></details>
+                <a class="review" href="02-superclass-subclass.html#section-3">Review in the tutorial: Lesson 2, §3 &rarr;</a>
+            </details>
+        </div>
+        <div class="item" data-id="i3">
+            <label class="row"><input type="checkbox" id="i3"><span class="num">3</span><span class="txt">I can explain the <b>motivation</b>: avoiding redundancy, and software reuse.</span><span class="slides">Slides 3, 9</span></label>
+            <details>
+                <summary>Prove it — test yourself</summary>
+                <div class="q">Circles, rectangles and triangles share colour, filled and date of creation. (1) What is the best design to avoid redundancy? (2) Why is reuse “a fundamental benefit”?</div>
+                <details class="ans"><summary>Show answer</summary><div class="a">(1) Put the common features in one superclass <code>Shape</code> and let the three classes <code>extend</code> it. (2) We capitalise on all the effort that went into the <b>design, implementation and testing</b> of the existing class.</div></details>
+                <a class="review" href="01-motivation.html#section-3">Review in the tutorial: Lesson 1, §3 &rarr;</a>
+            </details>
+        </div>
+        <div class="item" data-id="i4">
+            <label class="row"><input type="checkbox" id="i4"><span class="num">4</span><span class="txt">I can apply the <b>is-a</b> test and draw inheritance in <b>UML</b>.</span><span class="slides">Slide 7</span></label>
+            <details>
+                <summary>Prove it — test yourself</summary>
+                <div class="q">Which arrow shows inheritance in UML, and which way does it point? Is “Car extends Engine” proper inheritance?</div>
+                <details class="ans"><summary>Show answer</summary><div class="a">A <b>hollow triangular arrow pointing to the superclass</b>. No — a car <em>has</em> an engine, it is not <em>an</em> engine. Proper inheritance is an <b>is-a</b> relationship: the child is a more specific version of the parent.</div></details>
+                <a class="review" href="02-superclass-subclass.html#section-1">Review in the tutorial: Lesson 2, §1 &rarr;</a>
+            </details>
+        </div>
+        <div class="item" data-id="i5">
+            <label class="row"><input type="checkbox" id="i5"><span class="num">5</span><span class="txt">I can list the <b>four things a subclass can do</b> with what it gets from the superclass.</span><span class="slides">Slides 8, 10, 13–15, 47</span></label>
+            <details>
+                <summary>Prove it — test yourself</summary>
+                <div class="q">Name the four “child’s features”.</div>
+                <details class="ans"><summary>Show answer</summary><div class="a">1. <b>Inherit</b> the superclass members &nbsp;2. <b>Add new properties</b> (fields) &nbsp;3. <b>Add new methods</b> &nbsp;4. <b>Override</b> (modify) inherited methods.</div></details>
+                <a class="review" href="02-superclass-subclass.html#section-5">Review in the tutorial: Lesson 2, §5 &rarr;</a>
+            </details>
+        </div>
+        <div class="item" data-id="i6">
+            <label class="row"><input type="checkbox" id="i6"><span class="num">6</span><span class="txt">I can write a subclass with the reserved word <b>extends</b> and say which class has <b>more data</b>.</span><span class="slides">Slides 4–5, 17</span></label>
+            <details>
+                <summary>Prove it — test yourself</summary>
+                <div class="q">Shape has <code>color</code> and <code>filled</code>; Circle extends Shape and adds <code>radius</code>. How many fields does a Circle object have?</div>
+                <details class="ans"><summary>Show answer</summary><div class="a"><b>Three</b> (color, filled, radius). A subclass is a <em>specialisation</em> — it has everything the parent has plus its own additions, so it is never “smaller”.</div></details>
+                <a class="review" href="02-superclass-subclass.html#section-4">Review in the tutorial: Lesson 2, §4 &rarr;</a>
+            </details>
+        </div>
+        <div class="item" data-id="i7">
+            <label class="row"><input type="checkbox" id="i7"><span class="num">7</span><span class="txt">I can explain why a subclass <b>cannot use private superclass fields directly</b> — and the legal ways around it.</span><span class="slides">Slides 13, 17</span></label>
+            <details>
+                <summary>Prove it — test yourself</summary>
+                <div class="q">Inside <code>Circle(double radius, String color, boolean filled)</code>, is <code>this.color = color;</code> legal? If not, give two legal alternatives.</div>
+                <details class="ans"><summary>Show answer</summary><div class="a"><b>Illegal</b> — <code>color</code> is private in Shape. Alternatives: call the inherited public setters <code>setColor(color); setFilled(filled);</code>, or call <code>super(color, filled);</code> as the first statement. (Making the field <code>protected</code> also works.)</div></details>
+                <a class="review" href="02-superclass-subclass.html#section-5">Review in the tutorial: Lesson 2, §5 &rarr;</a>
+            </details>
+        </div></section><section class="group"><h2>B. Constructors and the Keyword super</h2>
+        <div class="item" data-id="i8">
+            <label class="row"><input type="checkbox" id="i8"><span class="num">8</span><span class="txt">I can name the <b>two uses of super</b>.</span><span class="slides">Slide 18</span></label>
+            <details>
+                <summary>Prove it — test yourself</summary>
+                <div class="q">Write one line that calls a superclass constructor and one line that calls a superclass method.</div>
+                <details class="ans"><summary>Show answer</summary><div class="a"><code>super(color, filled);</code> (constructor — first statement only) and <code>super.toString()</code> (method — anywhere in the method).</div></details>
+                <a class="review" href="03-constructors-super.html#section-1">Review in the tutorial: Lesson 3, §1 &rarr;</a>
+            </details>
+        </div>
+        <div class="item" data-id="i9">
+            <label class="row"><input type="checkbox" id="i9"><span class="num">9</span><span class="txt">I can explain that <b>constructors are not inherited</b>, yet the superclass constructor <b>always runs</b>.</span><span class="slides">Slide 19</span></label>
+            <details>
+                <summary>Prove it — test yourself</summary>
+                <div class="q">Shape has a public constructor <code>Shape(String, boolean)</code>. Can you write <code>new Circle("Red", true)</code> if Circle defines no such constructor?</div>
+                <details class="ans"><summary>Show answer</summary><div class="a"><b>No.</b> Constructors are not inherited. They can only be <em>invoked</em> from a subclass constructor with <code>super(...)</code>. A child’s constructor is responsible for calling the parent’s.</div></details>
+                <a class="review" href="03-constructors-super.html#section-1">Review in the tutorial: Lesson 3, §1 &rarr;</a>
+            </details>
+        </div>
+        <div class="item" data-id="i10">
+            <label class="row"><input type="checkbox" id="i10"><span class="num">10</span><span class="txt">I know exactly <b>when Java inserts super()</b> for me.</span><span class="slides">Slides 19–20, 24, 26</span></label>
+            <details>
+                <summary>Prove it — test yourself</summary>
+                <div class="q">Rewrite <code>public A(double d) { x = d; }</code> the way the compiler sees it. What does Java do for a class with <em>no</em> constructor?</div>
+                <details class="ans"><summary>Show answer</summary><div class="a"><code>public A(double d) { super(); x = d; }</code> — if neither <code>this(...)</code> nor <code>super(...)</code> is written, the compiler puts <code>super()</code> first. A class with no constructor gets a default <code>A() { super(); }</code>.</div></details>
+                <a class="review" href="03-constructors-super.html#section-1">Review in the tutorial: Lesson 3, §1 &rarr;</a>
+            </details>
+        </div>
+        <div class="item" data-id="i11">
+            <label class="row"><input type="checkbox" id="i11"><span class="num">11</span><span class="txt">I can find the error when a superclass has <b>no no-arg constructor</b>.</span><span class="slides">Slides 21–23, 27</span></label>
+            <details>
+                <summary>Prove it — test yourself</summary>
+                <div class="q"><pre class="cb"><span class="kw">public</span> <span class="kw">class</span> <span class="tp">Apple</span> <span class="kw">extends</span> <span class="tp">Fruit</span> { }
+
+<span class="kw">class</span> <span class="tp">Fruit</span> {
+    <span class="kw">public</span> <span class="tp">Fruit</span>(<span class="tp">String</span> <span class="var">name</span>) {
+        <span class="tp">System</span>.<span class="var">out</span>.<span class="mtd">println</span>(<span class="str">"Fruit's constructor is invoked"</span>);
+    }
+}</pre>Does it compile?</div>
+                <details class="ans"><summary>Show answer</summary><div class="a"><b>No.</b> Apple’s default constructor calls <code>super()</code>, but Fruit has only <code>Fruit(String)</code> — no no-arg constructor. Fix: add <code>Fruit()</code> or give Apple a constructor that calls <code>super("Apple")</code>.</div></details>
+                <a class="review" href="03-constructors-super.html#section-1">Review in the tutorial: Lesson 3, §1 (Quick Check + Challenge 15) &rarr;</a>
+            </details>
+        </div>
+        <div class="item" data-id="i12">
+            <label class="row"><input type="checkbox" id="i12"><span class="num">12</span><span class="txt">I know the <b>CAUTION rules</b>: call by <code>super</code>, never by name; <code>super</code>/<code>this</code> first; never both.</span><span class="slides">Slides 28–30</span></label>
+            <details>
+                <summary>Prove it — test yourself</summary>
+                <div class="q">Which of these constructor bodies compile? (a) <code>{ Shape("Red"); }</code> (b) <code>{ print(); super(); }</code> (c) <code>{ super(); this(1); }</code> (d) <code>{ this(1); print(); }</code></div>
+                <details class="ans"><summary>Show answer</summary><div class="a">Only <b>(d)</b>. (a) calling the superclass constructor by its name is a syntax error; (b) <code>super()</code> must be the first statement; (c) <code>super</code> and <code>this</code> cannot both appear.</div></details>
+                <a class="review" href="03-constructors-super.html#section-1">Review in the tutorial: Lesson 3, §1 (CAUTION + Cheat Sheet) &rarr;</a>
+            </details>
+        </div>
+        <div class="item" data-id="i13">
+            <label class="row"><input type="checkbox" id="i13"><span class="num">13</span><span class="txt">I can define <b>constructor chaining</b> and predict its output order.</span><span class="slides">Slides 31–44</span></label>
+            <details>
+                <summary>Prove it — test yourself</summary>
+                <div class="q"><pre class="cb"><span class="kw">public</span> <span class="kw">class</span> <span class="tp">Faculty</span> <span class="kw">extends</span> <span class="tp">Employee</span> {
+    <span class="kw">public</span> <span class="kw">static</span> <span class="kw">void</span> <span class="mtd">main</span>(<span class="tp">String</span>[] <span class="var">args</span>) { <span class="kw">new</span> <span class="tp">Faculty</span>(); }
+    <span class="kw">public</span> <span class="tp">Faculty</span>() { <span class="tp">System</span>.<span class="var">out</span>.<span class="mtd">println</span>(<span class="str">"(4) Faculty"</span>); }
+}
+<span class="kw">class</span> <span class="tp">Employee</span> <span class="kw">extends</span> <span class="tp">Person</span> {
+    <span class="kw">public</span> <span class="tp">Employee</span>() { <span class="kw">this</span>(<span class="str">"(2) Employee(String)"</span>); <span class="tp">System</span>.<span class="var">out</span>.<span class="mtd">println</span>(<span class="str">"(3) Employee()"</span>); }
+    <span class="kw">public</span> <span class="tp">Employee</span>(<span class="tp">String</span> <span class="var">s</span>) { <span class="tp">System</span>.<span class="var">out</span>.<span class="mtd">println</span>(<span class="var">s</span>); }
+}
+<span class="kw">class</span> <span class="tp">Person</span> {
+    <span class="kw">public</span> <span class="tp">Person</span>() { <span class="tp">System</span>.<span class="var">out</span>.<span class="mtd">println</span>(<span class="str">"(1) Person"</span>); }
+}</pre>What is printed?</div>
+                <details class="ans"><summary>Show answer</summary><div class="a"><code>(1) Person</code> → <code>(2) Employee(String)</code> → <code>(3) Employee()</code> → <code>(4) Faculty</code>. Constructing an object invokes <b>all the superclasses’ constructors along the inheritance chain</b>, deepest ancestor first.</div></details>
+                <a class="review" href="03-constructors-super.html#section-2">Review in the tutorial: Lesson 3, §2 &rarr;</a>
+            </details>
+        </div>
+        <div class="item" data-id="i14">
+            <label class="row"><input type="checkbox" id="i14"><span class="num">14</span><span class="txt">I can answer the textbook <b>Check Point</b> on constructors.</span><span class="slides">Slides 43–45</span></label>
+            <details>
+                <summary>Prove it — test yourself</summary>
+                <div class="q"><pre class="cb"><span class="kw">class</span> <span class="tp">A</span> { <span class="kw">public</span> <span class="tp">A</span>(<span class="kw">int</span> <span class="var">x</span>) { } }
+<span class="kw">class</span> <span class="tp">B</span> <span class="kw">extends</span> <span class="tp">A</span> { <span class="kw">public</span> <span class="tp">B</span>() { } }
+<span class="kw">public</span> <span class="kw">class</span> <span class="tp">C</span> {
+    <span class="kw">public</span> <span class="kw">static</span> <span class="kw">void</span> <span class="mtd">main</span>(<span class="tp">String</span>[] <span class="var">args</span>) { <span class="tp">B</span> <span class="var">b</span> = <span class="kw">new</span> <span class="tp">B</span>(); }
+}</pre>What problem arises when compiling?</div>
+                <details class="ans"><summary>Show answer</summary><div class="a"><code>B()</code> implicitly calls <code>super()</code>, but A has no no-arg constructor → <b>compile error</b>. (If A had <code>A()</code> printing a message, <code>new B()</code> would print it.)</div></details>
+                <a class="review" href="03-constructors-super.html#section-2">Review in the tutorial: Lesson 3, §2 (Challenges 8–9) &rarr;</a>
+            </details>
+        </div></section><section class="group"><h2>C. Overriding Methods</h2>
+        <div class="item" data-id="i15">
+            <label class="row"><input type="checkbox" id="i15"><span class="num">15</span><span class="txt">I can <b>define overriding</b> and state its rules: same signature, same return type, <code>@Override</code>.</span><span class="slides">Slides 47–48</span></label>
+            <details>
+                <summary>Prove it — test yourself</summary>
+                <div class="q">What must be identical for a subclass method to override a superclass method? Why write <code>@Override</code>?</div>
+                <details class="ans"><summary>Show answer</summary><div class="a">The <b>name, parameter list (signature) and return type</b> (a subtype return is allowed). <code>@Override</code> makes the compiler report an error if you did not really override.</div></details>
+                <a class="review" href="04-overriding-overloading.html#section-3">Review in the tutorial: Lesson 4, §3 &rarr;</a>
+            </details>
+        </div>
+        <div class="item" data-id="i16">
+            <label class="row"><input type="checkbox" id="i16"><span class="num">16</span><span class="txt">I can reuse the old method <b>plus</b> new behaviour with <code>super.method()</code>, and know when <code>super.</code> is optional.</span><span class="slides">Slides 46, 69–70</span></label>
+            <details>
+                <summary>Prove it — test yourself</summary>
+                <div class="q">Circle overrides <code>toString()</code>. Write a version that keeps Shape’s text and adds the radius. Is <code>super.</code> needed before <code>getDateCreated()</code>?</div>
+                <details class="ans"><summary>Show answer</summary><div class="a"><code>return super.toString() + "\nradius is " + radius;</code>. For <code>getDateCreated()</code>, <code>super.</code> is <b>optional</b> — Circle does not override it, so there is only one version.</div></details>
+                <a class="review" href="04-overriding-overloading.html#section-6">Review in the tutorial: Lesson 4, §6 &rarr;</a>
+            </details>
+        </div>
+        <div class="item" data-id="i17">
+            <label class="row"><input type="checkbox" id="i17"><span class="num">17</span><span class="txt">I know that a <b>private method cannot be overridden</b>.</span><span class="slides">Slides 49–54, 79–80</span></label>
+            <details>
+                <summary>Prove it — test yourself</summary>
+                <div class="q">Base has <code>public void fun()</code>; Derived declares <code>private void fun()</code>. Output of <code>new Derived().fun()</code> in Derived’s main? And if Base’s <code>fun()</code> were private instead?</div>
+                <details class="ans"><summary>Show answer</summary><div class="a">First case: <b>compile error</b> — weaker access privileges. Second case (Base private): the methods are <b>unrelated</b>, no overriding; it prints <b>Derived fun</b>.</div></details>
+                <a class="review" href="04-overriding-overloading.html#section-3">Review in the tutorial: Lesson 4, §3 &rarr;</a>
+            </details>
+        </div>
+        <div class="item" data-id="i18">
+            <label class="row"><input type="checkbox" id="i18"><span class="num">18</span><span class="txt">I can predict which version runs when an inherited method calls an <b>overridden</b> (or private) method.</span><span class="slides">Slides 81–84</span></label>
+            <details>
+                <summary>Prove it — test yourself</summary>
+                <div class="q">Person has <code>getInfo()</code> returning "Person" and <code>printPerson()</code> printing <code>getInfo()</code>. Student overrides <code>getInfo()</code> → "Student". Output of <code>new Person().printPerson(); new Student().printPerson();</code>? And if both <code>getInfo()</code> methods were private?</div>
+                <details class="ans"><summary>Show answer</summary><div class="a">Overridden: <b>Person, Student</b>. Private: <b>Person, Person</b> (private methods are not overridden).</div></details>
+                <a class="review" href="04-overriding-overloading.html#section-6">Review in the tutorial: Lesson 4, §6 (challenges) &rarr;</a>
+            </details>
+        </div>
+        <div class="item" data-id="i19">
+            <label class="row"><input type="checkbox" id="i19"><span class="num">19</span><span class="txt">I can trace an overridden method called from the <b>superclass constructor</b>.</span><span class="slides">Slides 85–88</span></label>
+            <details>
+                <summary>Prove it — test yourself</summary>
+                <div class="q"><pre class="cb"><span class="kw">class</span> <span class="tp">A</span> {
+    <span class="kw">int</span> <span class="var">i</span> = <span class="num">7</span>;
+    <span class="kw">public</span> <span class="tp">A</span>() { <span class="mtd">setI</span>(<span class="num">20</span>); <span class="tp">System</span>.<span class="var">out</span>.<span class="mtd">println</span>(<span class="str">"i from A is "</span> + <span class="var">i</span>); }
+    <span class="kw">public</span> <span class="kw">void</span> <span class="mtd">setI</span>(<span class="kw">int</span> <span class="var">i</span>) { <span class="kw">this</span>.<span class="var">i</span> = <span class="num">2</span> * <span class="var">i</span>; }
+}
+<span class="kw">class</span> <span class="tp">B</span> <span class="kw">extends</span> <span class="tp">A</span> {
+    <span class="kw">public</span> <span class="tp">B</span>() { <span class="tp">System</span>.<span class="var">out</span>.<span class="mtd">println</span>(<span class="str">"i from B is "</span> + <span class="var">i</span>); }
+    <span class="kw">public</span> <span class="kw">void</span> <span class="mtd">setI</span>(<span class="kw">int</span> <span class="var">i</span>) { <span class="kw">this</span>.<span class="var">i</span> = <span class="num">3</span> * <span class="var">i</span>; }
+}
+<span class="cmt">// main: new A(); new B();</span></pre>What is printed?</div>
+                <details class="ans"><summary>Show answer</summary><div class="a"><code>i from A is 40</code>, <code>i from A is 60</code>, <code>i from B is 60</code>. During <code>new B()</code>, A’s constructor runs first, but <code>setI</code> is B’s overriding version (3 × 20).</div></details>
+                <a class="review" href="04-overriding-overloading.html#section-6">Review in the tutorial: Lesson 4, §6 (challenges) &rarr;</a>
+            </details>
+        </div>
+        <div class="item" data-id="i20">
+            <label class="row"><input type="checkbox" id="i20"><span class="num">20</span><span class="txt">I know the <b>covariant return type</b> rule.</span><span class="slides">Slides 91–92</span></label>
+            <details>
+                <summary>Prove it — test yourself</summary>
+                <div class="q">Parent: <code>public Object getValue()</code>. Child: <code>public String getValue()</code>. Legal? And the reverse (parent returns String, child returns Object)?</div>
+                <details class="ans"><summary>Show answer</summary><div class="a">First: <b>legal</b> (String is a subtype of Object — covariant return). Reverse: <b>compile error</b>.</div></details>
+                <a class="review" href="04-overriding-overloading.html#section-5">Review in the tutorial: Lesson 4, §5 (challenges) &rarr;</a>
+            </details>
+        </div>
+        <div class="item" data-id="i21">
+            <label class="row"><input type="checkbox" id="i21"><span class="num">21</span><span class="txt">I know that <b>static methods are inherited but hidden, not overridden</b>.</span><span class="slides">Slides 55–59</span></label>
+            <details>
+                <summary>Prove it — test yourself</summary>
+                <div class="q"><pre class="cb"><span class="kw">class</span> <span class="tp">Base</span> { <span class="kw">public</span> <span class="kw">static</span> <span class="kw">void</span> <span class="mtd">fun</span>() { <span class="tp">System</span>.<span class="var">out</span>.<span class="mtd">println</span>(<span class="str">"Base fun"</span>); } }
+<span class="kw">class</span> <span class="tp">Derived</span> <span class="kw">extends</span> <span class="tp">Base</span> {
+    <span class="tp">Derived</span>() { <span class="kw">super</span>.<span class="mtd">fun</span>(); }
+    <span class="kw">public</span> <span class="kw">static</span> <span class="kw">void</span> <span class="mtd">fun</span>() { <span class="tp">System</span>.<span class="var">out</span>.<span class="mtd">println</span>(<span class="str">"Derived fun"</span>); }
+    <span class="kw">public</span> <span class="kw">static</span> <span class="kw">void</span> <span class="mtd">main</span>(<span class="tp">String</span>[] <span class="var">args</span>) {
+        <span class="tp">Derived</span> <span class="var">obj</span> = <span class="kw">new</span> <span class="tp">Derived</span>();
+        <span class="var">obj</span>.<span class="mtd">fun</span>();
+        <span class="tp">Base</span>.<span class="mtd">fun</span>();
+    }
+}</pre>What is printed? How do you call the hidden method?</div>
+                <details class="ans"><summary>Show answer</summary><div class="a"><b>Base fun, Derived fun, Base fun</b>. A redefined static method <b>hides</b> the superclass one; call the hidden one with <code>SuperClassName.staticMethodName()</code> — e.g. <code>Base.fun()</code>.</div></details>
+                <a class="review" href="06-static-hiding.html#section-1">Review in the tutorial: Lesson 6, §1 &rarr;</a>
+            </details>
+        </div></section><section class="group"><h2>D. Overriding vs. Overloading</h2>
+        <div class="item" data-id="i22">
+            <label class="row"><input type="checkbox" id="i22"><span class="num">22</span><span class="txt">I can state the <b>differences</b> between overriding and overloading.</span><span class="slides">Slide 60</span></label>
+            <details>
+                <summary>Prove it — test yourself</summary>
+                <div class="q">Where can each one happen, and what must be the same / different?</div>
+                <details class="ans"><summary>Show answer</summary><div class="a"><b>Overriding</b>: different classes related by inheritance; same signature and return type. <b>Overloading</b>: same class <em>or</em> classes related by inheritance; same name, different parameter list.</div></details>
+                <a class="review" href="04-overriding-overloading.html#section-5">Review in the tutorial: Lesson 4, §5 &rarr;</a>
+            </details>
+        </div>
+        <div class="item" data-id="i23">
+            <label class="row"><input type="checkbox" id="i23"><span class="num">23</span><span class="txt">I can predict the output of the <b>p(double) / p(int)</b> example.</span><span class="slides">Slides 61–62</span></label>
+            <details>
+                <summary>Prove it — test yourself</summary>
+                <div class="q">B has <code>p(double i)</code> printing <code>i*2</code>. A extends B. Calls: <code>a.p(10); a.p(10.0);</code>. Output if A defines (a) <code>p(double i)</code> printing <code>i</code>; (b) <code>p(int i)</code> printing <code>i</code>?</div>
+                <details class="ans"><summary>Show answer</summary><div class="a">(a) Overriding → <b>10.0 10.0</b>. (b) Overloading → <b>10 20.0</b>.</div></details>
+                <a class="review" href="04-overriding-overloading.html#section-5">Review in the tutorial: Lesson 4, §5 &rarr;</a>
+            </details>
+        </div>
+        <div class="item" data-id="i24">
+            <label class="row"><input type="checkbox" id="i24"><span class="num">24</span><span class="txt">I can classify the <b>set(String) / set(int)</b> and <b>m(int) / m(String)</b> cases.</span><span class="slides">Slides 63–68, 89–90</span></label>
+            <details>
+                <summary>Prove it — test yourself</summary>
+                <div class="q">A has <code>set(String)</code> printing “Hello A”. B extends A with <code>set(int)</code> printing “Hello B”. Output of <code>b.set(8)</code> and <code>b.set("A")</code>? What if B’s method is <code>set(String)</code>?</div>
+                <details class="ans"><summary>Show answer</summary><div class="a"><code>b.set(8)</code> → Hello B, <code>b.set("A")</code> → Hello A (both <b>overloading</b>). With <code>set(String)</code> in B → Hello B (<b>overriding</b>). Same idea for <code>m(int)</code>/<code>m(String)</code>: B inherits <code>m(int)</code> and overloads it.</div></details>
+                <a class="review" href="04-overriding-overloading.html#section-5">Review in the tutorial: Lesson 4, §5 (challenges) &rarr;</a>
+            </details>
+        </div></section><section class="group"><h2>E. Visibility — protected and Accessibility</h2>
+        <div class="item" data-id="i25">
+            <label class="row"><input type="checkbox" id="i25"><span class="num">25</span><span class="txt">I can define <b>protected</b> and order the four modifiers by visibility.</span><span class="slides">Slides 71–72</span></label>
+            <details>
+                <summary>Prove it — test yourself</summary>
+                <div class="q">Who can access a protected member of a public class? Order: public, private, protected, default.</div>
+                <details class="ans"><summary>Show answer</summary><div class="a">Any class in the <b>same package</b>, and <b>subclasses even in a different package</b>. Order: <b>private → default → protected → public</b>.</div></details>
+                <a class="review" href="05-protected-final-object.html#section-1">Review in the tutorial: Lesson 5, §1 &rarr;</a>
+            </details>
+        </div>
+        <div class="item" data-id="i26">
+            <label class="row"><input type="checkbox" id="i26"><span class="num">26</span><span class="txt">I can fill the <b>accessibility table</b> and the <b>C1–C5 figure</b> from memory.</span><span class="slides">Slides 73–76</span></label>
+            <details>
+                <summary>Prove it — test yourself</summary>
+                <div class="q">C1 (package p1) has <code>public x; protected y; int z; private u; protected m()</code>. C4 extends C1 in package p2; C5 is in p2 and not a subclass. Which can each access?</div>
+                <details class="ans"><summary>Show answer</summary><div class="a">C4: <b>x, y, m()</b> — not z, not u. C5: only <b>o.x</b>. (Same-package classes C2/C3 can use x, y, z, m — never u.)</div></details>
+                <a class="review" href="05-protected-final-object.html#section-1">Review in the tutorial: Lesson 5, §1 &rarr;</a>
+            </details>
+        </div>
+        <div class="item" data-id="i27">
+            <label class="row"><input type="checkbox" id="i27"><span class="num">27</span><span class="txt">I know a subclass <b>cannot weaken</b> the accessibility of an overridden method — but may strengthen it.</span><span class="slides">Slides 77–80</span></label>
+            <details>
+                <summary>Prove it — test yourself</summary>
+                <div class="q">Shape has <code>protected void Print()</code>. Circle overrides it as (a) <code>private void Print()</code>; (b) <code>public void Print()</code>. Which compiles?</div>
+                <details class="ans"><summary>Show answer</summary><div class="a">(a) <b>Error</b> — weaker access. (b) <b>Correct</b> — protected → public is allowed.</div></details>
+                <a class="review" href="05-protected-final-object.html#section-1">Review in the tutorial: Lesson 5, §1 &rarr;</a>
+            </details>
+        </div></section><section class="group"><h2>F. The final Modifier</h2>
+        <div class="item" data-id="i28">
+            <label class="row"><input type="checkbox" id="i28"><span class="num">28</span><span class="txt">I can explain <b>final</b> on a variable, a class and a method — with an example of each.</span><span class="slides">Slides 93–96</span></label>
+            <details>
+                <summary>Prove it — test yourself</summary>
+                <div class="q">What happens with: <code>final static double PI = 3.14159;</code> then <code>PI = 3;</code> — <code>class B extends A</code> where A is <code>final</code> — B overriding A’s <code>final void m1()</code>?</div>
+                <details class="ans"><summary>Show answer</summary><div class="a">All three are <b>compile errors</b>: a final variable is a constant; a final class cannot be extended (e.g. <code>Math</code>, <code>String</code>); a final method cannot be overridden.</div></details>
+                <a class="review" href="05-protected-final-object.html#section-2">Review in the tutorial: Lesson 5, §2 &rarr;</a>
+            </details>
+        </div></section><section class="group"><h2>G. The Object Class and toString()</h2>
+        <div class="item" data-id="i29">
+            <label class="row"><input type="checkbox" id="i29"><span class="num">29</span><span class="txt">I know that <b>every class descends from Object</b>.</span><span class="slides">Slides 97–98</span></label>
+            <details>
+                <summary>Prove it — test yourself</summary>
+                <div class="q">What is the superclass of <code>public class Circle { }</code>?</div>
+                <details class="ans"><summary>Show answer</summary><div class="a"><b>java.lang.Object</b> — <code>class Circle</code> is the same as <code>class Circle extends Object</code>.</div></details>
+                <a class="review" href="05-protected-final-object.html#section-3">Review in the tutorial: Lesson 5, §3 &rarr;</a>
+            </details>
+        </div>
+        <div class="item" data-id="i30">
+            <label class="row"><input type="checkbox" id="i30"><span class="num">30</span><span class="txt">I can explain the <b>default toString()</b> output and why we override it.</span><span class="slides">Slides 99–100</span></label>
+            <details>
+                <summary>Prove it — test yourself</summary>
+                <div class="q"><code>System.out.println(loan);</code> prints <code>Loan@15037e5</code>. What are the three parts? Is <code>println(loan)</code> the same as <code>println(loan.toString())</code>?</div>
+                <details class="ans"><summary>Show answer</summary><div class="a"><b>Class name</b> + <b>@</b> + <b>a number for the object in hexadecimal</b>. Yes, they are equivalent. The default is not helpful, so we <b>override toString()</b> to return a digestible description.</div></details>
+                <a class="review" href="05-protected-final-object.html#section-3">Review in the tutorial: Lesson 5, §3 &rarr;</a>
+            </details>
+        </div></section><section class="group"><h2>H. Multiple Inheritance</h2>
+        <div class="item" data-id="i31">
+            <label class="row"><input type="checkbox" id="i31"><span class="num">31</span><span class="txt">I can explain why Java supports <b>only single inheritance</b> and what replaces multiple inheritance.</span><span class="slides">Slide 101</span></label>
+            <details>
+                <summary>Prove it — test yourself</summary>
+                <div class="q">Can <code>class PickupTruck extends Car, Truck</code> compile? Why does Java forbid it, and what gives us “aspects of multiple inheritance”?</div>
+                <details class="ans"><summary>Show answer</summary><div class="a"><b>No.</b> A Java class has exactly one parent. Multiple parents cause <b>collisions</b> (e.g. the same variable or method name in both parents) that must be resolved. <b>Interfaces</b> give aspects of multiple inheritance without the overhead.</div></details>
+                <a class="review" href="05-protected-final-object.html#section-4">Review in the tutorial: Lesson 5, §4 &rarr;</a>
+            </details>
+        </div></section>
+
+    <div class="final" id="final"><b>&#10003; All 31 items mastered!</b><br>You have covered everything in the Inheritance presentation. Next: <a href="../module07-polymorphism/index.html">Polymorphism &rarr;</a></div>
+
+    <footer>Object-Oriented Programming — Module 6: Inheritance — Checklist<br>Prepared by Dr. Almalawi</footer>
+</div>
+<script>
+    var KEY = 'cpcs203-inheritance-checklist';
+    var boxes = document.querySelectorAll('.item input[type=checkbox]');
+    function load() { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; } }
+    function save(s) { try { localStorage.setItem(KEY, JSON.stringify(s)); } catch (e) {} }
+    function refresh() {
+        var d = 0;
+        boxes.forEach(function (b) { b.closest('.item').classList.toggle('done', b.checked); if (b.checked) d++; });
+        document.getElementById('done').textContent = d;
+        document.getElementById('fill').style.width = (100 * d / boxes.length) + '%';
+        document.getElementById('final').classList.toggle('show', d === boxes.length);
+    }
+    var state = load();
+    boxes.forEach(function (b) {
+        b.checked = !!state[b.id];
+        b.addEventListener('change', function () { state[b.id] = b.checked; save(state); refresh(); });
+    });
+    function resetAll() {
+        if (!confirm('Clear all ticks?')) return;
+        state = {}; save(state); boxes.forEach(function (b) { b.checked = false; }); refresh();
+    }
+    refresh();
+</script>
+</body>
+</html>
