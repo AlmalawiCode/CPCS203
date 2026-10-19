@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OO Thinking &mdash; Practice Exam (A4 printable)</title>
+<style>
+/* =======================================================================
+   Programming II — MODULE 5: OO THINKING — practice exam
+   Print-first, A4. Each question is a CARD. Module colour theme.
+   A "Show model answers" toggle turns the same file into an answer key.
+   ======================================================================= */
+@page { size: A4; margin: 12mm 15mm 14mm 15mm; }
+
+:root{
+  --em:        #d97706;
+  --em-dark:   #b45309;
+  --em-deep:   #78350f;
+  --em-tint:   #fffbeb;
+  --ink:       #1f2937;
+  --ink-soft:  #4b5563;
+  --rule:      #f1d9a8;
+  --paper:     #ffffff;
+  --code-bg:   #fffaf0;
+  --code-rule: #f3e0b5;
+  --warn:      #b42318;
+  --tag-easy:  #e7f6ec; --tag-easy-i:#1a7f37;
+  --tag-med:   #fef3e0; --tag-med-i: #9a6212;
+  --tag-hard:  #fdeaea; --tag-hard-i:#b42318;
+}
+
+*{ box-sizing:border-box; }
+html,body{
+  margin:0; padding:0;
+  background:#e5e9f0;
+  color:var(--ink);
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size:11pt; line-height:1.5;
+}
+body{ padding:14mm 0; }
+
+/* ---- A4 sheet ---- */
+.sheet{
+  background:var(--paper);
+  width:210mm; min-height:297mm;
+  margin:0 auto 10mm;
+  padding:15mm 15mm 18mm;
+  box-shadow:0 3px 14px rgba(31,41,55,.18);
+  position:relative;
+}
+
+/* ---- running head ---- */
+.runhead{
+  display:flex; justify-content:space-between; align-items:flex-end;
+  border-bottom:2px solid var(--em-dark);
+  padding-bottom:6px; margin-bottom:14px;
+  font-size:9.5pt; color:var(--em-deep);
+}
+.runhead b{ font-size:10.5pt; }
+
+/* ================= COVER ================= */
+.cover-top{ text-align:center; }
+.cover-rule{ height:2px; background:var(--em-dark); margin:12px 0; }
+.cover-title{ font-size:22pt; font-weight:800; color:var(--em); letter-spacing:.5px; }
+.cover-sub{ font-size:13pt; font-weight:600; margin-top:4px; }
+.cover-tag{
+  display:inline-block; margin-top:10px; padding:4px 16px;
+  background:var(--em-tint); color:var(--em-dark); border:1px solid var(--em);
+  border-radius:999px; font-weight:700; font-size:10.5pt;
+}
+
+.id-grid{ margin:22px 0 4px; width:100%; border-collapse:collapse; font-size:11pt; }
+.id-grid td{ padding:9px 6px; }
+.id-grid .lbl{ width:132px; white-space:nowrap; font-weight:700; color:var(--em-deep); }
+.id-grid .line{ border-bottom:1.4px solid #6b7280; }
+
+.instr{
+  margin-top:16px; border:1px solid var(--rule);
+  border-left:5px solid var(--em); border-radius:8px;
+  background:#fffdf7; padding:12px 16px;
+}
+.instr h3{ margin:0 0 6px; font-size:11.5pt; color:var(--em-deep); }
+.instr ul{ margin:0; padding-left:18px; }
+.instr li{ margin:3px 0; }
+
+.marks-tbl{ width:100%; border-collapse:collapse; margin-top:18px; font-size:10pt; text-align:center; }
+.marks-tbl th, .marks-tbl td{ border:1px solid var(--rule); padding:6px 4px; }
+.marks-tbl thead th{ background:var(--em-dark); color:#fff; }
+.marks-tbl .tot{ background:var(--em-tint); font-weight:800; }
+.marks-tbl thead th.tot{ background:var(--em-deep); color:#fff; }
+
+/* ================= QUESTION CARD ================= */
+.card{
+  border:1px solid var(--rule); border-radius:10px;
+  margin:0 0 16px; overflow:hidden;
+  break-inside:avoid; page-break-inside:avoid; background:#fff;
+}
+.card-head{
+  display:flex; flex-wrap:wrap; align-items:center; gap:8px;
+  background:linear-gradient(180deg,#fffaf0,#fdedc8);
+  border-bottom:1px solid var(--rule); padding:9px 14px;
+}
+.qno{
+  font-weight:800; color:#fff; background:var(--em-dark);
+  border-radius:6px; padding:3px 11px; font-size:11pt; letter-spacing:.3px;
+}
+.qtitle{ font-weight:700; font-size:11.5pt; color:var(--em-deep); flex:1 1 240px; }
+.chips{ display:flex; gap:6px; align-items:center; flex-wrap:wrap; }
+.chip{ font-size:8.5pt; padding:2px 8px; border-radius:999px; font-weight:700; white-space:nowrap; }
+.chip.clo{ background:#fef3c7; color:#92400e; border:1px solid #fcd34d; }
+.chip.so { background:#ecfeff; color:#0e7490; border:1px solid #a5f3fc; }
+.chip.pts{ background:var(--em-deep); color:#fff; }
+.tag-easy{ background:var(--tag-easy); color:var(--tag-easy-i); border:1px solid var(--tag-easy-i); }
+.tag-med { background:var(--tag-med);  color:var(--tag-med-i);  border:1px solid var(--tag-med-i);  }
+.tag-hard{ background:var(--tag-hard); color:var(--tag-hard-i); border:1px solid var(--tag-hard-i); }
+
+.card-body{ padding:12px 16px 14px; }
+.card-body p{ margin:6px 0; }
+.note{ color:var(--warn); font-style:italic; font-weight:600; font-size:10pt; }
+.hint{ color:var(--ink-soft); font-style:italic; font-size:10pt; }
+.mini{ font-size:9pt; color:#6b7280; }
+
+/* ---- code blocks ---- */
+pre.code{
+  background:var(--code-bg); border:1px solid var(--code-rule);
+  border-left:4px solid var(--em); border-radius:6px;
+  padding:10px 12px; margin:10px 0; overflow:auto;
+  font-family:'Consolas','DejaVu Sans Mono',monospace; font-size:10pt; line-height:1.5;
+  white-space:pre;
+}
+pre.code.sm{ font-size:9.3pt; line-height:1.42; }
+code.inl{ background:var(--code-bg); border:1px solid var(--code-rule); border-radius:4px;
+  padding:1px 5px; font-family:'Consolas',monospace; font-size:9.8pt; }
+.dots{ letter-spacing:1px; color:#6b7280; }
+.two-col{ display:flex; gap:12px; }
+.two-col > *{ flex:1 1 0; min-width:0; }
+.two-col > .wide{ flex-grow:1.4; }
+.two-col > .narrow{ flex-grow:.65; }
+.two-col > .snug{ flex:0 0 auto; }
+.opts p{ margin:3px 0; }
+.tight .card-body{ font-size:10.5pt; line-height:1.42; }
+.tight .card-body p{ margin:4px 0; }
+.tight .mcq{ margin-bottom:5px; }
+.tight pre.code{ margin:6px 0; }
+.mcq{ display:grid; grid-template-columns:1fr 1fr; gap:2px 18px; margin:2px 0 8px 14px; }
+.mcq.c4{ grid-template-columns:repeat(4, auto); justify-content:start; column-gap:34px; }
+.mcq.c5{ grid-template-columns:repeat(5, auto); justify-content:start; column-gap:26px; }
+
+/* ---- UML class box ---- */
+.uml{ display:inline-block; border:1.6px solid var(--em-deep); margin:10px 0;
+  font-family:'Consolas','DejaVu Sans Mono',monospace; font-size:10pt; background:#fff; min-width:300px; }
+.uml div{ padding:5px 12px; }
+.uml .uml-name{ text-align:center; font-weight:800; background:var(--em-tint); color:var(--em-deep);
+  border-bottom:1.6px solid var(--em-deep); font-family:'Segoe UI',sans-serif; font-size:11pt; }
+.uml .uml-sec{ border-bottom:1.6px solid var(--em-deep); }
+.uml .uml-sec:last-child{ border-bottom:0; }
+.uml .uml-sec span{ display:block; line-height:1.55; }
+.uml u{ text-decoration-thickness:1.4px; }
+.uml-wrap{ display:flex; gap:16px; align-items:flex-start; }
+.need{ border-collapse:collapse; font-size:9.5pt; margin-top:10px; }
+.need td, .need th{ border:1px solid var(--rule); padding:4px 8px; font-family:'Consolas',monospace; }
+.need th{ background:var(--em-tint); color:var(--em-deep); font-family:'Segoe UI',sans-serif; }
+
+/* ---- answer space ---- */
+.answer-space{ margin-top:10px; }
+.answer-space .lbl{ font-style:italic; color:var(--ink-soft); font-size:10pt; }
+.writeline{ border-bottom:1px solid #9ca3af; height:1.55em; margin-top:.45em; }
+.codebox{ border:1px dashed #9ca3af; border-radius:6px; min-height:120px; margin-top:8px;
+  background:repeating-linear-gradient(#fff,#fff 1.7em,#f8efdc 1.7em,#f8efdc calc(1.7em + 1px)); }
+.drawbox{ border:1px dashed #9ca3af; border-radius:6px; margin-top:8px; position:relative;
+  display:flex; }
+.drawbox .half{ flex:1; padding:6px 10px; font-size:9pt; color:#9ca3af; font-weight:700; letter-spacing:1px; }
+.drawbox .half + .half{ border-left:1px dashed #cbd5e1; }
+
+/* ---- fill-in tables ---- */
+.fill{ width:100%; border-collapse:collapse; margin-top:8px; font-size:10.5pt; }
+.fill td, .fill th{ border:1px solid var(--rule); padding:7px 8px; }
+.fill th{ background:var(--em-tint); color:var(--em-deep); font-size:10pt; }
+.fill td.ans{ background:#fff; width:42%; height:2.6em; }
+.fill td.mono{ font-family:'Consolas',monospace; }
+
+/* ---- model answer block (hidden until toggled) ---- */
+.answer-key{ display:none; }
+body.show-answers .answer-key{ display:block; }
+body.show-answers .card{ break-inside:auto; page-break-inside:auto; }
+body.show-answers .answer-key{ break-inside:avoid; page-break-inside:avoid; }
+.answer-key{
+  margin-top:12px; border:1px solid #bbf7d0; border-left:5px solid #16a34a;
+  background:#f0fdf4; border-radius:8px; padding:10px 14px;
+}
+.answer-key .akh{ font-weight:800; color:#15803d; font-size:10.5pt; margin-bottom:4px; }
+.answer-key pre.code{ border-left-color:#16a34a; background:#f6fdf9; border-color:#bbf7d0; }
+.answer-key .val{ color:#166534; font-weight:800; }
+.answer-key .rub{ color:#0e7490; font-size:9.5pt; font-style:italic; }
+.answer-key table.fill th{ background:#dcfce7; color:#15803d; }
+
+/* ---- floating toolbar (screen only) ---- */
+.toolbar{
+  position:fixed; top:14px; right:14px; z-index:50; display:flex; gap:8px;
+  background:#fff; border:1px solid var(--rule); border-radius:10px; padding:8px 10px;
+  box-shadow:0 4px 14px rgba(31,41,55,.18);
+}
+.toolbar button, .toolbar a{
+  font:inherit; font-size:10pt; font-weight:700; cursor:pointer; text-decoration:none;
+  border:1px solid var(--em); border-radius:7px; padding:7px 12px;
+  background:var(--em); color:#fff;
+}
+.toolbar .ghost{ background:#fff; color:var(--em-dark); }
+.toolbar button:active{ transform:translateY(1px); }
+
+.footline{ text-align:center; margin-top:6px; color:var(--ink-soft); font-size:9.5pt; }
+.endmark{ text-align:center; font-weight:800; color:var(--em-deep); margin:18px 0 4px; }
+
+/* ================= PRINT ================= */
+@media print{
+  body{ background:#fff; padding:0; }
+  .toolbar{ display:none !important; }
+  .sheet{ box-shadow:none; margin:0; width:auto; min-height:auto; padding:0; }
+  .sheet + .sheet{ page-break-before:always; }
+  .card{ box-shadow:none; }
+}
+
+/* ---- additions for this exam ---- */
+.fill td.mono{ font-size:9pt; line-height:1.45; }
+.instr .chip{ font-size:8pt; padding:1px 7px; }
+.two-col pre.code.sm{ font-size:8.5pt; line-height:1.4; }
+pre.code{ white-space:pre-wrap; overflow:visible; }   /* never clip code on paper */
+@media print{ html{ background:#fff; } }
+.card.flow{ break-inside:auto; page-break-inside:auto; }
+.uml-wrap{ gap:8px; }
+.uml-wrap .uml{ min-width:0; flex:1 1 0; font-size:9pt; }
+.uml-wrap .uml div{ padding:4px 8px; }
+/* let every card flow across a page break, but keep code blocks and table rows whole */
+.card, body.show-answers .card{ break-inside:auto; page-break-inside:auto; }
+pre.code, .fill tr, .mcq, .uml-wrap, .card-head, .answer-space, .drawbox, .codebox, svg{ break-inside:avoid; page-break-inside:avoid; }
+.card-head{ break-after:avoid; page-break-after:avoid; }
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <a href="04-exercises.html" class="ghost">&#8592; Exercises</a>
+  <button id="toggleAns" class="ghost">&#128065; Show model answers</button>
+  <button onclick="window.print()">&#128424; Print / Save PDF</button>
+</div>
+
+<!-- =====================================================================
+     COVER PAGE
+     ===================================================================== -->
+
+<section class="sheet cover">
+  <div class="cover-rule"></div>
+  <div class="cover-top">
+    <div class="cover-title">Programming II</div>
+    <div class="cover-sub">Module 5: Object-Oriented Thinking &mdash; Focused Practice Exam</div>
+    <div class="cover-tag">Immutable Objects &middot; Object Relationships &middot; UML &amp; Multiplicity &middot; Wrapper Classes &middot; BigInteger &amp; BigDecimal</div>
+  </div>
+  <div class="cover-rule"></div>
+
+  <table class="id-grid">
+    <tr><td class="lbl">Student Name:</td><td class="line"></td></tr>
+    <tr><td class="lbl">Student ID:</td><td class="line"></td></tr>
+    <tr>
+      <td class="lbl">Section:</td><td class="line" style="width:35%"></td>
+      <td class="lbl" style="text-align:right;padding-right:14px">Instructor:</td><td class="line"></td>
+    </tr>
+  </table>
+
+  <div class="instr">
+    <h3>Instructions</h3>
+    <ul>
+      <li>This booklet contains <b>9 questions</b> on Object-Oriented Thinking only. <b>Total: 70 marks</b> &middot; Suggested time: <b>75 minutes</b>.</li>
+      <li>Answer <b>all</b> questions in the spaces provided. <b>Place your answers in the boxes provided.</b></li>
+      <li>When a question shows several classes together, assume <b>each class is saved in its own <code class="inl">.java</code> file</b>
+          in the <b>same package</b>, and that the required <code class="inl">import</code> statements are present.</li>
+      <li>If a piece of code does not compile, write <b>&ldquo;Compilation error&rdquo;</b> and give the reason in one short sentence.</li>
+      <li>Questions are labelled <span class="chip tag-easy">EASY</span> <span class="chip tag-med">MEDIUM</span> <span class="chip tag-hard">HARD</span>.
+          Write clear Java. Partial (per-line) credit is given.</li>
+    </ul>
+  </div>
+
+  <table class="marks-tbl">
+    <thead>
+      <tr><th>Question</th><th>Q1</th><th>Q2</th><th>Q3</th><th>Q4</th><th>Q5</th><th>Q6</th><th>Q7</th><th>Q8</th><th>Q9</th><th class="tot">Total</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><b>Level</b></td><td>E</td><td>E</td><td>M</td><td>M</td><td>H</td><td>M</td><td>H</td><td>M</td><td>H</td><td class="tot"></td></tr>
+      <tr><td><b>Max Mark</b></td><td>8</td><td>8</td><td>8</td><td>6</td><td>8</td><td>8</td><td>8</td><td>8</td><td>8</td><td class="tot">70</td></tr>
+      <tr><td><b>Obtained</b></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class="tot"></td></tr>
+    </tbody>
+  </table>
+
+  <p class="footline">Topics covered: encapsulation &amp; abstraction &middot; mutable vs immutable objects &middot; the three rules of an immutable class &middot; defensive copies &middot;
+     dependency (&ldquo;uses&rdquo;) &middot; aggregation &amp; composition (&ldquo;has&rdquo;) &middot; self-aggregation &middot; multiplicity &middot; UML relationship symbols &middot;
+     wrapper classes, auto-boxing &amp; auto-unboxing &middot; <code class="inl">parseInt</code> and <code class="inl">MAX_VALUE</code> &middot; <code class="inl">BigInteger</code> &amp; <code class="inl">BigDecimal</code>.</p>
+</section>
+
+<!-- ================= Q1 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 5 &mdash; OO Thinking &mdash; Practice Exam &middot; Question 1 of 9</span></div>
+
+  <div class="card tight">
+    <div class="card-head">
+      <span class="qno">Q1</span>
+      <span class="qtitle">Object-Oriented Thinking Concepts (Multiple Choice)</span>
+      <span class="chips">
+        <span class="chip tag-easy">EASY</span>
+        <span class="chip clo">CLO 3</span><span class="chip so">SO-a</span>
+        <span class="chip pts">8 marks &middot; 1 each</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p>Circle the <b>single best</b> answer for each item.</p>
+
+      <p><b>1.</b> Keeping all data fields <code class="inl">private</code> and letting the outside world reach them only through public methods is called:</p>
+      <div class="mcq c4"><span>(a) Abstraction</span><span>(b) Encapsulation</span><span>(c) Inheritance</span><span>(d) Composition</span></div>
+
+      <p><b>2.</b> Which of the following is an <b>immutable</b> object in Java?</p>
+      <div class="mcq c4"><span>(a) an <code class="inl">int[]</code> array</span><span>(b) a <code class="inl">StringBuilder</code></span><span>(c) a <code class="inl">String</code></span><span>(d) a <code class="inl">Student</code> with setters</span></div>
+
+      <p><b>3.</b> Complete the sentence: &ldquo;Dependency says &hellip;&hellip;, aggregation says &hellip;&hellip;, inheritance says &hellip;&hellip;&rdquo;</p>
+      <div class="mcq">
+        <span>(a) has &middot; uses &middot; is</span>
+        <span>(b) uses &middot; has &middot; is</span>
+        <span>(c) is &middot; has &middot; uses</span>
+        <span>(d) uses &middot; is &middot; has</span>
+      </div>
+
+      <p><b>4.</b> In a UML class diagram, a <b>filled (black) diamond</b> &#9670; on the owner&rsquo;s end of a line means:</p>
+      <div class="mcq c4"><span>(a) Dependency</span><span>(b) Aggregation</span><span>(c) Composition</span><span>(d) Inheritance</span></div>
+
+      <p><b>5.</b> The multiplicity <code class="inl">1..*</code> written next to a class in a relationship means:</p>
+      <div class="mcq">
+        <span>(a) exactly one object</span>
+        <span>(b) zero or one object</span>
+        <span>(c) one or more objects</span>
+        <span>(d) zero or more objects</span>
+      </div>
+
+      <p><b>6.</b> Which declaration <b>compiles</b>?</p>
+      <div class="mcq">
+        <span>(a) <code class="inl">ArrayList&lt;int&gt; list = new ArrayList&lt;&gt;();</code></span>
+        <span>(b) <code class="inl">ArrayList&lt;Integer&gt; list = new ArrayList&lt;&gt;();</code></span>
+        <span>(c) <code class="inl">ArrayList&lt;integer&gt; list = new ArrayList&lt;&gt;();</code></span>
+        <span>(d) <code class="inl">ArrayList&lt;Int&gt; list = new ArrayList&lt;&gt;();</code></span>
+      </div>
+
+      <p><b>7.</b> The wrapper class of the primitive type <code class="inl">char</code> is:</p>
+      <div class="mcq c4"><span>(a) <code class="inl">Char</code></span><span>(b) <code class="inl">Character</code></span><span>(c) <code class="inl">String</code></span><span>(d) <code class="inl">CharWrapper</code></span></div>
+
+      <p><b>8.</b> <code class="inl">a</code> and <code class="inl">b</code> are <code class="inl">BigInteger</code> objects. Which statement <b>compiles</b> and stores their sum?</p>
+      <div class="mcq">
+        <span>(a) <code class="inl">BigInteger c = a + b;</code></span>
+        <span>(b) <code class="inl">BigInteger c = a.add(b);</code></span>
+        <span>(c) <code class="inl">BigInteger c = add(a, b);</code></span>
+        <span>(d) <code class="inl">long c = a + b;</code></span>
+      </div>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q1</div>
+        <p>1:&nbsp;<span class="val">(b)</span> &nbsp; 2:&nbsp;<span class="val">(c)</span> &nbsp; 3:&nbsp;<span class="val">(b)</span> &nbsp; 4:&nbsp;<span class="val">(c)</span> &nbsp;
+           5:&nbsp;<span class="val">(c)</span> &nbsp; 6:&nbsp;<span class="val">(b)</span> &nbsp; 7:&nbsp;<span class="val">(b)</span> &nbsp; 8:&nbsp;<span class="val">(b)</span></p>
+        <p class="rub">1 mark each. (1) Abstraction separates <i>what</i> a class does from <i>how</i> it does it; hiding the data behind methods is encapsulation.
+           (2) A <code class="inl">String</code>&rsquo;s characters can never change. (4) An open diamond &#9671; is aggregation; a dashed arrow is dependency; a hollow triangle is inheritance.
+           (6) Generic collections accept objects only, so the wrapper <code class="inl">Integer</code> is required. (8) Operators such as <code class="inl">+</code> do not work on <code class="inl">BigInteger</code>; you must call its methods.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Q2 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 5 &mdash; OO Thinking &mdash; Practice Exam &middot; Question 2 of 9</span></div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="qno">Q2</span>
+      <span class="qtitle">Name the Relationship</span>
+      <span class="chips">
+        <span class="chip tag-easy">EASY</span>
+        <span class="chip clo">CLO 3</span><span class="chip so">SO-a</span>
+        <span class="chip pts">8 marks &middot; 1 each</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p>For each scenario, write the relationship between the two classes. Choose from:
+         <b>Dependency</b>, <b>Aggregation</b>, <b>Composition</b>, <b>Self-aggregation</b>, <b>Inheritance</b>.</p>
+      <table class="fill">
+        <thead><tr><th style="width:6%">#</th><th>Scenario</th><th>Relationship</th></tr></thead>
+        <tbody>
+          <tr><td>a</td><td class="mono">class Order {<br>&nbsp;&nbsp;public void print(Printer p) { p.send(this); }<br>}</td><td class="ans"></td></tr>
+          <tr><td>b</td><td class="mono">class House {<br>&nbsp;&nbsp;private Room kitchen;<br>&nbsp;&nbsp;public House() { kitchen = new Room(); }<br>}</td><td class="ans"></td></tr>
+          <tr><td>c</td><td class="mono">class Team {<br>&nbsp;&nbsp;private Coach coach;<br>&nbsp;&nbsp;public Team(Coach coach) { this.coach = coach; }<br>}</td><td class="ans"></td></tr>
+          <tr><td>d</td><td class="mono">class Employee {<br>&nbsp;&nbsp;private Employee manager;<br>}</td><td class="ans"></td></tr>
+          <tr><td>e</td><td class="mono">class Manager extends Employee { &hellip; }</td><td class="ans"></td></tr>
+          <tr><td>f</td><td>A <b>Course</b> keeps the list of its enrolled <b>Students</b>. If the course is cancelled, the students still exist and stay enrolled in other courses.</td><td class="ans"></td></tr>
+          <tr><td>g</td><td>A <b>Body</b> and its <b>Heart</b>: the heart is created with the body, belongs to no other body, and is gone when the body is gone.</td><td class="ans"></td></tr>
+          <tr><td>h</td><td>A <b>Student</b> walks to a <b>BMICalculator</b> machine in the corridor, enters weight and height, reads the result and walks away. The machine is not part of who the student is.</td><td class="ans"></td></tr>
+        </tbody>
+      </table>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q2</div>
+        <p>a&nbsp;<span class="val">Dependency</span> &nbsp; b&nbsp;<span class="val">Composition</span> &nbsp; c&nbsp;<span class="val">Aggregation</span> &nbsp; d&nbsp;<span class="val">Self-aggregation</span><br>
+           e&nbsp;<span class="val">Inheritance</span> &nbsp; f&nbsp;<span class="val">Aggregation</span> &nbsp; g&nbsp;<span class="val">Composition</span> &nbsp; h&nbsp;<span class="val">Dependency</span></p>
+        <p class="rub">1 mark each. Rule of thumb from the lesson: a <b>parameter</b> that is not stored &rarr; dependency; <code class="inl">new</code> <b>inside</b> the owner&rsquo;s constructor &rarr; composition;
+           object <b>received from outside</b> and stored &rarr; aggregation; a field of the <b>same</b> class &rarr; self-aggregation; <code class="inl">extends</code> (is-a) &rarr; inheritance.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Q3 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 5 &mdash; OO Thinking &mdash; Practice Exam &middot; Question 3 of 9</span></div>
+
+  <div class="card tight">
+    <div class="card-head">
+      <span class="qno">Q3</span>
+      <span class="qtitle">Mutable or Immutable? Apply the Three Rules</span>
+      <span class="chips">
+        <span class="chip tag-med">MEDIUM</span>
+        <span class="chip clo">CLO 3</span><span class="chip so">SO-a</span>
+        <span class="chip pts">8 marks &middot; 2 each</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p>For each class, decide whether its objects are <b>mutable</b> or <b>immutable</b>. If mutable, name the rule that is broken and show
+         <b>one line of client code</b> that changes the object after it is created.</p>
+<div class="two-col">
+<pre class="code sm">// (a)
+public class Point {
+    private final int x;
+    private final int y;
+    public Point(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+    public int getX() { return x; }
+    public int getY() { return y; }
+    public Point move(int dx, int dy) {
+        return new Point(x + dx, y + dy);
+    }
+}</pre>
+<pre class="code sm">// (b)
+public class Counter {
+    private int count;
+    public Counter(int start) {
+        count = start;
+    }
+    public int getCount() {
+        return count;
+    }
+    public void increment() {
+        count++;
+    }
+}</pre>
+</div>
+<div class="two-col">
+<pre class="code sm">// (c)
+public class Team {
+    private final String name;
+    private final String[] players;
+    public Team(String n, String[] list) {
+        this.name = n;
+        this.players = list.clone();
+    }
+    public String getName() { return name; }
+    public String[] getPlayers() {
+        return players;
+    }
+}</pre>
+<pre class="code sm">// (d)
+public class Grades {
+    private final int[] g;
+    public Grades(int[] g) {
+        this.g = g;
+    }
+    public int[] getGrades() {
+        return g.clone();
+    }
+}</pre>
+</div>
+      <table class="fill">
+        <thead><tr><th style="width:8%">Class</th><th style="width:20%">Mutable / Immutable</th><th>Rule broken &amp; one line of code that changes the object (if mutable)</th></tr></thead>
+        <tbody>
+          <tr><td>(a)</td><td></td><td class="ans" style="width:auto"></td></tr>
+          <tr><td>(b)</td><td></td><td class="ans" style="width:auto"></td></tr>
+          <tr><td>(c)</td><td></td><td class="ans" style="width:auto"></td></tr>
+          <tr><td>(d)</td><td></td><td class="ans" style="width:auto"></td></tr>
+        </tbody>
+      </table>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q3</div>
+        <p>(a) <span class="val">Immutable.</span> Fields are private, there are no mutators, and <code class="inl">move</code> returns a <b>new</b> <code class="inl">Point</code> instead of changing this one.</p>
+        <p>(b) <span class="val">Mutable.</span> Rule 2 is broken: <code class="inl">increment()</code> is a mutator even though it is not called <code class="inl">set&hellip;</code>.
+           &nbsp;e.g. <code class="inl">c.increment();</code></p>
+        <p>(c) <span class="val">Mutable.</span> Rule 3 is broken: <code class="inl">getPlayers()</code> returns the real array.
+           &nbsp;e.g. <code class="inl">t.getPlayers()[0] = "X";</code> &mdash; <code class="inl">final</code> only stops <i>reassigning</i> the reference, not changing the elements.</p>
+        <p>(d) <span class="val">Mutable.</span> The getter copies, but the constructor stores the <b>caller&rsquo;s</b> array. The caller still holds that reference:
+           &nbsp;<code class="inl">int[] a = {90, 80}; Grades gr = new Grades(a); a[0] = 0;</code> &rarr; the object changes. Fix: <code class="inl">this.g = g.clone();</code></p>
+        <p class="rub">1 mark for the correct verdict + 1 mark for the rule/line of code. For (a), 2 marks for &ldquo;immutable&rdquo; with a reason.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Q4 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 5 &mdash; OO Thinking &mdash; Practice Exam &middot; Question 4 of 9</span></div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="qno">Q4</span>
+      <span class="qtitle">Output Tracing &mdash; Leaking a Reference</span>
+      <span class="chips">
+        <span class="chip tag-med">MEDIUM</span>
+        <span class="chip clo">CLO 3</span><span class="chip so">SO-a</span>
+        <span class="chip pts">6 marks</span>
+      </span>
+    </div>
+    <div class="card-body">
+<div class="two-col">
+<pre class="code sm">public class Course {
+    private final String title;
+    private final int[] seats;
+
+    public Course(String t, int[] s) {
+        this.title = t;
+        this.seats = s;
+    }
+    public String getTitle() {
+        return title;
+    }
+    public int[] getSeats() {
+        return seats;
+    }
+    public int total() {
+        int sum = 0;
+        for (int s : seats)
+            sum += s;
+        return sum;
+    }
+}</pre>
+<pre class="code sm">public class TestCourse {
+  public static void main(String[] args) {
+    int[] data = {30, 25, 40};
+    Course c = new Course("Java", data);
+    System.out.println(c.total());
+
+    int[] s = c.getSeats();
+    s[0] = 0;
+    System.out.println(c.total());
+
+    data[2] = 10;
+    System.out.println(c.total());
+
+    String t = c.getTitle();
+    t = t + " II";
+    System.out.println(c.getTitle());
+    System.out.println(t);
+  }
+}</pre>
+</div>
+      <p><b>(a)</b> Write the exact output. <span class="mini">(5 marks)</span></p>
+      <div class="answer-space"><span class="lbl">Output:</span><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div></div>
+      <p><b>(b)</b> The title did <b>not</b> change, but the seats did. Explain why in one sentence. <span class="mini">(1 mark)</span></p>
+      <div class="answer-space"><div class="writeline"></div><div class="writeline"></div></div>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q4</div>
+<pre class="code sm">95
+65
+35
+Java
+Java II</pre>
+        <p>(b) <code class="inl">String</code> is immutable, so <code class="inl">t + " II"</code> creates a <b>new</b> string and the object&rsquo;s title is untouched;
+           the <code class="inl">int[]</code> is mutable, and both <code class="inl">s</code> (from the getter) and <code class="inl">data</code> (passed to the constructor) point to the object&rsquo;s own array.</p>
+        <p class="rub">1 mark per output line. Line 3 is 0 + 25 + 10 = 35: the change made through <code class="inl">s</code> is still there.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Q5 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 5 &mdash; OO Thinking &mdash; Practice Exam &middot; Question 5 of 9</span></div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="qno">Q5</span>
+      <span class="qtitle">Write an Immutable Class</span>
+      <span class="chips">
+        <span class="chip tag-hard">HARD</span>
+        <span class="chip clo">CLO 3</span><span class="chip so">SO-c</span>
+        <span class="chip pts">8 marks</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p>The class below is <b>mutable</b>. Rewrite it as a new class <code class="inl">ImmutablePlaylist</code> whose objects can <b>never</b> change after creation.
+         Keep the constructor, <code class="inl">getName()</code>, <code class="inl">getDurations()</code> and <code class="inl">totalSeconds()</code>.
+         Remove what must be removed, and add one method <code class="inl">withName(String newName)</code> that returns a <b>new</b> playlist with the new name and the same durations.</p>
+<pre class="code sm">public class Playlist {
+    public String name;
+    private int[] durations;            // song lengths in seconds
+
+    public Playlist(String name, int[] durations) {
+        this.name = name;
+        this.durations = durations;
+    }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    public int[] getDurations() { return durations; }
+    public void setDuration(int index, int seconds) {
+        durations[index] = seconds;
+    }
+    public int totalSeconds() {
+        int sum = 0;
+        for (int d : durations) sum += d;
+        return sum;
+    }
+}</pre>
+      <div class="answer-space"><span class="lbl">Write the complete class ImmutablePlaylist:</span><div class="codebox" style="min-height:80mm"></div></div>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q5</div>
+<pre class="code sm">public class ImmutablePlaylist {
+    private final String name;              // Rule 1: private
+    private final int[] durations;
+
+    public ImmutablePlaylist(String name, int[] durations) {
+        this.name = name;                   // String is immutable: safe
+        this.durations = durations.clone(); // defensive copy IN
+    }
+    public String getName() { return name; }
+    public int[] getDurations() {
+        return durations.clone();           // Rule 3: defensive copy OUT
+    }
+    public int totalSeconds() {
+        int sum = 0;
+        for (int d : durations) sum += d;
+        return sum;
+    }
+    public ImmutablePlaylist withName(String newName) {
+        return new ImmutablePlaylist(newName, durations);   // new object
+    }
+    // Rule 2: setName and setDuration are removed
+}</pre>
+        <p class="rub">Rubric: <code class="inl">name</code> made private (1) &middot; both setters removed (2) &middot; getter returns a copy (2) &middot;
+           constructor copies the array (1) &middot; <code class="inl">withName</code> returns a new object without changing this one (2).
+           <code class="inl">final</code> is good practice but on its own earns no mark &mdash; a <code class="inl">final</code> array can still have its elements changed.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Q6 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 5 &mdash; OO Thinking &mdash; Practice Exam &middot; Question 6 of 9</span></div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="qno">Q6</span>
+      <span class="qtitle">From Code to UML &mdash; Relationships &amp; Multiplicity</span>
+      <span class="chips">
+        <span class="chip tag-med">MEDIUM</span>
+        <span class="chip clo">CLO 3</span><span class="chip so">SO-a</span>
+        <span class="chip pts">8 marks</span>
+      </span>
+    </div>
+    <div class="card-body">
+<pre class="code sm">public class Hospital {
+    private String name;
+    private Address address;
+    private Doctor director;
+    private Department[] departments;
+
+    public Hospital(String name, Address address, Doctor director) {
+        this.name = name;
+        this.address = address;     // received from outside
+        this.director = director;   // received from outside
+        departments = new Department[3];
+        for (int i = 0; i &lt; departments.length; i++)
+            departments[i] = new Department("Dept " + (i + 1)); // inside
+    }
+    public double payroll(SalaryCalculator calc) {
+        return calc.compute(departments);
+    }
+}
+
+public class Doctor {
+    private String name;
+    private Doctor mentor;          // one senior mentor, or none
+    // constructor, getters and setMentor(Doctor m) not shown
+}</pre>
+      <p><b>(a)</b> Name the relationship for each pair. <span class="mini">(5 marks)</span></p>
+      <table class="fill">
+        <tbody>
+          <tr><td style="width:42%">Hospital &mdash; Address</td><td class="ans"></td></tr>
+          <tr><td>Hospital &mdash; Department</td><td class="ans"></td></tr>
+          <tr><td>Hospital &mdash; Doctor (director)</td><td class="ans"></td></tr>
+          <tr><td>Hospital &mdash; SalaryCalculator</td><td class="ans"></td></tr>
+          <tr><td>Doctor &mdash; Doctor (mentor)</td><td class="ans"></td></tr>
+        </tbody>
+      </table>
+      <p><b>(b)</b> Draw the UML class diagram (class names only are enough). Use the correct symbol for each relationship and write the
+         <b>multiplicity</b> on the Hospital&ndash;Department line and on the mentor line. <span class="mini">(3 marks)</span></p>
+      <div class="drawbox" style="min-height:62mm"></div>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q6</div>
+        <p>(a) Address: <span class="val">Aggregation</span> &middot; Department: <span class="val">Composition</span> &middot; Doctor (director): <span class="val">Aggregation</span> &middot;
+           SalaryCalculator: <span class="val">Dependency</span> &middot; Doctor&ndash;Doctor: <span class="val">Self-aggregation</span></p>
+        <p>(b)</p>
+        <svg viewBox="0 0 640 250" width="100%" style="max-width:600px;display:block;margin:4px auto" font-family="Segoe UI, sans-serif" font-size="13">
+          <defs>
+            <marker id="openArrow" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path d="M0,0 L10,5 L0,10" fill="none" stroke="#14532d" stroke-width="1.5"/></marker>
+          </defs>
+          <g stroke="#14532d" stroke-width="1.5" fill="#fff">
+            <rect x="250" y="100" width="120" height="36"/><rect x="250" y="10" width="140" height="36"/>
+            <rect x="470" y="100" width="120" height="36"/><rect x="20" y="100" width="120" height="36"/>
+            <rect x="250" y="200" width="120" height="36"/>
+          </g>
+          <g fill="#14532d" text-anchor="middle" font-weight="700">
+            <text x="310" y="123">Hospital</text><text x="320" y="33">SalaryCalculator</text>
+            <text x="530" y="123">Department</text><text x="80" y="123">Address</text><text x="310" y="223">Doctor</text>
+          </g>
+          <!-- dependency -->
+          <line x1="310" y1="100" x2="310" y2="46" stroke="#14532d" stroke-width="1.5" stroke-dasharray="6 4" marker-end="url(#openArrow)"/>
+          <text x="318" y="78" fill="#166534" font-size="11">&#171;uses&#187;</text>
+          <!-- composition: filled diamond at Hospital -->
+          <line x1="390" y1="118" x2="470" y2="118" stroke="#14532d" stroke-width="1.5"/>
+          <path d="M370,118 L380,112 L390,118 L380,124 Z" fill="#14532d"/>
+          <text x="394" y="110" fill="#166534" font-size="11">1</text><text x="456" y="110" fill="#166534" font-size="11">3</text>
+          <!-- aggregation: open diamond at Hospital -->
+          <line x1="140" y1="118" x2="230" y2="118" stroke="#14532d" stroke-width="1.5"/>
+          <path d="M250,118 L240,112 L230,118 L240,124 Z" fill="#fff" stroke="#14532d" stroke-width="1.5"/>
+          <!-- director: open diamond at Hospital -->
+          <line x1="310" y1="156" x2="310" y2="200" stroke="#14532d" stroke-width="1.5"/>
+          <path d="M310,136 L316,146 L310,156 L304,146 Z" fill="#fff" stroke="#14532d" stroke-width="1.5"/>
+          <text x="318" y="190" fill="#166534" font-size="11">director</text>
+          <!-- self aggregation loop -->
+          <path d="M390,218 L420,218 L420,244 L310,244 L310,236" fill="none" stroke="#14532d" stroke-width="1.5"/>
+          <path d="M370,218 L380,212 L390,218 L380,224 Z" fill="#fff" stroke="#14532d" stroke-width="1.5"/>
+          <text x="426" y="236" fill="#166534" font-size="11">mentor 0..1</text>
+        </svg>
+        <p class="rub">(a) 1 mark each. (b) 1 mark for both diamonds on the <b>Hospital</b> side (filled for Department, open for Address/Doctor), 1 mark for the dashed
+           dependency arrow to SalaryCalculator, 1 mark for the multiplicities <code class="inl">1 &mdash; 3</code> and the self line marked <code class="inl">0..1</code>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Q7 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 5 &mdash; OO Thinking &mdash; Practice Exam &middot; Question 7 of 9</span></div>
+
+  <div class="card flow">
+    <div class="card-head">
+      <span class="qno">Q7</span>
+      <span class="qtitle">Self-Aggregation &mdash; Following the Supervisor Chain</span>
+      <span class="chips">
+        <span class="chip tag-hard">HARD</span>
+        <span class="chip clo">CLO 3</span><span class="chip so">SO-c</span>
+        <span class="chip pts">8 marks</span>
+      </span>
+    </div>
+    <div class="card-body">
+<pre class="code sm">public class Employee {
+    private String name;
+    private Employee supervisor;
+
+    public Employee(String name) {
+        this.name = name;
+    }
+    public void setSupervisor(Employee s) {
+        supervisor = s;
+    }
+    public Employee getSupervisor() {
+        return supervisor;
+    }
+    public String getName() {
+        return name;
+    }
+}</pre>
+<pre class="code sm">public class TestEmployee {
+  public static void main(String[] args) {
+    Employee ali  = new Employee("Ali");
+    Employee sara = new Employee("Sara");
+    Employee omar = new Employee("Omar");
+    Employee huda = new Employee("Huda");
+    sara.setSupervisor(ali);
+    omar.setSupervisor(sara);
+    huda.setSupervisor(sara);
+
+    System.out.println(omar.getSupervisor().getName());
+    System.out.println(
+      omar.getSupervisor().getSupervisor().getName());
+    System.out.println(
+      huda.getSupervisor() == omar.getSupervisor());
+    System.out.println(ali.getSupervisor());
+  }
+}</pre>
+      <p><b>(a)</b> Write the exact output. <span class="mini">(4 marks)</span></p>
+      <div class="answer-space"><span class="lbl">Output:</span><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div></div>
+      <p><b>(b)</b> Add a method <code class="inl">public int levelsToTop()</code> to <code class="inl">Employee</code> that returns how many supervisors are above this
+         employee. For the objects above: <code class="inl">omar &rarr; 2</code>, <code class="inl">sara &rarr; 1</code>, <code class="inl">ali &rarr; 0</code>. <span class="mini">(3 marks)</span></p>
+      <div class="answer-space"><div class="codebox" style="min-height:36mm"></div></div>
+      <p><b>(c)</b> What multiplicity should be written at the <code class="inl">supervisor</code> end of this self-aggregation in UML? <span class="mini">(1 mark)</span></p>
+      <div class="answer-space"><div class="writeline"></div></div>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q7</div>
+<div class="two-col">
+<pre class="code sm">Sara
+Ali
+true
+null</pre>
+<pre class="code sm">public int levelsToTop() {
+    int count = 0;
+    Employee current = supervisor;
+    while (current != null) {
+        count++;
+        current = current.getSupervisor();
+    }
+    return count;
+}</pre>
+</div>
+        <p>(c) <span class="val">0..1</span> &mdash; an employee has zero (the top boss) or one supervisor.</p>
+        <p class="rub">(a) 1 mark per line: line 3 is <code class="inl">true</code> because both employees hold a reference to the <b>same</b> Sara object; line 4 prints <code class="inl">null</code> because Ali has no supervisor.
+           (b) start from the supervisor (1), loop until <code class="inl">null</code> (1), count and return (1). A recursive answer is also accepted.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Q8 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 5 &mdash; OO Thinking &mdash; Practice Exam &middot; Question 8 of 9</span></div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="qno">Q8</span>
+      <span class="qtitle">Wrapper Classes, Auto-Boxing &amp; Unboxing</span>
+      <span class="chips">
+        <span class="chip tag-med">MEDIUM</span>
+        <span class="chip clo">CLO 3</span><span class="chip so">SO-a</span>
+        <span class="chip pts">8 marks</span>
+      </span>
+    </div>
+    <div class="card-body">
+<pre class="code sm">public class WrapperTest {
+  public static void main(String[] args) {
+    /* 1 */ Integer a = 25;
+    /* 2 */ int b = a + 5;
+    /* 3 */ System.out.println(b);
+    /* 4 */ System.out.println(Integer.parseInt("12") + Integer.parseInt("3"));
+    /* 5 */ System.out.println("12" + "3");
+    /* 6 */ Double d = 2.75;
+    /* 7 */ System.out.println(d.intValue());
+    /* 8 */ System.out.println(Integer.MAX_VALUE + 1);
+    /* 9 */ System.out.println(a.compareTo(30));
+  }
+}</pre>
+      <p><b>(a)</b> Write the exact output. <span class="mini">(6 marks)</span></p>
+      <div class="answer-space"><span class="lbl">Output:</span><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div></div>
+      <p><b>(b)</b> Give the number of <b>one line</b> where <b>auto-boxing</b> happens and <b>one line</b> where <b>auto-unboxing</b> happens. <span class="mini">(2 marks)</span></p>
+      <div class="answer-space"><span class="lbl">Auto-boxing: Line ______ &nbsp;&nbsp;&nbsp;&nbsp; Auto-unboxing: Line ______</span></div>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q8</div>
+<pre class="code sm">30
+15
+123
+2
+-2147483648
+-1</pre>
+        <p>(b) Auto-boxing: <span class="val">Line 1</span> (or Line 6) &nbsp;&middot;&nbsp; Auto-unboxing: <span class="val">Line 2</span> (<code class="inl">a</code> is unboxed so <code class="inl">+ 5</code> can work).</p>
+        <p class="rub">(a) 1 mark per line. Line 4 adds two <b>ints</b> (15); Line 5 joins two <b>Strings</b> (&ldquo;123&rdquo;). Line 7 drops the fraction (2).
+           Line 8 overflows past the largest <code class="inl">int</code> to <code class="inl">Integer.MIN_VALUE</code>. Line 9: 25 is less than 30, so <code class="inl">compareTo</code> returns -1.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Q9 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 5 &mdash; OO Thinking &mdash; Practice Exam &middot; Question 9 of 9</span></div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="qno">Q9</span>
+      <span class="qtitle">BigInteger &amp; BigDecimal &mdash; Beyond the Limits</span>
+      <span class="chips">
+        <span class="chip tag-hard">HARD</span>
+        <span class="chip clo">CLO 3</span><span class="chip so">SO-c</span>
+        <span class="chip pts">8 marks</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p><b>(a)</b> Write the output of the following code. <span class="mini">(3 marks)</span></p>
+<pre class="code sm">BigInteger x = new BigInteger("1000000000000");    // 10^12
+BigInteger y = new BigInteger("3");
+System.out.println(x.multiply(x));
+System.out.println(x.add(y).mod(new BigInteger("7")));
+System.out.println(x.compareTo(y) &gt; 0);</pre>
+      <div class="answer-space"><span class="lbl">Output:</span><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div></div>
+
+      <p><b>(b)</b> <code class="inl">System.out.println(1.0 - 0.9);</code> prints <code class="inl">0.09999999999999998</code>. Rewrite the subtraction with
+         <code class="inl">BigDecimal</code> so that it prints <code class="inl">0.1</code>, and say why a bank should use <code class="inl">BigDecimal</code>. <span class="mini">(2 marks)</span></p>
+      <div class="answer-space"><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div></div>
+
+      <p><b>(c)</b> 25! = 15,511,210,043,330,985,984,000,000 does not fit in a <code class="inl">long</code>. Write a static method
+         <code class="inl">factorial(int n)</code> that returns n! as a <code class="inl">BigInteger</code>, and the statement in <code class="inl">main</code> that prints 25!. <span class="mini">(3 marks)</span></p>
+      <div class="answer-space"><div class="codebox" style="min-height:52mm"></div></div>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q9</div>
+<pre class="code sm">1000000000000000000000000
+4
+true</pre>
+        <p class="rub">(a) 1 mark per line. 10<sup>12</sup> &times; 10<sup>12</sup> = 10<sup>24</sup>; (10<sup>12</sup> + 3) mod 7 = 4; <code class="inl">compareTo</code> is positive because x &gt; y.</p>
+<pre class="code sm">// (b)
+BigDecimal r = new BigDecimal("1.0").subtract(new BigDecimal("0.9"));
+System.out.println(r);                         // 0.1
+// double cannot store most decimal fractions exactly, so money
+// calculations collect rounding errors; BigDecimal keeps exact digits.
+
+// (c)
+public static BigInteger factorial(int n) {
+    BigInteger result = BigInteger.ONE;        // or new BigInteger("1")
+    for (int i = 2; i &lt;= n; i++)
+        result = result.multiply(new BigInteger("" + i));
+    return result;
+}
+// in main:
+System.out.println(factorial(25));   // 15511210043330985984000000</pre>
+        <p class="rub">(b) correct <code class="inl">subtract</code> with String constructors (1), reason (1). (c) start at one (1), multiply with the <b>method</b> and reassign the result,
+           because <code class="inl">BigInteger</code> is immutable (1), correct call and print (1). Writing <code class="inl">result * i</code> loses the multiplication mark.
+           (Using <code class="inl">long</code> silently overflows and prints 7034535277573963776.)</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="endmark">&mdash; End of OO Thinking Practice Exam &mdash; Good Luck! &mdash;</div>
+  <p class="footline">Module 5: Object-Oriented Thinking</p>
+</section>
+
+<script>
+  var btn = document.getElementById('toggleAns');
+  btn.addEventListener('click', function () {
+    var on = document.body.classList.toggle('show-answers');
+    btn.textContent = on ? '🙈 Hide model answers' : '👁 Show model answers';
+    btn.classList.toggle('ghost', !on);
+  });
+</script>
+</body>
+</html>
