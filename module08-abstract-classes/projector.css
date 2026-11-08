@@ -198,3 +198,31 @@ strong, b { color: #000000; }
 }
 .mermaid svg .edgePath path, .mermaid svg path.relation, .mermaid svg .flowchart-link { stroke: #000 !important; }
 .mermaid svg marker path, .mermaid svg marker polygon { stroke: #000 !important; }
+
+/* ---- Code blocks: EXACTLY as the DS204 tree tutorial ----
+   white, grey 2px border, no coloured bar, Courier New, bold black text;
+   keywords dark blue, types AND method names dark purple, comments dark
+   green italic, strings brown, null/numbers dark red. */
+.code-block, pre.code-block {
+    background: #ffffff !important; color: #000000 !important;
+    border: 2px solid #9aa5b1 !important; border-left: 2px solid #9aa5b1 !important;
+    border-radius: 0 0 10px 10px !important;
+    font-family: 'Courier New', Courier, monospace !important;
+    font-size: 1.02rem !important; font-weight: 600 !important; line-height: 1.75 !important;
+}
+.code-container > .code-block:first-child, .code-block:only-child { border-radius: 10px !important; }
+.code-header {
+    background: #ffffff !important; color: #000000 !important;
+    border: 2px solid #9aa5b1 !important; border-bottom: 1px solid #d0d7de !important;
+    border-radius: 10px 10px 0 0 !important;
+}
+.code-header * { color: #000000 !important; }
+.code-block .keyword, .code-block .kw { color: #0000b3 !important; font-weight: 800 !important; font-style: normal !important; }
+.code-block .class-name, .code-block .tp, .code-block .type,
+.code-block .method, .code-block .mtd { color: #6a1b9a !important; font-weight: 800 !important; font-style: normal !important; }
+.code-block .comment, .code-block .cmt { color: #1b5e20 !important; font-style: italic !important; font-weight: 600 !important; }
+.code-block .string, .code-block .str { color: #a0522d !important; font-weight: 600 !important; }
+.code-block .number, .code-block .num, .code-block .null { color: #b71c1c !important; font-weight: 800 !important; }
+.code-block .annotation, .code-block .ann { color: #0000b3 !important; font-weight: 800 !important; }
+.code-block span:not([class]) { color: inherit; }
+.code-inline, .content :not(pre) > code { font-family: 'Courier New', Courier, monospace !important; }
