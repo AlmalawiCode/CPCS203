@@ -1,0 +1,200 @@
+/* ==========================================================================
+   PROJECTOR THEME (data show) — same look as the Data Structures 204
+   tree tutorial (almalawicode.github.io/Data-Structures_204/tree/tree-tutorial.html):
+   white page, dark-green headings, green section circles, pill contents bar,
+   light tinted boxes with a coloured left border, white code with black text
+   and dark high-contrast syntax colours.
+   Loaded LAST in <head>, so it overrides the page's own styles.
+   ========================================================================== */
+
+/* ---- Page ---- */
+html { font-size: 18px; }
+html, body { background: #ffffff !important; color: #111111 !important; }
+body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.7; padding: 20px 10px; }
+.container {
+    max-width: 1100px !important; margin: 0 auto !important;
+    background: #ffffff !important; box-shadow: none !important;
+    border: 2px solid #d0d7de !important; border-radius: 15px !important; overflow: clip;
+}
+* { text-shadow: none !important; }
+p, li, td { color: #111111; }
+strong, b { color: #000000; }
+
+/* ---- Breadcrumb bar ---- */
+.nav-breadcrumb { background: #ffffff !important; border-bottom: 1px solid #e5e7eb !important; padding: 16px 35px !important; }
+.nav-breadcrumb, .nav-breadcrumb span, .breadcrumb .sep, .breadcrumb .cur { color: #374151 !important; }
+.breadcrumb a { color: #1a5276 !important; font-weight: 700; text-decoration: none; }
+.lesson-nav a, .lang-switch {
+    background: #ffffff !important; color: #0b5a2b !important;
+    border: 2px solid #1e8449 !important; border-radius: 20px !important; font-weight: 700 !important;
+}
+.lesson-nav a:hover { background: #1e8449 !important; color: #ffffff !important; }
+
+/* ---- Header (hero): white with dark green text ---- */
+.hero, .header {
+    background: #ffffff !important; color: #0b3d1f !important;
+    border-bottom: 4px solid #1e8449 !important;
+    text-align: left !important; padding: 34px 35px 30px !important;
+}
+.hero::before, .hero::after, .header::before, .header::after { display: none !important; }
+.hero h1, .header h1 { color: #0b3d1f !important; font-size: 2.4rem !important; margin: 10px 0 6px !important; }
+.hero .subtitle, .hero p, .header .subtitle { color: #0b3d1f !important; opacity: 1 !important; font-size: 1.1rem !important; }
+.hero .message { background: #f0fff4 !important; color: #111 !important; border: none !important; border-left: 5px solid #27ae60 !important; border-radius: 0 8px 8px 0 !important; }
+.hero .pillar-badge, .hero .pillar-chip, .hero .tag-chip, .hero .topic-chip {
+    background: #eef7f1 !important; color: #0b3d1f !important;
+    border: 2px solid #1e8449 !important; opacity: 1 !important; font-weight: 700;
+}
+.hero .pillar-badge .number, .hero .pillar-badge .num {
+    background: #1e8449 !important; color: #ffffff !important; border: none !important;
+}
+.hero .pillar-chip.current { background: #1e8449 !important; color: #ffffff !important; }
+
+/* ---- Contents: light-green band with pill links ---- */
+.chapter-toc {
+    background: #f0fff4 !important; border: none !important; border-radius: 0 !important;
+    border-top: 3px solid #27ae60 !important; border-bottom: 3px solid #27ae60 !important;
+    margin: -40px -35px 40px !important; padding: 20px 35px !important;
+}
+.chapter-toc-title {
+    color: #1e8449 !important; text-transform: uppercase; letter-spacing: 1px;
+    font-size: 1rem !important; font-weight: 800 !important; margin-bottom: 12px !important;
+}
+.chapter-toc ol {
+    columns: auto !important; display: flex !important; flex-wrap: wrap; gap: 8px;
+    list-style: none !important; padding: 0 !important; margin: 0 !important; counter-reset: toc;
+}
+.chapter-toc li { margin: 0 !important; counter-increment: toc; }
+.chapter-toc li a {
+    display: inline-block; background: #ffffff !important; border: 2px solid #27ae60 !important;
+    color: #1e8449 !important; padding: 5px 14px !important; border-radius: 20px !important;
+    text-decoration: none !important; font-size: .85rem !important; font-weight: 700 !important;
+}
+.chapter-toc li a::before { content: counter(toc) ". "; }
+.chapter-toc li a:hover { background: #27ae60 !important; color: #ffffff !important; }
+
+/* ---- Content area & headings ---- */
+.content { padding: 40px 35px !important; }
+.section { margin-bottom: 64px !important; scroll-margin-top: 20px; background: transparent !important; box-shadow: none !important; border: none !important; }
+.section-title, .content h2 {
+    color: #0b5a2b !important; font-size: 1.85rem !important;
+    border-bottom: 3px solid #27ae60 !important; padding-bottom: 12px !important;
+    display: flex; align-items: center; gap: 14px;
+}
+.section-title::after, .section-title::before { display: none !important; }
+.section-number {
+    background: #27ae60 !important; color: #ffffff !important; border: none !important;
+    width: 38px !important; height: 38px !important; min-width: 38px; border-radius: 50% !important;
+    display: inline-flex !important; align-items: center; justify-content: center;
+    font-size: 1.05rem !important; font-weight: 800 !important; box-shadow: none !important;
+}
+.subsection-title, .content h3 { color: #0e6655 !important; }
+.sub-badge { background: #eef7f1 !important; color: #0b5a2b !important; border: 1.5px solid #1e8449 !important; }
+
+/* ---- Boxes: light tint + coloured left border ---- */
+.info-box, .success-box, .tip-box, .note-box {
+    background: #f0fff4 !important; background-image: none !important; color: #111 !important;
+    border: none !important; border-left: 5px solid #27ae60 !important; border-radius: 0 8px 8px 0 !important;
+}
+.warning-box {
+    background: #fef9e7 !important; background-image: none !important; color: #111 !important;
+    border: none !important; border-left: 5px solid #f39c12 !important; border-radius: 0 8px 8px 0 !important;
+}
+.danger-box, .error-box {
+    background: #fde8e8 !important; background-image: none !important; color: #111 !important;
+    border: none !important; border-left: 5px solid #e74c3c !important; border-radius: 0 8px 8px 0 !important;
+}
+.purple-box, .violet-box, .pink-box, .discussion-box {
+    background: #ebf5fb !important; background-image: none !important; color: #111 !important;
+    border: none !important; border-left: 5px solid #2980b9 !important; border-radius: 0 8px 8px 0 !important;
+}
+.discussion-box * { color: #111111; }
+/* key-concept style */
+.key-box {
+    background: #eef7f1 !important; background-image: none !important; color: #000 !important;
+    border: 2px solid #1e8449 !important; border-radius: 12px !important;
+}
+.key-box-title { color: #0b5a2b !important; text-transform: uppercase; letter-spacing: 1px; font-weight: 800 !important; }
+.info-box-title, .success-box-title { color: #1e8449 !important; font-weight: 800 !important; }
+.danger-box-title { color: #b71c1c !important; font-weight: 800 !important; }
+.warning-box-title { color: #9a4d00 !important; font-weight: 800 !important; }
+.purple-box-title, .violet-box-title, .pink-box-title { color: #1a5276 !important; font-weight: 800 !important; }
+.summary-card, .speech-bubble, .challenge-box { background: #ffffff !important; background-image: none !important; }
+
+/* ---- Code blocks: white, black text, dark syntax colours ---- */
+.code-container { box-shadow: none !important; border-radius: 8px !important; }
+.code-header {
+    background: #eef7f1 !important; color: #0b3d1f !important; font-weight: 700;
+    border: 2px solid #9aa5b1 !important; border-bottom: none !important;
+}
+.code-header * { color: #0b3d1f !important; }
+.code-block, pre.code-block {
+    background: #ffffff !important; color: #000000 !important;
+    border: 2px solid #9aa5b1 !important; border-left: 8px solid #1e8449 !important;
+    font-family: Consolas, 'Courier New', monospace !important;
+    font-size: 1.02rem !important; font-weight: 600 !important; line-height: 1.6 !important;
+}
+.code-block .keyword, .code-block .kw  { color: #0000b3 !important; font-weight: 800 !important; }
+.code-block .class-name, .code-block .tp, .code-block .type { color: #6a1b9a !important; font-weight: 800 !important; }
+.code-block .comment, .code-block .cmt { color: #1b5e20 !important; font-style: italic; font-weight: 600; }
+.code-block .string, .code-block .str  { color: #a0522d !important; }
+.code-block .number, .code-block .num  { color: #b71c1c !important; font-weight: 800 !important; }
+.code-block .method, .code-block .mtd  { color: #000000 !important; font-weight: 700; }
+.code-block .annotation, .code-block .ann { color: #9a4d00 !important; }
+.code-inline, .content :not(pre) > code {
+    background: #f2f4f7 !important; color: #000 !important; border: 1px solid #9aa5b1 !important;
+    border-radius: 4px; padding: 1px 6px; font-weight: 700;
+}
+
+/* ---- Program output ---- */
+.terminal { background: #ffffff !important; border: 2px solid #9aa5b1 !important; box-shadow: none !important; }
+.terminal-header { background: #f2f4f7 !important; border-bottom: 1px solid #9aa5b1 !important; }
+.terminal-title { color: #111 !important; }
+.terminal-body, .terminal-body * {
+    background: #ffffff !important; color: #000000 !important;
+    font-family: Consolas, 'Courier New', monospace !important; font-weight: 700 !important;
+}
+
+/* ---- Tables ---- */
+.content th, table th { background: #1e8449 !important; color: #ffffff !important; border: 1px solid #1e8449 !important; }
+.content td { border-color: #dee2e6 !important; }
+
+/* ---- Bottom nav & footer ---- */
+.bottom-nav { background: #ffffff !important; border-top: 1px solid #e5e7eb !important; padding: 22px 35px !important; }
+.bottom-nav a, .nav-prev, .nav-next, .nav-practical {
+    background: #ffffff !important; background-image: none !important; color: #0b5a2b !important;
+    border: 2px solid #1e8449 !important; border-radius: 22px !important; box-shadow: none !important; font-weight: 700 !important;
+}
+.bottom-nav a:hover { background: #1e8449 !important; color: #ffffff !important; }
+.footer, .page-footer, footer {
+    background: #ffffff !important; color: #000000 !important;
+    border-top: 3px solid #1e8449 !important; text-align: center;
+}
+.footer p, .page-footer p { opacity: 1 !important; color: #000 !important; }
+
+/* ---- Mermaid ---- */
+.mermaid { display: flex; justify-content: center; margin: 20px 0; }
+
+/* ---- Misc ---- */
+#code-theme-picker { display: none !important; }
+
+/* ---- Header lesson number: green circle ---- */
+.hero .pillar-badge { display: inline-flex !important; align-items: center; gap: 10px; padding: 6px 18px 6px 6px !important; border-radius: 30px !important; }
+.hero .pillar-badge .number, .hero .pillar-badge .num {
+    width: 32px; height: 32px; min-width: 32px; border-radius: 50% !important;
+    display: inline-flex !important; align-items: center; justify-content: center; font-weight: 800;
+}
+
+/* ---- Mermaid diagrams in the green palette ---- */
+.mermaid svg g.node rect, .mermaid svg g.node polygon, .mermaid svg g.node circle,
+.mermaid svg .label-container, .mermaid svg rect.basic, .mermaid svg g.classGroup rect {
+    fill: #eef7f1 !important; stroke: #1e8449 !important; stroke-width: 2px !important;
+}
+.mermaid svg g.node path { stroke: #1e8449 !important; }
+.mermaid svg .nodeLabel, .mermaid svg .nodeLabel *, .mermaid svg g.node text, .mermaid svg .classTitle {
+    color: #0b3d1f !important; fill: #0b3d1f !important; font-weight: 700;
+}
+.mermaid svg .edgeLabel, .mermaid svg .edgeLabel rect, .mermaid svg .edgeLabel span, .mermaid svg .labelBkg {
+    background: #ffffff !important; fill: #ffffff !important; color: #000 !important;
+}
+.mermaid svg .edgePath path, .mermaid svg path.relation, .mermaid svg .flowchart-link { stroke: #000 !important; }
+.mermaid svg marker path, .mermaid svg marker polygon { stroke: #000 !important; }

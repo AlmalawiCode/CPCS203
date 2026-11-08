@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 5 — &#128290; Case Study: the Abstract Number Class | Module 08 Abstract Classes</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script>mermaid.initialize({startOnLoad:true, theme:'base', securityLevel:'loose',
+        themeVariables:{
+            primaryColor:'#0d9488', primaryTextColor:'#ffffff',
+            primaryBorderColor:'#0f766e', lineColor:'#374151',
+            secondaryColor:'#f0fdfa', tertiaryColor:'#ccfbf1'
+        }
+    });</script>
+    <style>
+        .mermaid { display:flex; justify-content:center; margin:20px 0; }
+        .mermaid svg { max-width:100%; height:auto; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --teal:        #0d9488;
+            --teal-dark:   #0f766e;
+            --teal-darker: #134e4a;
+            --teal-light:  #f0fdfa;
+            --teal-mid:    #ccfbf1;
+            --cyan:        #06b6d4;
+            --cyan-dark:   #0e7490;
+            --emerald:     #059669;
+            --emerald-dark:#065f46;
+            --warning:     #d97706;
+            --danger:      #dc2626;
+            --dark:        #1f2937;
+            --gray:        #6b7280;
+            --light:       #f9fafb;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.8;
+            color: var(--dark);
+            background: #ffffff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            border: 1px solid #e5e7eb;
+            overflow: hidden;
+        }
+
+        /* ── Breadcrumb ── */
+        .nav-breadcrumb {
+            background: #ffffff; border-bottom: 2px solid #e5e7eb;
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .breadcrumb { display: flex; align-items: center; gap: 8px; color: #374151; font-size: 0.9rem; }
+        .breadcrumb a { color: #0f766e; font-weight: 700; text-decoration: none; transition: color .3s; }
+        .breadcrumb a:hover { color: #134e4a; text-decoration: underline; }
+        .breadcrumb .sep { color: #6b7280; }
+        .breadcrumb .cur { color: #374151; }
+        .lesson-nav { display: flex; gap: 10px; }
+        .lesson-nav a {
+            padding: 8px 16px;
+            background: #ffffff;
+            color: #0f766e; border: 1.5px solid #0f766e;
+            text-decoration: none;
+            border-radius: 20px;
+            font-size: .85rem;
+            transition: background .3s;
+        }
+        .lesson-nav a:hover { background: #f0fdfa; }
+
+        /* ── Hero ── */
+        .hero {
+            background: #ffffff;
+            color: #111827; border-bottom: 3px solid #0f766e;
+            padding: 50px 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute; top: -50px; right: -50px;
+            width: 250px; height: 250px;
+            display: none;
+        }
+        .hero::after {
+            content: '';
+            position: absolute; bottom: -80px; left: -40px;
+            width: 300px; height: 300px;
+            display: none;
+        }
+        .pillar-badge {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: #ffffff; color: #374151;
+            border: 1.5px solid #d1d5db;
+            padding: 8px 22px; border-radius: 30px;
+            font-size: .95rem; font-weight: 600; margin-bottom: 20px;
+        }
+        .pillar-badge .num, .pillar-badge .number {
+            background: #ffffff; color: var(--teal-dark); border: 2px solid var(--teal-dark);
+            width: 28px; height: 28px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; font-weight: 900;
+        }
+        .hero h1 { font-size: 3rem; margin-bottom: 15px; color: var(--teal-dark); }
+        .hero .subtitle { font-size: 1.25rem; color: #374151; margin-bottom: 10px; }
+        .hero .message {
+            max-width: 700px; margin: 20px auto 0;
+            font-size: 1.05rem; opacity: .95; font-style: italic;
+            background: #ffffff; color: #374151; border: 1.5px solid #e5e7eb; border-left: 5px solid var(--teal-dark);
+            padding: 18px 25px; border-radius: 12px; line-height: 1.9;
+        }
+        .four-pillars {
+            display: flex; justify-content: center; gap: 12px;
+            margin-top: 28px; flex-wrap: wrap;
+        }
+        .pillar-chip {
+            padding: 10px 20px; border-radius: 30px;
+            font-weight: 700; font-size: .9rem;
+            border: 1.5px solid #d1d5db; background: #ffffff; color: #374151;
+        }
+        .pillar-chip.done    { color: #15803d; border-color: #86efac; }
+        .pillar-chip.current { color: var(--teal-dark); border-color: var(--teal-dark); }
+        .pillar-chip.upcoming{ opacity: .75; }
+
+        /* ── Content ── */
+        .content { padding: 50px 40px; }
+        .section { margin-bottom: 60px; }
+        .section-title {
+            font-size: 1.85rem; color: var(--teal-dark);
+            border-bottom: 3px solid var(--teal);
+            padding-bottom: 10px; margin-bottom: 28px;
+            display: flex; align-items: center; gap: 12px;
+        }
+        .section-number {
+            background: #ffffff; border: 2.5px solid var(--teal);
+            color: var(--teal-dark); width: 42px; height: 42px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 900; font-size: 1.1rem; flex-shrink: 0;
+        }
+        .section-number.star { font-size: 1.3rem; }
+        .subsection-title {
+            font-size: 1.3rem; color: var(--teal-dark);
+            margin: 32px 0 16px;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .sub-badge {
+            background: #ffffff; border: 1.5px solid var(--teal);
+            color: var(--teal-dark); padding: 3px 14px; border-radius: 20px;
+            font-size: .8rem; font-weight: 700; letter-spacing: .5px;
+        }
+
+        /* ── Code blocks ── */
+        .code-container { margin: 16px 0; border-radius: 12px; overflow: hidden; border: 1px solid #e5e7eb; }
+        .code-header {
+            background: #f1f5f9; color: #111827; border-bottom: 1px solid #cbd5e1;
+            padding: 10px 18px; font-size: .85rem; font-weight: 600;
+            display: flex; justify-content: space-between; align-items: center;
+            cursor: pointer; user-select: none;
+        }
+        .code-header:hover { background: #e2e8f0; }
+        .code-toggle { font-size: 1.2em; transition: transform 0.3s; }
+        .code-toggle.collapsed { transform: rotate(-90deg); }
+        .code-block {
+            background: #ffffff;
+            color: #111827;
+            padding: 22px 24px; font-family: 'Courier New', Consolas, monospace;
+            font-size: 1em; line-height: 1.9; overflow-x: auto;
+            white-space: pre;
+            transition: background 0.3s, color 0.3s;
+        }
+        .code-block.collapsed { display: none; }
+        .code-block .keyword    { color: var(--cb-keyword,  #ff79c6); font-weight: bold; }
+        .code-block .class-name { color: var(--cb-class,    #8be9fd); font-weight: bold; }
+        .code-block .method     { color: var(--cb-method,   #50fa7b); }
+        .code-block .string     { color: var(--cb-string,   #f1fa8c); }
+        .code-block .comment    { color: var(--cb-comment,  #7a8bbf); font-style: italic; }
+        .code-block .number     { color: #c2410c; }
+        .code-block .abstract-kw{ color: #b45309 !important; font-weight: bold; }
+
+        /* ── Terminal ── */
+        .terminal { background: #f8fafc; border-radius: 12px; overflow: hidden; margin: 16px 0; border: 1px solid var(--tm-border, #334155); transition: background 0.3s, border-color 0.3s; box-shadow: 0 4px 16px rgba(0,0,0,.2); }
+        .terminal-header { background: #f1f5f9; padding: 10px 16px; display: flex; align-items: center; gap: 8px; transition: background 0.3s; }
+        .terminal-dot { width: 12px; height: 12px; border-radius: 50%; }
+        .terminal-dot.r { background: #ef4444; }
+        .terminal-dot.y { background: #f59e0b; }
+        .terminal-dot.g { background: #10b981; }
+        .terminal-title { color: var(--tm-title, #94a3b8); font-size: .85rem; margin-left: 6px; font-weight: 600; transition: color 0.3s; }
+        .terminal-body { background: #f8fafc; color: #111827; padding: 18px 20px; font-family: 'Courier New', monospace; font-size: .9em; line-height: 1.9; white-space: pre; transition: background 0.3s, color 0.3s; }
+
+        /* ── Code-theme floating picker ── */
+        #code-theme-picker { position:fixed; bottom:28px; right:28px; z-index:9999; display:flex; flex-direction:column; align-items:flex-end; gap:10px; font-family:'Segoe UI',sans-serif; }
+        #theme-toggle-btn { background:#ffffff; color:#0f766e; border:1.5px solid #0f766e !important; border:none; border-radius:50px; padding:11px 20px; font-size:.88rem; font-weight:700; cursor:pointer; box-shadow:0 4px 18px rgba(13,148,136,.5); letter-spacing:.5px; transition:box-shadow .2s; }
+        #theme-toggle-btn:hover { box-shadow:0 6px 24px rgba(13,148,136,.7); }
+        #theme-panel { background:#fff; border-radius:14px; padding:14px 16px; box-shadow:0 8px 32px rgba(0,0,0,.25); display:none; flex-direction:column; gap:8px; min-width:210px; border:1px solid #99f6e4; }
+        #theme-panel.open { display:flex; }
+        #theme-panel .tp-label { font-size:.72rem; font-weight:800; letter-spacing:1.5px; text-transform:uppercase; color:#0f766e; margin-bottom:4px; }
+        .theme-btn { display:flex; align-items:center; gap:10px; padding:8px 12px; border-radius:8px; border:2px solid transparent; cursor:pointer; font-size:.88rem; font-weight:600; transition:border-color .2s,background .2s; background:#f9fafb; color:#1f2937; }
+        .theme-btn:hover { background:#f0fdfa; border-color:#0d9488; }
+        .theme-btn.active { border-color:#0f766e; background:#ccfbf1; }
+        .theme-swatch { width:28px; height:28px; border-radius:6px; border:1px solid rgba(0,0,0,.15); flex-shrink:0; }
+
+        /* ── Projector mode overrides ── */
+        body.projector .nav-breadcrumb { background:#ccfbf1 !important; }
+        body.projector .breadcrumb a   { color:#0f766e !important; }
+        body.projector .breadcrumb .sep, body.projector .breadcrumb .cur { color:#0d9488 !important; }
+        body.projector .lesson-nav a   { background:rgba(13,148,136,.12) !important; color:#134e4a !important; border:1px solid #5eead4 !important; }
+        body.projector .code-header    { background:#99f6e4 !important; color:#134e4a !important; }
+        body.projector .code-header:hover { background:#0d9488 !important; color:#fff !important; }
+        body.projector .alert-important { background:#ccfbf1 !important; color:#134e4a !important; }
+        body.projector .alert-important-title { color:#0f766e !important; }
+        body.projector .alert-important strong { color:#0f766e !important; }
+        body.projector .discussion-box { background:#ffffff !important; color:#1f2937 !important; }
+        body.projector .discussion-box h4 { color:#0f766e !important; }
+        body.projector .speech-bubble  { background:rgba(13,148,136,.06) !important; border:1px solid #5eead4 !important; }
+        body.projector .speech-who     { color:#0f766e !important; }
+        body.projector .speech-text    { color:#1f2937 !important; }
+        body.projector .speech-text strong { color:#0d9488 !important; }
+
+        /* ── Info / success / danger / warning boxes ── */
+        .info-box {
+            background: #f0fdfa; border-left: 5px solid var(--teal);
+            border-radius: 0 12px 12px 0; padding: 18px 22px; margin: 16px 0;
+        }
+        .info-box-title { font-weight: 800; color: var(--teal-dark); margin-bottom: 8px; font-size: 1.05rem; }
+        .success-box {
+            background: #f0fdf4; border: 2px solid #16a34a;
+            border-radius: 12px; padding: 20px 24px; margin: 16px 0;
+        }
+        .success-box-title { font-weight: 800; color: #14532d; margin-bottom: 10px; font-size: 1.05rem; }
+        .warning-box {
+            background: #fffbeb; border: 2px solid #f59e0b;
+            border-radius: 12px; padding: 18px 22px; margin: 16px 0;
+        }
+        .warning-box-title { font-weight: 800; color: #92400e; margin-bottom: 8px; }
+        .danger-box {
+            background: #fef2f2; border: 2px solid #dc2626;
+            border-radius: 12px; padding: 18px 22px; margin: 16px 0;
+        }
+        .danger-box-title { font-weight: 800; color: #991b1b; margin-bottom: 8px; }
+        .key-box {
+            background: #ffffff;
+            border: 2px solid var(--teal); border-radius: 12px;
+            padding: 18px 22px; margin: 16px 0;
+        }
+        .key-box-title { font-weight: 800; color: var(--teal-dark); margin-bottom: 8px; font-size: 1.05rem; }
+
+        /* ── Alert important ── */
+        .alert-important {
+            background: #ffffff; border: 2px solid var(--teal-dark); border-left: 7px solid var(--teal-dark);
+            color: #1f2937; border-radius: 14px; padding: 22px 28px; margin: 20px 0;
+        }
+        .alert-important-title { font-size: 1.2rem; font-weight: 900; margin-bottom: 10px; color: var(--teal-dark); }
+
+        /* ── Discussion / speech bubbles ── */
+        .discussion-box {
+            background: #ffffff;
+            border: 2px solid var(--teal); border-radius: 16px;
+            padding: 24px; margin: 20px 0;
+        }
+        .discussion-box h4 { color: var(--teal-dark); margin-bottom: 16px; font-size: 1.1rem; }
+        .speech-bubble {
+            background: white; border-radius: 12px; padding: 14px 18px;
+            margin: 10px 0; box-shadow: 0 2px 8px rgba(0,0,0,.08);
+            border-left: 4px solid var(--teal);
+        }
+        .speech-who { font-weight: 800; color: var(--teal-dark); font-size: .9rem; margin-bottom: 4px; }
+        .speech-text { color: #374151; line-height: 1.75; }
+
+
+
+        /* ── Rules section ── */
+        .rule-card {
+            border-radius: 14px; overflow: hidden; margin: 18px 0;
+            border: 2px solid var(--rc, var(--teal));
+        }
+        .rule-header {
+            padding: 14px 22px; color: var(--rc, var(--teal)); background: #ffffff;
+            border-bottom: 2px solid var(--rc, var(--teal)); font-weight: 800; font-size: 1rem;
+            display: flex; align-items: center; gap: 12px;
+        }
+        .rule-num {
+            background: #ffffff; border: 2px solid currentColor; width: 32px; height: 32px;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-weight: 900; flex-shrink: 0;
+        }
+        .rule-body { background: #ffffff; padding: 18px 22px; }
+        .rule-teal    { --rc: var(--teal-dark); }
+        .rule-cyan    { --rc: var(--cyan-dark); }
+        .rule-emerald { --rc: var(--emerald-dark); }
+        .rule-warning { --rc: #b45309; }
+        .rule-slate   { --rc: #334155; }
+
+        /* ── Hierarchy visual ── */
+        .hier-box {
+            display: inline-flex; flex-direction: column; align-items: center; gap: 0;
+            font-family: 'Courier New', monospace; font-size: .9em;
+        }
+        .hier-node {
+            padding: 10px 22px; border-radius: 10px; border: 2px solid;
+            font-weight: 700; text-align: center; min-width: 140px;
+        }
+        .hier-node.abstract-node { background: #fef3c7; border-color: #d97706; color: #92400e; }
+        .hier-node.concrete-node { background: #dcfce7; border-color: #16a34a; color: #14532d; }
+        .hier-arrow { color: #6b7280; font-size: 1.5rem; line-height: 1; }
+
+        /* ── Summary grid ── */
+        .summary-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px,1fr)); gap: 16px; margin-top: 20px; }
+        .summary-card {
+            border-radius: 14px; padding: 20px 18px; text-align: center; background: #ffffff;
+        }
+        .sc-icon { font-size: 2rem; margin-bottom: 10px; }
+        .sc-title { font-weight: 800; font-size: 1rem; margin-bottom: 6px; }
+        .sc-desc { font-size: .85rem; color: #4b5563; line-height: 1.6; }
+        .summary-card.s1 { border: 2px solid var(--teal); }
+        .summary-card.s1 .sc-title { color: var(--teal-dark); }
+        .summary-card.s2 { border: 2px solid var(--cyan); }
+        .summary-card.s2 .sc-title { color: var(--cyan-dark); }
+        .summary-card.s3 { border: 2px solid #16a34a; }
+        .summary-card.s3 .sc-title { color: #14532d; }
+        .summary-card.s4 { border: 2px solid #ca8a04; }
+        .summary-card.s4 .sc-title { color: #713f12; }
+
+        .code-inline { background: #f1f5f9; padding: 2px 7px; border-radius: 5px; font-family: 'Courier New', monospace; font-size: .93em; color: #0f766e; font-weight: 700; }
+
+        /* ── Abstract vs concrete diagram ── */
+        .spectrum-bar {
+            display: flex; border-radius: 12px; overflow: hidden; height: 54px; margin: 14px 0;
+        }
+        .spectrum-seg {
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: .88rem; flex: 1;
+            background: #ffffff; border: 3px solid currentColor; text-align: center;
+        }
+
+        /* ── Number class cards ── */
+        .number-grid { display: flex; flex-wrap: wrap; gap: 10px; margin: 16px 0; }
+        .number-chip {
+            padding: 10px 18px; border-radius: 10px; font-weight: 700;
+            font-family: 'Courier New', monospace; font-size: .9em;
+        }
+        .number-chip.abstract-chip { background: #fef3c7; border: 2px solid #d97706; color: #92400e; }
+        .number-chip.concrete-chip { background: #dcfce7; border: 2px solid #16a34a; color: #14532d; }
+
+        p { margin-bottom: 12px; }
+        ul, ol { margin-left: 24px; line-height: 2.1; }
+        li { margin-bottom: 4px; }
+
+        /* Bottom navigation + footer (white, solid borders — projector friendly) */
+        .bottom-nav {
+            display: flex; justify-content: space-between; align-items: center; gap: 12px;
+            flex-wrap: wrap; padding: 26px 40px; border-top: 2px solid #e5e7eb; background: #ffffff;
+        }
+        .bottom-nav a {
+            padding: 10px 22px; border-radius: 30px; text-decoration: none; font-weight: 700;
+            background: #ffffff; color: var(--teal-dark); border: 2px solid var(--teal-dark);
+        }
+        .bottom-nav a:hover { background: #f0fdfa; }
+        .bottom-nav .nav-practical { color: #047857; border-color: #047857; }
+        .footer {
+            max-width: 1000px; margin: 18px auto 0; background: #ffffff; color: #374151;
+            text-align: center; padding: 18px 20px; font-size: .9rem; border-top: 2px solid #e5e7eb;
+        }
+        .footer p { margin: 4px 0; }
+        .footer strong { color: var(--teal-dark); }
+        .footer a { color: var(--teal-dark); text-decoration: none; }
+        @media (max-width: 640px) { .bottom-nav { flex-direction: column; text-align: center; } }
+
+        /* Slide-question answers (show / hide) */
+        .answer-btn {
+            background: #059669; color: #ffffff; border: none; border-radius: 20px;
+            padding: 8px 18px; font-weight: 700; font-size: .9rem; cursor: pointer; margin: 8px 0;
+        }
+        .answer-box {
+            display: none; background: #ffffff; border: 2px solid #16a34a; border-left: 6px solid #16a34a;
+            border-radius: 0 12px 12px 0; padding: 14px 20px; margin: 6px 0 16px;
+        }
+        .slide-q {
+            background: #ffffff; border: 2px solid #3b82f6; border-radius: 14px;
+            padding: 18px 22px; margin: 18px 0;
+        }
+        .slide-q-title { font-weight: 800; color: #1d4ed8; margin-bottom: 8px; font-size: 1.05rem; }
+        .slide-tag {
+            display: inline-block; font-size: .75rem; font-weight: 700; color: #6b7280;
+            border: 1px solid #d1d5db; border-radius: 12px; padding: 1px 9px; margin-left: 8px; vertical-align: middle;
+        }
+        .uml-box { display: inline-block; border: 2px solid #374151; border-radius: 4px; min-width: 200px; font-family: 'Courier New', monospace; font-size: .9em; background: #ffffff; text-align: left; }
+        .uml-box .uml-name { border-bottom: 2px solid #374151; padding: 6px 12px; text-align: center; font-weight: 700; }
+        .uml-box .uml-name.abs { font-style: italic; }
+        .uml-box .uml-sec { border-bottom: 1px solid #374151; padding: 6px 12px; line-height: 1.6; }
+        .uml-box .uml-sec:last-child { border-bottom: none; }
+        .uml-box .abs { font-style: italic; }
+    
+        /* Chapter table of contents */
+        .chapter-toc { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 16px; padding: 22px 26px; margin: 0 0 36px; }
+        .chapter-toc-title { font-size: 1.15rem; font-weight: 800; margin: 0 0 12px; color: #1e293b; }
+        .chapter-toc ol { margin: 0; padding-left: 1.6em; columns: 2; column-gap: 32px; }
+        .chapter-toc li { margin: 0 0 8px; break-inside: avoid; line-height: 1.4; }
+        .chapter-toc a { color: #1d4ed8; text-decoration: none; font-weight: 600; }
+        .chapter-toc a:hover { text-decoration: underline; }
+        .section-title { scroll-margin-top: 20px; }
+        @media (max-width: 700px) { .chapter-toc ol { columns: 1; } .chapter-toc { padding: 18px 16px; } }
+    </style>
+    <link rel="stylesheet" href="projector.css">
+</head>
+<body>
+<div class="container">
+
+    <!-- ── Breadcrumb ── -->
+    <nav class="nav-breadcrumb">
+        <div class="breadcrumb">
+            <a href="../index.html">&#127968; Object-Oriented Programming</a>
+            <span class="sep">&#8250;</span>
+            <a href="index.html">Module 8 — Abstract Classes</a>
+            <span class="sep">&#8250;</span>
+            <span class="cur">Lesson 5: Case Study: Number</span>
+        </div>
+        <div class="lesson-nav">
+            <a href="04-rules.html">&#8592; Lesson 4</a>
+            <a href="06-summary-checklist.html">Lesson 6 &#8594;</a>
+        </div>
+    </nav>
+
+    <!-- ── Hero ── -->
+    <div class="hero">
+        <div class="pillar-badge">
+            <span class="number">5</span>
+            Lesson 5 of 6 &nbsp;&#183;&nbsp; Chapter 13 &nbsp;&#183;&nbsp; Lecture slides 22–23
+        </div>
+        <h1>&#128290; Case Study: the Abstract Number Class</h1>
+        <p class="subtitle">java.lang.Number — an abstract class you already use every day</p>
+    </div>
+
+    <!-- ── CONTENT ── -->
+    <div class="content">
+
+        <nav class="chapter-toc" aria-label="Lesson contents">
+            <div class="chapter-toc-title">&#128203; In this lesson &mdash; jump to a topic</div>
+            <ol>
+                <li><a href="#section-1">Case Study — java.lang.Number (Abstract in the Real Java API)</a></li>
+                <li><a href="#section-2">LargestNumbers — Finding the Largest Number in a List</a></li>
+            </ol>
+        </nav>
+
+        <!-- ════════════════════════════════════════════════
+             SECTION 8 — NUMBER CLASS CASE STUDY
+             ════════════════════════════════════════════════ -->
+        <div class="section">
+            <h2 class="section-title" id="section-1">
+                <span class="section-number">1</span>
+                Case Study — java.lang.Number (Abstract in the Real Java API)
+            </h2>
+
+            <p>Everything we studied in this module exists right inside Java's standard library.
+            The perfect example: <code class="code-inline">java.lang.Number</code>.</p>
+
+            <div class="info-box">
+                <div class="info-box-title">&#128204; What Is java.lang.Number?</div>
+                <p>
+                    <code class="code-inline">Number</code> is the <strong>abstract superclass</strong> of all numeric
+                    wrapper classes in Java. It is declared as:<br><br>
+                    <code style="font-size:1.05em;font-weight:700;color:#0f766e;">public abstract class Number extends Object</code><br><br>
+                    It has abstract methods that every numeric subclass must implement.
+                    You <strong>cannot</strong> do <code class="code-inline">new Number()</code> — it is abstract!
+                </p>
+            </div>
+
+            <!-- Abstract parent + concrete children -->
+            <div style="text-align:center;margin:24px 0;">
+                <div style="display:inline-block;">
+                    <div style="background:#fef3c7;border:3px solid #d97706;border-radius:12px;padding:14px 32px;font-weight:900;font-size:1.1rem;color:#92400e;font-family:'Courier New',monospace;">
+                        &#128736; abstract class Number
+                    </div>
+                    <div style="color:#6b7280;font-size:1.4rem;margin:4px 0;">↓ &nbsp; extends &nbsp; ↓</div>
+                    <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:4px;">
+                        <div style="background:#dcfce7;border:2px solid #16a34a;border-radius:10px;padding:10px 16px;font-weight:700;font-family:'Courier New',monospace;color:#14532d;">Integer</div>
+                        <div style="background:#dcfce7;border:2px solid #16a34a;border-radius:10px;padding:10px 16px;font-weight:700;font-family:'Courier New',monospace;color:#14532d;">Double</div>
+                        <div style="background:#dcfce7;border:2px solid #16a34a;border-radius:10px;padding:10px 16px;font-weight:700;font-family:'Courier New',monospace;color:#14532d;">Float</div>
+                        <div style="background:#dcfce7;border:2px solid #16a34a;border-radius:10px;padding:10px 16px;font-weight:700;font-family:'Courier New',monospace;color:#14532d;">Long</div>
+                        <div style="background:#dcfce7;border:2px solid #16a34a;border-radius:10px;padding:10px 16px;font-weight:700;font-family:'Courier New',monospace;color:#14532d;">Short</div>
+                        <div style="background:#dcfce7;border:2px solid #16a34a;border-radius:10px;padding:10px 16px;font-weight:700;font-family:'Courier New',monospace;color:#14532d;">Byte</div>
+                        <div style="background:#dcfce7;border:2px solid #16a34a;border-radius:10px;padding:10px 16px;font-weight:700;font-family:'Courier New',monospace;color:#14532d;">BigInteger</div>
+                        <div style="background:#dcfce7;border:2px solid #16a34a;border-radius:10px;padding:10px 16px;font-weight:700;font-family:'Courier New',monospace;color:#14532d;">BigDecimal</div>
+                    </div>
+                </div>
+            </div>
+
+            <h3 class="subsection-title"><span class="sub-badge">UML</span> The abstract Number class <span class="slide-tag">Slide 22</span></h3>
+            <div style="text-align:center;margin:20px 0;">
+                <div class="uml-box" style="min-width:260px;">
+                    <div class="uml-name abs">java.lang.Number</div>
+                    <div class="uml-sec">+byteValue(): byte<br>+shortValue(): short<br><span class="abs">+intValue(): int</span><br><span class="abs">+longValue(): long</span><br><span class="abs">+floatValue(): float</span><br><span class="abs">+doubleValue(): double</span></div>
+                </div>
+                <div style="color:#374151;font-size:1.3rem;margin:4px 0;line-height:1.2;">&#9651;<br><span style="font-size:.85rem;">extends</span></div>
+                <div style="display:flex;justify-content:center;gap:10px;flex-wrap:wrap;">
+                    <div class="uml-box" style="min-width:100px;"><div class="uml-name">Double</div></div>
+                    <div class="uml-box" style="min-width:100px;"><div class="uml-name">Float</div></div>
+                    <div class="uml-box" style="min-width:100px;"><div class="uml-name">Long</div></div>
+                    <div class="uml-box" style="min-width:100px;"><div class="uml-name">Integer</div></div>
+                    <div class="uml-box" style="min-width:100px;"><div class="uml-name">Short</div></div>
+                    <div class="uml-box" style="min-width:100px;"><div class="uml-name">Byte</div></div>
+                    <div class="uml-box" style="min-width:100px;"><div class="uml-name">BigInteger</div></div>
+                    <div class="uml-box" style="min-width:100px;"><div class="uml-name">BigDecimal</div></div>
+                </div>
+                <p style="font-size:.85rem;color:#6b7280;margin-top:8px;">Italics = abstract. <code>byteValue()</code> and
+                <code>shortValue()</code> are concrete: they are implemented in Number using <code>intValue()</code>
+                (<code>(byte) intValue()</code>, <code>(short) intValue()</code>).</p>
+            </div>
+
+            <div class="code-container">
+                <div class="code-header" onclick="toggleCode(this)">
+                    <span>&#128196; java.lang.Number — Simplified Declaration</span>
+                    <span class="code-toggle">&#9660;</span>
+                </div>
+                <div class="code-block"><span class="comment">// java.lang.Number — as declared in Java's source code (simplified)</span>
+<span class="keyword">public</span> <span class="abstract-kw">abstract</span> <span class="keyword">class</span> <span class="class-name">Number</span> <span class="keyword">extends</span> <span class="class-name">Object</span> {
+
+    <span class="comment">// Abstract methods — every subclass MUST implement these</span>
+    <span class="keyword">public</span> <span class="abstract-kw">abstract</span> <span class="keyword">int</span>    <span class="method">intValue</span>();
+    <span class="keyword">public</span> <span class="abstract-kw">abstract</span> <span class="keyword">long</span>   <span class="method">longValue</span>();
+    <span class="keyword">public</span> <span class="abstract-kw">abstract</span> <span class="keyword">float</span>  <span class="method">floatValue</span>();
+    <span class="keyword">public</span> <span class="abstract-kw">abstract</span> <span class="keyword">double</span> <span class="method">doubleValue</span>();
+}
+
+<span class="comment">// Integer — one concrete subclass</span>
+<span class="keyword">public final class</span> <span class="class-name">Integer</span> <span class="keyword">extends</span> <span class="class-name">Number</span> {
+    <span class="keyword">private final int</span> value;
+    <span class="keyword">@Override</span> <span class="keyword">public int</span>    <span class="method">intValue</span>()    { <span class="keyword">return</span> value; }
+    <span class="keyword">@Override</span> <span class="keyword">public long</span>   <span class="method">longValue</span>()   { <span class="keyword">return</span> (<span class="keyword">long</span>) value; }
+    <span class="keyword">@Override</span> <span class="keyword">public float</span>  <span class="method">floatValue</span>()  { <span class="keyword">return</span> (<span class="keyword">float</span>) value; }
+    <span class="keyword">@Override</span> <span class="keyword">public double</span> <span class="method">doubleValue</span>() { <span class="keyword">return</span> (<span class="keyword">double</span>) value; }
+    <span class="comment">// ... many more methods</span>
+}</div>
+            </div>
+
+            <div class="info-box">
+                <div class="info-box-title">&#128204; Why valueOf instead of new Integer(...)?</div>
+                <p style="margin:0;">The constructors <code>new Integer(42)</code>, <code>new Double(3.14)</code>, … still compile but are
+                <strong>deprecated</strong> (javac prints warnings). Use <code>Integer.valueOf(42)</code> or simply let Java
+                <strong>autobox</strong>: <code>Number n = 42;</code> — exactly what <a href="#section-2">LargestNumbers</a> does.</p>
+            </div>
+
+            <h3 class="subsection-title"><span class="sub-badge">Polymorphism</span> Using Number as a Data Type</h3>
+
+            <div class="code-container">
+                <div class="code-header" onclick="toggleCode(this)">
+                    <span>&#128196; Number as Polymorphic Type — Variable, Array, Method</span>
+                    <span class="code-toggle">&#9660;</span>
+                </div>
+                <div class="code-block"><span class="comment">// 1. Polymorphic VARIABLE ──────────────────────────────────────────</span>
+<span class="class-name">Number</span> n1 = <span class="class-name">Integer</span>.<span class="method">valueOf</span>(<span class="number">42</span>);    <span class="comment">// Integer IS-A Number ✓</span>
+<span class="class-name">Number</span> n2 = <span class="class-name">Double</span>.<span class="method">valueOf</span>(<span class="number">3.14</span>);   <span class="comment">// Double  IS-A Number ✓</span>
+<span class="class-name">Number</span> n3 = <span class="class-name">Float</span>.<span class="method">valueOf</span>(<span class="number">2.5f</span>);    <span class="comment">// Float   IS-A Number ✓</span>
+<span class="class-name">Number</span> n4 = <span class="number">100L</span>;                   <span class="comment">// autoboxing: Long IS-A Number ✓</span>
+
+<span class="comment">// 2. Polymorphic ARRAY ─────────────────────────────────────────────</span>
+<span class="class-name">Number</span>[] numbers = {
+    <span class="class-name">Integer</span>.<span class="method">valueOf</span>(<span class="number">10</span>),
+    <span class="class-name">Double</span>.<span class="method">valueOf</span>(<span class="number">3.14</span>),
+    <span class="class-name">Float</span>.<span class="method">valueOf</span>(<span class="number">2.5f</span>),
+    <span class="class-name">Long</span>.<span class="method">valueOf</span>(<span class="number">100L</span>),
+    <span class="class-name">Short</span>.<span class="method">valueOf</span>((<span class="keyword">short</span>) <span class="number">5</span>)
+};
+
+<span class="keyword">for</span> (<span class="class-name">Number</span> num : numbers) {
+    <span class="class-name">System</span>.out.<span class="method">printf</span>(<span class="string">"int=%-6d  double=%.2f%n"</span>,
+                       num.<span class="method">intValue</span>(), num.<span class="method">doubleValue</span>());
+}
+
+<span class="comment">// 3. Polymorphic METHOD ────────────────────────────────────────────</span>
+<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="method">showNumber</span>(<span class="class-name">Number</span> n) {   <span class="comment">// accepts ANY Number subclass</span>
+    <span class="class-name">System</span>.out.<span class="method">println</span>(<span class="string">"Value as double: "</span> + n.<span class="method">doubleValue</span>());
+}
+<span class="method">showNumber</span>(<span class="class-name">Integer</span>.<span class="method">valueOf</span>(<span class="number">7</span>));
+<span class="method">showNumber</span>(<span class="keyword">new</span> <span class="class-name">BigInteger</span>(<span class="string">"999999999999999999"</span>));</div>
+            </div>
+
+            <div class="terminal">
+                <div class="terminal-header">
+                    <span class="terminal-dot r"></span>
+                    <span class="terminal-dot y"></span>
+                    <span class="terminal-dot g"></span>
+                    <span class="terminal-title">Output</span>
+                </div>
+                <div class="terminal-body">int=10      double=10.00
+int=3       double=3.14
+int=2       double=2.50
+int=100     double=100.00
+int=5       double=5.00
+Value as double: 7.0
+Value as double: 1.0E18</div>
+            </div>
+
+            <div class="key-box">
+                <div class="key-box-title">&#128161; The Lesson from Number</div>
+                <p style="margin:0;">Java's own designers used the abstract class pattern for <code class="code-inline">Number</code>
+                for exactly the same reasons we use it for <code class="code-inline">Shape</code>:
+                "Number" is too general to have its own object, but it provides a shared interface
+                and IS-A relationship for all numeric types — enabling polymorphism across the entire numeric hierarchy.</p>
+            </div>
+        </div>
+
+
+        <!-- ════════════════════════════════════════════════
+             SECTION 2 — LARGESTNUMBERS (SLIDES 22-23)
+             ════════════════════════════════════════════════ -->
+        <div class="section">
+            <h2 class="section-title" id="section-2">
+                <span class="section-number">2</span>
+                LargestNumbers — Finding the Largest Number in a List
+            </h2>
+
+            <p>Because <code>Number</code> is the common (abstract) superclass of all numeric wrappers, one list can hold
+            <strong>integers and doubles together</strong>, and one method can find the largest of them.</p>
+            <div class="code-container">
+                <div class="code-header" onclick="toggleCode(this)">
+                    <span>&#128196; LargestNumbers.java <span class="slide-tag">Slide 23</span></span>
+                    <span class="code-toggle">&#9660;</span>
+                </div>
+                <div class="code-block"><span class="keyword">import</span> java.util.<span class="class-name">ArrayList</span>;
+
+<span class="keyword">public</span> <span class="keyword">class</span> <span class="class-name">LargestNumbers</span> {
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="method">main</span>(<span class="class-name">String</span>[] args) {
+        <span class="class-name">ArrayList</span>&lt;<span class="class-name">Number</span>&gt; list = <span class="keyword">new</span> <span class="class-name">ArrayList</span>&lt;&gt;();
+        list.<span class="method">add</span>(<span class="number">45</span>);        <span class="comment">// autoboxed to Integer</span>
+        list.<span class="method">add</span>(<span class="number">3445.53</span>);   <span class="comment">// autoboxed to Double</span>
+        list.<span class="method">add</span>(<span class="number">33.9</span>);      <span class="comment">// Double</span>
+        list.<span class="method">add</span>(<span class="number">46</span>);        <span class="comment">// Integer</span>
+
+        <span class="class-name">System</span>.out.<span class="method">println</span>(<span class="string">"The largest number is "</span> + <span class="method">getLargestNumber</span>(list));
+    }
+
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="class-name">Number</span> <span class="method">getLargestNumber</span>(<span class="class-name">ArrayList</span>&lt;<span class="class-name">Number</span>&gt; list) {
+        <span class="keyword">if</span> (list == <span class="keyword">null</span> || list.<span class="method">size</span>() == <span class="number">0</span>)
+            <span class="keyword">return</span> <span class="keyword">null</span>;
+
+        <span class="class-name">Number</span> number = list.<span class="method">get</span>(<span class="number">0</span>);
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; list.<span class="method">size</span>(); i++)
+            <span class="keyword">if</span> (number.<span class="method">doubleValue</span>() &lt; list.<span class="method">get</span>(i).<span class="method">doubleValue</span>())
+                number = list.<span class="method">get</span>(i);
+        <span class="keyword">return</span> number;
+    }
+}</div>
+            </div>
+            <div class="terminal">
+                <div class="terminal-header">
+                    <span class="terminal-dot r"></span>
+                    <span class="terminal-dot y"></span>
+                    <span class="terminal-dot g"></span>
+                    <span class="terminal-title">Output — LargestNumbers.java (Run)</span>
+                </div>
+                <div class="terminal-body">The largest number is 3445.53</div>
+            </div>
+            <div class="warning-box">
+                <div class="warning-box-title">&#9888; Copying the slide code?</div>
+                <p style="margin:0;">The slide does not show the line <code>import java.util.ArrayList;</code> — without it javac reports
+                <em>"cannot find symbol: class ArrayList"</em>. The version above is complete.</p>
+            </div>
+
+            <div class="slide-q">
+                <div class="slide-q-title">&#10067; Questions on LargestNumbers <span class="slide-tag">Slides 22–23</span></div>
+                <p style="margin:0 0 6px;"><strong>Q1.</strong> How can <code>list.add(45)</code> and <code>list.add(3445.53)</code> both go
+                into an <code>ArrayList&lt;Number&gt;</code>?</p>
+                <button class="answer-btn" onclick="toggleAnswer(this)">&#128161; Show Answer &#9660;</button>
+                <div class="answer-box"><p style="margin:0;"><strong>Autoboxing + polymorphism.</strong> <code>45</code> is boxed to an
+                    <code>Integer</code> and <code>3445.53</code> to a <code>Double</code>. Both are subclasses of <code>Number</code>
+                    (an Integer <em>is a</em> Number), so both can be stored in a list whose element type is the abstract class
+                    <code>Number</code>.</p></div>
+                <p style="margin:6px 0;"><strong>Q2.</strong> Why does <code>getLargestNumber</code> compare with
+                <code>doubleValue()</code> instead of <code>number &lt; list.get(i)</code>?</p>
+                <button class="answer-btn" onclick="toggleAnswer(this)">&#128161; Show Answer &#9660;</button>
+                <div class="answer-box"><p style="margin:0;"><code>&lt;</code> does not work on objects (a <code>Number</code> reference is not a primitive),
+                    and a general <code>Number</code> has no "real" value we can read directly. But every Number <strong>must</strong>
+                    implement the abstract method <code>doubleValue()</code>, so calling it is safe for any element. Dynamic binding runs
+                    <code>Integer.doubleValue()</code> or <code>Double.doubleValue()</code> as needed, and the comparison is done on
+                    <code>double</code> values.</p></div>
+                <p style="margin:6px 0;"><strong>Q3.</strong> What is printed, and what is the type of the object returned?</p>
+                <button class="answer-btn" onclick="toggleAnswer(this)">&#128161; Show Answer &#9660;</button>
+                <div class="answer-box"><p style="margin:0;"><code>The largest number is 3445.53</code>. The method's return type is <code>Number</code>, but the
+                    object returned is the <code>Double</code> 3445.53 (the element itself, not a copy), and string concatenation calls
+                    its <code>toString()</code>.</p></div>
+                <p style="margin:6px 0;"><strong>Q4.</strong> What does <code>getLargestNumber</code> return for an empty list? And what if
+                we also add a <code>BigInteger</code>?</p>
+                <button class="answer-btn" onclick="toggleAnswer(this)">&#128161; Show Answer &#9660;</button>
+                <div class="answer-box"><p style="margin:0 0 6px;">For <code>null</code> or an empty list it returns <code>null</code> (the first
+                    <code>if</code>). A <code>BigInteger</code> or <code>BigDecimal</code> is also a Number, so it can be added and compared
+                    with no change to the method. Verified:</p>
+                    <div class="terminal-body" style="border:1.5px solid #cbd5e1;border-radius:8px;">The largest number is 3432323234344343101
+Integer -&gt; 45
+Double -&gt; 3445.53
+BigInteger -&gt; 3432323234344343101
+BigDecimal -&gt; 2.0909090989091343433344343
+Empty list: null</div>
+                    <p style="margin:6px 0 0;">(list: 45, 3445.53, <code>new BigInteger("3432323234344343101")</code>,
+                    <code>new BigDecimal("2.0909090989091343433344343")</code>.)</p></div>
+            </div>
+
+        </div>
+
+    </div><!-- /content -->
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+        <a href="04-rules.html" class="nav-prev">&#8592; Lesson 4</a>
+        <a href="index.html" class="nav-practical">&#127968; Module 8 Home</a>
+        <a href="06-summary-checklist.html" class="nav-next">Lesson 6 &#8594;</a>
+    </div>
+
+</div><!-- /container -->
+
+<!-- Footer -->
+<div class="footer">
+    <p><strong>Object-Oriented Programming &nbsp;&#183;&nbsp; Module 8: Abstract Classes &nbsp;&#183;&nbsp; Chapter 13</strong></p>
+    <p>Prepared by Dr. Almalawi</p>
+</div>
+
+<script>
+/* ─── Theme definitions ─────────────────────────── */
+const CODE_THEMES = {
+  black: {
+    bg:'#000000', text:'#ffffff', comment:'#a0aec0', keyword:'#ff79c6', cls:'#8be9fd', method:'#50fa7b', string:'#f1fa8c', number:'#bd93f9',
+    tmBg:'#0f172a', tmHeader:'#1e293b', tmBorder:'#334155', tmText:'#4ade80', tmTitle:'#94a3b8', projector: false
+  },
+  vscode: {
+    bg:'#1e1e1e', text:'#ffffff', comment:'#57c757', keyword:'#569cd6', cls:'#4ec9b0', method:'#dcdcaa', string:'#ce9178', number:'#b5cea8',
+    tmBg:'#1e1e1e', tmHeader:'#2d2d2d', tmBorder:'#444', tmText:'#ffffff', tmTitle:'#9cdcfe', projector: false
+  },
+  white: {
+    bg:'#ffffff', text:'#000000', comment:'#1d4ed8', keyword:'#dc2626', cls:'#16a34a', method:'#0369a1', string:'#b45309', number:'#7c3aed',
+    tmBg:'#f1f5f9', tmHeader:'#e2e8f0', tmBorder:'#94a3b8', tmText:'#000000', tmTitle:'#1d4ed8', projector: true
+  },
+  cream: {
+    bg:'#fefce8', text:'#000000', comment:'#1d4ed8', keyword:'#dc2626', cls:'#15803d', method:'#0369a1', string:'#b45309', number:'#7c3aed',
+    tmBg:'#fefce8', tmHeader:'#fef08a', tmBorder:'#a16207', tmText:'#000000', tmTitle:'#0369a1', projector: true
+  }
+};
+
+/* ─── Luminance helper ──────────────────────────── */
+function _lum(hex) {
+  hex = hex.replace('#','');
+  if (hex.length === 3) hex = hex.split('').map(c=>c+c).join('');
+  if (hex.length !== 6) return 0.5;
+  const r=parseInt(hex.slice(0,2),16), g=parseInt(hex.slice(2,4),16), b=parseInt(hex.slice(4,6),16);
+  return (0.299*r + 0.587*g + 0.114*b) / 255;
+}
+
+/* Turn a dark hex color into a soft light tint */
+function _lighten(hex) {
+  hex = hex.replace('#','');
+  if (hex.length === 3) hex = hex.split('').map(c=>c+c).join('');
+  const r=parseInt(hex.slice(0,2),16), g=parseInt(hex.slice(2,4),16), b=parseInt(hex.slice(4,6),16);
+  const lr=Math.round(r*.10+255*.90), lg=Math.round(g*.10+255*.90), lb=Math.round(b*.10+255*.90);
+  return '#'+[lr,lg,lb].map(c=>c.toString(16).padStart(2,'0')).join('');
+}
+
+/* ─── Inline-style projector scanner ───────────── */
+const _backup = new Map();
+
+function _applyProjectorInline(enable) {
+  if (enable) {
+    document.querySelectorAll('[style]').forEach(el => {
+      const orig = el.getAttribute('style');
+      _backup.set(el, orig);
+      let s = orig;
+      s = s.replace(/(background(?:-color)?\s*:[^;}"']*?)(#[0-9a-fA-F]{6}|#[0-9a-fA-F]{3})\b/gi,
+        (m, pre, hex) => _lum(hex) < 0.28 ? pre + _lighten(hex) : m);
+      s = s.replace(/((?:^|;|\s)color\s*:\s*)(#[0-9a-fA-F]{6}|#[0-9a-fA-F]{3})\b/gi,
+        (m, pre, hex) => _lum(hex) > 0.72 ? pre + '#1f2937' : m);
+      el.setAttribute('style', s);
+    });
+  } else {
+    _backup.forEach((orig, el) => el.setAttribute('style', orig));
+    _backup.clear();
+  }
+}
+
+/* ─── Main theme switcher ───────────────────────── */
+function setCodeTheme(name) {
+  const t = CODE_THEMES[name], r = document.documentElement.style;
+  r.setProperty('--cb-bg',      t.bg);        r.setProperty('--cb-text',    t.text);
+  r.setProperty('--cb-comment', t.comment);   r.setProperty('--cb-keyword', t.keyword);
+  r.setProperty('--cb-class',   t.cls);       r.setProperty('--cb-method',  t.method);
+  r.setProperty('--cb-string',  t.string);    r.setProperty('--cb-number',  t.number);
+  r.setProperty('--tm-bg',      t.tmBg);      r.setProperty('--tm-header',  t.tmHeader);
+  r.setProperty('--tm-border',  t.tmBorder);  r.setProperty('--tm-text',    t.tmText);
+  r.setProperty('--tm-title',   t.tmTitle);
+  const wasProjector = document.body.classList.contains('projector');
+  if (t.projector) {
+    if (!wasProjector) _applyProjectorInline(true);
+    document.body.classList.add('projector');
+  } else {
+    if (wasProjector) _applyProjectorInline(false);
+    document.body.classList.remove('projector');
+  }
+  document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('btn-' + name).classList.add('active');
+  document.getElementById('theme-panel').classList.remove('open');
+}
+
+function toggleCode(header) {
+    const block = header.nextElementSibling;
+    const toggle = header.querySelector('.code-toggle');
+    block.classList.toggle('collapsed');
+    toggle.classList.toggle('collapsed');
+    const label = header.querySelector('span:first-child');
+    if (label && label.textContent.includes('Code')) {
+        label.innerHTML = block.classList.contains('collapsed')
+            ? '&#128065;&#65038; Show Code'
+            : '&#128065;&#65038; Hide Code';
+    }
+}
+
+function toggleAnswer(btn) {
+    const ans = btn.nextElementSibling;
+    const isHidden = ans.style.display === 'none' || ans.style.display === '';
+    ans.style.display = isHidden ? 'block' : 'none';
+    btn.innerHTML = isHidden
+        ? '&#128065;&#65038; Hide Answer &#9650;'
+        : '&#128161; Show Answer &#9660;';
+    btn.style.background = isHidden ? '#dc2626' : '#059669';
+}
+</script>
+
+<!-- ── Code Theme Picker ── -->
+<div id="code-theme-picker">
+  <div id="theme-panel">
+    <div class="tp-label">🎨 Code Block Theme</div>
+    <button class="theme-btn active" onclick="setCodeTheme('black')" id="btn-black">
+      <span class="theme-swatch" style="background:#000;"></span> Black (Default)
+    </button>
+    <button class="theme-btn" onclick="setCodeTheme('vscode')" id="btn-vscode">
+      <span class="theme-swatch" style="background:#1e1e1e;"></span> VS Code Dark
+    </button>
+    <button class="theme-btn" onclick="setCodeTheme('white')" id="btn-white">
+      <span class="theme-swatch" style="background:#fff;border:1px solid #ccc;"></span> White (Projector)
+    </button>
+    <button class="theme-btn" onclick="setCodeTheme('cream')" id="btn-cream">
+      <span class="theme-swatch" style="background:#fefce8;border:1px solid #ccc;"></span> Cream (Projector)
+    </button>
+  </div>
+  <button id="theme-toggle-btn" onclick="document.getElementById('theme-panel').classList.toggle('open')">
+    🎨 Code Theme
+  </button>
+</div>
+
+</body>
+</html>

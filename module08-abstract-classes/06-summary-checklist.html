@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 6 — &#9989; Summary &amp; Checklist | Module 08 Abstract Classes</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script>mermaid.initialize({startOnLoad:true, theme:'base', securityLevel:'loose',
+        themeVariables:{
+            primaryColor:'#0d9488', primaryTextColor:'#ffffff',
+            primaryBorderColor:'#0f766e', lineColor:'#374151',
+            secondaryColor:'#f0fdfa', tertiaryColor:'#ccfbf1'
+        }
+    });</script>
+    <style>
+        .mermaid { display:flex; justify-content:center; margin:20px 0; }
+        .mermaid svg { max-width:100%; height:auto; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --teal:        #0d9488;
+            --teal-dark:   #0f766e;
+            --teal-darker: #134e4a;
+            --teal-light:  #f0fdfa;
+            --teal-mid:    #ccfbf1;
+            --cyan:        #06b6d4;
+            --cyan-dark:   #0e7490;
+            --emerald:     #059669;
+            --emerald-dark:#065f46;
+            --warning:     #d97706;
+            --danger:      #dc2626;
+            --dark:        #1f2937;
+            --gray:        #6b7280;
+            --light:       #f9fafb;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.8;
+            color: var(--dark);
+            background: #ffffff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            border: 1px solid #e5e7eb;
+            overflow: hidden;
+        }
+
+        /* ── Breadcrumb ── */
+        .nav-breadcrumb {
+            background: #ffffff; border-bottom: 2px solid #e5e7eb;
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .breadcrumb { display: flex; align-items: center; gap: 8px; color: #374151; font-size: 0.9rem; }
+        .breadcrumb a { color: #0f766e; font-weight: 700; text-decoration: none; transition: color .3s; }
+        .breadcrumb a:hover { color: #134e4a; text-decoration: underline; }
+        .breadcrumb .sep { color: #6b7280; }
+        .breadcrumb .cur { color: #374151; }
+        .lesson-nav { display: flex; gap: 10px; }
+        .lesson-nav a {
+            padding: 8px 16px;
+            background: #ffffff;
+            color: #0f766e; border: 1.5px solid #0f766e;
+            text-decoration: none;
+            border-radius: 20px;
+            font-size: .85rem;
+            transition: background .3s;
+        }
+        .lesson-nav a:hover { background: #f0fdfa; }
+
+        /* ── Hero ── */
+        .hero {
+            background: #ffffff;
+            color: #111827; border-bottom: 3px solid #0f766e;
+            padding: 50px 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute; top: -50px; right: -50px;
+            width: 250px; height: 250px;
+            display: none;
+        }
+        .hero::after {
+            content: '';
+            position: absolute; bottom: -80px; left: -40px;
+            width: 300px; height: 300px;
+            display: none;
+        }
+        .pillar-badge {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: #ffffff; color: #374151;
+            border: 1.5px solid #d1d5db;
+            padding: 8px 22px; border-radius: 30px;
+            font-size: .95rem; font-weight: 600; margin-bottom: 20px;
+        }
+        .pillar-badge .num, .pillar-badge .number {
+            background: #ffffff; color: var(--teal-dark); border: 2px solid var(--teal-dark);
+            width: 28px; height: 28px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; font-weight: 900;
+        }
+        .hero h1 { font-size: 3rem; margin-bottom: 15px; color: var(--teal-dark); }
+        .hero .subtitle { font-size: 1.25rem; color: #374151; margin-bottom: 10px; }
+        .hero .message {
+            max-width: 700px; margin: 20px auto 0;
+            font-size: 1.05rem; opacity: .95; font-style: italic;
+            background: #ffffff; color: #374151; border: 1.5px solid #e5e7eb; border-left: 5px solid var(--teal-dark);
+            padding: 18px 25px; border-radius: 12px; line-height: 1.9;
+        }
+        .four-pillars {
+            display: flex; justify-content: center; gap: 12px;
+            margin-top: 28px; flex-wrap: wrap;
+        }
+        .pillar-chip {
+            padding: 10px 20px; border-radius: 30px;
+            font-weight: 700; font-size: .9rem;
+            border: 1.5px solid #d1d5db; background: #ffffff; color: #374151;
+        }
+        .pillar-chip.done    { color: #15803d; border-color: #86efac; }
+        .pillar-chip.current { color: var(--teal-dark); border-color: var(--teal-dark); }
+        .pillar-chip.upcoming{ opacity: .75; }
+
+        /* ── Content ── */
+        .content { padding: 50px 40px; }
+        .section { margin-bottom: 60px; }
+        .section-title {
+            font-size: 1.85rem; color: var(--teal-dark);
+            border-bottom: 3px solid var(--teal);
+            padding-bottom: 10px; margin-bottom: 28px;
+            display: flex; align-items: center; gap: 12px;
+        }
+        .section-number {
+            background: #ffffff; border: 2.5px solid var(--teal);
+            color: var(--teal-dark); width: 42px; height: 42px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 900; font-size: 1.1rem; flex-shrink: 0;
+        }
+        .section-number.star { font-size: 1.3rem; }
+        .subsection-title {
+            font-size: 1.3rem; color: var(--teal-dark);
+            margin: 32px 0 16px;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .sub-badge {
+            background: #ffffff; border: 1.5px solid var(--teal);
+            color: var(--teal-dark); padding: 3px 14px; border-radius: 20px;
+            font-size: .8rem; font-weight: 700; letter-spacing: .5px;
+        }
+
+        /* ── Code blocks ── */
+        .code-container { margin: 16px 0; border-radius: 12px; overflow: hidden; border: 1px solid #e5e7eb; }
+        .code-header {
+            background: #f1f5f9; color: #111827; border-bottom: 1px solid #cbd5e1;
+            padding: 10px 18px; font-size: .85rem; font-weight: 600;
+            display: flex; justify-content: space-between; align-items: center;
+            cursor: pointer; user-select: none;
+        }
+        .code-header:hover { background: #e2e8f0; }
+        .code-toggle { font-size: 1.2em; transition: transform 0.3s; }
+        .code-toggle.collapsed { transform: rotate(-90deg); }
+        .code-block {
+            background: #ffffff;
+            color: #111827;
+            padding: 22px 24px; font-family: 'Courier New', Consolas, monospace;
+            font-size: 1em; line-height: 1.9; overflow-x: auto;
+            white-space: pre;
+            transition: background 0.3s, color 0.3s;
+        }
+        .code-block.collapsed { display: none; }
+        .code-block .keyword    { color: var(--cb-keyword,  #ff79c6); font-weight: bold; }
+        .code-block .class-name { color: var(--cb-class,    #8be9fd); font-weight: bold; }
+        .code-block .method     { color: var(--cb-method,   #50fa7b); }
+        .code-block .string     { color: var(--cb-string,   #f1fa8c); }
+        .code-block .comment    { color: var(--cb-comment,  #7a8bbf); font-style: italic; }
+        .code-block .number     { color: #c2410c; }
+        .code-block .abstract-kw{ color: #b45309 !important; font-weight: bold; }
+
+        /* ── Terminal ── */
+        .terminal { background: #f8fafc; border-radius: 12px; overflow: hidden; margin: 16px 0; border: 1px solid var(--tm-border, #334155); transition: background 0.3s, border-color 0.3s; box-shadow: 0 4px 16px rgba(0,0,0,.2); }
+        .terminal-header { background: #f1f5f9; padding: 10px 16px; display: flex; align-items: center; gap: 8px; transition: background 0.3s; }
+        .terminal-dot { width: 12px; height: 12px; border-radius: 50%; }
+        .terminal-dot.r { background: #ef4444; }
+        .terminal-dot.y { background: #f59e0b; }
+        .terminal-dot.g { background: #10b981; }
+        .terminal-title { color: var(--tm-title, #94a3b8); font-size: .85rem; margin-left: 6px; font-weight: 600; transition: color 0.3s; }
+        .terminal-body { background: #f8fafc; color: #111827; padding: 18px 20px; font-family: 'Courier New', monospace; font-size: .9em; line-height: 1.9; white-space: pre; transition: background 0.3s, color 0.3s; }
+
+        /* ── Code-theme floating picker ── */
+        #code-theme-picker { position:fixed; bottom:28px; right:28px; z-index:9999; display:flex; flex-direction:column; align-items:flex-end; gap:10px; font-family:'Segoe UI',sans-serif; }
+        #theme-toggle-btn { background:#ffffff; color:#0f766e; border:1.5px solid #0f766e !important; border:none; border-radius:50px; padding:11px 20px; font-size:.88rem; font-weight:700; cursor:pointer; box-shadow:0 4px 18px rgba(13,148,136,.5); letter-spacing:.5px; transition:box-shadow .2s; }
+        #theme-toggle-btn:hover { box-shadow:0 6px 24px rgba(13,148,136,.7); }
+        #theme-panel { background:#fff; border-radius:14px; padding:14px 16px; box-shadow:0 8px 32px rgba(0,0,0,.25); display:none; flex-direction:column; gap:8px; min-width:210px; border:1px solid #99f6e4; }
+        #theme-panel.open { display:flex; }
+        #theme-panel .tp-label { font-size:.72rem; font-weight:800; letter-spacing:1.5px; text-transform:uppercase; color:#0f766e; margin-bottom:4px; }
+        .theme-btn { display:flex; align-items:center; gap:10px; padding:8px 12px; border-radius:8px; border:2px solid transparent; cursor:pointer; font-size:.88rem; font-weight:600; transition:border-color .2s,background .2s; background:#f9fafb; color:#1f2937; }
+        .theme-btn:hover { background:#f0fdfa; border-color:#0d9488; }
+        .theme-btn.active { border-color:#0f766e; background:#ccfbf1; }
+        .theme-swatch { width:28px; height:28px; border-radius:6px; border:1px solid rgba(0,0,0,.15); flex-shrink:0; }
+
+        /* ── Projector mode overrides ── */
+        body.projector .nav-breadcrumb { background:#ccfbf1 !important; }
+        body.projector .breadcrumb a   { color:#0f766e !important; }
+        body.projector .breadcrumb .sep, body.projector .breadcrumb .cur { color:#0d9488 !important; }
+        body.projector .lesson-nav a   { background:rgba(13,148,136,.12) !important; color:#134e4a !important; border:1px solid #5eead4 !important; }
+        body.projector .code-header    { background:#99f6e4 !important; color:#134e4a !important; }
+        body.projector .code-header:hover { background:#0d9488 !important; color:#fff !important; }
+        body.projector .alert-important { background:#ccfbf1 !important; color:#134e4a !important; }
+        body.projector .alert-important-title { color:#0f766e !important; }
+        body.projector .alert-important strong { color:#0f766e !important; }
+        body.projector .discussion-box { background:#ffffff !important; color:#1f2937 !important; }
+        body.projector .discussion-box h4 { color:#0f766e !important; }
+        body.projector .speech-bubble  { background:rgba(13,148,136,.06) !important; border:1px solid #5eead4 !important; }
+        body.projector .speech-who     { color:#0f766e !important; }
+        body.projector .speech-text    { color:#1f2937 !important; }
+        body.projector .speech-text strong { color:#0d9488 !important; }
+
+        /* ── Info / success / danger / warning boxes ── */
+        .info-box {
+            background: #f0fdfa; border-left: 5px solid var(--teal);
+            border-radius: 0 12px 12px 0; padding: 18px 22px; margin: 16px 0;
+        }
+        .info-box-title { font-weight: 800; color: var(--teal-dark); margin-bottom: 8px; font-size: 1.05rem; }
+        .success-box {
+            background: #f0fdf4; border: 2px solid #16a34a;
+            border-radius: 12px; padding: 20px 24px; margin: 16px 0;
+        }
+        .success-box-title { font-weight: 800; color: #14532d; margin-bottom: 10px; font-size: 1.05rem; }
+        .warning-box {
+            background: #fffbeb; border: 2px solid #f59e0b;
+            border-radius: 12px; padding: 18px 22px; margin: 16px 0;
+        }
+        .warning-box-title { font-weight: 800; color: #92400e; margin-bottom: 8px; }
+        .danger-box {
+            background: #fef2f2; border: 2px solid #dc2626;
+            border-radius: 12px; padding: 18px 22px; margin: 16px 0;
+        }
+        .danger-box-title { font-weight: 800; color: #991b1b; margin-bottom: 8px; }
+        .key-box {
+            background: #ffffff;
+            border: 2px solid var(--teal); border-radius: 12px;
+            padding: 18px 22px; margin: 16px 0;
+        }
+        .key-box-title { font-weight: 800; color: var(--teal-dark); margin-bottom: 8px; font-size: 1.05rem; }
+
+        /* ── Alert important ── */
+        .alert-important {
+            background: #ffffff; border: 2px solid var(--teal-dark); border-left: 7px solid var(--teal-dark);
+            color: #1f2937; border-radius: 14px; padding: 22px 28px; margin: 20px 0;
+        }
+        .alert-important-title { font-size: 1.2rem; font-weight: 900; margin-bottom: 10px; color: var(--teal-dark); }
+
+        /* ── Discussion / speech bubbles ── */
+        .discussion-box {
+            background: #ffffff;
+            border: 2px solid var(--teal); border-radius: 16px;
+            padding: 24px; margin: 20px 0;
+        }
+        .discussion-box h4 { color: var(--teal-dark); margin-bottom: 16px; font-size: 1.1rem; }
+        .speech-bubble {
+            background: white; border-radius: 12px; padding: 14px 18px;
+            margin: 10px 0; box-shadow: 0 2px 8px rgba(0,0,0,.08);
+            border-left: 4px solid var(--teal);
+        }
+        .speech-who { font-weight: 800; color: var(--teal-dark); font-size: .9rem; margin-bottom: 4px; }
+        .speech-text { color: #374151; line-height: 1.75; }
+
+
+
+        /* ── Rules section ── */
+        .rule-card {
+            border-radius: 14px; overflow: hidden; margin: 18px 0;
+            border: 2px solid var(--rc, var(--teal));
+        }
+        .rule-header {
+            padding: 14px 22px; color: var(--rc, var(--teal)); background: #ffffff;
+            border-bottom: 2px solid var(--rc, var(--teal)); font-weight: 800; font-size: 1rem;
+            display: flex; align-items: center; gap: 12px;
+        }
+        .rule-num {
+            background: #ffffff; border: 2px solid currentColor; width: 32px; height: 32px;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-weight: 900; flex-shrink: 0;
+        }
+        .rule-body { background: #ffffff; padding: 18px 22px; }
+        .rule-teal    { --rc: var(--teal-dark); }
+        .rule-cyan    { --rc: var(--cyan-dark); }
+        .rule-emerald { --rc: var(--emerald-dark); }
+        .rule-warning { --rc: #b45309; }
+        .rule-slate   { --rc: #334155; }
+
+        /* ── Hierarchy visual ── */
+        .hier-box {
+            display: inline-flex; flex-direction: column; align-items: center; gap: 0;
+            font-family: 'Courier New', monospace; font-size: .9em;
+        }
+        .hier-node {
+            padding: 10px 22px; border-radius: 10px; border: 2px solid;
+            font-weight: 700; text-align: center; min-width: 140px;
+        }
+        .hier-node.abstract-node { background: #fef3c7; border-color: #d97706; color: #92400e; }
+        .hier-node.concrete-node { background: #dcfce7; border-color: #16a34a; color: #14532d; }
+        .hier-arrow { color: #6b7280; font-size: 1.5rem; line-height: 1; }
+
+        /* ── Summary grid ── */
+        .summary-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px,1fr)); gap: 16px; margin-top: 20px; }
+        .summary-card {
+            border-radius: 14px; padding: 20px 18px; text-align: center; background: #ffffff;
+        }
+        .sc-icon { font-size: 2rem; margin-bottom: 10px; }
+        .sc-title { font-weight: 800; font-size: 1rem; margin-bottom: 6px; }
+        .sc-desc { font-size: .85rem; color: #4b5563; line-height: 1.6; }
+        .summary-card.s1 { border: 2px solid var(--teal); }
+        .summary-card.s1 .sc-title { color: var(--teal-dark); }
+        .summary-card.s2 { border: 2px solid var(--cyan); }
+        .summary-card.s2 .sc-title { color: var(--cyan-dark); }
+        .summary-card.s3 { border: 2px solid #16a34a; }
+        .summary-card.s3 .sc-title { color: #14532d; }
+        .summary-card.s4 { border: 2px solid #ca8a04; }
+        .summary-card.s4 .sc-title { color: #713f12; }
+
+        .code-inline { background: #f1f5f9; padding: 2px 7px; border-radius: 5px; font-family: 'Courier New', monospace; font-size: .93em; color: #0f766e; font-weight: 700; }
+
+        /* ── Abstract vs concrete diagram ── */
+        .spectrum-bar {
+            display: flex; border-radius: 12px; overflow: hidden; height: 54px; margin: 14px 0;
+        }
+        .spectrum-seg {
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: .88rem; flex: 1;
+            background: #ffffff; border: 3px solid currentColor; text-align: center;
+        }
+
+        /* ── Number class cards ── */
+        .number-grid { display: flex; flex-wrap: wrap; gap: 10px; margin: 16px 0; }
+        .number-chip {
+            padding: 10px 18px; border-radius: 10px; font-weight: 700;
+            font-family: 'Courier New', monospace; font-size: .9em;
+        }
+        .number-chip.abstract-chip { background: #fef3c7; border: 2px solid #d97706; color: #92400e; }
+        .number-chip.concrete-chip { background: #dcfce7; border: 2px solid #16a34a; color: #14532d; }
+
+        p { margin-bottom: 12px; }
+        ul, ol { margin-left: 24px; line-height: 2.1; }
+        li { margin-bottom: 4px; }
+
+        /* Bottom navigation + footer (white, solid borders — projector friendly) */
+        .bottom-nav {
+            display: flex; justify-content: space-between; align-items: center; gap: 12px;
+            flex-wrap: wrap; padding: 26px 40px; border-top: 2px solid #e5e7eb; background: #ffffff;
+        }
+        .bottom-nav a {
+            padding: 10px 22px; border-radius: 30px; text-decoration: none; font-weight: 700;
+            background: #ffffff; color: var(--teal-dark); border: 2px solid var(--teal-dark);
+        }
+        .bottom-nav a:hover { background: #f0fdfa; }
+        .bottom-nav .nav-practical { color: #047857; border-color: #047857; }
+        .footer {
+            max-width: 1000px; margin: 18px auto 0; background: #ffffff; color: #374151;
+            text-align: center; padding: 18px 20px; font-size: .9rem; border-top: 2px solid #e5e7eb;
+        }
+        .footer p { margin: 4px 0; }
+        .footer strong { color: var(--teal-dark); }
+        .footer a { color: var(--teal-dark); text-decoration: none; }
+        @media (max-width: 640px) { .bottom-nav { flex-direction: column; text-align: center; } }
+
+        /* Slide-question answers (show / hide) */
+        .answer-btn {
+            background: #059669; color: #ffffff; border: none; border-radius: 20px;
+            padding: 8px 18px; font-weight: 700; font-size: .9rem; cursor: pointer; margin: 8px 0;
+        }
+        .answer-box {
+            display: none; background: #ffffff; border: 2px solid #16a34a; border-left: 6px solid #16a34a;
+            border-radius: 0 12px 12px 0; padding: 14px 20px; margin: 6px 0 16px;
+        }
+        .slide-q {
+            background: #ffffff; border: 2px solid #3b82f6; border-radius: 14px;
+            padding: 18px 22px; margin: 18px 0;
+        }
+        .slide-q-title { font-weight: 800; color: #1d4ed8; margin-bottom: 8px; font-size: 1.05rem; }
+        .slide-tag {
+            display: inline-block; font-size: .75rem; font-weight: 700; color: #6b7280;
+            border: 1px solid #d1d5db; border-radius: 12px; padding: 1px 9px; margin-left: 8px; vertical-align: middle;
+        }
+        .uml-box { display: inline-block; border: 2px solid #374151; border-radius: 4px; min-width: 200px; font-family: 'Courier New', monospace; font-size: .9em; background: #ffffff; text-align: left; }
+        .uml-box .uml-name { border-bottom: 2px solid #374151; padding: 6px 12px; text-align: center; font-weight: 700; }
+        .uml-box .uml-name.abs { font-style: italic; }
+        .uml-box .uml-sec { border-bottom: 1px solid #374151; padding: 6px 12px; line-height: 1.6; }
+        .uml-box .uml-sec:last-child { border-bottom: none; }
+        .uml-box .abs { font-style: italic; }
+    
+        /* Chapter table of contents */
+        .chapter-toc { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 16px; padding: 22px 26px; margin: 0 0 36px; }
+        .chapter-toc-title { font-size: 1.15rem; font-weight: 800; margin: 0 0 12px; color: #1e293b; }
+        .chapter-toc ol { margin: 0; padding-left: 1.6em; columns: 2; column-gap: 32px; }
+        .chapter-toc li { margin: 0 0 8px; break-inside: avoid; line-height: 1.4; }
+        .chapter-toc a { color: #1d4ed8; text-decoration: none; font-weight: 600; }
+        .chapter-toc a:hover { text-decoration: underline; }
+        .section-title { scroll-margin-top: 20px; }
+        @media (max-width: 700px) { .chapter-toc ol { columns: 1; } .chapter-toc { padding: 18px 16px; } }
+        /* ── Checklist (modelled on Module 6 checklist) ── */
+        .ck-progress { position: sticky; top: 0; background: #ffffff; z-index: 5; padding: 12px 0; border-bottom: 1px solid #e5e7eb; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin: 10px 0; }
+        .ck-bar { flex: 1; min-width: 160px; height: 14px; border: 1.5px solid #cbd5e1; border-radius: 10px; overflow: hidden; }
+        .ck-fill { height: 100%; width: 0; background: #15803d; transition: width .3s; }
+        .ck-count { font-weight: 800; color: #111827; }
+        .ck-tools button { background: #ffffff; border: 1.5px solid #374151; color: #374151; border-radius: 20px; padding: 5px 14px; font-weight: 700; cursor: pointer; margin-left: 6px; }
+        .ck-group h3 { color: var(--teal-dark); font-size: 1.25rem; border-bottom: 2px solid var(--teal); padding-bottom: 6px; margin: 30px 0 12px; }
+        .ck-range { font-size: .8rem; font-weight: 600; color: #6b7280; margin-left: 8px; }
+        .ck-range a { color: var(--teal-dark); }
+        .ck-item { border: 1.5px solid #e5e7eb; border-radius: 12px; margin: 10px 0; padding: 10px 16px; }
+        .ck-item.done { border-color: #15803d; border-left: 6px solid #15803d; }
+        .ck-row { display: flex; gap: 12px; align-items: flex-start; cursor: pointer; }
+        .ck-row input { width: 22px; height: 22px; margin-top: 3px; accent-color: #15803d; flex-shrink: 0; cursor: pointer; }
+        .ck-num { font-weight: 800; color: var(--teal-dark); min-width: 26px; }
+        .ck-txt { flex: 1; font-size: 1.02rem; }
+        .ck-slides { font-size: .78rem; color: #6b7280; border: 1px solid #d1d5db; border-radius: 12px; padding: 1px 9px; white-space: nowrap; height: fit-content; margin-top: 3px; }
+        .ck-item details { margin: 8px 0 2px 60px; }
+        .ck-item summary { cursor: pointer; color: #1d4ed8; font-weight: 700; font-size: .92rem; }
+        .ck-q { margin: 8px 0; padding: 10px 14px; border: 1.5px solid #e5e7eb; border-radius: 10px; }
+        .ck-item details.ck-ans { margin: 6px 0; }
+        .ck-item details.ck-ans summary { color: #15803d; }
+        .ck-a { margin: 6px 0; padding: 10px 14px; border: 1.5px solid #86efac; border-left: 5px solid #15803d; border-radius: 0 10px 10px 0; }
+        .ck-review { display: inline-block; margin: 4px 0 6px; color: var(--teal-dark); font-weight: 700; font-size: .9rem; text-decoration: none; }
+        .ck-item code, .ck-q code, .ck-a code { font-family: Consolas, Monaco, monospace; font-size: .92em; color: #0f766e; background: #f3f4f6; padding: 1px 5px; border-radius: 4px; }
+        .ck-final { text-align: center; margin: 30px 0 10px; padding: 18px; border: 2px solid #15803d; border-radius: 14px; display: none; }
+        .ck-final.show { display: block; }
+        .ck-final b { color: #15803d; font-size: 1.2rem; }
+        @media (max-width: 640px) { .ck-item details { margin-left: 0; } .ck-slides { display: none; } }
+        @media print { .ck-tools, #code-theme-picker, .bottom-nav { display: none; } .ck-item details { display: none; } .ck-item { break-inside: avoid; } }
+    </style>
+    <link rel="stylesheet" href="projector.css">
+</head>
+<body>
+<div class="container">
+
+    <!-- ── Breadcrumb ── -->
+    <nav class="nav-breadcrumb">
+        <div class="breadcrumb">
+            <a href="../index.html">&#127968; Object-Oriented Programming</a>
+            <span class="sep">&#8250;</span>
+            <a href="index.html">Module 8 — Abstract Classes</a>
+            <span class="sep">&#8250;</span>
+            <span class="cur">Lesson 6: Summary &amp; Checklist</span>
+        </div>
+        <div class="lesson-nav">
+            <a href="05-number-case-study.html">&#8592; Lesson 5</a>
+            <a href="index.html">Module Home &#8594;</a>
+        </div>
+    </nav>
+
+    <!-- ── Hero ── -->
+    <div class="hero">
+        <div class="pillar-badge">
+            <span class="number">6</span>
+            Lesson 6 of 6 &nbsp;&#183;&nbsp; Chapter 13 &nbsp;&#183;&nbsp; Lecture slides 1–23
+        </div>
+        <h1>&#9989; Summary &amp; Checklist</h1>
+        <p class="subtitle">Everything in the Abstract Classes presentation — am I ready?</p>
+    </div>
+
+    <!-- ── CONTENT ── -->
+    <div class="content">
+
+        <nav class="chapter-toc" aria-label="Lesson contents">
+            <div class="chapter-toc-title">&#128203; In this lesson &mdash; jump to a topic</div>
+            <ol>
+                <li><a href="#section-1">Summary — What You Learned in This Module</a></li>
+                <li><a href="#section-2">Checklist — Am I Ready?</a></li>
+            </ol>
+        </nav>
+
+        <!-- ════════════════════════════════════════════════
+             SUMMARY
+             ════════════════════════════════════════════════ -->
+        <div class="section">
+            <h2 class="section-title" id="section-1">
+                <span class="section-number">1</span>
+                Summary — What You Learned in This Module
+            </h2>
+
+            <div class="summary-grid">
+                <div class="summary-card s1">
+                    <div class="sc-icon">&#8800;</div>
+                    <div class="sc-title">Abstract ≠ Abstraction</div>
+                    <div class="sc-desc">Abstract class is a Java keyword. Abstraction is OOP's 2nd pillar. Different things!</div>
+                </div>
+                <div class="summary-card s2">
+                    <div class="sc-icon">&#128336;</div>
+                    <div class="sc-title">Abstract Meaning</div>
+                    <div class="sc-desc">Abstract = vague, general, incomplete. Cannot represent a specific real-world object.</div>
+                </div>
+                <div class="summary-card s3">
+                    <div class="sc-icon">&#128396;</div>
+                    <div class="sc-title">The Shape Story</div>
+                    <div class="sc-desc">"Draw a shape" — you cannot draw just a shape. It is too general. Same in Java: no new Shape().</div>
+                </div>
+                <div class="summary-card s4">
+                    <div class="sc-icon">&#127978;</div>
+                    <div class="sc-title">Why Keep Shape?</div>
+                    <div class="sc-desc">Inheritance (avoid redundancy) + Polymorphism (IS-A relationship). Both require the superclass.</div>
+                </div>
+                <div class="summary-card s1">
+                    <div class="sc-icon">&#128736;</div>
+                    <div class="sc-title">abstract keyword</div>
+                    <div class="sc-desc">Prevents instantiation. Class and/or method can be abstract. Compiler enforces rules.</div>
+                </div>
+                <div class="summary-card s2">
+                    <div class="sc-icon">&#128203;</div>
+                    <div class="sc-title">Abstract Method</div>
+                    <div class="sc-desc">Header only, no body. Forces subclasses to implement. 100% guarantees the behavior exists.</div>
+                </div>
+                <div class="summary-card s3">
+                    <div class="sc-icon">&#128217;</div>
+                    <div class="sc-title">8 Rules (Lesson 4)</div>
+                    <div class="sc-desc">All → concrete. Some → still abstract. Has abstract method → must be abstract. Can be data type. And more.</div>
+                </div>
+                <div class="summary-card s4">
+                    <div class="sc-icon">&#128188;</div>
+                    <div class="sc-title">Manager Technique</div>
+                    <div class="sc-desc">Make a concrete method abstract in a subclass to force all developers to implement it.</div>
+                </div>
+                <div class="summary-card s1">
+                    <div class="sc-icon">&#128290;</div>
+                    <div class="sc-title">Number Case Study</div>
+                    <div class="sc-desc">java.lang.Number is abstract. Integer, Double, etc. extend it. Use Number as a polymorphic type.</div>
+                </div>
+            </div>
+
+            <div class="alert-important" style="margin-top:28px;">
+                <div class="alert-important-title">&#128204; The Complete Definition</div>
+                <p style="line-height:1.9;margin:0;font-size:1.02rem;">
+                    An <strong style="color:#b45309;">abstract class</strong> is a class that is declared with the
+                    <code style="background:#f1f5f9;padding:2px 8px;border-radius:5px;">abstract</code> keyword.
+                    It may contain <strong style="color:#0f766e;">abstract methods</strong> (header only, no body)
+                    and/or concrete methods. It <strong style="color:#dc2626;">cannot be instantiated</strong>,
+                    but it <strong style="color:#15803d;">can be used as a data type</strong> for polymorphism.
+                    Any class that inherits abstract methods must either
+                    <strong style="color:#b45309;">implement all of them</strong> (becoming concrete)
+                    or <strong style="color:#b45309;">declare itself abstract</strong> too.
+                </p>
+            </div>
+        </div>
+
+
+        <!-- ════════════════════════════════════════════════
+             SECTION 2 — CHECKLIST
+             ════════════════════════════════════════════════ -->
+        <div class="section">
+            <h2 class="section-title" id="section-2">
+                <span class="section-number">2</span>
+                Checklist — Am I Ready?
+            </h2>
+            <p>This checklist covers <strong>everything in the Abstract Classes lecture slides</strong> (slides 3–23; slides 1–2
+            are the title and objectives). If you can honestly tick every item, you have covered the whole presentation.</p>
+            <div class="info-box">
+                <div class="info-box-title">How to use it</div>
+                <ol style="margin:4px 0 0 22px;">
+                    <li>Read the statement. Open <b>“Prove it”</b> and answer the question <b>without looking</b>.</li>
+                    <li>Open <b>“Show answer”</b> and compare. Only tick the box if your answer was right.</li>
+                    <li>If not, follow <b>“Review in the tutorial”</b>, study that part, and come back.</li>
+                </ol>
+            </div>
+
+            <div class="ck-progress">
+                <span class="ck-count"><span id="ck-done">0</span> / 26 mastered</span>
+                <div class="ck-bar"><div class="ck-fill" id="ck-fill"></div></div>
+                <span class="ck-tools"><button type="button" onclick="window.print()">Print</button><button type="button" onclick="ckResetAll()">Reset</button></span>
+            </div>
+
+        <section class="ck-group"><h3>A. Lesson 1 — Why Abstract Classes? <span class="ck-range">Slides 3–6 · <a href="01-why-abstract-classes.html">open lesson</a></span></h3>
+            <div class="ck-item" data-id="ab1">
+                <label class="ck-row"><input type="checkbox" id="ab1"><span class="ck-num">1</span><span class="ck-txt">I can explain why it is <b>not logical to create an object of Animal</b>, but it is logical for Cat or Dog.</span><span class="ck-slides">Slide 3</span></label>
+                <details>
+                    <summary>Prove it — test yourself</summary>
+                    <div class="ck-q">Is <code>new Animal()</code> logical? Is <code>new Cat()</code>? Give the reason in one sentence each.</div>
+                    <details class="ck-ans"><summary>Show answer</summary><div class="ck-a"><code>new Animal()</code> is not logical — "animal" is a general idea, not one specific, identifiable thing. <code>new Cat()</code> is logical — a cat is a specific, concrete thing.</div></details>
+                    <a class="ck-review" href="01-why-abstract-classes.html#section-3">Review in the tutorial: Lesson 1, §3 &rarr;</a>
+                </details>
+            </div>
+            <div class="ck-item" data-id="ab2">
+                <label class="ck-row"><input type="checkbox" id="ab2"><span class="ck-num">2</span><span class="ck-txt">I can say <b>why we still need the Animal / Shape class</b> even if we never create one.</span><span class="ck-slides">Slides 3, 5</span></label>
+                <details>
+                    <summary>Prove it — test yourself</summary>
+                    <div class="ck-q">Give the two main reasons for keeping a superclass that is never instantiated.</div>
+                    <details class="ck-ans"><summary>Show answer</summary><div class="ck-a"><b>Inheritance</b> — common fields and methods are written once; <b>polymorphism</b> — one superclass type (variable, array, parameter) can refer to objects of every subclass.</div></details>
+                    <a class="ck-review" href="01-why-abstract-classes.html#section-4">Review in the tutorial: Lesson 1, §4 &rarr;</a>
+                </details>
+            </div>
+            <div class="ck-item" data-id="ab3">
+                <label class="ck-row"><input type="checkbox" id="ab3"><span class="ck-num">3</span><span class="ck-txt">I can state the <b>Student problem</b> (undergraduate, MSc, PhD) and how to enforce it.</span><span class="ck-slides">Slide 4</span></label>
+                <details>
+                    <summary>Prove it — test yourself</summary>
+                    <div class="ck-q">We must guarantee that nobody creates a Student object — the application always creates a specific kind of Student. How?</div>
+                    <details class="ck-ans"><summary>Show answer</summary><div class="ck-a">Declare <code>Student</code> as an <b>abstract class</b> (<code>public abstract class Student</code>). The compiler then rejects every <code>new Student()</code>.</div></details>
+                    <a class="ck-review" href="01-why-abstract-classes.html#section-5">Review in the tutorial: Lesson 1, §5 &rarr;</a>
+                </details>
+            </div>
+            <div class="ck-item" data-id="ab4">
+                <label class="ck-row"><input type="checkbox" id="ab4"><span class="ck-num">4</span><span class="ck-txt">I can give the <b>three reasons for having the Student class</b> in the first place.</span><span class="ck-slides">Slide 5</span></label>
+                <details>
+                    <summary>Prove it — test yourself</summary>
+                    <div class="ck-q">Why do we have the Student class if nobody may create a Student object?</div>
+                    <details class="ck-ans"><summary>Show answer</summary><div class="ck-a">(1) A common implementation of common aspects of all students (e.g. <code>setLogin()</code>, <code>getLogin()</code>); (2) a place holder in the hierarchy for a significant concept of the problem domain; (3) to handle all students independently of their subclass, using type <code>Student</code> and polymorphism.</div></details>
+                    <a class="ck-review" href="01-why-abstract-classes.html#section-5">Review in the tutorial: Lesson 1, §5 &rarr;</a>
+                </details>
+            </div>
+            <div class="ck-item" data-id="ab5">
+                <label class="ck-row"><input type="checkbox" id="ab5"><span class="ck-num">5</span><span class="ck-txt">I can <b>define an abstract class</b>: general vs specific, the keyword, and the <code>new</code> rule.</span><span class="ck-slides">Slide 6</span></label>
+                <details>
+                    <summary>Prove it — test yourself</summary>
+                    <div class="ck-q">Complete: "In a hierarchy, superclasses become more ____ and subclasses more ____. An abstract class is declared with the keyword ____ and cannot be ____ using the ____ operator."</div>
+                    <details class="ck-ans"><summary>Show answer</summary><div class="ck-a">general · specific · <code>abstract</code> · instantiated · <code>new</code>.</div></details>
+                    <a class="ck-review" href="01-why-abstract-classes.html#section-6">Review in the tutorial: Lesson 1, §6 &rarr;</a>
+                </details>
+            </div>
+            <div class="ck-item" data-id="ab6">
+                <label class="ck-row"><input type="checkbox" id="ab6"><span class="ck-num">6</span><span class="ck-txt">I can tell an <b>abstract class</b> (Java keyword) from <b>abstraction</b> (OOP principle).</span><span class="ck-slides">Lesson 1 extra</span></label>
+                <details>
+                    <summary>Prove it — test yourself</summary>
+                    <div class="ck-q">Are "abstract class" and "abstraction" the same thing?</div>
+                    <details class="ck-ans"><summary>Show answer</summary><div class="ck-a">No. Abstraction is an OOP design <em>concept</em> (hide details, show what is necessary). An abstract class is one Java <em>tool</em> (the <code>abstract</code> keyword) that helps achieve it.</div></details>
+                    <a class="ck-review" href="01-why-abstract-classes.html#section-1">Review in the tutorial: Lesson 1, §1 &rarr;</a>
+                </details>
+            </div>
+        </section>
+        <section class="ck-group"><h3>B. Lesson 2 — The abstract Class <span class="ck-range">Slides 7–11 · <a href="02-abstract-class.html">open lesson</a></span></h3>
+            <div class="ck-item" data-id="ab7">
+                <label class="ck-row"><input type="checkbox" id="ab7"><span class="ck-num">7</span><span class="ck-txt">I can write the <b>abstract Student class</b> and a <b>concrete PhdStudent</b> subclass.</span><span class="ck-slides">Slide 7</span></label>
+                <details>
+                    <summary>Prove it — test yourself</summary>
+                    <div class="ck-q">Which of these compile? <code>Student s = new PhdStudent();</code> / <code>Student s = new Student();</code> / <code>PhdStudent p = new PhdStudent();</code></div>
+                    <details class="ck-ans"><summary>Show answer</summary><div class="ck-a">1st: yes (a PhdStudent is a Student). 2nd: <b>no</b> — "Student is abstract; cannot be instantiated". 3rd: yes — PhdStudent is a <b>concrete class</b>.</div></details>
+                    <a class="ck-review" href="02-abstract-class.html#section-2">Review in the tutorial: Lesson 2, §2 &rarr;</a>
+                </details>
+            </div>
+            <div class="ck-item" data-id="ab8">
+                <label class="ck-row"><input type="checkbox" id="ab8"><span class="ck-num">8</span><span class="ck-txt">I know that an abstract class <b>can have constructors</b>, and when they run.</span><span class="ck-slides">Slides 8–9</span></label>
+                <details>
+                    <summary>Prove it — test yourself</summary>
+                    <div class="ck-q">If nobody can call <code>new Student()</code>, who calls Student's constructor?</div>
+                    <details class="ck-ans"><summary>Show answer</summary><div class="ck-a">The constructors of its subclasses — through <code>super(...)</code>, written explicitly or inserted by the compiler. It runs once for every subclass object created (e.g. Shape's constructors are invoked in Circle and Rectangle).</div></details>
+                    <a class="ck-review" href="02-abstract-class.html#section-3">Review in the tutorial: Lesson 2, §2–3 &rarr;</a>
+                </details>
+            </div>
+            <div class="ck-item" data-id="ab9">
+                <label class="ck-row"><input type="checkbox" id="ab9"><span class="ck-num">9</span><span class="ck-txt">I can answer: <b>"Can you initiate a concrete object from Shape? Why?"</b></span><span class="ck-slides">Slide 9</span></label>
+                <details>
+                    <summary>Prove it — test yourself</summary>
+                    <div class="ck-q">Can you write <code>new Shape()</code> when Shape is abstract? Why?</div>
+                    <details class="ck-ans"><summary>Show answer</summary><div class="ck-a">No — compile error "Shape is abstract; cannot be instantiated". Shape is too general and incomplete (e.g. <code>getArea()</code> has no body). Its constructors exist only to initialise the Shape part of subclass objects.</div></details>
+                    <a class="ck-review" href="02-abstract-class.html#section-3">Review in the tutorial: Lesson 2, §3 &rarr;</a>
+                </details>
+            </div>
+            <div class="ck-item" data-id="ab10">
+                <label class="ck-row"><input type="checkbox" id="ab10"><span class="ck-num">10</span><span class="ck-txt">I can use an <b>abstract class as a data type</b> (arrays included).</span><span class="ck-slides">Slide 10</span></label>
+                <details>
+                    <summary>Prove it — test yourself</summary>
+                    <div class="ck-q">Mark each line legal or illegal: <code>Shape[] geo = new Shape[10];</code> / <code>geo[0] = new Circle();</code> / <code>geo[1] = new Shape();</code></div>
+                    <details class="ck-ans"><summary>Show answer</summary><div class="ck-a">legal &radic; (an array of 10 Shape references, all null) / legal &radic; (a Circle is a Shape) / <b>illegal</b> X (Shape is abstract).</div></details>
+                    <a class="ck-review" href="02-abstract-class.html#section-4">Review in the tutorial: Lesson 2, §4 &rarr;</a>
+                </details>
+            </div>
+            <div class="ck-item" data-id="ab11">
+                <label class="ck-row"><input type="checkbox" id="ab11"><span class="ck-num">11</span><span class="ck-txt">I can explain why <b>getArea()</b> makes Shape abstract, and why getArea() is declared in Shape.</span><span class="ck-slides">Slide 11</span></label>
+                <details>
+                    <summary>Prove it — test yourself</summary>
+                    <div class="ck-q">Why can we not create Shape objects, and why must getArea() still appear in Shape?</div>
+                    <details class="ck-ans"><summary>Show answer</summary><div class="ck-a">We cannot give a reasonable implementation of <code>getArea()</code> for an arbitrary shape, so getArea() is an abstract method and Shape an abstract class. It is declared in Shape because <b>we want to force all shapes to provide an implementation of getArea()</b> (and so we can call it through a Shape reference).</div></details>
+                    <a class="ck-review" href="02-abstract-class.html#section-5">Review in the tutorial: Lesson 2, §5 &rarr;</a>
+                </details>
+            </div>
+        </section>
+        <section class="ck-group"><h3>C. Lesson 3 — Abstract Methods <span class="ck-range">Slides 12–16 · <a href="03-abstract-methods.html">open lesson</a></span></h3>
+            <div class="ck-item" data-id="ab12">
+                <label class="ck-row"><input type="checkbox" id="ab12"><span class="ck-num">12</span><span class="ck-txt">I can <b>declare an abstract method</b> and say what is missing.</span><span class="ck-slides">Slide 12</span></label>
+                <details>
+                    <summary>Prove it — test yourself</summary>
+                    <div class="ck-q">Write an abstract method <code>draw</code> that takes an int size. What is a method that is declared but not defined called?</div>
+                    <details class="ck-ans"><summary>Show answer</summary><div class="ck-a"><code>public abstract void draw(int size);</code> — the body is missing (semicolon instead of <code>{ }</code>). Such a method is an <b>abstract method</b> (just as <code>Person p;</code> declares an object without creating it).</div></details>
+                    <a class="ck-review" href="03-abstract-methods.html#section-1">Review in the tutorial: Lesson 3, §1 &rarr;</a>
+                </details>
+            </div>
+            <div class="ck-item" data-id="ab13">
+                <label class="ck-row"><input type="checkbox" id="ab13"><span class="ck-num">13</span><span class="ck-txt">I can read the slide's <b>Shape / Circle</b> code and say what happens if Circle does not implement getArea().</span><span class="ck-slides">Slide 13</span></label>
+                <details>
+                    <summary>Prove it — test yourself</summary>
+                    <div class="ck-q">If Circle did not implement <code>getArea()</code>, what would you have to do? And what does the slide's <code>(radius^2)*PI</code> really compute?</div>
+                    <details class="ck-ans"><summary>Show answer</summary><div class="ck-a">Circle would have to be declared <code>abstract</code> too (otherwise: "Circle is not abstract and does not override abstract method getArea() in Shape"). <code>^</code> is XOR in Java: <code>5^2</code> = 7, so the area is 7 &times; 3.1419 = 21.9933 — use <code>radius * radius * Math.PI</code>.</div></details>
+                    <a class="ck-review" href="03-abstract-methods.html#section-2">Review in the tutorial: Lesson 3, §2 &rarr;</a>
+                </details>
+            </div>
+            <div class="ck-item" data-id="ab14">
+                <label class="ck-row"><input type="checkbox" id="ab14"><span class="ck-num">14</span><span class="ck-txt">I can read the <b>GeometricObject UML</b> and name its abstract methods.</span><span class="ck-slides">Slide 14</span></label>
+                <details>
+                    <summary>Prove it — test yourself</summary>
+                    <div class="ck-q">In the UML diagram, how do you recognise abstract members? Which methods of GeometricObject are abstract?</div>
+                    <details class="ck-ans"><summary>Show answer</summary><div class="ck-a">They are written in <i>italics</i> (the class name too). <code>getArea()</code> and <code>getPerimeter()</code> are abstract.</div></details>
+                    <a class="ck-review" href="03-abstract-methods.html#section-3">Review in the tutorial: Lesson 3, §3 &rarr;</a>
+                </details>
+            </div>
+            <div class="ck-item" data-id="ab15">
+                <label class="ck-row"><input type="checkbox" id="ab15"><span class="ck-num">15</span><span class="ck-txt">I can predict the output of <b>TestGeometricObject</b>.</span><span class="ck-slides">Slide 15</span></label>
+                <details>
+                    <summary>Prove it — test yourself</summary>
+                    <div class="ck-q">With <code>new Circle(5)</code> and <code>new Rectangle(5, 3)</code>: what does <code>equalArea</code> print, and what are the two areas?</div>
+                    <details class="ck-ans"><summary>Show answer</summary><div class="ck-a">"The two objects have the same area? false"; circle area 78.53981633974483 (perimeter 31.41592653589793); rectangle area 15.0 (perimeter 16.0).</div></details>
+                    <a class="ck-review" href="03-abstract-methods.html#section-3">Review in the tutorial: Lesson 3, §3 &rarr;</a>
+                </details>
+            </div>
+            <div class="ck-item" data-id="ab16">
+                <label class="ck-row"><input type="checkbox" id="ab16"><span class="ck-num">16</span><span class="ck-txt">I know the <b>four rules</b> for abstract methods in abstract classes.</span><span class="ck-slides">Slide 16</span></label>
+                <details>
+                    <summary>Prove it — test yourself</summary>
+                    <div class="ck-q">A subclass of GeometricObject implements only getArea(). What must it be? What if it implements both abstract methods? Can a non-abstract class contain an abstract method?</div>
+                    <details class="ck-ans"><summary>Show answer</summary><div class="ck-a">It must be declared <code>abstract</code>. If it implements all inherited abstract methods it is "complete" and can be instantiated. No — a class that contains abstract methods must be abstract. A non-abstract subclass must implement all abstract methods, even ones it does not use.</div></details>
+                    <a class="ck-review" href="03-abstract-methods.html#section-4">Review in the tutorial: Lesson 3, §4 &rarr;</a>
+                </details>
+            </div>
+        </section>
+        <section class="ck-group"><h3>D. Lesson 4 — The Rules of Abstract Classes <span class="ck-range">Slides 17–21 · <a href="04-rules.html">open lesson</a></span></h3>
+            <div class="ck-item" data-id="ab17">
+                <label class="ck-row"><input type="checkbox" id="ab17"><span class="ck-num">17</span><span class="ck-txt">I know an abstract class may have <b>no abstract methods</b> at all.</span><span class="ck-slides">Slide 17</span></label>
+                <details>
+                    <summary>Prove it — test yourself</summary>
+                    <div class="ck-q">Is <code>abstract class Animal { public void eat() { } }</code> legal? Can you write <code>new Animal()</code>?</div>
+                    <details class="ck-ans"><summary>Show answer</summary><div class="ck-a">Legal — it simply cannot be instantiated with <code>new</code>; it is used as a base class for defining new subclasses.</div></details>
+                    <a class="ck-review" href="04-rules.html#section-1">Review in the tutorial: Lesson 4, Rule 5 &rarr;</a>
+                </details>
+            </div>
+            <div class="ck-item" data-id="ab18">
+                <label class="ck-row"><input type="checkbox" id="ab18"><span class="ck-num">18</span><span class="ck-txt">I can give an example of an <b>abstract subclass of a concrete superclass</b>.</span><span class="ck-slides">Slide 17</span></label>
+                <details>
+                    <summary>Prove it — test yourself</summary>
+                    <div class="ck-q">A subclass can be abstract even if its superclass is concrete. Example?</div>
+                    <details class="ck-ans"><summary>Show answer</summary><div class="ck-a"><code>Object</code> is concrete, but its subclass <code>Shape</code> (or GeometricObject) is abstract.</div></details>
+                    <a class="ck-review" href="04-rules.html#section-1">Review in the tutorial: Lesson 4, Rule 6 &rarr;</a>
+                </details>
+            </div>
+            <div class="ck-item" data-id="ab19">
+                <label class="ck-row"><input type="checkbox" id="ab19"><span class="ck-num">19</span><span class="ck-txt">I can explain why <b>someShape.draw()</b> fails when Shape has no draw().</span><span class="ck-slides">Slide 18</span></label>
+                <details>
+                    <summary>Prove it — test yourself</summary>
+                    <div class="ck-q">Shape has no draw(); Star and Circle do. <code>Shape someShape = new Star(); someShape.draw();</code> — which line is wrong and why?</div>
+                    <details class="ck-ans"><summary>Show answer</summary><div class="ck-a">Line 1 is legal (a Star is a Shape). Line 2 is a compile error: some Shape might not have a draw() method — <b>a class knows its superclass, but not its subclasses</b>.</div></details>
+                    <a class="ck-review" href="04-rules.html#section-2">Review in the tutorial: Lesson 4, §2 &rarr;</a>
+                </details>
+            </div>
+            <div class="ck-item" data-id="ab20">
+                <label class="ck-row"><input type="checkbox" id="ab20"><span class="ck-num">20</span><span class="ck-txt">I can fix that problem with an <b>abstract draw()</b> and judge the three statements again.</span><span class="ck-slides">Slide 19</span></label>
+                <details>
+                    <summary>Prove it — test yourself</summary>
+                    <div class="ck-q">With <code>abstract class Shape { public abstract void draw(); }</code>: are <code>new Star()</code>, <code>new Shape()</code> and <code>someShape.draw()</code> legal? What access must Star's draw() have?</div>
+                    <details class="ck-ans"><summary>Show answer</summary><div class="ck-a"><code>Shape someShape = new Star();</code> legal; <code>new Shape()</code> no longer legal; <code>someShape.draw()</code> legal — every actual instance must have draw(). Star's draw() must be <code>public</code> ("attempting to assign weaker access privileges; was public" otherwise).</div></details>
+                    <a class="ck-review" href="04-rules.html#section-2">Review in the tutorial: Lesson 4, §2 &rarr;</a>
+                </details>
+            </div>
+            <div class="ck-item" data-id="ab21">
+                <label class="ck-row"><input type="checkbox" id="ab21"><span class="ck-num">21</span><span class="ck-txt">I can classify the <b>GeometricObject statements</b> as legal or illegal.</span><span class="ck-slides">Slide 20</span></label>
+                <details>
+                    <summary>Prove it — test yourself</summary>
+                    <div class="ck-q"><code>GeometricObject s = new GeometricObject();</code> / <code>GeometricObject s = new Circle(4);</code> / <code>double area = s.getArea();</code> / <code>Circle c = new Circle(3);</code> / <code>c.setColour(GREEN);</code> / <code>area = c.getArea();</code></div>
+                    <details class="ck-ans"><summary>Show answer</summary><div class="ck-a">Only the first is illegal (GeometricObject is abstract); the other five are legal. (In Liang's code the setter is spelled <code>setColor(String)</code>.)</div></details>
+                    <a class="ck-review" href="04-rules.html#section-3">Review in the tutorial: Lesson 4, §3 &rarr;</a>
+                </details>
+            </div>
+            <div class="ck-item" data-id="ab22">
+                <label class="ck-row"><input type="checkbox" id="ab22"><span class="ck-num">22</span><span class="ck-txt">I can explain a <b>concrete method overridden to be abstract</b>: what happens and why.</span><span class="ck-slides">Slide 21</span></label>
+                <details>
+                    <summary>Prove it — test yourself</summary>
+                    <div class="ck-q">Animal re-declares Object's <code>toString()</code> as <code>public abstract String toString();</code>. What must Animal be, and why would anyone do this?</div>
+                    <details class="ck-ans"><summary>Show answer</summary><div class="ck-a">Animal must be declared <code>abstract</code>. It is rare, but useful when the superclass implementation becomes invalid in the subclass — it forces every concrete subclass to write its own toString().</div></details>
+                    <a class="ck-review" href="04-rules.html#section-4">Review in the tutorial: Lesson 4, §4 &rarr;</a>
+                </details>
+            </div>
+            <div class="ck-item" data-id="ab23">
+                <label class="ck-row"><input type="checkbox" id="ab23"><span class="ck-num">23</span><span class="ck-txt">I can explain the <b>Manager Technique</b>.</span><span class="ck-slides">Lesson 4 extra</span></label>
+                <details>
+                    <summary>Prove it — test yourself</summary>
+                    <div class="ck-q">How can a manager make the compiler force every class to implement toString()?</div>
+                    <details class="ck-ans"><summary>Show answer</summary><div class="ck-a">Create <code>abstract class BaseEntity</code> that overrides <code>toString()</code> as abstract; every class extends BaseEntity, so a class without toString() does not compile.</div></details>
+                    <a class="ck-review" href="04-rules.html#section-5">Review in the tutorial: Lesson 4, §5 &rarr;</a>
+                </details>
+            </div>
+        </section>
+        <section class="ck-group"><h3>E. Lesson 5 — Case Study: the Abstract Number Class <span class="ck-range">Slides 22–23 · <a href="05-number-case-study.html">open lesson</a></span></h3>
+            <div class="ck-item" data-id="ab24">
+                <label class="ck-row"><input type="checkbox" id="ab24"><span class="ck-num">24</span><span class="ck-txt">I know that <b>Number is abstract</b> and can name its subclasses and abstract methods.</span><span class="ck-slides">Slide 22</span></label>
+                <details>
+                    <summary>Prove it — test yourself</summary>
+                    <div class="ck-q">Is <code>new Number()</code> legal? Name four subclasses and the four abstract methods of Number.</div>
+                    <details class="ck-ans"><summary>Show answer</summary><div class="ck-a">No — Number is abstract. Subclasses: Integer, Double, Float, Long, Short, Byte, BigInteger, BigDecimal. Abstract methods: <code>intValue()</code>, <code>longValue()</code>, <code>floatValue()</code>, <code>doubleValue()</code> (byteValue and shortValue are concrete).</div></details>
+                    <a class="ck-review" href="05-number-case-study.html#section-1">Review in the tutorial: Lesson 5, §1 &rarr;</a>
+                </details>
+            </div>
+            <div class="ck-item" data-id="ab25">
+                <label class="ck-row"><input type="checkbox" id="ab25"><span class="ck-num">25</span><span class="ck-txt">I can explain how an <b>ArrayList&lt;Number&gt;</b> holds 45 and 3445.53 together.</span><span class="ck-slides">Slide 23</span></label>
+                <details>
+                    <summary>Prove it — test yourself</summary>
+                    <div class="ck-q">Why do <code>list.add(45)</code> and <code>list.add(3445.53)</code> both compile for <code>ArrayList&lt;Number&gt; list</code>?</div>
+                    <details class="ck-ans"><summary>Show answer</summary><div class="ck-a">Autoboxing turns 45 into an Integer and 3445.53 into a Double; both are subclasses of Number, so both fit a list of the abstract type Number.</div></details>
+                    <a class="ck-review" href="05-number-case-study.html#section-2">Review in the tutorial: Lesson 5, §2 &rarr;</a>
+                </details>
+            </div>
+            <div class="ck-item" data-id="ab26">
+                <label class="ck-row"><input type="checkbox" id="ab26"><span class="ck-num">26</span><span class="ck-txt">I can trace <b>getLargestNumber</b> and give the output of LargestNumbers.</span><span class="ck-slides">Slide 23</span></label>
+                <details>
+                    <summary>Prove it — test yourself</summary>
+                    <div class="ck-q">What does LargestNumbers print for 45, 3445.53, 33.9, 46? Why compare with <code>doubleValue()</code>? What is returned for an empty list?</div>
+                    <details class="ck-ans"><summary>Show answer</summary><div class="ck-a">"The largest number is 3445.53". <code>doubleValue()</code> is an abstract method every Number must implement, so it works for any element (<code>&lt;</code> does not work on objects). For null or an empty list the method returns <code>null</code>.</div></details>
+                    <a class="ck-review" href="05-number-case-study.html#section-2">Review in the tutorial: Lesson 5, §2 &rarr;</a>
+                </details>
+            </div>
+        </section>
+
+            <div class="ck-final" id="ck-final"><b>&#10003; All 26 items mastered!</b><br>You have covered everything in the Abstract Classes presentation. Next: <a href="../module09-interfaces/index.html">Interfaces &rarr;</a></div>
+        </div>
+
+    </div><!-- /content -->
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+        <a href="05-number-case-study.html" class="nav-prev">&#8592; Lesson 5</a>
+        <a href="index.html" class="nav-practical">&#127968; Module 8 Home</a>
+        <a href="index.html" class="nav-next">Module Home &#8594;</a>
+    </div>
+
+</div><!-- /container -->
+
+<!-- Footer -->
+<div class="footer">
+    <p><strong>Object-Oriented Programming &nbsp;&#183;&nbsp; Module 8: Abstract Classes &nbsp;&#183;&nbsp; Chapter 13</strong></p>
+    <p>Prepared by Dr. Almalawi</p>
+</div>
+
+<script>
+/* ─── Theme definitions ─────────────────────────── */
+const CODE_THEMES = {
+  black: {
+    bg:'#000000', text:'#ffffff', comment:'#a0aec0', keyword:'#ff79c6', cls:'#8be9fd', method:'#50fa7b', string:'#f1fa8c', number:'#bd93f9',
+    tmBg:'#0f172a', tmHeader:'#1e293b', tmBorder:'#334155', tmText:'#4ade80', tmTitle:'#94a3b8', projector: false
+  },
+  vscode: {
+    bg:'#1e1e1e', text:'#ffffff', comment:'#57c757', keyword:'#569cd6', cls:'#4ec9b0', method:'#dcdcaa', string:'#ce9178', number:'#b5cea8',
+    tmBg:'#1e1e1e', tmHeader:'#2d2d2d', tmBorder:'#444', tmText:'#ffffff', tmTitle:'#9cdcfe', projector: false
+  },
+  white: {
+    bg:'#ffffff', text:'#000000', comment:'#1d4ed8', keyword:'#dc2626', cls:'#16a34a', method:'#0369a1', string:'#b45309', number:'#7c3aed',
+    tmBg:'#f1f5f9', tmHeader:'#e2e8f0', tmBorder:'#94a3b8', tmText:'#000000', tmTitle:'#1d4ed8', projector: true
+  },
+  cream: {
+    bg:'#fefce8', text:'#000000', comment:'#1d4ed8', keyword:'#dc2626', cls:'#15803d', method:'#0369a1', string:'#b45309', number:'#7c3aed',
+    tmBg:'#fefce8', tmHeader:'#fef08a', tmBorder:'#a16207', tmText:'#000000', tmTitle:'#0369a1', projector: true
+  }
+};
+
+/* ─── Luminance helper ──────────────────────────── */
+function _lum(hex) {
+  hex = hex.replace('#','');
+  if (hex.length === 3) hex = hex.split('').map(c=>c+c).join('');
+  if (hex.length !== 6) return 0.5;
+  const r=parseInt(hex.slice(0,2),16), g=parseInt(hex.slice(2,4),16), b=parseInt(hex.slice(4,6),16);
+  return (0.299*r + 0.587*g + 0.114*b) / 255;
+}
+
+/* Turn a dark hex color into a soft light tint */
+function _lighten(hex) {
+  hex = hex.replace('#','');
+  if (hex.length === 3) hex = hex.split('').map(c=>c+c).join('');
+  const r=parseInt(hex.slice(0,2),16), g=parseInt(hex.slice(2,4),16), b=parseInt(hex.slice(4,6),16);
+  const lr=Math.round(r*.10+255*.90), lg=Math.round(g*.10+255*.90), lb=Math.round(b*.10+255*.90);
+  return '#'+[lr,lg,lb].map(c=>c.toString(16).padStart(2,'0')).join('');
+}
+
+/* ─── Inline-style projector scanner ───────────── */
+const _backup = new Map();
+
+function _applyProjectorInline(enable) {
+  if (enable) {
+    document.querySelectorAll('[style]').forEach(el => {
+      const orig = el.getAttribute('style');
+      _backup.set(el, orig);
+      let s = orig;
+      s = s.replace(/(background(?:-color)?\s*:[^;}"']*?)(#[0-9a-fA-F]{6}|#[0-9a-fA-F]{3})\b/gi,
+        (m, pre, hex) => _lum(hex) < 0.28 ? pre + _lighten(hex) : m);
+      s = s.replace(/((?:^|;|\s)color\s*:\s*)(#[0-9a-fA-F]{6}|#[0-9a-fA-F]{3})\b/gi,
+        (m, pre, hex) => _lum(hex) > 0.72 ? pre + '#1f2937' : m);
+      el.setAttribute('style', s);
+    });
+  } else {
+    _backup.forEach((orig, el) => el.setAttribute('style', orig));
+    _backup.clear();
+  }
+}
+
+/* ─── Main theme switcher ───────────────────────── */
+function setCodeTheme(name) {
+  const t = CODE_THEMES[name], r = document.documentElement.style;
+  r.setProperty('--cb-bg',      t.bg);        r.setProperty('--cb-text',    t.text);
+  r.setProperty('--cb-comment', t.comment);   r.setProperty('--cb-keyword', t.keyword);
+  r.setProperty('--cb-class',   t.cls);       r.setProperty('--cb-method',  t.method);
+  r.setProperty('--cb-string',  t.string);    r.setProperty('--cb-number',  t.number);
+  r.setProperty('--tm-bg',      t.tmBg);      r.setProperty('--tm-header',  t.tmHeader);
+  r.setProperty('--tm-border',  t.tmBorder);  r.setProperty('--tm-text',    t.tmText);
+  r.setProperty('--tm-title',   t.tmTitle);
+  const wasProjector = document.body.classList.contains('projector');
+  if (t.projector) {
+    if (!wasProjector) _applyProjectorInline(true);
+    document.body.classList.add('projector');
+  } else {
+    if (wasProjector) _applyProjectorInline(false);
+    document.body.classList.remove('projector');
+  }
+  document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('btn-' + name).classList.add('active');
+  document.getElementById('theme-panel').classList.remove('open');
+}
+
+function toggleCode(header) {
+    const block = header.nextElementSibling;
+    const toggle = header.querySelector('.code-toggle');
+    block.classList.toggle('collapsed');
+    toggle.classList.toggle('collapsed');
+    const label = header.querySelector('span:first-child');
+    if (label && label.textContent.includes('Code')) {
+        label.innerHTML = block.classList.contains('collapsed')
+            ? '&#128065;&#65038; Show Code'
+            : '&#128065;&#65038; Hide Code';
+    }
+}
+
+function toggleAnswer(btn) {
+    const ans = btn.nextElementSibling;
+    const isHidden = ans.style.display === 'none' || ans.style.display === '';
+    ans.style.display = isHidden ? 'block' : 'none';
+    btn.innerHTML = isHidden
+        ? '&#128065;&#65038; Hide Answer &#9650;'
+        : '&#128161; Show Answer &#9660;';
+    btn.style.background = isHidden ? '#dc2626' : '#059669';
+}
+</script>
+
+<!-- ── Code Theme Picker ── -->
+<div id="code-theme-picker">
+  <div id="theme-panel">
+    <div class="tp-label">🎨 Code Block Theme</div>
+    <button class="theme-btn active" onclick="setCodeTheme('black')" id="btn-black">
+      <span class="theme-swatch" style="background:#000;"></span> Black (Default)
+    </button>
+    <button class="theme-btn" onclick="setCodeTheme('vscode')" id="btn-vscode">
+      <span class="theme-swatch" style="background:#1e1e1e;"></span> VS Code Dark
+    </button>
+    <button class="theme-btn" onclick="setCodeTheme('white')" id="btn-white">
+      <span class="theme-swatch" style="background:#fff;border:1px solid #ccc;"></span> White (Projector)
+    </button>
+    <button class="theme-btn" onclick="setCodeTheme('cream')" id="btn-cream">
+      <span class="theme-swatch" style="background:#fefce8;border:1px solid #ccc;"></span> Cream (Projector)
+    </button>
+  </div>
+  <button id="theme-toggle-btn" onclick="document.getElementById('theme-panel').classList.toggle('open')">
+    🎨 Code Theme
+  </button>
+</div>
+
+<script>
+/* ─── Checklist progress (saved in this browser) ─── */
+(function () {
+    var KEY = 'cpcs203-abstract-classes-checklist';
+    var boxes = document.querySelectorAll('.ck-item input[type=checkbox]');
+    function load() { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; } }
+    function save(st) { try { localStorage.setItem(KEY, JSON.stringify(st)); } catch (e) {} }
+    var state = load();
+    function refresh() {
+        var d = 0;
+        boxes.forEach(function (b) { b.closest('.ck-item').classList.toggle('done', b.checked); if (b.checked) d++; });
+        document.getElementById('ck-done').textContent = d;
+        document.getElementById('ck-fill').style.width = (100 * d / boxes.length) + '%';
+        document.getElementById('ck-final').classList.toggle('show', d === boxes.length);
+    }
+    boxes.forEach(function (b) {
+        b.checked = !!state[b.id];
+        b.addEventListener('change', function () { state[b.id] = b.checked; save(state); refresh(); });
+    });
+    window.ckResetAll = function () {
+        if (!confirm('Clear all ticks?')) return;
+        state = {}; save(state); boxes.forEach(function (b) { b.checked = false; }); refresh();
+    };
+    refresh();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,1225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 3 — &#9998; Abstract Methods | Module 08 Abstract Classes</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script>mermaid.initialize({startOnLoad:true, theme:'base', securityLevel:'loose',
+        themeVariables:{
+            primaryColor:'#0d9488', primaryTextColor:'#ffffff',
+            primaryBorderColor:'#0f766e', lineColor:'#374151',
+            secondaryColor:'#f0fdfa', tertiaryColor:'#ccfbf1'
+        }
+    });</script>
+    <style>
+        .mermaid { display:flex; justify-content:center; margin:20px 0; }
+        .mermaid svg { max-width:100%; height:auto; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --teal:        #0d9488;
+            --teal-dark:   #0f766e;
+            --teal-darker: #134e4a;
+            --teal-light:  #f0fdfa;
+            --teal-mid:    #ccfbf1;
+            --cyan:        #06b6d4;
+            --cyan-dark:   #0e7490;
+            --emerald:     #059669;
+            --emerald-dark:#065f46;
+            --warning:     #d97706;
+            --danger:      #dc2626;
+            --dark:        #1f2937;
+            --gray:        #6b7280;
+            --light:       #f9fafb;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.8;
+            color: var(--dark);
+            background: #ffffff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            border: 1px solid #e5e7eb;
+            overflow: hidden;
+        }
+
+        /* ── Breadcrumb ── */
+        .nav-breadcrumb {
+            background: #ffffff; border-bottom: 2px solid #e5e7eb;
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .breadcrumb { display: flex; align-items: center; gap: 8px; color: #374151; font-size: 0.9rem; }
+        .breadcrumb a { color: #0f766e; font-weight: 700; text-decoration: none; transition: color .3s; }
+        .breadcrumb a:hover { color: #134e4a; text-decoration: underline; }
+        .breadcrumb .sep { color: #6b7280; }
+        .breadcrumb .cur { color: #374151; }
+        .lesson-nav { display: flex; gap: 10px; }
+        .lesson-nav a {
+            padding: 8px 16px;
+            background: #ffffff;
+            color: #0f766e; border: 1.5px solid #0f766e;
+            text-decoration: none;
+            border-radius: 20px;
+            font-size: .85rem;
+            transition: background .3s;
+        }
+        .lesson-nav a:hover { background: #f0fdfa; }
+
+        /* ── Hero ── */
+        .hero {
+            background: #ffffff;
+            color: #111827; border-bottom: 3px solid #0f766e;
+            padding: 50px 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute; top: -50px; right: -50px;
+            width: 250px; height: 250px;
+            display: none;
+        }
+        .hero::after {
+            content: '';
+            position: absolute; bottom: -80px; left: -40px;
+            width: 300px; height: 300px;
+            display: none;
+        }
+        .pillar-badge {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: #ffffff; color: #374151;
+            border: 1.5px solid #d1d5db;
+            padding: 8px 22px; border-radius: 30px;
+            font-size: .95rem; font-weight: 600; margin-bottom: 20px;
+        }
+        .pillar-badge .num, .pillar-badge .number {
+            background: #ffffff; color: var(--teal-dark); border: 2px solid var(--teal-dark);
+            width: 28px; height: 28px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; font-weight: 900;
+        }
+        .hero h1 { font-size: 3rem; margin-bottom: 15px; color: var(--teal-dark); }
+        .hero .subtitle { font-size: 1.25rem; color: #374151; margin-bottom: 10px; }
+        .hero .message {
+            max-width: 700px; margin: 20px auto 0;
+            font-size: 1.05rem; opacity: .95; font-style: italic;
+            background: #ffffff; color: #374151; border: 1.5px solid #e5e7eb; border-left: 5px solid var(--teal-dark);
+            padding: 18px 25px; border-radius: 12px; line-height: 1.9;
+        }
+        .four-pillars {
+            display: flex; justify-content: center; gap: 12px;
+            margin-top: 28px; flex-wrap: wrap;
+        }
+        .pillar-chip {
+            padding: 10px 20px; border-radius: 30px;
+            font-weight: 700; font-size: .9rem;
+            border: 1.5px solid #d1d5db; background: #ffffff; color: #374151;
+        }
+        .pillar-chip.done    { color: #15803d; border-color: #86efac; }
+        .pillar-chip.current { color: var(--teal-dark); border-color: var(--teal-dark); }
+        .pillar-chip.upcoming{ opacity: .75; }
+
+        /* ── Content ── */
+        .content { padding: 50px 40px; }
+        .section { margin-bottom: 60px; }
+        .section-title {
+            font-size: 1.85rem; color: var(--teal-dark);
+            border-bottom: 3px solid var(--teal);
+            padding-bottom: 10px; margin-bottom: 28px;
+            display: flex; align-items: center; gap: 12px;
+        }
+        .section-number {
+            background: #ffffff; border: 2.5px solid var(--teal);
+            color: var(--teal-dark); width: 42px; height: 42px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 900; font-size: 1.1rem; flex-shrink: 0;
+        }
+        .section-number.star { font-size: 1.3rem; }
+        .subsection-title {
+            font-size: 1.3rem; color: var(--teal-dark);
+            margin: 32px 0 16px;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .sub-badge {
+            background: #ffffff; border: 1.5px solid var(--teal);
+            color: var(--teal-dark); padding: 3px 14px; border-radius: 20px;
+            font-size: .8rem; font-weight: 700; letter-spacing: .5px;
+        }
+
+        /* ── Code blocks ── */
+        .code-container { margin: 16px 0; border-radius: 12px; overflow: hidden; border: 1px solid #e5e7eb; }
+        .code-header {
+            background: #f1f5f9; color: #111827; border-bottom: 1px solid #cbd5e1;
+            padding: 10px 18px; font-size: .85rem; font-weight: 600;
+            display: flex; justify-content: space-between; align-items: center;
+            cursor: pointer; user-select: none;
+        }
+        .code-header:hover { background: #e2e8f0; }
+        .code-toggle { font-size: 1.2em; transition: transform 0.3s; }
+        .code-toggle.collapsed { transform: rotate(-90deg); }
+        .code-block {
+            background: #ffffff;
+            color: #111827;
+            padding: 22px 24px; font-family: 'Courier New', Consolas, monospace;
+            font-size: 1em; line-height: 1.9; overflow-x: auto;
+            white-space: pre;
+            transition: background 0.3s, color 0.3s;
+        }
+        .code-block.collapsed { display: none; }
+        .code-block .keyword    { color: var(--cb-keyword,  #ff79c6); font-weight: bold; }
+        .code-block .class-name { color: var(--cb-class,    #8be9fd); font-weight: bold; }
+        .code-block .method     { color: var(--cb-method,   #50fa7b); }
+        .code-block .string     { color: var(--cb-string,   #f1fa8c); }
+        .code-block .comment    { color: var(--cb-comment,  #7a8bbf); font-style: italic; }
+        .code-block .number     { color: #c2410c; }
+        .code-block .abstract-kw{ color: #b45309 !important; font-weight: bold; }
+
+        /* ── Terminal ── */
+        .terminal { background: #f8fafc; border-radius: 12px; overflow: hidden; margin: 16px 0; border: 1px solid var(--tm-border, #334155); transition: background 0.3s, border-color 0.3s; box-shadow: 0 4px 16px rgba(0,0,0,.2); }
+        .terminal-header { background: #f1f5f9; padding: 10px 16px; display: flex; align-items: center; gap: 8px; transition: background 0.3s; }
+        .terminal-dot { width: 12px; height: 12px; border-radius: 50%; }
+        .terminal-dot.r { background: #ef4444; }
+        .terminal-dot.y { background: #f59e0b; }
+        .terminal-dot.g { background: #10b981; }
+        .terminal-title { color: var(--tm-title, #94a3b8); font-size: .85rem; margin-left: 6px; font-weight: 600; transition: color 0.3s; }
+        .terminal-body { background: #f8fafc; color: #111827; padding: 18px 20px; font-family: 'Courier New', monospace; font-size: .9em; line-height: 1.9; white-space: pre; transition: background 0.3s, color 0.3s; }
+
+        /* ── Code-theme floating picker ── */
+        #code-theme-picker { position:fixed; bottom:28px; right:28px; z-index:9999; display:flex; flex-direction:column; align-items:flex-end; gap:10px; font-family:'Segoe UI',sans-serif; }
+        #theme-toggle-btn { background:#ffffff; color:#0f766e; border:1.5px solid #0f766e !important; border:none; border-radius:50px; padding:11px 20px; font-size:.88rem; font-weight:700; cursor:pointer; box-shadow:0 4px 18px rgba(13,148,136,.5); letter-spacing:.5px; transition:box-shadow .2s; }
+        #theme-toggle-btn:hover { box-shadow:0 6px 24px rgba(13,148,136,.7); }
+        #theme-panel { background:#fff; border-radius:14px; padding:14px 16px; box-shadow:0 8px 32px rgba(0,0,0,.25); display:none; flex-direction:column; gap:8px; min-width:210px; border:1px solid #99f6e4; }
+        #theme-panel.open { display:flex; }
+        #theme-panel .tp-label { font-size:.72rem; font-weight:800; letter-spacing:1.5px; text-transform:uppercase; color:#0f766e; margin-bottom:4px; }
+        .theme-btn { display:flex; align-items:center; gap:10px; padding:8px 12px; border-radius:8px; border:2px solid transparent; cursor:pointer; font-size:.88rem; font-weight:600; transition:border-color .2s,background .2s; background:#f9fafb; color:#1f2937; }
+        .theme-btn:hover { background:#f0fdfa; border-color:#0d9488; }
+        .theme-btn.active { border-color:#0f766e; background:#ccfbf1; }
+        .theme-swatch { width:28px; height:28px; border-radius:6px; border:1px solid rgba(0,0,0,.15); flex-shrink:0; }
+
+        /* ── Projector mode overrides ── */
+        body.projector .nav-breadcrumb { background:#ccfbf1 !important; }
+        body.projector .breadcrumb a   { color:#0f766e !important; }
+        body.projector .breadcrumb .sep, body.projector .breadcrumb .cur { color:#0d9488 !important; }
+        body.projector .lesson-nav a   { background:rgba(13,148,136,.12) !important; color:#134e4a !important; border:1px solid #5eead4 !important; }
+        body.projector .code-header    { background:#99f6e4 !important; color:#134e4a !important; }
+        body.projector .code-header:hover { background:#0d9488 !important; color:#fff !important; }
+        body.projector .alert-important { background:#ccfbf1 !important; color:#134e4a !important; }
+        body.projector .alert-important-title { color:#0f766e !important; }
+        body.projector .alert-important strong { color:#0f766e !important; }
+        body.projector .discussion-box { background:#ffffff !important; color:#1f2937 !important; }
+        body.projector .discussion-box h4 { color:#0f766e !important; }
+        body.projector .speech-bubble  { background:rgba(13,148,136,.06) !important; border:1px solid #5eead4 !important; }
+        body.projector .speech-who     { color:#0f766e !important; }
+        body.projector .speech-text    { color:#1f2937 !important; }
+        body.projector .speech-text strong { color:#0d9488 !important; }
+
+        /* ── Info / success / danger / warning boxes ── */
+        .info-box {
+            background: #f0fdfa; border-left: 5px solid var(--teal);
+            border-radius: 0 12px 12px 0; padding: 18px 22px; margin: 16px 0;
+        }
+        .info-box-title { font-weight: 800; color: var(--teal-dark); margin-bottom: 8px; font-size: 1.05rem; }
+        .success-box {
+            background: #f0fdf4; border: 2px solid #16a34a;
+            border-radius: 12px; padding: 20px 24px; margin: 16px 0;
+        }
+        .success-box-title { font-weight: 800; color: #14532d; margin-bottom: 10px; font-size: 1.05rem; }
+        .warning-box {
+            background: #fffbeb; border: 2px solid #f59e0b;
+            border-radius: 12px; padding: 18px 22px; margin: 16px 0;
+        }
+        .warning-box-title { font-weight: 800; color: #92400e; margin-bottom: 8px; }
+        .danger-box {
+            background: #fef2f2; border: 2px solid #dc2626;
+            border-radius: 12px; padding: 18px 22px; margin: 16px 0;
+        }
+        .danger-box-title { font-weight: 800; color: #991b1b; margin-bottom: 8px; }
+        .key-box {
+            background: #ffffff;
+            border: 2px solid var(--teal); border-radius: 12px;
+            padding: 18px 22px; margin: 16px 0;
+        }
+        .key-box-title { font-weight: 800; color: var(--teal-dark); margin-bottom: 8px; font-size: 1.05rem; }
+
+        /* ── Alert important ── */
+        .alert-important {
+            background: #ffffff; border: 2px solid var(--teal-dark); border-left: 7px solid var(--teal-dark);
+            color: #1f2937; border-radius: 14px; padding: 22px 28px; margin: 20px 0;
+        }
+        .alert-important-title { font-size: 1.2rem; font-weight: 900; margin-bottom: 10px; color: var(--teal-dark); }
+
+        /* ── Discussion / speech bubbles ── */
+        .discussion-box {
+            background: #ffffff;
+            border: 2px solid var(--teal); border-radius: 16px;
+            padding: 24px; margin: 20px 0;
+        }
+        .discussion-box h4 { color: var(--teal-dark); margin-bottom: 16px; font-size: 1.1rem; }
+        .speech-bubble {
+            background: white; border-radius: 12px; padding: 14px 18px;
+            margin: 10px 0; box-shadow: 0 2px 8px rgba(0,0,0,.08);
+            border-left: 4px solid var(--teal);
+        }
+        .speech-who { font-weight: 800; color: var(--teal-dark); font-size: .9rem; margin-bottom: 4px; }
+        .speech-text { color: #374151; line-height: 1.75; }
+
+
+
+        /* ── Rules section ── */
+        .rule-card {
+            border-radius: 14px; overflow: hidden; margin: 18px 0;
+            border: 2px solid var(--rc, var(--teal));
+        }
+        .rule-header {
+            padding: 14px 22px; color: var(--rc, var(--teal)); background: #ffffff;
+            border-bottom: 2px solid var(--rc, var(--teal)); font-weight: 800; font-size: 1rem;
+            display: flex; align-items: center; gap: 12px;
+        }
+        .rule-num {
+            background: #ffffff; border: 2px solid currentColor; width: 32px; height: 32px;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-weight: 900; flex-shrink: 0;
+        }
+        .rule-body { background: #ffffff; padding: 18px 22px; }
+        .rule-teal    { --rc: var(--teal-dark); }
+        .rule-cyan    { --rc: var(--cyan-dark); }
+        .rule-emerald { --rc: var(--emerald-dark); }
+        .rule-warning { --rc: #b45309; }
+        .rule-slate   { --rc: #334155; }
+
+        /* ── Hierarchy visual ── */
+        .hier-box {
+            display: inline-flex; flex-direction: column; align-items: center; gap: 0;
+            font-family: 'Courier New', monospace; font-size: .9em;
+        }
+        .hier-node {
+            padding: 10px 22px; border-radius: 10px; border: 2px solid;
+            font-weight: 700; text-align: center; min-width: 140px;
+        }
+        .hier-node.abstract-node { background: #fef3c7; border-color: #d97706; color: #92400e; }
+        .hier-node.concrete-node { background: #dcfce7; border-color: #16a34a; color: #14532d; }
+        .hier-arrow { color: #6b7280; font-size: 1.5rem; line-height: 1; }
+
+        /* ── Summary grid ── */
+        .summary-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px,1fr)); gap: 16px; margin-top: 20px; }
+        .summary-card {
+            border-radius: 14px; padding: 20px 18px; text-align: center; background: #ffffff;
+        }
+        .sc-icon { font-size: 2rem; margin-bottom: 10px; }
+        .sc-title { font-weight: 800; font-size: 1rem; margin-bottom: 6px; }
+        .sc-desc { font-size: .85rem; color: #4b5563; line-height: 1.6; }
+        .summary-card.s1 { border: 2px solid var(--teal); }
+        .summary-card.s1 .sc-title { color: var(--teal-dark); }
+        .summary-card.s2 { border: 2px solid var(--cyan); }
+        .summary-card.s2 .sc-title { color: var(--cyan-dark); }
+        .summary-card.s3 { border: 2px solid #16a34a; }
+        .summary-card.s3 .sc-title { color: #14532d; }
+        .summary-card.s4 { border: 2px solid #ca8a04; }
+        .summary-card.s4 .sc-title { color: #713f12; }
+
+        .code-inline { background: #f1f5f9; padding: 2px 7px; border-radius: 5px; font-family: 'Courier New', monospace; font-size: .93em; color: #0f766e; font-weight: 700; }
+
+        /* ── Abstract vs concrete diagram ── */
+        .spectrum-bar {
+            display: flex; border-radius: 12px; overflow: hidden; height: 54px; margin: 14px 0;
+        }
+        .spectrum-seg {
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: .88rem; flex: 1;
+            background: #ffffff; border: 3px solid currentColor; text-align: center;
+        }
+
+        /* ── Number class cards ── */
+        .number-grid { display: flex; flex-wrap: wrap; gap: 10px; margin: 16px 0; }
+        .number-chip {
+            padding: 10px 18px; border-radius: 10px; font-weight: 700;
+            font-family: 'Courier New', monospace; font-size: .9em;
+        }
+        .number-chip.abstract-chip { background: #fef3c7; border: 2px solid #d97706; color: #92400e; }
+        .number-chip.concrete-chip { background: #dcfce7; border: 2px solid #16a34a; color: #14532d; }
+
+        p { margin-bottom: 12px; }
+        ul, ol { margin-left: 24px; line-height: 2.1; }
+        li { margin-bottom: 4px; }
+
+        /* Bottom navigation + footer (white, solid borders — projector friendly) */
+        .bottom-nav {
+            display: flex; justify-content: space-between; align-items: center; gap: 12px;
+            flex-wrap: wrap; padding: 26px 40px; border-top: 2px solid #e5e7eb; background: #ffffff;
+        }
+        .bottom-nav a {
+            padding: 10px 22px; border-radius: 30px; text-decoration: none; font-weight: 700;
+            background: #ffffff; color: var(--teal-dark); border: 2px solid var(--teal-dark);
+        }
+        .bottom-nav a:hover { background: #f0fdfa; }
+        .bottom-nav .nav-practical { color: #047857; border-color: #047857; }
+        .footer {
+            max-width: 1000px; margin: 18px auto 0; background: #ffffff; color: #374151;
+            text-align: center; padding: 18px 20px; font-size: .9rem; border-top: 2px solid #e5e7eb;
+        }
+        .footer p { margin: 4px 0; }
+        .footer strong { color: var(--teal-dark); }
+        .footer a { color: var(--teal-dark); text-decoration: none; }
+        @media (max-width: 640px) { .bottom-nav { flex-direction: column; text-align: center; } }
+
+        /* Slide-question answers (show / hide) */
+        .answer-btn {
+            background: #059669; color: #ffffff; border: none; border-radius: 20px;
+            padding: 8px 18px; font-weight: 700; font-size: .9rem; cursor: pointer; margin: 8px 0;
+        }
+        .answer-box {
+            display: none; background: #ffffff; border: 2px solid #16a34a; border-left: 6px solid #16a34a;
+            border-radius: 0 12px 12px 0; padding: 14px 20px; margin: 6px 0 16px;
+        }
+        .slide-q {
+            background: #ffffff; border: 2px solid #3b82f6; border-radius: 14px;
+            padding: 18px 22px; margin: 18px 0;
+        }
+        .slide-q-title { font-weight: 800; color: #1d4ed8; margin-bottom: 8px; font-size: 1.05rem; }
+        .slide-tag {
+            display: inline-block; font-size: .75rem; font-weight: 700; color: #6b7280;
+            border: 1px solid #d1d5db; border-radius: 12px; padding: 1px 9px; margin-left: 8px; vertical-align: middle;
+        }
+        .uml-box { display: inline-block; border: 2px solid #374151; border-radius: 4px; min-width: 200px; font-family: 'Courier New', monospace; font-size: .9em; background: #ffffff; text-align: left; }
+        .uml-box .uml-name { border-bottom: 2px solid #374151; padding: 6px 12px; text-align: center; font-weight: 700; }
+        .uml-box .uml-name.abs { font-style: italic; }
+        .uml-box .uml-sec { border-bottom: 1px solid #374151; padding: 6px 12px; line-height: 1.6; }
+        .uml-box .uml-sec:last-child { border-bottom: none; }
+        .uml-box .abs { font-style: italic; }
+    
+        /* Chapter table of contents */
+        .chapter-toc { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 16px; padding: 22px 26px; margin: 0 0 36px; }
+        .chapter-toc-title { font-size: 1.15rem; font-weight: 800; margin: 0 0 12px; color: #1e293b; }
+        .chapter-toc ol { margin: 0; padding-left: 1.6em; columns: 2; column-gap: 32px; }
+        .chapter-toc li { margin: 0 0 8px; break-inside: avoid; line-height: 1.4; }
+        .chapter-toc a { color: #1d4ed8; text-decoration: none; font-weight: 600; }
+        .chapter-toc a:hover { text-decoration: underline; }
+        .section-title { scroll-margin-top: 20px; }
+        @media (max-width: 700px) { .chapter-toc ol { columns: 1; } .chapter-toc { padding: 18px 16px; } }
+    </style>
+    <link rel="stylesheet" href="projector.css">
+</head>
+<body>
+<div class="container">
+
+    <!-- ── Breadcrumb ── -->
+    <nav class="nav-breadcrumb">
+        <div class="breadcrumb">
+            <a href="../index.html">&#127968; Object-Oriented Programming</a>
+            <span class="sep">&#8250;</span>
+            <a href="index.html">Module 8 — Abstract Classes</a>
+            <span class="sep">&#8250;</span>
+            <span class="cur">Lesson 3: Abstract Methods</span>
+        </div>
+        <div class="lesson-nav">
+            <a href="02-abstract-class.html">&#8592; Lesson 2</a>
+            <a href="04-rules.html">Lesson 4 &#8594;</a>
+        </div>
+    </nav>
+
+    <!-- ── Hero ── -->
+    <div class="hero">
+        <div class="pillar-badge">
+            <span class="number">3</span>
+            Lesson 3 of 6 &nbsp;&#183;&nbsp; Chapter 13 &nbsp;&#183;&nbsp; Lecture slides 12–16
+        </div>
+        <h1>&#9998; Abstract Methods</h1>
+        <p class="subtitle">A method with a signature but no body — every concrete subclass must complete it</p>
+    </div>
+
+    <!-- ── CONTENT ── -->
+    <div class="content">
+
+        <nav class="chapter-toc" aria-label="Lesson contents">
+            <div class="chapter-toc-title">&#128203; In this lesson &mdash; jump to a topic</div>
+            <ol>
+                <li><a href="#section-1">Abstract Methods — Incomplete by Design</a></li>
+                <li><a href="#section-2">Abstract Methods in Java — Shape and Circle</a></li>
+                <li><a href="#section-3">Case Study — GeometricObject, Circle and Rectangle</a></li>
+                <li><a href="#section-4">Abstract Methods in Abstract Classes — The Rules</a></li>
+            </ol>
+        </nav>
+
+        <!-- ════════════════════════════════════════════════
+             SECTION 5 — ABSTRACT METHODS
+             ════════════════════════════════════════════════ -->
+        <div class="section">
+            <h2 class="section-title" id="section-1">
+                <span class="section-number">1</span>
+                Abstract Methods — Incomplete by Design
+            </h2>
+
+            <h3 class="subsection-title"><span class="sub-badge">The Problem</span> Can getArea() have a generic implementation?</h3>
+
+            <div class="discussion-box">
+                <div class="speech-bubble">
+                    <div class="speech-who">&#128104;&#8205;&#127979; The Professor:</div>
+                    <div class="speech-text">Now, our <code>Shape</code> has a method called <code>getArea()</code>.
+                    My students — can anyone give me a single formula for the area that works for ALL shapes?</div>
+                </div>
+                <div class="speech-bubble" style="border-left-color:#3b82f6;">
+                    <div class="speech-who" style="color:#1d4ed8;">&#128100; Students (all at once):</div>
+                    <div class="speech-text">No, doctor! Impossible! Each shape has a completely different formula:
+                    <ul style="margin-left:20px;margin-top:6px;line-height:1.9;">
+                        <li>Circle: π × r²</li>
+                        <li>Rectangle: width × height</li>
+                        <li>Triangle: Heron's formula</li>
+                    </ul>
+                    There is no single formula for ALL shapes!</div>
+                </div>
+                <div class="speech-bubble">
+                    <div class="speech-who">&#128104;&#8205;&#127979; The Professor:</div>
+                    <div class="speech-text">Then someone might say — "let's just remove <code>getArea()</code> from <code>Shape</code>
+                    and put it only in each subclass." But wait — what problem does this create?</div>
+                </div>
+                <div class="speech-bubble" style="border-left-color:#3b82f6;">
+                    <div class="speech-who" style="color:#1d4ed8;">&#128100; Excellent Student:</div>
+                    <div class="speech-text">Doctor, if <code>getArea()</code> is not in <code>Shape</code>, then when we treat
+                    shapes polymorphically, we cannot call <code>s.getArea()</code> on a <code>Shape</code> reference —
+                    the compiler will reject it! Polymorphism works through the reference type (Shape),
+                    so the method must be declared there.</div>
+                </div>
+                <div class="speech-bubble">
+                    <div class="speech-who">&#128104;&#8205;&#127979; The Professor:</div>
+                    <div class="speech-text">Perfect! And there is another risk — what if a developer creates a new subclass
+                    <code>Pentagon extends Shape</code> and <strong>forgets to implement</strong> <code>getArea()</code>?
+                    If <code>getArea()</code> is in <code>Shape</code> with a body (e.g., <code>return 0;</code>),
+                    <code>Pentagon</code> silently inherits the wrong implementation and there is no warning!<br><br>
+                    <strong>The solution: declare getArea() as ABSTRACT in Shape.</strong></div>
+                </div>
+            </div>
+
+            <h3 class="subsection-title"><span class="sub-badge">Definition</span> Declaring a method without defining it <span class="slide-tag">Slide 12</span></h3>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0;">
+                <div class="info-box" style="margin:0;">
+                    <div class="info-box-title">You can declare an <em>object</em> without defining it</div>
+                    <code class="code-inline">Person p;</code>
+                    <p style="margin:8px 0 0;font-size:.93rem;">A variable <code>p</code> of type Person exists — but no Person object has been created yet.</p>
+                </div>
+                <div class="info-box" style="margin:0;">
+                    <div class="info-box-title">Similarly, you can declare a <em>method</em> without defining it</div>
+                    <code class="code-inline">public abstract void draw(int size);</code>
+                    <p style="margin:8px 0 0;font-size:.93rem;">Notice that <strong>the body of the method is missing</strong> — no <code>{ }</code>, just a semicolon.</p>
+                </div>
+            </div>
+
+            <div class="key-box">
+                <div class="key-box-title">&#128204; Definition — Abstract Method</div>
+                <p style="margin:0;">A method that has been <strong>declared but not defined</strong> (header only, no body) is an
+                <strong>abstract method</strong>. It is marked with the keyword <code class="code-inline">abstract</code>.</p>
+            </div>
+
+            <div class="slide-q">
+                <div class="slide-q-title">&#10067; Spot the difference</div>
+                <p style="margin:0 0 6px;">What is the difference between
+                <code>public abstract void draw(int size);</code> and <code>public void draw(int size) { }</code>?</p>
+                <button class="answer-btn" onclick="toggleAnswer(this)">&#128161; Show Answer &#9660;</button>
+                <div class="answer-box"><p style="margin:0;">The first is <strong>abstract</strong>: it has <strong>no body</strong>, the class that contains
+                    it must be abstract, and every concrete subclass is <em>forced</em> to implement it. The second is a normal
+                    (concrete) method whose body is simply <em>empty</em> — it does nothing, it can live in a concrete class, and
+                    subclasses are <em>not</em> forced to override it. Writing <code>public abstract void draw(int size) { }</code>
+                    (abstract <em>with</em> a body) is a compile error: <em>"abstract methods cannot have a body"</em>.</p></div>
+            </div>
+
+            <h3 class="subsection-title"><span class="sub-badge">Syntax</span> Abstract Method Declaration</h3>
+
+            <div class="code-container">
+                <div class="code-header" onclick="toggleCode(this)">
+                    <span>&#128736; Abstract Method — Header Only, No Body</span>
+                    <span class="code-toggle">&#9660;</span>
+                </div>
+                <div class="code-block"><span class="abstract-kw">abstract</span> <span class="keyword">class</span> <span class="class-name">Shape</span> {
+    <span class="keyword">private</span> <span class="class-name">String</span> color;
+
+    <span class="keyword">public</span> <span class="class-name">Shape</span>(<span class="class-name">String</span> color) { <span class="keyword">this</span>.color = color; }
+    <span class="keyword">public</span> <span class="class-name">String</span> <span class="method">getColor</span>() { <span class="keyword">return</span> color; }   <span class="comment">// normal method ✓</span>
+
+    <span class="comment">// ── Abstract methods: header only, NO body ─────────────────────</span>
+    <span class="keyword">public</span> <span class="abstract-kw">abstract</span> <span class="keyword">double</span> <span class="method">getArea</span>();          <span class="comment">// no { } ← that is the point!</span>
+    <span class="keyword">public</span> <span class="abstract-kw">abstract</span> <span class="keyword">double</span> <span class="method">getPerimeter</span>();     <span class="comment">// no { } ← incomplete on purpose</span>
+
+    <span class="comment">// ── A normal (concrete) method CAN exist in abstract class ──────</span>
+    <span class="keyword">public</span> <span class="class-name">String</span> <span class="method">toString</span>() {
+        <span class="keyword">return</span> <span class="string">"Shape[color="</span> + color + <span class="string">", area="</span> + <span class="method">getArea</span>() + <span class="string">"]"</span>;
+    }
+}</div>
+            </div>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0;">
+                <div class="info-box" style="margin:0;">
+                    <div class="info-box-title">&#128161; What abstract method means</div>
+                    <ul style="margin-left:18px;font-size:.92rem;line-height:1.9;margin-top:6px;">
+                        <li>Only the <strong>signature/header</strong> is declared</li>
+                        <li><strong>No body</strong> — no <code>{ }</code></li>
+                        <li>Ends with a semicolon <code>;</code></li>
+                        <li>Forces subclasses to provide the implementation</li>
+                        <li>Guarantees the behavior EXISTS in all subclasses</li>
+                    </ul>
+                </div>
+                <div class="warning-box" style="margin:0;">
+                    <div class="warning-box-title">&#9888; The Two Guarantees</div>
+                    <ul style="margin-left:18px;font-size:.92rem;line-height:1.9;margin-top:6px;">
+                        <li><strong>Guarantee 1:</strong> Every concrete subclass WILL have <code>getArea()</code></li>
+                        <li><strong>Guarantee 2:</strong> It WILL have a real implementation (not a default <code>return 0</code>)</li>
+                        <li>The compiler enforces both — no developer can forget!</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3 class="subsection-title"><span class="sub-badge">Example</span> Complete Shape Hierarchy</h3>
+
+            <div class="code-container">
+                <div class="code-header" onclick="toggleCode(this)">
+                    <span>&#128196; Shape Hierarchy — Circle, Rectangle, Triangle</span>
+                    <span class="code-toggle">&#9660;</span>
+                </div>
+                <div class="code-block"><span class="abstract-kw">abstract</span> <span class="keyword">class</span> <span class="class-name">Shape</span> {
+    <span class="keyword">private</span> <span class="class-name">String</span> color;
+    <span class="keyword">public</span> <span class="class-name">Shape</span>(<span class="class-name">String</span> color) { <span class="keyword">this</span>.color = color; }
+    <span class="keyword">public</span> <span class="class-name">String</span> <span class="method">getColor</span>() { <span class="keyword">return</span> color; }
+    <span class="keyword">public</span> <span class="abstract-kw">abstract</span> <span class="keyword">double</span> <span class="method">getArea</span>();
+    <span class="keyword">public</span> <span class="abstract-kw">abstract</span> <span class="keyword">double</span> <span class="method">getPerimeter</span>();
+    <span class="keyword">public</span> <span class="class-name">String</span> <span class="method">toString</span>() {
+        <span class="keyword">return</span> <span class="class-name">String</span>.<span class="method">format</span>(<span class="string">"[%s | color=%s | area=%.2f]"</span>,
+                <span class="method">getClass</span>().<span class="method">getSimpleName</span>(), color, <span class="method">getArea</span>());
+    }
+}
+
+<span class="keyword">class</span> <span class="class-name">Circle</span> <span class="keyword">extends</span> <span class="class-name">Shape</span> {
+    <span class="keyword">private double</span> radius;
+    <span class="keyword">public</span> <span class="class-name">Circle</span>(<span class="class-name">String</span> color, <span class="keyword">double</span> radius) {
+        <span class="keyword">super</span>(color); <span class="keyword">this</span>.radius = radius;
+    }
+    <span class="keyword">@Override</span>
+    <span class="keyword">public double</span> <span class="method">getArea</span>()      { <span class="keyword">return</span> Math.PI * radius * radius; }
+    <span class="keyword">@Override</span>
+    <span class="keyword">public double</span> <span class="method">getPerimeter</span>() { <span class="keyword">return</span> <span class="number">2</span> * Math.PI * radius; }
+}
+
+<span class="keyword">class</span> <span class="class-name">Rectangle</span> <span class="keyword">extends</span> <span class="class-name">Shape</span> {
+    <span class="keyword">private double</span> width, height;
+    <span class="keyword">public</span> <span class="class-name">Rectangle</span>(<span class="class-name">String</span> color, <span class="keyword">double</span> width, <span class="keyword">double</span> height) {
+        <span class="keyword">super</span>(color); <span class="keyword">this</span>.width = width; <span class="keyword">this</span>.height = height;
+    }
+    <span class="keyword">@Override</span>
+    <span class="keyword">public double</span> <span class="method">getArea</span>()      { <span class="keyword">return</span> width * height; }
+    <span class="keyword">@Override</span>
+    <span class="keyword">public double</span> <span class="method">getPerimeter</span>() { <span class="keyword">return</span> <span class="number">2</span> * (width + height); }
+}
+
+<span class="keyword">class</span> <span class="class-name">Triangle</span> <span class="keyword">extends</span> <span class="class-name">Shape</span> {
+    <span class="keyword">private double</span> a, b, c;
+    <span class="keyword">public</span> <span class="class-name">Triangle</span>(<span class="class-name">String</span> color, <span class="keyword">double</span> a, <span class="keyword">double</span> b, <span class="keyword">double</span> c) {
+        <span class="keyword">super</span>(color); <span class="keyword">this</span>.a = a; <span class="keyword">this</span>.b = b; <span class="keyword">this</span>.c = c;
+    }
+    <span class="keyword">@Override</span>
+    <span class="keyword">public double</span> <span class="method">getArea</span>() {          <span class="comment">// Heron's formula</span>
+        <span class="keyword">double</span> s = (a + b + c) / <span class="number">2</span>;
+        <span class="keyword">return</span> Math.<span class="method">sqrt</span>(s * (s-a) * (s-b) * (s-c));
+    }
+    <span class="keyword">@Override</span>
+    <span class="keyword">public double</span> <span class="method">getPerimeter</span>() { <span class="keyword">return</span> a + b + c; }
+}
+
+<span class="comment">// ── Polymorphic usage ──────────────────────────────────────────</span>
+<span class="keyword">public class</span> <span class="class-name">TestShapes</span> {
+    <span class="keyword">public static void</span> <span class="method">main</span>(<span class="class-name">String</span>[] args) {
+        <span class="class-name">Shape</span>[] shapes = {
+            <span class="keyword">new</span> <span class="class-name">Circle</span>(<span class="string">"Red"</span>, <span class="number">5</span>),
+            <span class="keyword">new</span> <span class="class-name">Rectangle</span>(<span class="string">"Blue"</span>, <span class="number">4</span>, <span class="number">6</span>),
+            <span class="keyword">new</span> <span class="class-name">Triangle</span>(<span class="string">"Green"</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>)
+        };
+        <span class="keyword">for</span> (<span class="class-name">Shape</span> s : shapes)
+            System.out.<span class="method">println</span>(s);   <span class="comment">// calls toString() → calls getArea()</span>
+    }
+}</div>
+            </div>
+
+            <div class="terminal">
+                <div class="terminal-header">
+                    <span class="terminal-dot r"></span>
+                    <span class="terminal-dot y"></span>
+                    <span class="terminal-dot g"></span>
+                    <span class="terminal-title">Output — TestShapes.java</span>
+                </div>
+                <div class="terminal-body">[Circle | color=Red | area=78.54]
+[Rectangle | color=Blue | area=24.00]
+[Triangle | color=Green | area=6.00]</div>
+            </div>
+        </div>
+
+
+        <!-- ════════════════════════════════════════════════
+             SECTION 2 — SHAPE CODE (SLIDE 13)
+             ════════════════════════════════════════════════ -->
+        <div class="section">
+            <h2 class="section-title" id="section-2">
+                <span class="section-number">2</span>
+                Abstract Methods in Java — Shape and Circle
+            </h2>
+
+            <p>This is the Shape of <a href="02-abstract-class.html#section-5">Lesson 2, slide 11</a> written in Java: a constant
+            <code>BLACK</code>, a <code>colour</code> field, a constructor, a normal method <code>setColour(int)</code> and one
+            <strong>abstract method</strong> <code>getArea()</code>.</p>
+            <div class="code-container">
+                <div class="code-header" onclick="toggleCode(this)">
+                    <span>&#128196; Abstract Methods in Java — Shape and Circle, as on the slide <span class="slide-tag">Slide 13</span></span>
+                    <span class="code-toggle">&#9660;</span>
+                </div>
+                <div class="code-block"><span class="keyword">public</span> <span class="abstract-kw">abstract</span> <span class="keyword">class</span> <span class="class-name">Shape</span> {
+    <span class="keyword">final</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="class-name">BLACK</span> = <span class="number">0</span>;
+    <span class="keyword">private</span> <span class="keyword">int</span> colour;
+
+    <span class="keyword">public</span> <span class="class-name">Shape</span>() {
+        colour = <span class="class-name">BLACK</span>;
+    }
+
+    <span class="keyword">public</span> <span class="keyword">void</span> <span class="method">setColour</span>(<span class="keyword">int</span> c) {
+        <span class="keyword">this</span>.colour = c;
+    }
+
+    <span class="keyword">public</span> <span class="abstract-kw">abstract</span> <span class="keyword">double</span> <span class="method">getArea</span>();
+}
+
+<span class="keyword">public</span> <span class="keyword">class</span> <span class="class-name">Circle</span> <span class="keyword">extends</span> <span class="class-name">Shape</span> {
+    <span class="keyword">final</span> <span class="keyword">static</span> <span class="keyword">double</span> <span class="class-name">PI</span> = <span class="number">3.1419</span>;
+    <span class="keyword">private</span> <span class="keyword">int</span> radius;
+
+    <span class="keyword">public</span> <span class="class-name">Circle</span>(<span class="keyword">int</span> r) {
+        radius = r;
+    }
+
+    <span class="keyword">public</span> <span class="keyword">double</span> <span class="method">getArea</span>() {
+        <span class="keyword">return</span> (radius^<span class="number">2</span>)*<span class="class-name">PI</span>;
+    }
+}</div>
+            </div>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0;">
+                <div class="info-box" style="margin:0;">
+                    <div class="info-box-title">&#128161; Abstract methods have no body</div>
+                    <p style="margin:0;"><code>public abstract double getArea();</code> ends with <code>;</code> — Shape says
+                    <em>"every shape has an area"</em> without saying <em>how</em> to compute it.</p>
+                </div>
+                <div class="warning-box" style="margin:0;">
+                    <div class="warning-box-title">&#9888; If Circle did not implement getArea()</div>
+                    <p style="margin:0;">…then Circle would have to be declared <code>abstract</code> too! Otherwise:</p>
+                </div>
+            </div>
+            <div class="terminal">
+                <div class="terminal-header">
+                    <span class="terminal-dot r"></span>
+                    <span class="terminal-dot y"></span>
+                    <span class="terminal-dot g"></span>
+                    <span class="terminal-title">javac — Circle without getArea()</span>
+                </div>
+                <div class="terminal-body">X.java:4: error: Circle is not abstract and does not override abstract method getArea() in Shape
+class Circle extends Shape {
+^
+1 error</div>
+            </div>
+
+            <div class="slide-q">
+                <div class="slide-q-title">&#10067; The slide's getArea() compiles — but is it correct? What does new Circle(5).getArea() return?</div>
+                <button class="answer-btn" onclick="toggleAnswer(this)">&#128161; Show Answer &#9660;</button>
+                <div class="answer-box"><p style="margin:0 0 6px;">It returns <strong>21.9933</strong>, not 78.54. Two problems:</p>
+                    <ul style="margin:0 0 6px 22px;">
+                        <li>In Java, <code>^</code> is the bitwise <strong>XOR</strong> operator, not "to the power of". <code>5 ^ 2</code> is
+                            <code>7</code> (binary 101 XOR 010 = 111). Write <code>radius * radius</code> (or <code>Math.pow(radius, 2)</code>).</li>
+                        <li><code>3.1419</code> is not &pi; (&pi; &asymp; 3.14159). Use <code>Math.PI</code>.</li>
+                    </ul>
+                    <p style="margin:0;">Verified output:</p>
+                    <div class="terminal-body" style="border:1.5px solid #cbd5e1;border-radius:8px;margin-top:6px;">Slide version:  area = 21.9933
+5 ^ 2 in Java  = 7
+Fixed version:  area = 78.53981633974483
+colour = 0</div>
+                    <p style="margin:6px 0 0;">The fixed method: <code>public double getArea() { return radius * radius * Math.PI; }</code>.
+                    The abstract-class idea on the slide is correct — only the formula has a bug.</p></div>
+            </div>
+
+        </div>
+
+        <!-- ════════════════════════════════════════════════
+             SECTION 3 — GEOMETRICOBJECT (SLIDES 14-15)
+             ════════════════════════════════════════════════ -->
+        <div class="section">
+            <h2 class="section-title" id="section-3">
+                <span class="section-number">3</span>
+                Case Study — GeometricObject, Circle and Rectangle
+            </h2>
+
+            <p>The textbook example (Liang, <em>Introduction to Java Programming</em>, 10th ed., &sect;13.2): <code>GeometricObject</code>
+            is the abstract superclass of <code>Circle</code> and <code>Rectangle</code>. Its <code>getArea()</code> and
+            <code>getPerimeter()</code> are abstract because they cannot be computed for a general geometric object.</p>
+            <h3 class="subsection-title"><span class="sub-badge">UML</span> The class diagram <span class="slide-tag">Slide 14</span></h3>
+
+            <div style="text-align:center;margin:20px 0;overflow-x:auto;">
+                <div class="uml-box" style="min-width:330px;">
+                    <div class="uml-name abs">GeometricObject</div>
+                    <div class="uml-sec">-color: String<br>-filled: boolean<br>-dateCreated: java.util.Date</div>
+                    <div class="uml-sec">#GeometricObject()<br>#GeometricObject(color: String, filled: boolean)<br>+getColor(): String<br>+setColor(color: String): void<br>+isFilled(): boolean<br>+setFilled(filled: boolean): void<br>+getDateCreated(): java.util.Date<br>+toString(): String<br><span class="abs">+getArea(): double</span><br><span class="abs">+getPerimeter(): double</span></div>
+                </div>
+                <div style="color:#374151;font-size:1.3rem;margin:4px 0;line-height:1.2;">&#9651;<br><span style="font-size:.85rem;">extends</span></div>
+                <div style="display:flex;justify-content:center;gap:16px;flex-wrap:wrap;">
+                    <div class="uml-box" style="min-width:280px;">
+                        <div class="uml-name">Circle</div>
+                        <div class="uml-sec">-radius: double</div>
+                        <div class="uml-sec">+Circle()<br>+Circle(radius: double)<br>+Circle(radius: double, color: String, filled: boolean)<br>+getRadius(): double<br>+setRadius(radius: double): void<br>+getDiameter(): double<br>+printCircle(): void</div>
+                    </div>
+                    <div class="uml-box" style="min-width:280px;">
+                        <div class="uml-name">Rectangle</div>
+                        <div class="uml-sec">-width: double<br>-height: double</div>
+                        <div class="uml-sec">+Rectangle()<br>+Rectangle(width: double, height: double)<br>+Rectangle(width: double, height: double, color: String, filled: boolean)<br>+getWidth(): double<br>+setWidth(width: double): void<br>+getHeight(): double<br>+setHeight(height: double): void</div>
+                    </div>
+                </div>
+                <p style="font-size:.85rem;color:#6b7280;margin-top:8px;">Italics = abstract. <code>#</code> = protected, <code>-</code> = private, <code>+</code> = public.
+                Circle and Rectangle also implement <code>getArea()</code> and <code>getPerimeter()</code>.</p>
+            </div>
+
+            <h3 class="subsection-title"><span class="sub-badge">Code</span> The four classes <span class="slide-tag">Slide 15</span></h3>
+            <div class="code-container">
+                <div class="code-header" onclick="toggleCode(this)">
+                    <span>&#128196; GeometricObject.java — the abstract superclass</span>
+                    <span class="code-toggle">&#9660;</span>
+                </div>
+                <div class="code-block"><span class="keyword">public</span> <span class="abstract-kw">abstract</span> <span class="keyword">class</span> <span class="class-name">GeometricObject</span> {
+  <span class="keyword">private</span> <span class="class-name">String</span> color = <span class="string">"white"</span>;
+  <span class="keyword">private</span> <span class="keyword">boolean</span> filled;
+  <span class="keyword">private</span> java.util.<span class="class-name">Date</span> dateCreated;
+
+  <span class="comment">/** Construct a default geometric object */</span>
+  <span class="keyword">protected</span> <span class="class-name">GeometricObject</span>() {
+    dateCreated = <span class="keyword">new</span> java.util.<span class="class-name">Date</span>();
+  }
+
+  <span class="comment">/** Construct a geometric object with color and filled value */</span>
+  <span class="keyword">protected</span> <span class="class-name">GeometricObject</span>(<span class="class-name">String</span> color, <span class="keyword">boolean</span> filled) {
+    dateCreated = <span class="keyword">new</span> java.util.<span class="class-name">Date</span>();
+    <span class="keyword">this</span>.color = color;
+    <span class="keyword">this</span>.filled = filled;
+  }
+
+  <span class="comment">/** Return color */</span>
+  <span class="keyword">public</span> <span class="class-name">String</span> <span class="method">getColor</span>() {
+    <span class="keyword">return</span> color;
+  }
+
+  <span class="comment">/** Set a new color */</span>
+  <span class="keyword">public</span> <span class="keyword">void</span> <span class="method">setColor</span>(<span class="class-name">String</span> color) {
+    <span class="keyword">this</span>.color = color;
+  }
+
+  <span class="comment">/** Return filled. Since filled is boolean,
+   *  the get method is named isFilled */</span>
+  <span class="keyword">public</span> <span class="keyword">boolean</span> <span class="method">isFilled</span>() {
+    <span class="keyword">return</span> filled;
+  }
+
+  <span class="comment">/** Set a new filled */</span>
+  <span class="keyword">public</span> <span class="keyword">void</span> <span class="method">setFilled</span>(<span class="keyword">boolean</span> filled) {
+    <span class="keyword">this</span>.filled = filled;
+  }
+
+  <span class="comment">/** Get dateCreated */</span>
+  <span class="keyword">public</span> java.util.<span class="class-name">Date</span> <span class="method">getDateCreated</span>() {
+    <span class="keyword">return</span> dateCreated;
+  }
+
+  <span class="keyword">@Override</span>
+  <span class="keyword">public</span> <span class="class-name">String</span> <span class="method">toString</span>() {
+    <span class="keyword">return</span> <span class="string">"created on "</span> + dateCreated + <span class="string">"\ncolor: "</span> + color +
+      <span class="string">" and filled: "</span> + filled;
+  }
+
+  <span class="comment">/** Abstract method getArea */</span>
+  <span class="keyword">public</span> <span class="abstract-kw">abstract</span> <span class="keyword">double</span> <span class="method">getArea</span>();
+
+  <span class="comment">/** Abstract method getPerimeter */</span>
+  <span class="keyword">public</span> <span class="abstract-kw">abstract</span> <span class="keyword">double</span> <span class="method">getPerimeter</span>();
+}</div>
+            </div>
+            <div class="code-container">
+                <div class="code-header" onclick="toggleCode(this)">
+                    <span>&#128196; Circle.java</span>
+                    <span class="code-toggle">&#9660;</span>
+                </div>
+                <div class="code-block"><span class="keyword">public</span> <span class="keyword">class</span> <span class="class-name">Circle</span> <span class="keyword">extends</span> <span class="class-name">GeometricObject</span> {
+  <span class="keyword">private</span> <span class="keyword">double</span> radius;
+
+  <span class="keyword">public</span> <span class="class-name">Circle</span>() {
+  }
+
+  <span class="keyword">public</span> <span class="class-name">Circle</span>(<span class="keyword">double</span> radius) {
+    <span class="keyword">this</span>.radius = radius;
+  }
+
+  <span class="keyword">public</span> <span class="class-name">Circle</span>(<span class="keyword">double</span> radius, <span class="class-name">String</span> color, <span class="keyword">boolean</span> filled) {
+    <span class="keyword">this</span>.radius = radius;
+    <span class="method">setColor</span>(color);
+    <span class="method">setFilled</span>(filled);
+  }
+
+  <span class="comment">/** Return radius */</span>
+  <span class="keyword">public</span> <span class="keyword">double</span> <span class="method">getRadius</span>() {
+    <span class="keyword">return</span> radius;
+  }
+
+  <span class="comment">/** Set a new radius */</span>
+  <span class="keyword">public</span> <span class="keyword">void</span> <span class="method">setRadius</span>(<span class="keyword">double</span> radius) {
+    <span class="keyword">this</span>.radius = radius;
+  }
+
+  <span class="keyword">@Override</span> <span class="comment">/** Return area */</span>
+  <span class="keyword">public</span> <span class="keyword">double</span> <span class="method">getArea</span>() {
+    <span class="keyword">return</span> radius * radius * <span class="class-name">Math</span>.<span class="class-name">PI</span>;
+  }
+
+  <span class="comment">/** Return diameter */</span>
+  <span class="keyword">public</span> <span class="keyword">double</span> <span class="method">getDiameter</span>() {
+    <span class="keyword">return</span> <span class="number">2</span> * radius;
+  }
+
+  <span class="keyword">@Override</span> <span class="comment">/** Return perimeter */</span>
+  <span class="keyword">public</span> <span class="keyword">double</span> <span class="method">getPerimeter</span>() {
+    <span class="keyword">return</span> <span class="number">2</span> * radius * <span class="class-name">Math</span>.<span class="class-name">PI</span>;
+  }
+
+  <span class="comment">/** Print the circle info */</span>
+  <span class="keyword">public</span> <span class="keyword">void</span> <span class="method">printCircle</span>() {
+    <span class="class-name">System</span>.out.<span class="method">println</span>(<span class="string">"The circle is created "</span> + <span class="method">getDateCreated</span>() +
+      <span class="string">" and the radius is "</span> + radius);
+  }
+}</div>
+            </div>
+            <div class="code-container">
+                <div class="code-header" onclick="toggleCode(this)">
+                    <span>&#128196; Rectangle.java</span>
+                    <span class="code-toggle">&#9660;</span>
+                </div>
+                <div class="code-block"><span class="keyword">public</span> <span class="keyword">class</span> <span class="class-name">Rectangle</span> <span class="keyword">extends</span> <span class="class-name">GeometricObject</span> {
+  <span class="keyword">private</span> <span class="keyword">double</span> width;
+  <span class="keyword">private</span> <span class="keyword">double</span> height;
+
+  <span class="keyword">public</span> <span class="class-name">Rectangle</span>() {
+  }
+
+  <span class="keyword">public</span> <span class="class-name">Rectangle</span>(<span class="keyword">double</span> width, <span class="keyword">double</span> height) {
+    <span class="keyword">this</span>.width = width;
+    <span class="keyword">this</span>.height = height;
+  }
+
+  <span class="keyword">public</span> <span class="class-name">Rectangle</span>(<span class="keyword">double</span> width, <span class="keyword">double</span> height, <span class="class-name">String</span> color,
+      <span class="keyword">boolean</span> filled) {
+    <span class="keyword">this</span>.width = width;
+    <span class="keyword">this</span>.height = height;
+    <span class="method">setColor</span>(color);
+    <span class="method">setFilled</span>(filled);
+  }
+
+  <span class="comment">/** Return width */</span>
+  <span class="keyword">public</span> <span class="keyword">double</span> <span class="method">getWidth</span>() {
+    <span class="keyword">return</span> width;
+  }
+
+  <span class="comment">/** Set a new width */</span>
+  <span class="keyword">public</span> <span class="keyword">void</span> <span class="method">setWidth</span>(<span class="keyword">double</span> width) {
+    <span class="keyword">this</span>.width = width;
+  }
+
+  <span class="comment">/** Return height */</span>
+  <span class="keyword">public</span> <span class="keyword">double</span> <span class="method">getHeight</span>() {
+    <span class="keyword">return</span> height;
+  }
+
+  <span class="comment">/** Set a new height */</span>
+  <span class="keyword">public</span> <span class="keyword">void</span> <span class="method">setHeight</span>(<span class="keyword">double</span> height) {
+    <span class="keyword">this</span>.height = height;
+  }
+
+  <span class="keyword">@Override</span> <span class="comment">/** Return area */</span>
+  <span class="keyword">public</span> <span class="keyword">double</span> <span class="method">getArea</span>() {
+    <span class="keyword">return</span> width * height;
+  }
+
+  <span class="keyword">@Override</span> <span class="comment">/** Return perimeter */</span>
+  <span class="keyword">public</span> <span class="keyword">double</span> <span class="method">getPerimeter</span>() {
+    <span class="keyword">return</span> <span class="number">2</span> * (width + height);
+  }
+}</div>
+            </div>
+            <div class="code-container">
+                <div class="code-header" onclick="toggleCode(this)">
+                    <span>&#128196; TestGeometricObject.java</span>
+                    <span class="code-toggle">&#9660;</span>
+                </div>
+                <div class="code-block"><span class="keyword">public</span> <span class="keyword">class</span> <span class="class-name">TestGeometricObject</span> {
+  <span class="comment">/** Main method */</span>
+  <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="method">main</span>(<span class="class-name">String</span>[] args) {
+    <span class="comment">// Create two geometric objects</span>
+    <span class="class-name">GeometricObject</span> geoObject1 = <span class="keyword">new</span> <span class="class-name">Circle</span>(<span class="number">5</span>);
+    <span class="class-name">GeometricObject</span> geoObject2 = <span class="keyword">new</span> <span class="class-name">Rectangle</span>(<span class="number">5</span>, <span class="number">3</span>);
+
+    <span class="class-name">System</span>.out.<span class="method">println</span>(<span class="string">"The two objects have the same area? "</span> +
+      <span class="method">equalArea</span>(geoObject1, geoObject2));
+
+    <span class="comment">// Display circle</span>
+    <span class="method">displayGeometricObject</span>(geoObject1);
+
+    <span class="comment">// Display rectangle</span>
+    <span class="method">displayGeometricObject</span>(geoObject2);
+  }
+
+  <span class="comment">/** A method for comparing the areas of two geometric objects */</span>
+  <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="method">equalArea</span>(<span class="class-name">GeometricObject</span> object1,
+      <span class="class-name">GeometricObject</span> object2) {
+    <span class="keyword">return</span> object1.<span class="method">getArea</span>() == object2.<span class="method">getArea</span>();
+  }
+
+  <span class="comment">/** A method for displaying a geometric object */</span>
+  <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="method">displayGeometricObject</span>(<span class="class-name">GeometricObject</span> object) {
+    <span class="class-name">System</span>.out.<span class="method">println</span>();
+    <span class="class-name">System</span>.out.<span class="method">println</span>(<span class="string">"The area is "</span> + object.<span class="method">getArea</span>());
+    <span class="class-name">System</span>.out.<span class="method">println</span>(<span class="string">"The perimeter is "</span> + object.<span class="method">getPerimeter</span>());
+  }
+}</div>
+            </div>
+            <div class="terminal">
+                <div class="terminal-header">
+                    <span class="terminal-dot r"></span>
+                    <span class="terminal-dot y"></span>
+                    <span class="terminal-dot g"></span>
+                    <span class="terminal-title">Output — TestGeometricObject.java (Run)</span>
+                </div>
+                <div class="terminal-body">The two objects have the same area? false
+
+The area is 78.53981633974483
+The perimeter is 31.41592653589793
+
+The area is 15.0
+The perimeter is 16.0</div>
+            </div>
+
+            <div class="slide-q">
+                <div class="slide-q-title">&#10067; Questions on slides 14–15</div>
+                <p style="margin:0 0 6px;"><strong>Q1.</strong> <code>equalArea</code> and <code>displayGeometricObject</code> take
+                <code>GeometricObject</code> parameters. Why can they call <code>object.getArea()</code>?</p>
+                <button class="answer-btn" onclick="toggleAnswer(this)">&#128161; Show Answer &#9660;</button>
+                <div class="answer-box"><p style="margin:0;">Because <code>getArea()</code> is <strong>declared</strong> (as abstract) in
+                    <code>GeometricObject</code>, so the compiler accepts the call on a GeometricObject reference. At run time,
+                    <strong>dynamic binding</strong> calls the actual object's version: <code>Circle.getArea()</code> for
+                    <code>geoObject1</code> and <code>Rectangle.getArea()</code> for <code>geoObject2</code>. Without the abstract
+                    method in GeometricObject, <code>object.getArea()</code> would be a compile error ("cannot find symbol").</p></div>
+                <p style="margin:6px 0;"><strong>Q2.</strong> Why are the constructors of GeometricObject <code>protected</code>?</p>
+                <button class="answer-btn" onclick="toggleAnswer(this)">&#128161; Show Answer &#9660;</button>
+                <div class="answer-box"><p style="margin:0;">An abstract class can never be created with <code>new</code>, so its constructors are only used
+                    by its subclasses (through <code>super(...)</code> — here the implicit <code>super()</code> in Circle and Rectangle).
+                    <code>protected</code> says exactly that: "for subclasses". Making them <code>public</code> would also compile, but it
+                    would not let anyone create a GeometricObject either.</p></div>
+                <p style="margin:6px 0;"><strong>Q3.</strong> Why does the program print <code>false</code>?</p>
+                <button class="answer-btn" onclick="toggleAnswer(this)">&#128161; Show Answer &#9660;</button>
+                <div class="answer-box"><p style="margin:0;">The circle's area is 5 &times; 5 &times; &pi; = 78.5398…, the rectangle's is 5 &times; 3 = 15.0;
+                    they are not equal, so <code>equalArea</code> returns <code>false</code>.</p></div>
+            </div>
+
+        </div>
+
+        <!-- ════════════════════════════════════════════════
+             SECTION 4 — RULES (SLIDE 16)
+             ════════════════════════════════════════════════ -->
+        <div class="section">
+            <h2 class="section-title" id="section-4">
+                <span class="section-number">4</span>
+                Abstract Methods in Abstract Classes — The Rules
+            </h2>
+
+            <div class="key-box">
+                <div class="key-box-title">&#128204; Abstract method in abstract class <span class="slide-tag">Slide 16</span></div>
+                <ol style="margin:4px 0 0 22px;">
+                    <li>If the subclass defines <strong>all</strong> the inherited abstract methods, it is <strong>"complete"</strong> and can
+                        be instantiated.</li>
+                    <li>If the subclass does <strong>not</strong> define all the inherited abstract methods, it <strong>too must be
+                        abstract</strong>.</li>
+                    <li>A class that contains abstract methods <strong>must be abstract</strong>.</li>
+                    <li>In a non-abstract subclass extended from an abstract class, <strong>all</strong> the abstract methods must be
+                        implemented, <strong>even if they are not used</strong> in the subclass.</li>
+                </ol>
+            </div>
+            <p>Each rule has a worked example in <a href="04-rules.html#section-1">Lesson 4 — Rules 1–4</a>.</p>
+
+            <div class="slide-q">
+                <div class="slide-q-title">&#10067; Apply the rules</div>
+                <p style="margin:0 0 6px;"><code>class Square extends GeometricObject</code> implements <code>getArea()</code> but not
+                <code>getPerimeter()</code>. Does it compile? How do you fix it?</p>
+                <button class="answer-btn" onclick="toggleAnswer(this)">&#128161; Show Answer &#9660;</button>
+                <div class="answer-box"><p style="margin:0;"><strong>No.</strong> Square is not abstract, so it must implement <em>all</em> inherited abstract
+                    methods (rule 4); javac reports <em>"Square is not abstract and does not override abstract method getPerimeter() in
+                    GeometricObject"</em>. Two fixes: implement <code>getPerimeter()</code> (then Square is complete and can be
+                    instantiated — rule 1), or declare <code>abstract class Square</code> (rule 2) — then you cannot write
+                    <code>new Square()</code>.</p></div>
+            </div>
+
+        </div>
+
+    </div><!-- /content -->
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+        <a href="02-abstract-class.html" class="nav-prev">&#8592; Lesson 2</a>
+        <a href="index.html" class="nav-practical">&#127968; Module 8 Home</a>
+        <a href="04-rules.html" class="nav-next">Lesson 4 &#8594;</a>
+    </div>
+
+</div><!-- /container -->
+
+<!-- Footer -->
+<div class="footer">
+    <p><strong>Object-Oriented Programming &nbsp;&#183;&nbsp; Module 8: Abstract Classes &nbsp;&#183;&nbsp; Chapter 13</strong></p>
+    <p>Prepared by Dr. Almalawi</p>
+</div>
+
+<script>
+/* ─── Theme definitions ─────────────────────────── */
+const CODE_THEMES = {
+  black: {
+    bg:'#000000', text:'#ffffff', comment:'#a0aec0', keyword:'#ff79c6', cls:'#8be9fd', method:'#50fa7b', string:'#f1fa8c', number:'#bd93f9',
+    tmBg:'#0f172a', tmHeader:'#1e293b', tmBorder:'#334155', tmText:'#4ade80', tmTitle:'#94a3b8', projector: false
+  },
+  vscode: {
+    bg:'#1e1e1e', text:'#ffffff', comment:'#57c757', keyword:'#569cd6', cls:'#4ec9b0', method:'#dcdcaa', string:'#ce9178', number:'#b5cea8',
+    tmBg:'#1e1e1e', tmHeader:'#2d2d2d', tmBorder:'#444', tmText:'#ffffff', tmTitle:'#9cdcfe', projector: false
+  },
+  white: {
+    bg:'#ffffff', text:'#000000', comment:'#1d4ed8', keyword:'#dc2626', cls:'#16a34a', method:'#0369a1', string:'#b45309', number:'#7c3aed',
+    tmBg:'#f1f5f9', tmHeader:'#e2e8f0', tmBorder:'#94a3b8', tmText:'#000000', tmTitle:'#1d4ed8', projector: true
+  },
+  cream: {
+    bg:'#fefce8', text:'#000000', comment:'#1d4ed8', keyword:'#dc2626', cls:'#15803d', method:'#0369a1', string:'#b45309', number:'#7c3aed',
+    tmBg:'#fefce8', tmHeader:'#fef08a', tmBorder:'#a16207', tmText:'#000000', tmTitle:'#0369a1', projector: true
+  }
+};
+
+/* ─── Luminance helper ──────────────────────────── */
+function _lum(hex) {
+  hex = hex.replace('#','');
+  if (hex.length === 3) hex = hex.split('').map(c=>c+c).join('');
+  if (hex.length !== 6) return 0.5;
+  const r=parseInt(hex.slice(0,2),16), g=parseInt(hex.slice(2,4),16), b=parseInt(hex.slice(4,6),16);
+  return (0.299*r + 0.587*g + 0.114*b) / 255;
+}
+
+/* Turn a dark hex color into a soft light tint */
+function _lighten(hex) {
+  hex = hex.replace('#','');
+  if (hex.length === 3) hex = hex.split('').map(c=>c+c).join('');
+  const r=parseInt(hex.slice(0,2),16), g=parseInt(hex.slice(2,4),16), b=parseInt(hex.slice(4,6),16);
+  const lr=Math.round(r*.10+255*.90), lg=Math.round(g*.10+255*.90), lb=Math.round(b*.10+255*.90);
+  return '#'+[lr,lg,lb].map(c=>c.toString(16).padStart(2,'0')).join('');
+}
+
+/* ─── Inline-style projector scanner ───────────── */
+const _backup = new Map();
+
+function _applyProjectorInline(enable) {
+  if (enable) {
+    document.querySelectorAll('[style]').forEach(el => {
+      const orig = el.getAttribute('style');
+      _backup.set(el, orig);
+      let s = orig;
+      s = s.replace(/(background(?:-color)?\s*:[^;}"']*?)(#[0-9a-fA-F]{6}|#[0-9a-fA-F]{3})\b/gi,
+        (m, pre, hex) => _lum(hex) < 0.28 ? pre + _lighten(hex) : m);
+      s = s.replace(/((?:^|;|\s)color\s*:\s*)(#[0-9a-fA-F]{6}|#[0-9a-fA-F]{3})\b/gi,
+        (m, pre, hex) => _lum(hex) > 0.72 ? pre + '#1f2937' : m);
+      el.setAttribute('style', s);
+    });
+  } else {
+    _backup.forEach((orig, el) => el.setAttribute('style', orig));
+    _backup.clear();
+  }
+}
+
+/* ─── Main theme switcher ───────────────────────── */
+function setCodeTheme(name) {
+  const t = CODE_THEMES[name], r = document.documentElement.style;
+  r.setProperty('--cb-bg',      t.bg);        r.setProperty('--cb-text',    t.text);
+  r.setProperty('--cb-comment', t.comment);   r.setProperty('--cb-keyword', t.keyword);
+  r.setProperty('--cb-class',   t.cls);       r.setProperty('--cb-method',  t.method);
+  r.setProperty('--cb-string',  t.string);    r.setProperty('--cb-number',  t.number);
+  r.setProperty('--tm-bg',      t.tmBg);      r.setProperty('--tm-header',  t.tmHeader);
+  r.setProperty('--tm-border',  t.tmBorder);  r.setProperty('--tm-text',    t.tmText);
+  r.setProperty('--tm-title',   t.tmTitle);
+  const wasProjector = document.body.classList.contains('projector');
+  if (t.projector) {
+    if (!wasProjector) _applyProjectorInline(true);
+    document.body.classList.add('projector');
+  } else {
+    if (wasProjector) _applyProjectorInline(false);
+    document.body.classList.remove('projector');
+  }
+  document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('btn-' + name).classList.add('active');
+  document.getElementById('theme-panel').classList.remove('open');
+}
+
+function toggleCode(header) {
+    const block = header.nextElementSibling;
+    const toggle = header.querySelector('.code-toggle');
+    block.classList.toggle('collapsed');
+    toggle.classList.toggle('collapsed');
+    const label = header.querySelector('span:first-child');
+    if (label && label.textContent.includes('Code')) {
+        label.innerHTML = block.classList.contains('collapsed')
+            ? '&#128065;&#65038; Show Code'
+            : '&#128065;&#65038; Hide Code';
+    }
+}
+
+function toggleAnswer(btn) {
+    const ans = btn.nextElementSibling;
+    const isHidden = ans.style.display === 'none' || ans.style.display === '';
+    ans.style.display = isHidden ? 'block' : 'none';
+    btn.innerHTML = isHidden
+        ? '&#128065;&#65038; Hide Answer &#9650;'
+        : '&#128161; Show Answer &#9660;';
+    btn.style.background = isHidden ? '#dc2626' : '#059669';
+}
+</script>
+
+<!-- ── Code Theme Picker ── -->
+<div id="code-theme-picker">
+  <div id="theme-panel">
+    <div class="tp-label">🎨 Code Block Theme</div>
+    <button class="theme-btn active" onclick="setCodeTheme('black')" id="btn-black">
+      <span class="theme-swatch" style="background:#000;"></span> Black (Default)
+    </button>
+    <button class="theme-btn" onclick="setCodeTheme('vscode')" id="btn-vscode">
+      <span class="theme-swatch" style="background:#1e1e1e;"></span> VS Code Dark
+    </button>
+    <button class="theme-btn" onclick="setCodeTheme('white')" id="btn-white">
+      <span class="theme-swatch" style="background:#fff;border:1px solid #ccc;"></span> White (Projector)
+    </button>
+    <button class="theme-btn" onclick="setCodeTheme('cream')" id="btn-cream">
+      <span class="theme-swatch" style="background:#fefce8;border:1px solid #ccc;"></span> Cream (Projector)
+    </button>
+  </div>
+  <button id="theme-toggle-btn" onclick="document.getElementById('theme-panel').classList.toggle('open')">
+    🎨 Code Theme
+  </button>
+</div>
+
+</body>
+</html>

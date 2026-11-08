@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 2 — &#128736; The abstract Class | Module 08 Abstract Classes</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script>mermaid.initialize({startOnLoad:true, theme:'base', securityLevel:'loose',
+        themeVariables:{
+            primaryColor:'#0d9488', primaryTextColor:'#ffffff',
+            primaryBorderColor:'#0f766e', lineColor:'#374151',
+            secondaryColor:'#f0fdfa', tertiaryColor:'#ccfbf1'
+        }
+    });</script>
+    <style>
+        .mermaid { display:flex; justify-content:center; margin:20px 0; }
+        .mermaid svg { max-width:100%; height:auto; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --teal:        #0d9488;
+            --teal-dark:   #0f766e;
+            --teal-darker: #134e4a;
+            --teal-light:  #f0fdfa;
+            --teal-mid:    #ccfbf1;
+            --cyan:        #06b6d4;
+            --cyan-dark:   #0e7490;
+            --emerald:     #059669;
+            --emerald-dark:#065f46;
+            --warning:     #d97706;
+            --danger:      #dc2626;
+            --dark:        #1f2937;
+            --gray:        #6b7280;
+            --light:       #f9fafb;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.8;
+            color: var(--dark);
+            background: #ffffff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            border: 1px solid #e5e7eb;
+            overflow: hidden;
+        }
+
+        /* ── Breadcrumb ── */
+        .nav-breadcrumb {
+            background: #ffffff; border-bottom: 2px solid #e5e7eb;
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .breadcrumb { display: flex; align-items: center; gap: 8px; color: #374151; font-size: 0.9rem; }
+        .breadcrumb a { color: #0f766e; font-weight: 700; text-decoration: none; transition: color .3s; }
+        .breadcrumb a:hover { color: #134e4a; text-decoration: underline; }
+        .breadcrumb .sep { color: #6b7280; }
+        .breadcrumb .cur { color: #374151; }
+        .lesson-nav { display: flex; gap: 10px; }
+        .lesson-nav a {
+            padding: 8px 16px;
+            background: #ffffff;
+            color: #0f766e; border: 1.5px solid #0f766e;
+            text-decoration: none;
+            border-radius: 20px;
+            font-size: .85rem;
+            transition: background .3s;
+        }
+        .lesson-nav a:hover { background: #f0fdfa; }
+
+        /* ── Hero ── */
+        .hero {
+            background: #ffffff;
+            color: #111827; border-bottom: 3px solid #0f766e;
+            padding: 50px 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute; top: -50px; right: -50px;
+            width: 250px; height: 250px;
+            display: none;
+        }
+        .hero::after {
+            content: '';
+            position: absolute; bottom: -80px; left: -40px;
+            width: 300px; height: 300px;
+            display: none;
+        }
+        .pillar-badge {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: #ffffff; color: #374151;
+            border: 1.5px solid #d1d5db;
+            padding: 8px 22px; border-radius: 30px;
+            font-size: .95rem; font-weight: 600; margin-bottom: 20px;
+        }
+        .pillar-badge .num, .pillar-badge .number {
+            background: #ffffff; color: var(--teal-dark); border: 2px solid var(--teal-dark);
+            width: 28px; height: 28px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; font-weight: 900;
+        }
+        .hero h1 { font-size: 3rem; margin-bottom: 15px; color: var(--teal-dark); }
+        .hero .subtitle { font-size: 1.25rem; color: #374151; margin-bottom: 10px; }
+        .hero .message {
+            max-width: 700px; margin: 20px auto 0;
+            font-size: 1.05rem; opacity: .95; font-style: italic;
+            background: #ffffff; color: #374151; border: 1.5px solid #e5e7eb; border-left: 5px solid var(--teal-dark);
+            padding: 18px 25px; border-radius: 12px; line-height: 1.9;
+        }
+        .four-pillars {
+            display: flex; justify-content: center; gap: 12px;
+            margin-top: 28px; flex-wrap: wrap;
+        }
+        .pillar-chip {
+            padding: 10px 20px; border-radius: 30px;
+            font-weight: 700; font-size: .9rem;
+            border: 1.5px solid #d1d5db; background: #ffffff; color: #374151;
+        }
+        .pillar-chip.done    { color: #15803d; border-color: #86efac; }
+        .pillar-chip.current { color: var(--teal-dark); border-color: var(--teal-dark); }
+        .pillar-chip.upcoming{ opacity: .75; }
+
+        /* ── Content ── */
+        .content { padding: 50px 40px; }
+        .section { margin-bottom: 60px; }
+        .section-title {
+            font-size: 1.85rem; color: var(--teal-dark);
+            border-bottom: 3px solid var(--teal);
+            padding-bottom: 10px; margin-bottom: 28px;
+            display: flex; align-items: center; gap: 12px;
+        }
+        .section-number {
+            background: #ffffff; border: 2.5px solid var(--teal);
+            color: var(--teal-dark); width: 42px; height: 42px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 900; font-size: 1.1rem; flex-shrink: 0;
+        }
+        .section-number.star { font-size: 1.3rem; }
+        .subsection-title {
+            font-size: 1.3rem; color: var(--teal-dark);
+            margin: 32px 0 16px;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .sub-badge {
+            background: #ffffff; border: 1.5px solid var(--teal);
+            color: var(--teal-dark); padding: 3px 14px; border-radius: 20px;
+            font-size: .8rem; font-weight: 700; letter-spacing: .5px;
+        }
+
+        /* ── Code blocks ── */
+        .code-container { margin: 16px 0; border-radius: 12px; overflow: hidden; border: 1px solid #e5e7eb; }
+        .code-header {
+            background: #f1f5f9; color: #111827; border-bottom: 1px solid #cbd5e1;
+            padding: 10px 18px; font-size: .85rem; font-weight: 600;
+            display: flex; justify-content: space-between; align-items: center;
+            cursor: pointer; user-select: none;
+        }
+        .code-header:hover { background: #e2e8f0; }
+        .code-toggle { font-size: 1.2em; transition: transform 0.3s; }
+        .code-toggle.collapsed { transform: rotate(-90deg); }
+        .code-block {
+            background: #ffffff;
+            color: #111827;
+            padding: 22px 24px; font-family: 'Courier New', Consolas, monospace;
+            font-size: 1em; line-height: 1.9; overflow-x: auto;
+            white-space: pre;
+            transition: background 0.3s, color 0.3s;
+        }
+        .code-block.collapsed { display: none; }
+        .code-block .keyword    { color: var(--cb-keyword,  #ff79c6); font-weight: bold; }
+        .code-block .class-name { color: var(--cb-class,    #8be9fd); font-weight: bold; }
+        .code-block .method     { color: var(--cb-method,   #50fa7b); }
+        .code-block .string     { color: var(--cb-string,   #f1fa8c); }
+        .code-block .comment    { color: var(--cb-comment,  #7a8bbf); font-style: italic; }
+        .code-block .number     { color: #c2410c; }
+        .code-block .abstract-kw{ color: #b45309 !important; font-weight: bold; }
+
+        /* ── Terminal ── */
+        .terminal { background: #f8fafc; border-radius: 12px; overflow: hidden; margin: 16px 0; border: 1px solid var(--tm-border, #334155); transition: background 0.3s, border-color 0.3s; box-shadow: 0 4px 16px rgba(0,0,0,.2); }
+        .terminal-header { background: #f1f5f9; padding: 10px 16px; display: flex; align-items: center; gap: 8px; transition: background 0.3s; }
+        .terminal-dot { width: 12px; height: 12px; border-radius: 50%; }
+        .terminal-dot.r { background: #ef4444; }
+        .terminal-dot.y { background: #f59e0b; }
+        .terminal-dot.g { background: #10b981; }
+        .terminal-title { color: var(--tm-title, #94a3b8); font-size: .85rem; margin-left: 6px; font-weight: 600; transition: color 0.3s; }
+        .terminal-body { background: #f8fafc; color: #111827; padding: 18px 20px; font-family: 'Courier New', monospace; font-size: .9em; line-height: 1.9; white-space: pre; transition: background 0.3s, color 0.3s; }
+
+        /* ── Code-theme floating picker ── */
+        #code-theme-picker { position:fixed; bottom:28px; right:28px; z-index:9999; display:flex; flex-direction:column; align-items:flex-end; gap:10px; font-family:'Segoe UI',sans-serif; }
+        #theme-toggle-btn { background:#ffffff; color:#0f766e; border:1.5px solid #0f766e !important; border:none; border-radius:50px; padding:11px 20px; font-size:.88rem; font-weight:700; cursor:pointer; box-shadow:0 4px 18px rgba(13,148,136,.5); letter-spacing:.5px; transition:box-shadow .2s; }
+        #theme-toggle-btn:hover { box-shadow:0 6px 24px rgba(13,148,136,.7); }
+        #theme-panel { background:#fff; border-radius:14px; padding:14px 16px; box-shadow:0 8px 32px rgba(0,0,0,.25); display:none; flex-direction:column; gap:8px; min-width:210px; border:1px solid #99f6e4; }
+        #theme-panel.open { display:flex; }
+        #theme-panel .tp-label { font-size:.72rem; font-weight:800; letter-spacing:1.5px; text-transform:uppercase; color:#0f766e; margin-bottom:4px; }
+        .theme-btn { display:flex; align-items:center; gap:10px; padding:8px 12px; border-radius:8px; border:2px solid transparent; cursor:pointer; font-size:.88rem; font-weight:600; transition:border-color .2s,background .2s; background:#f9fafb; color:#1f2937; }
+        .theme-btn:hover { background:#f0fdfa; border-color:#0d9488; }
+        .theme-btn.active { border-color:#0f766e; background:#ccfbf1; }
+        .theme-swatch { width:28px; height:28px; border-radius:6px; border:1px solid rgba(0,0,0,.15); flex-shrink:0; }
+
+        /* ── Projector mode overrides ── */
+        body.projector .nav-breadcrumb { background:#ccfbf1 !important; }
+        body.projector .breadcrumb a   { color:#0f766e !important; }
+        body.projector .breadcrumb .sep, body.projector .breadcrumb .cur { color:#0d9488 !important; }
+        body.projector .lesson-nav a   { background:rgba(13,148,136,.12) !important; color:#134e4a !important; border:1px solid #5eead4 !important; }
+        body.projector .code-header    { background:#99f6e4 !important; color:#134e4a !important; }
+        body.projector .code-header:hover { background:#0d9488 !important; color:#fff !important; }
+        body.projector .alert-important { background:#ccfbf1 !important; color:#134e4a !important; }
+        body.projector .alert-important-title { color:#0f766e !important; }
+        body.projector .alert-important strong { color:#0f766e !important; }
+        body.projector .discussion-box { background:#ffffff !important; color:#1f2937 !important; }
+        body.projector .discussion-box h4 { color:#0f766e !important; }
+        body.projector .speech-bubble  { background:rgba(13,148,136,.06) !important; border:1px solid #5eead4 !important; }
+        body.projector .speech-who     { color:#0f766e !important; }
+        body.projector .speech-text    { color:#1f2937 !important; }
+        body.projector .speech-text strong { color:#0d9488 !important; }
+
+        /* ── Info / success / danger / warning boxes ── */
+        .info-box {
+            background: #f0fdfa; border-left: 5px solid var(--teal);
+            border-radius: 0 12px 12px 0; padding: 18px 22px; margin: 16px 0;
+        }
+        .info-box-title { font-weight: 800; color: var(--teal-dark); margin-bottom: 8px; font-size: 1.05rem; }
+        .success-box {
+            background: #f0fdf4; border: 2px solid #16a34a;
+            border-radius: 12px; padding: 20px 24px; margin: 16px 0;
+        }
+        .success-box-title { font-weight: 800; color: #14532d; margin-bottom: 10px; font-size: 1.05rem; }
+        .warning-box {
+            background: #fffbeb; border: 2px solid #f59e0b;
+            border-radius: 12px; padding: 18px 22px; margin: 16px 0;
+        }
+        .warning-box-title { font-weight: 800; color: #92400e; margin-bottom: 8px; }
+        .danger-box {
+            background: #fef2f2; border: 2px solid #dc2626;
+            border-radius: 12px; padding: 18px 22px; margin: 16px 0;
+        }
+        .danger-box-title { font-weight: 800; color: #991b1b; margin-bottom: 8px; }
+        .key-box {
+            background: #ffffff;
+            border: 2px solid var(--teal); border-radius: 12px;
+            padding: 18px 22px; margin: 16px 0;
+        }
+        .key-box-title { font-weight: 800; color: var(--teal-dark); margin-bottom: 8px; font-size: 1.05rem; }
+
+        /* ── Alert important ── */
+        .alert-important {
+            background: #ffffff; border: 2px solid var(--teal-dark); border-left: 7px solid var(--teal-dark);
+            color: #1f2937; border-radius: 14px; padding: 22px 28px; margin: 20px 0;
+        }
+        .alert-important-title { font-size: 1.2rem; font-weight: 900; margin-bottom: 10px; color: var(--teal-dark); }
+
+        /* ── Discussion / speech bubbles ── */
+        .discussion-box {
+            background: #ffffff;
+            border: 2px solid var(--teal); border-radius: 16px;
+            padding: 24px; margin: 20px 0;
+        }
+        .discussion-box h4 { color: var(--teal-dark); margin-bottom: 16px; font-size: 1.1rem; }
+        .speech-bubble {
+            background: white; border-radius: 12px; padding: 14px 18px;
+            margin: 10px 0; box-shadow: 0 2px 8px rgba(0,0,0,.08);
+            border-left: 4px solid var(--teal);
+        }
+        .speech-who { font-weight: 800; color: var(--teal-dark); font-size: .9rem; margin-bottom: 4px; }
+        .speech-text { color: #374151; line-height: 1.75; }
+
+
+
+        /* ── Rules section ── */
+        .rule-card {
+            border-radius: 14px; overflow: hidden; margin: 18px 0;
+            border: 2px solid var(--rc, var(--teal));
+        }
+        .rule-header {
+            padding: 14px 22px; color: var(--rc, var(--teal)); background: #ffffff;
+            border-bottom: 2px solid var(--rc, var(--teal)); font-weight: 800; font-size: 1rem;
+            display: flex; align-items: center; gap: 12px;
+        }
+        .rule-num {
+            background: #ffffff; border: 2px solid currentColor; width: 32px; height: 32px;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-weight: 900; flex-shrink: 0;
+        }
+        .rule-body { background: #ffffff; padding: 18px 22px; }
+        .rule-teal    { --rc: var(--teal-dark); }
+        .rule-cyan    { --rc: var(--cyan-dark); }
+        .rule-emerald { --rc: var(--emerald-dark); }
+        .rule-warning { --rc: #b45309; }
+        .rule-slate   { --rc: #334155; }
+
+        /* ── Hierarchy visual ── */
+        .hier-box {
+            display: inline-flex; flex-direction: column; align-items: center; gap: 0;
+            font-family: 'Courier New', monospace; font-size: .9em;
+        }
+        .hier-node {
+            padding: 10px 22px; border-radius: 10px; border: 2px solid;
+            font-weight: 700; text-align: center; min-width: 140px;
+        }
+        .hier-node.abstract-node { background: #fef3c7; border-color: #d97706; color: #92400e; }
+        .hier-node.concrete-node { background: #dcfce7; border-color: #16a34a; color: #14532d; }
+        .hier-arrow { color: #6b7280; font-size: 1.5rem; line-height: 1; }
+
+        /* ── Summary grid ── */
+        .summary-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px,1fr)); gap: 16px; margin-top: 20px; }
+        .summary-card {
+            border-radius: 14px; padding: 20px 18px; text-align: center; background: #ffffff;
+        }
+        .sc-icon { font-size: 2rem; margin-bottom: 10px; }
+        .sc-title { font-weight: 800; font-size: 1rem; margin-bottom: 6px; }
+        .sc-desc { font-size: .85rem; color: #4b5563; line-height: 1.6; }
+        .summary-card.s1 { border: 2px solid var(--teal); }
+        .summary-card.s1 .sc-title { color: var(--teal-dark); }
+        .summary-card.s2 { border: 2px solid var(--cyan); }
+        .summary-card.s2 .sc-title { color: var(--cyan-dark); }
+        .summary-card.s3 { border: 2px solid #16a34a; }
+        .summary-card.s3 .sc-title { color: #14532d; }
+        .summary-card.s4 { border: 2px solid #ca8a04; }
+        .summary-card.s4 .sc-title { color: #713f12; }
+
+        .code-inline { background: #f1f5f9; padding: 2px 7px; border-radius: 5px; font-family: 'Courier New', monospace; font-size: .93em; color: #0f766e; font-weight: 700; }
+
+        /* ── Abstract vs concrete diagram ── */
+        .spectrum-bar {
+            display: flex; border-radius: 12px; overflow: hidden; height: 54px; margin: 14px 0;
+        }
+        .spectrum-seg {
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: .88rem; flex: 1;
+            background: #ffffff; border: 3px solid currentColor; text-align: center;
+        }
+
+        /* ── Number class cards ── */
+        .number-grid { display: flex; flex-wrap: wrap; gap: 10px; margin: 16px 0; }
+        .number-chip {
+            padding: 10px 18px; border-radius: 10px; font-weight: 700;
+            font-family: 'Courier New', monospace; font-size: .9em;
+        }
+        .number-chip.abstract-chip { background: #fef3c7; border: 2px solid #d97706; color: #92400e; }
+        .number-chip.concrete-chip { background: #dcfce7; border: 2px solid #16a34a; color: #14532d; }
+
+        p { margin-bottom: 12px; }
+        ul, ol { margin-left: 24px; line-height: 2.1; }
+        li { margin-bottom: 4px; }
+
+        /* Bottom navigation + footer (white, solid borders — projector friendly) */
+        .bottom-nav {
+            display: flex; justify-content: space-between; align-items: center; gap: 12px;
+            flex-wrap: wrap; padding: 26px 40px; border-top: 2px solid #e5e7eb; background: #ffffff;
+        }
+        .bottom-nav a {
+            padding: 10px 22px; border-radius: 30px; text-decoration: none; font-weight: 700;
+            background: #ffffff; color: var(--teal-dark); border: 2px solid var(--teal-dark);
+        }
+        .bottom-nav a:hover { background: #f0fdfa; }
+        .bottom-nav .nav-practical { color: #047857; border-color: #047857; }
+        .footer {
+            max-width: 1000px; margin: 18px auto 0; background: #ffffff; color: #374151;
+            text-align: center; padding: 18px 20px; font-size: .9rem; border-top: 2px solid #e5e7eb;
+        }
+        .footer p { margin: 4px 0; }
+        .footer strong { color: var(--teal-dark); }
+        .footer a { color: var(--teal-dark); text-decoration: none; }
+        @media (max-width: 640px) { .bottom-nav { flex-direction: column; text-align: center; } }
+
+        /* Slide-question answers (show / hide) */
+        .answer-btn {
+            background: #059669; color: #ffffff; border: none; border-radius: 20px;
+            padding: 8px 18px; font-weight: 700; font-size: .9rem; cursor: pointer; margin: 8px 0;
+        }
+        .answer-box {
+            display: none; background: #ffffff; border: 2px solid #16a34a; border-left: 6px solid #16a34a;
+            border-radius: 0 12px 12px 0; padding: 14px 20px; margin: 6px 0 16px;
+        }
+        .slide-q {
+            background: #ffffff; border: 2px solid #3b82f6; border-radius: 14px;
+            padding: 18px 22px; margin: 18px 0;
+        }
+        .slide-q-title { font-weight: 800; color: #1d4ed8; margin-bottom: 8px; font-size: 1.05rem; }
+        .slide-tag {
+            display: inline-block; font-size: .75rem; font-weight: 700; color: #6b7280;
+            border: 1px solid #d1d5db; border-radius: 12px; padding: 1px 9px; margin-left: 8px; vertical-align: middle;
+        }
+        .uml-box { display: inline-block; border: 2px solid #374151; border-radius: 4px; min-width: 200px; font-family: 'Courier New', monospace; font-size: .9em; background: #ffffff; text-align: left; }
+        .uml-box .uml-name { border-bottom: 2px solid #374151; padding: 6px 12px; text-align: center; font-weight: 700; }
+        .uml-box .uml-name.abs { font-style: italic; }
+        .uml-box .uml-sec { border-bottom: 1px solid #374151; padding: 6px 12px; line-height: 1.6; }
+        .uml-box .uml-sec:last-child { border-bottom: none; }
+        .uml-box .abs { font-style: italic; }
+    
+        /* Chapter table of contents */
+        .chapter-toc { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 16px; padding: 22px 26px; margin: 0 0 36px; }
+        .chapter-toc-title { font-size: 1.15rem; font-weight: 800; margin: 0 0 12px; color: #1e293b; }
+        .chapter-toc ol { margin: 0; padding-left: 1.6em; columns: 2; column-gap: 32px; }
+        .chapter-toc li { margin: 0 0 8px; break-inside: avoid; line-height: 1.4; }
+        .chapter-toc a { color: #1d4ed8; text-decoration: none; font-weight: 600; }
+        .chapter-toc a:hover { text-decoration: underline; }
+        .section-title { scroll-margin-top: 20px; }
+        @media (max-width: 700px) { .chapter-toc ol { columns: 1; } .chapter-toc { padding: 18px 16px; } }
+    </style>
+    <link rel="stylesheet" href="projector.css">
+</head>
+<body>
+<div class="container">
+
+    <!-- ── Breadcrumb ── -->
+    <nav class="nav-breadcrumb">
+        <div class="breadcrumb">
+            <a href="../index.html">&#127968; Object-Oriented Programming</a>
+            <span class="sep">&#8250;</span>
+            <a href="index.html">Module 8 — Abstract Classes</a>
+            <span class="sep">&#8250;</span>
+            <span class="cur">Lesson 2: The abstract Class</span>
+        </div>
+        <div class="lesson-nav">
+            <a href="01-why-abstract-classes.html">&#8592; Lesson 1</a>
+            <a href="03-abstract-methods.html">Lesson 3 &#8594;</a>
+        </div>
+    </nav>
+
+    <!-- ── Hero ── -->
+    <div class="hero">
+        <div class="pillar-badge">
+            <span class="number">2</span>
+            Lesson 2 of 6 &nbsp;&#183;&nbsp; Chapter 13 &nbsp;&#183;&nbsp; Lecture slides 7–11
+        </div>
+        <h1>&#128736; The abstract Class</h1>
+        <p class="subtitle">Syntax, “cannot be instantiated”, constructors, and the abstract class as a data type</p>
+    </div>
+
+    <!-- ── CONTENT ── -->
+    <div class="content">
+
+        <nav class="chapter-toc" aria-label="Lesson contents">
+            <div class="chapter-toc-title">&#128203; In this lesson &mdash; jump to a topic</div>
+            <ol>
+                <li><a href="#section-1">The abstract Class — Syntax &amp; Meaning</a></li>
+                <li><a href="#section-2">Abstract Classes in Java — the Student Class</a></li>
+                <li><a href="#section-3">Constructors of an Abstract Class</a></li>
+                <li><a href="#section-4">An Abstract Class as a Data Type</a></li>
+                <li><a href="#section-5">Why getArea() Makes Shape Abstract</a></li>
+            </ol>
+        </nav>
+
+        <!-- ════════════════════════════════════════════════
+             SECTION 4 — ABSTRACT CLASS SYNTAX
+             ════════════════════════════════════════════════ -->
+        <div class="section">
+            <h2 class="section-title" id="section-1">
+                <span class="section-number">1</span>
+                The abstract Class — Syntax &amp; Meaning
+            </h2>
+
+            <p>We agree: it is <strong>not logical</strong> to create an object of <code class="code-inline">Shape</code>.
+            But programmatically, Java does not automatically prevent it — unless we tell it to.
+            The solution: declare the class as <code class="code-inline">abstract</code>.</p>
+
+            <div style="background:#ffffff;border:2px solid #0f766e;border-radius:14px;padding:24px;margin:18px 0;font-family:'Courier New',monospace;font-size:1.05em;text-align:center;color:#111827;">
+                <span style="color:#b45309;font-weight:700;">abstract</span>
+                <span style="color:#1d4ed8;font-weight:700;"> class </span>
+                <span style="color:#0f766e;font-weight:700;">Shape</span>
+                <span style="color:#111827;"> { ... }</span>
+            </div>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0;">
+                <div class="danger-box" style="margin:0;">
+                    <div class="danger-box-title">&#10060; Compile Error — Cannot Instantiate</div>
+                    <div style="font-family:'Courier New',monospace;font-size:.9em;background:#fef2f2;border-radius:8px;padding:10px 14px;margin-top:8px;">
+                        Shape s = <span style="color:#dc2626;font-weight:700;">new Shape()</span>;<br>
+                        <span style="color:#991b1b;font-size:.85em;">// ERROR! Shape is abstract</span>
+                    </div>
+                </div>
+                <div class="success-box" style="margin:0;">
+                    <div class="success-box-title">&#9989; Correct — Use a Subclass</div>
+                    <div style="font-family:'Courier New',monospace;font-size:.9em;background:#f0fdf4;border-radius:8px;padding:10px 14px;margin-top:8px;">
+                        Shape s = <span style="color:#16a34a;font-weight:700;">new Circle(...)</span>;<br>
+                        <span style="color:#15803d;font-size:.85em;">// OK! Circle IS-A Shape</span>
+                    </div>
+                </div>
+            </div>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0;">
+                <div style="background:#fef2f2;border:2px solid #dc2626;border-radius:12px;padding:18px;">
+                    <div style="font-weight:900;color:#991b1b;margin-bottom:8px;font-size:1rem;">&#128736; Abstract Class</div>
+                    <ul style="margin-left:16px;font-size:.91rem;line-height:1.9;color:#374151;">
+                        <li><strong>Usually incomplete</strong> — normally has one or more methods without a body (it may also have none — see <a href="04-rules.html#section-1">Lesson 4</a>)</li>
+                        <li>Cannot be instantiated (<code>new Shape()</code> = error)</li>
+                        <li>Must be subclassed</li>
+                        <li>Represents a concept too general to be a real object</li>
+                    </ul>
+                </div>
+                <div style="background:#f0fdf4;border:2px solid #16a34a;border-radius:12px;padding:18px;">
+                    <div style="font-weight:900;color:#14532d;margin-bottom:8px;font-size:1rem;">&#9989; Concrete Class</div>
+                    <ul style="margin-left:16px;font-size:.91rem;line-height:1.9;color:#374151;">
+                        <li><strong>Complete / fully built</strong> — all methods have implementations</li>
+                        <li>Can be instantiated (<code>new Circle()</code> = OK)</li>
+                        <li>Represents a specific, real-world object</li>
+                        <li>A class with no <code>abstract</code> keyword is concrete</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="key-box">
+                <div class="key-box-title">&#128204; Definition — Abstract Class</div>
+                <p style="margin:0;line-height:1.9;">An <strong>abstract class</strong> is a class declared with the <code class="code-inline">abstract</code> keyword.
+                It is <strong>incomplete</strong> — it cannot be instantiated directly.
+                But it <em>can</em> have concrete attributes (like <code class="code-inline">color</code>)
+                and concrete methods (like <code class="code-inline">getColor()</code>) —
+                the "incomplete" part refers only to the <strong>abstract methods</strong> that have no body yet.
+                Those attributes and concrete methods are <strong>fully inherited</strong> by every subclass.</p>
+            </div>
+        </div>
+
+
+        <!-- ════════════════════════════════════════════════
+             SECTION 2 — STUDENT CODE (SLIDES 7-8)
+             ════════════════════════════════════════════════ -->
+        <div class="section">
+            <h2 class="section-title" id="section-2">
+                <span class="section-number">2</span>
+                Abstract Classes in Java — the Student Class
+            </h2>
+
+            <p>This is the Student class from <a href="01-why-abstract-classes.html#section-5">Lesson 1</a> written in Java.
+            The only new word is <code class="code-inline">abstract</code> — everything else (fields, a constructor, methods) is
+            exactly what you write in any class.</p>
+            <div class="code-container">
+                <div class="code-header" onclick="toggleCode(this)">
+                    <span>&#128196; Abstract Classes in Java — as on the slides <span class="slide-tag">Slides 7–8</span></span>
+                    <span class="code-toggle">&#9660;</span>
+                </div>
+                <div class="code-block"><span class="keyword">public</span> <span class="abstract-kw">abstract</span> <span class="keyword">class</span> <span class="class-name">Student</span> {
+    <span class="keyword">protected</span> <span class="class-name">String</span> login, department, name;
+
+    <span class="keyword">public</span> <span class="class-name">Student</span>() {
+        login = <span class="string">""</span>; department = <span class="string">""</span>; name = <span class="string">""</span>;
+    }
+
+    <span class="keyword">public</span> <span class="keyword">void</span> <span class="method">setLogin</span>(<span class="class-name">String</span> login) {
+        <span class="keyword">this</span>.login = <span class="keyword">new</span> <span class="class-name">String</span>(login);
+    }
+
+    <span class="keyword">public</span> <span class="class-name">String</span> <span class="method">getLogin</span>() {
+        <span class="keyword">return</span> <span class="keyword">new</span> <span class="class-name">String</span>(login);
+    }
+}
+
+<span class="keyword">public</span> <span class="keyword">class</span> <span class="class-name">PhdStudent</span> <span class="keyword">extends</span> <span class="class-name">Student</span> {
+    <span class="keyword">private</span> <span class="class-name">String</span> supervisor;
+
+    <span class="keyword">public</span> <span class="keyword">void</span> <span class="method">setSupervisor</span>(<span class="class-name">String</span> login) {
+        ...</div>
+            </div>
+            <div class="warning-box">
+                <div class="warning-box-title">&#9888; Copying the slide code?</div>
+                <p style="margin:0;">The slide shows the quotes as <code>“”</code> (curly quotes from PowerPoint). Java only accepts straight
+                quotes <code>""</code>. The slide also stops at <code>...</code>; the complete, runnable version is below.</p>
+            </div>
+
+            <div class="key-box">
+                <div class="key-box-title">&#128204; Two facts from slides 7–8</div>
+                <ul style="margin:4px 0 0 22px;">
+                    <li><code class="code-inline">PhdStudent</code> is said to be a <strong>concrete class</strong> — it is not abstract, so
+                        <code>new PhdStudent()</code> is allowed.</li>
+                    <li>You cannot write <code>new Student()</code>, <strong>BUT you can still define its constructors</strong>, which are
+                        <strong>invoked in the constructors of its subclasses</strong> (through <code>super(...)</code>, written by you or
+                        inserted automatically by the compiler).</li>
+                </ul>
+            </div>
+            <div class="code-container">
+                <div class="code-header" onclick="toggleCode(this)">
+                    <span>&#128196; TestStudents.java — complete, runnable version</span>
+                    <span class="code-toggle">&#9660;</span>
+                </div>
+                <div class="code-block"><span class="abstract-kw">abstract</span> <span class="keyword">class</span> <span class="class-name">Student</span> {
+    <span class="keyword">protected</span> <span class="class-name">String</span> login, department, name;
+
+    <span class="keyword">public</span> <span class="class-name">Student</span>() {
+        login = <span class="string">""</span>; department = <span class="string">""</span>; name = <span class="string">""</span>;
+        <span class="class-name">System</span>.out.<span class="method">println</span>(<span class="string">"Student() constructor runs"</span>);
+    }
+
+    <span class="keyword">public</span> <span class="keyword">void</span> <span class="method">setLogin</span>(<span class="class-name">String</span> login) {
+        <span class="keyword">this</span>.login = <span class="keyword">new</span> <span class="class-name">String</span>(login);
+    }
+
+    <span class="keyword">public</span> <span class="class-name">String</span> <span class="method">getLogin</span>() {
+        <span class="keyword">return</span> <span class="keyword">new</span> <span class="class-name">String</span>(login);
+    }
+}
+
+<span class="keyword">class</span> <span class="class-name">PhdStudent</span> <span class="keyword">extends</span> <span class="class-name">Student</span> {
+    <span class="keyword">private</span> <span class="class-name">String</span> supervisor;
+
+    <span class="keyword">public</span> <span class="class-name">PhdStudent</span>() {
+        <span class="keyword">super</span>();                       <span class="comment">// calls the constructor of the abstract class</span>
+        <span class="class-name">System</span>.out.<span class="method">println</span>(<span class="string">"PhdStudent() constructor runs"</span>);
+    }
+
+    <span class="keyword">public</span> <span class="keyword">void</span> <span class="method">setSupervisor</span>(<span class="class-name">String</span> login) {
+        supervisor = login;
+    }
+
+    <span class="keyword">public</span> <span class="class-name">String</span> <span class="method">getSupervisor</span>() {
+        <span class="keyword">return</span> supervisor;
+    }
+}
+
+<span class="keyword">class</span> <span class="class-name">MscStudent</span> <span class="keyword">extends</span> <span class="class-name">Student</span> { }
+<span class="keyword">class</span> <span class="class-name">Undergrad</span> <span class="keyword">extends</span> <span class="class-name">Student</span> { }
+
+<span class="keyword">public</span> <span class="keyword">class</span> <span class="class-name">TestStudents</span> {
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="method">main</span>(<span class="class-name">String</span>[] args) {
+        <span class="class-name">PhdStudent</span> p = <span class="keyword">new</span> <span class="class-name">PhdStudent</span>();
+        p.<span class="method">setLogin</span>(<span class="string">"aalharbi"</span>);
+        p.<span class="method">setSupervisor</span>(<span class="string">"almalawi"</span>);
+        <span class="class-name">System</span>.out.<span class="method">println</span>(p.<span class="method">getLogin</span>() + <span class="string">" is supervised by "</span> + p.<span class="method">getSupervisor</span>());
+
+        <span class="class-name">Student</span>[] all = { p, <span class="keyword">new</span> <span class="class-name">MscStudent</span>(), <span class="keyword">new</span> <span class="class-name">Undergrad</span>() };
+        all[<span class="number">1</span>].<span class="method">setLogin</span>(<span class="string">"sali"</span>);
+        all[<span class="number">2</span>].<span class="method">setLogin</span>(<span class="string">"fomar"</span>);
+        <span class="keyword">for</span> (<span class="class-name">Student</span> s : all)
+            <span class="class-name">System</span>.out.<span class="method">println</span>(s.<span class="method">getClass</span>().<span class="method">getSimpleName</span>() + <span class="string">": "</span> + s.<span class="method">getLogin</span>());
+    }
+}</div>
+            </div>
+            <div class="terminal">
+                <div class="terminal-header">
+                    <span class="terminal-dot r"></span>
+                    <span class="terminal-dot y"></span>
+                    <span class="terminal-dot g"></span>
+                    <span class="terminal-title">Output — TestStudents.java</span>
+                </div>
+                <div class="terminal-body">Student() constructor runs
+PhdStudent() constructor runs
+aalharbi is supervised by almalawi
+Student() constructor runs
+Student() constructor runs
+PhdStudent: aalharbi
+MscStudent: sali
+Undergrad: fomar</div>
+            </div>
+
+            <div class="slide-q">
+                <div class="slide-q-title">&#10067; Why does Student() run three times?</div>
+                <button class="answer-btn" onclick="toggleAnswer(this)">&#128161; Show Answer &#9660;</button>
+                <div class="answer-box"><p style="margin:0;">Every time <em>any</em> subclass object is created, the subclass constructor first calls the
+                    superclass constructor. <code>new PhdStudent()</code> calls it through the explicit <code>super()</code>;
+                    <code>new MscStudent()</code> and <code>new Undergrad()</code> have no constructor written, so the compiler gives them a
+                    default constructor that calls <code>super()</code>. So the constructor of the abstract class runs once for every
+                    student object — even though <code>new Student()</code> itself is illegal
+                    (<em>"Student is abstract; cannot be instantiated"</em>).</p></div>
+            </div>
+
+        </div>
+
+        <!-- ════════════════════════════════════════════════
+             SECTION 3 — CONSTRUCTORS (SLIDE 9)
+             ════════════════════════════════════════════════ -->
+        <div class="section">
+            <h2 class="section-title" id="section-3">
+                <span class="section-number">3</span>
+                Constructors of an Abstract Class
+            </h2>
+
+            <p>The same is true for <code class="code-inline">Shape</code>: <strong>the constructors of Shape are invoked in the
+            Circle class and the Rectangle class</strong>. An abstract class has constructors so that it can initialise its own
+            fields (here <code>color</code>) for every subclass object.</p>
+            <div class="code-container">
+                <div class="code-header" onclick="toggleCode(this)">
+                    <span>&#128196; TestShapeConstructors.java <span class="slide-tag">Slide 9</span></span>
+                    <span class="code-toggle">&#9660;</span>
+                </div>
+                <div class="code-block"><span class="abstract-kw">abstract</span> <span class="keyword">class</span> <span class="class-name">Shape</span> {
+    <span class="keyword">private</span> <span class="class-name">String</span> color;
+
+    <span class="keyword">public</span> <span class="class-name">Shape</span>() {                     <span class="comment">// constructor of an abstract class</span>
+        <span class="keyword">this</span>(<span class="string">"white"</span>);
+        <span class="class-name">System</span>.out.<span class="method">println</span>(<span class="string">"  Shape() runs"</span>);
+    }
+
+    <span class="keyword">public</span> <span class="class-name">Shape</span>(<span class="class-name">String</span> color) {         <span class="comment">// another constructor</span>
+        <span class="keyword">this</span>.color = color;
+        <span class="class-name">System</span>.out.<span class="method">println</span>(<span class="string">"  Shape(String) runs, color = "</span> + color);
+    }
+
+    <span class="keyword">public</span> <span class="class-name">String</span> <span class="method">getColor</span>() { <span class="keyword">return</span> color; }
+
+    <span class="keyword">public</span> <span class="abstract-kw">abstract</span> <span class="keyword">double</span> <span class="method">getArea</span>();
+}
+
+<span class="keyword">class</span> <span class="class-name">Circle</span> <span class="keyword">extends</span> <span class="class-name">Shape</span> {
+    <span class="keyword">private</span> <span class="keyword">double</span> radius;
+
+    <span class="keyword">public</span> <span class="class-name">Circle</span>() {
+        <span class="keyword">super</span>();                         <span class="comment">// invokes Shape()</span>
+        radius = <span class="number">1</span>;
+        <span class="class-name">System</span>.out.<span class="method">println</span>(<span class="string">"  Circle() runs"</span>);
+    }
+
+    <span class="keyword">public</span> <span class="class-name">Circle</span>(<span class="keyword">double</span> radius, <span class="class-name">String</span> color) {
+        <span class="keyword">super</span>(color);                    <span class="comment">// invokes Shape(String)</span>
+        <span class="keyword">this</span>.radius = radius;
+        <span class="class-name">System</span>.out.<span class="method">println</span>(<span class="string">"  Circle(double, String) runs"</span>);
+    }
+
+    <span class="keyword">public</span> <span class="keyword">double</span> <span class="method">getArea</span>() { <span class="keyword">return</span> <span class="class-name">Math</span>.<span class="class-name">PI</span> * radius * radius; }
+}
+
+<span class="keyword">class</span> <span class="class-name">Rectangle</span> <span class="keyword">extends</span> <span class="class-name">Shape</span> {
+    <span class="keyword">private</span> <span class="keyword">double</span> width, height;
+
+    <span class="keyword">public</span> <span class="class-name">Rectangle</span>(<span class="keyword">double</span> width, <span class="keyword">double</span> height, <span class="class-name">String</span> color) {
+        <span class="keyword">super</span>(color);                    <span class="comment">// invokes Shape(String)</span>
+        <span class="keyword">this</span>.width = width;
+        <span class="keyword">this</span>.height = height;
+        <span class="class-name">System</span>.out.<span class="method">println</span>(<span class="string">"  Rectangle(double, double, String) runs"</span>);
+    }
+
+    <span class="keyword">public</span> <span class="keyword">double</span> <span class="method">getArea</span>() { <span class="keyword">return</span> width * height; }
+}
+
+<span class="keyword">public</span> <span class="keyword">class</span> <span class="class-name">TestShapeConstructors</span> {
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="method">main</span>(<span class="class-name">String</span>[] args) {
+        <span class="class-name">System</span>.out.<span class="method">println</span>(<span class="string">"new Circle():"</span>);
+        <span class="class-name">Shape</span> s1 = <span class="keyword">new</span> <span class="class-name">Circle</span>();
+        <span class="class-name">System</span>.out.<span class="method">println</span>(<span class="string">"new Circle(2, \"red\"):"</span>);
+        <span class="class-name">Shape</span> s2 = <span class="keyword">new</span> <span class="class-name">Circle</span>(<span class="number">2</span>, <span class="string">"red"</span>);
+        <span class="class-name">System</span>.out.<span class="method">println</span>(<span class="string">"new Rectangle(3, 4, \"blue\"):"</span>);
+        <span class="class-name">Shape</span> s3 = <span class="keyword">new</span> <span class="class-name">Rectangle</span>(<span class="number">3</span>, <span class="number">4</span>, <span class="string">"blue"</span>);
+        <span class="comment">// Shape s4 = new Shape();       // compile error: Shape is abstract</span>
+    }
+}</div>
+            </div>
+            <div class="terminal">
+                <div class="terminal-header">
+                    <span class="terminal-dot r"></span>
+                    <span class="terminal-dot y"></span>
+                    <span class="terminal-dot g"></span>
+                    <span class="terminal-title">Output — TestShapeConstructors.java</span>
+                </div>
+                <div class="terminal-body">new Circle():
+  Shape(String) runs, color = white
+  Shape() runs
+  Circle() runs
+new Circle(2, "red"):
+  Shape(String) runs, color = red
+  Circle(double, String) runs
+new Rectangle(3, 4, "blue"):
+  Shape(String) runs, color = blue
+  Rectangle(double, double, String) runs</div>
+            </div>
+
+            <div class="slide-q">
+                <div class="slide-q-title">&#10067; Can you initiate a concrete object from Shape? Why? <span class="slide-tag">Slide 9</span></div>
+                <button class="answer-btn" onclick="toggleAnswer(this)">&#128161; Show Answer &#9660;</button>
+                <div class="answer-box"><p style="margin:0;"><strong>No.</strong> <code>Shape</code> is declared <code class="code-inline">abstract</code>, so
+                    <code>new Shape()</code> is a compile error: <em>"Shape is abstract; cannot be instantiated"</em>. Shape is too general
+                    to be a real object, and it is incomplete (its <code>getArea()</code> has no body — which formula would it use?).
+                    Its constructors are <em>not</em> for creating Shape objects; they only run as the first step of building a
+                    <code>Circle</code> or <code>Rectangle</code> object (constructor chaining).</p></div>
+            </div>
+
+        </div>
+
+        <!-- ════════════════════════════════════════════════
+             SECTION 4 — DATA TYPE (SLIDE 10)
+             ════════════════════════════════════════════════ -->
+        <div class="section">
+            <h2 class="section-title" id="section-4">
+                <span class="section-number">4</span>
+                An Abstract Class as a Data Type
+            </h2>
+
+            <div class="slide-q">
+                <div class="slide-q-title">&#10067; Can I define an array of an abstract class, such as Animal or Shape? <span class="slide-tag">Slide 10</span></div>
+                <button class="answer-btn" onclick="toggleAnswer(this)">&#128161; Show Answer &#9660;</button>
+                <div class="answer-box"><p style="margin:0;"><strong>YES.</strong> An abstract class can be used as a <strong>data type</strong> — for variables,
+                    arrays, parameters and return types. Creating the <em>array</em> does not create any Shape objects; it only creates
+                    references (all <code>null</code> at first), and each element can then refer to any concrete subclass object.</p></div>
+            </div>
+
+            <p>The following statement creates an array whose elements are of <code class="code-inline">Shape</code> type:</p>
+            <div style="border:2px solid #cbd5e1;border-radius:12px;padding:14px 20px;margin:14px 0;font-family:'Courier New',monospace;font-size:1.02em;line-height:2.1;">
+                Shape[] geo = new Shape[10]; &nbsp;<strong style="color:#15803d;">&#10003; legal</strong> — an array of 10 Shape references<br>
+                geo[0] = new Circle(); &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong style="color:#15803d;">&#10003; legal</strong> — a Circle is a Shape<br>
+                geo[1] = new Shape(); &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong style="color:#dc2626;">&#10007; illegal</strong> — Shape is abstract; cannot be instantiated
+            </div>
+            <div class="code-container">
+                <div class="code-header" onclick="toggleCode(this)">
+                    <span>&#128196; TestShapeArray.java</span>
+                    <span class="code-toggle">&#9660;</span>
+                </div>
+                <div class="code-block"><span class="abstract-kw">abstract</span> <span class="keyword">class</span> <span class="class-name">Shape</span> {
+    <span class="keyword">public</span> <span class="abstract-kw">abstract</span> <span class="keyword">double</span> <span class="method">getArea</span>();
+}
+
+<span class="keyword">class</span> <span class="class-name">Circle</span> <span class="keyword">extends</span> <span class="class-name">Shape</span> {
+    <span class="keyword">private</span> <span class="keyword">double</span> radius = <span class="number">1</span>;
+    <span class="keyword">public</span> <span class="keyword">double</span> <span class="method">getArea</span>() { <span class="keyword">return</span> <span class="class-name">Math</span>.<span class="class-name">PI</span> * radius * radius; }
+}
+
+<span class="keyword">class</span> <span class="class-name">Rectangle</span> <span class="keyword">extends</span> <span class="class-name">Shape</span> {
+    <span class="keyword">private</span> <span class="keyword">double</span> width = <span class="number">3</span>, height = <span class="number">4</span>;
+    <span class="keyword">public</span> <span class="keyword">double</span> <span class="method">getArea</span>() { <span class="keyword">return</span> width * height; }
+}
+
+<span class="keyword">public</span> <span class="keyword">class</span> <span class="class-name">TestShapeArray</span> {
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="method">main</span>(<span class="class-name">String</span>[] args) {
+        <span class="class-name">Shape</span>[] geo = <span class="keyword">new</span> <span class="class-name">Shape</span>[<span class="number">10</span>];     <span class="comment">// legal: 10 references of type Shape, all null</span>
+        geo[<span class="number">0</span>] = <span class="keyword">new</span> <span class="class-name">Circle</span>();           <span class="comment">// legal: a Circle is a Shape</span>
+        geo[<span class="number">1</span>] = <span class="keyword">new</span> <span class="class-name">Rectangle</span>();        <span class="comment">// legal: a Rectangle is a Shape</span>
+        <span class="comment">// geo[2] = new Shape();         // compile error: Shape is abstract</span>
+
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">3</span>; i++) {
+            <span class="keyword">if</span> (geo[i] == <span class="keyword">null</span>)
+                <span class="class-name">System</span>.out.<span class="method">println</span>(<span class="string">"geo["</span> + i + <span class="string">"] is null (no object yet)"</span>);
+            <span class="keyword">else</span>
+                <span class="class-name">System</span>.out.<span class="method">printf</span>(<span class="string">"geo[%d] area = %.2f%n"</span>, i, geo[i].<span class="method">getArea</span>());
+        }
+    }
+}</div>
+            </div>
+            <div class="terminal">
+                <div class="terminal-header">
+                    <span class="terminal-dot r"></span>
+                    <span class="terminal-dot y"></span>
+                    <span class="terminal-dot g"></span>
+                    <span class="terminal-title">Output — TestShapeArray.java</span>
+                </div>
+                <div class="terminal-body">geo[0] area = 3.14
+geo[1] area = 12.00
+geo[2] is null (no object yet)</div>
+            </div>
+            <div class="terminal">
+                <div class="terminal-header">
+                    <span class="terminal-dot r"></span>
+                    <span class="terminal-dot y"></span>
+                    <span class="terminal-dot g"></span>
+                    <span class="terminal-title">javac — if the line geo[2] = new Shape(); is un-commented</span>
+                </div>
+                <div class="terminal-body">TestShapeArray.java:20: error: Shape is abstract; cannot be instantiated
+        geo[2] = new Shape();         // compile error: Shape is abstract
+                 ^
+1 error</div>
+            </div>
+
+            <div class="info-box">
+                <div class="info-box-title">&#128204; Remember</div>
+                <p style="margin:0;"><code>new Shape[10]</code> &ne; <code>new Shape()</code>. The first creates an <strong>array</strong>
+                (legal), the second tries to create a <strong>Shape object</strong> (illegal). More uses of an abstract type — variables
+                and method parameters — are in <a href="04-rules.html#section-1">Lesson 4, Rule 7</a>.</p>
+            </div>
+
+        </div>
+
+        <!-- ════════════════════════════════════════════════
+             SECTION 5 — GETAREA (SLIDE 11)
+             ════════════════════════════════════════════════ -->
+        <div class="section">
+            <h2 class="section-title" id="section-5">
+                <span class="section-number">5</span>
+                Why getArea() Makes Shape Abstract
+            </h2>
+
+            <div style="text-align:center;margin:20px 0;">
+                <div class="uml-box">
+                    <div class="uml-name abs">Shape <span style="font-weight:400;font-style:normal;">{abstract}</span></div>
+                    <div class="uml-sec">&nbsp;</div>
+                    <div class="uml-sec"><span class="abs">+getArea(): double</span><br>+setColour(int): void</div>
+                </div>
+                <div style="color:#374151;font-size:1.3rem;margin:4px 0;line-height:1.2;">&#9651;<br><span style="font-size:.85rem;">extends</span></div>
+                <div style="display:flex;justify-content:center;gap:14px;flex-wrap:wrap;">
+                    <div class="uml-box" style="min-width:120px;"><div class="uml-name">Triangle</div></div>
+                    <div class="uml-box" style="min-width:120px;"><div class="uml-name">Circle</div></div>
+                    <div class="uml-box" style="min-width:120px;"><div class="uml-name">Rectangle</div></div>
+                    <div class="uml-box" style="min-width:120px;"><div class="uml-name">Hexagon</div></div>
+                </div>
+                <p style="font-size:.85rem;color:#6b7280;margin-top:8px;">Abstract class and abstract method names are written in <em>italics</em> in UML.</p>
+            </div>
+
+            <ul style="margin:6px 0 14px 22px;">
+                <li>We <strong>cannot create Shape objects</strong>, because we cannot provide a reasonable implementation of
+                    <code class="code-inline">getArea()</code>. How do we calculate the area of an <em>arbitrary</em> shape?</li>
+                <li>So we declare <code class="code-inline">Shape</code> to be an <strong>abstract class</strong>.</li>
+                <li>Furthermore, we declare <code class="code-inline">getArea()</code> as an <strong>abstract method</strong>, because it
+                    has no implementation. (<code>setColour(int)</code> <em>can</em> be implemented once for every shape, so it stays a
+                    normal method.)</li>
+            </ul>
+
+            <div class="slide-q">
+                <div class="slide-q-title">&#10067; Why have the Shape class in the first place? And why do we have to address getArea() in the Shape class? <span class="slide-tag">Slide 11</span></div>
+                <button class="answer-btn" onclick="toggleAnswer(this)">&#128161; Show Answer &#9660;</button>
+                <div class="answer-box"><p style="margin:0 0 6px;"><strong>Why Shape:</strong> shared code (e.g. the colour field and <code>setColour()</code>
+                    are written once) and a common type for polymorphism (<code>Shape[]</code>, <code>Shape s</code>) — see
+                    <a href="01-why-abstract-classes.html#section-4">Lesson 1, Section 4</a>.</p>
+                    <p style="margin:0;"><strong>Why getArea() in Shape:</strong> <strong>we want to force all shapes to provide an
+                    implementation for <code>getArea()</code></strong>. Because it is declared (abstract) in Shape, every concrete subclass
+                    — Triangle, Circle, Rectangle, Hexagon — must implement it, and we can call <code>s.getArea()</code> on any
+                    <code>Shape</code> reference.</p></div>
+            </div>
+
+            <div class="info-box">
+                <div class="info-box-title">&#10145; Next</div>
+                <p style="margin:0;">How to write an abstract method, and what the compiler does with it, is
+                <a href="03-abstract-methods.html">Lesson 3 — Abstract Methods</a>.</p>
+            </div>
+
+        </div>
+
+    </div><!-- /content -->
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+        <a href="01-why-abstract-classes.html" class="nav-prev">&#8592; Lesson 1</a>
+        <a href="index.html" class="nav-practical">&#127968; Module 8 Home</a>
+        <a href="03-abstract-methods.html" class="nav-next">Lesson 3 &#8594;</a>
+    </div>
+
+</div><!-- /container -->
+
+<!-- Footer -->
+<div class="footer">
+    <p><strong>Object-Oriented Programming &nbsp;&#183;&nbsp; Module 8: Abstract Classes &nbsp;&#183;&nbsp; Chapter 13</strong></p>
+    <p>Prepared by Dr. Almalawi</p>
+</div>
+
+<script>
+/* ─── Theme definitions ─────────────────────────── */
+const CODE_THEMES = {
+  black: {
+    bg:'#000000', text:'#ffffff', comment:'#a0aec0', keyword:'#ff79c6', cls:'#8be9fd', method:'#50fa7b', string:'#f1fa8c', number:'#bd93f9',
+    tmBg:'#0f172a', tmHeader:'#1e293b', tmBorder:'#334155', tmText:'#4ade80', tmTitle:'#94a3b8', projector: false
+  },
+  vscode: {
+    bg:'#1e1e1e', text:'#ffffff', comment:'#57c757', keyword:'#569cd6', cls:'#4ec9b0', method:'#dcdcaa', string:'#ce9178', number:'#b5cea8',
+    tmBg:'#1e1e1e', tmHeader:'#2d2d2d', tmBorder:'#444', tmText:'#ffffff', tmTitle:'#9cdcfe', projector: false
+  },
+  white: {
+    bg:'#ffffff', text:'#000000', comment:'#1d4ed8', keyword:'#dc2626', cls:'#16a34a', method:'#0369a1', string:'#b45309', number:'#7c3aed',
+    tmBg:'#f1f5f9', tmHeader:'#e2e8f0', tmBorder:'#94a3b8', tmText:'#000000', tmTitle:'#1d4ed8', projector: true
+  },
+  cream: {
+    bg:'#fefce8', text:'#000000', comment:'#1d4ed8', keyword:'#dc2626', cls:'#15803d', method:'#0369a1', string:'#b45309', number:'#7c3aed',
+    tmBg:'#fefce8', tmHeader:'#fef08a', tmBorder:'#a16207', tmText:'#000000', tmTitle:'#0369a1', projector: true
+  }
+};
+
+/* ─── Luminance helper ──────────────────────────── */
+function _lum(hex) {
+  hex = hex.replace('#','');
+  if (hex.length === 3) hex = hex.split('').map(c=>c+c).join('');
+  if (hex.length !== 6) return 0.5;
+  const r=parseInt(hex.slice(0,2),16), g=parseInt(hex.slice(2,4),16), b=parseInt(hex.slice(4,6),16);
+  return (0.299*r + 0.587*g + 0.114*b) / 255;
+}
+
+/* Turn a dark hex color into a soft light tint */
+function _lighten(hex) {
+  hex = hex.replace('#','');
+  if (hex.length === 3) hex = hex.split('').map(c=>c+c).join('');
+  const r=parseInt(hex.slice(0,2),16), g=parseInt(hex.slice(2,4),16), b=parseInt(hex.slice(4,6),16);
+  const lr=Math.round(r*.10+255*.90), lg=Math.round(g*.10+255*.90), lb=Math.round(b*.10+255*.90);
+  return '#'+[lr,lg,lb].map(c=>c.toString(16).padStart(2,'0')).join('');
+}
+
+/* ─── Inline-style projector scanner ───────────── */
+const _backup = new Map();
+
+function _applyProjectorInline(enable) {
+  if (enable) {
+    document.querySelectorAll('[style]').forEach(el => {
+      const orig = el.getAttribute('style');
+      _backup.set(el, orig);
+      let s = orig;
+      s = s.replace(/(background(?:-color)?\s*:[^;}"']*?)(#[0-9a-fA-F]{6}|#[0-9a-fA-F]{3})\b/gi,
+        (m, pre, hex) => _lum(hex) < 0.28 ? pre + _lighten(hex) : m);
+      s = s.replace(/((?:^|;|\s)color\s*:\s*)(#[0-9a-fA-F]{6}|#[0-9a-fA-F]{3})\b/gi,
+        (m, pre, hex) => _lum(hex) > 0.72 ? pre + '#1f2937' : m);
+      el.setAttribute('style', s);
+    });
+  } else {
+    _backup.forEach((orig, el) => el.setAttribute('style', orig));
+    _backup.clear();
+  }
+}
+
+/* ─── Main theme switcher ───────────────────────── */
+function setCodeTheme(name) {
+  const t = CODE_THEMES[name], r = document.documentElement.style;
+  r.setProperty('--cb-bg',      t.bg);        r.setProperty('--cb-text',    t.text);
+  r.setProperty('--cb-comment', t.comment);   r.setProperty('--cb-keyword', t.keyword);
+  r.setProperty('--cb-class',   t.cls);       r.setProperty('--cb-method',  t.method);
+  r.setProperty('--cb-string',  t.string);    r.setProperty('--cb-number',  t.number);
+  r.setProperty('--tm-bg',      t.tmBg);      r.setProperty('--tm-header',  t.tmHeader);
+  r.setProperty('--tm-border',  t.tmBorder);  r.setProperty('--tm-text',    t.tmText);
+  r.setProperty('--tm-title',   t.tmTitle);
+  const wasProjector = document.body.classList.contains('projector');
+  if (t.projector) {
+    if (!wasProjector) _applyProjectorInline(true);
+    document.body.classList.add('projector');
+  } else {
+    if (wasProjector) _applyProjectorInline(false);
+    document.body.classList.remove('projector');
+  }
+  document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('btn-' + name).classList.add('active');
+  document.getElementById('theme-panel').classList.remove('open');
+}
+
+function toggleCode(header) {
+    const block = header.nextElementSibling;
+    const toggle = header.querySelector('.code-toggle');
+    block.classList.toggle('collapsed');
+    toggle.classList.toggle('collapsed');
+    const label = header.querySelector('span:first-child');
+    if (label && label.textContent.includes('Code')) {
+        label.innerHTML = block.classList.contains('collapsed')
+            ? '&#128065;&#65038; Show Code'
+            : '&#128065;&#65038; Hide Code';
+    }
+}
+
+function toggleAnswer(btn) {
+    const ans = btn.nextElementSibling;
+    const isHidden = ans.style.display === 'none' || ans.style.display === '';
+    ans.style.display = isHidden ? 'block' : 'none';
+    btn.innerHTML = isHidden
+        ? '&#128065;&#65038; Hide Answer &#9650;'
+        : '&#128161; Show Answer &#9660;';
+    btn.style.background = isHidden ? '#dc2626' : '#059669';
+}
+</script>
+
+<!-- ── Code Theme Picker ── -->
+<div id="code-theme-picker">
+  <div id="theme-panel">
+    <div class="tp-label">🎨 Code Block Theme</div>
+    <button class="theme-btn active" onclick="setCodeTheme('black')" id="btn-black">
+      <span class="theme-swatch" style="background:#000;"></span> Black (Default)
+    </button>
+    <button class="theme-btn" onclick="setCodeTheme('vscode')" id="btn-vscode">
+      <span class="theme-swatch" style="background:#1e1e1e;"></span> VS Code Dark
+    </button>
+    <button class="theme-btn" onclick="setCodeTheme('white')" id="btn-white">
+      <span class="theme-swatch" style="background:#fff;border:1px solid #ccc;"></span> White (Projector)
+    </button>
+    <button class="theme-btn" onclick="setCodeTheme('cream')" id="btn-cream">
+      <span class="theme-swatch" style="background:#fefce8;border:1px solid #ccc;"></span> Cream (Projector)
+    </button>
+  </div>
+  <button id="theme-toggle-btn" onclick="document.getElementById('theme-panel').classList.toggle('open')">
+    🎨 Code Theme
+  </button>
+</div>
+
+</body>
+</html>

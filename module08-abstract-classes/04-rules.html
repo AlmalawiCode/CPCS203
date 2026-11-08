@@ -1,0 +1,1349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 4 — &#128220; The Rules of Abstract Classes | Module 08 Abstract Classes</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script>mermaid.initialize({startOnLoad:true, theme:'base', securityLevel:'loose',
+        themeVariables:{
+            primaryColor:'#0d9488', primaryTextColor:'#ffffff',
+            primaryBorderColor:'#0f766e', lineColor:'#374151',
+            secondaryColor:'#f0fdfa', tertiaryColor:'#ccfbf1'
+        }
+    });</script>
+    <style>
+        .mermaid { display:flex; justify-content:center; margin:20px 0; }
+        .mermaid svg { max-width:100%; height:auto; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --teal:        #0d9488;
+            --teal-dark:   #0f766e;
+            --teal-darker: #134e4a;
+            --teal-light:  #f0fdfa;
+            --teal-mid:    #ccfbf1;
+            --cyan:        #06b6d4;
+            --cyan-dark:   #0e7490;
+            --emerald:     #059669;
+            --emerald-dark:#065f46;
+            --warning:     #d97706;
+            --danger:      #dc2626;
+            --dark:        #1f2937;
+            --gray:        #6b7280;
+            --light:       #f9fafb;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.8;
+            color: var(--dark);
+            background: #ffffff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            border: 1px solid #e5e7eb;
+            overflow: hidden;
+        }
+
+        /* ── Breadcrumb ── */
+        .nav-breadcrumb {
+            background: #ffffff; border-bottom: 2px solid #e5e7eb;
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .breadcrumb { display: flex; align-items: center; gap: 8px; color: #374151; font-size: 0.9rem; }
+        .breadcrumb a { color: #0f766e; font-weight: 700; text-decoration: none; transition: color .3s; }
+        .breadcrumb a:hover { color: #134e4a; text-decoration: underline; }
+        .breadcrumb .sep { color: #6b7280; }
+        .breadcrumb .cur { color: #374151; }
+        .lesson-nav { display: flex; gap: 10px; }
+        .lesson-nav a {
+            padding: 8px 16px;
+            background: #ffffff;
+            color: #0f766e; border: 1.5px solid #0f766e;
+            text-decoration: none;
+            border-radius: 20px;
+            font-size: .85rem;
+            transition: background .3s;
+        }
+        .lesson-nav a:hover { background: #f0fdfa; }
+
+        /* ── Hero ── */
+        .hero {
+            background: #ffffff;
+            color: #111827; border-bottom: 3px solid #0f766e;
+            padding: 50px 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute; top: -50px; right: -50px;
+            width: 250px; height: 250px;
+            display: none;
+        }
+        .hero::after {
+            content: '';
+            position: absolute; bottom: -80px; left: -40px;
+            width: 300px; height: 300px;
+            display: none;
+        }
+        .pillar-badge {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: #ffffff; color: #374151;
+            border: 1.5px solid #d1d5db;
+            padding: 8px 22px; border-radius: 30px;
+            font-size: .95rem; font-weight: 600; margin-bottom: 20px;
+        }
+        .pillar-badge .num, .pillar-badge .number {
+            background: #ffffff; color: var(--teal-dark); border: 2px solid var(--teal-dark);
+            width: 28px; height: 28px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; font-weight: 900;
+        }
+        .hero h1 { font-size: 3rem; margin-bottom: 15px; color: var(--teal-dark); }
+        .hero .subtitle { font-size: 1.25rem; color: #374151; margin-bottom: 10px; }
+        .hero .message {
+            max-width: 700px; margin: 20px auto 0;
+            font-size: 1.05rem; opacity: .95; font-style: italic;
+            background: #ffffff; color: #374151; border: 1.5px solid #e5e7eb; border-left: 5px solid var(--teal-dark);
+            padding: 18px 25px; border-radius: 12px; line-height: 1.9;
+        }
+        .four-pillars {
+            display: flex; justify-content: center; gap: 12px;
+            margin-top: 28px; flex-wrap: wrap;
+        }
+        .pillar-chip {
+            padding: 10px 20px; border-radius: 30px;
+            font-weight: 700; font-size: .9rem;
+            border: 1.5px solid #d1d5db; background: #ffffff; color: #374151;
+        }
+        .pillar-chip.done    { color: #15803d; border-color: #86efac; }
+        .pillar-chip.current { color: var(--teal-dark); border-color: var(--teal-dark); }
+        .pillar-chip.upcoming{ opacity: .75; }
+
+        /* ── Content ── */
+        .content { padding: 50px 40px; }
+        .section { margin-bottom: 60px; }
+        .section-title {
+            font-size: 1.85rem; color: var(--teal-dark);
+            border-bottom: 3px solid var(--teal);
+            padding-bottom: 10px; margin-bottom: 28px;
+            display: flex; align-items: center; gap: 12px;
+        }
+        .section-number {
+            background: #ffffff; border: 2.5px solid var(--teal);
+            color: var(--teal-dark); width: 42px; height: 42px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 900; font-size: 1.1rem; flex-shrink: 0;
+        }
+        .section-number.star { font-size: 1.3rem; }
+        .subsection-title {
+            font-size: 1.3rem; color: var(--teal-dark);
+            margin: 32px 0 16px;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .sub-badge {
+            background: #ffffff; border: 1.5px solid var(--teal);
+            color: var(--teal-dark); padding: 3px 14px; border-radius: 20px;
+            font-size: .8rem; font-weight: 700; letter-spacing: .5px;
+        }
+
+        /* ── Code blocks ── */
+        .code-container { margin: 16px 0; border-radius: 12px; overflow: hidden; border: 1px solid #e5e7eb; }
+        .code-header {
+            background: #f1f5f9; color: #111827; border-bottom: 1px solid #cbd5e1;
+            padding: 10px 18px; font-size: .85rem; font-weight: 600;
+            display: flex; justify-content: space-between; align-items: center;
+            cursor: pointer; user-select: none;
+        }
+        .code-header:hover { background: #e2e8f0; }
+        .code-toggle { font-size: 1.2em; transition: transform 0.3s; }
+        .code-toggle.collapsed { transform: rotate(-90deg); }
+        .code-block {
+            background: #ffffff;
+            color: #111827;
+            padding: 22px 24px; font-family: 'Courier New', Consolas, monospace;
+            font-size: 1em; line-height: 1.9; overflow-x: auto;
+            white-space: pre;
+            transition: background 0.3s, color 0.3s;
+        }
+        .code-block.collapsed { display: none; }
+        .code-block .keyword    { color: var(--cb-keyword,  #ff79c6); font-weight: bold; }
+        .code-block .class-name { color: var(--cb-class,    #8be9fd); font-weight: bold; }
+        .code-block .method     { color: var(--cb-method,   #50fa7b); }
+        .code-block .string     { color: var(--cb-string,   #f1fa8c); }
+        .code-block .comment    { color: var(--cb-comment,  #7a8bbf); font-style: italic; }
+        .code-block .number     { color: #c2410c; }
+        .code-block .abstract-kw{ color: #b45309 !important; font-weight: bold; }
+
+        /* ── Terminal ── */
+        .terminal { background: #f8fafc; border-radius: 12px; overflow: hidden; margin: 16px 0; border: 1px solid var(--tm-border, #334155); transition: background 0.3s, border-color 0.3s; box-shadow: 0 4px 16px rgba(0,0,0,.2); }
+        .terminal-header { background: #f1f5f9; padding: 10px 16px; display: flex; align-items: center; gap: 8px; transition: background 0.3s; }
+        .terminal-dot { width: 12px; height: 12px; border-radius: 50%; }
+        .terminal-dot.r { background: #ef4444; }
+        .terminal-dot.y { background: #f59e0b; }
+        .terminal-dot.g { background: #10b981; }
+        .terminal-title { color: var(--tm-title, #94a3b8); font-size: .85rem; margin-left: 6px; font-weight: 600; transition: color 0.3s; }
+        .terminal-body { background: #f8fafc; color: #111827; padding: 18px 20px; font-family: 'Courier New', monospace; font-size: .9em; line-height: 1.9; white-space: pre; transition: background 0.3s, color 0.3s; }
+
+        /* ── Code-theme floating picker ── */
+        #code-theme-picker { position:fixed; bottom:28px; right:28px; z-index:9999; display:flex; flex-direction:column; align-items:flex-end; gap:10px; font-family:'Segoe UI',sans-serif; }
+        #theme-toggle-btn { background:#ffffff; color:#0f766e; border:1.5px solid #0f766e !important; border:none; border-radius:50px; padding:11px 20px; font-size:.88rem; font-weight:700; cursor:pointer; box-shadow:0 4px 18px rgba(13,148,136,.5); letter-spacing:.5px; transition:box-shadow .2s; }
+        #theme-toggle-btn:hover { box-shadow:0 6px 24px rgba(13,148,136,.7); }
+        #theme-panel { background:#fff; border-radius:14px; padding:14px 16px; box-shadow:0 8px 32px rgba(0,0,0,.25); display:none; flex-direction:column; gap:8px; min-width:210px; border:1px solid #99f6e4; }
+        #theme-panel.open { display:flex; }
+        #theme-panel .tp-label { font-size:.72rem; font-weight:800; letter-spacing:1.5px; text-transform:uppercase; color:#0f766e; margin-bottom:4px; }
+        .theme-btn { display:flex; align-items:center; gap:10px; padding:8px 12px; border-radius:8px; border:2px solid transparent; cursor:pointer; font-size:.88rem; font-weight:600; transition:border-color .2s,background .2s; background:#f9fafb; color:#1f2937; }
+        .theme-btn:hover { background:#f0fdfa; border-color:#0d9488; }
+        .theme-btn.active { border-color:#0f766e; background:#ccfbf1; }
+        .theme-swatch { width:28px; height:28px; border-radius:6px; border:1px solid rgba(0,0,0,.15); flex-shrink:0; }
+
+        /* ── Projector mode overrides ── */
+        body.projector .nav-breadcrumb { background:#ccfbf1 !important; }
+        body.projector .breadcrumb a   { color:#0f766e !important; }
+        body.projector .breadcrumb .sep, body.projector .breadcrumb .cur { color:#0d9488 !important; }
+        body.projector .lesson-nav a   { background:rgba(13,148,136,.12) !important; color:#134e4a !important; border:1px solid #5eead4 !important; }
+        body.projector .code-header    { background:#99f6e4 !important; color:#134e4a !important; }
+        body.projector .code-header:hover { background:#0d9488 !important; color:#fff !important; }
+        body.projector .alert-important { background:#ccfbf1 !important; color:#134e4a !important; }
+        body.projector .alert-important-title { color:#0f766e !important; }
+        body.projector .alert-important strong { color:#0f766e !important; }
+        body.projector .discussion-box { background:#ffffff !important; color:#1f2937 !important; }
+        body.projector .discussion-box h4 { color:#0f766e !important; }
+        body.projector .speech-bubble  { background:rgba(13,148,136,.06) !important; border:1px solid #5eead4 !important; }
+        body.projector .speech-who     { color:#0f766e !important; }
+        body.projector .speech-text    { color:#1f2937 !important; }
+        body.projector .speech-text strong { color:#0d9488 !important; }
+
+        /* ── Info / success / danger / warning boxes ── */
+        .info-box {
+            background: #f0fdfa; border-left: 5px solid var(--teal);
+            border-radius: 0 12px 12px 0; padding: 18px 22px; margin: 16px 0;
+        }
+        .info-box-title { font-weight: 800; color: var(--teal-dark); margin-bottom: 8px; font-size: 1.05rem; }
+        .success-box {
+            background: #f0fdf4; border: 2px solid #16a34a;
+            border-radius: 12px; padding: 20px 24px; margin: 16px 0;
+        }
+        .success-box-title { font-weight: 800; color: #14532d; margin-bottom: 10px; font-size: 1.05rem; }
+        .warning-box {
+            background: #fffbeb; border: 2px solid #f59e0b;
+            border-radius: 12px; padding: 18px 22px; margin: 16px 0;
+        }
+        .warning-box-title { font-weight: 800; color: #92400e; margin-bottom: 8px; }
+        .danger-box {
+            background: #fef2f2; border: 2px solid #dc2626;
+            border-radius: 12px; padding: 18px 22px; margin: 16px 0;
+        }
+        .danger-box-title { font-weight: 800; color: #991b1b; margin-bottom: 8px; }
+        .key-box {
+            background: #ffffff;
+            border: 2px solid var(--teal); border-radius: 12px;
+            padding: 18px 22px; margin: 16px 0;
+        }
+        .key-box-title { font-weight: 800; color: var(--teal-dark); margin-bottom: 8px; font-size: 1.05rem; }
+
+        /* ── Alert important ── */
+        .alert-important {
+            background: #ffffff; border: 2px solid var(--teal-dark); border-left: 7px solid var(--teal-dark);
+            color: #1f2937; border-radius: 14px; padding: 22px 28px; margin: 20px 0;
+        }
+        .alert-important-title { font-size: 1.2rem; font-weight: 900; margin-bottom: 10px; color: var(--teal-dark); }
+
+        /* ── Discussion / speech bubbles ── */
+        .discussion-box {
+            background: #ffffff;
+            border: 2px solid var(--teal); border-radius: 16px;
+            padding: 24px; margin: 20px 0;
+        }
+        .discussion-box h4 { color: var(--teal-dark); margin-bottom: 16px; font-size: 1.1rem; }
+        .speech-bubble {
+            background: white; border-radius: 12px; padding: 14px 18px;
+            margin: 10px 0; box-shadow: 0 2px 8px rgba(0,0,0,.08);
+            border-left: 4px solid var(--teal);
+        }
+        .speech-who { font-weight: 800; color: var(--teal-dark); font-size: .9rem; margin-bottom: 4px; }
+        .speech-text { color: #374151; line-height: 1.75; }
+
+
+
+        /* ── Rules section ── */
+        .rule-card {
+            border-radius: 14px; overflow: hidden; margin: 18px 0;
+            border: 2px solid var(--rc, var(--teal));
+        }
+        .rule-header {
+            padding: 14px 22px; color: var(--rc, var(--teal)); background: #ffffff;
+            border-bottom: 2px solid var(--rc, var(--teal)); font-weight: 800; font-size: 1rem;
+            display: flex; align-items: center; gap: 12px;
+        }
+        .rule-num {
+            background: #ffffff; border: 2px solid currentColor; width: 32px; height: 32px;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-weight: 900; flex-shrink: 0;
+        }
+        .rule-body { background: #ffffff; padding: 18px 22px; }
+        .rule-teal    { --rc: var(--teal-dark); }
+        .rule-cyan    { --rc: var(--cyan-dark); }
+        .rule-emerald { --rc: var(--emerald-dark); }
+        .rule-warning { --rc: #b45309; }
+        .rule-slate   { --rc: #334155; }
+
+        /* ── Hierarchy visual ── */
+        .hier-box {
+            display: inline-flex; flex-direction: column; align-items: center; gap: 0;
+            font-family: 'Courier New', monospace; font-size: .9em;
+        }
+        .hier-node {
+            padding: 10px 22px; border-radius: 10px; border: 2px solid;
+            font-weight: 700; text-align: center; min-width: 140px;
+        }
+        .hier-node.abstract-node { background: #fef3c7; border-color: #d97706; color: #92400e; }
+        .hier-node.concrete-node { background: #dcfce7; border-color: #16a34a; color: #14532d; }
+        .hier-arrow { color: #6b7280; font-size: 1.5rem; line-height: 1; }
+
+        /* ── Summary grid ── */
+        .summary-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px,1fr)); gap: 16px; margin-top: 20px; }
+        .summary-card {
+            border-radius: 14px; padding: 20px 18px; text-align: center; background: #ffffff;
+        }
+        .sc-icon { font-size: 2rem; margin-bottom: 10px; }
+        .sc-title { font-weight: 800; font-size: 1rem; margin-bottom: 6px; }
+        .sc-desc { font-size: .85rem; color: #4b5563; line-height: 1.6; }
+        .summary-card.s1 { border: 2px solid var(--teal); }
+        .summary-card.s1 .sc-title { color: var(--teal-dark); }
+        .summary-card.s2 { border: 2px solid var(--cyan); }
+        .summary-card.s2 .sc-title { color: var(--cyan-dark); }
+        .summary-card.s3 { border: 2px solid #16a34a; }
+        .summary-card.s3 .sc-title { color: #14532d; }
+        .summary-card.s4 { border: 2px solid #ca8a04; }
+        .summary-card.s4 .sc-title { color: #713f12; }
+
+        .code-inline { background: #f1f5f9; padding: 2px 7px; border-radius: 5px; font-family: 'Courier New', monospace; font-size: .93em; color: #0f766e; font-weight: 700; }
+
+        /* ── Abstract vs concrete diagram ── */
+        .spectrum-bar {
+            display: flex; border-radius: 12px; overflow: hidden; height: 54px; margin: 14px 0;
+        }
+        .spectrum-seg {
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: .88rem; flex: 1;
+            background: #ffffff; border: 3px solid currentColor; text-align: center;
+        }
+
+        /* ── Number class cards ── */
+        .number-grid { display: flex; flex-wrap: wrap; gap: 10px; margin: 16px 0; }
+        .number-chip {
+            padding: 10px 18px; border-radius: 10px; font-weight: 700;
+            font-family: 'Courier New', monospace; font-size: .9em;
+        }
+        .number-chip.abstract-chip { background: #fef3c7; border: 2px solid #d97706; color: #92400e; }
+        .number-chip.concrete-chip { background: #dcfce7; border: 2px solid #16a34a; color: #14532d; }
+
+        p { margin-bottom: 12px; }
+        ul, ol { margin-left: 24px; line-height: 2.1; }
+        li { margin-bottom: 4px; }
+
+        /* Bottom navigation + footer (white, solid borders — projector friendly) */
+        .bottom-nav {
+            display: flex; justify-content: space-between; align-items: center; gap: 12px;
+            flex-wrap: wrap; padding: 26px 40px; border-top: 2px solid #e5e7eb; background: #ffffff;
+        }
+        .bottom-nav a {
+            padding: 10px 22px; border-radius: 30px; text-decoration: none; font-weight: 700;
+            background: #ffffff; color: var(--teal-dark); border: 2px solid var(--teal-dark);
+        }
+        .bottom-nav a:hover { background: #f0fdfa; }
+        .bottom-nav .nav-practical { color: #047857; border-color: #047857; }
+        .footer {
+            max-width: 1000px; margin: 18px auto 0; background: #ffffff; color: #374151;
+            text-align: center; padding: 18px 20px; font-size: .9rem; border-top: 2px solid #e5e7eb;
+        }
+        .footer p { margin: 4px 0; }
+        .footer strong { color: var(--teal-dark); }
+        .footer a { color: var(--teal-dark); text-decoration: none; }
+        @media (max-width: 640px) { .bottom-nav { flex-direction: column; text-align: center; } }
+
+        /* Slide-question answers (show / hide) */
+        .answer-btn {
+            background: #059669; color: #ffffff; border: none; border-radius: 20px;
+            padding: 8px 18px; font-weight: 700; font-size: .9rem; cursor: pointer; margin: 8px 0;
+        }
+        .answer-box {
+            display: none; background: #ffffff; border: 2px solid #16a34a; border-left: 6px solid #16a34a;
+            border-radius: 0 12px 12px 0; padding: 14px 20px; margin: 6px 0 16px;
+        }
+        .slide-q {
+            background: #ffffff; border: 2px solid #3b82f6; border-radius: 14px;
+            padding: 18px 22px; margin: 18px 0;
+        }
+        .slide-q-title { font-weight: 800; color: #1d4ed8; margin-bottom: 8px; font-size: 1.05rem; }
+        .slide-tag {
+            display: inline-block; font-size: .75rem; font-weight: 700; color: #6b7280;
+            border: 1px solid #d1d5db; border-radius: 12px; padding: 1px 9px; margin-left: 8px; vertical-align: middle;
+        }
+        .uml-box { display: inline-block; border: 2px solid #374151; border-radius: 4px; min-width: 200px; font-family: 'Courier New', monospace; font-size: .9em; background: #ffffff; text-align: left; }
+        .uml-box .uml-name { border-bottom: 2px solid #374151; padding: 6px 12px; text-align: center; font-weight: 700; }
+        .uml-box .uml-name.abs { font-style: italic; }
+        .uml-box .uml-sec { border-bottom: 1px solid #374151; padding: 6px 12px; line-height: 1.6; }
+        .uml-box .uml-sec:last-child { border-bottom: none; }
+        .uml-box .abs { font-style: italic; }
+    
+        /* Chapter table of contents */
+        .chapter-toc { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 16px; padding: 22px 26px; margin: 0 0 36px; }
+        .chapter-toc-title { font-size: 1.15rem; font-weight: 800; margin: 0 0 12px; color: #1e293b; }
+        .chapter-toc ol { margin: 0; padding-left: 1.6em; columns: 2; column-gap: 32px; }
+        .chapter-toc li { margin: 0 0 8px; break-inside: avoid; line-height: 1.4; }
+        .chapter-toc a { color: #1d4ed8; text-decoration: none; font-weight: 600; }
+        .chapter-toc a:hover { text-decoration: underline; }
+        .section-title { scroll-margin-top: 20px; }
+        @media (max-width: 700px) { .chapter-toc ol { columns: 1; } .chapter-toc { padding: 18px 16px; } }
+    </style>
+    <link rel="stylesheet" href="projector.css">
+</head>
+<body>
+<div class="container">
+
+    <!-- ── Breadcrumb ── -->
+    <nav class="nav-breadcrumb">
+        <div class="breadcrumb">
+            <a href="../index.html">&#127968; Object-Oriented Programming</a>
+            <span class="sep">&#8250;</span>
+            <a href="index.html">Module 8 — Abstract Classes</a>
+            <span class="sep">&#8250;</span>
+            <span class="cur">Lesson 4: Rules of Abstract Classes</span>
+        </div>
+        <div class="lesson-nav">
+            <a href="03-abstract-methods.html">&#8592; Lesson 3</a>
+            <a href="05-number-case-study.html">Lesson 5 &#8594;</a>
+        </div>
+    </nav>
+
+    <!-- ── Hero ── -->
+    <div class="hero">
+        <div class="pillar-badge">
+            <span class="number">4</span>
+            Lesson 4 of 6 &nbsp;&#183;&nbsp; Chapter 13 &nbsp;&#183;&nbsp; Lecture slides 17–21
+        </div>
+        <h1>&#128220; The Rules of Abstract Classes</h1>
+        <p class="subtitle">What is legal, what is not, and why</p>
+    </div>
+
+    <!-- ── CONTENT ── -->
+    <div class="content">
+
+        <nav class="chapter-toc" aria-label="Lesson contents">
+            <div class="chapter-toc-title">&#128203; In this lesson &mdash; jump to a topic</div>
+            <ol>
+                <li><a href="#section-1">The Rules of Abstract Classes</a></li>
+                <li><a href="#section-2">Are the Following Codes Correct? — Star, Circle and draw()</a></li>
+                <li><a href="#section-3">Legal or Illegal? — GeometricObject Statements</a></li>
+                <li><a href="#section-4">A Concrete Method Overridden to Be Abstract</a></li>
+                <li><a href="#section-5">The Manager Technique — Forcing toString()</a></li>
+            </ol>
+        </nav>
+
+        <!-- ════════════════════════════════════════════════
+             SECTION 6 — RULES
+             ════════════════════════════════════════════════ -->
+        <div class="section">
+            <h2 class="section-title" id="section-1">
+                <span class="section-number">1</span>
+                The Rules of Abstract Classes
+            </h2>
+            <p>Study each rule carefully. Each one has an example to make it concrete.</p>
+
+            <!-- Rule 1 -->
+            <div class="rule-card rule-teal">
+                <div class="rule-header">
+                    <span class="rule-num">1</span>
+                    Subclass implements ALL abstract methods → it becomes concrete and can be instantiated
+                </div>
+                <div class="rule-body">
+                    <p>If a subclass provides a <code class="code-inline">@Override</code> implementation for
+                    <strong>every</strong> abstract method it inherited, the compiler considers it <strong>complete</strong>
+                    — it becomes a normal (concrete) class and you can create objects of it.</p>
+                    <div class="code-container">
+                        <div class="code-header collapsed" onclick="toggleCode(this)">
+                            <span>&#128065;&#65038; Show Example</span><span class="code-toggle collapsed">&#9660;</span>
+                        </div>
+                        <div class="code-block collapsed"><span class="abstract-kw">abstract</span> <span class="keyword">class</span> <span class="class-name">Shape</span> {
+    <span class="keyword">public</span> <span class="abstract-kw">abstract</span> <span class="keyword">double</span> <span class="method">getArea</span>();
+    <span class="keyword">public</span> <span class="abstract-kw">abstract</span> <span class="keyword">double</span> <span class="method">getPerimeter</span>();
+}
+
+<span class="keyword">class</span> <span class="class-name">Circle</span> <span class="keyword">extends</span> <span class="class-name">Shape</span> {
+    <span class="keyword">private double</span> radius;
+    <span class="keyword">public</span> <span class="class-name">Circle</span>(<span class="keyword">double</span> r) { radius = r; }
+
+    <span class="keyword">@Override</span>
+    <span class="keyword">public double</span> <span class="method">getArea</span>()      { <span class="keyword">return</span> Math.PI * radius * radius; }   <span class="comment">// ✓ implemented</span>
+    <span class="keyword">@Override</span>
+    <span class="keyword">public double</span> <span class="method">getPerimeter</span>() { <span class="keyword">return</span> <span class="number">2</span> * Math.PI * radius; }         <span class="comment">// ✓ implemented</span>
+}
+<span class="comment">// → Circle is concrete: new Circle(5) is VALID ✓</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rule 2 -->
+            <div class="rule-card rule-warning">
+                <div class="rule-header">
+                    <span class="rule-num">2</span>
+                    Subclass does NOT implement all abstract methods → it must remain abstract
+                </div>
+                <div class="rule-body">
+                    <p>If a subclass implements <em>some</em> but not all abstract methods, it is still
+                    <strong>incomplete</strong>. The compiler forces it to also be declared <code class="code-inline">abstract</code>.</p>
+                    <div class="code-container">
+                        <div class="code-header collapsed" onclick="toggleCode(this)">
+                            <span>&#128065;&#65038; Show Example</span><span class="code-toggle collapsed">&#9660;</span>
+                        </div>
+                        <div class="code-block collapsed"><span class="abstract-kw">abstract</span> <span class="keyword">class</span> <span class="class-name">Shape</span> {
+    <span class="keyword">public</span> <span class="abstract-kw">abstract</span> <span class="keyword">double</span> <span class="method">getArea</span>();
+    <span class="keyword">public</span> <span class="abstract-kw">abstract</span> <span class="keyword">double</span> <span class="method">getPerimeter</span>();
+}
+
+<span class="comment">// RegularShape implements getPerimeter (all sides equal) but NOT getArea</span>
+<span class="abstract-kw">abstract</span> <span class="keyword">class</span> <span class="class-name">RegularShape</span> <span class="keyword">extends</span> <span class="class-name">Shape</span> {
+    <span class="keyword">protected int</span>    sides;
+    <span class="keyword">protected double</span> sideLength;
+    <span class="keyword">public</span> <span class="class-name">RegularShape</span>(<span class="keyword">int</span> sides, <span class="keyword">double</span> len) {
+        <span class="keyword">this</span>.sides = sides; sideLength = len;
+    }
+    <span class="keyword">@Override</span>
+    <span class="keyword">public double</span> <span class="method">getPerimeter</span>() { <span class="keyword">return</span> sides * sideLength; }  <span class="comment">// ✓ implemented</span>
+    <span class="comment">// getArea() is still inherited as abstract → must stay abstract!</span>
+}
+
+<span class="keyword">class</span> <span class="class-name">RegularHexagon</span> <span class="keyword">extends</span> <span class="class-name">RegularShape</span> {
+    <span class="keyword">public</span> <span class="class-name">RegularHexagon</span>(<span class="keyword">double</span> side) { <span class="keyword">super</span>(<span class="number">6</span>, side); }
+    <span class="keyword">@Override</span>
+    <span class="keyword">public double</span> <span class="method">getArea</span>() {
+        <span class="keyword">return</span> (<span class="number">3</span> * Math.<span class="method">sqrt</span>(<span class="number">3</span>) / <span class="number">2</span>) * sideLength * sideLength;
+    }
+    <span class="comment">// → Now complete! new RegularHexagon(5) is VALID ✓</span>
+}</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rule 3 -->
+            <div class="rule-card rule-slate">
+                <div class="rule-header">
+                    <span class="rule-num">3</span>
+                    A class that contains any abstract method MUST be declared abstract
+                </div>
+                <div class="rule-body">
+                    <p>You cannot have an abstract method inside a non-abstract class. The class becomes
+                    <strong>incomplete</strong> the moment it contains an abstract method, so it must be abstract too.</p>
+                    <div class="code-container">
+                        <div class="code-header collapsed" onclick="toggleCode(this)">
+                            <span>&#128065;&#65038; Show Example</span><span class="code-toggle collapsed">&#9660;</span>
+                        </div>
+                        <div class="code-block collapsed"><span class="comment">// ❌ ILLEGAL — cannot have abstract method in non-abstract class</span>
+<span class="keyword">class</span> <span class="class-name">BadClass</span> {
+    <span class="keyword">public</span> <span class="abstract-kw">abstract</span> <span class="keyword">void</span> <span class="method">doSomething</span>();   <span class="comment">// ERROR!</span>
+}
+
+<span class="comment">// ✓ CORRECT — abstract method requires abstract class</span>
+<span class="abstract-kw">abstract</span> <span class="keyword">class</span> <span class="class-name">GoodClass</span> {
+    <span class="keyword">public</span> <span class="abstract-kw">abstract</span> <span class="keyword">void</span> <span class="method">doSomething</span>();   <span class="comment">// OK!</span>
+}</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rule 4 -->
+            <div class="rule-card rule-teal">
+                <div class="rule-header">
+                    <span class="rule-num">4</span>
+                    If a non-abstract class extends an abstract class, it MUST implement ALL inherited abstract methods
+                </div>
+                <div class="rule-body">
+                    <p>Even if the developer does not plan to use a particular method — they must still implement it.
+                    The compiler enforces this with no exceptions. This is exactly what we want!</p>
+                    <div class="code-container">
+                        <div class="code-header collapsed" onclick="toggleCode(this)">
+                            <span>&#128065;&#65038; Show Example — The Forgotten Pentagon</span><span class="code-toggle collapsed">&#9660;</span>
+                        </div>
+                        <div class="code-block collapsed"><span class="abstract-kw">abstract</span> <span class="keyword">class</span> <span class="class-name">Shape</span> {
+    <span class="keyword">public</span> <span class="abstract-kw">abstract</span> <span class="keyword">double</span> <span class="method">getArea</span>();
+    <span class="keyword">public</span> <span class="abstract-kw">abstract</span> <span class="keyword">double</span> <span class="method">getPerimeter</span>();
+}
+
+<span class="comment">// ❌ COMPILE ERROR — Pentagon forgot to implement getPerimeter()!</span>
+<span class="keyword">class</span> <span class="class-name">Pentagon</span> <span class="keyword">extends</span> <span class="class-name">Shape</span> {
+    <span class="keyword">private double</span> side;
+    <span class="keyword">public</span> <span class="class-name">Pentagon</span>(<span class="keyword">double</span> s) { side = s; }
+    <span class="keyword">@Override</span>
+    <span class="keyword">public double</span> <span class="method">getArea</span>() { <span class="keyword">return</span> <span class="number">1.72</span> * side * side; }
+    <span class="comment">// getPerimeter() is missing! → Compiler error: "Pentagon is not abstract</span>
+    <span class="comment">//   and does not override abstract method getPerimeter() in Shape"</span>
+}
+
+<span class="comment">// ✓ CORRECT — implements both</span>
+<span class="keyword">class</span> <span class="class-name">Pentagon</span> <span class="keyword">extends</span> <span class="class-name">Shape</span> {
+    <span class="keyword">private double</span> side;
+    <span class="keyword">public</span> <span class="class-name">Pentagon</span>(<span class="keyword">double</span> s) { side = s; }
+    <span class="keyword">@Override</span>
+    <span class="keyword">public double</span> <span class="method">getArea</span>()      { <span class="keyword">return</span> <span class="number">1.72</span> * side * side; }
+    <span class="keyword">@Override</span>
+    <span class="keyword">public double</span> <span class="method">getPerimeter</span>() { <span class="keyword">return</span> <span class="number">5</span> * side; }
+}</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rule 5 -->
+            <div class="rule-card rule-cyan">
+                <div class="rule-header">
+                    <span class="rule-num">5</span>
+                    An abstract class CAN have zero abstract methods (all methods can be concrete)
+                </div>
+                <div class="rule-body">
+                    <p>You can declare a class <code class="code-inline">abstract</code> even if it has no abstract methods at all.
+                    In this case you <strong>cannot create instances of the class using the <code class="code-inline">new</code>
+                    operator</strong>; the class is used as a <strong>base class for defining new subclasses</strong>
+                    <span class="slide-tag">Slide 17</span>. This is useful when the class is logically incomplete,
+                    even though all its methods have implementations.</p>
+                    <div class="code-container">
+                        <div class="code-header collapsed" onclick="toggleCode(this)">
+                            <span>&#128065;&#65038; Show Example</span><span class="code-toggle collapsed">&#9660;</span>
+                        </div>
+                        <div class="code-block collapsed"><span class="comment">// Valid! No abstract methods, but still abstract (cannot be instantiated)</span>
+<span class="abstract-kw">abstract</span> <span class="keyword">class</span> <span class="class-name">Animal</span> {
+    <span class="keyword">private</span> <span class="class-name">String</span> name;
+    <span class="keyword">public</span> <span class="class-name">Animal</span>(<span class="class-name">String</span> name) { <span class="keyword">this</span>.name = name; }
+    <span class="keyword">public</span> <span class="class-name">String</span> <span class="method">getName</span>() { <span class="keyword">return</span> name; }           <span class="comment">// concrete</span>
+    <span class="keyword">public void</span> <span class="method">eat</span>()       { System.out.<span class="method">println</span>(<span class="string">"eating"</span>); }  <span class="comment">// concrete</span>
+    <span class="comment">// No abstract methods — but still abstract!</span>
+    <span class="comment">// Why? Because "Animal" is not a specific enough object.</span>
+}
+
+<span class="keyword">class</span> <span class="class-name">Cat</span> <span class="keyword">extends</span> <span class="class-name">Animal</span> {
+    <span class="keyword">public</span> <span class="class-name">Cat</span>(<span class="class-name">String</span> name) { <span class="keyword">super</span>(name); }
+    <span class="comment">// No need to override anything — but Cat IS concrete, so new Cat("Tom") is valid</span>
+}</div>
+                    </div>
+                    <div class="info-box" style="margin-top:12px;">
+                        <div class="info-box-title">&#128204; Why do this?</div>
+                        <p style="margin:0;">Sometimes the concept is not logical to instantiate (like <code>Animal</code> or <code>Vehicle</code>),
+                        even if all behaviors have reasonable default implementations. Making it abstract
+                        expresses this design intent clearly.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rule 6 -->
+            <div class="rule-card rule-emerald">
+                <div class="rule-header">
+                    <span class="rule-num">6</span>
+                    A subclass CAN be abstract even if its superclass is concrete
+                </div>
+                <div class="rule-body">
+                    <p>Abstractness does not flow only top-down. A subclass of a concrete class can itself
+                    be abstract. A famous real-world example: the <code class="code-inline">Object</code> class
+                    in Java is concrete — yet <code class="code-inline">Shape</code> (which extends Object) can be abstract.</p>
+                    <div class="code-container">
+                        <div class="code-header collapsed" onclick="toggleCode(this)">
+                            <span>&#128065;&#65038; Show Example</span><span class="code-toggle collapsed">&#9660;</span>
+                        </div>
+                        <div class="code-block collapsed"><span class="comment">// Object is concrete (java.lang.Object)</span>
+<span class="comment">// Yet Shape extends Object and is abstract — perfectly legal!</span>
+
+<span class="abstract-kw">abstract</span> <span class="keyword">class</span> <span class="class-name">Shape</span> <span class="keyword">extends</span> <span class="class-name">Object</span> {   <span class="comment">// Object is concrete!</span>
+    <span class="keyword">public</span> <span class="abstract-kw">abstract</span> <span class="keyword">double</span> <span class="method">getArea</span>();
+}
+
+<span class="comment">// Similarly:</span>
+<span class="keyword">class</span> <span class="class-name">ConcreteA</span> {                  <span class="comment">// concrete</span>
+    <span class="keyword">public void</span> <span class="method">hello</span>() { System.out.<span class="method">println</span>(<span class="string">"Hello!"</span>); }
+}
+
+<span class="abstract-kw">abstract</span> <span class="keyword">class</span> <span class="class-name">AbstractB</span> <span class="keyword">extends</span> <span class="class-name">ConcreteA</span> {   <span class="comment">// abstract extends concrete!</span>
+    <span class="keyword">public</span> <span class="abstract-kw">abstract</span> <span class="keyword">void</span> <span class="method">work</span>();
+    <span class="comment">// inherits hello() from ConcreteA — still abstract because of work()</span>
+}</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slide-q">
+                <div class="slide-q-title">&#10067; A subclass can be abstract even if its superclass is concrete. Example? <span class="slide-tag">Slide 17</span></div>
+                <button class="answer-btn" onclick="toggleAnswer(this)">&#128161; Show Answer &#9660;</button>
+                <div class="answer-box"><p style="margin:0;">The <code>Object</code> class is <strong>concrete</strong> (<code>new Object()</code> is legal), but its
+                    subclasses, such as <code>Shape</code>, may be <strong>abstract</strong>: <code>abstract class Shape</code> extends
+                    <code>Object</code> automatically. Another example from this module: <code>GeometricObject</code> (abstract) extends
+                    <code>Object</code> (concrete).</p></div>
+            </div>
+
+            <!-- Rule 7 -->
+            <div class="rule-card rule-teal">
+                <div class="rule-header">
+                    <span class="rule-num">7</span>
+                    An abstract class CAN be used as a data type (polymorphic variable, array, method parameter)
+                </div>
+                <div class="rule-body">
+                    <p>Even though you cannot create a <code class="code-inline">new Shape()</code>, you CAN declare a
+                    <strong>variable</strong>, an <strong>array</strong>, or a <strong>method parameter</strong>
+                    of type <code class="code-inline">Shape</code>. This is the foundation of polymorphism!</p>
+                    <div class="code-container">
+                        <div class="code-header collapsed" onclick="toggleCode(this)">
+                            <span>&#128065;&#65038; Show Example — 3 Forms of Polymorphism</span><span class="code-toggle collapsed">&#9660;</span>
+                        </div>
+                        <div class="code-block collapsed"><span class="comment">// 1. Polymorphic VARIABLE ──────────────────────────────────────</span>
+<span class="class-name">Shape</span> s = <span class="keyword">new</span> <span class="class-name">Circle</span>(<span class="string">"Red"</span>, <span class="number">5</span>);   <span class="comment">// Shape reference, Circle object → legal!</span>
+System.out.<span class="method">println</span>(s.<span class="method">getArea</span>());  <span class="comment">// dynamic binding → Circle.getArea()</span>
+
+<span class="comment">// 2. Polymorphic ARRAY ────────────────────────────────────────</span>
+<span class="class-name">Shape</span>[] shapes = <span class="keyword">new</span> <span class="class-name">Shape</span>[<span class="number">3</span>];        <span class="comment">// array of Shape type → legal!</span>
+shapes[<span class="number">0</span>] = <span class="keyword">new</span> <span class="class-name">Circle</span>(<span class="string">"Red"</span>, <span class="number">5</span>);
+shapes[<span class="number">1</span>] = <span class="keyword">new</span> <span class="class-name">Rectangle</span>(<span class="string">"Blue"</span>, <span class="number">4</span>, <span class="number">6</span>);
+shapes[<span class="number">2</span>] = <span class="keyword">new</span> <span class="class-name">Triangle</span>(<span class="string">"Green"</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>);
+
+<span class="keyword">for</span> (<span class="class-name">Shape</span> sh : shapes)
+    System.out.<span class="method">printf</span>(<span class="string">"Area = %.2f%n"</span>, sh.<span class="method">getArea</span>());   <span class="comment">// polymorphism!</span>
+
+<span class="comment">// 3. Polymorphic METHOD PARAMETER ──────────────────────────────</span>
+<span class="keyword">public static void</span> <span class="method">printInfo</span>(<span class="class-name">Shape</span> s) {         <span class="comment">// accepts any Shape!</span>
+    System.out.<span class="method">println</span>(<span class="string">"Area: "</span> + s.<span class="method">getArea</span>());
+}
+
+<span class="comment">// Call it with any concrete Shape:</span>
+<span class="method">printInfo</span>(<span class="keyword">new</span> <span class="class-name">Circle</span>(<span class="string">"Red"</span>, <span class="number">7</span>));
+<span class="method">printInfo</span>(<span class="keyword">new</span> <span class="class-name">Rectangle</span>(<span class="string">"Blue"</span>, <span class="number">3</span>, <span class="number">5</span>));</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rule 8 -->
+            <div class="rule-card rule-warning">
+                <div class="rule-header">
+                    <span class="rule-num">8</span>
+                    A subclass CAN override a concrete (non-abstract) method and make it abstract
+                </div>
+                <div class="rule-body">
+                    <p>This is a powerful and often surprising rule. A subclass can take a method that was
+                    fully implemented in its parent, and <strong>re-declare it as abstract</strong> —
+                    forcing its own subclasses to provide a new implementation.
+                    This is the basis of the <em>Manager Technique</em> in <a href="#section-5">Section 5</a>; the slide example is in <a href="#section-4">Section 4</a>.</p>
+                    <div class="code-container">
+                        <div class="code-header collapsed" onclick="toggleCode(this)">
+                            <span>&#128065;&#65038; Show Example — Inheriting toString and making it abstract</span><span class="code-toggle collapsed">&#9660;</span>
+                        </div>
+                        <div class="code-block collapsed"><span class="comment">// Object has a concrete toString() method</span>
+<span class="comment">// We can extend Object and redeclare toString() as abstract:</span>
+
+<span class="abstract-kw">abstract</span> <span class="keyword">class</span> <span class="class-name">MustPrint</span> <span class="keyword">extends</span> <span class="class-name">Object</span> {
+    <span class="comment">// Override the CONCRETE toString() from Object → make it ABSTRACT here!</span>
+    <span class="keyword">@Override</span>
+    <span class="keyword">public</span> <span class="abstract-kw">abstract</span> <span class="class-name">String</span> <span class="method">toString</span>();   <span class="comment">// forces all subclasses to implement it</span>
+}
+
+<span class="keyword">class</span> <span class="class-name">Student</span> <span class="keyword">extends</span> <span class="class-name">MustPrint</span> {
+    <span class="keyword">private</span> <span class="class-name">String</span> name; <span class="keyword">private int</span> age;
+    <span class="keyword">public</span> <span class="class-name">Student</span>(<span class="class-name">String</span> name, <span class="keyword">int</span> age) { <span class="keyword">this</span>.name = name; <span class="keyword">this</span>.age = age; }
+
+    <span class="keyword">@Override</span>
+    <span class="keyword">public</span> <span class="class-name">String</span> <span class="method">toString</span>() {           <span class="comment">// COMPILER forces this!</span>
+        <span class="keyword">return</span> <span class="string">"Student["</span> + name + <span class="string">", age="</span> + age + <span class="string">"]"</span>;
+    }
+}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- ════════════════════════════════════════════════
+             SECTION 2 — STAR / DRAW (SLIDES 18-19)
+             ════════════════════════════════════════════════ -->
+        <div class="section">
+            <h2 class="section-title" id="section-2">
+                <span class="section-number">2</span>
+                Are the Following Codes Correct? — Star, Circle and draw()
+            </h2>
+
+            <h3 class="subsection-title"><span class="sub-badge">Version 1</span> Shape is a normal class <span class="slide-tag">Slide 18</span></h3>
+            <div class="code-container">
+                <div class="code-header" onclick="toggleCode(this)">
+                    <span>&#128196; Slide 18 — Shape has no draw()</span>
+                    <span class="code-toggle">&#9660;</span>
+                </div>
+                <div class="code-block"><span class="keyword">class</span> <span class="class-name">Shape</span> { ... }
+
+<span class="keyword">class</span> <span class="class-name">Star</span> <span class="keyword">extends</span> <span class="class-name">Shape</span> {
+    <span class="keyword">void</span> <span class="method">draw</span>() { ... }
+    ...
+}
+
+<span class="keyword">class</span> <span class="class-name">Circle</span> <span class="keyword">extends</span> <span class="class-name">Shape</span> {
+    <span class="keyword">void</span> <span class="method">draw</span>() { ... }
+    ...
+}</div>
+            </div>
+            <div class="slide-q">
+                <div class="slide-q-title">&#10067; Are the following codes correct?</div>
+                <div style="border:2px solid #cbd5e1;border-radius:12px;padding:12px 20px;margin:12px 0;font-family:'Courier New',monospace;font-size:1.02em;line-height:2;">Shape someShape = new Star();<br>someShape.draw();</div>
+                <button class="answer-btn" onclick="toggleAnswer(this)">&#128161; Show Answer &#9660;</button>
+                <div class="answer-box"><ul style="margin:0 0 0 22px;">
+                        <li><code>Shape someShape = new Star();</code> &mdash; <strong style="color:#15803d;">legal</strong>, because a Star
+                            <em>is a</em> Shape.</li>
+                        <li><code>someShape.draw();</code> &mdash; <strong style="color:#dc2626;">syntax (compile) error</strong>, because
+                            <em>some</em> Shape might not have a <code>draw()</code> method. The compiler only looks at the declared type
+                            <code>Shape</code>, and class Shape has no <code>draw()</code>.</li>
+                    </ul>
+                    <p style="margin:6px 0 0;"><strong>Remember: a class knows its superclass, but not its subclasses.</strong>
+                    Shape does not know that Star and Circle added <code>draw()</code>.</p></div>
+            </div>
+            <div class="code-container">
+                <div class="code-header" onclick="toggleCode(this)">
+                    <span>&#128196; Slide18.java — try it yourself</span>
+                    <span class="code-toggle">&#9660;</span>
+                </div>
+                <div class="code-block"><span class="keyword">class</span> <span class="class-name">Shape</span> { }
+<span class="keyword">class</span> <span class="class-name">Star</span> <span class="keyword">extends</span> <span class="class-name">Shape</span> {
+    <span class="keyword">void</span> <span class="method">draw</span>() { <span class="class-name">System</span>.out.<span class="method">println</span>(<span class="string">"Drawing a star"</span>); }
+}
+<span class="keyword">class</span> <span class="class-name">Circle</span> <span class="keyword">extends</span> <span class="class-name">Shape</span> {
+    <span class="keyword">void</span> <span class="method">draw</span>() { <span class="class-name">System</span>.out.<span class="method">println</span>(<span class="string">"Drawing a circle"</span>); }
+}
+<span class="keyword">public</span> <span class="keyword">class</span> <span class="class-name">Slide18</span> {
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="method">main</span>(<span class="class-name">String</span>[] args) {
+        <span class="class-name">Shape</span> someShape = <span class="keyword">new</span> <span class="class-name">Star</span>();   <span class="comment">// legal: a Star is a Shape</span>
+        someShape.<span class="method">draw</span>();               <span class="comment">// ?</span>
+    }
+}</div>
+            </div>
+            <div class="terminal">
+                <div class="terminal-header">
+                    <span class="terminal-dot r"></span>
+                    <span class="terminal-dot y"></span>
+                    <span class="terminal-dot g"></span>
+                    <span class="terminal-title">javac — Slide18.java (Shape without draw)</span>
+                </div>
+                <div class="terminal-body">Slide18.java:11: error: cannot find symbol
+        someShape.draw();               // ?
+                 ^
+  symbol:   method draw()
+  location: variable someShape of type Shape
+1 error</div>
+            </div>
+            <div class="slide-q">
+                <div class="slide-q-title">&#10067; Solutions?</div>
+                <button class="answer-btn" onclick="toggleAnswer(this)">&#128161; Show Answer &#9660;</button>
+                <div class="answer-box"><p style="margin:0;">Declare <code>draw()</code> in <code>Shape</code>, so that the compiler knows every Shape has it.
+                    But Shape cannot give a sensible drawing for an arbitrary shape, so <code>draw()</code> should be an
+                    <strong>abstract method</strong> — and then <code>Shape</code> must be an <strong>abstract class</strong>.
+                    That is version 2 below. (Casting, <code>((Star) someShape).draw();</code>, also compiles, but only works if you
+                    already know the object is a Star — it does not solve the general problem.)</p></div>
+            </div>
+
+            <h3 class="subsection-title"><span class="sub-badge">Version 2</span> Shape is abstract with an abstract draw() <span class="slide-tag">Slide 19</span></h3>
+            <div class="code-container">
+                <div class="code-header" onclick="toggleCode(this)">
+                    <span>&#128196; Slide 19 — abstract Shape, Star and Crescent</span>
+                    <span class="code-toggle">&#9660;</span>
+                </div>
+                <div class="code-block"><span class="abstract-kw">abstract</span> <span class="keyword">class</span> <span class="class-name">Shape</span> {
+    <span class="keyword">public</span> <span class="abstract-kw">abstract</span> <span class="keyword">void</span> <span class="method">draw</span>();
+}
+
+<span class="keyword">class</span> <span class="class-name">Star</span> <span class="keyword">extends</span> <span class="class-name">Shape</span> {
+    <span class="keyword">void</span> <span class="method">draw</span>() { ... }
+    ...
+}
+
+<span class="keyword">class</span> <span class="class-name">Crescent</span> <span class="keyword">extends</span> <span class="class-name">Shape</span> {
+    <span class="keyword">void</span> <span class="method">draw</span>() { ... }
+}</div>
+            </div>
+            <div class="slide-q">
+                <div class="slide-q-title">&#10067; Are the following codes correct now?</div>
+                <div style="border:2px solid #cbd5e1;border-radius:12px;padding:12px 20px;margin:12px 0;font-family:'Courier New',monospace;font-size:1.02em;line-height:2;">Shape someShape = new Star();<br>Shape someShape = new Shape();<br>someShape.draw();</div>
+                <button class="answer-btn" onclick="toggleAnswer(this)">&#128161; Show Answer &#9660;</button>
+                <div class="answer-box"><ul style="margin:0 0 0 22px;">
+                        <li><code>Shape someShape = new Star();</code> &mdash; <strong style="color:#15803d;">legal</strong>, because a Star
+                            is a Shape.</li>
+                        <li><code>Shape someShape = new Shape();</code> &mdash; <strong style="color:#dc2626;">no longer legal</strong>:
+                            Shape is abstract and cannot be instantiated.</li>
+                        <li><code>someShape.draw();</code> &mdash; <strong style="color:#15803d;">legal</strong>, because every actual
+                            instance must have a <code>draw()</code> method: the only objects a Shape variable can refer to are of
+                            concrete subclasses, and each of them was forced to implement <code>draw()</code>.</li>
+                    </ul></div>
+            </div>
+
+            <div class="warning-box">
+                <div class="warning-box-title">&#9888; One detail the slide skips — access modifier</div>
+                <p style="margin:0 0 6px;">On the slide, Star writes <code>void draw()</code> (package access) while Shape declares
+                <code>public abstract void draw()</code>. An overriding method cannot be <em>less</em> visible than the method it
+                overrides, so the exact slide code does not compile:</p>
+                <div class="terminal-body" style="border:1.5px solid #cbd5e1;border-radius:8px;">Slide19.java:3: error: draw() in Star cannot override draw() in Shape
+    void draw() { System.out.println("Drawing a star"); }
+         ^
+  attempting to assign weaker access privileges; was public
+1 error</div>
+                <p style="margin:6px 0 0;">Write <code>public void draw()</code> in the subclasses (as below).</p>
+            </div>
+            <div class="code-container">
+                <div class="code-header" onclick="toggleCode(this)">
+                    <span>&#128196; Slide19.java — complete, runnable version</span>
+                    <span class="code-toggle">&#9660;</span>
+                </div>
+                <div class="code-block"><span class="abstract-kw">abstract</span> <span class="keyword">class</span> <span class="class-name">Shape</span> {
+    <span class="keyword">public</span> <span class="abstract-kw">abstract</span> <span class="keyword">void</span> <span class="method">draw</span>();
+}
+<span class="keyword">class</span> <span class="class-name">Star</span> <span class="keyword">extends</span> <span class="class-name">Shape</span> {
+    <span class="keyword">public</span> <span class="keyword">void</span> <span class="method">draw</span>() { <span class="class-name">System</span>.out.<span class="method">println</span>(<span class="string">"Drawing a star"</span>); }
+}
+<span class="keyword">class</span> <span class="class-name">Crescent</span> <span class="keyword">extends</span> <span class="class-name">Shape</span> {
+    <span class="keyword">public</span> <span class="keyword">void</span> <span class="method">draw</span>() { <span class="class-name">System</span>.out.<span class="method">println</span>(<span class="string">"Drawing a crescent"</span>); }
+}
+<span class="keyword">public</span> <span class="keyword">class</span> <span class="class-name">Slide19</span> {
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="method">main</span>(<span class="class-name">String</span>[] args) {
+        <span class="class-name">Shape</span> someShape = <span class="keyword">new</span> <span class="class-name">Star</span>();   <span class="comment">// legal: a Star is a Shape</span>
+        someShape.<span class="method">draw</span>();               <span class="comment">// legal: every actual Shape object has draw()</span>
+        someShape = <span class="keyword">new</span> <span class="class-name">Crescent</span>();
+        someShape.<span class="method">draw</span>();
+        <span class="comment">// Shape other = new Shape();   // no longer legal: Shape is abstract</span>
+    }
+}</div>
+            </div>
+            <div class="terminal">
+                <div class="terminal-header">
+                    <span class="terminal-dot r"></span>
+                    <span class="terminal-dot y"></span>
+                    <span class="terminal-dot g"></span>
+                    <span class="terminal-title">Output — Slide19.java</span>
+                </div>
+                <div class="terminal-body">Drawing a star
+Drawing a crescent</div>
+            </div>
+
+        </div>
+
+        <!-- ════════════════════════════════════════════════
+             SECTION 3 — LEGAL / ILLEGAL (SLIDE 20)
+             ════════════════════════════════════════════════ -->
+        <div class="section">
+            <h2 class="section-title" id="section-3">
+                <span class="section-number">3</span>
+                Legal or Illegal? — GeometricObject Statements
+            </h2>
+
+            <p>Use <code>GeometricObject</code>, <code>Circle</code> and <code>Rectangle</code> from
+            <a href="03-abstract-methods.html#section-3">Lesson 3, Section 3</a>. Decide for each statement: legal or illegal?</p>
+            <div class="slide-q">
+                <div class="slide-q-title">&#10067; Legal or illegal? <span class="slide-tag">Slide 20</span></div>
+                <div style="border:2px solid #cbd5e1;border-radius:12px;padding:12px 20px;margin:12px 0;font-family:'Courier New',monospace;font-size:1.02em;line-height:2;">GeometricObject s = new GeometricObject();<br>GeometricObject s = new Circle(4);<br>double area = s.getArea();<br>Circle c = new Circle(3);<br>c.setColour(GREEN);<br>area = c.getArea();</div>
+                <button class="answer-btn" onclick="toggleAnswer(this)">&#128161; Show Answer &#9660;</button>
+                <div class="answer-box"><table style="width:100%;border-collapse:collapse;margin:6px 0;font-size:.95rem;"><tr><th style="text-align:left;border-bottom:2px solid #374151;padding:6px;">Statement</th><th style="border-bottom:2px solid #374151;padding:6px;">Verdict</th><th style="text-align:left;border-bottom:2px solid #374151;padding:6px;">Why</th></tr><tr><td style="padding:6px;border-bottom:1px solid #e5e7eb;"><code>GeometricObject s = new GeometricObject();</code></td><td style="padding:6px;border-bottom:1px solid #e5e7eb;text-align:center;white-space:nowrap;"><strong style="color:#dc2626;">&#10007; illegal</strong></td><td style="padding:6px;border-bottom:1px solid #e5e7eb;">GeometricObject is abstract; cannot be instantiated.</td></tr><tr><td style="padding:6px;border-bottom:1px solid #e5e7eb;"><code>GeometricObject s = new Circle(4);</code></td><td style="padding:6px;border-bottom:1px solid #e5e7eb;text-align:center;white-space:nowrap;"><strong style="color:#15803d;">&#10003; legal</strong></td><td style="padding:6px;border-bottom:1px solid #e5e7eb;">A Circle is a GeometricObject — an abstract class can be a variable type.</td></tr><tr><td style="padding:6px;border-bottom:1px solid #e5e7eb;"><code>double area = s.getArea();</code></td><td style="padding:6px;border-bottom:1px solid #e5e7eb;text-align:center;white-space:nowrap;"><strong style="color:#15803d;">&#10003; legal</strong></td><td style="padding:6px;border-bottom:1px solid #e5e7eb;">getArea() is declared (abstract) in GeometricObject; at run time Circle.getArea() runs.</td></tr><tr><td style="padding:6px;border-bottom:1px solid #e5e7eb;"><code>Circle c = new Circle(3);</code></td><td style="padding:6px;border-bottom:1px solid #e5e7eb;text-align:center;white-space:nowrap;"><strong style="color:#15803d;">&#10003; legal</strong></td><td style="padding:6px;border-bottom:1px solid #e5e7eb;">Circle is concrete.</td></tr><tr><td style="padding:6px;border-bottom:1px solid #e5e7eb;"><code>c.setColour(GREEN);</code></td><td style="padding:6px;border-bottom:1px solid #e5e7eb;text-align:center;white-space:nowrap;"><strong style="color:#15803d;">&#10003; legal</strong></td><td style="padding:6px;border-bottom:1px solid #e5e7eb;">A Circle inherits the concrete colour setter of its superclass (see the note below).</td></tr><tr><td style="padding:6px;border-bottom:1px solid #e5e7eb;"><code>area = c.getArea();</code></td><td style="padding:6px;border-bottom:1px solid #e5e7eb;text-align:center;white-space:nowrap;"><strong style="color:#15803d;">&#10003; legal</strong></td><td style="padding:6px;border-bottom:1px solid #e5e7eb;">Circle implements getArea().</td></tr></table>
+                    <p style="margin:8px 0 0;">Only the first statement is illegal (the slide marks it X; the other five &radic;).</p></div>
+            </div>
+            <div class="terminal">
+                <div class="terminal-header">
+                    <span class="terminal-dot r"></span>
+                    <span class="terminal-dot y"></span>
+                    <span class="terminal-dot g"></span>
+                    <span class="terminal-title">javac — the illegal statement</span>
+                </div>
+                <div class="terminal-body">Slide20Bad.java:3: error: GeometricObject is abstract; cannot be instantiated
+    GeometricObject s = new GeometricObject();
+                        ^
+1 error</div>
+            </div>
+            <div class="warning-box">
+                <div class="warning-box-title">&#9888; Two notes if you type these lines into one program</div>
+                <ul style="margin:4px 0 0 22px;">
+                    <li><strong>One statement at a time.</strong> Lines 1 and 2 both declare <code>s</code>; in one method the second
+                        declaration gives <em>"variable s is already defined in method main(String[])"</em>. Treat each line as a separate
+                        question (or write <code>s = new Circle(4);</code>).</li>
+                    <li><strong><code>setColour(GREEN)</code></strong> follows the slide-13 <code>Shape</code> style (an <code>int</code>
+                        colour and constants such as <code>BLACK</code>). Liang's GeometricObject spells it
+                        <code>setColor(String)</code>, so with the Lesson 3 code you write <code>c.setColor("green");</code>
+                        (with the exact slide text javac reports <em>"cannot find symbol"</em>). Either way the idea is the same:
+                        a concrete method inherited from the abstract superclass can be called on a Circle.</li>
+                </ul>
+            </div>
+            <div class="code-container">
+                <div class="code-header" onclick="toggleCode(this)">
+                    <span>&#128196; Slide20.java — the five legal statements, compiled and run</span>
+                    <span class="code-toggle">&#9660;</span>
+                </div>
+                <div class="code-block"><span class="keyword">public</span> <span class="keyword">class</span> <span class="class-name">Slide20</span> {
+  <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="method">main</span>(<span class="class-name">String</span>[] args) {
+    <span class="class-name">GeometricObject</span> s = <span class="keyword">new</span> <span class="class-name">Circle</span>(<span class="number">4</span>);   <span class="comment">// legal</span>
+    <span class="keyword">double</span> area = s.<span class="method">getArea</span>();           <span class="comment">// legal</span>
+    <span class="class-name">Circle</span> c = <span class="keyword">new</span> <span class="class-name">Circle</span>(<span class="number">3</span>);            <span class="comment">// legal</span>
+    c.<span class="method">setColor</span>(<span class="string">"green"</span>);                 <span class="comment">// Liang's spelling of the slide's c.setColour(GREEN)</span>
+    area = c.<span class="method">getArea</span>();                  <span class="comment">// legal</span>
+    <span class="class-name">System</span>.out.<span class="method">println</span>(area + <span class="string">" "</span> + c.<span class="method">getColor</span>());
+  }
+}</div>
+            </div>
+            <div class="terminal">
+                <div class="terminal-header">
+                    <span class="terminal-dot r"></span>
+                    <span class="terminal-dot y"></span>
+                    <span class="terminal-dot g"></span>
+                    <span class="terminal-title">Output — Slide20.java</span>
+                </div>
+                <div class="terminal-body">28.274333882308138 green</div>
+            </div>
+
+        </div>
+
+        <!-- ════════════════════════════════════════════════
+             SECTION 4 — CONCRETE -> ABSTRACT (SLIDE 21)
+             ════════════════════════════════════════════════ -->
+        <div class="section">
+            <h2 class="section-title" id="section-4">
+                <span class="section-number">4</span>
+                A Concrete Method Overridden to Be Abstract
+            </h2>
+
+            <div class="code-container">
+                <div class="code-header" onclick="toggleCode(this)">
+                    <span>&#128196; Slide 21 — as on the slide</span>
+                    <span class="code-toggle">&#9660;</span>
+                </div>
+                <div class="code-block"><span class="class-name">Class</span> <span class="class-name">Object</span> {
+    <span class="keyword">public</span> <span class="class-name">String</span> <span class="method">toString</span>() { ... }
+}
+
+<span class="class-name">Class</span> <span class="class-name">Animal</span> {
+    <span class="keyword">public</span> <span class="abstract-kw">abstract</span> <span class="class-name">String</span> <span class="method">toString</span>();
+}</div>
+            </div>
+            <div class="slide-q">
+                <div class="slide-q-title">&#10067; What happened? <span class="slide-tag">Slide 21</span></div>
+                <button class="answer-btn" onclick="toggleAnswer(this)">&#128161; Show Answer &#9660;</button>
+                <div class="answer-box"><p style="margin:0;"><code>Object.toString()</code> is a <strong>concrete</strong> method (it has a body).
+                    <code>Animal</code> (a subclass of Object) <strong>overrides it and declares it abstract</strong> — the body is
+                    "taken away". <strong>A subclass can override a method from its superclass to define it abstract.</strong>
+                    Because Animal now contains an abstract method, <strong>Animal must be defined abstract</strong>
+                    (<code>abstract class Animal</code>). On the slide <code>Class</code> is pseudo-code; in Java it is
+                    <code>class</code> (lower case) and Object already exists in <code>java.lang</code>.</p></div>
+            </div>
+            <div class="slide-q">
+                <div class="slide-q-title">&#10067; Why? For what reason?</div>
+                <button class="answer-btn" onclick="toggleAnswer(this)">&#128161; Show Answer &#9660;</button>
+                <div class="answer-box"><p style="margin:0;">This is <strong>rare</strong>, but useful <strong>when the implementation of the method in the
+                    superclass becomes invalid in the subclass</strong>. Object's <code>toString()</code> prints something like
+                    <code>Cat@1b6d3586</code>, which is useless for animals; making it abstract in Animal <strong>forces every
+                    concrete animal</strong> to write its own meaningful <code>toString()</code>. In this case the subclass
+                    (Animal) must be defined abstract.</p></div>
+            </div>
+            <div class="terminal">
+                <div class="terminal-header">
+                    <span class="terminal-dot r"></span>
+                    <span class="terminal-dot y"></span>
+                    <span class="terminal-dot g"></span>
+                    <span class="terminal-title">javac — Animal not declared abstract</span>
+                </div>
+                <div class="terminal-body">Animal.java:1: error: Animal is not abstract and does not override abstract method toString() in Animal
+class Animal {
+^
+1 error</div>
+            </div>
+            <div class="code-container">
+                <div class="code-header" onclick="toggleCode(this)">
+                    <span>&#128196; TestAnimals.java — correct Java version</span>
+                    <span class="code-toggle">&#9660;</span>
+                </div>
+                <div class="code-block"><span class="abstract-kw">abstract</span> <span class="keyword">class</span> <span class="class-name">Animal</span> {
+    <span class="keyword">@Override</span>
+    <span class="keyword">public</span> <span class="abstract-kw">abstract</span> <span class="class-name">String</span> <span class="method">toString</span>();   <span class="comment">// Object.toString() is concrete; here it becomes abstract</span>
+}
+<span class="keyword">class</span> <span class="class-name">Cat</span> <span class="keyword">extends</span> <span class="class-name">Animal</span> {
+    <span class="keyword">@Override</span>
+    <span class="keyword">public</span> <span class="class-name">String</span> <span class="method">toString</span>() { <span class="keyword">return</span> <span class="string">"Cat: says meow"</span>; }
+}
+<span class="keyword">class</span> <span class="class-name">Camel</span> <span class="keyword">extends</span> <span class="class-name">Animal</span> {
+    <span class="keyword">@Override</span>
+    <span class="keyword">public</span> <span class="class-name">String</span> <span class="method">toString</span>() { <span class="keyword">return</span> <span class="string">"Camel: lives in the desert"</span>; }
+}
+<span class="keyword">public</span> <span class="keyword">class</span> <span class="class-name">TestAnimals</span> {
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="method">main</span>(<span class="class-name">String</span>[] args) {
+        <span class="class-name">Animal</span>[] animals = { <span class="keyword">new</span> <span class="class-name">Cat</span>(), <span class="keyword">new</span> <span class="class-name">Camel</span>() };
+        <span class="keyword">for</span> (<span class="class-name">Animal</span> a : animals)
+            <span class="class-name">System</span>.out.<span class="method">println</span>(a);       <span class="comment">// println calls toString()</span>
+    }
+}</div>
+            </div>
+            <div class="terminal">
+                <div class="terminal-header">
+                    <span class="terminal-dot r"></span>
+                    <span class="terminal-dot y"></span>
+                    <span class="terminal-dot g"></span>
+                    <span class="terminal-title">Output — TestAnimals.java</span>
+                </div>
+                <div class="terminal-body">Cat: says meow
+Camel: lives in the desert</div>
+            </div>
+            <div class="terminal">
+                <div class="terminal-header">
+                    <span class="terminal-dot r"></span>
+                    <span class="terminal-dot y"></span>
+                    <span class="terminal-dot g"></span>
+                    <span class="terminal-title">javac — a subclass that forgets toString()  (class Dog extends Animal { })</span>
+                </div>
+                <div class="terminal-body">Dog.java:5: error: Dog is not abstract and does not override abstract method toString() in Animal
+class Dog extends Animal { }
+^
+1 error</div>
+            </div>
+            <div class="info-box">
+                <div class="info-box-title">&#128204; See also</div>
+                <p style="margin:0;">This is <a href="#section-1">Rule 8</a>, and the same trick is used in the
+                <a href="#section-5">Manager Technique</a> below.</p>
+            </div>
+
+        </div>
+
+        <!-- ════════════════════════════════════════════════
+             SECTION 7 — THE MANAGER TECHNIQUE
+             ════════════════════════════════════════════════ -->
+        <div class="section">
+            <h2 class="section-title" id="section-5">
+                <span class="section-number">5</span>
+                The Manager Technique — Forcing toString()
+            </h2>
+
+            <p>This is a real-world application of Rule 8 that every software manager should know.</p>
+
+            <div class="discussion-box">
+                <h4>&#128188; Real Scenario at a Software Company</h4>
+                <div class="speech-bubble">
+                    <div class="speech-who">&#128104;&#8205;&#128188; Software Manager:</div>
+                    <div class="speech-text">Every class in our system must have a meaningful <code>toString()</code> method.
+                    This is our company standard — no exceptions!</div>
+                </div>
+                <div class="speech-bubble" style="border-left-color:#3b82f6;">
+                    <div class="speech-who" style="color:#1d4ed8;">&#128100; Junior Developer:</div>
+                    <div class="speech-text">But manager, I always forget! When I create many classes, I sometimes miss it.
+                    Can you remind me?</div>
+                </div>
+                <div class="speech-bubble">
+                    <div class="speech-who">&#128104;&#8205;&#128188; Manager (smiling):</div>
+                    <div class="speech-text">I should not have to remind you every time. Let me make the
+                    <strong>compiler remind you instead!</strong></div>
+                </div>
+            </div>
+
+            <div class="code-container">
+                <div class="code-header" onclick="toggleCode(this)">
+                    <span>&#128188; The Manager Technique — Making toString() Mandatory</span>
+                    <span class="code-toggle">&#9660;</span>
+                </div>
+                <div class="code-block"><span class="comment">// ── Step 1: Create a base class that forces toString() ──────────</span>
+<span class="abstract-kw">abstract</span> <span class="keyword">class</span> <span class="class-name">BaseEntity</span> <span class="keyword">extends</span> <span class="class-name">Object</span> {
+
+    <span class="comment">// Take toString() from Object (which has a concrete version)</span>
+    <span class="comment">// and re-declare it as ABSTRACT — this forces ALL subclasses to implement it!</span>
+    <span class="keyword">@Override</span>
+    <span class="keyword">public</span> <span class="abstract-kw">abstract</span> <span class="class-name">String</span> <span class="method">toString</span>();
+}
+
+<span class="comment">// ── Step 2: All developers extend BaseEntity ─────────────────────</span>
+<span class="keyword">class</span> <span class="class-name">Student</span> <span class="keyword">extends</span> <span class="class-name">BaseEntity</span> {
+    <span class="keyword">private</span> <span class="class-name">String</span> name; <span class="keyword">private int</span> id;
+    <span class="keyword">public</span> <span class="class-name">Student</span>(<span class="class-name">String</span> name, <span class="keyword">int</span> id) { <span class="keyword">this</span>.name = name; <span class="keyword">this</span>.id = id; }
+
+    <span class="comment">// Compiler FORCES the developer to write this — they cannot skip it!</span>
+    <span class="keyword">@Override</span>
+    <span class="keyword">public</span> <span class="class-name">String</span> <span class="method">toString</span>() { <span class="keyword">return</span> <span class="string">"Student[id="</span> + id + <span class="string">", name="</span> + name + <span class="string">"]"</span>; }
+}
+
+<span class="keyword">class</span> <span class="class-name">Course</span> <span class="keyword">extends</span> <span class="class-name">BaseEntity</span> {
+    <span class="keyword">private</span> <span class="class-name">String</span> code; <span class="keyword">private int</span> credits;
+    <span class="keyword">public</span> <span class="class-name">Course</span>(<span class="class-name">String</span> code, <span class="keyword">int</span> credits) { <span class="keyword">this</span>.code = code; <span class="keyword">this</span>.credits = credits; }
+
+    <span class="keyword">@Override</span>
+    <span class="keyword">public</span> <span class="class-name">String</span> <span class="method">toString</span>() { <span class="keyword">return</span> <span class="string">"Course["</span> + code + <span class="string">", credits="</span> + credits + <span class="string">"]"</span>; }
+}
+
+<span class="comment">// ── What happens if someone forgets? ─────────────────────────────</span>
+<span class="keyword">class</span> <span class="class-name">LazyDeveloper</span> <span class="keyword">extends</span> <span class="class-name">BaseEntity</span> {
+    <span class="keyword">private</span> <span class="class-name">String</span> data;
+    <span class="comment">// ❌ COMPILE ERROR: "LazyDeveloper is not abstract and does not</span>
+    <span class="comment">//   override abstract method toString() in BaseEntity"</span>
+    <span class="comment">// The compiler forces them to implement it — manager is happy!</span>
+}</div>
+            </div>
+
+            <div class="success-box">
+                <div class="success-box-title">&#127881; Why This Is Powerful</div>
+                <ul style="margin-left:20px;line-height:2.1;">
+                    <li>The <strong>compiler</strong> becomes the manager's assistant — no reminders needed</li>
+                    <li>A developer <strong>cannot compile</strong> their class without providing a proper <code>toString()</code></li>
+                    <li>This technique combines <strong>Rule 6</strong> (abstract subclass of concrete superclass)
+                        and <strong>Rule 8</strong> (making a concrete method abstract)</li>
+                    <li>Used in real Java frameworks and large enterprise codebases</li>
+                </ul>
+            </div>
+        </div>
+
+
+
+    </div><!-- /content -->
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+        <a href="03-abstract-methods.html" class="nav-prev">&#8592; Lesson 3</a>
+        <a href="index.html" class="nav-practical">&#127968; Module 8 Home</a>
+        <a href="05-number-case-study.html" class="nav-next">Lesson 5 &#8594;</a>
+    </div>
+
+</div><!-- /container -->
+
+<!-- Footer -->
+<div class="footer">
+    <p><strong>Object-Oriented Programming &nbsp;&#183;&nbsp; Module 8: Abstract Classes &nbsp;&#183;&nbsp; Chapter 13</strong></p>
+    <p>Prepared by Dr. Almalawi</p>
+</div>
+
+<script>
+/* ─── Theme definitions ─────────────────────────── */
+const CODE_THEMES = {
+  black: {
+    bg:'#000000', text:'#ffffff', comment:'#a0aec0', keyword:'#ff79c6', cls:'#8be9fd', method:'#50fa7b', string:'#f1fa8c', number:'#bd93f9',
+    tmBg:'#0f172a', tmHeader:'#1e293b', tmBorder:'#334155', tmText:'#4ade80', tmTitle:'#94a3b8', projector: false
+  },
+  vscode: {
+    bg:'#1e1e1e', text:'#ffffff', comment:'#57c757', keyword:'#569cd6', cls:'#4ec9b0', method:'#dcdcaa', string:'#ce9178', number:'#b5cea8',
+    tmBg:'#1e1e1e', tmHeader:'#2d2d2d', tmBorder:'#444', tmText:'#ffffff', tmTitle:'#9cdcfe', projector: false
+  },
+  white: {
+    bg:'#ffffff', text:'#000000', comment:'#1d4ed8', keyword:'#dc2626', cls:'#16a34a', method:'#0369a1', string:'#b45309', number:'#7c3aed',
+    tmBg:'#f1f5f9', tmHeader:'#e2e8f0', tmBorder:'#94a3b8', tmText:'#000000', tmTitle:'#1d4ed8', projector: true
+  },
+  cream: {
+    bg:'#fefce8', text:'#000000', comment:'#1d4ed8', keyword:'#dc2626', cls:'#15803d', method:'#0369a1', string:'#b45309', number:'#7c3aed',
+    tmBg:'#fefce8', tmHeader:'#fef08a', tmBorder:'#a16207', tmText:'#000000', tmTitle:'#0369a1', projector: true
+  }
+};
+
+/* ─── Luminance helper ──────────────────────────── */
+function _lum(hex) {
+  hex = hex.replace('#','');
+  if (hex.length === 3) hex = hex.split('').map(c=>c+c).join('');
+  if (hex.length !== 6) return 0.5;
+  const r=parseInt(hex.slice(0,2),16), g=parseInt(hex.slice(2,4),16), b=parseInt(hex.slice(4,6),16);
+  return (0.299*r + 0.587*g + 0.114*b) / 255;
+}
+
+/* Turn a dark hex color into a soft light tint */
+function _lighten(hex) {
+  hex = hex.replace('#','');
+  if (hex.length === 3) hex = hex.split('').map(c=>c+c).join('');
+  const r=parseInt(hex.slice(0,2),16), g=parseInt(hex.slice(2,4),16), b=parseInt(hex.slice(4,6),16);
+  const lr=Math.round(r*.10+255*.90), lg=Math.round(g*.10+255*.90), lb=Math.round(b*.10+255*.90);
+  return '#'+[lr,lg,lb].map(c=>c.toString(16).padStart(2,'0')).join('');
+}
+
+/* ─── Inline-style projector scanner ───────────── */
+const _backup = new Map();
+
+function _applyProjectorInline(enable) {
+  if (enable) {
+    document.querySelectorAll('[style]').forEach(el => {
+      const orig = el.getAttribute('style');
+      _backup.set(el, orig);
+      let s = orig;
+      s = s.replace(/(background(?:-color)?\s*:[^;}"']*?)(#[0-9a-fA-F]{6}|#[0-9a-fA-F]{3})\b/gi,
+        (m, pre, hex) => _lum(hex) < 0.28 ? pre + _lighten(hex) : m);
+      s = s.replace(/((?:^|;|\s)color\s*:\s*)(#[0-9a-fA-F]{6}|#[0-9a-fA-F]{3})\b/gi,
+        (m, pre, hex) => _lum(hex) > 0.72 ? pre + '#1f2937' : m);
+      el.setAttribute('style', s);
+    });
+  } else {
+    _backup.forEach((orig, el) => el.setAttribute('style', orig));
+    _backup.clear();
+  }
+}
+
+/* ─── Main theme switcher ───────────────────────── */
+function setCodeTheme(name) {
+  const t = CODE_THEMES[name], r = document.documentElement.style;
+  r.setProperty('--cb-bg',      t.bg);        r.setProperty('--cb-text',    t.text);
+  r.setProperty('--cb-comment', t.comment);   r.setProperty('--cb-keyword', t.keyword);
+  r.setProperty('--cb-class',   t.cls);       r.setProperty('--cb-method',  t.method);
+  r.setProperty('--cb-string',  t.string);    r.setProperty('--cb-number',  t.number);
+  r.setProperty('--tm-bg',      t.tmBg);      r.setProperty('--tm-header',  t.tmHeader);
+  r.setProperty('--tm-border',  t.tmBorder);  r.setProperty('--tm-text',    t.tmText);
+  r.setProperty('--tm-title',   t.tmTitle);
+  const wasProjector = document.body.classList.contains('projector');
+  if (t.projector) {
+    if (!wasProjector) _applyProjectorInline(true);
+    document.body.classList.add('projector');
+  } else {
+    if (wasProjector) _applyProjectorInline(false);
+    document.body.classList.remove('projector');
+  }
+  document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('btn-' + name).classList.add('active');
+  document.getElementById('theme-panel').classList.remove('open');
+}
+
+function toggleCode(header) {
+    const block = header.nextElementSibling;
+    const toggle = header.querySelector('.code-toggle');
+    block.classList.toggle('collapsed');
+    toggle.classList.toggle('collapsed');
+    const label = header.querySelector('span:first-child');
+    if (label && label.textContent.includes('Code')) {
+        label.innerHTML = block.classList.contains('collapsed')
+            ? '&#128065;&#65038; Show Code'
+            : '&#128065;&#65038; Hide Code';
+    }
+}
+
+function toggleAnswer(btn) {
+    const ans = btn.nextElementSibling;
+    const isHidden = ans.style.display === 'none' || ans.style.display === '';
+    ans.style.display = isHidden ? 'block' : 'none';
+    btn.innerHTML = isHidden
+        ? '&#128065;&#65038; Hide Answer &#9650;'
+        : '&#128161; Show Answer &#9660;';
+    btn.style.background = isHidden ? '#dc2626' : '#059669';
+}
+</script>
+
+<!-- ── Code Theme Picker ── -->
+<div id="code-theme-picker">
+  <div id="theme-panel">
+    <div class="tp-label">🎨 Code Block Theme</div>
+    <button class="theme-btn active" onclick="setCodeTheme('black')" id="btn-black">
+      <span class="theme-swatch" style="background:#000;"></span> Black (Default)
+    </button>
+    <button class="theme-btn" onclick="setCodeTheme('vscode')" id="btn-vscode">
+      <span class="theme-swatch" style="background:#1e1e1e;"></span> VS Code Dark
+    </button>
+    <button class="theme-btn" onclick="setCodeTheme('white')" id="btn-white">
+      <span class="theme-swatch" style="background:#fff;border:1px solid #ccc;"></span> White (Projector)
+    </button>
+    <button class="theme-btn" onclick="setCodeTheme('cream')" id="btn-cream">
+      <span class="theme-swatch" style="background:#fefce8;border:1px solid #ccc;"></span> Cream (Projector)
+    </button>
+  </div>
+  <button id="theme-toggle-btn" onclick="document.getElementById('theme-panel').classList.toggle('open')">
+    🎨 Code Theme
+  </button>
+</div>
+
+</body>
+</html>
