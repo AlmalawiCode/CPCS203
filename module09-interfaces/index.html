@@ -428,6 +428,9 @@
                 <li><a href="#section-6">Interface as a Contract — Parallel Development</a></li>
                 <li><a href="#section-7">Multiple Interfaces — Java's Answer to Flexibility</a></li>
                 <li><a href="#section-8">Revisiting the Payroll Problem — The Promise We Made in Module 07</a></li>
+                <li><a href="#section-comparable">The Comparable Interface — Defining a Natural Order</a></li>
+                <li><a href="#section-choose">Abstract Class or Interface? — Choosing Wisely</a></li>
+                <li><a href="#section-design">Class Design Guidelines</a></li>
                 <li><a href="#section-9">Common Mistakes — Avoid These!</a></li>
                 <li><a href="#section-10">&#9733; Summary — What We Learned Today</a></li>
             </ol>
@@ -1001,7 +1004,7 @@ classDiagram
                 </p>
             </div>
 
-            <h3 class="subsection-title"><span class="sub-badge">Rules</span> &#128203; The Five Rules of an Interface</h3>
+            <h3 class="subsection-title"><span class="sub-badge">Rules</span> &#128203; The Rules of an Interface</h3>
 
             <div class="rule-card rule-violet">
                 <div class="rule-header">
@@ -1117,6 +1120,192 @@ list[<span class="number">2</span>] = <span class="keyword">new</span> <span cla
                     </div>
                 </div>
             </div>
+<div class="rule-card rule-violet">
+<div class="rule-header"><span class="rule-num">6</span> <span>The modifiers may be omitted &mdash; constants are used as <code class="code-inline">InterfaceName.CONSTANT</code></span></div>
+<div class="rule-body">
+
+<p>Because every data field in an interface is <strong>public static final</strong> and every method is <strong>public abstract</strong>,
+Java lets you leave these words out. The two interfaces below are <strong>exactly the same</strong>:</p>
+<div>
+<div><div class="code-container">
+<div class="code-header" onclick="toggleCode(this)"><span>&#128065;&#65038; Hide Code — T1 with all modifiers</span><span class="code-toggle">&#9660;</span></div>
+<div class="code-block"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="class-name">T1</span> {
+  <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> <span class="class-name">K</span> = <span class="number">1</span>;
+
+  <span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="method">p</span>();
+}</div>
+</div>
+</div>
+<div><div class="code-container">
+<div class="code-header" onclick="toggleCode(this)"><span>&#128065;&#65038; Hide Code — T1 &mdash; equivalent, modifiers omitted</span><span class="code-toggle">&#9660;</span></div>
+<div class="code-block"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="class-name">T1</span> {
+  <span class="keyword">int</span> <span class="class-name">K</span> = <span class="number">1</span>;
+
+  <span class="keyword">void</span> <span class="method">p</span>();
+}</div>
+</div>
+</div>
+</div>
+<p>A constant defined in an interface is reached with the syntax <code class="code-inline">InterfaceName.CONSTANT_NAME</code>, for example <code class="code-inline">T1.K</code>
+(prints <code class="code-inline">1</code>). Because it is <code class="code-inline">final</code>, the statement <code class="code-inline">T1.K = 5;</code> is a compile error:
+<em>cannot assign a value to static final variable K</em>.</p>
+</div>
+</div>
+
+<div class="rule-card rule-danger">
+<div class="rule-header"><span class="rule-num">7</span> <span>A class that implements a method of an interface must declare it <strong>public</strong></span></div>
+<div class="rule-body">
+
+<p>All methods in an interface are <strong>public</strong>. When a class implements the interface, the method must also be
+declared <code class="code-inline">public</code> &mdash; <strong>the visibility cannot be reduced</strong>. (Slide question: <em>&ldquo;Show the error in the following code.&rdquo;</em>)</p>
+<div class="code-container">
+<div class="code-header" onclick="toggleCode(this)"><span>&#128065;&#65038; Hide Code — Show the error</span><span class="code-toggle">&#9660;</span></div>
+<div class="code-block"><span class="keyword">interface</span> <span class="class-name">A</span> {
+  <span class="keyword">void</span> <span class="method">m1</span>();
+}
+
+<span class="keyword">class</span> <span class="class-name">B</span> <span class="keyword">implements</span> <span class="class-name">A</span> {
+  <span class="keyword">void</span> <span class="method">m1</span>() {      <span class="comment">// ❌ no modifier: weaker than public</span>
+    <span class="class-name">System</span>.out.<span class="method">println</span>(<span class="string">"m1"</span>);
+  }
+}</div>
+</div>
+
+<div class="terminal">
+<div class="terminal-header"><span class="terminal-dot r"></span><span class="terminal-dot y"></span><span class="terminal-dot g"></span><span class="terminal-title">javac output</span></div>
+<div class="terminal-body">B.java:6: error: m1() in B cannot implement m1() in A
+  void m1() {
+       ^
+  attempting to assign weaker access privileges; was public</div>
+</div>
+
+<p><strong>Fix:</strong> write <code class="code-inline">public void m1() { ... }</code> in class <code class="code-inline">B</code>.</p>
+</div>
+</div>
+
+<h3 class="subsection-title"><span class="sub-badge">Special Class</span> &#127991;&#65039; An Interface Is Treated Like a Special Class</h3>
+
+<p>An interface is treated like a <strong>special class</strong> in Java:</p>
+<ul style="margin-left:22px;">
+<li>Like an abstract class, you <strong>cannot create an instance</strong> of an interface with the <code class="code-inline">new</code> operator.</li>
+<li>In most other ways you use it like an abstract class: as the <strong>data type of a variable</strong>, as the <strong>result of casting</strong>, as a parameter type, and so on.</li>
+<li>The <strong>interface body</strong> contains declarations of ALL its methods; each declaration ends with a semicolon <code class="code-inline">;</code>
+and has <strong>no implementation</strong>.</li>
+</ul>
+
+<h3 class="subsection-title"><span class="sub-badge">How to Use</span> &#127922; Methods That Work With More Than One Class &mdash; the RuleSet Example</h3>
+
+<p>An interface lets you write code that works with <strong>many different classes</strong>. A board-game program can describe the
+rules of <em>any</em> game with one interface; each game supplies its own implementation:</p>
+<div class="code-container">
+<div class="code-header" onclick="toggleCode(this)"><span>&#128065;&#65038; Hide Code — RuleSet.java and its implementations</span><span class="code-toggle">&#9660;</span></div>
+<div class="code-block"><span class="keyword">interface</span> <span class="class-name">RuleSet</span> {
+  <span class="keyword">boolean</span> <span class="method">isLegal</span>(<span class="class-name">Move</span> m, <span class="class-name">Board</span> b);   <span class="comment">// no method bodies</span>
+  <span class="keyword">void</span> <span class="method">makeMove</span>(<span class="class-name">Move</span> m);
+}
+
+<span class="comment">// Every class that implements RuleSet must have these methods</span>
+<span class="keyword">class</span> <span class="class-name">CheckersRules</span> <span class="keyword">implements</span> <span class="class-name">RuleSet</span> {        <span class="comment">// one implementation</span>
+  <span class="keyword">public</span> <span class="keyword">boolean</span> <span class="method">isLegal</span>(<span class="class-name">Move</span> m, <span class="class-name">Board</span> b) { <span class="keyword">return</span> <span class="keyword">true</span>; }
+  <span class="keyword">public</span> <span class="keyword">void</span> <span class="method">makeMove</span>(<span class="class-name">Move</span> m) { <span class="class-name">System</span>.out.<span class="method">println</span>(<span class="string">"Checkers move made"</span>); }
+}
+<span class="keyword">class</span> <span class="class-name">ChessRules</span> <span class="keyword">implements</span> <span class="class-name">RuleSet</span> {           <span class="comment">// another implementation</span>
+  <span class="keyword">public</span> <span class="keyword">boolean</span> <span class="method">isLegal</span>(<span class="class-name">Move</span> m, <span class="class-name">Board</span> b) { <span class="keyword">return</span> <span class="keyword">true</span>; }
+  <span class="keyword">public</span> <span class="keyword">void</span> <span class="method">makeMove</span>(<span class="class-name">Move</span> m) { <span class="class-name">System</span>.out.<span class="method">println</span>(<span class="string">"Chess move made"</span>); }
+}
+<span class="comment">// class LinesOfActionRules implements RuleSet { ... }   // and another</span></div>
+</div>
+
+<table class="compare-table" style="margin-top:12px;">
+<tr><th>Statement</th><th>Legal?</th><th>Why</th></tr>
+<tr><td><code class="code-inline">RuleSet rulesOfThisGame = new RuleSet();</code></td><td>&#10060; Illegal</td><td>Like an abstract class, you cannot create an instance of an interface with <code class="code-inline">new</code> (<em>RuleSet is abstract; cannot be instantiated</em>).</td></tr>
+<tr><td><code class="code-inline">RuleSet rulesOfThisGame = new ChessRules();</code></td><td>&#9989; Legal</td><td>An interface can be the data type of a variable; a ChessRules object <strong>is a</strong> RuleSet.</td></tr>
+<tr><td><code class="code-inline">if (rulesOfThisGame.isLegal(m, b)) { rulesOfThisGame.makeMove(m); }</code></td><td>&#9989; Legal</td><td>Whatever kind of RuleSet object it is, it <strong>must</strong> have <code class="code-inline">isLegal</code> and <code class="code-inline">makeMove</code>.</td></tr>
+</table>
+
+<div class="terminal">
+<div class="terminal-header"><span class="terminal-dot r"></span><span class="terminal-dot y"></span><span class="terminal-dot g"></span><span class="terminal-title">Output — the same two lines run with ChessRules, then with CheckersRules</span></div>
+<div class="terminal-body">Chess move made
+Checkers move made</div>
+</div>
+
+<div class="key-box">
+<div class="key-box-title">&#128273; An interface is not part of the class hierarchy</div>
+<p style="margin:0;">Unrelated classes can implement the same interface.
+A class can also <strong>extend a class and implement an interface at the same time</strong>, e.g. the slide example
+<code class="code-inline">public class StockApplet extends Applet implements StockWatcher { ... }</code> &mdash; StockApplet <em>is an</em> Applet (its parent class)
+and also has the StockWatcher behaviour.</p>
+</div>
+
+
+<h3 class="subsection-title"><span class="sub-badge">Quick Check</span> &#10067; Slide Questions &mdash; Test Yourself</h3>
+
+<div class="info-box">
+<div class="info-box-title">&#10067; Questions</div>
+<p><strong>Q1.</strong> Suppose <code class="code-inline">A</code> is an interface. Can you create an instance using <code class="code-inline">new A()</code>?</p>
+<p><strong>Q2.</strong> Suppose <code class="code-inline">A</code> is an interface. Can you declare a reference variable <code class="code-inline">x</code> with type <code class="code-inline">A</code> like this: <code class="code-inline">A x;</code>?</p>
+<p><strong>Q3.</strong> Which of the following is a correct interface?</p>
+<div style="display:flex;gap:10px;flex-wrap:wrap;">
+<div style="flex:1;min-width:200px;"><div class="code-container">
+<div class="code-header" onclick="toggleCode(this)"><span>&#128065;&#65038; Hide Code — (a)</span><span class="code-toggle">&#9660;</span></div>
+<div class="code-block"><span class="keyword">interface</span> <span class="class-name">A</span> {
+  <span class="keyword">void</span> <span class="method">print</span>() { }
+}</div>
+</div>
+<div class="code-container">
+<div class="code-header" onclick="toggleCode(this)"><span>&#128065;&#65038; Hide Code — (b)</span><span class="code-toggle">&#9660;</span></div>
+<div class="code-block"><span class="keyword">abstract</span> <span class="keyword">interface</span> <span class="class-name">A</span> {
+  <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="method">print</span>() { }
+}</div>
+</div>
+</div>
+<div style="flex:1;min-width:200px;"><div class="code-container">
+<div class="code-header" onclick="toggleCode(this)"><span>&#128065;&#65038; Hide Code — (c)</span><span class="code-toggle">&#9660;</span></div>
+<div class="code-block"><span class="keyword">abstract</span> <span class="keyword">interface</span> <span class="class-name">A</span> {
+  <span class="method">print</span>();
+}</div>
+</div>
+<div class="code-container">
+<div class="code-header" onclick="toggleCode(this)"><span>&#128065;&#65038; Hide Code — (d)</span><span class="code-toggle">&#9660;</span></div>
+<div class="code-block"><span class="keyword">interface</span> <span class="class-name">A</span> {
+  <span class="keyword">void</span> <span class="method">print</span>();
+}</div>
+</div>
+</div>
+<div style="flex:1;min-width:200px;"><div class="code-container">
+<div class="code-header" onclick="toggleCode(this)"><span>&#128065;&#65038; Hide Code — (e)</span><span class="code-toggle">&#9660;</span></div>
+<div class="code-block"><span class="keyword">interface</span> <span class="class-name">A</span> {
+  <span class="keyword">default</span> <span class="keyword">void</span> <span class="method">print</span>() {
+  }
+}</div>
+</div>
+<div class="code-container">
+<div class="code-header" onclick="toggleCode(this)"><span>&#128065;&#65038; Hide Code — (f)</span><span class="code-toggle">&#9660;</span></div>
+<div class="code-block"><span class="keyword">interface</span> <span class="class-name">A</span> {
+  <span class="keyword">static</span> <span class="keyword">int</span> <span class="method">get</span>() {
+    <span class="keyword">return</span> <span class="number">0</span>;
+  }
+}</div>
+</div>
+</div>
+</div>
+</div>
+<div class="success-box">
+<div class="success-box-title">&#9989; Answers (checked with javac)</div>
+<p><strong>Q1. No.</strong> <code class="code-inline">new A()</code> gives the error <em>A is abstract; cannot be instantiated</em>.</p>
+<p><strong>Q2. Yes.</strong> An interface can be used as the type of a reference variable.</p>
+<p><strong>Q3.</strong></p>
+<ul style="margin-left:22px;">
+<li>(a) <strong>wrong</strong> &mdash; the <code class="code-inline">print()</code> method has a body (<em>interface abstract methods cannot have body</em>).</li>
+<li>(b) <strong>wrong</strong> &mdash; <code class="code-inline">print()</code> has a body; the word <code class="code-inline">abstract</code> before it (and before <code class="code-inline">interface</code>) is allowed but unnecessary.</li>
+<li>(c) <strong>wrong</strong> &mdash; <code class="code-inline">print()</code> has no return type; again <code class="code-inline">abstract</code> is allowed but unnecessary.</li>
+<li>(d) <strong>correct.</strong></li>
+<li>(e) <strong>correct</strong> &mdash; since JDK 8 an interface may contain <strong>default methods</strong> (methods with a body, marked <code class="code-inline">default</code>).</li>
+<li>(f) <strong>correct</strong> &mdash; since JDK 8 an interface may contain <strong>static methods</strong>.</li>
+</ul>
+<p style="margin-bottom:0;">So the full rule is: <em>an interface cannot implement any methods, except default and static methods (JDK 8 and later)</em>.
+In this course we write interfaces with constants and abstract methods only.</p>
+</div>
         </div>
 
         <!-- ════════════════════════════════════════════════
@@ -1345,6 +1534,121 @@ Grill or fry the chicken and serve hot.</div>
                     <li>Apple and Orange still inherit from Fruit — no duplication &#9989;</li>
                 </ul>
             </div>
+
+<h3 class="subsection-title"><span class="sub-badge">Textbook Version</span> &#128214; The Edible Example as Liang Writes It (from the slides)</h3>
+
+<p>The slides use a slightly different version of the same example: <code class="code-inline">Animal</code> is <strong>abstract</strong> with an abstract
+<code class="code-inline">sound()</code> method, and <code class="code-inline">Fruit</code> is an <strong>abstract class that implements Edible</strong> &mdash; so Apple and Orange
+inherit the Edible behaviour through Fruit. Notice the use of <code class="code-inline">instanceof</code> and casting to an interface type.</p>
+<div class="code-container">
+<div class="code-header" onclick="toggleCode(this)"><span>&#128065;&#65038; Hide Code — TestEdible.java (textbook version)</span><span class="code-toggle">&#9660;</span></div>
+<div class="code-block"><span class="keyword">public</span> <span class="keyword">class</span> <span class="class-name">TestEdible</span> {
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="method">main</span>(<span class="class-name">String</span>[] args) {
+        <span class="class-name">Object</span>[] objects = {<span class="keyword">new</span> <span class="class-name">Tiger</span>(), <span class="keyword">new</span> <span class="class-name">Chicken</span>(), <span class="keyword">new</span> <span class="class-name">Apple</span>()};
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; objects.length; i++) {
+            <span class="keyword">if</span> (objects[i] <span class="keyword">instanceof</span> <span class="class-name">Edible</span>)
+                <span class="class-name">System</span>.out.<span class="method">println</span>(((<span class="class-name">Edible</span>)objects[i]).<span class="method">howToEat</span>());
+
+            <span class="keyword">if</span> (objects[i] <span class="keyword">instanceof</span> <span class="class-name">Animal</span>) {
+                <span class="class-name">System</span>.out.<span class="method">println</span>(((<span class="class-name">Animal</span>)objects[i]).<span class="method">sound</span>());
+            }
+        }
+    }
+}
+
+<span class="keyword">abstract</span> <span class="keyword">class</span> <span class="class-name">Animal</span> {
+    <span class="comment">/** Return animal sound */</span>
+    <span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class-name">String</span> <span class="method">sound</span>();
+}
+
+<span class="keyword">class</span> <span class="class-name">Chicken</span> <span class="keyword">extends</span> <span class="class-name">Animal</span> <span class="keyword">implements</span> <span class="class-name">Edible</span> {
+    <span class="annotation">@Override</span>
+    <span class="keyword">public</span> <span class="class-name">String</span> <span class="method">howToEat</span>() {
+        <span class="keyword">return</span> <span class="string">"Chicken: Fry it"</span>;
+    }
+
+    <span class="annotation">@Override</span>
+    <span class="keyword">public</span> <span class="class-name">String</span> <span class="method">sound</span>() {
+        <span class="keyword">return</span> <span class="string">"Chicken: cock-a-doodle-doo"</span>;
+    }
+}
+
+<span class="keyword">class</span> <span class="class-name">Tiger</span> <span class="keyword">extends</span> <span class="class-name">Animal</span> {
+    <span class="annotation">@Override</span>
+    <span class="keyword">public</span> <span class="class-name">String</span> <span class="method">sound</span>() {
+        <span class="keyword">return</span> <span class="string">"Tiger: RROOAARR"</span>;
+    }
+}
+
+<span class="keyword">abstract</span> <span class="keyword">class</span> <span class="class-name">Fruit</span> <span class="keyword">implements</span> <span class="class-name">Edible</span> {
+    <span class="comment">// Data fields, constructors, and methods omitted here</span>
+}
+
+<span class="keyword">class</span> <span class="class-name">Apple</span> <span class="keyword">extends</span> <span class="class-name">Fruit</span> {
+    <span class="annotation">@Override</span>
+    <span class="keyword">public</span> <span class="class-name">String</span> <span class="method">howToEat</span>() {
+        <span class="keyword">return</span> <span class="string">"Apple: Make apple cider"</span>;
+    }
+}
+
+<span class="keyword">class</span> <span class="class-name">Orange</span> <span class="keyword">extends</span> <span class="class-name">Fruit</span> {
+    <span class="annotation">@Override</span>
+    <span class="keyword">public</span> <span class="class-name">String</span> <span class="method">howToEat</span>() {
+        <span class="keyword">return</span> <span class="string">"Orange: Make orange juice"</span>;
+    }
+}
+
+
+<span class="keyword">interface</span> <span class="class-name">Edible</span> {
+    <span class="comment">/** Describe how to eat */</span>
+    <span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class-name">String</span> <span class="method">howToEat</span>();
+}</div>
+</div>
+
+<div class="terminal">
+<div class="terminal-header"><span class="terminal-dot r"></span><span class="terminal-dot y"></span><span class="terminal-dot g"></span><span class="terminal-title">Output — TestEdible.java (textbook version)</span></div>
+<div class="terminal-body">Tiger: RROOAARR
+Chicken: Fry it
+Chicken: cock-a-doodle-doo
+Apple: Make apple cider</div>
+</div>
+
+<div class="info-box">
+<div class="info-box-title">&#128269; Why this output?</div>
+<ul>
+<li>Tiger is an Animal but <strong>not</strong> Edible &rarr; only its sound is printed.</li>
+<li>Chicken is both Edible and an Animal &rarr; both <code class="code-inline">howToEat()</code> and <code class="code-inline">sound()</code> are printed.</li>
+<li>Apple is Edible (through Fruit) but not an Animal &rarr; only <code class="code-inline">howToEat()</code> is printed.</li>
+<li><code class="code-inline">((Edible)objects[i]).howToEat()</code>: the element is declared <code class="code-inline">Object</code>, so we must cast it to <code class="code-inline">Edible</code> before calling <code class="code-inline">howToEat()</code>.</li>
+</ul>
+</div>
+<h3 class="subsection-title"><span class="sub-badge">Quick Check</span> &#10067; Slide Question &mdash; Compile? Run? Output?</h3>
+
+<div class="info-box">
+<div class="info-box-title">&#10067; Using the textbook classes, and assuming <code class="code-inline">class LittleChicken extends Chicken { }</code>:
+for each item, does the code compile and run? If not, give the reason. If it runs, give the output.</div>
+<table class="compare-table" style="margin-top:12px;">
+<tr><th></th><th>Code</th></tr>
+<tr><td>a</td><td><code class="code-inline">Edible x = new Tiger();</code></td></tr>
+<tr><td>b</td><td><code class="code-inline">Edible x = new Chicken();</code><br><code class="code-inline">System.out.println(x.sound());</code></td></tr>
+<tr><td>c</td><td><code class="code-inline">Edible x = new Chicken();</code><br><code class="code-inline">System.out.println((Animal)x.sound());</code></td></tr>
+<tr><td>d</td><td><code class="code-inline">Edible x = new Chicken();</code><br><code class="code-inline">System.out.println(((Animal)x).sound());</code></td></tr>
+<tr><td>e</td><td><code class="code-inline">Edible x = new LittleChicken();</code><br><code class="code-inline">System.out.println(x.howToEat());</code></td></tr>
+<tr><td>f</td><td><code class="code-inline">LittleChicken x = new Chicken();</code></td></tr>
+</table>
+
+</div>
+<div class="success-box">
+<div class="success-box-title">&#9989; Answers (checked with javac)</div>
+<ul style="margin-left:22px;">
+<li><strong>a. Compile error.</strong> Tiger is not Edible (<em>incompatible types: Tiger cannot be converted to Edible</em>).</li>
+<li><strong>b. Compile error.</strong> x is declared <code class="code-inline">Edible</code>, and Edible does not have the <code class="code-inline">sound()</code> method.</li>
+<li><strong>c. Compile error.</strong> <code class="code-inline">x.sound()</code> is performed <em>before</em> the cast, and x (an Edible) does not have <code class="code-inline">sound()</code>.</li>
+<li><strong>d. Runs</strong> &rarr; prints <code class="code-inline">Chicken: cock-a-doodle-doo</code> (the cast happens first because of the extra parentheses).</li>
+<li><strong>e. Runs</strong> &rarr; prints <code class="code-inline">Chicken: Fry it</code> (LittleChicken inherits <code class="code-inline">howToEat()</code> from Chicken).</li>
+<li><strong>f. Compile error.</strong> A Chicken is not a LittleChicken; a superclass object cannot be assigned to a subclass variable.</li>
+</ul>
+</div>
         </div>
 
         <!-- ════════════════════════════════════════════════
@@ -1915,6 +2219,121 @@ Chicken → diabetic-friendly: true
                     &#9989; The <code class="code-inline">Edible[]</code> array now only accepts true food — the type system <em>protects us</em>.
                 </p>
             </div>
+
+<h3 class="subsection-title"><span class="sub-badge">Not Multiple Inheritance</span> &#8986; StopWatch + AlarmClock = MultiFunctionWatch</h3>
+
+<p>A class is allowed to implement <strong>multiple interfaces</strong>. A watch can be both a stopwatch and an alarm clock:</p>
+<div class="code-container">
+<div class="code-header" onclick="toggleCode(this)"><span>&#128065;&#65038; Hide Code — MultiFunctionWatch.java</span><span class="code-toggle">&#9660;</span></div>
+<div class="code-block"><span class="keyword">interface</span> <span class="class-name">StopWatch</span>  { <span class="keyword">void</span> <span class="method">start</span>(); <span class="keyword">void</span> <span class="method">stop</span>(); }
+<span class="keyword">interface</span> <span class="class-name">AlarmClock</span> { <span class="keyword">void</span> <span class="method">setTime</span>(<span class="keyword">int</span> h, <span class="keyword">int</span> m); <span class="keyword">void</span> <span class="method">setAlarm</span>(<span class="keyword">int</span> h, <span class="keyword">int</span> m); }
+
+<span class="keyword">class</span> <span class="class-name">MultiFunctionWatch</span> <span class="keyword">implements</span> <span class="class-name">StopWatch</span>, <span class="class-name">AlarmClock</span> {
+  <span class="keyword">public</span> <span class="keyword">void</span> <span class="method">start</span>() { <span class="class-name">System</span>.out.<span class="method">println</span>(<span class="string">"Stopwatch started"</span>); }
+  <span class="keyword">public</span> <span class="keyword">void</span> <span class="method">stop</span>()  { <span class="class-name">System</span>.out.<span class="method">println</span>(<span class="string">"Stopwatch stopped"</span>); }
+  <span class="keyword">public</span> <span class="keyword">void</span> <span class="method">setTime</span>(<span class="keyword">int</span> h, <span class="keyword">int</span> m)  { <span class="class-name">System</span>.out.<span class="method">println</span>(<span class="string">"Time set to "</span> + h + <span class="string">":"</span> + m); }
+  <span class="keyword">public</span> <span class="keyword">void</span> <span class="method">setAlarm</span>(<span class="keyword">int</span> h, <span class="keyword">int</span> m) { <span class="class-name">System</span>.out.<span class="method">println</span>(<span class="string">"Alarm set to "</span> + h + <span class="string">":"</span> + m); }
+}
+
+<span class="comment">// in main:</span>
+<span class="class-name">MultiFunctionWatch</span> w = <span class="keyword">new</span> <span class="class-name">MultiFunctionWatch</span>();
+<span class="class-name">StopWatch</span> sw = w;   <span class="class-name">AlarmClock</span> ac = w;      <span class="comment">// one object, two interface types</span>
+sw.<span class="method">start</span>();  ac.<span class="method">setAlarm</span>(<span class="number">5</span>, <span class="number">30</span>);  sw.<span class="method">stop</span>();</div>
+</div>
+
+<div class="terminal">
+<div class="terminal-header"><span class="terminal-dot r"></span><span class="terminal-dot y"></span><span class="terminal-dot g"></span><span class="terminal-title">Output</span></div>
+<div class="terminal-body">Stopwatch started
+Alarm set to 5:30
+Stopwatch stopped</div>
+</div>
+
+<div class="key-box">
+<div class="key-box-title">&#128273; Q: Why is this not the same as multiple inheritance?</div>
+<p style="margin:0;"><strong>A: There is no implementation to inherit.</strong>
+The interfaces only list method headers; the class writes every body itself. The same idea lets a food class implement both
+<code class="code-inline">Edible</code> (<code class="code-inline">howToEat()</code>) and <code class="code-inline">Cookable</code> (<code class="code-inline">howToCook()</code>).</p>
+</div>
+
+
+<h3 class="subsection-title"><span class="sub-badge">Conflict Resolution</span> &#9878;&#65039; When Two Interfaces Use the Same Name</h3>
+
+<p>A <strong>conflict</strong> can occur when a class implements several interfaces that contain the <strong>same constant name</strong>
+or <strong>methods with the same name</strong>. Java resolves it with these rules (every row was checked with javac 21):</p>
+<table class="compare-table" style="margin-top:12px;">
+<tr><th>Situation</th><th>Example</th><th>Result</th></tr>
+<tr><td>Same constant name (same or different value)</td><td><code class="code-inline">interface a{int x=10;}</code><br><code class="code-inline">interface b{int x=100;}</code><br><code class="code-inline">class test implements a,b{ }</code></td><td>The class compiles. Writing <strong><code class="code-inline">a.x</code></strong> or <strong><code class="code-inline">b.x</code></strong> works; writing just <code class="code-inline">x</code> is a <strong>compile error</strong>: <em>reference to x is ambiguous</em>.</td></tr>
+<tr><td>Same signature, same return type</td><td><code class="code-inline">void m1();</code> in a and <code class="code-inline">void m1();</code> in b</td><td>&#9989; No problem &mdash; it is the <strong>same method</strong>; one implementation serves both.</td></tr>
+<tr><td>Same signature, different return type</td><td><code class="code-inline">void m1();</code> in a and <code class="code-inline">int m1();</code> in b</td><td>&#10060; <strong>Compile error</strong> &mdash; no single method can implement both.</td></tr>
+<tr><td>Different signatures</td><td><code class="code-inline">void m1();</code> in a and <code class="code-inline">void m1(int n);</code> in b</td><td>&#9989; <strong>Overloading</strong> &mdash; the class implements both methods.</td></tr>
+</table>
+
+<div>
+<div><div class="code-container">
+<div class="code-header" onclick="toggleCode(this)"><span>&#128065;&#65038; Hide Code — Same constant, same value</span><span class="code-toggle">&#9660;</span></div>
+<div class="code-block"><span class="keyword">interface</span> a{<span class="keyword">int</span> x=<span class="number">10</span>;}
+<span class="keyword">interface</span> b{<span class="keyword">int</span> x=<span class="number">10</span>;}
+<span class="keyword">public</span> <span class="keyword">class</span> test <span class="keyword">implements</span> a,b{
+  <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="method">main</span>(<span class="class-name">String</span>[] args){
+    <span class="class-name">System</span>.out.<span class="method">println</span>(a.x);   <span class="comment">// ✅ 10 — we named the interface</span>
+    <span class="class-name">System</span>.out.<span class="method">println</span>(b.x);   <span class="comment">// ✅ 10 — we named the interface</span>
+    <span class="comment">// System.out.println(x);  // ❌ reference to x is ambiguous</span>
+  }
+}</div>
+</div>
+</div>
+<div><div class="code-container">
+<div class="code-header" onclick="toggleCode(this)"><span>&#128065;&#65038; Hide Code — Same constant, different values</span><span class="code-toggle">&#9660;</span></div>
+<div class="code-block"><span class="keyword">interface</span> a{<span class="keyword">int</span> x=<span class="number">10</span>;}
+<span class="keyword">interface</span> b{<span class="keyword">int</span> x=<span class="number">100</span>;}
+<span class="keyword">public</span> <span class="keyword">class</span> test <span class="keyword">implements</span> a,b{
+  <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="method">main</span>(<span class="class-name">String</span>[] args){
+    <span class="class-name">System</span>.out.<span class="method">println</span>(a.x);   <span class="comment">// ✅ 10</span>
+    <span class="class-name">System</span>.out.<span class="method">println</span>(b.x);   <span class="comment">// ✅ 100</span>
+    <span class="comment">// System.out.println(x);  // ❌ reference to x is ambiguous</span>
+  }
+}</div>
+</div>
+</div>
+</div>
+<div class="warning-box">
+<div class="warning-box-title">&#9888;&#65038; Careful with the slide summary</div>
+<p style="margin:0;">One slide says &ldquo;same constants with different values: compile error&rdquo;.
+To be exact: the class itself compiles; the error appears only when you use the <strong>unqualified</strong> name <code class="code-inline">x</code>
+&mdash; and that happens even when the two values are the same. Always write <code class="code-inline">InterfaceName.CONSTANT</code>.</p>
+</div>
+
+<div class="code-container">
+<div class="code-header" onclick="toggleCode(this)"><span>&#128065;&#65038; Hide Code — Methods: same return type vs different signatures</span><span class="code-toggle">&#9660;</span></div>
+<div class="code-block"><span class="keyword">interface</span> a{ <span class="keyword">void</span> <span class="method">m1</span>(); }
+<span class="keyword">interface</span> b{ <span class="keyword">void</span> <span class="method">m1</span>(<span class="keyword">int</span> n); }
+<span class="keyword">class</span> test <span class="keyword">implements</span> a, b {
+  <span class="keyword">public</span> <span class="keyword">void</span> <span class="method">m1</span>()      { <span class="class-name">System</span>.out.<span class="method">println</span>(<span class="string">"m1()"</span>); }
+  <span class="keyword">public</span> <span class="keyword">void</span> <span class="method">m1</span>(<span class="keyword">int</span> n) { <span class="class-name">System</span>.out.<span class="method">println</span>(<span class="string">"m1("</span> + n + <span class="string">")"</span>); }
+}
+<span class="comment">// test t = new test();  t.m1();  t.m1(7);   prints m1()  then  m1(7)</span></div>
+</div>
+
+
+<h3 class="subsection-title"><span class="sub-badge">No Single Root</span> &#127795; Interfaces Can Extend Several Interfaces</h3>
+
+<p>All classes share a single root, the <code class="code-inline">Object</code> class, but there is <strong>no single root for interfaces</strong>.
+A class can extend only one class, but an <strong>interface can extend several interfaces</strong>:</p>
+<div class="code-container">
+<div class="code-header" onclick="toggleCode(this)"><span>&#128065;&#65038; Hide Code — Class2 and its interfaces</span><span class="code-toggle">&#9660;</span></div>
+<div class="code-block"><span class="keyword">interface</span> <span class="class-name">Interface1_1</span> { }
+<span class="keyword">interface</span> <span class="class-name">Interface1_2</span> { }
+<span class="keyword">interface</span> <span class="class-name">Interface1</span> <span class="keyword">extends</span> <span class="class-name">Interface1_1</span>, <span class="class-name">Interface1_2</span> { }   <span class="comment">// extends TWO interfaces</span>
+<span class="keyword">interface</span> <span class="class-name">Interface2_1</span> { }
+<span class="keyword">interface</span> <span class="class-name">Interface2_2</span> { }
+
+<span class="keyword">class</span> <span class="class-name">Class1</span> <span class="keyword">implements</span> <span class="class-name">Interface1</span> { }
+<span class="keyword">class</span> <span class="class-name">Class2</span> <span class="keyword">extends</span> <span class="class-name">Class1</span> <span class="keyword">implements</span> <span class="class-name">Interface2_1</span>, <span class="class-name">Interface2_2</span> { }</div>
+</div>
+
+<p>If <code class="code-inline">c</code> is an instance of <code class="code-inline">Class2</code>, then <code class="code-inline">c</code> is <strong>also</strong> an instance of <code class="code-inline">Object</code>, <code class="code-inline">Class1</code>,
+<code class="code-inline">Interface1</code>, <code class="code-inline">Interface1_1</code>, <code class="code-inline">Interface1_2</code>, <code class="code-inline">Interface2_1</code> and <code class="code-inline">Interface2_2</code> &mdash; all seven
+<code class="code-inline">instanceof</code> tests print <code class="code-inline">true</code>.</p>
         </div>
 
         <!-- ════════════════════════════════════════════════
@@ -2173,11 +2592,429 @@ Employee[Sara]       SAR 5000.00</div>
         </div>
 
         <!-- ════════════════════════════════════════════════
+             NEW SECTION — THE COMPARABLE INTERFACE (from the slides)
+             ════════════════════════════════════════════════ -->
+        <div class="section">
+            <h2 class="section-title" id="section-comparable">
+                <span class="section-number">8</span>
+                The Comparable Interface &mdash; Defining a Natural Order
+            </h2>
+<p>How do we sort students by GPA, rectangles by area, or names alphabetically? Java answers with one small interface from the
+<code class="code-inline">java.lang</code> package: <strong>Comparable</strong>. It defines the <code class="code-inline">compareTo</code> method for comparing objects.</p>
+<div class="code-container">
+<div class="code-header" onclick="toggleCode(this)"><span>&#128065;&#65038; Hide Code — java.lang.Comparable</span><span class="code-toggle">&#9660;</span></div>
+<div class="code-block"><span class="comment">// This interface is defined in</span>
+<span class="comment">// java.lang package</span>
+<span class="keyword">package</span> java.lang;
+
+<span class="keyword">public</span> <span class="keyword">interface</span> <span class="class-name">Comparable</span>&lt;<span class="class-name">E</span>&gt; {
+  <span class="keyword">public</span> <span class="keyword">int</span> <span class="method">compareTo</span>(<span class="class-name">E</span> o);
+}</div>
+</div>
+
+<div class="key-box">
+<div class="key-box-title">&#128273; What compareTo returns</div>
+<p style="margin:0;"><code class="code-inline">a.compareTo(b)</code> determines the order of <strong>this</strong> object (<code class="code-inline">a</code>) with the specified object <code class="code-inline">b</code>. It returns
+<strong>a negative integer</strong> if a is less than b, <strong>zero</strong> if they are equal, and <strong>a positive integer</strong> if a is greater than b.
+Comparable is a <strong>generic interface</strong>: <code class="code-inline">&lt;E&gt;</code> is replaced by the type being compared.</p>
+</div>
+
+
+<h3 class="subsection-title"><span class="sub-badge">Java Library</span> &#128218; Who Implements Comparable?</h3>
+
+<p>Each wrapper class overrides the <code class="code-inline">toString</code> and <code class="code-inline">equals</code> methods of <code class="code-inline">Object</code>. In addition, <strong>all numeric wrapper
+classes and the Character class implement Comparable</strong>, so <code class="code-inline">compareTo</code> is implemented in them. So do
+<code class="code-inline">String</code>, <code class="code-inline">BigInteger</code>, <code class="code-inline">BigDecimal</code> and <code class="code-inline">java.util.Date</code>:</p>
+<div>
+<div><div class="code-container">
+<div class="code-header" onclick="toggleCode(this)"><span>&#128065;&#65038; Hide Code — Integer and BigInteger</span><span class="code-toggle">&#9660;</span></div>
+<div class="code-block"><span class="keyword">public</span> <span class="keyword">class</span> <span class="class-name">Integer</span> <span class="keyword">extends</span> <span class="class-name">Number</span>
+    <span class="keyword">implements</span> <span class="class-name">Comparable</span>&lt;<span class="class-name">Integer</span>&gt; {
+  <span class="comment">// class body omitted</span>
+
+  <span class="annotation">@Override</span>
+  <span class="keyword">public</span> <span class="keyword">int</span> <span class="method">compareTo</span>(<span class="class-name">Integer</span> o) {
+    <span class="comment">// Implementation omitted</span>
+  }
+}
+
+<span class="keyword">public</span> <span class="keyword">class</span> <span class="class-name">BigInteger</span> <span class="keyword">extends</span> <span class="class-name">Number</span>
+    <span class="keyword">implements</span> <span class="class-name">Comparable</span>&lt;<span class="class-name">BigInteger</span>&gt; {
+  <span class="comment">// class body omitted</span>
+
+  <span class="annotation">@Override</span>
+  <span class="keyword">public</span> <span class="keyword">int</span> <span class="method">compareTo</span>(<span class="class-name">BigInteger</span> o) {
+    <span class="comment">// Implementation omitted</span>
+  }
+}</div>
+</div>
+</div>
+<div><div class="code-container">
+<div class="code-header" onclick="toggleCode(this)"><span>&#128065;&#65038; Hide Code — String and Date</span><span class="code-toggle">&#9660;</span></div>
+<div class="code-block"><span class="keyword">public</span> <span class="keyword">class</span> <span class="class-name">String</span> <span class="keyword">extends</span> <span class="class-name">Object</span>
+    <span class="keyword">implements</span> <span class="class-name">Comparable</span>&lt;<span class="class-name">String</span>&gt; {
+  <span class="comment">// class body omitted</span>
+
+  <span class="annotation">@Override</span>
+  <span class="keyword">public</span> <span class="keyword">int</span> <span class="method">compareTo</span>(<span class="class-name">String</span> o) {
+    <span class="comment">// Implementation omitted</span>
+  }
+}
+
+<span class="keyword">public</span> <span class="keyword">class</span> <span class="class-name">Date</span> <span class="keyword">extends</span> <span class="class-name">Object</span>
+    <span class="keyword">implements</span> <span class="class-name">Comparable</span>&lt;<span class="class-name">Date</span>&gt; {
+  <span class="comment">// class body omitted</span>
+
+  <span class="annotation">@Override</span>
+  <span class="keyword">public</span> <span class="keyword">int</span> <span class="method">compareTo</span>(<span class="class-name">Date</span> o) {
+    <span class="comment">// Implementation omitted</span>
+  }
+}</div>
+</div>
+</div>
+</div>
+<div class="info-box">
+<div class="info-box-title">&#10067; Slide Question &mdash; What is the output?</div>
+<div class="code-container">
+<div class="code-header" onclick="toggleCode(this)"><span>&#128065;&#65038; Hide Code — compareTo calls</span><span class="code-toggle">&#9660;</span></div>
+<div class="code-block"><span class="class-name">System</span>.out.<span class="method">println</span>(<span class="keyword">new</span> <span class="class-name">Integer</span>(<span class="number">3</span>).<span class="method">compareTo</span>(<span class="keyword">new</span> <span class="class-name">Integer</span>(<span class="number">5</span>)));
+<span class="class-name">System</span>.out.<span class="method">println</span>(<span class="string">"ABC"</span>.<span class="method">compareTo</span>(<span class="string">"ABC"</span>));
+java.util.<span class="class-name">Date</span> date1 = <span class="keyword">new</span> java.util.<span class="class-name">Date</span>(<span class="number">2013</span>, <span class="number">1</span>, <span class="number">1</span>);
+java.util.<span class="class-name">Date</span> date2 = <span class="keyword">new</span> java.util.<span class="class-name">Date</span>(<span class="number">2012</span>, <span class="number">1</span>, <span class="number">1</span>);
+<span class="class-name">System</span>.out.<span class="method">println</span>(date1.<span class="method">compareTo</span>(date2));</div>
+</div>
+
+</div>
+<div class="terminal">
+<div class="terminal-header"><span class="terminal-dot r"></span><span class="terminal-dot y"></span><span class="terminal-dot g"></span><span class="terminal-title">Output (checked with javac)</span></div>
+<div class="terminal-body">-1
+0
+1</div>
+</div>
+
+<p><code class="code-inline">-1</code> since 3 is less than 5 &middot; <code class="code-inline">0</code> since "ABC" equals "ABC" &middot; <code class="code-inline">1</code> since date1 is later (greater) than date2.
+<em>Note:</em> <code class="code-inline">new Integer(3)</code> and this <code class="code-inline">Date</code> constructor are old (deprecated) but still compile; today we write <code class="code-inline">Integer.valueOf(3)</code>.</p>
+
+<h3 class="subsection-title"><span class="sub-badge">instanceof</span> &#128270; instanceof Works With Interfaces Too</h3>
+
+<p><code class="code-inline">instanceof</code> is a keyword that tells you whether a variable <strong>&ldquo;is a&rdquo;</strong> member of a <strong>class or an interface</strong>.
+If <code class="code-inline">class Dog extends Animal implements Pet { ... }</code> and <code class="code-inline">Animal fido = new Dog();</code> then:</p>
+<table class="compare-table" style="margin-top:12px;">
+<tr><th>Expression</th><th>Value</th></tr>
+<tr><td><code class="code-inline">fido instanceof Dog</code></td><td>true</td></tr>
+<tr><td><code class="code-inline">fido instanceof Animal</code></td><td>true</td></tr>
+<tr><td><code class="code-inline">fido instanceof Pet</code></td><td>true &mdash; Dog implements Pet</td></tr>
+</table>
+
+<p>Similarly, let <code class="code-inline">n</code> be an Integer, <code class="code-inline">s</code> a String and <code class="code-inline">d</code> a Date object. All of these are <code class="code-inline">true</code>:</p>
+<table class="compare-table" style="margin-top:12px;">
+<tr><th>Integer n</th><th>String s</th><th>Date d</th></tr>
+<tr><td><code class="code-inline">n instanceof Integer</code></td><td><code class="code-inline">s instanceof String</code></td><td><code class="code-inline">d instanceof java.util.Date</code></td></tr>
+<tr><td><code class="code-inline">n instanceof Object</code></td><td><code class="code-inline">s instanceof Object</code></td><td><code class="code-inline">d instanceof Object</code></td></tr>
+<tr><td><code class="code-inline">n instanceof Comparable</code></td><td><code class="code-inline">s instanceof Comparable</code></td><td><code class="code-inline">d instanceof Comparable</code></td></tr>
+</table>
+
+
+<h3 class="subsection-title"><span class="sub-badge">Generic sort</span> &#128202; Arrays.sort Needs Comparable Objects</h3>
+
+<p>The <code class="code-inline">java.util.Arrays.sort(array)</code> method requires that the elements of the array are <strong>instances of Comparable&lt;E&gt;</strong>.
+Since all Comparable objects have the <code class="code-inline">compareTo</code> method, <code class="code-inline">Arrays.sort(Object[])</code> uses <code class="code-inline">compareTo</code> to compare
+and sort the objects &mdash; one sort method works for Strings, BigIntegers, or any Comparable class.</p>
+<div class="code-container">
+<div class="code-header" onclick="toggleCode(this)"><span>&#128065;&#65038; Hide Code — SortComparableObjects.java</span><span class="code-toggle">&#9660;</span></div>
+<div class="code-block"><span class="keyword">import</span> java.math.*;
+
+<span class="keyword">public</span> <span class="keyword">class</span> <span class="class-name">SortComparableObjects</span> {
+  <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="method">main</span>(<span class="class-name">String</span>[] args) {
+    <span class="class-name">String</span>[] cities = {<span class="string">"Savannah"</span>, <span class="string">"Boston"</span>, <span class="string">"Atlanta"</span>, <span class="string">"Tampa"</span>};
+    java.util.<span class="class-name">Arrays</span>.<span class="method">sort</span>(cities);
+    <span class="keyword">for</span> (<span class="class-name">String</span> city: cities)
+      <span class="class-name">System</span>.out.<span class="method">print</span>(city + <span class="string">" "</span>);
+    <span class="class-name">System</span>.out.<span class="method">println</span>();
+
+    <span class="class-name">BigInteger</span>[] hugeNumbers = {<span class="keyword">new</span> <span class="class-name">BigInteger</span>(<span class="string">"2323231092923992"</span>),
+      <span class="keyword">new</span> <span class="class-name">BigInteger</span>(<span class="string">"432232323239292"</span>),
+      <span class="keyword">new</span> <span class="class-name">BigInteger</span>(<span class="string">"54623239292"</span>)};
+    java.util.<span class="class-name">Arrays</span>.<span class="method">sort</span>(hugeNumbers);
+    <span class="keyword">for</span> (<span class="class-name">BigInteger</span> number: hugeNumbers)
+      <span class="class-name">System</span>.out.<span class="method">print</span>(number + <span class="string">" "</span>);
+  }
+}</div>
+</div>
+
+<div class="terminal">
+<div class="terminal-header"><span class="terminal-dot r"></span><span class="terminal-dot y"></span><span class="terminal-dot g"></span><span class="terminal-title">Output — SortComparableObjects.java</span></div>
+<div class="terminal-body">Atlanta Boston Savannah Tampa
+54623239292 432232323239292 2323231092923992</div>
+</div>
+
+
+<h3 class="subsection-title"><span class="sub-badge">Your Own Class</span> &#128208; Defining Classes to Implement Comparable</h3>
+
+<p>We cannot sort ordinary <code class="code-inline">Rectangle</code> objects, because Rectangle does not implement Comparable. But we can define a new class
+<strong>ComparableRectangle</strong> that extends Rectangle and implements <code class="code-inline">Comparable&lt;ComparableRectangle&gt;</code>, comparing rectangles by <strong>area</strong>:</p>
+<div class="code-container">
+<div class="code-header" onclick="toggleCode(this)"><span>&#128065;&#65038; Hide Code — ComparableRectangle.java</span><span class="code-toggle">&#9660;</span></div>
+<div class="code-block"><span class="comment">// Rectangle has width, height, getWidth(), getHeight() and getArea()</span>
+<span class="keyword">public</span> <span class="keyword">class</span> <span class="class-name">ComparableRectangle</span> <span class="keyword">extends</span> <span class="class-name">Rectangle</span>
+    <span class="keyword">implements</span> <span class="class-name">Comparable</span>&lt;<span class="class-name">ComparableRectangle</span>&gt; {
+  <span class="comment">/** Construct a ComparableRectangle with specified properties */</span>
+  <span class="keyword">public</span> <span class="class-name">ComparableRectangle</span>(<span class="keyword">double</span> width, <span class="keyword">double</span> height) {
+    <span class="keyword">super</span>(width, height);
+  }
+
+  <span class="annotation">@Override</span> <span class="comment">// Implement the compareTo method defined in Comparable</span>
+  <span class="keyword">public</span> <span class="keyword">int</span> <span class="method">compareTo</span>(<span class="class-name">ComparableRectangle</span> o) {
+    <span class="keyword">if</span> (<span class="method">getArea</span>() &gt; o.<span class="method">getArea</span>())
+      <span class="keyword">return</span> <span class="number">1</span>;
+    <span class="keyword">else</span> <span class="keyword">if</span> (<span class="method">getArea</span>() &lt; o.<span class="method">getArea</span>())
+      <span class="keyword">return</span> -<span class="number">1</span>;
+    <span class="keyword">else</span>
+      <span class="keyword">return</span> <span class="number">0</span>;
+  }
+
+  <span class="annotation">@Override</span> <span class="comment">// Implement the toString method in Rectangle</span>
+  <span class="keyword">public</span> <span class="class-name">String</span> <span class="method">toString</span>() {
+    <span class="keyword">return</span> <span class="string">"Width: "</span> + <span class="method">getWidth</span>() + <span class="string">" Height: "</span> + <span class="method">getHeight</span>() +
+      <span class="string">" Area: "</span> + <span class="method">getArea</span>();
+  }
+}</div>
+</div>
+
+<div class="code-container">
+<div class="code-header" onclick="toggleCode(this)"><span>&#128065;&#65038; Hide Code — SortRectangles.java</span><span class="code-toggle">&#9660;</span></div>
+<div class="code-block"><span class="keyword">public</span> <span class="keyword">class</span> <span class="class-name">SortRectangles</span> {
+  <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="method">main</span>(<span class="class-name">String</span>[] args) {
+    <span class="class-name">ComparableRectangle</span>[] rectangles = {
+      <span class="keyword">new</span> <span class="class-name">ComparableRectangle</span>(<span class="number">3.4</span>, <span class="number">5.4</span>),
+      <span class="keyword">new</span> <span class="class-name">ComparableRectangle</span>(<span class="number">13.24</span>, <span class="number">55.4</span>),
+      <span class="keyword">new</span> <span class="class-name">ComparableRectangle</span>(<span class="number">7.4</span>, <span class="number">35.4</span>),
+      <span class="keyword">new</span> <span class="class-name">ComparableRectangle</span>(<span class="number">1.4</span>, <span class="number">25.4</span>)};
+    java.util.<span class="class-name">Arrays</span>.<span class="method">sort</span>(rectangles);
+    <span class="keyword">for</span> (<span class="class-name">Rectangle</span> rectangle: rectangles) {
+      <span class="class-name">System</span>.out.<span class="method">print</span>(rectangle + <span class="string">" "</span>);
+      <span class="class-name">System</span>.out.<span class="method">println</span>();
+    }
+  }
+}</div>
+</div>
+
+<div class="terminal">
+<div class="terminal-header"><span class="terminal-dot r"></span><span class="terminal-dot y"></span><span class="terminal-dot g"></span><span class="terminal-title">Output — SortRectangles.java (smallest area first)</span></div>
+<div class="terminal-body">Width: 3.4 Height: 5.4 Area: 18.36
+Width: 1.4 Height: 25.4 Area: 35.559999999999995
+Width: 7.4 Height: 35.4 Area: 261.96
+Width: 13.24 Height: 55.4 Area: 733.496</div>
+</div>
+
+<div class="success-box">
+<div class="success-box-title">&#9989; Notice</div>
+<p style="margin:0;">A ComparableRectangle <strong>is a</strong> Rectangle (strong is-a &rarr; class inheritance) and <strong>is</strong> Comparable
+(a property &rarr; interface). The loop variable can be of type <code class="code-inline">Rectangle</code> because every ComparableRectangle is a Rectangle.</p>
+</div>
+
+
+<h3 class="subsection-title"><span class="sub-badge">Quick Check</span> &#10067; Slide Questions</h3>
+
+<div class="info-box">
+<div class="info-box-title">&#10067; Q1. What is wrong in the following code?</div>
+<div class="code-container">
+<div class="code-header" onclick="toggleCode(this)"><span>&#128065;&#65038; Hide Code — Test.java</span><span class="code-toggle">&#9660;</span></div>
+<div class="code-block"><span class="keyword">public</span> <span class="keyword">class</span> <span class="class-name">Test</span> {
+  <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="method">main</span>(<span class="class-name">String</span>[] args) {
+    <span class="class-name">Person</span>[] persons = {<span class="keyword">new</span> <span class="class-name">Person</span>(<span class="number">3</span>), <span class="keyword">new</span> <span class="class-name">Person</span>(<span class="number">4</span>), <span class="keyword">new</span> <span class="class-name">Person</span>(<span class="number">1</span>)};
+    java.util.<span class="class-name">Arrays</span>.<span class="method">sort</span>(persons);
+  }
+}
+<span class="keyword">class</span> <span class="class-name">Person</span> {
+  <span class="keyword">private</span> <span class="keyword">int</span> id;
+
+  <span class="class-name">Person</span>(<span class="keyword">int</span> id) {
+    <span class="keyword">this</span>.id = id;
+  }
+}</div>
+</div>
+
+</div>
+<div class="success-box">
+<div class="success-box-title">&#9989; Answer</div>
+<p style="margin:0;">The <code class="code-inline">Person</code> class does <strong>not implement Comparable</strong>, so two persons cannot be compared with <code class="code-inline">compareTo</code>.
+The code <strong>compiles</strong>, but when it runs, <code class="code-inline">Arrays.sort</code> stops with
+<em>java.lang.ClassCastException: class Person cannot be cast to class java.lang.Comparable</em>.
+Fix: <code class="code-inline">class Person implements Comparable&lt;Person&gt;</code> with a <code class="code-inline">compareTo</code> that compares the ids.</p>
+</div>
+<div class="info-box">
+<div class="info-box-title">&#10067; Q2. Can the following code be compiled? Why?</div>
+<div class="code-container">
+<div class="code-header" onclick="toggleCode(this)"><span>&#128065;&#65038; Hide Code — compareTo with an Object argument</span><span class="code-toggle">&#9660;</span></div>
+<div class="code-block"><span class="class-name">Integer</span> n1 = <span class="keyword">new</span> <span class="class-name">Integer</span>(<span class="number">3</span>);
+<span class="class-name">Object</span> n2 = <span class="keyword">new</span> <span class="class-name">Integer</span>(<span class="number">4</span>);
+<span class="class-name">System</span>.out.<span class="method">println</span>(n1.<span class="method">compareTo</span>(n2));</div>
+</div>
+
+</div>
+<div class="success-box">
+<div class="success-box-title">&#9989; Answer</div>
+<p style="margin:0;"><strong>No.</strong> <code class="code-inline">n1</code> is an Integer, whose <code class="code-inline">compareTo</code> method requires an <strong>Integer</strong> argument, but <code class="code-inline">n2</code> is declared as
+<code class="code-inline">Object</code>. The compiler reports <em>incompatible types: Object cannot be converted to Integer</em>.
+With a cast, <code class="code-inline">n1.compareTo((Integer) n2)</code> compiles and prints <code class="code-inline">-1</code>.</p>
+</div>
+        </div>
+
+        <!-- ════════════════════════════════════════════════
+             NEW SECTION — ABSTRACT CLASS OR INTERFACE? (from the slides)
+             ════════════════════════════════════════════════ -->
+        <div class="section">
+            <h2 class="section-title" id="section-choose">
+                <span class="section-number">9</span>
+                Abstract Class or Interface? &mdash; Choosing Wisely
+            </h2>
+<h3 class="subsection-title"><span class="sub-badge">Recap</span> &#128221; Two Definitions</h3>
+
+<table class="compare-table" style="margin-top:12px;">
+<tr><th></th><th>Definition</th></tr>
+<tr><td><strong>Abstract class</strong></td><td>A restricted class that cannot be used to create objects; to use it, it must be inherited by another class. It contains regular methods and abstract methods. An abstract method can only be in an abstract class and has no body &mdash; the subclass provides the body.</td></tr>
+<tr><td><strong>Interface</strong></td><td>A class-like construct that contains only constants and abstract methods. It is similar to an abstract class, but it can specify common behaviour for objects of <strong>related or unrelated</strong> classes.</td></tr>
+</table>
+
+<h3 class="subsection-title"><span class="sub-badge">Side by Side</span> &#9878;&#65039; Abstract Classes vs. Interfaces</h3>
+
+<table class="compare-table" style="margin-top:12px;">
+<tr><th class="th-abstract">Abstract Classes</th><th class="th-iface">Interfaces</th></tr>
+<tr><td>Can have data fields.</td><td>Can only have constants.</td></tr>
+<tr><td>Methods may have an implementation.</td><td>Methods have no implementation (except default/static methods, JDK 8+).</td></tr>
+<tr><td>Classes and abstract classes <strong>extend</strong> abstract classes.</td><td>Classes and abstract classes <strong>implement</strong> interfaces.</td></tr>
+<tr><td>A class cannot extend multiple abstract classes.</td><td>Interfaces can extend multiple interfaces.<br>A class can implement multiple interfaces.</td></tr>
+<tr><td>All classes share a single root: <code class="code-inline">Object</code>.</td><td>There is no single root for interfaces.</td></tr>
+</table>
+<h3 class="subsection-title"><span class="sub-badge">Decide</span> &#129300; Whether to Use an Interface or a Class?</h3>
+
+<p>Abstract classes and interfaces can both be used to model common features. How do you decide?</p>
+<ul style="margin-left:22px;">
+<li>A <strong>strong is-a</strong> relationship that clearly describes a parent&ndash;child relationship should be modelled using <strong>classes</strong>.</li>
+<li>A <strong>weak is-a</strong> relationship, also known as an <strong>is-kind-of</strong> relationship, indicates that an object <em>possesses a certain property</em>.
+It can be modelled using <strong>interfaces</strong>.</li>
+<li>You can also use interfaces to avoid the <strong>single-inheritance restriction</strong> when multiple inheritance is desired.
+In that case, design one parent as a superclass and the others as interfaces.</li>
+<li>If there is <strong>common implementation</strong> (shared code or data) &rarr; use an <strong>abstract class</strong>.
+If there is <strong>no common implementation</strong> &rarr; use an <strong>interface</strong> (and a class may implement several of them).</li>
+</ul>
+<div class="info-box">
+<div class="info-box-title">&#10067; Slide Question &mdash; interface or class?</div>
+<p><strong>(1)</strong> A staff member is a person. &nbsp;&nbsp; <strong>(2)</strong> All strings are comparable.</p>
+</div>
+<div class="success-box">
+<div class="success-box-title">&#9989; Answer</div>
+<p style="margin:0;">(1) <strong>Class</strong> &mdash; a strong is-a relationship: <code class="code-inline">class Staff extends Person</code>.<br>
+(2) <strong>Interface</strong> &mdash; being comparable is a property (weak is-a): the String class implements the Comparable interface.</p>
+</div>
+        </div>
+
+        <!-- ════════════════════════════════════════════════
+             NEW SECTION — CLASS DESIGN GUIDELINES (from the slides, §13.10)
+             ════════════════════════════════════════════════ -->
+        <div class="section">
+            <h2 class="section-title" id="section-design">
+                <span class="section-number">10</span>
+                Class Design Guidelines
+            </h2>
+<p>Now that we know classes, inheritance, abstract classes and interfaces, here are the guidelines for designing <strong>good</strong> classes.</p>
+<div class="rule-card rule-violet">
+<div class="rule-header"><span class="rule-num">1</span> <span>Coherence</span></div>
+<div class="rule-body">
+<p>A class should describe a <strong>single entity</strong>, and all the class operations should logically fit together to support a coherent purpose.
+You can use a class for students, for example, but you should <strong>not</strong> combine students and staff in the same class, because students and staff are different entities.</p>
+</div>
+</div>
+
+<div class="rule-card rule-indigo">
+<div class="rule-header"><span class="rule-num">2</span> <span>Separating responsibilities</span></div>
+<div class="rule-body">
+<p>A single entity with too many responsibilities can be broken into several classes to separate responsibilities.
+The classes <code class="code-inline">String</code>, <code class="code-inline">StringBuilder</code> and <code class="code-inline">StringBuffer</code> all deal with strings but have different responsibilities:
+String deals with <strong>immutable</strong> strings, StringBuilder is for creating <strong>mutable</strong> strings, and StringBuffer is like StringBuilder except that it contains
+<strong>synchronized</strong> methods for updating strings.</p>
+</div>
+</div>
+
+<div class="rule-card rule-emerald">
+<div class="rule-header"><span class="rule-num">3</span> <span>Consistency</span></div>
+<div class="rule-body">
+<ul style="margin-left:22px;">
+<li>Follow standard Java programming style and naming conventions. Choose informative names for classes, data fields and methods.</li>
+<li>Always place the data declarations before the constructors, and place constructors before methods.</li>
+<li>Always provide a constructor and initialize variables to avoid programming errors.</li>
+<li>Provide a public no-arg constructor. (If no constructors are defined explicitly, a public default no-arg constructor with an empty body is assumed.)</li>
+<li>Override the <code class="code-inline">equals</code> method and the <code class="code-inline">toString</code> method defined in the Object class whenever possible.</li>
+</ul>
+</div>
+</div>
+
+<div class="rule-card rule-warning">
+<div class="rule-header"><span class="rule-num">4</span> <span>Clarity</span></div>
+<div class="rule-body">
+<p>Classes are designed for <strong>reuse</strong>: users can combine them in many different combinations, orders and environments.
+So design a class that imposes no restrictions on what or when the user can do with it: the user should be able to set properties in
+<strong>any order</strong>, with <strong>any combination of values</strong>, and methods should work <strong>independently of the order</strong> in which they are called.</p>
+</div>
+</div>
+
+<div class="rule-card rule-slate">
+<div class="rule-header"><span class="rule-num">5</span> <span>Encapsulation</span></div>
+<div class="rule-body">
+<ul style="margin-left:22px;">
+<li>A class should use the <code class="code-inline">private</code> modifier to hide its data from direct access by clients.</li>
+<li>Use get and set methods to give users access to the private data &mdash; but only to the data you want the user to see or to modify.</li>
+<li>A class should also hide methods not intended for client use.</li>
+<li>Each class presents <strong>two contracts</strong>: one for the <strong>users</strong> of the class and one for the <strong>extenders</strong> of the class.
+Make fields private and accessor methods public if they are intended for users; make fields or methods <code class="code-inline">protected</code> if they are intended for extenders.
+The contract for the extenders encompasses the contract for the users.</li>
+<li>An extended class may increase the visibility of an instance method from protected to public, or change its implementation,
+but you should never change the implementation in a way that violates the contract.</li>
+</ul>
+</div>
+</div>
+
+<h3 class="subsection-title"><span class="sub-badge">Three Roles</span> &#128101; Developers Play Three Different Roles</h3>
+
+<table class="compare-table" style="margin-top:12px;">
+<tr><th>Role</th><th>What the developer does</th><th>UML visibility</th></tr>
+<tr><td><strong>Class user</strong></td><td>Calls the class (creates objects and uses them).</td><td><strong>+</strong> public &mdash; can be accessed by any class</td></tr>
+<tr><td><strong>Class implementor</strong></td><td>Realizes the class (writes its code).</td><td><strong>&minus;</strong> private &mdash; only inside the class that defines it; not by subclasses or other classes</td></tr>
+<tr><td><strong>Class extender</strong></td><td>Refines the class (writes a subclass).</td><td><strong>#</strong> protected &mdash; the defining class and any descendant of it</td></tr>
+</table>
+
+<p><strong>Example:</strong> a <code class="code-inline">League</code> has many <code class="code-inline">Tournament</code>s and uses class <code class="code-inline">Game</code>; <code class="code-inline">TicTacToe</code> and <code class="code-inline">Chess</code> extend Game.
+The developer of <strong>League</strong> is a <strong>class user</strong> of Game; the developer of <strong>Game</strong> is its <strong>class implementor</strong>;
+the developer of <strong>TicTacToe</strong> is a <strong>class extender</strong> of Game.</p>
+<div class="rule-card rule-emerald">
+<div class="rule-header"><span class="rule-num">6</span> <span>Inheritance vs. aggregation</span></div>
+<div class="rule-body">
+<p>The difference between inheritance and aggregation is the difference between an <strong>is-a</strong> and a <strong>has-a</strong> relationship.
+An apple <em>is a</em> fruit &rarr; use inheritance between Apple and Fruit. A person <em>has a</em> name &rarr; use aggregation between Person and Name.</p>
+</div>
+</div>
+
+<div class="rule-card rule-indigo">
+<div class="rule-header"><span class="rule-num">7</span> <span>Instance vs. static</span></div>
+<div class="rule-body">
+<ul style="margin-left:22px;">
+<li>A variable or method that depends on a specific instance of the class must be an <strong>instance</strong> variable or method.</li>
+<li>A variable that is shared by all the instances of a class should be declared <strong>static</strong>.</li>
+<li>Always reference static variables and methods from the <strong>class name</strong> (not a reference variable) to improve readability and avoid errors.</li>
+</ul>
+</div>
+</div>
+
+        </div>
+
+
+        <!-- ════════════════════════════════════════════════
              SECTION 8 — COMMON MISTAKES
              ════════════════════════════════════════════════ -->
         <div class="section">
             <h2 class="section-title" id="section-9">
-                <span class="section-number">8</span>
+                <span class="section-number">11</span>
                 Common Mistakes — Avoid These!
             </h2>
 
@@ -2371,6 +3208,17 @@ Employee[Sara]       SAR 5000.00</div>
                     <div class="sc-title">Multiple Interfaces</div>
                     <div class="sc-desc">A class can implement many interfaces simultaneously. This is Java's safe, flexible answer to the need for multiple behaviors.</div>
                 </div>
+
+                <div class="summary-card s3">
+                    <div class="sc-icon">&#128202;</div>
+                    <div class="sc-title">Comparable</div>
+                    <div class="sc-desc">compareTo returns negative / zero / positive. Arrays.sort works only on Comparable objects; String, wrappers, BigInteger and Date are Comparable.</div>
+                </div>
+                <div class="summary-card s4">
+                    <div class="sc-icon">&#9878;&#65039;</div>
+                    <div class="sc-title">Class or Interface?</div>
+                    <div class="sc-desc">Strong is-a with common code &rarr; (abstract) class. Weak is-a (a property, is-kind-of) &rarr; interface. A class extends one class but implements many interfaces.</div>
+                </div>
             </div>
 
             <div class="alert-important" style="margin-top:32px;">
@@ -2385,6 +3233,20 @@ Employee[Sara]       SAR 5000.00</div>
                     enabling objects of completely unrelated classes to be treated uniformly
                     based on their shared behavior.
                 </p>
+            </div>
+
+
+            <div class="key-box" style="margin-top:28px;">
+                <div class="key-box-title">&#128273; The Seven Points to Remember (last slide)</div>
+                <ol style="margin:0 0 0 22px;">
+                    <li><code class="code-inline">public static final int K = 1;</code> and <code class="code-inline">public abstract void p();</code> may be written simply as <code class="code-inline">int K = 1;</code> and <code class="code-inline">void p();</code>.</li>
+                    <li>All data fields in an interface are <strong>public static final</strong>.</li>
+                    <li>All methods in an interface are <strong>public abstract</strong>.</li>
+                    <li>When a class implements an interface method, it must declare it <strong>public</strong> &mdash; the visibility cannot be reduced.</li>
+                    <li>An interface cannot implement any methods, except static (and default) methods.</li>
+                    <li>Every class that implements an interface must implement <strong>all</strong> its methods (or be declared abstract).</li>
+                    <li>A constant in an interface is accessed as <code class="code-inline">InterfaceName.CONSTANT_NAME</code> (e.g. <code class="code-inline">T1.K</code>).</li>
+                </ol>
             </div>
 
             <h3 class="subsection-title"><span class="sub-badge">Quick Reference</span> Interface Syntax Cheat Sheet</h3>
