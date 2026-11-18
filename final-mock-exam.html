@@ -161,7 +161,7 @@ code.inl{ background:var(--code-bg); border:1px solid var(--code-rule); border-r
 .opts p{ margin:3px 0; }
 .tight .card-body{ font-size:10.5pt; line-height:1.42; }
 .tight .card-body p{ margin:4px 0; }
-.tight pre.code{ margin:5px 0; }
+.tight pre.code{ margin:5px 0; font-size:9pt; line-height:1.35; }
 .mcq{ display:grid; grid-template-columns:1fr 1fr; gap:2px 18px; margin:2px 0 8px 14px; }
 .mcq.c1{ grid-template-columns:1fr; }
 .mcq.c4{ grid-template-columns:repeat(4, auto); justify-content:start; column-gap:34px; }
@@ -178,7 +178,7 @@ code.inl{ background:var(--code-bg); border:1px solid var(--code-rule); border-r
 .need td.mono, .need .mono{ font-family:'Consolas','DejaVu Sans Mono',monospace; }
 
 /* ---- UML class diagram canvas (absolute boxes + SVG arrows) ---- */
-.uml-canvas{ position:relative; width:640px; height:556px; margin:10px auto 6px; }
+.uml-canvas{ position:relative; width:640px; height:556px; margin:6px auto 4px; zoom:.74; }
 .uml-canvas svg.links{ position:absolute; left:0; top:0; overflow:visible; }
 .ubox{ position:absolute; border:1.5px solid var(--em-deep); background:#fff;
   font-family:'Consolas','DejaVu Sans Mono',monospace; font-size:8pt; line-height:14px;
@@ -304,9 +304,9 @@ body.show-answers .answer-key{ break-inside:auto; page-break-inside:auto; }
     <ul>
       <li>Write your <b>Student ID, Section and Full Name</b> before you start.</li>
       <li><b>Closed-book exam.</b> No notes, textbooks or electronic devices are allowed.</li>
-      <li>This booklet has <b>three parts</b>: Part I Multiple Choice, Part II Code Analysis &amp; Writing, Part III UML Diagram &amp; Java Implementation.
+      <li>This booklet contains <b>13 questions</b> in <b>three parts</b>: Part I Multiple Choice (Q1), Part II Code Analysis &amp; Writing (Q2&ndash;Q7), Part III UML Diagram &amp; Java Implementation (Q8&ndash;Q13). <b>Total: 30 marks</b> &middot; Time allowed: <b>120 minutes</b>.
           It covers <b>all chapters</b> of the course (CLO 1&ndash;13). Answer <b>all</b> questions in the spaces provided.</li>
-      <li>Write clearly and neatly. Ambiguous or illegible answers receive <b>zero marks</b>.</li>
+      <li>Questions are labelled <span class="chip tag-easy">EASY</span> <span class="chip tag-med">MEDIUM</span> <span class="chip tag-hard">HARD</span>. Write clearly and neatly. Ambiguous or illegible answers receive <b>zero marks</b>.</li>
       <li>Assume all necessary <code class="inl">import</code> statements are present and that all classes of a question are in the <b>same package</b>, unless the question says otherwise.</li>
       <li>Output questions: write each line exactly as Java prints it (case, spaces, <code class="inl">.0</code> of a <code class="inl">double</code>). Each line is marked on its own.</li>
       <li>If code does not compile, write <b>&ldquo;Compilation error&rdquo;</b> and the reason in one short sentence.</li>
@@ -314,22 +314,14 @@ body.show-answers .answer-key{ break-inside:auto; page-break-inside:auto; }
     </ul>
   </div>
 
-  <p class="tbl-cap">Marks summary by Part</p>
   <table class="marks-tbl">
-    <thead><tr><th>Part I &mdash; MCQ</th><th>Part II &mdash; Code Analysis &amp; Writing</th><th>Part III &mdash; UML &amp; Java</th><th class="tot">Total</th></tr></thead>
+    <thead>
+      <tr><th>Question</th><th>Q1</th><th>Q2</th><th>Q3</th><th>Q4</th><th>Q5</th><th>Q6</th><th>Q7</th><th>Q8</th><th>Q9</th><th>Q10</th><th>Q11</th><th>Q12</th><th>Q13</th><th class="tot">Total</th></tr>
+    </thead>
     <tbody>
-      <tr><td><i>6 marks</i></td><td><i>15 marks</i></td><td><i>9 marks</i></td><td class="tot">30 marks</td></tr>
-      <tr class="obt"><td></td><td></td><td></td><td class="tot"></td></tr>
-    </tbody>
-  </table>
-
-  <p class="tbl-cap">Marks summary by Question</p>
-  <table class="marks-tbl qs">
-    <thead><tr><th>Question</th><th>I.1&ndash;12</th><th>II.1</th><th>II.2</th><th>II.3</th><th>II.4</th><th>II.5</th><th>II.6</th>
-      <th>III.a</th><th>III.b</th><th>III.c</th><th>III.d</th><th>III.e</th><th>III.f</th><th class="tot">Total</th></tr></thead>
-    <tbody>
-      <tr><td><b>Max</b></td><td data-cover="6">6</td><td data-cover="2">2</td><td data-cover="2.5">2.5</td><td data-cover="2.5">2.5</td><td data-cover="2.5">2.5</td><td data-cover="2.5">2.5</td><td data-cover="3">3</td>
-        <td data-cover="2.5">2.5</td><td data-cover="1">1</td><td data-cover="1">1</td><td data-cover="2">2</td><td data-cover="1.5">1.5</td><td data-cover="1">1</td><td class="tot">30</td></tr>
+      <tr><td><b>Part</b></td><td>I</td><td colspan="6">II</td><td colspan="6">III</td><td class="tot"></td></tr>
+      <tr><td><b>Level</b></td><td>E</td><td>M</td><td>M</td><td>H</td><td>M</td><td>H</td><td>M</td><td>M</td><td>E</td><td>M</td><td>H</td><td>M</td><td>M</td><td class="tot"></td></tr>
+      <tr><td><b>Max Mark</b></td><td>6</td><td>2</td><td>2.5</td><td>2.5</td><td>2.5</td><td>2.5</td><td>3</td><td>2.5</td><td>1</td><td>1</td><td>2</td><td>1.5</td><td>1</td><td class="tot">30</td></tr>
       <tr class="obt"><td><b>Obtained</b></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class="tot"></td></tr>
     </tbody>
   </table>
@@ -342,15 +334,15 @@ body.show-answers .answer-key{ break-inside:auto; page-break-inside:auto; }
      PART I — MCQ
      ===================================================================== -->
 <section class="sheet">
-  <div class="runhead"><span>Programming II (CPCS203)</span><span>Comprehensive Final Exam (Mock) &middot; Part I</span></div>
+  <div class="runhead"><span>Programming II (CPCS203)</span><span>Comprehensive Final Exam (Mock) &middot; Question 1 of 13</span></div>
   <div class="partbar" data-part="6"><span class="pn">Part I</span> Multiple Choice Questions <span class="pm">6 marks &mdash; 12 &times; 0.5 mark</span></div>
   <p class="partnote">Circle the letter of the ONE best answer for each question.</p>
 
   <div class="card tight" data-q="6" id="I">
     <div class="card-head">
-      <span class="qno">I</span>
-      <span class="qtitle">Multiple Choice &mdash; All Chapters</span>
-      <span class="chips"><span class="chip clo">CLO 1&ndash;13</span><span class="chip so">SO 1 / SO 2</span><span class="chip pts">6 marks &middot; 0.5 each</span></span>
+      <span class="qno">Q1</span>
+      <span class="qtitle">Part I &mdash; Multiple Choice &mdash; All Chapters</span>
+      <span class="chips"><span class="chip tag-easy">EASY</span><span class="chip clo">CLO 1&ndash;13</span><span class="chip so">SO 1 / SO 2</span><span class="chip pts">6 marks &middot; 0.5 each</span></span>
     </div>
     <div class="card-body">
 
@@ -520,7 +512,7 @@ System.out.println(list);</pre>
       </div>
 
       <div class="answer-key">
-        <div class="akh">Model Answer &mdash; Part I</div>
+        <div class="akh">Model Answer &mdash; Q1</div>
         <table class="fill">
           <thead><tr><th>#</th><th>Answer</th><th>Why (checked with javac/java 21)</th></tr></thead>
           <tbody>
@@ -548,15 +540,15 @@ System.out.println(list);</pre>
      PART II — CODE ANALYSIS & WRITING
      ===================================================================== -->
 <section class="sheet">
-  <div class="runhead"><span>Programming II (CPCS203)</span><span>Comprehensive Final Exam (Mock) &middot; Part II</span></div>
+  <div class="runhead"><span>Programming II (CPCS203)</span><span>Comprehensive Final Exam (Mock) &middot; Question 2 of 13</span></div>
   <div class="partbar" data-part="15"><span class="pn">Part II</span> Code Analysis &amp; Writing <span class="pm">15 marks</span></div>
 
-  <!-- ================= II.1 ================= -->
+  <!-- ================= Q2 ================= -->
   <div class="card" data-q="2" id="II.1">
     <div class="card-head">
-      <span class="qno">II.1</span>
-      <span class="qtitle">Text I/O with a Ragged Array &mdash; Complete &amp; Trace</span>
-      <span class="chips"><span class="chip clo">CLO 2</span><span class="chip so">SO 1</span><span class="chip pts">2 marks</span></span>
+      <span class="qno">Q2</span>
+      <span class="qtitle">Part II &mdash; Text I/O with a Ragged Array &mdash; Complete &amp; Trace</span>
+      <span class="chips"><span class="chip tag-med">MEDIUM</span><span class="chip clo">CLO 2</span><span class="chip so">SO 1</span><span class="chip pts">2 marks</span></span>
     </div>
     <div class="card-body">
       <p>The program reads the daily sales of each branch from <code class="inl">branches.txt</code> into a <b>ragged</b> 2-D array (each branch has its own number of days),
@@ -619,7 +611,7 @@ Abha 3 40 55 70</pre></div>
       </div>
 
       <div class="answer-key">
-        <div class="akh">Model Answer &mdash; II.1</div>
+        <div class="akh">Model Answer &mdash; Q2</div>
         <p>(a) (1) <code class="inl">nextInt()</code> &nbsp; (2) <code class="inl">new int[n][]</code> &nbsp; (3) <code class="inl">next()</code> &nbsp; (4) <code class="inl">sales[i] = new int[days]</code></p>
         <p>(b) Real run: <code class="inl">report.txt</code>, then the console:</p>
 <pre class="code sm">Jeddah: 355 SAR in 4 days
@@ -633,12 +625,17 @@ Abha: 165 SAR in 3 days</pre>
     </div>
   </div><!-- /card -->
 
-  <!-- ================= II.2 ================= -->
+</section>
+
+<section class="sheet">
+  <div class="runhead"><span>Programming II (CPCS203)</span><span>Comprehensive Final Exam (Mock) &middot; Question 3 of 13</span></div>
+
+  <!-- ================= Q3 ================= -->
   <div class="card" data-q="2.5" id="II.2">
     <div class="card-head">
-      <span class="qno">II.2</span>
-      <span class="qtitle">String &amp; StringBuilder &mdash; Write <code>makeUsername</code></span>
-      <span class="chips"><span class="chip clo">CLO 1</span><span class="chip so">SO 1</span><span class="chip pts">2.5 marks</span></span>
+      <span class="qno">Q3</span>
+      <span class="qtitle">Part II &mdash; String &amp; StringBuilder &mdash; Write <code>makeUsername</code></span>
+      <span class="chips"><span class="chip tag-med">MEDIUM</span><span class="chip clo">CLO 1</span><span class="chip so">SO 1</span><span class="chip pts">2.5 marks</span></span>
     </div>
     <div class="card-body">
       <p>The university e-mail system builds a username from a student&rsquo;s full name and year of entry. Write the static method</p>
@@ -660,7 +657,7 @@ Abha: 165 SAR in 3 days</pre>
       <div class="answer-space"><span class="lbl">Write your method here:</span><div class="codebox" style="min-height:62mm"></div></div>
 
       <div class="answer-key">
-        <div class="akh">Model Answer &mdash; II.2</div>
+        <div class="akh">Model Answer &mdash; Q3</div>
 <div class="two-col">
 <pre class="code xs">public static String makeUsername(String fullName, int year) {
     String name = fullName.trim();                       // 0.25
@@ -695,12 +692,17 @@ public static String makeUsername2(String fullName, int year) {
     </div>
   </div><!-- /card -->
 
-  <!-- ================= II.3 ================= -->
+</section>
+
+<section class="sheet">
+  <div class="runhead"><span>Programming II (CPCS203)</span><span>Comprehensive Final Exam (Mock) &middot; Question 4 of 13</span></div>
+
+  <!-- ================= Q4 ================= -->
   <div class="card" data-q="2.5" id="II.3">
     <div class="card-head">
-      <span class="qno">II.3</span>
-      <span class="qtitle">Polymorphism, Dynamic Binding &amp; Casting &mdash; Trace</span>
-      <span class="chips"><span class="chip clo">CLO 8</span><span class="chip so">SO 1</span><span class="chip pts">2.5 marks &middot; 0.5 per line</span></span>
+      <span class="qno">Q4</span>
+      <span class="qtitle">Part II &mdash; Polymorphism, Dynamic Binding &amp; Casting &mdash; Trace</span>
+      <span class="chips"><span class="chip tag-hard">HARD</span><span class="chip clo">CLO 8</span><span class="chip so">SO 1</span><span class="chip pts">2.5 marks &middot; 0.5 per line</span></span>
     </div>
     <div class="card-body">
       <p>Trace the program and write the <b>exact output</b> of each numbered <code class="inl">println</code>.</p>
@@ -789,7 +791,7 @@ class Intern extends Employee {
       </table>
 
       <div class="answer-key">
-        <div class="akh">Model Answer &mdash; II.3</div>
+        <div class="akh">Model Answer &mdash; Q4</div>
 <pre class="code sm">Engineer Faisal earns 3000.0
 Intern Lama earns 1000.0
 E: Engineer
@@ -802,12 +804,17 @@ KAU Lama
     </div>
   </div><!-- /card -->
 
-  <!-- ================= II.4 ================= -->
+</section>
+
+<section class="sheet">
+  <div class="runhead"><span>Programming II (CPCS203)</span><span>Comprehensive Final Exam (Mock) &middot; Question 5 of 13</span></div>
+
+  <!-- ================= Q5 ================= -->
   <div class="card" data-q="2.5" id="II.4">
     <div class="card-head">
-      <span class="qno">II.4</span>
-      <span class="qtitle">ArrayList &amp; Generics</span>
-      <span class="chips"><span class="chip clo">CLO 9, 12</span><span class="chip so">SO 1</span><span class="chip pts">2.5 marks</span></span>
+      <span class="qno">Q5</span>
+      <span class="qtitle">Part II &mdash; ArrayList &amp; Generics</span>
+      <span class="chips"><span class="chip tag-med">MEDIUM</span><span class="chip clo">CLO 9, 12</span><span class="chip so">SO 1</span><span class="chip pts">2.5 marks</span></span>
     </div>
     <div class="card-body">
       <div style="break-inside:avoid;page-break-inside:avoid">
@@ -834,7 +841,7 @@ System.out.println(q.indexOf("Sara") + " " + q.contains("Ali"));  // Output 2</p
       <div class="answer-space"><div class="writeline"></div><div class="writeline"></div></div>
 
       <div class="answer-key">
-        <div class="akh">Model Answer &mdash; II.4</div>
+        <div class="akh">Model Answer &mdash; Q5</div>
         <p>(a) <span class="val" data-check="q4|[Huda, Omar, Sara] 3">[Huda, Omar, Sara] 3</span> &nbsp;and&nbsp; <span class="val" data-check="q4|2 false">2 false</span></p>
         <p class="rub">[Ali, Sara] &rarr; add(1,"Omar") [Ali, Omar, Sara] &rarr; add [Ali, Omar, Sara, Ali] &rarr; set(0) [Huda, Omar, Sara, Ali] &rarr; <code class="inl">remove("Ali")</code> removes the <b>first</b> "Ali" still in the list (the last one).</p>
 <pre class="code sm">public static &lt;T&gt; int countOccurrences(ArrayList&lt;T&gt; list, T target) {
@@ -854,12 +861,17 @@ System.out.println(q.indexOf("Sara") + " " + q.contains("Ali"));  // Output 2</p
     </div>
   </div><!-- /card -->
 
-  <!-- ================= II.5 ================= -->
+</section>
+
+<section class="sheet">
+  <div class="runhead"><span>Programming II (CPCS203)</span><span>Comprehensive Final Exam (Mock) &middot; Question 6 of 13</span></div>
+
+  <!-- ================= Q6 ================= -->
   <div class="card" data-q="2.5" id="II.5">
     <div class="card-head">
-      <span class="qno">II.5</span>
-      <span class="qtitle">Exception Handling &mdash; try / catch / finally and Propagation</span>
-      <span class="chips"><span class="chip clo">CLO 13</span><span class="chip so">SO 2</span><span class="chip pts">2.5 marks &middot; 0.25 per line</span></span>
+      <span class="qno">Q6</span>
+      <span class="qtitle">Part II &mdash; Exception Handling &mdash; try / catch / finally and Propagation</span>
+      <span class="chips"><span class="chip tag-hard">HARD</span><span class="chip clo">CLO 13</span><span class="chip so">SO 2</span><span class="chip pts">2.5 marks &middot; 0.25 per line</span></span>
     </div>
     <div class="card-body">
       <p>Trace the program and write its <b>complete output</b>, one line per row.</p>
@@ -912,7 +924,7 @@ System.out.println(q.indexOf("Sara") + " " + q.contains("Ali"));  // Output 2</p
 </div>
 
       <div class="answer-key">
-        <div class="akh">Model Answer &mdash; II.5</div>
+        <div class="akh">Model Answer &mdash; Q6</div>
 <pre class="code sm">end of share(0)
 Share = 30
 Math: / by zero
@@ -931,16 +943,21 @@ Done</pre>
     </div>
   </div><!-- /card -->
 
-  <!-- ================= II.6 ================= -->
-  <div class="card" data-q="3" id="II.6">
+</section>
+
+<section class="sheet">
+  <div class="runhead"><span>Programming II (CPCS203)</span><span>Comprehensive Final Exam (Mock) &middot; Question 7 of 13</span></div>
+
+  <!-- ================= Q7 ================= -->
+  <div class="card tight" data-q="3" id="II.6">
     <div class="card-head">
-      <span class="qno">II.6</span>
-      <span class="qtitle">Abstract Classes &amp; Interfaces &mdash; Find and Fix 3 Errors</span>
-      <span class="chips"><span class="chip clo">CLO 10</span><span class="chip so">SO 1</span><span class="chip pts">3 marks &middot; 1 each</span></span>
+      <span class="qno">Q7</span>
+      <span class="qtitle">Part II &mdash; Abstract Classes &amp; Interfaces &mdash; Find and Fix 3 Errors</span>
+      <span class="chips"><span class="chip tag-med">MEDIUM</span><span class="chip clo">CLO 10</span><span class="chip so">SO 1</span><span class="chip pts">3 marks &middot; 1 each</span></span>
     </div>
     <div class="card-body">
       <p>The code contains <b>exactly three compilation errors</b>, all related to abstract classes and interfaces. For each error give the line number, explain it, and write the correction.</p>
-<pre class="code xs"><span class="ln"> 1</span>  interface Payable {
+<pre class="code xs" style="font-size:8.4pt;line-height:1.28;padding:7px 10px"><span class="ln"> 1</span>  interface Payable {
 <span class="ln"> 2</span>      double RATE = 0.15;
 <span class="ln"> 3</span>      double amountDue();
 <span class="ln"> 4</span>  }
@@ -984,14 +1001,14 @@ Done</pre>
       <table class="fill">
         <thead><tr><th style="width:6%">#</th><th style="width:10%">Line</th><th style="width:44%">Error (explanation)</th><th>Correction</th></tr></thead>
         <tbody>
-          <tr><td class="num">1</td><td style="height:3.4em"></td><td></td><td></td></tr>
-          <tr><td class="num">2</td><td style="height:3.4em"></td><td></td><td></td></tr>
-          <tr><td class="num">3</td><td style="height:3.4em"></td><td></td><td></td></tr>
+          <tr><td class="num">1</td><td style="height:2.9em"></td><td></td><td></td></tr>
+          <tr><td class="num">2</td><td style="height:2.9em"></td><td></td><td></td></tr>
+          <tr><td class="num">3</td><td style="height:2.9em"></td><td></td><td></td></tr>
         </tbody>
       </table>
 
       <div class="answer-key">
-        <div class="akh">Model Answer &mdash; II.6</div>
+        <div class="akh">Model Answer &mdash; Q7</div>
         <table class="fill">
           <thead><tr><th>Line</th><th>Error</th><th>Correction</th></tr></thead>
           <tbody>
@@ -1011,17 +1028,17 @@ Done</pre>
      PART III — UML & JAVA
      ===================================================================== -->
 <section class="sheet">
-  <div class="runhead"><span>Programming II (CPCS203)</span><span>Comprehensive Final Exam (Mock) &middot; Part III</span></div>
+  <div class="runhead"><span>Programming II (CPCS203)</span><span>Comprehensive Final Exam (Mock) &middot; Part III Scenario (Q8&ndash;Q13)</span></div>
   <div class="partbar" data-part="9"><span class="pn">Part III</span> UML Diagram &amp; Java Implementation <span class="pm">9 marks</span></div>
 
-  <div class="card">
+  <div class="card tight">
     <div class="card-head">
-      <span class="qno">III</span>
-      <span class="qtitle">Scenario &mdash; &ldquo;Jeddah Wheels&rdquo; Rental Office</span>
+      <span class="qno">Part III</span>
+      <span class="qtitle">Scenario &mdash; &ldquo;Jeddah Wheels&rdquo; Rental Office &mdash; used by Q8&ndash;Q13</span>
       <span class="chips"><span class="chip clo">CLO 5, 8&ndash;13</span><span class="chip so">SO 1 / SO 2</span></span>
     </div>
-    <div class="card-body">
-      <p>A car-rental office in Jeddah rents cars and trucks. Study the UML class diagram and the notes, then answer questions (a)&ndash;(f).
+    <div class="card-body" style="font-size:9.6pt;line-height:1.36">
+      <p>A car-rental office in Jeddah rents cars and trucks. Study the UML class diagram and the notes, then answer Questions 8&ndash;13.
          Abstract names are in <i>italic</i>.</p>
 
       <div class="uml-canvas">
@@ -1108,25 +1125,30 @@ Done</pre>
         <tr><td><code class="inl">totalInsurance(days)</code> returns the sum of <code class="inl">insuranceCost(days)</code> of every <b>insurable</b> vehicle in the fleet.</td></tr>
       </table>
       <table class="need" style="width:100%">
-        <tr><th colspan="2">The office&rsquo;s fleet, added in this order (used in (c) and (e))</th></tr>
+        <tr><th colspan="2">The office&rsquo;s fleet, added in this order (used in Q10 and Q12)</th></tr>
         <tr><td class="mono">1. new Truck("JED-500", 300, 8)</td><td class="mono">2. new Car("JED-101", 150, 5)</td></tr>
         <tr><td class="mono">3. new Truck("JED-777", 250, 3)</td><td class="mono">4. new Car("JED-202", 120, 7)</td></tr>
       </table>
     </div>
   </div>
 
-  <!-- ================= III.a ================= -->
+</section>
+
+<section class="sheet">
+  <div class="runhead"><span>Programming II (CPCS203)</span><span>Comprehensive Final Exam (Mock) &middot; Question 8 of 13</span></div>
+
+  <!-- ================= Q8 ================= -->
   <div class="card" data-q="2.5" id="III.a">
     <div class="card-head">
-      <span class="qno">III (a)</span>
-      <span class="qtitle">Write the Complete Class <code>Truck</code></span>
-      <span class="chips"><span class="chip clo">CLO 11</span><span class="chip so">SO 2</span><span class="chip pts">2.5 marks</span></span>
+      <span class="qno">Q8</span>
+      <span class="qtitle">Part III &mdash; Write the Complete Class <code>Truck</code></span>
+      <span class="chips"><span class="chip tag-med">MEDIUM</span><span class="chip clo">CLO 11</span><span class="chip so">SO 2</span><span class="chip pts">2.5 marks</span></span>
     </div>
     <div class="card-body">
       <p>Translate <code class="inl">Truck</code> into complete Java code. Write <code class="inl">Truck</code> <b>only</b> &mdash; assume <code class="inl">Vehicle</code> and <code class="inl">Insurable</code> already exist.</p>
       <div class="answer-space"><div class="codebox" style="min-height:82mm"></div></div>
       <div class="answer-key">
-        <div class="akh">Model Answer &mdash; III (a)</div>
+        <div class="akh">Model Answer &mdash; Q8</div>
 <pre class="code sm">class Truck extends Vehicle implements Insurable {
     private double loadTons;
 
@@ -1158,12 +1180,17 @@ Done</pre>
     </div>
   </div><!-- /card -->
 
-  <!-- ================= III.b ================= -->
+</section>
+
+<section class="sheet">
+  <div class="runhead"><span>Programming II (CPCS203)</span><span>Comprehensive Final Exam (Mock) &middot; Question 9 of 13</span></div>
+
+  <!-- ================= Q9 ================= -->
   <div class="card" data-q="1" id="III.b">
     <div class="card-head">
-      <span class="qno">III (b)</span>
-      <span class="qtitle">Name the Relationships</span>
-      <span class="chips"><span class="chip clo">CLO 5</span><span class="chip so">SO 2</span><span class="chip pts">1 mark &middot; 0.25 each</span></span>
+      <span class="qno">Q9</span>
+      <span class="qtitle">Part III &mdash; Name the Relationships</span>
+      <span class="chips"><span class="chip tag-easy">EASY</span><span class="chip clo">CLO 5</span><span class="chip so">SO 2</span><span class="chip pts">1 mark &middot; 0.25 each</span></span>
     </div>
     <div class="card-body">
       <p>Write <b>Inheritance</b>, <b>Realization</b> (implements an interface), <b>Composition</b>, <b>Aggregation</b> or <b>Dependency</b> for each pair, as shown in the diagram.</p>
@@ -1177,19 +1204,24 @@ Done</pre>
         </tbody>
       </table>
       <div class="answer-key">
-        <div class="akh">Model Answer &mdash; III (b)</div>
+        <div class="akh">Model Answer &mdash; Q9</div>
         <p>Car&ndash;Vehicle: <span class="val">Inheritance</span> &middot; Truck&ndash;Insurable: <span class="val">Realization</span> &middot;
            RentalOffice&ndash;Vehicle: <span class="val">Aggregation</span> (hollow diamond; vehicles are added from outside) &middot; RentalOffice&ndash;RentalException: <span class="val">Dependency</span> (dashed arrow; only used/thrown in a method).</p>
       </div>
     </div>
   </div><!-- /card -->
 
-  <!-- ================= III.c ================= -->
+</section>
+
+<section class="sheet">
+  <div class="runhead"><span>Programming II (CPCS203)</span><span>Comprehensive Final Exam (Mock) &middot; Question 10 of 13</span></div>
+
+  <!-- ================= Q10 ================= -->
   <div class="card" data-q="1" id="III.c">
     <div class="card-head">
-      <span class="qno">III (c)</span>
-      <span class="qtitle">Comparable &mdash; Write <code>compareTo</code></span>
-      <span class="chips"><span class="chip clo">CLO 10</span><span class="chip so">SO 1</span><span class="chip pts">1 mark</span></span>
+      <span class="qno">Q10</span>
+      <span class="qtitle">Part III &mdash; Comparable &mdash; Write <code>compareTo</code></span>
+      <span class="chips"><span class="chip tag-med">MEDIUM</span><span class="chip clo">CLO 10</span><span class="chip so">SO 1</span><span class="chip pts">1 mark</span></span>
     </div>
     <div class="card-body">
       <p>Write the method <code class="inl">compareTo</code> of class <code class="inl">Vehicle</code> (see the notes). <span class="mini" data-sub="0.75">(0.75 mark)</span></p>
@@ -1197,7 +1229,7 @@ Done</pre>
       <p>After <code class="inl">Collections.sort(fleet)</code> on the office&rsquo;s fleet, which plate is <b>first</b>? <span class="mini" data-sub="0.25">(0.25 mark)</span></p>
       <div class="answer-space"><div class="writeline"></div></div>
       <div class="answer-key">
-        <div class="akh">Model Answer &mdash; III (c)</div>
+        <div class="akh">Model Answer &mdash; Q10</div>
 <pre class="code sm">@Override
 public int compareTo(Vehicle other) {
     if (dailyRate &lt; other.dailyRate) {
@@ -1215,18 +1247,23 @@ public int compareTo(Vehicle other) {
     </div>
   </div><!-- /card -->
 
-  <!-- ================= III.d ================= -->
+</section>
+
+<section class="sheet">
+  <div class="runhead"><span>Programming II (CPCS203)</span><span>Comprehensive Final Exam (Mock) &middot; Question 11 of 13</span></div>
+
+  <!-- ================= Q11 ================= -->
   <div class="card" data-q="2" id="III.d">
     <div class="card-head">
-      <span class="qno">III (d)</span>
-      <span class="qtitle">ArrayList of Objects &mdash; Write <code>rent</code></span>
-      <span class="chips"><span class="chip clo">CLO 9</span><span class="chip so">SO 1</span><span class="chip pts">2 marks</span></span>
+      <span class="qno">Q11</span>
+      <span class="qtitle">Part III &mdash; ArrayList of Objects &mdash; Write <code>rent</code></span>
+      <span class="chips"><span class="chip tag-hard">HARD</span><span class="chip clo">CLO 9</span><span class="chip so">SO 1</span><span class="chip pts">2 marks</span></span>
     </div>
     <div class="card-body">
       <p>Write the method <code class="inl">rent(String plate, int days)</code> of class <code class="inl">RentalOffice</code> exactly as described in the notes. <code class="inl">RentalException</code> is a <b>checked</b> exception.</p>
       <div class="answer-space"><div class="codebox" style="min-height:58mm"></div></div>
       <div class="answer-key">
-        <div class="akh">Model Answer &mdash; III (d)</div>
+        <div class="akh">Model Answer &mdash; Q11</div>
 <pre class="code sm">public double rent(String plate, int days) throws RentalException {
     if (days &lt; 1) {
         throw new RentalException("Invalid days: " + days);
@@ -1244,12 +1281,17 @@ public int compareTo(Vehicle other) {
     </div>
   </div><!-- /card -->
 
-  <!-- ================= III.e ================= -->
+</section>
+
+<section class="sheet">
+  <div class="runhead"><span>Programming II (CPCS203)</span><span>Comprehensive Final Exam (Mock) &middot; Question 12 of 13</span></div>
+
+  <!-- ================= Q12 ================= -->
   <div class="card" data-q="1.5" id="III.e">
     <div class="card-head">
-      <span class="qno">III (e)</span>
-      <span class="qtitle">Custom Exception &mdash; Write It and Trace It</span>
-      <span class="chips"><span class="chip clo">CLO 13</span><span class="chip so">SO 2</span><span class="chip pts">1.5 marks</span></span>
+      <span class="qno">Q12</span>
+      <span class="qtitle">Part III &mdash; Custom Exception &mdash; Write It and Trace It</span>
+      <span class="chips"><span class="chip tag-med">MEDIUM</span><span class="chip clo">CLO 13</span><span class="chip so">SO 2</span><span class="chip pts">1.5 marks</span></span>
     </div>
     <div class="card-body">
       <p><b>(i)</b> Write the class <code class="inl">RentalException</code> from the diagram. <span class="mini" data-sub="0.5">(0.5 mark)</span></p>
@@ -1269,7 +1311,7 @@ public int compareTo(Vehicle other) {
 </div>
       </div>
       <div class="answer-key">
-        <div class="akh">Model Answer &mdash; III (e)</div>
+        <div class="akh">Model Answer &mdash; Q12</div>
 <div class="two-col">
 <pre class="code sm">class RentalException extends Exception {
     public RentalException(String message) {
@@ -1286,18 +1328,23 @@ Sorry: No vehicle JED-999</pre>
     </div>
   </div><!-- /card -->
 
-  <!-- ================= III.f ================= -->
+</section>
+
+<section class="sheet">
+  <div class="runhead"><span>Programming II (CPCS203)</span><span>Comprehensive Final Exam (Mock) &middot; Question 13 of 13</span></div>
+
+  <!-- ================= Q13 ================= -->
   <div class="card" data-q="1" id="III.f">
     <div class="card-head">
-      <span class="qno">III (f)</span>
-      <span class="qtitle">Polymorphism with <code>instanceof</code> &mdash; Write <code>totalInsurance</code></span>
-      <span class="chips"><span class="chip clo">CLO 8</span><span class="chip so">SO 1</span><span class="chip pts">1 mark</span></span>
+      <span class="qno">Q13</span>
+      <span class="qtitle">Part III &mdash; Polymorphism with <code>instanceof</code> &mdash; Write <code>totalInsurance</code></span>
+      <span class="chips"><span class="chip tag-med">MEDIUM</span><span class="chip clo">CLO 8</span><span class="chip so">SO 1</span><span class="chip pts">1 mark</span></span>
     </div>
     <div class="card-body">
       <p>Write the method <code class="inl">totalInsurance(int days)</code> of class <code class="inl">RentalOffice</code>. Only some vehicles are insurable, and <code class="inl">fleet</code> is declared as <code class="inl">ArrayList&lt;Vehicle&gt;</code>.</p>
       <div class="answer-space"><div class="codebox" style="min-height:40mm"></div></div>
       <div class="answer-key">
-        <div class="akh">Model Answer &mdash; III (f)</div>
+        <div class="akh">Model Answer &mdash; Q13</div>
 <pre class="code sm">public double totalInsurance(int days) {
     double total = 0;
     for (Vehicle v : fleet) {
@@ -1326,33 +1373,33 @@ Sorry: No vehicle JED-999</pre>
     <thead><tr><th style="width:9%">Question</th><th>Topic</th><th style="width:7%">CLO</th><th style="width:7%">SO</th><th style="width:9%">Marks</th></tr></thead>
     <tbody>
       <tr class="grp"><td colspan="5">Part I &mdash; Multiple Choice (6 marks)</td></tr>
-      <tr><td>I.1</td><td>Multidimensional arrays (Ch 8) + String &mdash; <code class="inl">length</code> of a 2-D array, <code class="inl">substring</code></td><td class="c">1</td><td class="c">1</td><td class="c" data-bp="0.5">0.5</td></tr>
-      <tr><td>I.2</td><td>Text I/O &mdash; <code class="inl">Scanner(File)</code> and the checked <code class="inl">FileNotFoundException</code></td><td class="c">2</td><td class="c">1</td><td class="c" data-bp="0.5">0.5</td></tr>
-      <tr><td>I.3</td><td>Objects &amp; Classes &mdash; static vs instance variables, aliases</td><td class="c">3</td><td class="c">1</td><td class="c" data-bp="0.5">0.5</td></tr>
-      <tr><td>I.4</td><td>Thinking in Objects &mdash; passing object references to methods</td><td class="c">4</td><td class="c">2</td><td class="c" data-bp="0.5">0.5</td></tr>
-      <tr><td>I.5</td><td>OO analysis &mdash; composition vs aggregation in a real situation</td><td class="c">6</td><td class="c">2</td><td class="c" data-bp="0.5">0.5</td></tr>
-      <tr><td>I.6</td><td>Inheritance &mdash; implicit <code class="inl">super()</code> and the missing no-arg constructor</td><td class="c">7</td><td class="c">2</td><td class="c" data-bp="0.5">0.5</td></tr>
-      <tr><td>I.7</td><td>Polymorphism &mdash; declared type decides which methods compile</td><td class="c">8</td><td class="c">1</td><td class="c" data-bp="0.5">0.5</td></tr>
-      <tr><td>I.8</td><td>Polymorphism &mdash; <code class="inl">==</code> vs <code class="inl">Object.equals</code></td><td class="c">8</td><td class="c">1</td><td class="c" data-bp="0.5">0.5</td></tr>
-      <tr><td>I.9</td><td>ArrayList &mdash; <code class="inl">remove(index)</code> vs <code class="inl">remove(Object)</code>, <code class="inl">add(index, e)</code></td><td class="c">9</td><td class="c">1</td><td class="c" data-bp="0.5">0.5</td></tr>
-      <tr><td>I.10</td><td>Abstract classes &mdash; rules</td><td class="c">10</td><td class="c">1</td><td class="c" data-bp="0.5">0.5</td></tr>
-      <tr><td>I.11</td><td>Generics &mdash; type arguments must be class types</td><td class="c">12</td><td class="c">1</td><td class="c" data-bp="0.5">0.5</td></tr>
-      <tr><td>I.12</td><td>Exceptions &mdash; order of catch blocks</td><td class="c">13</td><td class="c">2</td><td class="c" data-bp="0.5">0.5</td></tr>
+      <tr><td>Q1 (1)</td><td>Multidimensional arrays (Ch 8) + String &mdash; <code class="inl">length</code> of a 2-D array, <code class="inl">substring</code></td><td class="c">1</td><td class="c">1</td><td class="c" data-bp="0.5">0.5</td></tr>
+      <tr><td>Q1 (2)</td><td>Text I/O &mdash; <code class="inl">Scanner(File)</code> and the checked <code class="inl">FileNotFoundException</code></td><td class="c">2</td><td class="c">1</td><td class="c" data-bp="0.5">0.5</td></tr>
+      <tr><td>Q1 (3)</td><td>Objects &amp; Classes &mdash; static vs instance variables, aliases</td><td class="c">3</td><td class="c">1</td><td class="c" data-bp="0.5">0.5</td></tr>
+      <tr><td>Q1 (4)</td><td>Thinking in Objects &mdash; passing object references to methods</td><td class="c">4</td><td class="c">2</td><td class="c" data-bp="0.5">0.5</td></tr>
+      <tr><td>Q1 (5)</td><td>OO analysis &mdash; composition vs aggregation in a real situation</td><td class="c">6</td><td class="c">2</td><td class="c" data-bp="0.5">0.5</td></tr>
+      <tr><td>Q1 (6)</td><td>Inheritance &mdash; implicit <code class="inl">super()</code> and the missing no-arg constructor</td><td class="c">7</td><td class="c">2</td><td class="c" data-bp="0.5">0.5</td></tr>
+      <tr><td>Q1 (7)</td><td>Polymorphism &mdash; declared type decides which methods compile</td><td class="c">8</td><td class="c">1</td><td class="c" data-bp="0.5">0.5</td></tr>
+      <tr><td>Q1 (8)</td><td>Polymorphism &mdash; <code class="inl">==</code> vs <code class="inl">Object.equals</code></td><td class="c">8</td><td class="c">1</td><td class="c" data-bp="0.5">0.5</td></tr>
+      <tr><td>Q1 (9)</td><td>ArrayList &mdash; <code class="inl">remove(index)</code> vs <code class="inl">remove(Object)</code>, <code class="inl">add(index, e)</code></td><td class="c">9</td><td class="c">1</td><td class="c" data-bp="0.5">0.5</td></tr>
+      <tr><td>Q1 (10)</td><td>Abstract classes &mdash; rules</td><td class="c">10</td><td class="c">1</td><td class="c" data-bp="0.5">0.5</td></tr>
+      <tr><td>Q1 (11)</td><td>Generics &mdash; type arguments must be class types</td><td class="c">12</td><td class="c">1</td><td class="c" data-bp="0.5">0.5</td></tr>
+      <tr><td>Q1 (12)</td><td>Exceptions &mdash; order of catch blocks</td><td class="c">13</td><td class="c">2</td><td class="c" data-bp="0.5">0.5</td></tr>
       <tr class="grp"><td colspan="5">Part II &mdash; Code Analysis &amp; Writing (15 marks)</td></tr>
-      <tr><td>II.1</td><td>Text I/O + ragged 2-D array &mdash; complete &amp; trace (<code class="inl">BranchSales</code>)</td><td class="c">2</td><td class="c">1</td><td class="c" data-bp="2">2</td></tr>
-      <tr><td>II.2</td><td>String / StringBuilder &mdash; write <code class="inl">makeUsername</code></td><td class="c">1</td><td class="c">1</td><td class="c" data-bp="2.5">2.5</td></tr>
-      <tr><td>II.3</td><td>Polymorphism &mdash; dynamic binding, overloading, <code class="inl">instanceof</code>, casting (<code class="inl">PayrollTest</code>)</td><td class="c">8</td><td class="c">1</td><td class="c" data-bp="2.5">2.5</td></tr>
-      <tr><td>II.4 (a)</td><td>ArrayList &mdash; trace <code class="inl">add / set / remove / indexOf / contains</code></td><td class="c">9</td><td class="c">1</td><td class="c" data-bp="1">1</td></tr>
-      <tr><td>II.4 (b, c)</td><td>Generics &mdash; write a generic method; benefits of generics</td><td class="c">12</td><td class="c">1</td><td class="c" data-bp="1.5">1.5</td></tr>
-      <tr><td>II.5</td><td>Exception handling &mdash; try / catch / finally, propagation (<code class="inl">FeeSplitter</code>)</td><td class="c">13</td><td class="c">2</td><td class="c" data-bp="2.5">2.5</td></tr>
-      <tr><td>II.6</td><td>Abstract classes &amp; interfaces &mdash; find &amp; fix 3 errors (<code class="inl">Bill</code>)</td><td class="c">10</td><td class="c">1</td><td class="c" data-bp="3">3</td></tr>
+      <tr><td>Q2</td><td>Text I/O + ragged 2-D array &mdash; complete &amp; trace (<code class="inl">BranchSales</code>)</td><td class="c">2</td><td class="c">1</td><td class="c" data-bp="2">2</td></tr>
+      <tr><td>Q3</td><td>String / StringBuilder &mdash; write <code class="inl">makeUsername</code></td><td class="c">1</td><td class="c">1</td><td class="c" data-bp="2.5">2.5</td></tr>
+      <tr><td>Q4</td><td>Polymorphism &mdash; dynamic binding, overloading, <code class="inl">instanceof</code>, casting (<code class="inl">PayrollTest</code>)</td><td class="c">8</td><td class="c">1</td><td class="c" data-bp="2.5">2.5</td></tr>
+      <tr><td>Q5 (a)</td><td>ArrayList &mdash; trace <code class="inl">add / set / remove / indexOf / contains</code></td><td class="c">9</td><td class="c">1</td><td class="c" data-bp="1">1</td></tr>
+      <tr><td>Q5 (b, c)</td><td>Generics &mdash; write a generic method; benefits of generics</td><td class="c">12</td><td class="c">1</td><td class="c" data-bp="1.5">1.5</td></tr>
+      <tr><td>Q6</td><td>Exception handling &mdash; try / catch / finally, propagation (<code class="inl">FeeSplitter</code>)</td><td class="c">13</td><td class="c">2</td><td class="c" data-bp="2.5">2.5</td></tr>
+      <tr><td>Q7</td><td>Abstract classes &amp; interfaces &mdash; find &amp; fix 3 errors (<code class="inl">Bill</code>)</td><td class="c">10</td><td class="c">1</td><td class="c" data-bp="3">3</td></tr>
       <tr class="grp"><td colspan="5">Part III &mdash; UML Diagram &amp; Java Implementation (9 marks)</td></tr>
-      <tr><td>III.a</td><td>Class hierarchy &mdash; write <code class="inl">Truck</code> (abstract superclass + interface)</td><td class="c">11</td><td class="c">2</td><td class="c" data-bp="2.5">2.5</td></tr>
-      <tr><td>III.b</td><td>UML relationships</td><td class="c">5</td><td class="c">2</td><td class="c" data-bp="1">1</td></tr>
-      <tr><td>III.c</td><td>Comparable &mdash; write <code class="inl">compareTo</code>, sorting</td><td class="c">10</td><td class="c">1</td><td class="c" data-bp="1">1</td></tr>
-      <tr><td>III.d</td><td>ArrayList of objects &mdash; write <code class="inl">rent</code></td><td class="c">9</td><td class="c">1</td><td class="c" data-bp="2">2</td></tr>
-      <tr><td>III.e</td><td>Custom checked exception &mdash; write it and trace a try/catch</td><td class="c">13</td><td class="c">2</td><td class="c" data-bp="1.5">1.5</td></tr>
-      <tr><td>III.f</td><td>Polymorphism &mdash; <code class="inl">instanceof</code> + cast to an interface</td><td class="c">8</td><td class="c">1</td><td class="c" data-bp="1">1</td></tr>
+      <tr><td>Q8</td><td>Class hierarchy &mdash; write <code class="inl">Truck</code> (abstract superclass + interface)</td><td class="c">11</td><td class="c">2</td><td class="c" data-bp="2.5">2.5</td></tr>
+      <tr><td>Q9</td><td>UML relationships</td><td class="c">5</td><td class="c">2</td><td class="c" data-bp="1">1</td></tr>
+      <tr><td>Q10</td><td>Comparable &mdash; write <code class="inl">compareTo</code>, sorting</td><td class="c">10</td><td class="c">1</td><td class="c" data-bp="1">1</td></tr>
+      <tr><td>Q11</td><td>ArrayList of objects &mdash; write <code class="inl">rent</code></td><td class="c">9</td><td class="c">1</td><td class="c" data-bp="2">2</td></tr>
+      <tr><td>Q12</td><td>Custom checked exception &mdash; write it and trace a try/catch</td><td class="c">13</td><td class="c">2</td><td class="c" data-bp="1.5">1.5</td></tr>
+      <tr><td>Q13</td><td>Polymorphism &mdash; <code class="inl">instanceof</code> + cast to an interface</td><td class="c">8</td><td class="c">1</td><td class="c" data-bp="1">1</td></tr>
       <tr class="sum"><td colspan="4" style="text-align:right">Total</td><td class="c">30</td></tr>
     </tbody>
   </table>
@@ -1365,7 +1412,7 @@ Sorry: No vehicle JED-999</pre>
     </tbody>
   </table>
   <p class="mini" style="margin-top:8px">Before the midterm (CLO 1&ndash;7, Ch 8, 9, 10, 12 Text I/O, 11.1&ndash;11.6): <b>8.5 marks</b>. After the midterm (CLO 8&ndash;13: polymorphism, ArrayList, abstract classes, interfaces, generics, exceptions): <b>21.5 marks</b>.
-     SO 1: 20.5 marks &middot; SO 2: 9.5 marks. Chapter 8 (multidimensional arrays) has no CLO of its own in the syllabus; it is tested inside I.1 (CLO 1) and II.1 (CLO 2).</p>
+     SO 1: 20.5 marks &middot; SO 2: 9.5 marks. Chapter 8 (multidimensional arrays) has no CLO of its own in the syllabus; it is tested inside Q1 item 1 (CLO 1) and Q2 (CLO 2).</p>
   <p class="mini">CLO 1 String &middot; 2 File I/O &middot; 3 object identity, constructors, encapsulation &middot; 4 program as communicating objects &middot; 5 UML &middot; 6 real-world OO analysis &middot;
      7 inheritance &middot; 8 polymorphism &middot; 9 ArrayList &middot; 10 interfaces &amp; abstract classes &middot; 11 class hierarchies &middot; 12 generics &middot; 13 exception handling.
      Every program in this exam and its key was compiled and run with javac / java 21.</p>
