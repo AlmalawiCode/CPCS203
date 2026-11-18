@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interfaces &mdash; Practice Exam (A4 printable)</title>
+<style>
+/* =======================================================================
+   Programming II — MODULE 9: INTERFACES — practice exam
+   Print-first, A4. Each question is a CARD. Module colour theme (violet).
+   A "Show model answers" toggle turns the same file into an answer key.
+   ======================================================================= */
+@page { size: A4; margin: 12mm 15mm 14mm 15mm; }
+
+:root{
+  --em:        #6d28d9;
+  --em-dark:   #5b21b6;
+  --em-deep:   #4c1d95;
+  --em-tint:   #f5f3ff;
+  --ink:       #1f2937;
+  --ink-soft:  #4b5563;
+  --rule:      #ddd6fe;
+  --paper:     #ffffff;
+  --code-bg:   #faf8ff;
+  --code-rule: #e4dcfb;
+  --warn:      #b42318;
+  --tag-easy:  #e7f6ec; --tag-easy-i:#1a7f37;
+  --tag-med:   #fef3e0; --tag-med-i: #9a6212;
+  --tag-hard:  #fdeaea; --tag-hard-i:#b42318;
+}
+
+*{ box-sizing:border-box; }
+html,body{
+  margin:0; padding:0;
+  background:#e5e9f0;
+  color:var(--ink);
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size:11pt; line-height:1.5;
+}
+body{ padding:14mm 0; }
+
+/* ---- A4 sheet ---- */
+.sheet{
+  background:var(--paper);
+  width:210mm; min-height:297mm;
+  margin:0 auto 10mm;
+  padding:15mm 15mm 18mm;
+  box-shadow:0 3px 14px rgba(31,41,55,.18);
+  position:relative;
+}
+
+/* ---- running head ---- */
+.runhead{
+  display:flex; justify-content:space-between; align-items:flex-end;
+  border-bottom:2px solid var(--em-dark);
+  padding-bottom:6px; margin-bottom:14px;
+  font-size:9.5pt; color:var(--em-deep);
+}
+.runhead b{ font-size:10.5pt; }
+
+/* ================= COVER ================= */
+.cover-top{ text-align:center; }
+.cover-rule{ height:2px; background:var(--em-dark); margin:12px 0; }
+.cover-title{ font-size:22pt; font-weight:800; color:var(--em); letter-spacing:.5px; }
+.cover-sub{ font-size:13pt; font-weight:600; margin-top:4px; }
+.cover-tag{
+  display:inline-block; margin-top:10px; padding:4px 16px;
+  background:var(--em-tint); color:var(--em-dark); border:1px solid var(--em);
+  border-radius:999px; font-weight:700; font-size:10.5pt;
+}
+
+.id-grid{ margin:22px 0 4px; width:100%; border-collapse:collapse; font-size:11pt; }
+.id-grid td{ padding:9px 6px; }
+.id-grid .lbl{ width:132px; white-space:nowrap; font-weight:700; color:var(--em-deep); }
+.id-grid .line{ border-bottom:1.4px solid #6b7280; }
+
+.instr{
+  margin-top:16px; border:1px solid var(--rule);
+  border-left:5px solid var(--em); border-radius:8px;
+  background:#fbfaff; padding:12px 16px;
+}
+.instr h3{ margin:0 0 6px; font-size:11.5pt; color:var(--em-deep); }
+.instr ul{ margin:0; padding-left:18px; }
+.instr li{ margin:3px 0; }
+
+.marks-tbl{ width:100%; border-collapse:collapse; margin-top:18px; font-size:10pt; text-align:center; }
+.marks-tbl th, .marks-tbl td{ border:1px solid var(--rule); padding:6px 4px; }
+.marks-tbl thead th{ background:var(--em-dark); color:#fff; }
+.marks-tbl .tot{ background:var(--em-tint); font-weight:800; }
+.marks-tbl thead th.tot{ background:var(--em-deep); color:#fff; }
+
+/* ================= QUESTION CARD ================= */
+.card{
+  border:1px solid var(--rule); border-radius:10px;
+  margin:0 0 16px; overflow:hidden;
+  break-inside:avoid; page-break-inside:avoid; background:#fff;
+}
+.card-head{
+  display:flex; flex-wrap:wrap; align-items:center; gap:8px;
+  background:linear-gradient(180deg,#faf8ff,#ede9fe);
+  border-bottom:1px solid var(--rule); padding:9px 14px;
+}
+.qno{
+  font-weight:800; color:#fff; background:var(--em-dark);
+  border-radius:6px; padding:3px 11px; font-size:11pt; letter-spacing:.3px;
+}
+.qtitle{ font-weight:700; font-size:11.5pt; color:var(--em-deep); flex:1 1 240px; }
+.chips{ display:flex; gap:6px; align-items:center; flex-wrap:wrap; }
+.chip{ font-size:8.5pt; padding:2px 8px; border-radius:999px; font-weight:700; white-space:nowrap; }
+.chip.clo{ background:#ede9fe; color:#5b21b6; border:1px solid #c4b5fd; }
+.chip.so { background:#ecfeff; color:#0e7490; border:1px solid #a5f3fc; }
+.chip.pts{ background:var(--em-deep); color:#fff; }
+.tag-easy{ background:var(--tag-easy); color:var(--tag-easy-i); border:1px solid var(--tag-easy-i); }
+.tag-med { background:var(--tag-med);  color:var(--tag-med-i);  border:1px solid var(--tag-med-i);  }
+.tag-hard{ background:var(--tag-hard); color:var(--tag-hard-i); border:1px solid var(--tag-hard-i); }
+
+.card-body{ padding:12px 16px 14px; }
+.card-body p{ margin:6px 0; }
+.note{ color:var(--warn); font-style:italic; font-weight:600; font-size:10pt; }
+.hint{ color:var(--ink-soft); font-style:italic; font-size:10pt; }
+.mini{ font-size:9pt; color:#6b7280; }
+
+/* ---- code blocks ---- */
+pre.code{
+  background:var(--code-bg); border:1px solid var(--code-rule);
+  border-left:4px solid var(--em); border-radius:6px;
+  padding:10px 12px; margin:10px 0; overflow:auto;
+  font-family:'Consolas','DejaVu Sans Mono',monospace; font-size:10pt; line-height:1.5;
+  white-space:pre;
+}
+pre.code.sm{ font-size:9.3pt; line-height:1.42; }
+code.inl{ background:var(--code-bg); border:1px solid var(--code-rule); border-radius:4px;
+  padding:1px 5px; font-family:'Consolas',monospace; font-size:9.8pt; }
+.dots{ letter-spacing:1px; color:#6b7280; }
+.two-col{ display:flex; gap:12px; }
+.two-col > *{ flex:1 1 0; min-width:0; }
+.two-col > .wide{ flex-grow:1.4; }
+.two-col > .narrow{ flex-grow:.65; }
+.two-col > .snug{ flex:0 0 auto; }
+.opts p{ margin:3px 0; }
+.tight .card-body{ font-size:10.5pt; line-height:1.42; }
+.tight .card-body p{ margin:4px 0; }
+.tight .mcq{ margin-bottom:5px; }
+.tight pre.code{ margin:6px 0; }
+.mcq{ display:grid; grid-template-columns:1fr 1fr; gap:2px 18px; margin:2px 0 8px 14px; }
+.mcq.c4{ grid-template-columns:repeat(4, auto); justify-content:start; column-gap:34px; }
+.mcq.c5{ grid-template-columns:repeat(5, auto); justify-content:start; column-gap:26px; }
+
+/* ---- UML class box ---- */
+.uml{ display:inline-block; border:1.6px solid var(--em-deep); margin:10px 0;
+  font-family:'Consolas','DejaVu Sans Mono',monospace; font-size:10pt; background:#fff; min-width:300px; }
+.uml div{ padding:5px 12px; }
+.uml .uml-name{ text-align:center; font-weight:800; background:var(--em-tint); color:var(--em-deep);
+  border-bottom:1.6px solid var(--em-deep); font-family:'Segoe UI',sans-serif; font-size:11pt; }
+.uml .uml-sec{ border-bottom:1.6px solid var(--em-deep); }
+.uml .uml-sec:last-child{ border-bottom:0; }
+.uml .uml-sec span{ display:block; line-height:1.55; }
+.uml u{ text-decoration-thickness:1.4px; }
+.uml-wrap{ display:flex; gap:16px; align-items:flex-start; }
+.need{ border-collapse:collapse; font-size:9.5pt; margin-top:10px; }
+.need td, .need th{ border:1px solid var(--rule); padding:4px 8px; font-family:'Consolas',monospace; }
+.need th{ background:var(--em-tint); color:var(--em-deep); font-family:'Segoe UI',sans-serif; }
+
+/* ---- answer space ---- */
+.answer-space{ margin-top:10px; }
+.answer-space .lbl{ font-style:italic; color:var(--ink-soft); font-size:10pt; }
+.writeline{ border-bottom:1px solid #9ca3af; height:1.55em; margin-top:.45em; }
+.codebox{ border:1px dashed #9ca3af; border-radius:6px; min-height:120px; margin-top:8px;
+  background:repeating-linear-gradient(#fff,#fff 1.7em,#ece6fb 1.7em,#ece6fb calc(1.7em + 1px)); }
+.drawbox{ border:1px dashed #9ca3af; border-radius:6px; margin-top:8px; position:relative;
+  display:flex; }
+.drawbox .half{ flex:1; padding:6px 10px; font-size:9pt; color:#9ca3af; font-weight:700; letter-spacing:1px; }
+.drawbox .half + .half{ border-left:1px dashed #cbd5e1; }
+
+/* ---- fill-in tables ---- */
+.fill{ width:100%; border-collapse:collapse; margin-top:8px; font-size:10.5pt; }
+.fill td, .fill th{ border:1px solid var(--rule); padding:7px 8px; }
+.fill th{ background:var(--em-tint); color:var(--em-deep); font-size:10pt; }
+.fill td.ans{ background:#fff; width:42%; height:2.6em; }
+.fill td.mono{ font-family:'Consolas',monospace; }
+
+/* ---- model answer block (hidden until toggled) ---- */
+.answer-key{ display:none; }
+body.show-answers .answer-key{ display:block; }
+body.show-answers .card{ break-inside:auto; page-break-inside:auto; }
+body.show-answers .answer-key{ break-inside:avoid; page-break-inside:avoid; }
+.answer-key{
+  margin-top:12px; border:1px solid #bbf7d0; border-left:5px solid #16a34a;
+  background:#f0fdf4; border-radius:8px; padding:10px 14px;
+}
+.answer-key .akh{ font-weight:800; color:#15803d; font-size:10.5pt; margin-bottom:4px; }
+.answer-key pre.code{ border-left-color:#16a34a; background:#f6fdf9; border-color:#bbf7d0; }
+.answer-key .val{ color:#166534; font-weight:800; }
+.answer-key .rub{ color:#0e7490; font-size:9.5pt; font-style:italic; }
+.answer-key table.fill th{ background:#dcfce7; color:#15803d; }
+
+/* ---- floating toolbar (screen only) ---- */
+.toolbar{
+  position:fixed; top:14px; right:14px; z-index:50; display:flex; gap:8px;
+  background:#fff; border:1px solid var(--rule); border-radius:10px; padding:8px 10px;
+  box-shadow:0 4px 14px rgba(31,41,55,.18);
+}
+.toolbar button, .toolbar a{
+  font:inherit; font-size:10pt; font-weight:700; cursor:pointer; text-decoration:none;
+  border:1px solid var(--em); border-radius:7px; padding:7px 12px;
+  background:var(--em); color:#fff;
+}
+.toolbar .ghost{ background:#fff; color:var(--em-dark); }
+.toolbar button:active{ transform:translateY(1px); }
+
+.footline{ text-align:center; margin-top:6px; color:var(--ink-soft); font-size:9.5pt; }
+.endmark{ text-align:center; font-weight:800; color:var(--em-deep); margin:18px 0 4px; }
+
+/* ================= PRINT ================= */
+@media print{
+  body{ background:#fff; padding:0; }
+  .toolbar{ display:none !important; }
+  .sheet{ box-shadow:none; margin:0; width:auto; min-height:auto; padding:0; }
+  .sheet + .sheet{ page-break-before:always; }
+  .card{ box-shadow:none; }
+}
+
+/* ---- additions for this exam ---- */
+.fill td.mono{ font-size:9pt; line-height:1.45; }
+.instr .chip{ font-size:8pt; padding:1px 7px; }
+.two-col pre.code.sm{ font-size:8.3pt; line-height:1.4; padding:8px 8px; }
+.two-col.code2{ gap:8px; }
+pre.code{ white-space:pre-wrap; overflow:visible; }   /* never clip code on paper */
+@media print{ html{ background:#fff; } }
+.card.flow{ break-inside:auto; page-break-inside:auto; }
+.uml-wrap{ gap:8px; }
+.uml-wrap .uml{ min-width:0; flex:1 1 0; font-size:9pt; }
+.uml-wrap .uml div{ padding:4px 8px; }
+.uml .stereo{ display:block; font-weight:400; font-style:italic; font-size:9pt; }
+/* let every card flow across a page break, but keep code blocks and table rows whole */
+.card, body.show-answers .card{ break-inside:auto; page-break-inside:auto; }
+pre.code, .fill tr, .mcq, .uml-wrap, .card-head, .answer-space, .drawbox, .codebox, svg{ break-inside:avoid; page-break-inside:avoid; }
+.card-head{ break-after:avoid; page-break-after:avoid; }
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <a href="index.html" class="ghost">&#8592; Interfaces</a>
+  <button id="toggleAns" class="ghost">&#128065; Show model answers</button>
+  <button onclick="window.print()">&#128424; Print / Save PDF</button>
+</div>
+
+<!-- =====================================================================
+     COVER PAGE
+     ===================================================================== -->
+
+<section class="sheet cover">
+  <div class="cover-rule"></div>
+  <div class="cover-top">
+    <div class="cover-title">Programming II</div>
+    <div class="cover-sub">Module 9: Interfaces &mdash; Focused Practice Exam</div>
+    <div class="cover-tag">interface &middot; implements &middot; Constants &amp; Abstract Methods &middot; Multiple Interfaces &middot; Interface Inheritance &middot; Interface as a Type &amp; instanceof &middot; Comparable &middot; Abstract Class vs Interface</div>
+  </div>
+  <div class="cover-rule"></div>
+
+  <table class="id-grid">
+    <tr><td class="lbl">Student Name:</td><td class="line"></td></tr>
+    <tr><td class="lbl">Student ID:</td><td class="line"></td></tr>
+    <tr>
+      <td class="lbl">Section:</td><td class="line" style="width:35%"></td>
+      <td class="lbl" style="text-align:right;padding-right:14px">Instructor:</td><td class="line"></td>
+    </tr>
+  </table>
+
+  <div class="instr">
+    <h3>Instructions</h3>
+    <ul>
+      <li>This booklet contains <b>11 questions</b> on Interfaces only. <b>Total: 80 marks</b> &middot; Suggested time: <b>90 minutes</b>.</li>
+      <li>Answer <b>all</b> questions in the spaces provided. <b>Place your answers in the boxes provided.</b></li>
+      <li>When a question shows several classes and interfaces together, assume <b>each one is saved in its own <code class="inl">.java</code> file</b>
+          in the <b>same package</b>. <b>Assume all necessary import statements are present.</b></li>
+      <li>When asked for output, write the <b>exact output, one line per line</b>.
+          If a piece of code does not compile, write <b>&ldquo;Compilation error&rdquo;</b> and give the reason in one short sentence.</li>
+      <li>Questions are labelled <span class="chip tag-easy">EASY</span> <span class="chip tag-med">MEDIUM</span> <span class="chip tag-hard">HARD</span>.
+          Write clear Java. Partial (per-line) credit is given.
+          <span class="note">Data fields must be private wherever a question asks you to write a class.</span></li>
+    </ul>
+  </div>
+
+  <table class="marks-tbl">
+    <thead>
+      <tr><th>Question</th><th>Q1</th><th>Q2</th><th>Q3</th><th>Q4</th><th>Q5</th><th>Q6</th><th>Q7</th><th>Q8</th><th>Q9</th><th>Q10</th><th>Q11</th><th class="tot">Total</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><b>Level</b></td><td>E</td><td>E</td><td>M</td><td>M</td><td>M</td><td>M</td><td>H</td><td>M</td><td>M</td><td>H</td><td>H</td><td class="tot"></td></tr>
+      <tr><td><b>Max Mark</b></td><td>8</td><td>6</td><td>8</td><td>6</td><td>6</td><td>8</td><td>8</td><td>6</td><td>8</td><td>8</td><td>8</td><td class="tot">80</td></tr>
+      <tr><td><b>Obtained</b></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class="tot"></td></tr>
+    </tbody>
+  </table>
+
+  <p class="footline">Topics covered: class (what it <i>is</i>) vs interface (what it <i>can do</i>) &middot; single inheritance and the diamond problem &middot; defining an interface &mdash;
+     constants (<code class="inl">public static final</code>) and abstract methods (<code class="inl">public abstract</code>) &middot; <code class="inl">implements</code> and implementing every method &middot;
+     implementing several interfaces &middot; an interface extending another interface &middot; the interface as a data type, polymorphism, casting and <code class="inl">instanceof</code> &middot;
+     the Edible and Payable examples &middot; interface as a contract &middot; <code class="inl">Comparable&lt;E&gt;</code>, <code class="inl">compareTo</code> and <code class="inl">Arrays.sort</code> &middot;
+     name conflicts between interfaces &middot; abstract class vs interface &middot; strong vs weak is-a.</p>
+</section>
+
+<!-- ================= Q1 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 9 &mdash; Interfaces &mdash; Practice Exam &middot; Question 1 of 11</span></div>
+
+  <div class="card tight">
+    <div class="card-head">
+      <span class="qno">Q1</span>
+      <span class="qtitle">Interface Concepts (Multiple Choice)</span>
+      <span class="chips">
+        <span class="chip tag-easy">EASY</span>
+        <span class="chip clo">CLO 10</span><span class="chip so">SO-a</span>
+        <span class="chip pts">8 marks &middot; 1 each</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p>Circle the <b>single best</b> answer for each item.</p>
+
+      <p><b>1.</b> Which keyword does a <b>class</b> use to adopt an interface?</p>
+      <div class="mcq c4"><span>(a) <code class="inl">extends</code></span><span>(b) <code class="inl">implements</code></span><span>(c) <code class="inl">inherits</code></span><span>(d) <code class="inl">interface</code></span></div>
+
+      <p><b>2.</b> Inside an interface, the line <code class="inl">int MAX = 100;</code> means exactly the same as:</p>
+      <div class="mcq">
+        <span>(a) <code class="inl">private int MAX = 100;</code></span>
+        <span>(b) <code class="inl">public int MAX = 100;</code> (an instance variable)</span>
+        <span>(c) <code class="inl">public static final int MAX = 100;</code></span>
+        <span>(d) <code class="inl">protected static int MAX = 100;</code></span>
+      </div>
+
+      <p><b>3.</b> What is printed by: <code class="inl">Integer x = 3;  System.out.println(x.compareTo(5));</code></p>
+      <div class="mcq c4"><span>(a) <code class="inl">-2</code></span><span>(b) <code class="inl">-1</code></span><span>(c) <code class="inl">0</code></span><span>(d) <code class="inl">1</code></span></div>
+
+      <p><b>4.</b> <code class="inl">Apple</code> implements the interface <code class="inl">Edible</code>. Which statement does <b>not</b> compile?</p>
+      <div class="mcq">
+        <span>(a) <code class="inl">Edible e = new Apple();</code></span>
+        <span>(b) <code class="inl">Edible[] list = new Edible[3];</code></span>
+        <span>(c) <code class="inl">Edible e = new Edible();</code></span>
+        <span>(d) <code class="inl">Object o = new Apple();</code></span>
+      </div>
+
+      <p><b>5.</b> Which of the following is a <b>correct</b> interface?</p>
+      <div class="mcq">
+        <span>(a) <code class="inl">interface A { void print() { } }</code></span>
+        <span>(b) <code class="inl">abstract interface A { abstract void print() { } }</code></span>
+        <span>(c) <code class="inl">interface A { print(); }</code></span>
+        <span>(d) <code class="inl">interface A { void print(); }</code></span>
+      </div>
+
+      <p><b>6.</b> <code class="inl">interface Diabetic extends Edible</code> adds <code class="inl">isDiabeticFriendly()</code>; <code class="inl">Edible</code> has <code class="inl">howToEat()</code>.
+         A concrete class <code class="inl">Orange implements Diabetic</code> must implement:</p>
+      <div class="mcq">
+        <span>(a) only <code class="inl">isDiabeticFriendly()</code></span>
+        <span>(b) only <code class="inl">howToEat()</code></span>
+        <span>(c) both <code class="inl">howToEat()</code> and <code class="inl">isDiabeticFriendly()</code></span>
+        <span>(d) nothing &mdash; interface methods already have bodies</span>
+      </div>
+
+      <p><b>7.</b> Which statement is <b>true</b>?</p>
+      <div class="mcq">
+        <span>(a) A class can extend several classes.</span>
+        <span>(b) A class can extend one class and implement many interfaces.</span>
+        <span>(c) An interface can <code class="inl">implement</code> another interface.</span>
+        <span>(d) An interface can have a constructor.</span>
+      </div>
+
+      <p><b>8.</b> What is printed by the code below?</p>
+<pre class="code sm">interface Greeter { String greet(); }
+class Hi implements Greeter    { public String greet() { return "Hi"; } }
+class Hello extends Hi         { public String greet() { return "Hello"; } }
+// in main:
+Greeter g = new Hello();
+System.out.println(g.greet());</pre>
+      <div class="mcq c4"><span>(a) <code class="inl">Hi</code></span><span>(b) <code class="inl">Hello</code></span><span>(c) <code class="inl">HiHello</code></span><span>(d) Compilation error</span></div>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q1</div>
+        <p>1:&nbsp;<span class="val">(b)</span> &nbsp; 2:&nbsp;<span class="val">(c)</span> &nbsp; 3:&nbsp;<span class="val">(b)</span> &nbsp; 4:&nbsp;<span class="val">(c)</span> &nbsp;
+           5:&nbsp;<span class="val">(d)</span> &nbsp; 6:&nbsp;<span class="val">(c)</span> &nbsp; 7:&nbsp;<span class="val">(b)</span> &nbsp; 8:&nbsp;<span class="val">(b)</span></p>
+        <p class="rub">1 mark each. (3) <code class="inl">Integer.compareTo</code> returns -1, 0 or 1; 3 &lt; 5 gives -1 (checked by running it). (4) An interface cannot be instantiated with <code class="inl">new</code>;
+           (b) only creates an array of 3 empty references. (5) Interface methods have no body, and (c) has no return type.
+           (6) <code class="inl">Diabetic</code> inherits <code class="inl">howToEat()</code> from <code class="inl">Edible</code>. (8) Dynamic binding: the object is a <code class="inl">Hello</code>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Q2 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 9 &mdash; Interfaces &mdash; Practice Exam &middot; Question 2 of 11</span></div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="qno">Q2</span>
+      <span class="qtitle">Short Answers &mdash; Why and How We Use Interfaces</span>
+      <span class="chips">
+        <span class="chip tag-easy">EASY</span>
+        <span class="chip clo">CLO 10</span><span class="chip so">SO-a</span>
+        <span class="chip pts">6 marks &middot; 1 each</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p><b>(a)</b> Complete: a <b>class</b> describes what an object ______ ; an <b>interface</b> describes what an object ______ .</p>
+      <div class="answer-space"><div class="writeline"></div></div>
+
+      <p><b>(b)</b> Java rejects <code class="inl">class D extends B, C</code>. Name the problem this rule avoids and explain it in one sentence.</p>
+      <div class="answer-space"><div class="writeline"></div><div class="writeline"></div></div>
+
+      <p><b>(c)</b> We want one array that holds an <code class="inl">Apple</code>, an <code class="inl">Orange</code> and a <code class="inl">Chicken</code> (all edible) but never a <code class="inl">Tiger</code>.
+         Why is <code class="inl">Object[]</code> a poor choice, and what type should the array have?</p>
+      <div class="answer-space"><div class="writeline"></div><div class="writeline"></div></div>
+
+      <p><b>(d)</b> Rewrite these two interface members exactly as the <b>compiler</b> sees them: &nbsp;<code class="inl">double RATE = 0.15;</code> &nbsp; and &nbsp; <code class="inl">double pay();</code></p>
+      <div class="answer-space"><div class="writeline"></div><div class="writeline"></div></div>
+
+      <p><b>(e)</b> The interface <code class="inl">NutritionInfo</code> declares <code class="inl">int MAX_CALORIES = 2000;</code>. Write the expression another class uses to read this constant.</p>
+      <div class="answer-space"><div class="writeline"></div></div>
+
+      <p><b>(f)</b> A class says <code class="inl">implements ArithmeticOperation</code> but writes only two of its four methods, so it does not compile. Give the <b>two</b> possible ways to fix it.</p>
+      <div class="answer-space"><div class="writeline"></div><div class="writeline"></div></div>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q2</div>
+        <p>(a) A class = what the object <span class="val">IS</span> (its identity, the is-a relationship); an interface = what the object <span class="val">CAN DO</span> (a behaviour, the can-do relationship).</p>
+        <p>(b) The <span class="val">diamond problem</span>: if B and C both override a method of A, then D would not know which version to inherit &mdash; the call is ambiguous.</p>
+        <p>(c) <code class="inl">Object[]</code> also accepts a <code class="inl">Tiger</code> (everything is an Object), so the compiler cannot protect us. Use an <span class="val"><code class="inl">Edible[]</code></span> array:
+           only objects of classes that implement <code class="inl">Edible</code> can go in.</p>
+        <p>(d) <code class="inl">public static final double RATE = 0.15;</code> &nbsp;and&nbsp; <code class="inl">public abstract double pay();</code></p>
+        <p>(e) <code class="inl">NutritionInfo.MAX_CALORIES</code> &nbsp;(InterfaceName.CONSTANT_NAME)</p>
+        <p>(f) <span class="val">Implement all four methods</span>, or <span class="val">declare the class <code class="inl">abstract</code></span> so that a concrete subclass completes the missing ones.</p>
+        <p class="rub">1 mark each; (c), (d) and (f) need both parts for the mark. Both fixes in (f) were compiled.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Q3 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 9 &mdash; Interfaces &mdash; Practice Exam &middot; Question 3 of 11</span></div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="qno">Q3</span>
+      <span class="qtitle">Abstract Class vs Interface</span>
+      <span class="chips">
+        <span class="chip tag-med">MEDIUM</span>
+        <span class="chip clo">CLO 11</span><span class="chip so">SO-a</span>
+        <span class="chip pts">8 marks</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p><b>(a)</b> Complete the table. Answer for interfaces exactly as taught in this module. <span class="mini">(6 marks &middot; &frac12; per cell)</span></p>
+      <table class="fill">
+        <thead><tr><th style="width:26%;text-align:left">Feature</th><th>Abstract class</th><th>Interface</th></tr></thead>
+        <tbody>
+          <tr><td>Data fields (variables)</td><td class="ans" style="width:auto"></td><td class="ans" style="width:auto"></td></tr>
+          <tr><td>Constructors</td><td class="ans" style="width:auto"></td><td class="ans" style="width:auto"></td></tr>
+          <tr><td>Methods</td><td class="ans" style="width:auto"></td><td class="ans" style="width:auto"></td></tr>
+          <tr><td>How many can one class use?</td><td class="ans" style="width:auto"></td><td class="ans" style="width:auto"></td></tr>
+          <tr><td>Keyword a class uses</td><td class="ans" style="width:auto"></td><td class="ans" style="width:auto"></td></tr>
+          <tr><td>Use it when &hellip;</td><td class="ans" style="width:auto"></td><td class="ans" style="width:auto"></td></tr>
+        </tbody>
+      </table>
+
+      <p style="margin-top:12px"><b>(b)</b> For each situation write <b>abstract class</b> or <b>interface</b>. <span class="mini">(2 marks &middot; &frac12; each)</span></p>
+      <table class="fill">
+        <thead><tr><th style="width:5%">#</th><th style="text-align:left">Situation</th><th style="width:30%">Abstract class / Interface</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>A staff member <b>is a</b> person: every person has a name, an address and the same <code class="inl">getName()</code> code.</td><td></td></tr>
+          <tr><td>2</td><td>All strings, dates and numbers <b>can be compared</b> with each other.</td><td></td></tr>
+          <tr><td>3</td><td>Birds, planes and drones <b>can fly</b>; they have nothing else in common.</td><td></td></tr>
+          <tr><td>4</td><td>Circles and rectangles share a <code class="inl">color</code> field and the same <code class="inl">getColor()</code> code, but each computes its own area.</td><td></td></tr>
+        </tbody>
+      </table>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q3</div>
+        <table class="fill">
+          <thead><tr><th style="text-align:left">Feature</th><th>Abstract class</th><th>Interface</th></tr></thead>
+          <tbody>
+            <tr><td>Data fields</td><td>Any fields, including instance variables</td><td>Only constants (<code class="inl">public static final</code>)</td></tr>
+            <tr><td>Constructors</td><td>Yes (called by subclasses with <code class="inl">super(&hellip;)</code>; still no <code class="inl">new</code>)</td><td>No constructors</td></tr>
+            <tr><td>Methods</td><td>Abstract <b>and</b> concrete methods</td><td>Abstract methods only (<code class="inl">public abstract</code>, no body)</td></tr>
+            <tr><td>How many per class?</td><td>One only (single inheritance)</td><td>Many</td></tr>
+            <tr><td>Keyword</td><td><code class="inl">extends</code></td><td><code class="inl">implements</code></td></tr>
+            <tr><td>Use when &hellip;</td><td>Strong is-a: related objects share identity <b>and</b> common code</td><td>Weak is-a / can-do: (possibly unrelated) objects share a behaviour</td></tr>
+          </tbody>
+        </table>
+        <p>(b) 1 <span class="val">abstract class</span> (strong is-a, common code) &middot; 2 <span class="val">interface</span> (that is why <code class="inl">String</code> implements <code class="inl">Comparable</code>) &middot;
+           3 <span class="val">interface</span> (unrelated classes, one behaviour) &middot; 4 <span class="val">abstract class</span> (common implementation + one abstract method).</p>
+        <p class="rub">(a) &frac12; per cell. For &ldquo;Methods&rdquo;, also accept a note that Java 8+ allows <code class="inl">default</code>/<code class="inl">static</code> methods in interfaces. (b) &frac12; each; rule of thumb from the slides:
+           common implementation &rarr; abstract class; no common implementation &rarr; interface.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Q4 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 9 &mdash; Interfaces &mdash; Practice Exam &middot; Question 4 of 11</span></div>
+
+  <div class="card flow">
+    <div class="card-head">
+      <span class="qno">Q4</span>
+      <span class="qtitle">Output Tracing &mdash; An Interface as a Parameter Type</span>
+      <span class="chips">
+        <span class="chip tag-med">MEDIUM</span>
+        <span class="chip clo">CLO 10</span><span class="chip so">SO-a</span>
+        <span class="chip pts">6 marks</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p>An online shop gives discounts. Write the <b>exact output</b> of <code class="inl">Shop</code>, one line per line.</p>
+<div class="two-col code2">
+<pre class="code sm">interface Discountable {
+  double RATE = 0.10;
+  double discount(double amount);
+}
+
+abstract class Customer
+               implements Discountable {
+  private String name;
+  public Customer(String name) {
+    this.name = name;
+  }
+  public String getName() { return name; }
+  @Override
+  public double discount(double amount) {
+    return amount * RATE;
+  }
+}
+
+class Regular extends Customer {
+  public Regular(String name) {
+    super(name);
+  }
+}
+
+class Gold extends Customer {
+  public Gold(String name) {
+    super(name);
+  }
+  @Override
+  public double discount(double amount) {
+    return super.discount(amount) * 2;
+  }
+}</pre>
+<pre class="code sm">class Coupon implements Discountable {
+  @Override
+  public double discount(double amount) {
+    if (amount &gt;= 100) return 15;
+    return 0;
+  }
+}
+
+public class Shop {
+  public static double pay(Discountable d,
+                           double amount) {
+    double off = d.discount(amount);
+    System.out.println("off " + off);
+    return amount - off;
+  }
+
+  public static void main(String[] args) {
+    System.out.println(
+          pay(new Regular("Sami"), 200));
+    System.out.println(
+          pay(new Gold("Nora"), 200));
+    System.out.println(
+          pay(new Coupon(), 80));
+    Discountable d = new Gold("Reem");
+    System.out.println(
+          d instanceof Customer);
+  }
+}</pre>
+</div>
+      <div class="answer-space"><span class="lbl">Output:</span><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div></div>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q4</div>
+<pre class="code sm">off 20.0
+180.0
+off 40.0
+160.0
+off 0.0
+80.0
+true</pre>
+        <p class="rub"><code class="inl">Regular</code> inherits <code class="inl">discount</code> from <code class="inl">Customer</code> (the abstract class implements the interface for its subclasses), so 200 &times; 0.10 = 20.0.
+           <code class="inl">Gold</code> overrides it: 20.0 &times; 2 = 40.0. <code class="inl">Coupon</code> is unrelated to <code class="inl">Customer</code> but is still <code class="inl">Discountable</code>; 80 &lt; 100 gives 0 (printed as <code class="inl">0.0</code> because <code class="inl">off</code> is a double).
+           Marks: Regular lines (2), Gold lines (2), Coupon lines (1), <code class="inl">true</code> (1). Output copied from a real run.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Q5 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 9 &mdash; Interfaces &mdash; Practice Exam &middot; Question 5 of 11</span></div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="qno">Q5</span>
+      <span class="qtitle">Find and Fix the Compilation Errors</span>
+      <span class="chips">
+        <span class="chip tag-med">MEDIUM</span>
+        <span class="chip clo">CLO 10</span><span class="chip so">SO-c</span>
+        <span class="chip pts">6 marks &middot; 2 each</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p>A taxi-booking app. The interface <code class="inl">Bookable</code> is correct. The code below contains <b>exactly three (3) compilation errors</b>.
+         For each, give the line number, the reason, and the corrected line(s). Do <b>not</b> change <code class="inl">Bookable</code>.</p>
+<pre class="code sm">public interface Bookable {
+    double BASE_FARE = 10.0;
+    double fare(double km);
+    String bookingCode();
+}</pre>
+<pre class="code sm">public class Taxi implements Bookable {          // 1
+    private String plate;                        // 2
+                                                 // 3
+    public Taxi(String plate) {                  // 4
+        this.plate = plate;                      // 5
+    }                                            // 6
+    double fare(double km) {                     // 7
+        return BASE_FARE + 2.5 * km;             // 8
+    }                                            // 9
+}                                                // 10
+
+public class Booking {                           // 11
+    public static void main(String[] args) {     // 12
+        Bookable b = new Bookable();             // 13
+        System.out.println(b.fare(4));           // 14
+    }                                            // 15
+}                                                // 16</pre>
+      <table class="fill">
+        <thead><tr><th style="width:9%">Line</th><th style="width:38%">Reason</th><th>Correction</th></tr></thead>
+        <tbody>
+          <tr><td style="height:3.2em"></td><td></td><td></td></tr>
+          <tr><td style="height:3.2em"></td><td></td><td></td></tr>
+          <tr><td style="height:3.2em"></td><td></td><td></td></tr>
+        </tbody>
+      </table>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q5</div>
+        <table class="fill">
+          <thead><tr><th>Line</th><th>Reason</th><th>Correction</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td><code class="inl">Taxi</code> is not abstract and does <b>not implement</b> <code class="inl">bookingCode()</code> from <code class="inl">Bookable</code>.</td><td>Add inside Taxi:<br><code class="inl">public String bookingCode() { return "TX-" + plate; }</code></td></tr>
+            <tr><td>7</td><td>Interface methods are <code class="inl">public</code>; the implementation has default access, which is <b>weaker</b> access.</td><td><code class="inl">public double fare(double km) {</code></td></tr>
+            <tr><td>13</td><td>An interface <b>cannot be instantiated</b> with <code class="inl">new</code>.</td><td><code class="inl">Bookable b = new Taxi("JED-55");</code></td></tr>
+          </tbody>
+        </table>
+        <p class="rub">1 mark for the line and reason + 1 mark for a fix that compiles. For line 1 any body returning a String is fine; declaring <code class="inl">Taxi</code> abstract does not earn the fix mark
+           because line 13 must then create a Taxi. javac 21 reports exactly these three lines; the fixed program prints <code class="inl">20.0</code>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Q6 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 9 &mdash; Interfaces &mdash; Practice Exam &middot; Question 6 of 11</span></div>
+
+  <div class="card flow">
+    <div class="card-head">
+      <span class="qno">Q6</span>
+      <span class="qtitle">The Comparable Interface &mdash; compareTo and Arrays.sort</span>
+      <span class="chips">
+        <span class="chip tag-med">MEDIUM</span>
+        <span class="chip clo">CLO 10</span><span class="chip so">SO-a</span>
+        <span class="chip pts">8 marks</span>
+      </span>
+    </div>
+    <div class="card-body">
+<div class="two-col code2">
+<pre class="code sm">class Product
+        implements Comparable&lt;Product&gt; {
+  private String name;
+  private double price;
+
+  public Product(String n, double p) {
+    name = n;
+    price = p;
+  }
+  @Override
+  public int compareTo(Product other) {
+    if (price &gt; other.price) return 1;
+    else if (price &lt; other.price) return -1;
+    else return 0;
+  }
+  @Override
+  public String toString() {
+    return name + "(" + price + ")";
+  }
+}</pre>
+<pre class="code sm">public class Cart {
+  public static void main(String[] args) {
+    Product[] cart = {
+        new Product("Milk", 6.5),
+        new Product("Rice", 25),
+        new Product("Bread", 3),
+        new Product("Tea", 6.5) };
+    System.out.println(
+          cart[0].compareTo(cart[1]));
+    System.out.println(
+          cart[0].compareTo(cart[2]));
+    System.out.println(
+          cart[3].compareTo(cart[0]));
+    java.util.Arrays.sort(cart);
+    for (Product p : cart)
+      System.out.print(p + " ");
+    System.out.println();
+    int a = "Ali".compareTo("Ali");
+    int b = Integer.valueOf(9).compareTo(4);
+    System.out.println(a + " " + b);
+  }
+}</pre>
+</div>
+      <p><b>(a)</b> Write the exact output of <code class="inl">Cart</code>, one line per line. <span class="mini">(6 marks)</span></p>
+      <div class="answer-space"><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div></div>
+
+      <p><b>(b)</b> Does this compile? Why? &nbsp;<code class="inl">Integer n1 = 3;  Object n2 = 4;  System.out.println(n1.compareTo(n2));</code> <span class="mini">(1 mark)</span></p>
+      <div class="answer-space"><div class="writeline"></div></div>
+
+      <p><b>(c)</b> Suppose <code class="inl">Product</code> did <b>not</b> say <code class="inl">implements Comparable&lt;Product&gt;</code> (and had no <code class="inl">compareTo</code>).
+         What would go wrong with <code class="inl">java.util.Arrays.sort(cart)</code>? <span class="mini">(1 mark)</span></p>
+      <div class="answer-space"><div class="writeline"></div><div class="writeline"></div></div>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q6</div>
+<pre class="code sm">-1
+1
+0
+Bread(3.0) Milk(6.5) Tea(6.5) Rice(25.0)
+0 1</pre>
+        <p>(b) <span class="val">Compilation error.</span> <code class="inl">Integer</code> implements <code class="inl">Comparable&lt;Integer&gt;</code>, so its <code class="inl">compareTo</code> needs an <code class="inl">Integer</code> argument; <code class="inl">n2</code> is declared as <code class="inl">Object</code>.</p>
+        <p>(c) <code class="inl">Arrays.sort</code> needs objects that are <code class="inl">Comparable</code> so it can call <code class="inl">compareTo</code>. Products could not be compared: the call compiles,
+           but the program <span class="val">fails at run time</span> (<code class="inl">ClassCastException</code>).</p>
+        <p class="rub">(a) 1 mark for each of the three <code class="inl">compareTo</code> lines, 2 for the sorted line (ascending price &mdash; the natural order defined by <code class="inl">compareTo</code>;
+           Milk stays before Tea because equal elements keep their order), 1 for <code class="inl">0 1</code>. Ints 25 and 3 are stored as doubles, so they print as 25.0 and 3.0.
+           (b) and (c) were checked with javac/java 21.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Q7 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 9 &mdash; Interfaces &mdash; Practice Exam &middot; Question 7 of 11</span></div>
+
+  <div class="card flow">
+    <div class="card-head">
+      <span class="qno">Q7</span>
+      <span class="qtitle">Tricky Tracing &mdash; Interface Hierarchy, instanceof and Casting</span>
+      <span class="chips">
+        <span class="chip tag-hard">HARD</span>
+        <span class="chip clo">CLO 10</span><span class="chip so">SO-a</span>
+        <span class="chip pts">8 marks</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p>A city-guide app rates places. Write the <b>exact output</b> of <code class="inl">Guide</code>, one line per line.</p>
+<div class="two-col code2">
+<pre class="code sm">interface Rateable {
+  int MAX = 5;
+  int rate();
+}
+interface Reviewable extends Rateable {
+  String review();
+}
+
+abstract class Place {
+  private String name;
+  public Place(String name) {
+    this.name = name;
+  }
+  public String getName() { return name; }
+}
+
+class Cafe extends Place
+           implements Reviewable {
+  public Cafe(String name) { super(name); }
+  @Override
+  public int rate() { return 4; }
+  @Override
+  public String review() {
+    return "good coffee";
+  }
+}
+
+class Museum extends Place
+             implements Rateable {
+  public Museum(String name) {
+    super(name);
+  }
+  @Override
+  public int rate() { return MAX; }
+}
+
+class Park extends Place {
+  public Park(String name) { super(name); }
+}
+
+class BookCafe extends Cafe {
+  public BookCafe(String name) {
+    super(name);
+  }
+  @Override
+  public String review() {
+    return "quiet, " + super.review();
+  }
+}</pre>
+<pre class="code sm">public class Guide {
+  public static void main(String[] args) {
+    Place[] places = { new Cafe("Bean"),
+      new Museum("Art"), new Park("Green"),
+      new BookCafe("Read") };
+    int total = 0;
+    for (Place p : places) {
+      if (p instanceof Rateable) {
+        Rateable r = (Rateable) p;
+        total += r.rate();
+        System.out.print(p.getName() + ": "
+                         + r.rate());
+        if (r instanceof Reviewable) {
+          Reviewable v = (Reviewable) r;
+          String txt = v.review();
+          System.out.print(" - " + txt);
+        }
+        System.out.println();
+      } else {
+        System.out.println(p.getName()
+                           + ": not rated");
+      }
+    }
+    int max = Rateable.MAX * places.length;
+    System.out.println("Total " + total
+                       + " of " + max);
+  }
+}</pre>
+</div>
+      <div class="answer-space"><span class="lbl">Output:</span><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div></div>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q7</div>
+<pre class="code sm">Bean: 4 - good coffee
+Art: 5
+Green: not rated
+Read: 4 - quiet, good coffee
+Total 13 of 20</pre>
+        <p class="rub"><code class="inl">Cafe</code> implements <code class="inl">Reviewable</code>, which <b>extends</b> <code class="inl">Rateable</code>, so a Cafe is also <code class="inl">Rateable</code>. <code class="inl">Museum</code> is Rateable but not Reviewable;
+           its <code class="inl">MAX</code> is the interface constant 5. <code class="inl">Park</code> implements nothing. <code class="inl">BookCafe</code> inherits <code class="inl">rate()</code> (4) and both interfaces from Cafe,
+           and its overriding <code class="inl">review()</code> calls <code class="inl">super.review()</code>. Total = 4 + 5 + 4 = 13; 5 &times; 4 = 20.
+           Marks: line 1 (2), line 2 (1), line 3 (1), line 4 (2), line 5 (2). Output copied from a real run.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Q8 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 9 &mdash; Interfaces &mdash; Practice Exam &middot; Question 8 of 11</span></div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="qno">Q8</span>
+      <span class="qtitle">The Interface as a Type &mdash; instanceof and Assignments</span>
+      <span class="chips">
+        <span class="chip tag-med">MEDIUM</span>
+        <span class="chip clo">CLO 10</span><span class="chip so">SO-a</span>
+        <span class="chip pts">6 marks</span>
+      </span>
+    </div>
+    <div class="card-body">
+<pre class="code sm">interface Pet { }
+interface Trained extends Pet { }
+class Animal { }
+class Dog extends Animal implements Trained { }
+class Cat extends Animal implements Pet { }
+class Robot implements Pet { }
+
+// in main:
+Animal fido  = new Dog();
+Pet    kitty = new Cat();
+Object toy   = new Robot();</pre>
+      <p><b>(a)</b> What does each expression print with <code class="inl">System.out.println(&hellip;)</code>? Write <b>true</b> or <b>false</b>. <span class="mini">(3 marks &middot; &frac12; each)</span></p>
+      <table class="fill">
+        <thead><tr><th style="width:5%">#</th><th style="width:45%">Expression</th><th>true / false</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td class="mono">fido instanceof Pet</td><td></td></tr>
+          <tr><td>2</td><td class="mono">fido instanceof Trained</td><td></td></tr>
+          <tr><td>3</td><td class="mono">kitty instanceof Animal</td><td></td></tr>
+          <tr><td>4</td><td class="mono">kitty instanceof Trained</td><td></td></tr>
+          <tr><td>5</td><td class="mono">toy instanceof Animal</td><td></td></tr>
+          <tr><td>6</td><td class="mono">toy instanceof Pet</td><td></td></tr>
+        </tbody>
+      </table>
+      <p style="margin-top:10px"><b>(b)</b> Each statement is added after the code above. Write <b>OK</b> if it compiles, or <b>Error</b> with a short reason. <span class="mini">(3 marks &middot; 1 each)</span></p>
+      <table class="fill">
+        <thead><tr><th style="width:5%">#</th><th style="width:45%">Statement</th><th>OK / Error + reason</th></tr></thead>
+        <tbody>
+          <tr><td>7</td><td class="mono">Trained t = fido;</td><td class="ans"></td></tr>
+          <tr><td>8</td><td class="mono">Trained t = (Trained) fido;</td><td class="ans"></td></tr>
+          <tr><td>9</td><td class="mono">Pet p = new Pet();</td><td class="ans"></td></tr>
+        </tbody>
+      </table>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q8</div>
+        <p>1 <span class="val">true</span> &middot; 2 <span class="val">true</span> &middot; 3 <span class="val">true</span> &middot; 4 <span class="val">false</span> &middot; 5 <span class="val">false</span> &middot; 6 <span class="val">true</span></p>
+        <p>7 <span class="val">Error</span> &mdash; the declared type of <code class="inl">fido</code> is <code class="inl">Animal</code>, and not every Animal is Trained; an explicit cast is needed.<br>
+           8 <span class="val">OK</span> &mdash; the cast tells the compiler to treat it as Trained (and at run time the object really is a Dog, which is Trained).<br>
+           9 <span class="val">Error</span> &mdash; an interface cannot be instantiated.</p>
+        <p class="rub"><code class="inl">instanceof</code> tests the <b>real object</b>, not the variable type: a Dog is an Animal, Trained and Pet (Trained extends Pet); a Cat is Pet but not Trained; a Robot is Pet but not an Animal.
+           All nine items were checked with javac/java 21.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Q9 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 9 &mdash; Interfaces &mdash; Practice Exam &middot; Question 9 of 11</span></div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="qno">Q9</span>
+      <span class="qtitle">Compiles or Not? &mdash; The Rules of Interfaces</span>
+      <span class="chips">
+        <span class="chip tag-med">MEDIUM</span>
+        <span class="chip clo">CLO 10</span><span class="chip so">SO-a</span>
+        <span class="chip pts">8 marks &middot; 1 each</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p>For each item write <b>OK</b> if it compiles, or <b>Error</b> with a short reason.</p>
+      <table class="fill">
+        <thead><tr><th style="width:5%">#</th><th style="width:55%">Code</th><th>OK / Error + reason</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td class="mono">interface Shape {<br>&nbsp;&nbsp;double area() { return 0; }<br>}</td><td class="ans"></td></tr>
+          <tr><td>2</td><td class="mono">interface Limits { int MAX = 10; }<br>class T {<br>&nbsp;&nbsp;void f() { Limits.MAX = 20; }<br>}</td><td class="ans"></td></tr>
+          <tr><td>3</td><td class="mono">interface Edible { String howToEat(); }<br>class Apple extends Edible {<br>&nbsp;&nbsp;public String howToEat() { return "Peel"; }<br>}</td><td class="ans"></td></tr>
+          <tr><td>4</td><td class="mono">interface Edible { String howToEat(); }<br>class Menu {<br>&nbsp;&nbsp;Edible[] list = new Edible[3];<br>}</td><td class="ans"></td></tr>
+          <tr><td>5</td><td class="mono">interface A { void m(); }<br>interface B extends A { void n(); }<br>class C implements B {<br>&nbsp;&nbsp;public void n() { }<br>}</td><td class="ans"></td></tr>
+          <tr><td>6</td><td class="mono">interface A { void m(); }<br>abstract class C implements A { }</td><td class="ans"></td></tr>
+          <tr><td>7</td><td class="mono">interface X { int K = 1; }<br>interface Y { int K = 2; }<br>class Z implements X, Y {<br>&nbsp;&nbsp;int get() { return K; }<br>}</td><td class="ans"></td></tr>
+          <tr><td>8</td><td class="mono">interface X { void go(); }<br>interface Y { void go(); }<br>class Z implements X, Y {<br>&nbsp;&nbsp;public void go() { }<br>}</td><td class="ans"></td></tr>
+        </tbody>
+      </table>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q9</div>
+        <p>1 <span class="val">Error</span> &mdash; an interface method is abstract; it cannot have a body.<br>
+           2 <span class="val">Error</span> &mdash; <code class="inl">MAX</code> is a constant (<code class="inl">static final</code>); it cannot be assigned a new value.<br>
+           3 <span class="val">Error</span> &mdash; a class cannot <code class="inl">extend</code> an interface; it must use <code class="inl">implements</code>.<br>
+           4 <span class="val">OK</span> &mdash; an interface is a valid type; this creates an array of 3 <code class="inl">null</code> references, not Edible objects.<br>
+           5 <span class="val">Error</span> &mdash; <code class="inl">B</code> extends <code class="inl">A</code>, so <code class="inl">C</code> must also implement <code class="inl">m()</code>.<br>
+           6 <span class="val">OK</span> &mdash; an abstract class does not have to implement the interface methods; its concrete subclass will.<br>
+           7 <span class="val">Error</span> &mdash; the reference to <code class="inl">K</code> is ambiguous: two constants with the same name and different values.<br>
+           8 <span class="val">OK</span> &mdash; same signature and same return type in both interfaces: one method satisfies both.</p>
+        <p class="rub">1 mark each: &frac12; for OK/Error, &frac12; for the reason. All eight items were checked with javac 21.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Q10 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 9 &mdash; Interfaces &mdash; Practice Exam &middot; Question 10 of 11</span></div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="qno">Q10</span>
+      <span class="qtitle">From UML to Code &mdash; Implement Two Interfaces</span>
+      <span class="chips">
+        <span class="chip tag-hard">HARD</span>
+        <span class="chip clo">CLO 10</span><span class="chip so">SO-c</span>
+        <span class="chip pts">8 marks</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p>A car-rental company. Write the interface <code class="inl">Rentable</code> and the class <code class="inl">Car</code> from the UML diagram.
+         <code class="inl">Comparable&lt;Car&gt;</code> is the Java interface you know (<code class="inl">java.lang</code>). A dashed arrow with a hollow triangle means <b>implements</b>.</p>
+      <div class="uml-tree" style="width:560px;margin:8px auto 0;break-inside:avoid;page-break-inside:avoid">
+        <div style="display:flex;justify-content:space-between;align-items:flex-end">
+          <div class="uml" style="min-width:0;width:240px;margin:0;font-size:9pt">
+            <div class="uml-name"><span class="stereo">&laquo;interface&raquo;</span>Rentable</div>
+            <div class="uml-sec"><span><u>+MAX_DAYS: int = 30</u></span></div>
+            <div class="uml-sec"><span>+dailyRate(): double</span><span>+cost(days: int): double</span></div>
+          </div>
+          <div class="uml" style="min-width:0;width:240px;margin:0;font-size:9pt">
+            <div class="uml-name"><span class="stereo">&laquo;interface&raquo;</span>Comparable&lt;Car&gt;</div>
+            <div class="uml-sec"><span>+compareTo(o: Car): int</span></div>
+          </div>
+        </div>
+        <svg width="560" height="46" viewBox="0 0 560 46" style="display:block;color:var(--em-deep)">
+          <polyline points="230,46 230,30 120,30 120,16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-dasharray="5,4"/>
+          <path d="M120,1 L111,16 L129,16 Z" fill="#fff" stroke="currentColor" stroke-width="1.6"/>
+          <polyline points="330,46 330,30 440,30 440,16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-dasharray="5,4"/>
+          <path d="M440,1 L431,16 L449,16 Z" fill="#fff" stroke="currentColor" stroke-width="1.6"/>
+          <text x="280" y="24" text-anchor="middle" font-size="11" font-weight="700" fill="currentColor">implements</text>
+        </svg>
+        <div style="display:flex;justify-content:center">
+          <div class="uml" style="min-width:0;width:300px;margin:0;font-size:9pt">
+            <div class="uml-name">Car</div>
+            <div class="uml-sec"><span>-model: String</span><span>-rate: double</span></div>
+            <div class="uml-sec"><span>+Car(model: String, rate: double)</span><span>+dailyRate(): double</span><span>+cost(days: int): double</span>
+              <span>+compareTo(other: Car): int</span><span>+toString(): String</span></div>
+          </div>
+        </div>
+      </div>
+      <table class="need" style="width:100%">
+        <tr><th>Requirement</th></tr>
+        <tr><td>dailyRate() returns rate. cost(days) returns days &times; dailyRate(), but days above MAX_DAYS are charged as MAX_DAYS.</td></tr>
+        <tr><td>compareTo orders cars by daily rate, cheapest first: return -1, 0 or 1.</td></tr>
+        <tr><td>toString() returns, e.g., "Yaris @ 120.0"</td></tr>
+        <tr><td>Finally, write ONE statement that sorts an array Car[] fleet from cheapest to most expensive.</td></tr>
+      </table>
+      <div class="answer-space"><span class="lbl">Write the interface Rentable, the class Car and the sort statement:</span><div class="codebox" style="min-height:92mm"></div></div>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q10</div>
+<div class="two-col code2">
+<pre class="code sm">public interface Rentable {
+  int MAX_DAYS = 30;   // static final
+  double dailyRate();  // abstract
+  double cost(int days);
+}
+
+// sorting the array (uses compareTo):
+java.util.Arrays.sort(fleet);
+
+// Test: fleet = Camry 180, Yaris 120,
+//               Tahoe 350
+// after sorting, printing each car gives:
+//   Yaris @ 120.0
+//   Camry @ 180.0
+//   Tahoe @ 350.0
+// fleet[0].cost(3)  -&gt; 360.0
+// fleet[0].cost(45) -&gt; 3600.0  (30 days)</pre>
+<pre class="code sm">public class Car
+    implements Rentable, Comparable&lt;Car&gt; {
+  private String model;
+  private double rate;
+
+  public Car(String model, double rate) {
+    this.model = model;
+    this.rate = rate;
+  }
+  @Override
+  public double dailyRate() {
+    return rate;
+  }
+  @Override
+  public double cost(int days) {
+    if (days &gt; MAX_DAYS)
+      days = MAX_DAYS;
+    return days * dailyRate();
+  }
+  @Override
+  public int compareTo(Car other) {
+    if (rate &gt; other.rate) return 1;
+    else if (rate &lt; other.rate) return -1;
+    else return 0;
+  }
+  @Override
+  public String toString() {
+    return model + " @ " + rate;
+  }
+}</pre>
+</div>
+        <p class="rub">Rubric: interface with the constant and two method headers, no bodies (2) &middot; <code class="inl">implements Rentable, Comparable&lt;Car&gt;</code> + private fields + constructor (1) &middot;
+           <code class="inl">dailyRate</code> and <code class="inl">cost</code> with the 30-day cap, both <code class="inl">public</code> (2) &middot; <code class="inl">compareTo(Car other)</code> correct (2) &middot;
+           <code class="inl">toString</code> and <code class="inl">Arrays.sort(fleet)</code> (1). Missing <code class="inl">public</code> on an implemented method loses that method&rsquo;s mark (weaker access). Code compiled and run with the test shown.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Q11 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 9 &mdash; Interfaces &mdash; Practice Exam &middot; Question 11 of 11</span></div>
+
+  <div class="card flow">
+    <div class="card-head">
+      <span class="qno">Q11</span>
+      <span class="qtitle">Design &mdash; An Abstract Class and an Interface Together</span>
+      <span class="chips">
+        <span class="chip tag-hard">HARD</span>
+        <span class="chip clo">CLO 11</span><span class="chip so">SO-c</span>
+        <span class="chip pts">8 marks</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p>A delivery company ships items. <b>Every</b> item has a name, a weight (kg) and a shipping cost, but each kind of item computes its cost differently.
+         <b>Some</b> items (glassware, but not books) are fragile: they cost an extra fee and need a handling message.</p>
+      <table class="need" style="width:100%">
+        <tr><th>Item (abstract)</th><th>Fragile (interface)</th><th>Book</th><th>Glassware</th></tr>
+        <tr><td>-name: String<br>-weight: double<br>+Item(name, weight)<br>+getName(), getWeight()<br>+shippingCost(): double &mdash; abstract</td>
+            <td>EXTRA = 5.0 (constant)<br>+handling(): String</td>
+            <td>cost = 2 &times; weight<br>(already written)</td>
+            <td>cost = 2 &times; weight + EXTRA<br>handling() returns<br>"Wrap in bubble film"</td></tr>
+      </table>
+      <p><b>(a)</b> Draw the UML class diagram for <code class="inl">Item</code>, <code class="inl">Fragile</code>, <code class="inl">Book</code> and <code class="inl">Glassware</code>.
+         Mark the interface and the abstract class, and use the correct arrows. <span class="mini">(2 marks)</span></p>
+      <div class="drawbox" style="min-height:50mm"></div>
+      <p><b>(b)</b> Write <code class="inl">Fragile</code>, <code class="inl">Item</code> and <code class="inl">Glassware</code>. <span class="mini">(4 marks)</span></p>
+      <div class="answer-space"><div class="codebox" style="min-height:82mm"></div></div>
+      <p><b>(c)</b> <code class="inl">Item[] box</code> holds books and glassware. Write a loop that adds up the shipping cost of all items and, for every <b>fragile</b> item only,
+         prints <code class="inl">name: handling message</code>. Then print the total, e.g. <code class="inl">Total shipping: 13.0 SAR</code>. <span class="mini">(2 marks)</span></p>
+      <div class="answer-space"><div class="codebox" style="min-height:40mm"></div></div>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q11</div>
+        <p>(a) <code class="inl">Item</code> marked <i>&laquo;abstract&raquo;</i> (or name in italics) with its fields and methods; <code class="inl">Fragile</code> marked <b>&laquo;interface&raquo;</b> with <code class="inl">EXTRA</code> and <code class="inl">handling()</code>.
+           <code class="inl">Book</code> and <code class="inl">Glassware</code> each have a <b>solid</b> line with a hollow triangle up to <code class="inl">Item</code> (extends);
+           <code class="inl">Glassware</code> also has a <b>dashed</b> line with a hollow triangle to <code class="inl">Fragile</code> (implements). Book has no link to Fragile.</p>
+<div class="two-col code2">
+<pre class="code sm">public interface Fragile {
+  double EXTRA = 5.0;
+  String handling();
+}
+
+public abstract class Item {
+  private String name;
+  private double weight;
+
+  public Item(String name, double weight) {
+    this.name = name;
+    this.weight = weight;
+  }
+  public String getName() { return name; }
+  public double getWeight() {
+    return weight;
+  }
+  public abstract double shippingCost();
+}</pre>
+<pre class="code sm">public class Glassware extends Item
+                       implements Fragile {
+  public Glassware(String name, double w) {
+    super(name, w);
+  }
+  @Override
+  public double shippingCost() {
+    return 2 * getWeight() + EXTRA;
+  }
+  @Override
+  public String handling() {
+    return "Wrap in bubble film";
+  }
+}
+
+// (c)
+double total = 0;
+for (Item it : box) {
+  total += it.shippingCost();
+  if (it instanceof Fragile) {
+    Fragile f = (Fragile) it;
+    System.out.println(it.getName() + ": "
+                       + f.handling());
+  }
+}
+System.out.println("Total shipping: "
+                   + total + " SAR");</pre>
+</div>
+        <p class="rub">(a) abstract class + interface correctly marked (1), solid vs dashed arrows correct (1). (b) <code class="inl">Fragile</code> with constant and abstract method (1);
+           <code class="inl">Item</code> abstract with private fields, constructor and abstract <code class="inl">shippingCost()</code> (1); <code class="inl">Glassware extends Item implements Fragile</code> calling <code class="inl">super(name, w)</code> (1);
+           both methods <code class="inl">public</code> and using <code class="inl">getWeight()</code> + <code class="inl">EXTRA</code> (1) &mdash; <code class="inl">weight</code> is private in Item. (c) polymorphic loop (1), <code class="inl">instanceof</code> + cast (1).
+           Checked: box = Book(&ldquo;Java Book&rdquo;, 1.5), Glassware(&ldquo;Vase&rdquo;, 2.0), Book(&ldquo;Notebook&rdquo;, 0.5) prints <code class="inl">Vase: Wrap in bubble film</code> and <code class="inl">Total shipping: 13.0 SAR</code>.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="endmark">&mdash; End of Interfaces Practice Exam &mdash; Good Luck! &mdash;</div>
+  <p class="footline">Module 9: Interfaces</p>
+</section>
+
+<script>
+  var btn = document.getElementById('toggleAns');
+  btn.addEventListener('click', function () {
+    var on = document.body.classList.toggle('show-answers');
+    btn.textContent = on ? '🙈 Hide model answers' : '👁 Show model answers';
+    btn.classList.toggle('ghost', !on);
+  });
+</script>
+</body>
+</html>

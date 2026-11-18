@@ -1,0 +1,1168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Abstract Classes &mdash; Practice Exam (A4 printable)</title>
+<style>
+/* =======================================================================
+   Programming II — MODULE 8: ABSTRACT CLASSES — practice exam
+   Print-first, A4. Each question is a CARD. Module colour theme (teal).
+   A "Show model answers" toggle turns the same file into an answer key.
+   ======================================================================= */
+@page { size: A4; margin: 12mm 15mm 14mm 15mm; }
+
+:root{
+  --em:        #0f766e;
+  --em-dark:   #115e59;
+  --em-deep:   #134e4a;
+  --em-tint:   #f0fdfa;
+  --ink:       #1f2937;
+  --ink-soft:  #4b5563;
+  --rule:      #99f6e4;
+  --paper:     #ffffff;
+  --code-bg:   #f6fdfc;
+  --code-rule: #ccf3ee;
+  --warn:      #b42318;
+  --tag-easy:  #e7f6ec; --tag-easy-i:#1a7f37;
+  --tag-med:   #fef3e0; --tag-med-i: #9a6212;
+  --tag-hard:  #fdeaea; --tag-hard-i:#b42318;
+}
+
+*{ box-sizing:border-box; }
+html,body{
+  margin:0; padding:0;
+  background:#e5e9f0;
+  color:var(--ink);
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size:11pt; line-height:1.5;
+}
+body{ padding:14mm 0; }
+
+/* ---- A4 sheet ---- */
+.sheet{
+  background:var(--paper);
+  width:210mm; min-height:297mm;
+  margin:0 auto 10mm;
+  padding:15mm 15mm 18mm;
+  box-shadow:0 3px 14px rgba(31,41,55,.18);
+  position:relative;
+}
+
+/* ---- running head ---- */
+.runhead{
+  display:flex; justify-content:space-between; align-items:flex-end;
+  border-bottom:2px solid var(--em-dark);
+  padding-bottom:6px; margin-bottom:14px;
+  font-size:9.5pt; color:var(--em-deep);
+}
+.runhead b{ font-size:10.5pt; }
+
+/* ================= COVER ================= */
+.cover-top{ text-align:center; }
+.cover-rule{ height:2px; background:var(--em-dark); margin:12px 0; }
+.cover-title{ font-size:22pt; font-weight:800; color:var(--em); letter-spacing:.5px; }
+.cover-sub{ font-size:13pt; font-weight:600; margin-top:4px; }
+.cover-tag{
+  display:inline-block; margin-top:10px; padding:4px 16px;
+  background:var(--em-tint); color:var(--em-dark); border:1px solid var(--em);
+  border-radius:999px; font-weight:700; font-size:10.5pt;
+}
+
+.id-grid{ margin:22px 0 4px; width:100%; border-collapse:collapse; font-size:11pt; }
+.id-grid td{ padding:9px 6px; }
+.id-grid .lbl{ width:132px; white-space:nowrap; font-weight:700; color:var(--em-deep); }
+.id-grid .line{ border-bottom:1.4px solid #6b7280; }
+
+.instr{
+  margin-top:16px; border:1px solid var(--rule);
+  border-left:5px solid var(--em); border-radius:8px;
+  background:#f7fefd; padding:12px 16px;
+}
+.instr h3{ margin:0 0 6px; font-size:11.5pt; color:var(--em-deep); }
+.instr ul{ margin:0; padding-left:18px; }
+.instr li{ margin:3px 0; }
+
+.marks-tbl{ width:100%; border-collapse:collapse; margin-top:18px; font-size:10pt; text-align:center; }
+.marks-tbl th, .marks-tbl td{ border:1px solid var(--rule); padding:6px 4px; }
+.marks-tbl thead th{ background:var(--em-dark); color:#fff; }
+.marks-tbl .tot{ background:var(--em-tint); font-weight:800; }
+.marks-tbl thead th.tot{ background:var(--em-deep); color:#fff; }
+
+/* ================= QUESTION CARD ================= */
+.card{
+  border:1px solid var(--rule); border-radius:10px;
+  margin:0 0 16px; overflow:hidden;
+  break-inside:avoid; page-break-inside:avoid; background:#fff;
+}
+.card-head{
+  display:flex; flex-wrap:wrap; align-items:center; gap:8px;
+  background:linear-gradient(180deg,#f5fdfb,#ccf5ee);
+  border-bottom:1px solid var(--rule); padding:9px 14px;
+}
+.qno{
+  font-weight:800; color:#fff; background:var(--em-dark);
+  border-radius:6px; padding:3px 11px; font-size:11pt; letter-spacing:.3px;
+}
+.qtitle{ font-weight:700; font-size:11.5pt; color:var(--em-deep); flex:1 1 240px; }
+.chips{ display:flex; gap:6px; align-items:center; flex-wrap:wrap; }
+.chip{ font-size:8.5pt; padding:2px 8px; border-radius:999px; font-weight:700; white-space:nowrap; }
+.chip.clo{ background:#ccfbf1; color:#115e59; border:1px solid #5eead4; }
+.chip.so { background:#ecfeff; color:#0e7490; border:1px solid #a5f3fc; }
+.chip.pts{ background:var(--em-deep); color:#fff; }
+.tag-easy{ background:var(--tag-easy); color:var(--tag-easy-i); border:1px solid var(--tag-easy-i); }
+.tag-med { background:var(--tag-med);  color:var(--tag-med-i);  border:1px solid var(--tag-med-i);  }
+.tag-hard{ background:var(--tag-hard); color:var(--tag-hard-i); border:1px solid var(--tag-hard-i); }
+
+.card-body{ padding:12px 16px 14px; }
+.card-body p{ margin:6px 0; }
+.note{ color:var(--warn); font-style:italic; font-weight:600; font-size:10pt; }
+.hint{ color:var(--ink-soft); font-style:italic; font-size:10pt; }
+.mini{ font-size:9pt; color:#6b7280; }
+
+/* ---- code blocks ---- */
+pre.code{
+  background:var(--code-bg); border:1px solid var(--code-rule);
+  border-left:4px solid var(--em); border-radius:6px;
+  padding:10px 12px; margin:10px 0; overflow:auto;
+  font-family:'Consolas','DejaVu Sans Mono',monospace; font-size:10pt; line-height:1.5;
+  white-space:pre;
+}
+pre.code.sm{ font-size:9.3pt; line-height:1.42; }
+code.inl{ background:var(--code-bg); border:1px solid var(--code-rule); border-radius:4px;
+  padding:1px 5px; font-family:'Consolas',monospace; font-size:9.8pt; }
+.dots{ letter-spacing:1px; color:#6b7280; }
+.two-col{ display:flex; gap:12px; }
+.two-col > *{ flex:1 1 0; min-width:0; }
+.two-col > .wide{ flex-grow:1.4; }
+.two-col > .narrow{ flex-grow:.65; }
+.two-col > .snug{ flex:0 0 auto; }
+.opts p{ margin:3px 0; }
+.tight .card-body{ font-size:10.5pt; line-height:1.42; }
+.tight .card-body p{ margin:4px 0; }
+.tight .mcq{ margin-bottom:5px; }
+.tight pre.code{ margin:6px 0; }
+.mcq{ display:grid; grid-template-columns:1fr 1fr; gap:2px 18px; margin:2px 0 8px 14px; }
+.mcq.c4{ grid-template-columns:repeat(4, auto); justify-content:start; column-gap:34px; }
+.mcq.c5{ grid-template-columns:repeat(5, auto); justify-content:start; column-gap:26px; }
+
+/* ---- UML class box ---- */
+.uml{ display:inline-block; border:1.6px solid var(--em-deep); margin:10px 0;
+  font-family:'Consolas','DejaVu Sans Mono',monospace; font-size:10pt; background:#fff; min-width:300px; }
+.uml div{ padding:5px 12px; }
+.uml .uml-name{ text-align:center; font-weight:800; background:var(--em-tint); color:var(--em-deep);
+  border-bottom:1.6px solid var(--em-deep); font-family:'Segoe UI',sans-serif; font-size:11pt; }
+.uml .uml-sec{ border-bottom:1.6px solid var(--em-deep); }
+.uml .uml-sec:last-child{ border-bottom:0; }
+.uml .uml-sec span{ display:block; line-height:1.55; }
+.uml u{ text-decoration-thickness:1.4px; }
+.uml-wrap{ display:flex; gap:16px; align-items:flex-start; }
+.need{ border-collapse:collapse; font-size:9.5pt; margin-top:10px; }
+.need td, .need th{ border:1px solid var(--rule); padding:4px 8px; font-family:'Consolas',monospace; }
+.need th{ background:var(--em-tint); color:var(--em-deep); font-family:'Segoe UI',sans-serif; }
+
+/* ---- answer space ---- */
+.answer-space{ margin-top:10px; }
+.answer-space .lbl{ font-style:italic; color:var(--ink-soft); font-size:10pt; }
+.writeline{ border-bottom:1px solid #9ca3af; height:1.55em; margin-top:.45em; }
+.codebox{ border:1px dashed #9ca3af; border-radius:6px; min-height:120px; margin-top:8px;
+  background:repeating-linear-gradient(#fff,#fff 1.7em,#dff5f1 1.7em,#dff5f1 calc(1.7em + 1px)); }
+.drawbox{ border:1px dashed #9ca3af; border-radius:6px; margin-top:8px; position:relative;
+  display:flex; }
+.drawbox .half{ flex:1; padding:6px 10px; font-size:9pt; color:#9ca3af; font-weight:700; letter-spacing:1px; }
+.drawbox .half + .half{ border-left:1px dashed #cbd5e1; }
+
+/* ---- fill-in tables ---- */
+.fill{ width:100%; border-collapse:collapse; margin-top:8px; font-size:10.5pt; }
+.fill td, .fill th{ border:1px solid var(--rule); padding:7px 8px; }
+.fill th{ background:var(--em-tint); color:var(--em-deep); font-size:10pt; }
+.fill td.ans{ background:#fff; width:42%; height:2.6em; }
+.fill td.mono{ font-family:'Consolas',monospace; }
+
+/* ---- model answer block (hidden until toggled) ---- */
+.answer-key{ display:none; }
+body.show-answers .answer-key{ display:block; }
+body.show-answers .card{ break-inside:auto; page-break-inside:auto; }
+body.show-answers .answer-key{ break-inside:avoid; page-break-inside:avoid; }
+.answer-key{
+  margin-top:12px; border:1px solid #bbf7d0; border-left:5px solid #16a34a;
+  background:#f0fdf4; border-radius:8px; padding:10px 14px;
+}
+.answer-key .akh{ font-weight:800; color:#15803d; font-size:10.5pt; margin-bottom:4px; }
+.answer-key pre.code{ border-left-color:#16a34a; background:#f6fdf9; border-color:#bbf7d0; }
+.answer-key .val{ color:#166534; font-weight:800; }
+.answer-key .rub{ color:#0e7490; font-size:9.5pt; font-style:italic; }
+.answer-key table.fill th{ background:#dcfce7; color:#15803d; }
+
+/* ---- floating toolbar (screen only) ---- */
+.toolbar{
+  position:fixed; top:14px; right:14px; z-index:50; display:flex; gap:8px;
+  background:#fff; border:1px solid var(--rule); border-radius:10px; padding:8px 10px;
+  box-shadow:0 4px 14px rgba(31,41,55,.18);
+}
+.toolbar button, .toolbar a{
+  font:inherit; font-size:10pt; font-weight:700; cursor:pointer; text-decoration:none;
+  border:1px solid var(--em); border-radius:7px; padding:7px 12px;
+  background:var(--em); color:#fff;
+}
+.toolbar .ghost{ background:#fff; color:var(--em-dark); }
+.toolbar button:active{ transform:translateY(1px); }
+
+.footline{ text-align:center; margin-top:6px; color:var(--ink-soft); font-size:9.5pt; }
+.endmark{ text-align:center; font-weight:800; color:var(--em-deep); margin:18px 0 4px; }
+
+/* ================= PRINT ================= */
+@media print{
+  body{ background:#fff; padding:0; }
+  .toolbar{ display:none !important; }
+  .sheet{ box-shadow:none; margin:0; width:auto; min-height:auto; padding:0; }
+  .sheet + .sheet{ page-break-before:always; }
+  .card{ box-shadow:none; }
+}
+
+/* ---- additions for this exam ---- */
+.fill td.mono{ font-size:9pt; line-height:1.45; }
+.instr .chip{ font-size:8pt; padding:1px 7px; }
+.two-col pre.code.sm{ font-size:8.2pt; line-height:1.4; padding:8px 10px; }
+pre.code{ white-space:pre-wrap; overflow:visible; }   /* never clip code on paper */
+@media print{ html{ background:#fff; } }
+.card.flow{ break-inside:auto; page-break-inside:auto; }
+.uml-wrap{ gap:8px; }
+.uml-wrap .uml{ min-width:0; flex:1 1 0; font-size:9pt; }
+.uml-wrap .uml div{ padding:4px 8px; }
+.uml i{ font-style:italic; }
+.uml .uml-name .st{ display:block; font-size:8.5pt; font-weight:600; font-style:normal; }
+/* let every card flow across a page break, but keep code blocks and table rows whole */
+.card, body.show-answers .card{ break-inside:auto; page-break-inside:auto; }
+pre.code, .fill tr, .mcq, .uml-wrap, .card-head, .answer-space, .drawbox, .codebox, svg{ break-inside:avoid; page-break-inside:avoid; }
+.card-head{ break-after:avoid; page-break-after:avoid; }
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <a href="06-summary-checklist.html" class="ghost">&#8592; Checklist</a>
+  <button id="toggleAns" class="ghost">&#128065; Show model answers</button>
+  <button onclick="window.print()">&#128424; Print / Save PDF</button>
+</div>
+
+<!-- =====================================================================
+     COVER PAGE
+     ===================================================================== -->
+
+<section class="sheet cover">
+  <div class="cover-rule"></div>
+  <div class="cover-top">
+    <div class="cover-title">Programming II</div>
+    <div class="cover-sub">Module 8: Abstract Classes &mdash; Focused Practice Exam</div>
+    <div class="cover-tag">abstract class &middot; abstract methods &middot; Constructors &amp; Chaining &middot; Abstract Type as Data Type &middot; The Rules &middot; The Number Class &middot; Dynamic Binding</div>
+  </div>
+  <div class="cover-rule"></div>
+
+  <table class="id-grid">
+    <tr><td class="lbl">Student Name:</td><td class="line"></td></tr>
+    <tr><td class="lbl">Student ID:</td><td class="line"></td></tr>
+    <tr>
+      <td class="lbl">Section:</td><td class="line" style="width:35%"></td>
+      <td class="lbl" style="text-align:right;padding-right:14px">Instructor:</td><td class="line"></td>
+    </tr>
+  </table>
+
+  <div class="instr">
+    <h3>Instructions</h3>
+    <ul>
+      <li>This booklet contains <b>11 questions</b> on Abstract Classes only. <b>Total: 80 marks</b> &middot; Suggested time: <b>90 minutes</b>.</li>
+      <li>Answer <b>all</b> questions in the spaces provided. <b>Place your answers in the boxes provided.</b></li>
+      <li>When a question shows several classes together, assume <b>each class is saved in its own <code class="inl">.java</code> file</b>
+          in the <b>same package</b>. Assume all necessary <code class="inl">import</code> statements are present.</li>
+      <li>For output questions, write the <b>exact output, one line per line</b>.
+          If code does not compile, write <b>&ldquo;Compilation error&rdquo;</b> and give the reason in one short sentence.
+          In UML, a name in <i>italics</i> is <b>abstract</b>.</li>
+      <li>Questions are labelled <span class="chip tag-easy">EASY</span> <span class="chip tag-med">MEDIUM</span> <span class="chip tag-hard">HARD</span>.
+          Write clear Java. Partial (per-line) credit is given.
+          <span class="note">Data fields must be private wherever a question asks you to write a class.</span></li>
+    </ul>
+  </div>
+
+  <table class="marks-tbl">
+    <thead>
+      <tr><th>Question</th><th>Q1</th><th>Q2</th><th>Q3</th><th>Q4</th><th>Q5</th><th>Q6</th><th>Q7</th><th>Q8</th><th>Q9</th><th>Q10</th><th>Q11</th><th class="tot">Total</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><b>Level</b></td><td>E</td><td>E</td><td>M</td><td>M</td><td>M</td><td>M</td><td>H</td><td>M</td><td>M</td><td>H</td><td>H</td><td class="tot"></td></tr>
+      <tr><td><b>Max Mark</b></td><td>8</td><td>6</td><td>8</td><td>6</td><td>6</td><td>8</td><td>8</td><td>6</td><td>8</td><td>8</td><td>8</td><td class="tot">80</td></tr>
+      <tr><td><b>Obtained</b></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class="tot"></td></tr>
+    </tbody>
+  </table>
+
+  <p class="footline">Topics covered: why abstract classes &middot; <code class="inl">abstract</code> classes and methods &middot; constructors and chaining &middot;
+     an abstract class as a data type &middot; the rules of abstract classes &middot; UML in italics &middot; the abstract <code class="inl">Number</code> class &middot;
+     polymorphism and dynamic binding.</p>
+</section>
+
+<!-- ================= Q1 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 8 &mdash; Abstract Classes &mdash; Practice Exam &middot; Question 1 of 11</span></div>
+
+  <div class="card tight">
+    <div class="card-head">
+      <span class="qno">Q1</span>
+      <span class="qtitle">Abstract Class Concepts (Multiple Choice)</span>
+      <span class="chips">
+        <span class="chip tag-easy">EASY</span>
+        <span class="chip clo">CLO 10</span><span class="chip so">SO-a</span>
+        <span class="chip pts">8 marks &middot; 1 each</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p>Circle the <b>single best</b> answer for each item. In items 1 and 7, <code class="inl">Shape</code> is an <b>abstract</b> class and <code class="inl">Circle</code> is a concrete subclass of it.</p>
+
+      <p><b>1.</b> Which line <b>compiles</b>?</p>
+      <div class="mcq">
+        <span>(a) <code class="inl">Shape s = new Shape();</code></span>
+        <span>(b) <code class="inl">Shape[] list = new Shape[5];</code></span>
+        <span>(c) <code class="inl">Circle c = new Shape();</code></span>
+        <span>(d) <code class="inl">Shape s = new Circle(); Circle c = s;</code></span>
+      </div>
+
+      <p><b>2.</b> What is printed by the code below?</p>
+<pre class="code sm">abstract class Pet {
+    public abstract String sound();
+    public String speak() { return "says " + sound(); }
+}
+class Cat extends Pet {
+    public String sound() { return "meow"; }
+}
+// in main:
+Pet p = new Cat();
+System.out.println(p.speak());</pre>
+      <div class="mcq c4"><span>(a) <code class="inl">says null</code></span><span>(b) <code class="inl">says meow</code></span><span>(c) <code class="inl">says </code></span><span>(d) Compilation error: Pet is abstract</span></div>
+
+      <p><b>3.</b> Which is a correct declaration of an <b>abstract method</b> inside an abstract class?</p>
+      <div class="mcq">
+        <span>(a) <code class="inl">public abstract void draw();</code></span>
+        <span>(b) <code class="inl">public abstract void draw() { }</code></span>
+        <span>(c) <code class="inl">public void abstract draw();</code></span>
+        <span>(d) <code class="inl">public void draw();</code></span>
+      </div>
+
+      <p><b>4.</b> A class contains one abstract method, but the class itself is <b>not</b> declared <code class="inl">abstract</code>. What happens?</p>
+      <div class="mcq">
+        <span>(a) It compiles; the method gets an empty body</span>
+        <span>(b) Compilation error</span>
+        <span>(c) It compiles, but crashes when an object is created</span>
+        <span>(d) It compiles, but no object can be created</span>
+      </div>
+
+      <p><b>5.</b> In a UML class diagram (as Liang draws it), an abstract class or abstract method is shown by:</p>
+      <div class="mcq c4"><span>(a) underlining its name</span><span>(b) writing its name in <i>italics</i></span><span>(c) a <code class="inl">#</code> sign</span><span>(d) a <code class="inl">-</code> sign</span></div>
+
+      <p><b>6.</b> What is printed by: <code class="inl">Number n = 7.9;&nbsp; System.out.println(n.intValue());</code></p>
+      <div class="mcq c4"><span>(a) <code class="inl">7.9</code></span><span>(b) <code class="inl">8</code></span><span>(c) <code class="inl">7</code></span><span>(d) Compilation error: Number is abstract</span></div>
+
+      <p><b>7.</b> After <code class="inl">Shape[] geo = new Shape[10];</code> how many <code class="inl">Shape</code> objects have been created?</p>
+      <div class="mcq c4"><span>(a) 0</span><span>(b) 1</span><span>(c) 10</span><span>(d) none &mdash; it is a compilation error</span></div>
+
+      <p><b>8.</b> Which class is <b>not</b> a subclass of the abstract class <code class="inl">java.lang.Number</code>?</p>
+      <div class="mcq c4"><span>(a) <code class="inl">Integer</code></span><span>(b) <code class="inl">BigDecimal</code></span><span>(c) <code class="inl">String</code></span><span>(d) <code class="inl">BigInteger</code></span></div>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q1</div>
+        <p>1:&nbsp;<span class="val">(b)</span> &nbsp; 2:&nbsp;<span class="val">(b)</span> &nbsp; 3:&nbsp;<span class="val">(a)</span> &nbsp; 4:&nbsp;<span class="val">(b)</span> &nbsp;
+           5:&nbsp;<span class="val">(b)</span> &nbsp; 6:&nbsp;<span class="val">(c)</span> &nbsp; 7:&nbsp;<span class="val">(a)</span> &nbsp; 8:&nbsp;<span class="val">(c)</span></p>
+        <p class="rub">1 mark each. (1) An array of an abstract type is legal; (a) and (c) give &ldquo;Shape is abstract; cannot be instantiated&rdquo;, (d) needs a cast.
+           (2) <code class="inl">speak()</code> calls <code class="inl">sound()</code>; dynamic binding runs Cat&rsquo;s version. (3) (b) &ldquo;abstract methods cannot have a body&rdquo;; (d) &ldquo;missing method body, or declare abstract&rdquo;.
+           (4) A class that contains an abstract method must be abstract. (6) <code class="inl">Double.intValue()</code> drops the fraction: 7.
+           (7) Only 10 <code class="inl">null</code> references are created. All code items were checked with javac 21.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Q2 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 8 &mdash; Abstract Classes &mdash; Practice Exam &middot; Question 2 of 11</span></div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="qno">Q2</span>
+      <span class="qtitle">Short Answers &mdash; The Basics of Abstract Classes</span>
+      <span class="chips">
+        <span class="chip tag-easy">EASY</span>
+        <span class="chip clo">CLO 10</span><span class="chip so">SO-a</span>
+        <span class="chip pts">6 marks &middot; 1 each</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p><b>(a)</b> We never create a plain <code class="inl">Shape</code> object, only circles and rectangles. Give the <b>two</b> reasons why we still keep the class <code class="inl">Shape</code>.</p>
+      <div class="answer-space"><div class="writeline"></div><div class="writeline"></div></div>
+
+      <p><b>(b)</b> <code class="inl">new Student()</code> is illegal because <code class="inl">Student</code> is abstract. Then why can <code class="inl">Student</code> have constructors, and <b>who</b> calls them?</p>
+      <div class="answer-space"><div class="writeline"></div><div class="writeline"></div></div>
+
+      <p><b>(c)</b> What is the difference between <code class="inl">public abstract void draw(int size);</code> and <code class="inl">public void draw(int size) { }</code>?</p>
+      <div class="answer-space"><div class="writeline"></div><div class="writeline"></div></div>
+
+      <p><b>(d)</b> A subclass inherits <b>two</b> abstract methods but implements only <b>one</b> of them. What must be true about this subclass?</p>
+      <div class="answer-space"><div class="writeline"></div></div>
+
+      <p><b>(e)</b> Is <code class="inl">abstract class Animal { public void eat() { } }</code> legal even though it has no abstract method? What is the effect of the word <code class="inl">abstract</code> here?</p>
+      <div class="answer-space"><div class="writeline"></div></div>
+
+      <p><b>(f)</b> &ldquo;A subclass can be abstract even if its superclass is concrete.&rdquo; Give one example from the Java library.</p>
+      <div class="answer-space"><div class="writeline"></div></div>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q2</div>
+        <p>(a) <span class="val">Inheritance</span> &mdash; the common fields and methods (e.g. <code class="inl">color</code>, <code class="inl">getColor()</code>) are written once;
+           <span class="val">polymorphism</span> &mdash; one <code class="inl">Shape</code> variable, array or parameter can refer to every kind of shape (an IS-A relationship).</p>
+        <p>(b) Its constructors initialise the fields of the abstract class (e.g. <code class="inl">login</code>, <code class="inl">name</code>) for every subclass object.
+           They are called by the <span class="val">constructors of the subclasses</span>, through <code class="inl">super(&hellip;)</code> &mdash; written by us or inserted by the compiler.</p>
+        <p>(c) The first is <span class="val">abstract</span>: no body (a semicolon), the class must be abstract, and every concrete subclass is forced to implement it.
+           The second is a <span class="val">normal method with an empty body</span>: it does nothing and subclasses are not forced to override it.</p>
+        <p>(d) The subclass must <span class="val">also be declared abstract</span> (it is still incomplete), so it cannot be instantiated.</p>
+        <p>(e) <span class="val">Legal.</span> The class simply <b>cannot be instantiated</b> with <code class="inl">new</code>; it is used only as a base class for subclasses.</p>
+        <p>(f) <code class="inl">Object</code> is concrete, but its subclass <span class="val"><code class="inl">Number</code></span> is abstract (also our own <code class="inl">Shape</code>/<code class="inl">GeometricObject</code>, which extend <code class="inl">Object</code>).</p>
+        <p class="rub">1 mark each; (a) and (c) need both parts for the mark.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Q3 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 8 &mdash; Abstract Classes &mdash; Practice Exam &middot; Question 3 of 11</span></div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="qno">Q3</span>
+      <span class="qtitle">Legal or Illegal? &mdash; Using an Abstract Type</span>
+      <span class="chips">
+        <span class="chip tag-med">MEDIUM</span>
+        <span class="chip clo">CLO 10</span><span class="chip so">SO-a</span>
+        <span class="chip pts">8 marks &middot; 1 each</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p>A shop records the payments it receives. Study the three classes.</p>
+<div class="two-col">
+<pre class="code sm">public abstract class Payment {
+    private double amount;
+
+    public Payment(double amount) {
+        this.amount = amount;
+    }
+    public double getAmount() {
+        return amount;
+    }
+    public abstract double fee();
+}</pre>
+<pre class="code sm">public class CardPayment extends Payment {
+    public CardPayment(double amount) {
+        super(amount);
+    }
+    public double fee() {
+        return getAmount() * 0.02;
+    }
+    public String bank() { return "SNB"; }
+}
+public class CashPayment extends Payment {
+    public CashPayment(double amount) {
+        super(amount);
+    }
+    public double fee() { return 0; }
+}</pre>
+</div>
+      <p>Each row below is written <b>alone</b> inside <code class="inl">main</code>. Write <b>Legal</b> or <b>Illegal</b>, and give a short reason.</p>
+      <table class="fill">
+        <thead><tr><th style="width:5%">#</th><th style="width:53%">Statement(s)</th><th>Legal / Illegal + reason</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td class="mono">Payment p = new Payment(100);</td><td class="ans"></td></tr>
+          <tr><td>2</td><td class="mono">Payment p = new CardPayment(100);</td><td class="ans"></td></tr>
+          <tr><td>3</td><td class="mono">Payment[] day = new Payment[30];</td><td class="ans"></td></tr>
+          <tr><td>4</td><td class="mono">Payment p = new CashPayment(50);<br>double f = p.fee();</td><td class="ans"></td></tr>
+          <tr><td>5</td><td class="mono">Payment p = new CardPayment(80);<br>String b = p.bank();</td><td class="ans"></td></tr>
+          <tr><td>6</td><td class="mono">CashPayment c = new CardPayment(70);</td><td class="ans"></td></tr>
+          <tr><td>7</td><td class="mono">Payment p = new CardPayment(80);<br>String b = ((CardPayment) p).bank();</td><td class="ans"></td></tr>
+          <tr><td>8</td><td class="mono">Payment[] day = { new CashPayment(10),<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;new CardPayment(20) };</td><td class="ans"></td></tr>
+        </tbody>
+      </table>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q3</div>
+        <p>1 <span class="val">Illegal</span> &mdash; &ldquo;Payment is abstract; cannot be instantiated&rdquo;.<br>
+           2 <span class="val">Legal</span> &mdash; a CardPayment <i>is a</i> Payment; an abstract class can be the type of a variable.<br>
+           3 <span class="val">Legal</span> &mdash; an array of 30 <code class="inl">Payment</code> references (all <code class="inl">null</code>); no Payment object is created.<br>
+           4 <span class="val">Legal</span> &mdash; <code class="inl">fee()</code> is declared (abstract) in Payment; at run time CashPayment&rsquo;s <code class="inl">fee()</code> runs.<br>
+           5 <span class="val">Illegal</span> &mdash; &ldquo;cannot find symbol&rdquo;: the compiler looks only at the declared type <code class="inl">Payment</code>, which has no <code class="inl">bank()</code>.<br>
+           6 <span class="val">Illegal</span> &mdash; incompatible types: a CardPayment is not a CashPayment.<br>
+           7 <span class="val">Legal</span> &mdash; the cast tells the compiler the object is a CardPayment, so <code class="inl">bank()</code> is found (and it really is one).<br>
+           8 <span class="val">Legal</span> &mdash; an array of the abstract type holding objects of two concrete subclasses.</p>
+        <p class="rub">1 mark each: &frac12; for Legal/Illegal, &frac12; for the reason. All eight rows were compiled separately with javac 21.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Q4 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 8 &mdash; Abstract Classes &mdash; Practice Exam &middot; Question 4 of 11</span></div>
+
+  <div class="card flow">
+    <div class="card-head">
+      <span class="qno">Q4</span>
+      <span class="qtitle">Output Tracing &mdash; Constructor Chaining Through Abstract Classes</span>
+      <span class="chips">
+        <span class="chip tag-med">MEDIUM</span>
+        <span class="chip clo">CLO 10</span><span class="chip so">SO-a</span>
+        <span class="chip pts">6 marks</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p>Both <code class="inl">Vehicle</code> and <code class="inl">Car</code> are abstract. Write the exact output, one line per line.</p>
+<pre class="code sm">abstract class Vehicle {
+    private String plate;
+    public Vehicle() {
+        this("NO-PLATE");
+        System.out.println("1: Vehicle()");
+    }
+    public Vehicle(String plate) {
+        this.plate = plate;
+        System.out.println("2: Vehicle(" + plate + ")");
+    }
+    public String getPlate() { return plate; }
+    public abstract int wheels();
+}
+
+abstract class Car extends Vehicle {
+    public Car(String plate) {
+        super(plate);
+        System.out.println("3: Car(" + plate + ")");
+    }
+    public Car() {
+        System.out.println("4: Car()");
+    }
+    public int wheels() { return 4; }
+}</pre>
+<div class="two-col">
+<pre class="code sm wide">class Taxi extends Car {
+    public Taxi(String plate) {
+        super(plate);
+        System.out.println("5: Taxi(" + plate + ")");
+    }
+    public Taxi() {
+        System.out.println("6: Taxi()");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Vehicle v = new Taxi("JED-77");    // (a)
+        System.out.println(v.wheels() + " wheels");
+        System.out.println("-----");
+        new Taxi();                        // (b)
+    }
+}</pre>
+<div class="narrow">
+      <p><b>(a)</b> Output <b>before</b> the line <code class="inl">-----</code> <span class="mini">(3 marks)</span></p>
+      <div class="answer-space"><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div></div>
+      <p><b>(b)</b> Output of <code class="inl">new Taxi();</code> <span class="mini">(3 marks)</span></p>
+      <div class="answer-space"><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div></div>
+</div>
+</div>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q4</div>
+<div class="two-col">
+<pre class="code sm">2: Vehicle(JED-77)
+3: Car(JED-77)
+5: Taxi(JED-77)
+4 wheels</pre>
+<pre class="code sm">2: Vehicle(NO-PLATE)
+1: Vehicle()
+4: Car()
+6: Taxi()</pre>
+</div>
+        <p class="rub">(a) <code class="inl">super(plate)</code> climbs Taxi &rarr; Car &rarr; Vehicle; the deepest constructor prints first. <code class="inl">wheels()</code> is implemented in Car, so the Taxi object uses it (4).
+           3 marks: 2 for the three constructor lines in order, 1 for &ldquo;4 wheels&rdquo;.
+           (b) <code class="inl">Taxi()</code> &rarr; implicit <code class="inl">super()</code> &rarr; <code class="inl">Car()</code> &rarr; implicit <code class="inl">super()</code> &rarr; <code class="inl">Vehicle()</code> &rarr; <code class="inl">this("NO-PLATE")</code>.
+           3 marks (lose 1 per misplaced line). Constructors of abstract classes run for every subclass object, even though <code class="inl">new Vehicle()</code> and <code class="inl">new Car()</code> are illegal.
+           Note that <code class="inl">Car</code> is abstract even though it has no abstract method left &mdash; that is allowed.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Q5 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 8 &mdash; Abstract Classes &mdash; Practice Exam &middot; Question 5 of 11</span></div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="qno">Q5</span>
+      <span class="qtitle">Find and Fix the Compilation Errors</span>
+      <span class="chips">
+        <span class="chip tag-med">MEDIUM</span>
+        <span class="chip clo">CLO 10</span><span class="chip so">SO-c</span>
+        <span class="chip pts">6 marks &middot; 2 each</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p>The abstract class <code class="inl">Appliance</code> is correct. The code below it contains <b>exactly three (3) compilation errors</b>.
+         For each, give the line number, the reason, and the corrected line(s). Do <b>not</b> change <code class="inl">Appliance</code>.</p>
+<pre class="code sm">public abstract class Appliance {
+    private String brand;
+
+    public Appliance(String brand) {
+        this.brand = brand;
+    }
+    public String getBrand() {
+        return brand;
+    }
+    public abstract double power();    // in watts
+    public abstract String label();
+}</pre>
+<pre class="code sm">public class Fridge extends Appliance {            // 1
+    private double litres;                         // 2
+                                                   // 3
+    public Fridge(String brand, double litres) {   // 4
+        super(brand);                              // 5
+        this.litres = litres;                      // 6
+    }                                              // 7
+    public abstract double power() {               // 8
+        return litres * 0.5;                       // 9
+    }                                              // 10
+}                                                  // 11
+
+public class Kitchen {                             // 12
+    public static void main(String[] args) {       // 13
+        Appliance a = new Appliance("LG");         // 14
+        Appliance f = new Fridge("Samsung", 400);  // 15
+        System.out.println(f.getBrand() + " " + f.power());  // 16
+    }                                              // 17
+}                                                  // 18</pre>
+      <table class="fill">
+        <thead><tr><th style="width:9%">Line</th><th style="width:38%">Reason</th><th>Correction</th></tr></thead>
+        <tbody>
+          <tr><td style="height:3.2em"></td><td></td><td></td></tr>
+          <tr><td style="height:3.2em"></td><td></td><td></td></tr>
+          <tr><td style="height:3.2em"></td><td></td><td></td></tr>
+        </tbody>
+      </table>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q5</div>
+        <table class="fill">
+          <thead><tr><th>Line</th><th>Reason</th><th>Correction</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td><code class="inl">Fridge</code> is not abstract but does <b>not implement</b> the inherited abstract method <code class="inl">label()</code>.</td><td>Add to Fridge: <code class="inl">public String label() { return "A++"; }</code></td></tr>
+            <tr><td>8</td><td>An <b>abstract method cannot have a body</b> (and a concrete class cannot contain an abstract method).</td><td><code class="inl">public double power() {</code> &mdash; remove <code class="inl">abstract</code>.</td></tr>
+            <tr><td>14</td><td><code class="inl">Appliance</code> is <b>abstract; cannot be instantiated</b>.</td><td><code class="inl">Appliance a = new Fridge("LG", 300);</code></td></tr>
+          </tbody>
+        </table>
+        <p class="rub">1 mark for the line and reason + 1 mark for a fix that compiles. javac 21 reports exactly these three errors (for line 1 it first names <code class="inl">power()</code>; once line 8 is fixed it names <code class="inl">label()</code>).
+           Declaring <code class="inl">Fridge</code> abstract is <b>not</b> accepted for line 1, because line 15 creates a Fridge. After the fixes the program prints <code class="inl">Samsung 200.0</code>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Q6 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 8 &mdash; Abstract Classes &mdash; Practice Exam &middot; Question 6 of 11</span></div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="qno">Q6</span>
+      <span class="qtitle">Dynamic Binding &mdash; Calling an Abstract Method</span>
+      <span class="chips">
+        <span class="chip tag-med">MEDIUM</span>
+        <span class="chip clo">CLO 10</span><span class="chip so">SO-a</span>
+        <span class="chip pts">8 marks</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p>A cinema sells three kinds of tickets.</p>
+<div class="two-col">
+<pre class="code sm">abstract class Ticket {
+    private String name;
+    public Ticket(String name) {
+        this.name = name;
+    }
+    public abstract double price();
+    public String type() {
+        return "General";
+    }
+    @Override
+    public String toString() {
+        return name + " [" + type() + "] "
+               + price();
+    }
+}
+class ChildTicket extends Ticket {
+    public ChildTicket(String name) {
+        super(name);
+    }
+    public double price() { return 25; }
+    public String type() { return "Child"; }
+}</pre>
+<pre class="code sm">class AdultTicket extends Ticket {
+    public AdultTicket(String name) {
+        super(name);
+    }
+    public double price() { return 50; }
+}
+class VipTicket extends AdultTicket {
+    public VipTicket(String name) {
+        super(name);
+    }
+    public double price() {
+        return super.price() * 3;
+    }
+    public String type() { return "VIP"; }
+}
+// in main:
+Ticket[] all = { new ChildTicket("Sara"),
+                 new AdultTicket("Omar"),
+                 new VipTicket("Huda") };
+double total = 0;
+for (Ticket t : all) {
+    System.out.println(t);
+    total += t.price();
+}
+System.out.println("Total: " + total);</pre>
+</div>
+      <p><b>(a)</b> Write the exact output, one line per line. <span class="mini">(4 marks)</span></p>
+      <div class="answer-space"><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div></div>
+      <p><b>(b)</b> <code class="inl">toString()</code> in <code class="inl">Ticket</code> calls <code class="inl">price()</code>, which has <b>no body</b> in <code class="inl">Ticket</code>. Why is this allowed, and which <code class="inl">price()</code> runs? <span class="mini">(2 marks)</span></p>
+      <div class="answer-space"><div class="writeline"></div><div class="writeline"></div></div>
+      <p><b>(c)</b> A student deletes the method <code class="inl">price()</code> from <code class="inl">AdultTicket</code>. Does the program still compile? Explain. <span class="mini">(2 marks)</span></p>
+      <div class="answer-space"><div class="writeline"></div><div class="writeline"></div></div>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q6</div>
+<pre class="code sm">Sara [Child] 25.0
+Omar [General] 50.0
+Huda [VIP] 150.0
+Total: 225.0</pre>
+        <p>(b) No <code class="inl">Ticket</code> object can ever exist (the class is abstract), so <code class="inl">this</code> always refers to an object of a <b>concrete subclass</b>, and every concrete subclass
+           was forced to implement <code class="inl">price()</code>. By <span class="val">dynamic binding</span> the version of the actual object runs (25, 50, or 50 &times; 3).</p>
+        <p>(c) <span class="val">No.</span> <code class="inl">AdultTicket</code> is not abstract, so it must implement every inherited abstract method:
+           &ldquo;AdultTicket is not abstract and does not override abstract method price() in Ticket&rdquo;. javac also rejects <code class="inl">super.price()</code> in VipTicket
+           (&ldquo;abstract method price() in Ticket cannot be accessed directly&rdquo;).</p>
+        <p class="rub">(a) 1 mark per line (Omar inherits <code class="inl">type()</code> from Ticket; Huda&rsquo;s price is <code class="inl">super.price()</code> &times; 3; values print as <code class="inl">double</code>).
+           (b) 1 for &ldquo;declared in Ticket / every concrete subclass implements it&rdquo;, 1 for dynamic binding. (c) 1 for &ldquo;No&rdquo;, 1 for the reason.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Q7 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 8 &mdash; Abstract Classes &mdash; Practice Exam &middot; Question 7 of 11</span></div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="qno">Q7</span>
+      <span class="qtitle">Tricky Tracing &mdash; Which Version Runs?</span>
+      <span class="chips">
+        <span class="chip tag-hard">HARD</span>
+        <span class="chip clo">CLO 10</span><span class="chip so">SO-a</span>
+        <span class="chip pts">8 marks &middot; 4 each</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p><b>(a)</b> An abstract method called from the constructor of the abstract class. Write the exact output of <code class="inl">new TempSensor();</code></p>
+<pre class="code sm">abstract class Sensor {
+    public Sensor() {
+        System.out.println("Reading: " + read());
+    }
+    public abstract int read();
+}</pre>
+<pre class="code sm">class TempSensor extends Sensor {
+    private int celsius = 30;
+    public TempSensor() {
+        System.out.println("Ready: " + read());
+    }
+    public int read() { return celsius; }
+}</pre>
+      <div class="answer-space"><span class="lbl">Output:</span><div class="writeline"></div><div class="writeline"></div></div>
+
+      <p style="margin-top:12px"><b>(b)</b> A concrete method overridden as abstract. <code class="inl">Item</code> is concrete; <code class="inl">Product</code> turns <code class="inl">info()</code> into an abstract method.</p>
+<div class="two-col">
+<pre class="code sm">class Item {
+    public String info() { return "Item"; }
+    @Override
+    public String toString() {
+        return "&lt;" + info() + "&gt;";
+    }
+}
+abstract class Product extends Item {
+    @Override
+    public abstract String info();
+}</pre>
+<pre class="code sm">class Book extends Product {
+    @Override
+    public String info() { return "Book"; }
+}
+class Pen extends Item { }
+
+// in main:
+Item[] items = { new Book(), new Pen(),
+                 new Item() };
+for (Item it : items)
+    System.out.println(it);</pre>
+</div>
+<div class="two-col">
+      <div class="answer-space"><span class="lbl">(b1) Output:</span><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div></div>
+      <div class="answer-space"><span class="lbl">(b2) What happens if <code class="inl">Book</code> does not write <code class="inl">info()</code>? Why would a designer make <code class="inl">info()</code> abstract in Product?</span><div class="writeline"></div><div class="writeline"></div></div>
+</div>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q7</div>
+<div class="two-col">
+<pre class="code sm">// (a)
+Reading: 0
+Ready: 30</pre>
+<pre class="code sm">// (b1)
+&lt;Book&gt;
+&lt;Item&gt;
+&lt;Item&gt;</pre>
+</div>
+        <p>(a) The Sensor constructor runs <b>first</b>. Its call <code class="inl">read()</code> is bound to TempSensor&rsquo;s version (the object is a TempSensor), but the field
+           <code class="inl">celsius = 30</code> is set only <b>after</b> <code class="inl">super()</code> returns, so it still holds the default <span class="val">0</span>. Then TempSensor&rsquo;s constructor sees <span class="val">30</span>.</p>
+        <p>(b2) <span class="val">Compilation error:</span> &ldquo;Book is not abstract and does not override abstract method info() in Product&rdquo;. Item&rsquo;s generic <code class="inl">info()</code> is not
+           valid for products, so making it abstract in Product <b>forces</b> every concrete product to write its own (Pen is not a Product, so it keeps Item&rsquo;s version).</p>
+        <p class="rub">(a) 2 marks for <code class="inl">Reading: 0</code> (the trap), 1 for <code class="inl">Ready: 30</code>, 1 for the order. (b1) 1 mark per line. (b2) 1 mark.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Q8 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 8 &mdash; Abstract Classes &mdash; Practice Exam &middot; Question 8 of 11</span></div>
+
+  <div class="card flow">
+    <div class="card-head">
+      <span class="qno">Q8</span>
+      <span class="qtitle">Case Study &mdash; The Abstract Number Class</span>
+      <span class="chips">
+        <span class="chip tag-med">MEDIUM</span>
+        <span class="chip clo">CLO 10</span><span class="chip so">SO-a</span>
+        <span class="chip pts">6 marks</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p>A store keeps prices of different numeric types in one list.</p>
+<pre class="code sm">public class Prices {
+    public static Number getLargest(ArrayList&lt;Number&gt; list) {
+        if (list == null || list.size() == 0)
+            return null;
+        Number max = list.get(0);
+        for (int i = 1; i &lt; list.size(); i++)
+            if (max.doubleValue() &lt; list.get(i).doubleValue())
+                max = list.get(i);
+        return max;
+    }
+    public static void main(String[] args) {
+        ArrayList&lt;Number&gt; list = new ArrayList&lt;&gt;();
+        list.add(19);
+        list.add(18.75);
+        list.add(new BigInteger("20"));
+        list.add(19.99);
+        for (Number n : list)
+            System.out.println(n.getClass().getSimpleName() + " " + n.intValue());
+        System.out.println("Largest: " + getLargest(list));
+        System.out.println("Empty: " + getLargest(new ArrayList&lt;Number&gt;()));
+    }
+}</pre>
+      <p><b>(a)</b> Write the exact output, one line per line. <span class="mini">(4 marks)</span></p>
+      <div class="answer-space"><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div></div>
+      <p><b>(b)</b> Why does <code class="inl">getLargest</code> compare <code class="inl">doubleValue()</code> results instead of writing <code class="inl">max &lt; list.get(i)</code>? <span class="mini">(1 mark)</span></p>
+      <div class="answer-space"><div class="writeline"></div><div class="writeline"></div></div>
+      <p><b>(c)</b> A student adds the line <code class="inl">list.add(new Number());</code> Does it compile? Why? <span class="mini">(1 mark)</span></p>
+      <div class="answer-space"><div class="writeline"></div></div>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q8</div>
+<pre class="code sm">Integer 19
+Double 18
+BigInteger 20
+Double 19
+Largest: 20
+Empty: null</pre>
+        <p>(b) <code class="inl">&lt;</code> does not work on objects (&ldquo;bad operand types for binary operator &lsquo;&lt;&rsquo;&rdquo;). Every subclass of Number must implement the abstract method
+           <code class="inl">doubleValue()</code>, so it is safe for any element; <span class="val">dynamic binding</span> runs Integer&rsquo;s, Double&rsquo;s or BigInteger&rsquo;s version.</p>
+        <p>(c) <span class="val">No</span> &mdash; &ldquo;Number is abstract; cannot be instantiated&rdquo;.</p>
+        <p class="rub">(a) &frac12; mark per type/value line (2), 1 for <code class="inl">Largest: 20</code> (the BigInteger 20 is larger than 19.99), 1 for <code class="inl">Empty: null</code>.
+           <code class="inl">intValue()</code> drops the fraction (18.75 &rarr; 18, 19.99 &rarr; 19). The autoboxed 19 is an <code class="inl">Integer</code>, 18.75 a <code class="inl">Double</code>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Q9 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 8 &mdash; Abstract Classes &mdash; Practice Exam &middot; Question 9 of 11</span></div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="qno">Q9</span>
+      <span class="qtitle">Compiles or Not? &mdash; The Rules of Abstract Classes</span>
+      <span class="chips">
+        <span class="chip tag-med">MEDIUM</span>
+        <span class="chip clo">CLO 10</span><span class="chip so">SO-a</span>
+        <span class="chip pts">8 marks &middot; 1 each</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p>For each item write <b>OK</b> if it compiles, or <b>Error</b> with a short reason. Each item is a separate program.</p>
+      <table class="fill">
+        <thead><tr><th style="width:5%">#</th><th style="width:55%">Code</th><th>OK / Error + reason</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td class="mono">abstract class Animal {<br>&nbsp;&nbsp;public void eat() { }<br>}<br>class Cat extends Animal { }</td><td class="ans"></td></tr>
+          <tr><td>2</td><td class="mono">class Shape {<br>&nbsp;&nbsp;public abstract double area();<br>}</td><td class="ans"></td></tr>
+          <tr><td>3</td><td class="mono">abstract class Shape {<br>&nbsp;&nbsp;public abstract double area() { return 0; }<br>}</td><td class="ans"></td></tr>
+          <tr><td>4</td><td class="mono">abstract class Shape {<br>&nbsp;&nbsp;public abstract double area();<br>}<br>class Square extends Shape { }</td><td class="ans"></td></tr>
+          <tr><td>5</td><td class="mono">abstract class Shape {<br>&nbsp;&nbsp;public abstract double area();<br>}<br>abstract class Polygon extends Shape { }</td><td class="ans"></td></tr>
+          <tr><td>6</td><td class="mono">class Base {<br>&nbsp;&nbsp;public void show() { }<br>}<br>abstract class Mid extends Base {<br>&nbsp;&nbsp;public abstract void show();<br>}</td><td class="ans"></td></tr>
+          <tr><td>7</td><td class="mono">abstract class Shape {<br>&nbsp;&nbsp;public abstract void draw();<br>}<br>class Star extends Shape {<br>&nbsp;&nbsp;void draw() { }<br>}</td><td class="ans"></td></tr>
+          <tr><td>8</td><td class="mono">abstract class Shape {<br>&nbsp;&nbsp;private String color;<br>&nbsp;&nbsp;protected Shape(String color) { this.color = color; }<br>}<br>class Dot extends Shape {<br>&nbsp;&nbsp;public Dot() { super("red"); }<br>}</td><td class="ans"></td></tr>
+        </tbody>
+      </table>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q9</div>
+        <p>1 <span class="val">OK</span> &mdash; an abstract class may have <b>no</b> abstract methods; Cat inherits <code class="inl">eat()</code> and is concrete.<br>
+           2 <span class="val">Error</span> &mdash; a class that contains an abstract method must be declared abstract.<br>
+           3 <span class="val">Error</span> &mdash; abstract methods cannot have a body.<br>
+           4 <span class="val">Error</span> &mdash; Square is not abstract and does not override the abstract method <code class="inl">area()</code>.<br>
+           5 <span class="val">OK</span> &mdash; a subclass that does not implement the abstract methods may stay abstract.<br>
+           6 <span class="val">OK</span> &mdash; a subclass may override a <b>concrete</b> method as abstract (and an abstract class may extend a concrete one).<br>
+           7 <span class="val">Error</span> &mdash; <code class="inl">draw()</code> must stay <code class="inl">public</code>: &ldquo;attempting to assign weaker access privileges; was public&rdquo;.<br>
+           8 <span class="val">OK</span> &mdash; an abstract class can have fields and constructors; Dot calls it with <code class="inl">super("red")</code>.</p>
+        <p class="rub">1 mark each: &frac12; for OK/Error, &frac12; for the reason. All eight items were checked with javac 21.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Q10 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 8 &mdash; Abstract Classes &mdash; Practice Exam &middot; Question 10 of 11</span></div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="qno">Q10</span>
+      <span class="qtitle">From UML to Code &mdash; An Abstract Class and Its Subclass</span>
+      <span class="chips">
+        <span class="chip tag-hard">HARD</span>
+        <span class="chip clo">CLO 11</span><span class="chip so">SO-c</span>
+        <span class="chip pts">8 marks</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p>A streaming service sells monthly plans. Write the classes <code class="inl">Subscription</code> and <code class="inl">StreamingPlan</code> from the UML diagram.
+         Names in <i>italics</i> are abstract.</p>
+      <div class="uml-wrap">
+        <div class="uml">
+          <div class="uml-name"><i>Subscription</i></div>
+          <div class="uml-sec"><span>-name: String</span><span>-months: int</span></div>
+          <div class="uml-sec"><span>+Subscription(name: String, months: int)</span><span>+getName(): String</span><span>+getMonths(): int</span>
+            <span><i>+monthlyFee(): double</i></span><span>+totalCost(): double</span><span>+toString(): String</span></div>
+        </div>
+        <div style="align-self:center;text-align:center;color:var(--em-deep);font-weight:700;font-size:10pt">
+          <svg width="70" height="28" viewBox="0 0 70 28"><line x1="70" y1="14" x2="18" y2="14" stroke="currentColor" stroke-width="1.6"/><path d="M2,14 L18,5 L18,23 Z" fill="#fff" stroke="currentColor" stroke-width="1.6"/></svg>
+          <div>extends</div>
+        </div>
+        <div class="uml">
+          <div class="uml-name">StreamingPlan</div>
+          <div class="uml-sec"><span>-screens: int</span></div>
+          <div class="uml-sec"><span>+StreamingPlan(name: String,</span><span>&nbsp;&nbsp;months: int, screens: int)</span><span>+getScreens(): int</span>
+            <span>+monthlyFee(): double</span></div>
+        </div>
+      </div>
+      <table class="need">
+        <tr><th>Requirement</th></tr>
+        <tr><td>monthlyFee() is abstract in Subscription (no body).</td></tr>
+        <tr><td>totalCost() returns monthlyFee() &times; months; toString() returns, e.g., "Family: 6 months, total 210.0"</td></tr>
+        <tr><td>StreamingPlan passes name and months to Subscription; its monthlyFee() = 15.0 + 10.0 &times; screens.</td></tr>
+        <tr><td>Test: Subscription s = new StreamingPlan("Family", 6, 2); System.out.println(s); prints the example above.</td></tr>
+      </table>
+      <div class="answer-space"><span class="lbl">Write the complete classes Subscription and StreamingPlan:</span><div class="codebox" style="min-height:78mm"></div></div>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q10</div>
+<div>
+<pre class="code sm">public abstract class Subscription {
+    private String name;
+    private int months;
+
+    public Subscription(String name, int months) {
+        this.name = name;
+        this.months = months;
+    }
+    public String getName() { return name; }
+    public int getMonths()  { return months; }
+
+    public abstract double monthlyFee();   // no body
+
+    public double totalCost() {
+        return monthlyFee() * months;      // dynamic binding
+    }
+    @Override
+    public String toString() {
+        return name + ": " + months
+               + " months, total " + totalCost();
+    }
+}</pre>
+<pre class="code sm">public class StreamingPlan extends Subscription {
+    private int screens;
+
+    public StreamingPlan(String name, int months,
+                         int screens) {
+        super(name, months);           // first statement
+        this.screens = screens;
+    }
+    public int getScreens() { return screens; }
+
+    @Override
+    public double monthlyFee() {
+        return 15.0 + 10.0 * screens;
+    }
+}
+
+// Subscription s = new StreamingPlan("Family", 6, 2);
+// System.out.println(s);   prints
+// Family: 6 months, total 210.0</pre>
+</div>
+        <p class="rub">Rubric: <code class="inl">abstract class</code> with private fields and constructor (1) &middot; getters (1) &middot; <code class="inl">public abstract double monthlyFee();</code> with <b>no body</b> (2) &middot;
+           <code class="inl">totalCost()</code> calling <code class="inl">monthlyFee()</code> and <code class="inl">toString()</code> (1) &middot; <code class="inl">extends Subscription</code> + <code class="inl">super(name, months)</code> first (2) &middot;
+           <code class="inl">monthlyFee()</code> implemented in StreamingPlan (1). The code was compiled and run: it prints <code class="inl">Family: 6 months, total 210.0</code>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Q11 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 8 &mdash; Abstract Classes &mdash; Practice Exam &middot; Question 11 of 11</span></div>
+
+  <div class="card flow">
+    <div class="card-head">
+      <span class="qno">Q11</span>
+      <span class="qtitle">Design &mdash; A Company Payroll with an Abstract Employee</span>
+      <span class="chips">
+        <span class="chip tag-hard">HARD</span>
+        <span class="chip clo">CLO 11</span><span class="chip so">SO-c</span>
+        <span class="chip pts">8 marks</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p>A company pays two kinds of employees. Nobody is &ldquo;just an employee&rdquo;:</p>
+      <table class="need" style="width:100%">
+        <tr><th>Every employee</th><th>SalariedEmployee</th><th>HourlyEmployee</th></tr>
+        <tr><td>has a name<br>has a monthly pay<br>prints as "Ahmed earns 9000.0"</td>
+            <td>has a fixed monthly salary<br>monthly pay = salary</td>
+            <td>has hours worked and an hourly rate<br>monthly pay = hours &times; rate</td></tr>
+      </table>
+      <p><b>(a)</b> Draw a UML class diagram with an abstract superclass <code class="inl">Employee</code> and the two subclasses. Show fields, constructors and methods, mark what is abstract, and draw the correct arrows. <span class="mini">(2 marks)</span></p>
+      <div class="drawbox" style="min-height:42mm"></div>
+      <p><b>(b)</b> Write the classes <code class="inl">Employee</code>, <code class="inl">SalariedEmployee</code> and <code class="inl">HourlyEmployee</code>. <code class="inl">Employee</code> must <b>force</b> every subclass to compute its monthly pay. <span class="mini">(4 marks)</span></p>
+      <div class="answer-space"><div class="codebox" style="min-height:78mm"></div></div>
+      <p><b>(c)</b> Write the method <code class="inl">public static double totalPayroll(Employee[] staff)</code> that returns the total monthly pay of all employees in the array. <span class="mini">(2 marks)</span></p>
+<pre class="code sm">// It is used like this:
+Employee[] staff = new Employee[3];
+staff[0] = new SalariedEmployee("Ahmed", 9000);
+staff[1] = new HourlyEmployee("Mona", 120, 50);
+staff[2] = new HourlyEmployee("Khalid", 80, 45);
+System.out.println("Total payroll: " + totalPayroll(staff));
+// prints:  Total payroll: 18600.0</pre>
+      <div class="answer-space"><div class="codebox" style="min-height:28mm"></div></div>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q11</div>
+        <p>(a) <code class="inl"><i>Employee</i></code> (italic name) holds <code class="inl">-name: String</code>, <code class="inl">+Employee(name: String)</code>, <code class="inl">+getName(): String</code>,
+           <code class="inl"><i>+monthlyPay(): double</i></code> (italic) and <code class="inl">+toString(): String</code>. <code class="inl">SalariedEmployee</code> (<code class="inl">-salary: double</code>) and
+           <code class="inl">HourlyEmployee</code> (<code class="inl">-hours: int</code>, <code class="inl">-rate: double</code>) each have a constructor and <code class="inl">+monthlyPay(): double</code>, with a <b>hollow triangle arrow pointing up to Employee</b>.</p>
+<div>
+<pre class="code sm">public abstract class Employee {
+    private String name;
+
+    public Employee(String name) {
+        this.name = name;
+    }
+    public String getName() { return name; }
+
+    public abstract double monthlyPay();
+
+    @Override
+    public String toString() {
+        return name + " earns " + monthlyPay();
+    }
+}
+
+public class SalariedEmployee extends Employee {
+    private double salary;
+
+    public SalariedEmployee(String name,
+                            double salary) {
+        super(name);
+        this.salary = salary;
+    }
+    @Override
+    public double monthlyPay() {
+        return salary;
+    }
+}</pre>
+<pre class="code sm">public class HourlyEmployee extends Employee {
+    private int hours;
+    private double rate;
+
+    public HourlyEmployee(String name, int hours,
+                          double rate) {
+        super(name);
+        this.hours = hours;
+        this.rate = rate;
+    }
+    @Override
+    public double monthlyPay() {
+        return hours * rate;
+    }
+}
+
+// (c)
+public static double totalPayroll(Employee[] staff) {
+    double total = 0;
+    for (Employee e : staff)
+        total += e.monthlyPay();   // dynamic binding
+    return total;
+}
+
+// Output of the test:
+// Total payroll: 18600.0
+// (9000.0 + 120 x 50 + 80 x 45)</pre>
+</div>
+        <p class="rub">(a) abstract Employee with the shared members and an italic abstract <code class="inl">monthlyPay()</code> (1), correct arrows (1).
+           (b) abstract Employee with private name, constructor and <code class="inl">public abstract double monthlyPay();</code> (2); both subclasses with <code class="inl">extends</code>, <code class="inl">super(name)</code> and <code class="inl">monthlyPay()</code> (2).
+           (c) loop over the array calling <code class="inl">monthlyPay()</code> through the <code class="inl">Employee</code> type (2). A solution with <code class="inl">instanceof</code> tests and casts loses 1 mark &mdash; the abstract method makes them unnecessary.
+           The code was compiled and run; printing each employee gives <code class="inl">Ahmed earns 9000.0</code>, <code class="inl">Mona earns 6000.0</code>, <code class="inl">Khalid earns 3600.0</code>.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="endmark">&mdash; End of Abstract Classes Practice Exam &mdash; Good Luck! &mdash;</div>
+  <p class="footline">Module 8: Abstract Classes</p>
+</section>
+
+<script>
+  var btn = document.getElementById('toggleAns');
+  btn.addEventListener('click', function () {
+    var on = document.body.classList.toggle('show-answers');
+    btn.textContent = on ? '🙈 Hide model answers' : '👁 Show model answers';
+    btn.classList.toggle('ghost', !on);
+  });
+</script>
+</body>
+</html>

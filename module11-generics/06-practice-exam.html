@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Generics &mdash; Practice Exam (A4 printable)</title>
+<style>
+/* =======================================================================
+   Programming II — MODULE 11: GENERICS — practice exam
+   Print-first, A4. Each question is a CARD. Module colour theme (amber).
+   A "Show model answers" toggle turns the same file into an answer key.
+   ======================================================================= */
+@page { size: A4; margin: 12mm 15mm 14mm 15mm; }
+
+:root{
+  --em:        #b45309;
+  --em-dark:   #92400e;
+  --em-deep:   #78350f;
+  --em-tint:   #fffbeb;
+  --ink:       #1f2937;
+  --ink-soft:  #4b5563;
+  --rule:      #fde68a;
+  --paper:     #ffffff;
+  --code-bg:   #fffdf6;
+  --code-rule: #f8e3b0;
+  --warn:      #b42318;
+  --tag-easy:  #e7f6ec; --tag-easy-i:#1a7f37;
+  --tag-med:   #ffedd5; --tag-med-i: #c2410c;
+  --tag-hard:  #fdeaea; --tag-hard-i:#b42318;
+}
+
+*{ box-sizing:border-box; }
+html,body{
+  margin:0; padding:0;
+  background:#e5e9f0;
+  color:var(--ink);
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size:11pt; line-height:1.5;
+}
+body{ padding:14mm 0; }
+
+/* ---- A4 sheet ---- */
+.sheet{
+  background:var(--paper);
+  width:210mm; min-height:297mm;
+  margin:0 auto 10mm;
+  padding:15mm 15mm 18mm;
+  box-shadow:0 3px 14px rgba(31,41,55,.18);
+  position:relative;
+}
+
+/* ---- running head ---- */
+.runhead{
+  display:flex; justify-content:space-between; align-items:flex-end;
+  border-bottom:2px solid var(--em-dark);
+  padding-bottom:6px; margin-bottom:14px;
+  font-size:9.5pt; color:var(--em-deep);
+}
+.runhead b{ font-size:10.5pt; }
+
+/* ================= COVER ================= */
+.cover-top{ text-align:center; }
+.cover-rule{ height:2px; background:var(--em-dark); margin:12px 0; }
+.cover-title{ font-size:22pt; font-weight:800; color:var(--em); letter-spacing:.5px; }
+.cover-sub{ font-size:13pt; font-weight:600; margin-top:4px; }
+.cover-tag{
+  display:inline-block; margin-top:10px; padding:4px 16px;
+  background:var(--em-tint); color:var(--em-dark); border:1px solid var(--em);
+  border-radius:999px; font-weight:700; font-size:10.5pt;
+}
+
+.id-grid{ margin:22px 0 4px; width:100%; border-collapse:collapse; font-size:11pt; }
+.id-grid td{ padding:9px 6px; }
+.id-grid .lbl{ width:132px; white-space:nowrap; font-weight:700; color:var(--em-deep); }
+.id-grid .line{ border-bottom:1.4px solid #6b7280; }
+
+.instr{
+  margin-top:16px; border:1px solid var(--rule);
+  border-left:5px solid var(--em); border-radius:8px;
+  background:#fffdf5; padding:12px 16px;
+}
+.instr h3{ margin:0 0 6px; font-size:11.5pt; color:var(--em-deep); }
+.instr ul{ margin:0; padding-left:18px; }
+.instr li{ margin:3px 0; }
+
+.marks-tbl{ width:100%; border-collapse:collapse; margin-top:18px; font-size:10pt; text-align:center; }
+.marks-tbl th, .marks-tbl td{ border:1px solid var(--rule); padding:6px 4px; }
+.marks-tbl thead th{ background:var(--em-dark); color:#fff; }
+.marks-tbl .tot{ background:var(--em-tint); font-weight:800; }
+.marks-tbl thead th.tot{ background:var(--em-deep); color:#fff; }
+
+/* ================= QUESTION CARD ================= */
+.card{
+  border:1px solid var(--rule); border-radius:10px;
+  margin:0 0 16px; overflow:hidden;
+  break-inside:avoid; page-break-inside:avoid; background:#fff;
+}
+.card-head{
+  display:flex; flex-wrap:wrap; align-items:center; gap:8px;
+  background:linear-gradient(180deg,#fffdf5,#fdefc8);
+  border-bottom:1px solid var(--rule); padding:9px 14px;
+}
+.qno{
+  font-weight:800; color:#fff; background:var(--em-dark);
+  border-radius:6px; padding:3px 11px; font-size:11pt; letter-spacing:.3px;
+}
+.qtitle{ font-weight:700; font-size:11.5pt; color:var(--em-deep); flex:1 1 240px; }
+.chips{ display:flex; gap:6px; align-items:center; flex-wrap:wrap; }
+.chip{ font-size:8.5pt; padding:2px 8px; border-radius:999px; font-weight:700; white-space:nowrap; }
+.chip.clo{ background:#fef3c7; color:#78350f; border:1px solid #d6a74a; }
+.chip.so { background:#ecfeff; color:#0e7490; border:1px solid #a5f3fc; }
+.chip.pts{ background:var(--em-deep); color:#fff; }
+.tag-easy{ background:var(--tag-easy); color:var(--tag-easy-i); border:1px solid var(--tag-easy-i); }
+.tag-med { background:var(--tag-med);  color:var(--tag-med-i);  border:1px solid var(--tag-med-i);  }
+.tag-hard{ background:var(--tag-hard); color:var(--tag-hard-i); border:1px solid var(--tag-hard-i); }
+
+.card-body{ padding:12px 16px 14px; }
+.card-body p{ margin:6px 0; }
+.note{ color:var(--warn); font-style:italic; font-weight:600; font-size:10pt; }
+.hint{ color:var(--ink-soft); font-style:italic; font-size:10pt; }
+.mini{ font-size:9pt; color:#6b7280; }
+
+/* ---- code blocks ---- */
+pre.code{
+  background:var(--code-bg); border:1px solid var(--code-rule);
+  border-left:4px solid var(--em); border-radius:6px;
+  padding:10px 12px; margin:10px 0; overflow:auto;
+  font-family:'Consolas','DejaVu Sans Mono',monospace; font-size:10pt; line-height:1.5;
+  white-space:pre;
+}
+pre.code.sm{ font-size:9.3pt; line-height:1.42; }
+code.inl{ background:var(--code-bg); border:1px solid var(--code-rule); border-radius:4px;
+  padding:1px 5px; font-family:'Consolas',monospace; font-size:9.8pt; }
+.dots{ letter-spacing:1px; color:#6b7280; }
+.two-col{ display:flex; gap:12px; }
+.two-col > *{ flex:1 1 0; min-width:0; }
+.two-col > .wide{ flex-grow:1.4; }
+.two-col > .narrow{ flex-grow:.65; }
+.two-col > .snug{ flex:0 0 auto; }
+.opts p{ margin:3px 0; }
+.tight .card-body{ font-size:10.5pt; line-height:1.42; }
+.tight .card-body p{ margin:4px 0; }
+.tight .mcq{ margin-bottom:5px; }
+.tight pre.code{ margin:6px 0; }
+.mcq{ display:grid; grid-template-columns:1fr 1fr; gap:2px 18px; margin:2px 0 8px 14px; }
+.mcq.c4{ grid-template-columns:repeat(4, auto); justify-content:start; column-gap:34px; }
+.mcq.c5{ grid-template-columns:repeat(5, auto); justify-content:start; column-gap:26px; }
+
+/* ---- UML class box ---- */
+.uml{ display:inline-block; border:1.6px solid var(--em-deep); margin:10px 0;
+  font-family:'Consolas','DejaVu Sans Mono',monospace; font-size:10pt; background:#fff; min-width:300px; }
+.uml div{ padding:5px 12px; }
+.uml .uml-name{ text-align:center; font-weight:800; background:var(--em-tint); color:var(--em-deep);
+  border-bottom:1.6px solid var(--em-deep); font-family:'Segoe UI',sans-serif; font-size:11pt; }
+.uml .uml-sec{ border-bottom:1.6px solid var(--em-deep); }
+.uml .uml-sec:last-child{ border-bottom:0; }
+.uml .uml-sec span{ display:block; line-height:1.55; }
+.uml u{ text-decoration-thickness:1.4px; }
+.uml-wrap{ display:flex; gap:16px; align-items:flex-start; }
+.need{ border-collapse:collapse; font-size:9.5pt; margin-top:10px; }
+.need td, .need th{ border:1px solid var(--rule); padding:4px 8px; font-family:'Consolas',monospace; }
+.need th{ background:var(--em-tint); color:var(--em-deep); font-family:'Segoe UI',sans-serif; }
+
+/* ---- answer space ---- */
+.answer-space{ margin-top:10px; }
+.answer-space .lbl{ font-style:italic; color:var(--ink-soft); font-size:10pt; }
+.writeline{ border-bottom:1px solid #9ca3af; height:1.55em; margin-top:.45em; }
+.codebox{ border:1px dashed #9ca3af; border-radius:6px; min-height:120px; margin-top:8px;
+  background:repeating-linear-gradient(#fff,#fff 1.7em,#f6ecd2 1.7em,#f6ecd2 calc(1.7em + 1px)); }
+.drawbox{ border:1px dashed #9ca3af; border-radius:6px; margin-top:8px; position:relative;
+  display:flex; }
+.drawbox .half{ flex:1; padding:6px 10px; font-size:9pt; color:#9ca3af; font-weight:700; letter-spacing:1px; }
+.drawbox .half + .half{ border-left:1px dashed #cbd5e1; }
+
+/* ---- fill-in tables ---- */
+.fill{ width:100%; border-collapse:collapse; margin-top:8px; font-size:10.5pt; }
+.fill td, .fill th{ border:1px solid var(--rule); padding:7px 8px; }
+.fill th{ background:var(--em-tint); color:var(--em-deep); font-size:10pt; }
+.fill td.ans{ background:#fff; width:42%; height:2.6em; }
+.fill td.mono{ font-family:'Consolas',monospace; }
+
+/* ---- model answer block (hidden until toggled) ---- */
+.answer-key{ display:none; }
+body.show-answers .answer-key{ display:block; }
+body.show-answers .card{ break-inside:auto; page-break-inside:auto; }
+body.show-answers .answer-key{ break-inside:avoid; page-break-inside:avoid; }
+.answer-key{
+  margin-top:12px; border:1px solid #bbf7d0; border-left:5px solid #16a34a;
+  background:#f0fdf4; border-radius:8px; padding:10px 14px;
+}
+.answer-key .akh{ font-weight:800; color:#15803d; font-size:10.5pt; margin-bottom:4px; }
+.answer-key pre.code{ border-left-color:#16a34a; background:#f6fdf9; border-color:#bbf7d0; }
+.answer-key .val{ color:#166534; font-weight:800; }
+.answer-key .rub{ color:#0e7490; font-size:9.5pt; font-style:italic; }
+.answer-key table.fill th{ background:#dcfce7; color:#15803d; }
+
+/* ---- floating toolbar (screen only) ---- */
+.toolbar{
+  position:fixed; top:14px; right:14px; z-index:50; display:flex; gap:8px;
+  background:#fff; border:1px solid var(--rule); border-radius:10px; padding:8px 10px;
+  box-shadow:0 4px 14px rgba(31,41,55,.18);
+}
+.toolbar button, .toolbar a{
+  font:inherit; font-size:10pt; font-weight:700; cursor:pointer; text-decoration:none;
+  border:1px solid var(--em); border-radius:7px; padding:7px 12px;
+  background:var(--em); color:#fff;
+}
+.toolbar .ghost{ background:#fff; color:var(--em-dark); }
+.toolbar button:active{ transform:translateY(1px); }
+
+.footline{ text-align:center; margin-top:6px; color:var(--ink-soft); font-size:9.5pt; }
+.endmark{ text-align:center; font-weight:800; color:var(--em-deep); margin:18px 0 4px; }
+
+/* ================= PRINT ================= */
+@media print{
+  body{ background:#fff; padding:0; }
+  .toolbar{ display:none !important; }
+  .sheet{ box-shadow:none; margin:0; width:auto; min-height:auto; padding:0; }
+  .sheet + .sheet{ page-break-before:always; }
+  .card{ box-shadow:none; }
+}
+
+/* ---- additions for this exam ---- */
+.fill td.mono{ font-size:9pt; line-height:1.45; }
+.instr .chip{ font-size:8pt; padding:1px 7px; }
+.two-col pre.code.sm{ font-size:8.5pt; line-height:1.4; }
+pre.code{ white-space:pre-wrap; overflow:visible; }   /* never clip code on paper */
+@media print{ html{ background:#fff; } }
+.card.flow{ break-inside:auto; page-break-inside:auto; }
+.uml-wrap{ gap:8px; }
+.uml-wrap .uml{ min-width:0; flex:1 1 0; font-size:9pt; }
+.uml-wrap .uml div{ padding:4px 8px; }
+.instr pre.code{ margin:6px 0 2px; font-size:8.6pt; line-height:1.35; padding:6px 10px; }
+.cover .id-grid{ margin:14px 0 2px; }
+.cover .id-grid td{ padding:7px 6px; }
+.cover .marks-tbl{ margin-top:12px; }
+/* let every card flow across a page break, but keep code blocks and table rows whole */
+.card, body.show-answers .card{ break-inside:auto; page-break-inside:auto; }
+pre.code, .fill tr, .mcq, .uml-wrap, .card-head, .answer-space, .drawbox, .codebox, svg{ break-inside:avoid; page-break-inside:avoid; }
+.card-head{ break-after:avoid; page-break-after:avoid; }
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <a href="05-type-erasure.html" class="ghost">&#8592; Type Erasure</a>
+  <button id="toggleAns" class="ghost">&#128065; Show model answers</button>
+  <button onclick="window.print()">&#128424; Print / Save PDF</button>
+</div>
+
+<!-- =====================================================================
+     COVER PAGE
+     ===================================================================== -->
+
+<section class="sheet cover">
+  <div class="cover-rule"></div>
+  <div class="cover-top">
+    <div class="cover-title">Programming II</div>
+    <div class="cover-sub">Module 11: Generics &mdash; Focused Practice Exam</div>
+    <div class="cover-tag">Generic Classes &middot; Generic Methods &middot; Generic Interfaces &middot; Raw Types &middot; Type Erasure</div>
+  </div>
+  <div class="cover-rule"></div>
+
+  <table class="id-grid">
+    <tr><td class="lbl">Student Name:</td><td class="line"></td></tr>
+    <tr><td class="lbl">Student ID:</td><td class="line"></td></tr>
+    <tr>
+      <td class="lbl">Section:</td><td class="line" style="width:35%"></td>
+      <td class="lbl" style="text-align:right;padding-right:14px">Instructor:</td><td class="line"></td>
+    </tr>
+  </table>
+
+  <div class="instr">
+    <h3>Instructions</h3>
+    <ul>
+      <li>This booklet contains <b>11 questions</b> on Generics only. <b>Total: 80 marks</b> &middot; Suggested time: <b>90 minutes</b>.</li>
+      <li>Answer <b>all</b> questions in the spaces provided. <b>Place your answers in the boxes provided.</b></li>
+      <li><b>Assume all necessary import statements are present</b> (e.g. <code class="inl">java.util.ArrayList</code>, <code class="inl">java.util.Date</code>); each class is in its own <code class="inl">.java</code> file.</li>
+      <li>Write the <b>exact output, one line per line</b>. If code does not compile, write <b>&ldquo;Compilation error&rdquo;</b>;
+          if it stops while running, write the <b>exception</b> name. Give the reason in one short sentence.</li>
+      <li>Several questions use the class <code class="inl">Glass&lt;T&gt;</code> from Lesson 2:
+<pre class="code sm">public class Glass&lt;T&gt; {
+    private T liquid;
+    public Glass() { }
+    public Glass(T liquid) { this.liquid = liquid; }
+    public T getLiquid() { return liquid; }
+    public void setLiquid(T liquid) { this.liquid = liquid; }
+    @Override public String toString() { return "Glass contains: " + liquid; }
+}</pre></li>
+      <li>Questions are labelled <span class="chip tag-easy">EASY</span> <span class="chip tag-med">MEDIUM</span> <span class="chip tag-hard">HARD</span>.
+          Write clear Java. Partial (per-line) credit is given.
+          <span class="note">Data fields must be private wherever a question asks you to write a class.</span></li>
+    </ul>
+  </div>
+
+  <table class="marks-tbl">
+    <thead>
+      <tr><th>Question</th><th>Q1</th><th>Q2</th><th>Q3</th><th>Q4</th><th>Q5</th><th>Q6</th><th>Q7</th><th>Q8</th><th>Q9</th><th>Q10</th><th>Q11</th><th class="tot">Total</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><b>Level</b></td><td>E</td><td>E</td><td>M</td><td>M</td><td>M</td><td>M</td><td>H</td><td>M</td><td>M</td><td>H</td><td>H</td><td class="tot"></td></tr>
+      <tr><td><b>Max Mark</b></td><td>8</td><td>6</td><td>8</td><td>6</td><td>6</td><td>8</td><td>8</td><td>6</td><td>8</td><td>8</td><td>8</td><td class="tot">80</td></tr>
+      <tr><td><b>Obtained</b></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class="tot"></td></tr>
+    </tbody>
+  </table>
+
+  <p class="footline">Topics covered: <code class="inl">Object</code> containers, casting and <code class="inl">ClassCastException</code> &middot; generic classes <code class="inl">&lt;T&gt;</code>, <code class="inl">&lt;K, V&gt;</code> and the diamond &middot; wrapper types &middot;
+     generic methods &middot; generic interfaces and <code class="inl">Comparable&lt;T&gt;</code> &middot; raw types &middot; type erasure.</p>
+</section>
+
+<!-- ================= Q1 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 11 &mdash; Generics &mdash; Practice Exam &middot; Question 1 of 11</span></div>
+
+  <div class="card tight">
+    <div class="card-head">
+      <span class="qno">Q1</span>
+      <span class="qtitle">Generics Concepts (Multiple Choice)</span>
+      <span class="chips">
+        <span class="chip tag-easy">EASY</span>
+        <span class="chip clo">CLO 12</span><span class="chip so">SO-a</span>
+        <span class="chip pts">8 marks &middot; 1 each</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p>Circle the <b>single best</b> answer for each item. <code class="inl">Glass&lt;T&gt;</code> is the class shown on the cover page.</p>
+
+      <p><b>1.</b> What happens when this code is compiled? &nbsp;<code class="inl">ArrayList list = new ArrayList(); list.add("Java");</code></p>
+      <div class="mcq">
+        <span>(a) Compilation error</span>
+        <span>(b) It compiles, with an <b>unchecked warning</b></span>
+        <span>(c) Compiles, then <code class="inl">ClassCastException</code></span>
+        <span>(d) It compiles with no message at all</span>
+      </div>
+
+      <p><b>2.</b> What is printed by: <code class="inl">Glass&lt;String&gt; g = new Glass&lt;&gt;("tea"); System.out.println(g.getLiquid().length());</code></p>
+      <div class="mcq c4"><span>(a) <code class="inl">3</code></span><span>(b) <code class="inl">tea</code></span><span>(c) Compilation error: a cast is needed</span><span>(d) <code class="inl">ClassCastException</code></span></div>
+
+      <p><b>3.</b> Which declaration does <b>not</b> compile?</p>
+      <div class="mcq">
+        <span>(a) <code class="inl">ArrayList&lt;Integer&gt; a = new ArrayList&lt;&gt;();</code></span>
+        <span>(b) <code class="inl">ArrayList&lt;int&gt; a = new ArrayList&lt;&gt;();</code></span>
+        <span>(c) <code class="inl">Glass&lt;Double&gt; g = new Glass&lt;&gt;(2.5);</code></span>
+        <span>(d) <code class="inl">Glass&lt;Character&gt; g = new Glass&lt;&gt;('x');</code></span>
+      </div>
+
+      <p><b>4.</b> Which is the correct header of a generic method that returns the first element of any array?</p>
+      <div class="mcq">
+        <span>(a) <code class="inl">public static T &lt;T&gt; first(T[] a)</code></span>
+        <span>(b) <code class="inl">public static &lt;T&gt; T first(T[] a)</code></span>
+        <span>(c) <code class="inl">public &lt;T&gt; static T first(T[] a)</code></span>
+        <span>(d) <code class="inl">public static T first(&lt;T&gt;[] a)</code></span>
+      </div>
+
+      <p><b>5.</b> What is printed by this code?</p>
+<div class="two-col">
+<pre class="code sm wide">ArrayList&lt;Double&gt; list = new ArrayList&lt;&gt;();
+list.add(5.5);
+list.add(3.0);
+double d = list.get(0) + list.get(1);
+System.out.println(d);</pre>
+      <div class="opts" style="align-self:center"><p>(a) <code class="inl">8.5</code></p><p>(b) <code class="inl">5.53.0</code></p><p>(c) Compilation error: cannot add a <code class="inl">double</code></p><p>(d) <code class="inl">ClassCastException</code></p></div>
+</div>
+
+      <p><b>6.</b> After type erasure, the type parameter <code class="inl">T</code> of <code class="inl">Glass&lt;T&gt;</code> becomes:</p>
+      <div class="mcq c4"><span>(a) <code class="inl">String</code></span><span>(b) the type used when the object was created</span><span>(c) <code class="inl">Object</code></span><span>(d) it stays <code class="inl">T</code></span></div>
+
+      <p><b>7.</b> A program uses <code class="inl">Glass&lt;Juice&gt;</code>, <code class="inl">Glass&lt;Water&gt;</code> and <code class="inl">Glass&lt;Honey&gt;</code>. How many <code class="inl">.class</code> files are made for <code class="inl">Glass</code>?</p>
+      <div class="mcq c4"><span>(a) 1</span><span>(b) 3</span><span>(c) 4</span><span>(d) 0</span></div>
+
+      <p><b>8.</b> What happens with: <code class="inl">Comparable&lt;String&gt; c = "Ali"; int r = c.compareTo(new Date());</code></p>
+      <div class="mcq">
+        <span>(a) It compiles and <code class="inl">r</code> is negative</span>
+        <span>(b) Compiles, then <code class="inl">ClassCastException</code></span>
+        <span>(c) Compilation error</span>
+        <span>(d) It compiles with a warning only</span>
+      </div>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q1</div>
+        <p>1:&nbsp;<span class="val">(b)</span> &nbsp; 2:&nbsp;<span class="val">(a)</span> &nbsp; 3:&nbsp;<span class="val">(b)</span> &nbsp; 4:&nbsp;<span class="val">(b)</span> &nbsp;
+           5:&nbsp;<span class="val">(a)</span> &nbsp; 6:&nbsp;<span class="val">(c)</span> &nbsp; 7:&nbsp;<span class="val">(a)</span> &nbsp; 8:&nbsp;<span class="val">(c)</span></p>
+        <p class="rub">1 mark each. (1) A raw <code class="inl">ArrayList</code> compiles, but javac warns: <i>unchecked call to add(E) as a member of the raw type ArrayList</i>.
+           (2) <code class="inl">getLiquid()</code> already returns a <code class="inl">String</code>, so no cast is needed. (3) A type argument must be a reference type (javac: <i>unexpected type, required: reference, found: int</i>).
+           (4) <code class="inl">&lt;T&gt;</code> goes just <b>before the return type</b>. (5) Autoboxing stores <code class="inl">Double</code> objects; unboxing adds them as numbers.
+           (7) Only one <code class="inl">Glass.class</code> &mdash; the type arguments are erased. (8) <code class="inl">Comparable&lt;String&gt;</code> accepts only a <code class="inl">String</code>, so the mistake is caught at compile time.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Q2 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 11 &mdash; Generics &mdash; Practice Exam &middot; Question 2 of 11</span></div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="qno">Q2</span>
+      <span class="qtitle">Short Answers &mdash; Why Generics?</span>
+      <span class="chips">
+        <span class="chip tag-easy">EASY</span>
+        <span class="chip clo">CLO 12</span><span class="chip so">SO-a</span>
+        <span class="chip pts">6 marks &middot; 1 each</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p><b>(a)</b> State the <b>key benefit</b> of generics in one sentence.</p>
+      <div class="answer-space"><div class="writeline"></div><div class="writeline"></div></div>
+
+      <p><b>(b)</b> A class stores its data in a field of type <code class="inl">Object</code>. Give <b>two</b> problems the user of this class faces when reading the data back.</p>
+      <div class="answer-space"><div class="writeline"></div><div class="writeline"></div></div>
+
+      <p><b>(c)</b> In <code class="inl">public class Glass&lt;T&gt;</code>, what is <code class="inl">T</code> called? By convention, what do the letters <code class="inl">E</code>, <code class="inl">K</code> and <code class="inl">V</code> stand for?</p>
+      <div class="answer-space"><div class="writeline"></div><div class="writeline"></div></div>
+
+      <p><b>(d)</b> Why can we not write <code class="inl">Glass&lt;int&gt;</code>? What do we write instead?</p>
+      <div class="answer-space"><div class="writeline"></div></div>
+
+      <p><b>(e)</b> In <code class="inl">Glass&lt;Juice&gt; g = new Glass&lt;&gt;();</code> what is <code class="inl">&lt;&gt;</code> called, and how does the compiler know the type?</p>
+      <div class="answer-space"><div class="writeline"></div></div>
+
+      <p><b>(f)</b> Name the <b>three</b> things in Java that can be made generic. Are generics one of the four OOP pillars?</p>
+      <div class="answer-space"><div class="writeline"></div></div>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q2</div>
+        <p>(a) Generics let the compiler detect <span class="val">type errors at compile time instead of at run time</span> (and remove the need for casting).</p>
+        <p>(b) Every read needs a <span class="val">cast</span> (e.g. <code class="inl">(Juice) g.getLiquid()</code>), and a <span class="val">wrong cast compiles</span> but crashes at run time with <code class="inl">ClassCastException</code>.</p>
+        <p>(c) <code class="inl">T</code> is a <span class="val">type parameter</span> (a placeholder for a type). <code class="inl">E</code> = Element, <code class="inl">K</code> = Key, <code class="inl">V</code> = Value.</p>
+        <p>(d) A type argument must be a <span class="val">reference type</span>, not a primitive. Use the wrapper class: <code class="inl">Glass&lt;Integer&gt;</code> (autoboxing converts <code class="inl">int</code> values for us).</p>
+        <p>(e) The <span class="val">diamond operator</span>; the compiler takes the type from the declared type on the left (<code class="inl">Glass&lt;Juice&gt;</code>).</p>
+        <p>(f) <span class="val">Classes, methods and interfaces.</span> <span class="val">No</span> &mdash; generics are a language feature (since JDK 1.5), not an OOP pillar.</p>
+        <p class="rub">1 mark each; (b), (c) and (f) need both parts for the full mark (&frac12; each).</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Q3 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 11 &mdash; Generics &mdash; Practice Exam &middot; Question 3 of 11</span></div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="qno">Q3</span>
+      <span class="qtitle">Before and After Generics &mdash; The Gym Locker</span>
+      <span class="chips">
+        <span class="chip tag-med">MEDIUM</span>
+        <span class="chip clo">CLO 12</span><span class="chip so">SO-c</span>
+        <span class="chip pts">8 marks</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p>A gym system stores one item in each locker. The first version uses <code class="inl">Object</code>:</p>
+<div class="two-col">
+<pre class="code sm">public class Locker {
+    private Object item;
+
+    public Locker(Object item) {
+        this.item = item;
+    }
+    public Object getItem() {
+        return item;
+    }
+    public void setItem(Object item) {
+        this.item = item;
+    }
+}</pre>
+<pre class="code sm">// in main
+Locker a = new Locker("Towel");
+String s = (String) a.getItem();
+Locker b = new Locker(42);
+Integer n = (Integer) b.getItem();
+System.out.println(s + " " + n);
+a.setItem(7);
+String t = (String) a.getItem(); // X
+System.out.println(t);</pre>
+</div>
+      <p><b>(a)</b> Does this program compile? What happens when it runs, especially at <b>line X</b>? <span class="mini">(2 marks)</span></p>
+      <div class="answer-space"><div class="writeline"></div><div class="writeline"></div></div>
+
+      <p><b>(b)</b> Rewrite the class as a generic class <code class="inl">Locker&lt;T&gt;</code>. <span class="mini">(3 marks)</span></p>
+      <div class="answer-space"><div class="codebox" style="min-height:52mm"></div></div>
+
+      <p><b>(c)</b> Rewrite the <b>first four</b> lines of <code class="inl">main</code> to use <code class="inl">Locker&lt;T&gt;</code> with <b>no casts</b>. <span class="mini">(2 marks)</span></p>
+      <div class="answer-space"><div class="codebox" style="min-height:26mm"></div></div>
+
+      <p><b>(d)</b> With your generic version, what happens now to the line <code class="inl">a.setItem(7);</code>? <span class="mini">(1 mark)</span></p>
+      <div class="answer-space"><div class="writeline"></div></div>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q3</div>
+        <p>(a) <span class="val">It compiles</span> (the compiler trusts every cast). It prints <code class="inl">Towel 42</code>, then at line X it stops with
+           <span class="val"><code class="inl">ClassCastException</code></span>: the locker now holds an <code class="inl">Integer</code>, which cannot be cast to <code class="inl">String</code>. The last line is never reached.</p>
+<pre class="code sm">// (b)
+public class Locker&lt;T&gt; {
+    private T item;
+
+    public Locker(T item) {
+        this.item = item;
+    }
+    public T getItem() {
+        return item;
+    }
+    public void setItem(T item) {
+        this.item = item;
+    }
+}</pre>
+<pre class="code sm">// (c)
+Locker&lt;String&gt; a = new Locker&lt;&gt;("Towel");
+String s = a.getItem();
+Locker&lt;Integer&gt; b = new Locker&lt;&gt;(42);
+Integer n = b.getItem();</pre>
+        <p>(d) <span class="val">Compilation error</span>: <i>incompatible types: int cannot be converted to String</i>. The mistake is now caught <b>before</b> the program runs.</p>
+        <p class="rub">(a) compiles (1) + ClassCastException at line X (1). (b) <code class="inl">&lt;T&gt;</code> after the class name (1), field and parameters of type <code class="inl">T</code> (1), getter returns <code class="inl">T</code> (1).
+           (c) &frac12; per line; a cast or <code class="inl">Locker&lt;int&gt;</code> loses that line. (d) 1. All code was compiled and run with javac/java 21.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Q4 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 11 &mdash; Generics &mdash; Practice Exam &middot; Question 4 of 11</span></div>
+
+  <div class="card flow">
+    <div class="card-head">
+      <span class="qno">Q4</span>
+      <span class="qtitle">Output Tracing &mdash; A Generic Gift Box</span>
+      <span class="chips">
+        <span class="chip tag-med">MEDIUM</span>
+        <span class="chip clo">CLO 12</span><span class="chip so">SO-a</span>
+        <span class="chip pts">6 marks</span>
+      </span>
+    </div>
+    <div class="card-body">
+<pre class="code sm">public class Box&lt;T&gt; {
+    private T content;
+    private int opens = 0;
+
+    public Box(T content) {
+        this.content = content;
+    }
+    public T open() {
+        opens++;
+        return content;
+    }
+    public void replace(T newContent) {
+        content = newContent;
+        opens = 0;
+    }
+    @Override
+    public String toString() {
+        return "Box[" + content
+             + ", opened " + opens + "]";
+    }
+}</pre>
+<pre class="code sm">public class Main {
+    public static void main(String[] args) {
+        Box&lt;String&gt; gift = new Box&lt;&gt;("Watch");
+        Box&lt;Integer&gt; coins = new Box&lt;&gt;(50);
+
+        System.out.println(gift.open().toUpperCase());
+        System.out.println(gift.open().length() + coins.open());
+        coins.replace(coins.open() + 25);
+        System.out.println(coins.open() * 2);
+        System.out.println(gift);
+        System.out.println(coins);
+
+        Box&lt;Box&lt;String&gt;&gt; parcel = new Box&lt;&gt;(gift);
+        System.out.println(parcel.open().open().charAt(0));
+        System.out.println(parcel + " | " + gift);
+    }
+}</pre>
+      <p>Write the exact output, one line per line.</p>
+<div class="two-col">
+      <div class="answer-space"><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div></div>
+      <div class="answer-space"><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div></div>
+</div>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q4</div>
+<pre class="code sm">WATCH
+55
+150
+Box[Watch, opened 2]
+Box[75, opened 1]
+W
+Box[Box[Watch, opened 3], opened 1] | Box[Watch, opened 3]</pre>
+        <p class="rub">Line 2: <code class="inl">"Watch".length()</code> is 5, plus <code class="inl">coins.open()</code> = 50 &rarr; 55 (both are numbers, so it is addition).
+           <code class="inl">replace</code> receives 50 + 25 = 75 and resets <code class="inl">opens</code> to 0; the next <code class="inl">open()</code> makes it 1.
+           <code class="inl">parcel.open()</code> returns the same <code class="inl">gift</code> object, so <code class="inl">gift</code> is now opened 3 times.
+           Marks: lines 1 and 6 &frac12; each, lines 2, 3, 4, 5 and 7 1 each. Output copied from a real run.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Q5 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 11 &mdash; Generics &mdash; Practice Exam &middot; Question 5 of 11</span></div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="qno">Q5</span>
+      <span class="qtitle">Find and Fix the Compilation Errors</span>
+      <span class="chips">
+        <span class="chip tag-med">MEDIUM</span>
+        <span class="chip clo">CLO 12</span><span class="chip so">SO-c</span>
+        <span class="chip pts">6 marks &middot; 2 each</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p>The class <code class="inl">Glass&lt;T&gt;</code> (cover page) is correct. The code below contains <b>exactly three (3) compilation errors</b>, each on a different line.
+         For each, give the line number, the reason, and the corrected line. Keep what each line is trying to do.</p>
+<pre class="code sm">public class Shop {
+    public static T lastOf(T[] list) {                   // 2
+        return list[list.length - 1];                    // 3
+    }                                                    // 4
+                                                         // 5
+    public static void main(String[] args) {             // 6
+        Glass&lt;String&gt; mug = new Glass&lt;&gt;("Coffee");       // 7
+        String drink = mug.getLiquid();                  // 8
+        Glass&lt;int&gt; cup = new Glass&lt;&gt;(250);               // 9
+        mug.setLiquid(500);                              // 10
+        String[] menu = {"Tea", "Karak", "Latte"};       // 11
+        String last = lastOf(menu);                      // 12
+        Glass&lt;Double&gt; jug = new Glass&lt;&gt;(1.5);            // 13
+        double litres = jug.getLiquid() * 2;             // 14
+        System.out.println(drink + " " + last + " " + litres);
+    }
+}</pre>
+      <table class="fill">
+        <thead><tr><th style="width:9%">Line</th><th style="width:38%">Reason</th><th>Correction</th></tr></thead>
+        <tbody>
+          <tr><td style="height:3.2em"></td><td></td><td></td></tr>
+          <tr><td style="height:3.2em"></td><td></td><td></td></tr>
+          <tr><td style="height:3.2em"></td><td></td><td></td></tr>
+        </tbody>
+      </table>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q5</div>
+        <table class="fill">
+          <thead><tr><th>Line</th><th>Reason</th><th>Correction</th></tr></thead>
+          <tbody>
+            <tr><td>2</td><td><code class="inl">T</code> is never declared, so the compiler reports <i>cannot find symbol: class T</i>. A generic method must declare <code class="inl">&lt;T&gt;</code> before its return type.</td><td><code class="inl">public static &lt;T&gt; T lastOf(T[] list) {</code></td></tr>
+            <tr><td>9</td><td>A type argument cannot be a primitive (<i>unexpected type: required reference, found int</i>).</td><td><code class="inl">Glass&lt;Integer&gt; cup = new Glass&lt;&gt;(250);</code></td></tr>
+            <tr><td>10</td><td><code class="inl">mug</code> is a <code class="inl">Glass&lt;String&gt;</code>; <i>int cannot be converted to String</i>.</td><td><code class="inl">mug.setLiquid("500");</code></td></tr>
+          </tbody>
+        </table>
+        <p class="rub">1 mark for the line and reason + 1 mark for a fix that compiles. Lines 13&ndash;14 are correct (autoboxing/unboxing of <code class="inl">Double</code>).
+           Checked with javac 21: exactly these three lines fail (javac prints line 2 twice, once for the return type and once for the parameter). After the fixes the program prints <code class="inl">Coffee Latte 3.0</code>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Q6 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 11 &mdash; Generics &mdash; Practice Exam &middot; Question 6 of 11</span></div>
+
+  <div class="card flow">
+    <div class="card-head">
+      <span class="qno">Q6</span>
+      <span class="qtitle">Output Tracing &mdash; Generic Methods</span>
+      <span class="chips">
+        <span class="chip tag-med">MEDIUM</span>
+        <span class="chip clo">CLO 12</span><span class="chip so">SO-a</span>
+        <span class="chip pts">8 marks</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p>Remember: <code class="inl">getClass().getName()</code> returns the full name of the object&rsquo;s class, for example <code class="inl">java.lang.String</code>.</p>
+<pre class="code sm">public class Report {
+    public static &lt;T&gt; void show(T item) {
+        System.out.println(item.getClass().getName() + " = " + item);
+    }
+    public static &lt;T&gt; void printArray(T[] list) {
+        for (T e : list) System.out.print(e + " ");
+        System.out.println();
+    }
+    public static &lt;T&gt; T getFirst(T[] list) {
+        return list[0];
+    }
+    public static &lt;T&gt; T pick(T a, T b, boolean first) {
+        if (first) return a;
+        return b;
+    }
+    public static void main(String[] args) {
+        show(11);
+        show("Jeddah");
+        show(2.0);
+        show('K');
+        Integer[] marks = {90, 75, 88};
+        String[] cities = {"Makkah", "Riyadh", "Abha"};
+        printArray(marks);
+        printArray(cities);
+        Integer top = getFirst(marks);
+        System.out.println(top + 10);
+        System.out.println(getFirst(cities) + 10);
+        System.out.println(pick(marks[1], marks[2], false) + pick(1, 2, true));
+        System.out.println(pick("A", "B", true) + pick(3, 4, false));
+    }
+}</pre>
+      <p>Write the exact output, one line per line.</p>
+<div class="two-col">
+      <div class="answer-space"><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div></div>
+      <div class="answer-space"><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div></div>
+</div>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q6</div>
+<pre class="code sm">java.lang.Integer = 11
+java.lang.String = Jeddah
+java.lang.Double = 2.0
+java.lang.Character = K
+90 75 88
+Makkah Riyadh Abha
+100
+Makkah10
+89
+A4</pre>
+        <p class="rub">Primitive arguments are <b>autoboxed</b>, so <code class="inl">T</code> becomes <code class="inl">Integer</code>, <code class="inl">Double</code>, <code class="inl">Character</code>.
+           <code class="inl">getFirst(marks)</code> returns an <code class="inl">Integer</code> &rarr; 90 + 10 = 100; <code class="inl">getFirst(cities)</code> returns a <code class="inl">String</code> &rarr; joining gives <code class="inl">Makkah10</code>.
+           <code class="inl">pick(75, 88, false)</code> = 88 plus <code class="inl">pick(1, 2, true)</code> = 1 &rarr; 89; <code class="inl">"A" + 4</code> &rarr; <code class="inl">A4</code>.
+           Marks: four <code class="inl">show</code> lines &frac12; each (2), two array lines &frac12; each (1), <code class="inl">100</code> (1), <code class="inl">Makkah10</code> (1), <code class="inl">89</code> (1&frac12;), <code class="inl">A4</code> (1&frac12;).
+           (Each array line ends with a space.) Output copied from a real run.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Q7 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 11 &mdash; Generics &mdash; Practice Exam &middot; Question 7 of 11</span></div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="qno">Q7</span>
+      <span class="qtitle">Type Erasure and Raw Types</span>
+      <span class="chips">
+        <span class="chip tag-hard">HARD</span>
+        <span class="chip clo">CLO 12</span><span class="chip so">SO-a</span>
+        <span class="chip pts">8 marks &middot; 4 each</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p><b>(a)</b> This code uses <code class="inl">Glass&lt;T&gt;</code> from the cover page. It <b>compiles with two warnings</b> (raw type, unchecked call).
+         Write the exact output. If the program stops with an exception, write the exception name at that point and stop.</p>
+<div class="two-col">
+<pre class="code sm wide">Glass&lt;String&gt; a = new Glass&lt;&gt;("Tea");
+Glass&lt;Integer&gt; b = new Glass&lt;&gt;(7);
+System.out.println(a.getClass() == b.getClass());
+System.out.println(a.getClass().getName());
+System.out.println(b.getLiquid() + 3);
+
+Glass raw = b;          // raw type: no &lt;...&gt;
+raw.setLiquid("Seven");
+System.out.println(raw.getLiquid());
+System.out.println(b);
+Integer x = b.getLiquid();
+System.out.println("x = " + x);</pre>
+      <div class="narrow"><div class="answer-space"><span class="lbl">Output:</span><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div></div></div>
+</div>
+
+      <p style="margin-top:12px"><b>(b)</b> Show what the compiler turns this code into after <b>type erasure</b>: rewrite the class <b>and</b> the four usage lines as the bytecode sees them.</p>
+<div class="two-col">
+<pre class="code sm">public class Ticket&lt;T&gt; {
+    private T seat;
+    public Ticket(T seat) {
+        this.seat = seat;
+    }
+    public T getSeat() {
+        return seat;
+    }
+    public void setSeat(T seat) {
+        this.seat = seat;
+    }
+}</pre>
+<pre class="code sm">// usage
+Ticket&lt;String&gt; t1 = new Ticket&lt;&gt;("A12");
+String s = t1.getSeat();
+Ticket&lt;Integer&gt; t2 = new Ticket&lt;&gt;(37);
+int n = t2.getSeat();</pre>
+</div>
+<div class="two-col">
+      <div class="answer-space"><span class="lbl">Class after erasure:</span><div class="codebox" style="min-height:48mm"></div></div>
+      <div class="answer-space"><span class="lbl">Usage after erasure:</span><div class="codebox" style="min-height:48mm"></div></div>
+</div>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q7</div>
+<p>(a)</p>
+<pre class="code sm">true
+Glass
+10
+Seven
+Glass contains: Seven
+ClassCastException</pre>
+<div class="two-col">
+<pre class="code sm">// (b) class after erasure
+public class Ticket {
+    private Object seat;
+    public Ticket(Object seat) {
+        this.seat = seat;
+    }
+    public Object getSeat() {
+        return seat;
+    }
+    public void setSeat(Object seat) {
+        this.seat = seat;
+    }
+}</pre>
+<pre class="code sm">// (b) usage after erasure
+Ticket t1 = new Ticket("A12");
+String s = (String) t1.getSeat();
+Ticket t2 = new Ticket(37);
+int n = (Integer) t2.getSeat();</pre>
+</div>
+        <p class="rub">(a) Both objects share <b>one</b> run-time class, <code class="inl">Glass</code> (no <code class="inl">&lt;String&gt;</code> or <code class="inl">&lt;Integer&gt;</code> at run time).
+           The raw reference skips the compiler&rsquo;s check, so a <code class="inl">String</code> enters a <code class="inl">Glass&lt;Integer&gt;</code>. The cast that the compiler inserted in
+           <code class="inl">Integer x = b.getLiquid();</code> then fails: <i>String cannot be cast to Integer</i>; <code class="inl">x = ...</code> is never printed.
+           Marks: lines 1&ndash;4 &frac12; each, line 5 (1), <code class="inl">ClassCastException</code> with nothing after it (1).
+           (b) Class: every <code class="inl">T</code> becomes <code class="inl">Object</code>, <code class="inl">&lt;T&gt;</code> removed (2). Usage: no <code class="inl">&lt;...&gt;</code> (1), casts <code class="inl">(String)</code> and <code class="inl">(Integer)</code> inserted (1).
+           Both versions were compiled and give the same output; <code class="inl">javap -c</code> shows the inserted <code class="inl">checkcast</code> instructions.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Q8 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 11 &mdash; Generics &mdash; Practice Exam &middot; Question 8 of 11</span></div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="qno">Q8</span>
+      <span class="qtitle">Write Generic Methods &mdash; Voting Tools</span>
+      <span class="chips">
+        <span class="chip tag-med">MEDIUM</span>
+        <span class="chip clo">CLO 12</span><span class="chip so">SO-c</span>
+        <span class="chip pts">6 marks &middot; 2 each</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p>Write the following <b>static generic methods</b> of class <code class="inl">Tools</code>. Each one must work for an array of <b>any</b> type. This <code class="inl">main</code> shows how they are used:</p>
+<div class="two-col">
+<pre class="code sm wide">String[] votes = {"Red", "Blue", "Red", "Green", "Red"};
+Integer[] scores = {5, 7, 5, 9};
+System.out.println(countMatches(votes, "Red"));
+System.out.println(countMatches(scores, 5));
+swap(votes, 0, 3);
+printArray(votes);   // given, as in Lesson 3
+swap(scores, 1, 2);
+printArray(scores);</pre>
+<pre class="code sm narrow">// output
+3
+2
+Green Blue Red Red Red
+5 5 7 9</pre>
+</div>
+      <p><b>(a)</b> <code class="inl">countMatches(list, target)</code> returns how many elements of <code class="inl">list</code> are equal to <code class="inl">target</code> (use <code class="inl">equals</code>).</p>
+      <div class="answer-space"><div class="codebox" style="min-height:40mm"></div></div>
+
+      <p><b>(b)</b> <code class="inl">swap(list, i, j)</code> exchanges the elements at positions <code class="inl">i</code> and <code class="inl">j</code>.</p>
+      <div class="answer-space"><div class="codebox" style="min-height:30mm"></div></div>
+
+      <p><b>(c)</b> A student writes <code class="inl">int[] ages = {19, 20, 19}; System.out.println(countMatches(ages, 19));</code>.
+         Does it compile? Explain, and correct the first statement.</p>
+      <div class="answer-space"><div class="writeline"></div><div class="writeline"></div></div>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q8</div>
+<pre class="code sm">public static &lt;T&gt; int countMatches(T[] list, T target) {
+    int count = 0;
+    for (T e : list) {
+        if (e.equals(target)) {
+            count++;
+        }
+    }
+    return count;
+}
+
+public static &lt;T&gt; void swap(T[] list, int i, int j) {
+    T temp = list[i];
+    list[i] = list[j];
+    list[j] = temp;
+}</pre>
+        <p>(c) <span class="val">Compilation error.</span> <code class="inl">T</code> can only stand for a reference type, and an <code class="inl">int[]</code> is not a <code class="inl">T[]</code>
+           (javac: <i>method countMatches cannot be applied to given types; found: int[], int</i>). Fix: <code class="inl">Integer[] ages = {19, 20, 19};</code> &rarr; prints <code class="inl">2</code>.</p>
+        <p class="rub">(a) <code class="inl">&lt;T&gt;</code> before the return type <code class="inl">int</code> (&frac12;), parameters <code class="inl">T[]</code> and <code class="inl">T</code> (&frac12;), loop with <code class="inl">equals</code> and count (1).
+           (b) <code class="inl">&lt;T&gt; void</code> header (&frac12;), temporary variable of type <code class="inl">T</code> (&frac12;), correct swap (1). (c) answer + reason (1), fix (1).
+           Using <code class="inl">==</code> instead of <code class="inl">equals</code> loses &frac12;. All methods compiled and the output above is from a real run.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Q9 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 11 &mdash; Generics &mdash; Practice Exam &middot; Question 9 of 11</span></div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="qno">Q9</span>
+      <span class="qtitle">Compile Error, Run-time Error, or OK?</span>
+      <span class="chips">
+        <span class="chip tag-med">MEDIUM</span>
+        <span class="chip clo">CLO 12</span><span class="chip so">SO-a</span>
+        <span class="chip pts">8 marks &middot; 1 each</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p>Each item is placed inside <code class="inl">main</code>. Write <b>OK</b> (compiles and runs without an exception; a warning is allowed),
+         <b>Compile error</b>, or <b>Run-time error</b> (name the exception), with a short reason. <code class="inl">Glass&lt;T&gt;</code> is the class on the cover page.</p>
+      <table class="fill">
+        <thead><tr><th style="width:5%">#</th><th style="width:55%">Code</th><th>OK / Compile error / Run-time error + reason</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td class="mono">ArrayList&lt;String&gt; list = new ArrayList&lt;&gt;();<br>list.add(5);</td><td class="ans"></td></tr>
+          <tr><td>2</td><td class="mono">ArrayList list = new ArrayList();<br>list.add("Java");<br>list.add(5);<br>System.out.println(list);</td><td class="ans"></td></tr>
+          <tr><td>3</td><td class="mono">ArrayList list = new ArrayList();<br>list.add(5);<br>String s = (String) list.get(0);</td><td class="ans"></td></tr>
+          <tr><td>4</td><td class="mono">Glass&lt;Double&gt; g = new Glass&lt;&gt;(5);</td><td class="ans"></td></tr>
+          <tr><td>5</td><td class="mono">Glass&lt;Double&gt; g = new Glass&lt;&gt;(5.0);<br>double d = g.getLiquid() * 2;</td><td class="ans"></td></tr>
+          <tr><td>6</td><td class="mono">Comparable c = "Ali";<br>int r = c.compareTo(new Date());</td><td class="ans"></td></tr>
+          <tr><td>7</td><td class="mono">Object o = new Glass&lt;Integer&gt;(3);<br>if (o instanceof Glass&lt;Integer&gt;) { &hellip; }</td><td class="ans"></td></tr>
+          <tr><td>8</td><td class="mono">Glass&lt;String&gt; g = new Glass&lt;&gt;("Ali");<br>Integer n = (Integer) g.getLiquid();</td><td class="ans"></td></tr>
+        </tbody>
+      </table>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q9</div>
+        <p>1 <span class="val">Compile error</span> &mdash; the list accepts only <code class="inl">String</code>: <i>int cannot be converted to String</i>.<br>
+           2 <span class="val">OK</span> (with an unchecked warning) &mdash; a raw list holds <code class="inl">Object</code>s, so mixed types are allowed; prints <code class="inl">[Java, 5]</code>.<br>
+           3 <span class="val">Run-time error: ClassCastException</span> &mdash; it compiles (warning only), but an <code class="inl">Integer</code> cannot be cast to <code class="inl">String</code>.<br>
+           4 <span class="val">Compile error</span> &mdash; <code class="inl">5</code> is an <code class="inl">int</code>; it can be boxed to <code class="inl">Integer</code>, not to <code class="inl">Double</code> (<i>cannot infer type arguments for Glass&lt;&gt;</i>). Write <code class="inl">5.0</code>.<br>
+           5 <span class="val">OK</span> &mdash; the <code class="inl">Double</code> is unboxed; <code class="inl">d</code> is 10.0.<br>
+           6 <span class="val">Run-time error: ClassCastException</span> &mdash; raw <code class="inl">Comparable</code> compiles (warning only); inside <code class="inl">String.compareTo</code> the <code class="inl">Date</code> cannot be cast to <code class="inl">String</code>.<br>
+           7 <span class="val">Compile error</span> &mdash; <code class="inl">&lt;Integer&gt;</code> does not exist at run time (erasure), so the type cannot be checked (<i>Object cannot be safely cast to Glass&lt;Integer&gt;</i>).<br>
+           8 <span class="val">Compile error</span> &mdash; the compiler knows <code class="inl">getLiquid()</code> returns <code class="inl">String</code>: <i>String cannot be converted to Integer</i>. Compare with item 3.</p>
+        <p class="rub">1 mark each: &frac12; for the outcome, &frac12; for the reason. All eight items were compiled (and the OK / run-time items run) with JDK 21.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Q10 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 11 &mdash; Generics &mdash; Practice Exam &middot; Question 10 of 11</span></div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="qno">Q10</span>
+      <span class="qtitle">From UML to Code &mdash; A Generic Pair&lt;K, V&gt;</span>
+      <span class="chips">
+        <span class="chip tag-hard">HARD</span>
+        <span class="chip clo">CLO 12</span><span class="chip so">SO-c</span>
+        <span class="chip pts">8 marks</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p>A grades app stores a student name with a mark, a course code with a room number, and so on. Write <b>one</b> generic class with <b>two</b> type parameters
+         <code class="inl">K</code> (key) and <code class="inl">V</code> (value) from the UML diagram.</p>
+      <div class="uml-wrap">
+        <div class="uml" style="flex:0 0 auto;min-width:300px">
+          <div class="uml-name">Pair&lt;K, V&gt;</div>
+          <div class="uml-sec"><span>-key: K</span><span>-value: V</span></div>
+          <div class="uml-sec"><span>+Pair(key: K, value: V)</span><span>+getKey(): K</span><span>+getValue(): V</span><span>+setValue(value: V): void</span>
+            <span>+swap(): Pair&lt;V, K&gt;</span><span>+toString(): String</span></div>
+        </div>
+        <table class="need" style="align-self:center">
+          <tr><th>Requirement</th></tr>
+          <tr><td>swap() returns a NEW pair with the key and<br>value exchanged; this pair is not changed.</td></tr>
+          <tr><td>toString() returns, e.g., "(Sara, 92)"</td></tr>
+        </table>
+      </div>
+      <div class="answer-space"><span class="lbl">(a) Write the complete class Pair (6 marks):</span><div class="codebox" style="min-height:92mm"></div></div>
+
+      <p><b>(b)</b> Using your class, write the exact output of: <span class="mini">(2 marks)</span></p>
+<div class="two-col">
+<pre class="code sm wide">Pair&lt;String, Integer&gt; p = new Pair&lt;&gt;("Sara", 88);
+p.setValue(p.getValue() + 4);
+Pair&lt;Integer, String&gt; q = p.swap();
+System.out.println(p);
+System.out.println(q);
+int mark = q.getKey();
+String name = q.getValue();
+System.out.println(name.length() + mark);</pre>
+<div class="narrow"><div class="answer-space"><span class="lbl">Output:</span><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div></div></div>
+</div>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q10</div>
+<div class="two-col">
+<pre class="code sm wide">public class Pair&lt;K, V&gt; {
+    private K key;
+    private V value;
+
+    public Pair(K key, V value) {
+        this.key = key;
+        this.value = value;
+    }
+    public K getKey() {
+        return key;
+    }
+    public V getValue() {
+        return value;
+    }
+    public void setValue(V value) {
+        this.value = value;
+    }
+    public Pair&lt;V, K&gt; swap() {
+        return new Pair&lt;&gt;(value, key);
+    }
+    @Override
+    public String toString() {
+        return "(" + key + ", " + value + ")";
+    }
+}</pre>
+<pre class="code sm narrow">// (b) output
+(Sara, 92)
+(92, Sara)
+96</pre>
+</div>
+        <p class="rub">(a) header <code class="inl">Pair&lt;K, V&gt;</code> + private fields of types <code class="inl">K</code> and <code class="inl">V</code> (1) &middot; constructor (1) &middot; getters and setter with the right types (1) &middot;
+           <code class="inl">swap()</code> returning <code class="inl">Pair&lt;V, K&gt;</code> built from <code class="inl">(value, key)</code> (2) &middot; <code class="inl">toString</code> in the required format (1).
+           (b) 1 mark for the two pair lines, 1 mark for <code class="inl">96</code> (4 + 92). Compiled and run with JDK 21.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Q11 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 11 &mdash; Generics &mdash; Practice Exam &middot; Question 11 of 11</span></div>
+
+  <div class="card flow">
+    <div class="card-head">
+      <span class="qno">Q11</span>
+      <span class="qtitle">Design &mdash; A Generic Tray for a Restaurant</span>
+      <span class="chips">
+        <span class="chip tag-hard">HARD</span>
+        <span class="chip clo">CLO 12</span><span class="chip so">SO-c</span>
+        <span class="chip pts">8 marks</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p>A restaurant app has three classes that each keep a pile of things (orders, table numbers, plate names). The last item put on a pile is the first one taken off.
+         Instead of three classes, design <b>one generic interface</b> and a class that implements it.</p>
+
+      <p><b>(a)</b> Write the generic interface <code class="inl">Tray&lt;T&gt;</code> with the methods <code class="inl">put</code> (adds an item), <code class="inl">takeTop</code> (removes and returns the last item put),
+         <code class="inl">isEmpty</code> and <code class="inl">size</code>. <span class="mini">(2 marks)</span></p>
+      <div class="answer-space"><div class="codebox" style="min-height:34mm"></div></div>
+
+      <p><b>(b)</b> Write the class <code class="inl">StackTray&lt;T&gt;</code> that implements <code class="inl">Tray&lt;T&gt;</code> and <b>stays generic</b>. Store the items in an <code class="inl">ArrayList&lt;T&gt;</code>. <span class="mini">(4 marks)</span></p>
+      <div class="answer-space"><div class="codebox" style="min-height:66mm"></div></div>
+
+      <p><b>(c)</b> The second way to implement a generic interface is to <b>fix the type</b>. Write only the class header of <code class="inl">PlateTray</code>, which holds plate names,
+         and the headers of its <code class="inl">put</code> and <code class="inl">takeTop</code> methods. <span class="mini">(1 mark)</span></p>
+      <div class="answer-space"><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div></div>
+
+      <p><b>(d)</b> <code class="inl">orders</code> is declared as <code class="inl">Tray&lt;String&gt; orders = new StackTray&lt;&gt;();</code>. What happens with <code class="inl">orders.put(15);</code>? <span class="mini">(1 mark)</span></p>
+      <div class="answer-space"><div class="writeline"></div></div>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q11</div>
+<pre class="code sm">// (a)
+public interface Tray&lt;T&gt; {
+    void put(T item);
+    T takeTop();
+    boolean isEmpty();
+    int size();
+}
+
+// (c)
+public class PlateTray implements Tray&lt;String&gt; {
+    public void put(String item) { ... }
+    public String takeTop() { ... }
+    ...
+}</pre>
+<pre class="code sm">// (b)
+public class StackTray&lt;T&gt; implements Tray&lt;T&gt; {
+    private ArrayList&lt;T&gt; items = new ArrayList&lt;&gt;();
+
+    @Override
+    public void put(T item) {
+        items.add(item);
+    }
+    @Override
+    public T takeTop() {
+        return items.remove(items.size() - 1);
+    }
+    @Override
+    public boolean isEmpty() {
+        return items.isEmpty();
+    }
+    @Override
+    public int size() {
+        return items.size();
+    }
+}</pre>
+        <p>(d) <span class="val">Compilation error</span>: <i>int cannot be converted to String</i> &mdash; the interface contract is checked by the compiler.</p>
+        <p class="rub">(a) <code class="inl">interface Tray&lt;T&gt;</code> (1), four abstract methods with <code class="inl">T</code> in the right places (1).
+           (b) <code class="inl">StackTray&lt;T&gt; implements Tray&lt;T&gt;</code> (1), private <code class="inl">ArrayList&lt;T&gt;</code> field (&frac12;), <code class="inl">put</code>/<code class="inl">size</code>/<code class="inl">isEmpty</code> (1),
+           <code class="inl">takeTop</code> removes and returns the <b>last</b> element with no cast (1&frac12;). (c) <code class="inl">implements Tray&lt;String&gt;</code> and <code class="inl">String</code> in both headers (1). (d) 1.
+           Checked: the interface, <code class="inl">StackTray</code> and a full <code class="inl">PlateTray</code> were compiled and run with JDK 21 (putting &ldquo;Soup&rdquo;, &ldquo;Rice&rdquo;, &ldquo;Tea&rdquo; then calling <code class="inl">takeTop()</code> returns &ldquo;Tea&rdquo;).</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="endmark">&mdash; End of Generics Practice Exam &mdash; Good Luck! &mdash;</div>
+  <p class="footline">Module 11: Generics</p>
+</section>
+
+<script>
+  var btn = document.getElementById('toggleAns');
+  btn.addEventListener('click', function () {
+    var on = document.body.classList.toggle('show-answers');
+    btn.textContent = on ? '🙈 Hide model answers' : '👁 Show model answers';
+    btn.classList.toggle('ghost', !on);
+  });
+</script>
+</body>
+</html>

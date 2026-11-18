@@ -1,0 +1,1383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CPCS203 &mdash; Comprehensive Final Exam (Mock) (A4 printable)</title>
+<style>
+/* =======================================================================
+   Programming II (CPCS203) — COMPREHENSIVE FINAL EXAM (MOCK)
+   Print-first, A4. Same layout as the module practice exams, navy theme.
+   Structure follows the real exams: Part I MCQ, Part II Code Analysis &
+   Writing, Part III UML Diagram & Java Implementation, then a blueprint.
+   A "Show model answers" toggle turns the same file into an answer key.
+   ======================================================================= */
+@page { size: A4; margin: 12mm 15mm 14mm 15mm; }
+
+:root{
+  --em:        #1d4ed8;
+  --em-dark:   #1e40af;
+  --em-deep:   #1e3a8a;
+  --em-tint:   #eff6ff;
+  --ink:       #1f2937;
+  --ink-soft:  #4b5563;
+  --rule:      #bfdbfe;
+  --paper:     #ffffff;
+  --code-bg:   #f8fbff;
+  --code-rule: #d6e4fb;
+  --warn:      #b42318;
+  --tag-easy:  #e7f6ec; --tag-easy-i:#1a7f37;
+  --tag-med:   #fef3e0; --tag-med-i: #9a6212;
+  --tag-hard:  #fdeaea; --tag-hard-i:#b42318;
+}
+
+*{ box-sizing:border-box; }
+html,body{
+  margin:0; padding:0;
+  background:#e5e9f0;
+  color:var(--ink);
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size:11pt; line-height:1.5;
+}
+body{ padding:14mm 0; }
+
+/* ---- A4 sheet ---- */
+.sheet{
+  background:var(--paper);
+  width:210mm; min-height:297mm;
+  margin:0 auto 10mm;
+  padding:15mm 15mm 18mm;
+  box-shadow:0 3px 14px rgba(31,41,55,.18);
+  position:relative;
+}
+
+/* ---- running head ---- */
+.runhead{
+  display:flex; justify-content:space-between; align-items:flex-end;
+  border-bottom:2px solid var(--em-dark);
+  padding-bottom:6px; margin-bottom:14px;
+  font-size:9.5pt; color:var(--em-deep);
+}
+.runhead b{ font-size:10.5pt; }
+
+/* ================= COVER ================= */
+.cover-top{ text-align:center; }
+.cover-rule{ height:2px; background:var(--em-dark); margin:10px 0; }
+.cover-uni{ font-size:10pt; color:var(--ink-soft); }
+.cover-uni b{ color:var(--em-deep); font-size:11pt; }
+.cover-title{ font-size:21pt; font-weight:800; color:var(--em); letter-spacing:.5px; margin-top:4px; }
+.cover-sub{ font-size:13.5pt; font-weight:700; margin-top:2px; color:var(--em-deep); }
+.cover-tag{
+  display:inline-block; margin-top:8px; padding:4px 16px;
+  background:var(--em-tint); color:var(--em-dark); border:1px solid var(--em);
+  border-radius:999px; font-weight:700; font-size:10.5pt;
+}
+
+.id-grid{ margin:14px 0 2px; width:100%; border-collapse:collapse; font-size:11pt; }
+.id-grid td{ padding:8px 6px; }
+.id-grid .lbl{ width:110px; white-space:nowrap; font-weight:700; color:var(--em-deep); }
+.id-grid .line{ border-bottom:1.4px solid #6b7280; }
+
+.instr{
+  margin-top:12px; border:1px solid var(--rule);
+  border-left:5px solid var(--em); border-radius:8px;
+  background:#f8fbff; padding:10px 16px;
+}
+.instr h3{ margin:0 0 4px; font-size:11.5pt; color:var(--em-deep); }
+.instr ul{ margin:0; padding-left:18px; }
+.instr li{ margin:2px 0; font-size:10.3pt; }
+
+.marks-tbl{ width:100%; border-collapse:collapse; margin-top:12px; font-size:10pt; text-align:center; }
+.marks-tbl th, .marks-tbl td{ border:1px solid var(--rule); padding:5px 4px; }
+.marks-tbl thead th{ background:var(--em-dark); color:#fff; }
+.marks-tbl .tot{ background:var(--em-tint); font-weight:800; }
+.marks-tbl thead th.tot{ background:var(--em-deep); color:#fff; }
+.marks-tbl .obt td{ height:2.3em; }
+.marks-tbl.qs{ font-size:9pt; }
+.marks-tbl.qs th, .marks-tbl.qs td{ padding:4px 2px; }
+.tbl-cap{ margin:12px 0 0; font-weight:700; color:var(--em-deep); font-size:10pt; }
+
+/* ================= PART BAR ================= */
+.partbar{
+  display:flex; align-items:center; gap:12px;
+  background:var(--em-deep); color:#fff; border-radius:8px;
+  padding:8px 14px; margin:0 0 12px; font-weight:700; font-size:12pt;
+  break-after:avoid; page-break-after:avoid;
+}
+.partbar .pn{ background:#fff; color:var(--em-deep); border-radius:6px; padding:1px 10px; font-weight:800; }
+.partbar .pm{ margin-left:auto; font-size:10pt; font-weight:600; opacity:.9; }
+.partnote{ font-style:italic; color:var(--ink-soft); font-size:10pt; margin:-4px 0 10px; }
+
+/* ================= QUESTION CARD ================= */
+.card{
+  border:1px solid var(--rule); border-radius:10px;
+  margin:0 0 16px; overflow:hidden;
+  break-inside:avoid; page-break-inside:avoid; background:#fff;
+}
+.card-head{
+  display:flex; flex-wrap:wrap; align-items:center; gap:8px;
+  background:linear-gradient(180deg,#f5f9ff,#dbeafe);
+  border-bottom:1px solid var(--rule); padding:9px 14px;
+}
+.qno{
+  font-weight:800; color:#fff; background:var(--em-dark);
+  border-radius:6px; padding:3px 11px; font-size:11pt; letter-spacing:.3px;
+}
+.qtitle{ font-weight:700; font-size:11.5pt; color:var(--em-deep); flex:1 1 240px; }
+.chips{ display:flex; gap:6px; align-items:center; flex-wrap:wrap; }
+.chip{ font-size:8.5pt; padding:2px 8px; border-radius:999px; font-weight:700; white-space:nowrap; }
+.chip.clo{ background:#e0e7ff; color:#3730a3; border:1px solid #a5b4fc; }
+.chip.so { background:#ecfeff; color:#0e7490; border:1px solid #a5f3fc; }
+.chip.pts{ background:var(--em-deep); color:#fff; }
+.tag-easy{ background:var(--tag-easy); color:var(--tag-easy-i); border:1px solid var(--tag-easy-i); }
+.tag-med { background:var(--tag-med);  color:var(--tag-med-i);  border:1px solid var(--tag-med-i);  }
+.tag-hard{ background:var(--tag-hard); color:var(--tag-hard-i); border:1px solid var(--tag-hard-i); }
+
+.card-body{ padding:12px 16px 14px; }
+.card-body p{ margin:6px 0; }
+.note{ color:var(--warn); font-style:italic; font-weight:600; font-size:10pt; }
+.hint{ color:var(--ink-soft); font-style:italic; font-size:10pt; }
+.mini{ font-size:9pt; color:#6b7280; }
+
+/* ---- code blocks ---- */
+pre.code{
+  background:var(--code-bg); border:1px solid var(--code-rule);
+  border-left:4px solid var(--em); border-radius:6px;
+  padding:10px 12px; margin:10px 0; overflow:auto;
+  font-family:'Consolas','DejaVu Sans Mono',monospace; font-size:10pt; line-height:1.5;
+  white-space:pre;
+}
+pre.code.sm{ font-size:9.3pt; line-height:1.42; }
+pre.code.xs{ font-size:8.6pt; line-height:1.38; }
+pre.code .ln{ color:#94a3b8; user-select:none; }
+code.inl{ background:var(--code-bg); border:1px solid var(--code-rule); border-radius:4px;
+  padding:1px 5px; font-family:'Consolas',monospace; font-size:9.8pt; }
+.blank{ display:inline-block; min-width:118px; border-bottom:1.4px solid var(--ink); color:var(--em-deep);
+  font-weight:700; text-align:center; font-family:'Segoe UI',sans-serif; font-size:8.5pt; line-height:1.2; }
+.two-col{ display:flex; gap:12px; }
+.two-col > *{ flex:1 1 0; min-width:0; }
+.two-col > .wide{ flex-grow:1.4; }
+.two-col > .narrow{ flex-grow:.65; }
+.opts p{ margin:3px 0; }
+.tight .card-body{ font-size:10.5pt; line-height:1.42; }
+.tight .card-body p{ margin:4px 0; }
+.tight pre.code{ margin:5px 0; }
+.mcq{ display:grid; grid-template-columns:1fr 1fr; gap:2px 18px; margin:2px 0 8px 14px; }
+.mcq.c1{ grid-template-columns:1fr; }
+.mcq.c4{ grid-template-columns:repeat(4, auto); justify-content:start; column-gap:34px; }
+.mq{ border-top:1px dashed var(--rule); padding-top:6px; margin-top:6px; }
+.mq:first-of-type{ border-top:0; margin-top:0; padding-top:0; }
+.mq .chips{ display:inline-flex; margin-left:6px; vertical-align:middle; }
+.mq .chip{ font-size:7.8pt; padding:1px 6px; }
+
+/* ---- UML class box (inline, as in the module exams) ---- */
+.uml u{ text-decoration-thickness:1.4px; }
+.need{ border-collapse:collapse; font-size:9.5pt; margin-top:10px; }
+.need td, .need th{ border:1px solid var(--rule); padding:4px 8px; }
+.need th{ background:var(--em-tint); color:var(--em-deep); text-align:left; }
+.need td.mono, .need .mono{ font-family:'Consolas','DejaVu Sans Mono',monospace; }
+
+/* ---- UML class diagram canvas (absolute boxes + SVG arrows) ---- */
+.uml-canvas{ position:relative; width:640px; height:556px; margin:10px auto 6px; }
+.uml-canvas svg.links{ position:absolute; left:0; top:0; overflow:visible; }
+.ubox{ position:absolute; border:1.5px solid var(--em-deep); background:#fff;
+  font-family:'Consolas','DejaVu Sans Mono',monospace; font-size:8pt; line-height:14px;
+  display:flex; flex-direction:column; }
+.ubox .nm{ text-align:center; font-weight:800; background:var(--em-tint); color:var(--em-deep);
+  border-bottom:1.5px solid var(--em-deep); padding:4px 6px; font-family:'Segoe UI',sans-serif;
+  font-size:9pt; line-height:14px; }
+.ubox .nm .st{ display:block; font-weight:400; font-size:8pt; }
+.ubox .nm.only{ border-bottom:0; flex:1; }
+.ubox .sec{ padding:4px 6px; border-bottom:1.5px solid var(--em-deep); }
+.ubox .sec:last-child{ border-bottom:0; flex:1; }
+.ubox .sec span{ display:block; white-space:nowrap; }
+.ubox .sec span.ind{ padding-left:3.2em; }
+.ubox .abs{ font-style:italic; }
+
+/* ---- answer space ---- */
+.answer-space{ margin-top:10px; }
+.answer-space .lbl{ font-style:italic; color:var(--ink-soft); font-size:10pt; }
+.writeline{ border-bottom:1px solid #9ca3af; height:1.55em; margin-top:.45em; }
+.codebox{ border:1px dashed #9ca3af; border-radius:6px; min-height:120px; margin-top:8px;
+  background:repeating-linear-gradient(#fff,#fff 1.7em,#e6eefb 1.7em,#e6eefb calc(1.7em + 1px)); }
+
+/* ---- fill-in tables ---- */
+.fill{ width:100%; border-collapse:collapse; margin-top:8px; font-size:10.5pt; }
+.fill td, .fill th{ border:1px solid var(--rule); padding:6px 8px; }
+.fill th{ background:var(--em-tint); color:var(--em-deep); font-size:10pt; }
+.fill td.ans{ background:#fff; height:2.2em; }
+.fill td.num{ width:7%; text-align:center; color:var(--em-deep); font-weight:700; }
+.fill td.mono{ font-family:'Consolas',monospace; font-size:9.5pt; }
+
+/* ---- model answer block (hidden until toggled) ---- */
+.answer-key{ display:none; }
+body.show-answers .answer-key{ display:block; }
+.answer-key{
+  margin-top:12px; border:1px solid #bbf7d0; border-left:5px solid #16a34a;
+  background:#f0fdf4; border-radius:8px; padding:10px 14px;
+}
+.answer-key .akh{ font-weight:800; color:#15803d; font-size:10.5pt; margin-bottom:4px; }
+.answer-key pre.code{ border-left-color:#16a34a; background:#f6fdf9; border-color:#bbf7d0; }
+.answer-key .val{ color:#166534; font-weight:800; }
+.answer-key .rub{ color:#0e7490; font-size:9.5pt; font-style:italic; }
+.answer-key table.fill th{ background:#dcfce7; color:#15803d; }
+.answer-key table.fill td, .answer-key table.fill th{ border-color:#bbf7d0; }
+
+/* ---- floating toolbar (screen only) ---- */
+.toolbar{
+  position:fixed; top:14px; right:14px; z-index:50; display:flex; gap:8px;
+  background:#fff; border:1px solid var(--rule); border-radius:10px; padding:8px 10px;
+  box-shadow:0 4px 14px rgba(31,41,55,.18);
+}
+.toolbar button, .toolbar a{
+  font:inherit; font-size:10pt; font-weight:700; cursor:pointer; text-decoration:none;
+  border:1px solid var(--em); border-radius:7px; padding:7px 12px;
+  background:var(--em); color:#fff;
+}
+.toolbar .ghost{ background:#fff; color:var(--em-dark); }
+.toolbar button:active{ transform:translateY(1px); }
+
+.footline{ text-align:center; margin-top:6px; color:var(--ink-soft); font-size:9.5pt; }
+.endmark{ text-align:center; font-weight:800; color:var(--em-deep); margin:18px 0 4px; }
+
+/* ---- blueprint ---- */
+.bp{ width:100%; border-collapse:collapse; font-size:8.8pt; line-height:1.3; margin-top:6px; }
+.bp th, .bp td{ border:1px solid var(--rule); padding:2px 6px; }
+.bp code.inl{ font-size:8.3pt; padding:0 3px; }
+.bp thead th{ background:var(--em-dark); color:#fff; }
+.bp td.c{ text-align:center; }
+.bp tr.sum td{ background:var(--em-tint); font-weight:800; }
+.bp tr.grp td{ background:#f8fbff; font-weight:700; color:var(--em-deep); }
+
+/* ================= PRINT ================= */
+@media print{
+  body{ background:#fff; padding:0; }
+  html{ background:#fff; }
+  .toolbar{ display:none !important; }
+  .sheet{ box-shadow:none; margin:0; width:auto; min-height:auto; padding:0; }
+  .sheet + .sheet{ page-break-before:always; }
+  .card{ box-shadow:none; }
+}
+pre.code{ white-space:pre-wrap; overflow:visible; }   /* never clip code on paper */
+/* let every card flow across a page break, but keep code blocks and table rows whole */
+.card, body.show-answers .card{ break-inside:auto; page-break-inside:auto; }
+pre.code, .fill tr, .mcq, .mq, .card-head, .answer-space, .codebox, .uml-canvas, svg, .need tr, .bp tr{ break-inside:avoid; page-break-inside:avoid; }
+.card-head{ break-after:avoid; page-break-after:avoid; }
+body.show-answers .answer-key{ break-inside:auto; page-break-inside:auto; }
+.answer-key .akh{ break-after:avoid; page-break-after:avoid; }
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <a href="index.html" class="ghost">&#8592; Course home</a>
+  <button id="toggleAns" class="ghost">&#128065; Show model answers</button>
+  <button onclick="window.print()">&#128424; Print / Save PDF</button>
+</div>
+
+<!-- =====================================================================
+     COVER PAGE
+     ===================================================================== -->
+<section class="sheet cover">
+  <div class="cover-top">
+    <div class="cover-uni"><b>King Abdulaziz University</b><br>Faculty of Computing &amp; Information Technology &nbsp;|&nbsp; Computer Science Department</div>
+  </div>
+  <div class="cover-rule"></div>
+  <div class="cover-top">
+    <div class="cover-title">Programming II (CPCS203)</div>
+    <div class="cover-sub">Comprehensive Final Exam (Mock)</div>
+    <div class="cover-tag">Fall 2026/2027 &nbsp;&middot;&nbsp; Time Allowed: 120 Minutes &nbsp;&middot;&nbsp; Total Marks: 30</div>
+  </div>
+  <div class="cover-rule"></div>
+
+  <table class="id-grid">
+    <tr>
+      <td class="lbl">Student ID:</td><td class="line" style="width:34%"></td>
+      <td class="lbl" style="text-align:right;padding-right:14px">Section:</td><td class="line"></td>
+    </tr>
+    <tr><td class="lbl">Name:</td><td class="line" colspan="3"></td></tr>
+    <tr><td class="lbl">Instructor:</td><td class="line" colspan="3"></td></tr>
+  </table>
+
+  <div class="instr">
+    <h3>Instructions</h3>
+    <ul>
+      <li>Write your <b>Student ID, Section and Full Name</b> before you start.</li>
+      <li><b>Closed-book exam.</b> No notes, textbooks or electronic devices are allowed.</li>
+      <li>This booklet has <b>three parts</b>: Part I Multiple Choice, Part II Code Analysis &amp; Writing, Part III UML Diagram &amp; Java Implementation.
+          It covers <b>all chapters</b> of the course (CLO 1&ndash;13). Answer <b>all</b> questions in the spaces provided.</li>
+      <li>Write clearly and neatly. Ambiguous or illegible answers receive <b>zero marks</b>.</li>
+      <li>Assume all necessary <code class="inl">import</code> statements are present and that all classes of a question are in the <b>same package</b>, unless the question says otherwise.</li>
+      <li>Output questions: write each line exactly as Java prints it (case, spaces, <code class="inl">.0</code> of a <code class="inl">double</code>). Each line is marked on its own.</li>
+      <li>If code does not compile, write <b>&ldquo;Compilation error&rdquo;</b> and the reason in one short sentence.</li>
+      <li>Mobile phones, smart watches and other smart devices must be switched off and placed away from your desk.</li>
+    </ul>
+  </div>
+
+  <p class="tbl-cap">Marks summary by Part</p>
+  <table class="marks-tbl">
+    <thead><tr><th>Part I &mdash; MCQ</th><th>Part II &mdash; Code Analysis &amp; Writing</th><th>Part III &mdash; UML &amp; Java</th><th class="tot">Total</th></tr></thead>
+    <tbody>
+      <tr><td><i>6 marks</i></td><td><i>15 marks</i></td><td><i>9 marks</i></td><td class="tot">30 marks</td></tr>
+      <tr class="obt"><td></td><td></td><td></td><td class="tot"></td></tr>
+    </tbody>
+  </table>
+
+  <p class="tbl-cap">Marks summary by Question</p>
+  <table class="marks-tbl qs">
+    <thead><tr><th>Question</th><th>I.1&ndash;12</th><th>II.1</th><th>II.2</th><th>II.3</th><th>II.4</th><th>II.5</th><th>II.6</th>
+      <th>III.a</th><th>III.b</th><th>III.c</th><th>III.d</th><th>III.e</th><th>III.f</th><th class="tot">Total</th></tr></thead>
+    <tbody>
+      <tr><td><b>Max</b></td><td data-cover="6">6</td><td data-cover="2">2</td><td data-cover="2.5">2.5</td><td data-cover="2.5">2.5</td><td data-cover="2.5">2.5</td><td data-cover="2.5">2.5</td><td data-cover="3">3</td>
+        <td data-cover="2.5">2.5</td><td data-cover="1">1</td><td data-cover="1">1</td><td data-cover="2">2</td><td data-cover="1.5">1.5</td><td data-cover="1">1</td><td class="tot">30</td></tr>
+      <tr class="obt"><td><b>Obtained</b></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class="tot"></td></tr>
+    </tbody>
+  </table>
+
+  <p class="footline">Chapters: 8 Multidimensional Arrays &middot; 10 String &amp; StringBuilder &middot; 12 Text I/O &middot; 9 Objects &amp; Classes &middot; 10 Object-Oriented Thinking &middot;
+     11 Inheritance &amp; Polymorphism, ArrayList &middot; 13 Abstract Classes &amp; Interfaces &middot; 19 Generics &middot; 12 Exception Handling</p>
+</section>
+
+<!-- =====================================================================
+     PART I — MCQ
+     ===================================================================== -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II (CPCS203)</span><span>Comprehensive Final Exam (Mock) &middot; Part I</span></div>
+  <div class="partbar" data-part="6"><span class="pn">Part I</span> Multiple Choice Questions <span class="pm">6 marks &mdash; 12 &times; 0.5 mark</span></div>
+  <p class="partnote">Circle the letter of the ONE best answer for each question.</p>
+
+  <div class="card tight" data-q="6" id="I">
+    <div class="card-head">
+      <span class="qno">I</span>
+      <span class="qtitle">Multiple Choice &mdash; All Chapters</span>
+      <span class="chips"><span class="chip clo">CLO 1&ndash;13</span><span class="chip so">SO 1 / SO 2</span><span class="chip pts">6 marks &middot; 0.5 each</span></span>
+    </div>
+    <div class="card-body">
+
+      <div class="mq" data-sub="0.5">
+        <p><b>1.</b> What is printed? <span class="chips"><span class="chip clo">CLO 1</span><span class="chip so">SO 1</span></span></p>
+<pre class="code sm">String[][] cities = { {"Jeddah", "Makkah"},
+                      {"Riyadh"},
+                      {"Abha", "Taif", "Tabuk"} };
+System.out.println(cities.length + " " + cities[2].length
+                   + " " + cities[0][1].substring(2));</pre>
+        <div class="mcq c4"><span>(a) <code class="inl">3 3 kkah</code></span><span>(b) <code class="inl">6 3 kkah</code></span><span>(c) <code class="inl">3 3 akkah</code></span><span>(d) <code class="inl">3 2 kah</code></span></div>
+      </div>
+
+      <div class="mq" data-sub="0.5">
+        <p><b>2.</b> The <code class="inl">main</code> method below has <b>no</b> <code class="inl">throws</code> clause. What happens when the program is compiled? <span class="chips"><span class="chip clo">CLO 2</span><span class="chip so">SO 1</span></span></p>
+<pre class="code sm">public static void main(String[] args) {
+    Scanner in = new Scanner(new File("marks.txt"));
+    System.out.println(in.nextLine());
+    in.close();
+}</pre>
+        <div class="mcq c1">
+          <span>(a) It compiles; if <code class="inl">marks.txt</code> is missing, <code class="inl">nextLine()</code> returns an empty string.</span>
+          <span>(b) Compilation error: the checked <code class="inl">FileNotFoundException</code> must be caught or declared with <code class="inl">throws</code>.</span>
+          <span>(c) It compiles; <code class="inl">Scanner</code> creates <code class="inl">marks.txt</code> if it is missing.</span>
+          <span>(d) Compilation error: a <code class="inl">Scanner</code> cannot be created from a <code class="inl">File</code> object.</span>
+        </div>
+      </div>
+
+      <div class="mq" data-sub="0.5">
+        <p><b>3.</b> What is printed? <span class="chips"><span class="chip clo">CLO 3</span><span class="chip so">SO 1</span></span></p>
+<div class="two-col">
+<pre class="code sm">class Visitor {
+    static int total = 0;
+    int visits = 0;
+    void enter() { total++; visits++; }
+}</pre>
+<pre class="code sm">// in main:
+Visitor a = new Visitor();
+Visitor b = a;
+Visitor c = new Visitor();
+a.enter(); b.enter(); c.enter();
+System.out.println(a.visits + " "
+     + c.visits + " " + Visitor.total);</pre>
+</div>
+        <div class="mcq c4"><span>(a) <code class="inl">1 1 3</code></span><span>(b) <code class="inl">2 1 3</code></span><span>(c) <code class="inl">2 1 1</code></span><span>(d) <code class="inl">2 2 3</code></span></div>
+      </div>
+
+      <div class="mq" data-sub="0.5">
+        <p><b>4.</b> Class <code class="inl">Wallet</code> has a private <code class="inl">double money</code>, a constructor <code class="inl">Wallet(double money)</code>, <code class="inl">add(double x)</code> that adds <code class="inl">x</code> to <code class="inl">money</code>, and <code class="inl">get()</code>. What is printed? <span class="chips"><span class="chip clo">CLO 4</span><span class="chip so">SO 2</span></span></p>
+<div class="two-col">
+<pre class="code sm">static void reset(Wallet w) {
+    w = new Wallet(0);
+    w.add(10);
+}
+static void gift(Wallet w) {
+    w.add(100);
+}</pre>
+<pre class="code sm">// in main:
+Wallet mine = new Wallet(50);
+reset(mine);
+gift(mine);
+System.out.println(mine.get());</pre>
+</div>
+        <div class="mcq c4"><span>(a) <code class="inl">160.0</code></span><span>(b) <code class="inl">110.0</code></span><span>(c) <code class="inl">150.0</code></span><span>(d) <code class="inl">50.0</code></span></div>
+      </div>
+
+      <div class="mq" data-sub="0.5">
+        <p><b>5.</b> A <code class="inl">Course</code> object creates its own <code class="inl">Syllabus</code> object inside its constructor, and the syllabus is deleted together with the course.
+           A course is also taught by an <code class="inl">Instructor</code> who existed before the course and may teach other courses. Which design is correct? <span class="chips"><span class="chip clo">CLO 6</span><span class="chip so">SO 2</span></span></p>
+        <div class="mcq">
+          <span>(a) Course&ndash;Syllabus: aggregation; Course&ndash;Instructor: composition</span>
+          <span>(b) Course&ndash;Syllabus: composition; Course&ndash;Instructor: aggregation</span>
+          <span>(c) Course&ndash;Syllabus: inheritance; Course&ndash;Instructor: inheritance</span>
+          <span>(d) Course&ndash;Syllabus: composition; Course&ndash;Instructor: composition</span>
+        </div>
+      </div>
+
+      <div class="mq" data-sub="0.5">
+        <p><b>6.</b> What happens when these two classes are compiled? <span class="chips"><span class="chip clo">CLO 7</span><span class="chip so">SO 2</span></span></p>
+<div class="two-col">
+<pre class="code sm">class Account {
+    private String owner;
+    public Account(String owner) {
+        this.owner = owner;
+    }
+}</pre>
+<pre class="code sm">public class Savings extends Account {
+    private double rate;
+}</pre>
+</div>
+        <div class="mcq c1">
+          <span>(a) It compiles; a new <code class="inl">Savings</code> object has <code class="inl">owner</code> equal to <code class="inl">null</code>.</span>
+          <span>(b) Compilation error: <code class="inl">Savings</code> must declare its own <code class="inl">owner</code> field.</span>
+          <span>(c) Compilation error: the default constructor of <code class="inl">Savings</code> calls <code class="inl">super()</code>, but <code class="inl">Account</code> has no no-arg constructor.</span>
+          <span>(d) It compiles, but a runtime error occurs when <code class="inl">new Savings()</code> is executed.</span>
+        </div>
+      </div>
+
+      <div class="mq" data-sub="0.5">
+        <p><b>7.</b> <code class="inl">Circle extends Shape</code>. <code class="inl">Shape</code> has <code class="inl">area()</code>; <code class="inl">Circle</code> overrides <code class="inl">area()</code> and adds <code class="inl">diameter()</code>. Which statement is true? <span class="chips"><span class="chip clo">CLO 8</span><span class="chip so">SO 1</span></span></p>
+<pre class="code sm">Shape s = new Circle();
+System.out.println(s.area());       // line X
+System.out.println(s.diameter());   // line Y</pre>
+        <div class="mcq">
+          <span>(a) It prints Shape&rsquo;s area, then the diameter.</span>
+          <span>(b) It prints Circle&rsquo;s area, then the diameter.</span>
+          <span>(c) Compilation error at line Y: the declared type <code class="inl">Shape</code> has no <code class="inl">diameter()</code>.</span>
+          <span>(d) Compilation error at line X: <code class="inl">area()</code> of <code class="inl">Circle</code> cannot be reached through a <code class="inl">Shape</code> variable.</span>
+        </div>
+      </div>
+
+      <div class="mq" data-sub="0.5">
+        <p><b>8.</b> Class <code class="inl">Point</code> (fields <code class="inl">x</code>, <code class="inl">y</code>) does <b>not</b> override <code class="inl">equals</code>. What is printed? <span class="chips"><span class="chip clo">CLO 8</span><span class="chip so">SO 1</span></span></p>
+<pre class="code sm">Point p = new Point(1, 2);
+Point q = new Point(1, 2);
+Point r = p;
+System.out.println((p == q) + " " + p.equals(q) + " " + p.equals(r));</pre>
+        <div class="mcq c4"><span>(a) <code class="inl">false true true</code></span><span>(b) <code class="inl">false false true</code></span><span>(c) <code class="inl">true true true</code></span><span>(d) <code class="inl">false false false</code></span></div>
+      </div>
+
+      <div class="mq" data-sub="0.5">
+        <p><b>9.</b> What is printed? <span class="chips"><span class="chip clo">CLO 9</span><span class="chip so">SO 1</span></span></p>
+<pre class="code sm">ArrayList&lt;Integer&gt; list = new ArrayList&lt;&gt;(Arrays.asList(10, 20, 30, 40));
+list.remove(1);
+list.remove(Integer.valueOf(30));
+list.add(0, 5);
+System.out.println(list);</pre>
+        <div class="mcq c4"><span>(a) <code class="inl">[5, 10, 40]</code></span><span>(b) <code class="inl">[5, 20, 40]</code></span><span>(c) <code class="inl">[5, 10, 30]</code></span><span>(d) <code class="inl">[10, 5, 40]</code></span></div>
+      </div>
+
+      <div class="mq" data-sub="0.5">
+        <p><b>10.</b> <code class="inl">public abstract class Shape { &hellip; }</code> has a constructor and <b>no</b> abstract methods. Which statement is true? <span class="chips"><span class="chip clo">CLO 10</span><span class="chip so">SO 1</span></span></p>
+        <div class="mcq">
+          <span>(a) <code class="inl">Shape</code> cannot have a constructor, because it cannot be instantiated.</span>
+          <span>(b) <code class="inl">new Shape()</code> compiles, because <code class="inl">Shape</code> has no abstract methods.</span>
+          <span>(c) <code class="inl">Shape[] list = new Shape[5];</code> compiles.</span>
+          <span>(d) Every class that extends <code class="inl">Shape</code> must also be abstract.</span>
+        </div>
+      </div>
+
+      <div class="mq" data-sub="0.5">
+        <p><b>11.</b> Which statement does <b>not</b> compile? <span class="chips"><span class="chip clo">CLO 12</span><span class="chip so">SO 1</span></span></p>
+        <div class="mcq">
+          <span>(a) <code class="inl">ArrayList&lt;Integer&gt; a = new ArrayList&lt;&gt;();</code></span>
+          <span>(b) <code class="inl">ArrayList&lt;int&gt; b = new ArrayList&lt;&gt;();</code></span>
+          <span>(c) <code class="inl">ArrayList&lt;String&gt; c = new ArrayList&lt;String&gt;();</code></span>
+          <span>(d) <code class="inl">ArrayList&lt;Double&gt; d = new ArrayList&lt;&gt;(); d.add(2.5);</code></span>
+        </div>
+      </div>
+
+      <div class="mq" data-sub="0.5">
+        <p><b>12.</b> What is the result of compiling and running this code? <span class="chips"><span class="chip clo">CLO 13</span><span class="chip so">SO 2</span></span></p>
+<pre class="code sm">try {
+    int x = 10 / 0;
+    System.out.println(x);
+} catch (Exception e) {
+    System.out.println("General problem");
+} catch (ArithmeticException e) {
+    System.out.println("Division problem");
+}</pre>
+        <div class="mcq">
+          <span>(a) It prints <code class="inl">General problem</code>.</span>
+          <span>(b) It prints <code class="inl">Division problem</code>.</span>
+          <span>(c) Compilation error: <code class="inl">ArithmeticException</code> has already been caught.</span>
+          <span>(d) It compiles but stops with an <code class="inl">ArithmeticException</code>.</span>
+        </div>
+      </div>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Part I</div>
+        <table class="fill">
+          <thead><tr><th>#</th><th>Answer</th><th>Why (checked with javac/java 21)</th></tr></thead>
+          <tbody>
+            <tr><td class="num">1</td><td><span class="val" data-check="mcq|3 3 kkah">(a) 3 3 kkah</span></td><td>3 rows; row 2 has 3 cells; <code class="inl">"Makkah".substring(2)</code> is <code class="inl">kkah</code>.</td></tr>
+            <tr><td class="num">2</td><td><span class="val">(b)</span></td><td>javac: <i>unreported exception FileNotFoundException; must be caught or declared to be thrown</i>.</td></tr>
+            <tr><td class="num">3</td><td><span class="val" data-check="mcq|2 1 3">(b) 2 1 3</span></td><td><code class="inl">b</code> is an alias of <code class="inl">a</code> (2 visits); <code class="inl">total</code> is static, shared by all objects (3).</td></tr>
+            <tr><td class="num">4</td><td><span class="val" data-check="mcq|150.0">(c) 150.0</span></td><td><code class="inl">reset</code> only changes its local copy of the reference; <code class="inl">gift</code> changes the real object.</td></tr>
+            <tr><td class="num">5</td><td><span class="val">(b)</span></td><td>The syllabus is created and owned by the course (composition); the instructor exists on its own (aggregation).</td></tr>
+            <tr><td class="num">6</td><td><span class="val">(c)</span></td><td>javac: <i>constructor Account in class Account cannot be applied to given types</i>.</td></tr>
+            <tr><td class="num">7</td><td><span class="val">(c)</span></td><td>The compiler checks the <b>declared</b> type; javac: <i>cannot find symbol</i> (diameter) at line Y.</td></tr>
+            <tr><td class="num">8</td><td><span class="val" data-check="mcq|false false true">(b) false false true</span></td><td><code class="inl">Object.equals</code> compares references, like <code class="inl">==</code>.</td></tr>
+            <tr><td class="num">9</td><td><span class="val" data-check="mcq|[5, 10, 40]">(a) [5, 10, 40]</span></td><td><code class="inl">remove(1)</code> removes index 1 (20); <code class="inl">remove(Integer.valueOf(30))</code> removes the value 30.</td></tr>
+            <tr><td class="num">10</td><td><span class="val">(c)</span></td><td>An array of an abstract type is allowed; <code class="inl">new Shape()</code> fails even without abstract methods.</td></tr>
+            <tr><td class="num">11</td><td><span class="val">(b)</span></td><td>A type argument must be a class type (use <code class="inl">Integer</code>); javac: <i>unexpected type</i>.</td></tr>
+            <tr><td class="num">12</td><td><span class="val">(c)</span></td><td>The general catch comes first, so the specific one is unreachable; put <code class="inl">ArithmeticException</code> first.</td></tr>
+          </tbody>
+        </table>
+        <p class="rub">0.5 mark for the correct letter only; no part marks.</p>
+      </div>
+    </div>
+  </div><!-- /card -->
+</section>
+
+<!-- =====================================================================
+     PART II — CODE ANALYSIS & WRITING
+     ===================================================================== -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II (CPCS203)</span><span>Comprehensive Final Exam (Mock) &middot; Part II</span></div>
+  <div class="partbar" data-part="15"><span class="pn">Part II</span> Code Analysis &amp; Writing <span class="pm">15 marks</span></div>
+
+  <!-- ================= II.1 ================= -->
+  <div class="card" data-q="2" id="II.1">
+    <div class="card-head">
+      <span class="qno">II.1</span>
+      <span class="qtitle">Text I/O with a Ragged Array &mdash; Complete &amp; Trace</span>
+      <span class="chips"><span class="chip clo">CLO 2</span><span class="chip so">SO 1</span><span class="chip pts">2 marks</span></span>
+    </div>
+    <div class="card-body">
+      <p>The program reads the daily sales of each branch from <code class="inl">branches.txt</code> into a <b>ragged</b> 2-D array (each branch has its own number of days),
+         then writes one summary line per branch to <code class="inl">report.txt</code>.</p>
+<pre class="code xs">public class BranchSales {
+    public static void main(String[] args) throws Exception {
+        Scanner input = new Scanner(new File("branches.txt"));
+        int n = input.<span class="blank">(1)</span>;
+        String[] names = new String[n];
+        int[][] sales = <span class="blank">(2)</span>;
+        for (int i = 0; i &lt; n; i++) {
+            names[i] = input.<span class="blank">(3)</span>;
+            int days = input.nextInt();
+            <span class="blank">(4)</span>;   // row i gets 'days' cells
+            for (int j = 0; j &lt; sales[i].length; j++) {
+                sales[i][j] = input.nextInt();
+            }
+        }
+        input.close();
+
+        PrintWriter out = new PrintWriter("report.txt");
+        for (int i = 0; i &lt; n; i++) {
+            int total = 0;
+            for (int s : sales[i]) {
+                total += s;
+            }
+            out.println(names[i] + ": " + total + " SAR in "
+                        + sales[i].length + " days");
+        }
+        out.close();
+        System.out.println("Rows: " + sales.length
+                           + ", longest row: " + sales[0].length);
+    }
+}</pre>
+<div class="two-col" style="align-items:flex-start">
+  <div class="snug" style="flex:0 0 46%"><p class="mini" style="margin:0"><b>branches.txt</b></p>
+<pre class="code xs" style="margin-top:2px">3
+Jeddah 4 120 80 95 60
+Riyadh 2 200 150
+Abha 3 40 55 70</pre></div>
+  <p class="hint" style="margin-top:18px">Line 1 = number of branches. Each next line: branch name, number of days, then the sales of each day.</p>
+</div>
+      <p><b>(a)</b> Fill in the <b>four blanks</b> (0.25 mark each). <span class="mini" data-sub="1">(1 mark)</span></p>
+      <table class="fill">
+        <tbody>
+          <tr><td class="num">(1)</td><td class="ans"></td><td class="num">(2)</td><td class="ans"></td></tr>
+          <tr><td class="num">(3)</td><td class="ans"></td><td class="num">(4)</td><td class="ans"></td></tr>
+        </tbody>
+      </table>
+      <div style="break-inside:avoid;page-break-inside:avoid">
+      <p style="margin-top:10px"><b>(b)</b> Write the exact contents of <code class="inl">report.txt</code> and the console output (0.25 mark per line). <span class="mini" data-sub="1">(1 mark)</span></p>
+      <table class="fill">
+        <tbody>
+          <tr><td style="width:24%" rowspan="3"><b>report.txt</b></td><td class="ans"></td></tr>
+          <tr><td class="ans"></td></tr>
+          <tr><td class="ans"></td></tr>
+          <tr><td><b>Console</b></td><td class="ans"></td></tr>
+        </tbody>
+      </table>
+      </div>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; II.1</div>
+        <p>(a) (1) <code class="inl">nextInt()</code> &nbsp; (2) <code class="inl">new int[n][]</code> &nbsp; (3) <code class="inl">next()</code> &nbsp; (4) <code class="inl">sales[i] = new int[days]</code></p>
+        <p>(b) Real run: <code class="inl">report.txt</code>, then the console:</p>
+<pre class="code sm">Jeddah: 355 SAR in 4 days
+Riyadh: 350 SAR in 2 days
+Abha: 165 SAR in 3 days</pre>
+<pre class="code sm">Rows: 3, longest row: 4</pre>
+        <p class="rub">(a) 0.25 per blank; for (2) accept <code class="inl">new int[n][]</code> only (no second size: the rows are created in blank 4).
+           (3) <code class="inl">nextLine()</code> is wrong: it would read the whole rest of the line. (b) 0.25 per line, exact text.
+           Jeddah 120+80+95+60 = 355, Riyadh 200+150 = 350, Abha 40+55+70 = 165; <code class="inl">sales[0]</code> (Jeddah) has 4 cells.</p>
+      </div>
+    </div>
+  </div><!-- /card -->
+
+  <!-- ================= II.2 ================= -->
+  <div class="card" data-q="2.5" id="II.2">
+    <div class="card-head">
+      <span class="qno">II.2</span>
+      <span class="qtitle">String &amp; StringBuilder &mdash; Write <code>makeUsername</code></span>
+      <span class="chips"><span class="chip clo">CLO 1</span><span class="chip so">SO 1</span><span class="chip pts">2.5 marks</span></span>
+    </div>
+    <div class="card-body">
+      <p>The university e-mail system builds a username from a student&rsquo;s full name and year of entry. Write the static method</p>
+      <p style="text-align:center"><code class="inl">public static String makeUsername(String fullName, int year)</code></p>
+      <table class="need" style="width:100%">
+        <tr><th>Rules</th></tr>
+        <tr><td>1. Remove the spaces at the start and end of <code class="inl">fullName</code>. Inside the name, words are separated by exactly <b>one</b> space.</td></tr>
+        <tr><td>2. If the name has fewer than <b>two</b> words, return <code class="inl">"INVALID"</code>.</td></tr>
+        <tr><td>3. Otherwise the username is: the <b>first letter</b> of the first word + the <b>whole last word</b> + the <b>last two digits</b> of <code class="inl">year</code>, all in <b>lower case</b>.
+                <code class="inl">year</code> is always between 2010 and 2099.</td></tr>
+        <tr><td>4. Build the result with a <code class="inl">StringBuilder</code>.</td></tr>
+      </table>
+      <table class="need" style="width:100%">
+        <tr><th>Call</th><th>Returns</th></tr>
+        <tr><td class="mono">makeUsername("Sara Ahmed Alghamdi", 2026)</td><td class="mono">"salghamdi26"</td></tr>
+        <tr><td class="mono">makeUsername("&nbsp;&nbsp;Omar Saleh&nbsp;&nbsp;", 2025)</td><td class="mono">"osaleh25"</td></tr>
+        <tr><td class="mono">makeUsername("Huda", 2026)</td><td class="mono">"INVALID"</td></tr>
+      </table>
+      <div class="answer-space"><span class="lbl">Write your method here:</span><div class="codebox" style="min-height:62mm"></div></div>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; II.2</div>
+<div class="two-col">
+<pre class="code xs">public static String makeUsername(String fullName, int year) {
+    String name = fullName.trim();                       // 0.25
+    int firstSpace = name.indexOf(' ');
+    if (firstSpace == -1) {                              // 0.5
+        return "INVALID";
+    }
+    int lastSpace = name.lastIndexOf(' ');
+    StringBuilder sb = new StringBuilder();
+    sb.append(Character.toLowerCase(name.charAt(0)));    // 0.5
+    sb.append(name.substring(lastSpace + 1).toLowerCase()); // 0.5
+    sb.append(year % 100);                               // 0.5
+    return sb.toString();                                // 0.25
+}</pre>
+<pre class="code xs">// also accepted: split
+public static String makeUsername2(String fullName, int year) {
+    String[] words = fullName.trim().split(" ");
+    if (words.length &lt; 2) {
+        return "INVALID";
+    }
+    StringBuilder sb = new StringBuilder();
+    sb.append(words[0].toLowerCase().charAt(0));
+    sb.append(words[words.length - 1].toLowerCase());
+    sb.append(String.valueOf(year).substring(2));
+    return sb.toString();
+}</pre>
+</div>
+        <p>Real run of both versions: <code class="inl">salghamdi26</code>, <code class="inl">osaleh25</code>, <code class="inl">INVALID</code>.</p>
+        <p class="rub">trim (0.25) &middot; fewer-than-two-words check returns "INVALID" (0.5) &middot; first letter in lower case (0.5) &middot; last word in lower case (0.5) &middot;
+           last two digits of the year (0.5) &middot; StringBuilder used and <code class="inl">toString()</code> returned (0.25). Deduct 0.25 if the result is built with <code class="inl">+=</code> only.</p>
+      </div>
+    </div>
+  </div><!-- /card -->
+
+  <!-- ================= II.3 ================= -->
+  <div class="card" data-q="2.5" id="II.3">
+    <div class="card-head">
+      <span class="qno">II.3</span>
+      <span class="qtitle">Polymorphism, Dynamic Binding &amp; Casting &mdash; Trace</span>
+      <span class="chips"><span class="chip clo">CLO 8</span><span class="chip so">SO 1</span><span class="chip pts">2.5 marks &middot; 0.5 per line</span></span>
+    </div>
+    <div class="card-body">
+      <p>Trace the program and write the <b>exact output</b> of each numbered <code class="inl">println</code>.</p>
+<div class="two-col">
+<pre class="code xs">class Employee {
+    protected String name;
+
+    public Employee(String name) {
+        this.name = name;
+    }
+    public double pay() {
+        return 1000;
+    }
+    public String role() {
+        return "Employee";
+    }
+    public String info() {
+        return role() + " " + name
+               + " earns " + pay();
+    }
+}</pre>
+<pre class="code xs">class Engineer extends Employee {
+    public Engineer(String name) {
+        super(name);
+    }
+    @Override
+    public double pay() {
+        return super.pay() * 3;
+    }
+    @Override
+    public String role() {
+        return "Engineer";
+    }
+}
+
+class Intern extends Employee {
+    public Intern(String name) {
+        super(name);
+    }
+    @Override
+    public String role() {
+        return "Intern";
+    }
+    public String school() {
+        return "KAU";
+    }
+}</pre>
+</div>
+<pre class="code xs">public class PayrollTest {
+    static void show(Employee e) {
+        System.out.println("E: " + e.role());
+    }
+    static void show(Engineer e) {
+        System.out.println("G: " + e.role());
+    }
+
+    public static void main(String[] args) {
+        Employee[] staff = { new Engineer("Faisal"),
+                             new Intern("Lama"),
+                             new Employee("Nora") };
+        System.out.println(staff[0].info());   // Output 1
+        System.out.println(staff[1].info());   // Output 2
+        show(staff[0]);   // Output 3
+        int count = 0;
+        for (Employee e : staff) {
+            if (e instanceof Intern) {
+                Intern in = (Intern) e;
+                System.out.println(in.school() + " " + e.name);   // Output 4
+            }
+            if (e instanceof Employee) {
+                count++;
+            }
+        }
+        System.out.println(count);   // Output 5
+    }
+}</pre>
+      <table class="fill">
+        <thead><tr><th style="width:12%">Output</th><th>Exact text printed</th></tr></thead>
+        <tbody>
+          <tr><td class="num">1</td><td class="ans"></td></tr>
+          <tr><td class="num">2</td><td class="ans"></td></tr>
+          <tr><td class="num">3</td><td class="ans"></td></tr>
+          <tr><td class="num">4</td><td class="ans"></td></tr>
+          <tr><td class="num">5</td><td class="ans"></td></tr>
+        </tbody>
+      </table>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; II.3</div>
+<pre class="code sm">Engineer Faisal earns 3000.0
+Intern Lama earns 1000.0
+E: Engineer
+KAU Lama
+3</pre>
+        <p class="rub">0.5 per line. (1) <code class="inl">info()</code> is written in Employee, but <code class="inl">role()</code> and <code class="inl">pay()</code> bind <b>dynamically</b> to Engineer: 1000 &times; 3 = 3000.0.
+           (2) Intern does not override <code class="inl">pay()</code>, so 1000.0. (3) <b>Overloading is chosen by the compiler</b> from the declared type <code class="inl">Employee</code>, so <code class="inl">show(Employee)</code> runs
+           (&ldquo;E:&rdquo;), but inside it <code class="inl">role()</code> is dynamic (&ldquo;Engineer&rdquo;). (4) Only Lama is an Intern; the cast is needed to call <code class="inl">school()</code>. (5) Every element <i>is an</i> Employee.</p>
+      </div>
+    </div>
+  </div><!-- /card -->
+
+  <!-- ================= II.4 ================= -->
+  <div class="card" data-q="2.5" id="II.4">
+    <div class="card-head">
+      <span class="qno">II.4</span>
+      <span class="qtitle">ArrayList &amp; Generics</span>
+      <span class="chips"><span class="chip clo">CLO 9, 12</span><span class="chip so">SO 1</span><span class="chip pts">2.5 marks</span></span>
+    </div>
+    <div class="card-body">
+      <div style="break-inside:avoid;page-break-inside:avoid">
+      <p><b>(a)</b> Write the exact output (0.5 mark per line). <span class="mini" data-sub="1">(1 mark &middot; CLO 9)</span></p>
+<div class="two-col">
+<pre class="code sm wide">ArrayList&lt;String&gt; q = new ArrayList&lt;&gt;();
+q.add("Ali");
+q.add("Sara");
+q.add(1, "Omar");
+q.add("Ali");
+q.set(0, "Huda");
+q.remove("Ali");
+System.out.println(q + " " + q.size());                     // Output 1
+System.out.println(q.indexOf("Sara") + " " + q.contains("Ali"));  // Output 2</pre>
+<div class="narrow"><div class="answer-space"><span class="lbl">Output 1:</span><div class="writeline"></div><span class="lbl">Output 2:</span><div class="writeline"></div></div></div>
+</div>
+      </div>
+      <p><b>(b)</b> Write a <b>generic</b> static method <code class="inl">countOccurrences</code> that receives an <code class="inl">ArrayList</code> of <b>any</b> element type and a <code class="inl">target</code> of the same type,
+         and returns how many elements are <b>equal</b> to the target. <span class="mini" data-sub="1">(1 mark &middot; CLO 12)</span><br>
+         Example: for the list <code class="inl">[90, 75, 90, 90]</code> (<code class="inl">ArrayList&lt;Integer&gt;</code>) and target <code class="inl">90</code> it returns <code class="inl">3</code>;
+         for <code class="inl">["Jeddah", "Taif", "Jeddah"]</code> and <code class="inl">"Jeddah"</code> it returns <code class="inl">2</code>.</p>
+      <div class="answer-space"><div class="codebox" style="min-height:40mm"></div></div>
+      <p><b>(c)</b> Give <b>two</b> benefits of declaring <code class="inl">ArrayList&lt;String&gt; q</code> instead of the raw type <code class="inl">ArrayList q</code>. <span class="mini" data-sub="0.5">(0.5 mark &middot; CLO 12)</span></p>
+      <div class="answer-space"><div class="writeline"></div><div class="writeline"></div></div>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; II.4</div>
+        <p>(a) <span class="val" data-check="q4|[Huda, Omar, Sara] 3">[Huda, Omar, Sara] 3</span> &nbsp;and&nbsp; <span class="val" data-check="q4|2 false">2 false</span></p>
+        <p class="rub">[Ali, Sara] &rarr; add(1,"Omar") [Ali, Omar, Sara] &rarr; add [Ali, Omar, Sara, Ali] &rarr; set(0) [Huda, Omar, Sara, Ali] &rarr; <code class="inl">remove("Ali")</code> removes the <b>first</b> "Ali" still in the list (the last one).</p>
+<pre class="code sm">public static &lt;T&gt; int countOccurrences(ArrayList&lt;T&gt; list, T target) {
+    int count = 0;
+    for (T item : list) {
+        if (item.equals(target)) {
+            count++;
+        }
+    }
+    return count;
+}</pre>
+        <p class="rub">(b) <code class="inl">&lt;T&gt;</code> before the return type and <code class="inl">ArrayList&lt;T&gt;</code>, <code class="inl">T target</code> parameters (0.5); loop + <code class="inl">equals</code> + count returned (0.5).
+           Using <code class="inl">==</code> instead of <code class="inl">equals</code> loses 0.25. Checked: the calls in the example return 3 and 2.</p>
+        <p>(c) Any two (0.25 each): <span class="val">type errors are caught at compile time</span> (e.g. <code class="inl">q.add(5)</code> is rejected);
+           <span class="val">no cast is needed</span> when reading (<code class="inl">String s = q.get(0);</code>); the code is easier to read (the element type is visible).</p>
+      </div>
+    </div>
+  </div><!-- /card -->
+
+  <!-- ================= II.5 ================= -->
+  <div class="card" data-q="2.5" id="II.5">
+    <div class="card-head">
+      <span class="qno">II.5</span>
+      <span class="qtitle">Exception Handling &mdash; try / catch / finally and Propagation</span>
+      <span class="chips"><span class="chip clo">CLO 13</span><span class="chip so">SO 2</span><span class="chip pts">2.5 marks &middot; 0.25 per line</span></span>
+    </div>
+    <div class="card-body">
+      <p>Trace the program and write its <b>complete output</b>, one line per row.</p>
+<pre class="code xs">public class FeeSplitter {
+    static int share(int[] bills, int index, int people) {
+        try {
+            if (people &lt; 0) {
+                throw new IllegalArgumentException("people = " + people);
+            }
+            int result = bills[index] / people;
+            return result;
+        } catch (ArithmeticException e) {
+            System.out.println("Math: " + e.getMessage());
+            return 0;
+        } finally {
+            System.out.println("end of share(" + index + ")");
+        }
+    }
+
+    public static void main(String[] args) {
+        int[] bills = {90, 50, 40};
+        int[][] tests = { {0, 3}, {1, 0}, {2, -2}, {3, 1} };
+        for (int[] t : tests) {
+            try {
+                System.out.println("Share = " + share(bills, t[0], t[1]));
+            } catch (IllegalArgumentException e) {
+                System.out.println("Caller: " + e.getMessage());
+            } catch (Exception e) {
+                System.out.println("Other error");
+            }
+        }
+        System.out.println("Done");
+    }
+}</pre>
+<div class="two-col">
+      <table class="fill"><tbody>
+          <tr><td class="num">1</td><td class="ans"></td></tr>
+          <tr><td class="num">2</td><td class="ans"></td></tr>
+          <tr><td class="num">3</td><td class="ans"></td></tr>
+          <tr><td class="num">4</td><td class="ans"></td></tr>
+          <tr><td class="num">5</td><td class="ans"></td></tr>
+      </tbody></table>
+      <table class="fill"><tbody>
+          <tr><td class="num">6</td><td class="ans"></td></tr>
+          <tr><td class="num">7</td><td class="ans"></td></tr>
+          <tr><td class="num">8</td><td class="ans"></td></tr>
+          <tr><td class="num">9</td><td class="ans"></td></tr>
+          <tr><td class="num">10</td><td class="ans"></td></tr>
+      </tbody></table>
+</div>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; II.5</div>
+<pre class="code sm">end of share(0)
+Share = 30
+Math: / by zero
+end of share(1)
+Share = 0
+end of share(2)
+Caller: people = -2
+end of share(3)
+Other error
+Done</pre>
+        <p class="rub">0.25 per line in the right position. Test {0,3}: <code class="inl">finally</code> runs <b>before</b> the caller prints the returned 30.
+           Test {1,0}: <code class="inl">ArithmeticException</code> is caught inside <code class="inl">share</code>, which returns 0. Test {2,-2}: the <code class="inl">IllegalArgumentException</code> is not caught in
+           <code class="inl">share</code>; <code class="inl">finally</code> runs, then it propagates to <code class="inl">main</code>. Test {3,1}: <code class="inl">bills[3]</code> throws <code class="inl">ArrayIndexOutOfBoundsException</code>,
+           which only <code class="inl">catch (Exception e)</code> in main matches. The loop then continues, so &ldquo;Done&rdquo; is printed.</p>
+      </div>
+    </div>
+  </div><!-- /card -->
+
+  <!-- ================= II.6 ================= -->
+  <div class="card" data-q="3" id="II.6">
+    <div class="card-head">
+      <span class="qno">II.6</span>
+      <span class="qtitle">Abstract Classes &amp; Interfaces &mdash; Find and Fix 3 Errors</span>
+      <span class="chips"><span class="chip clo">CLO 10</span><span class="chip so">SO 1</span><span class="chip pts">3 marks &middot; 1 each</span></span>
+    </div>
+    <div class="card-body">
+      <p>The code contains <b>exactly three compilation errors</b>, all related to abstract classes and interfaces. For each error give the line number, explain it, and write the correction.</p>
+<pre class="code xs"><span class="ln"> 1</span>  interface Payable {
+<span class="ln"> 2</span>      double RATE = 0.15;
+<span class="ln"> 3</span>      double amountDue();
+<span class="ln"> 4</span>  }
+<span class="ln"> 5</span>  
+<span class="ln"> 6</span>  abstract class Bill implements Payable {
+<span class="ln"> 7</span>      private String id;
+<span class="ln"> 8</span>  
+<span class="ln"> 9</span>      public Bill(String id) {
+<span class="ln">10</span>          this.id = id;
+<span class="ln">11</span>      }
+<span class="ln">12</span>      public String getId() {
+<span class="ln">13</span>          return id;
+<span class="ln">14</span>      }
+<span class="ln">15</span>      public abstract String describe() {
+<span class="ln">16</span>          return "Bill " + id;
+<span class="ln">17</span>      }
+<span class="ln">18</span>  }
+<span class="ln">19</span>  
+<span class="ln">20</span>  class WaterBill extends Bill {
+<span class="ln">21</span>      private double liters;
+<span class="ln">22</span>  
+<span class="ln">23</span>      public WaterBill(String id, double liters) {
+<span class="ln">24</span>          super(id);
+<span class="ln">25</span>          this.liters = liters;
+<span class="ln">26</span>      }
+<span class="ln">27</span>      double amountDue() {
+<span class="ln">28</span>          return liters * RATE;
+<span class="ln">29</span>      }
+<span class="ln">30</span>      public String describe() {
+<span class="ln">31</span>          return "Water " + getId();
+<span class="ln">32</span>      }
+<span class="ln">33</span>  }
+<span class="ln">34</span>  
+<span class="ln">35</span>  public class BillTest {
+<span class="ln">36</span>      public static void main(String[] args) {
+<span class="ln">37</span>          Bill b = new Bill("B-1");
+<span class="ln">38</span>          Payable p = new WaterBill("W-7", 300);
+<span class="ln">39</span>          System.out.println(p.amountDue());
+<span class="ln">40</span>      }
+<span class="ln">41</span>  }</pre>
+      <table class="fill">
+        <thead><tr><th style="width:6%">#</th><th style="width:10%">Line</th><th style="width:44%">Error (explanation)</th><th>Correction</th></tr></thead>
+        <tbody>
+          <tr><td class="num">1</td><td style="height:3.4em"></td><td></td><td></td></tr>
+          <tr><td class="num">2</td><td style="height:3.4em"></td><td></td><td></td></tr>
+          <tr><td class="num">3</td><td style="height:3.4em"></td><td></td><td></td></tr>
+        </tbody>
+      </table>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; II.6</div>
+        <table class="fill">
+          <thead><tr><th>Line</th><th>Error</th><th>Correction</th></tr></thead>
+          <tbody>
+            <tr><td>15</td><td>An <b>abstract method cannot have a body</b>.</td><td><code class="inl">public abstract String describe();</code> (delete lines 16&ndash;17)</td></tr>
+            <tr><td>27</td><td>Interface methods are <code class="inl">public</code>; the implementation has package access, which is <b>weaker</b>.</td><td><code class="inl">public double amountDue() {</code></td></tr>
+            <tr><td>37</td><td><code class="inl">Bill</code> is <b>abstract</b> and cannot be instantiated.</td><td>Create a concrete subclass object, e.g. <code class="inl">Bill b = new WaterBill("B-1", 100);</code></td></tr>
+          </tbody>
+        </table>
+        <p class="rub">0.5 for the line and explanation, 0.5 for the correction. javac 21 reports exactly these three errors (lines 15, 27, 37). After the three fixes the program compiles and prints
+           <code class="inl" data-check="q6fix|45.0">45.0</code> (300 &times; 0.15; <code class="inl">RATE</code> is a <code class="inl">public static final</code> interface constant).</p>
+      </div>
+    </div>
+  </div><!-- /card -->
+</section>
+
+<!-- =====================================================================
+     PART III — UML & JAVA
+     ===================================================================== -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II (CPCS203)</span><span>Comprehensive Final Exam (Mock) &middot; Part III</span></div>
+  <div class="partbar" data-part="9"><span class="pn">Part III</span> UML Diagram &amp; Java Implementation <span class="pm">9 marks</span></div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="qno">III</span>
+      <span class="qtitle">Scenario &mdash; &ldquo;Jeddah Wheels&rdquo; Rental Office</span>
+      <span class="chips"><span class="chip clo">CLO 5, 8&ndash;13</span><span class="chip so">SO 1 / SO 2</span></span>
+    </div>
+    <div class="card-body">
+      <p>A car-rental office in Jeddah rents cars and trucks. Study the UML class diagram and the notes, then answer questions (a)&ndash;(f).
+         Abstract names are in <i>italic</i>.</p>
+
+      <div class="uml-canvas">
+        <svg class="links" width="640" height="556" viewBox="0 0 640 556">
+          <g stroke="#1e3a8a" stroke-width="1.5" fill="none">
+            <!-- Vehicle realizes Comparable (dashed, hollow triangle) -->
+            <line x1="145" y1="110" x2="145" y2="78" stroke-dasharray="6 4"/>
+            <path d="M145,64 L137,78 L153,78 Z" fill="#fff"/>
+            <!-- Truck realizes Insurable -->
+            <line x1="505" y1="110" x2="505" y2="78" stroke-dasharray="6 4"/>
+            <path d="M505,64 L497,78 L513,78 Z" fill="#fff"/>
+            <!-- Truck extends Vehicle (solid, hollow triangle) -->
+            <line x1="370" y1="160" x2="304" y2="160"/>
+            <path d="M290,160 L304,152 L304,168 Z" fill="#fff"/>
+            <!-- Car extends Vehicle -->
+            <line x1="145" y1="340" x2="145" y2="296"/>
+            <path d="M145,282 L137,296 L153,296 Z" fill="#fff"/>
+            <!-- RentalOffice <>-- Vehicle (aggregation, hollow diamond at the whole) -->
+            <polyline points="352,370 330,370 330,262 290,262"/>
+            <path d="M370,370 L361,364 L352,370 L361,376 Z" fill="#fff"/>
+            <!-- RentalOffice - - -> RentalException (dependency) -->
+            <line x1="505" y1="430" x2="505" y2="489" stroke-dasharray="6 4"/>
+            <polyline points="498,479 505,489 512,479"/>
+            <!-- RentalException extends Exception -->
+            <line x1="370" y1="520" x2="304" y2="520"/>
+            <path d="M290,520 L304,512 L304,528 Z" fill="#fff"/>
+          </g>
+          <g fill="#1e3a8a" font-family="Segoe UI, sans-serif" font-size="11">
+            <text x="341" y="389">1</text>
+            <text x="296" y="256">0..*</text>
+            <text x="512" y="464" font-style="italic">throws</text>
+          </g>
+        </svg>
+
+        <div class="ubox" style="left:20px;top:0;width:250px;height:64px">
+          <div class="nm"><span class="st">&laquo;interface&raquo;</span>Comparable&lt;Vehicle&gt;</div>
+          <div class="sec"><span>+compareTo(o: Vehicle): int</span></div>
+        </div>
+        <div class="ubox" style="left:370px;top:0;width:270px;height:64px">
+          <div class="nm"><span class="st">&laquo;interface&raquo;</span>Insurable</div>
+          <div class="sec"><span>+insuranceCost(days: int): double</span></div>
+        </div>
+        <div class="ubox" style="left:20px;top:110px;width:270px;height:172px">
+          <div class="nm abs">Vehicle</div>
+          <div class="sec"><span>-plate: String</span><span>-dailyRate: double</span></div>
+          <div class="sec"><span>+Vehicle(plate: String,</span><span class="ind">dailyRate: double)</span><span>+getPlate(): String</span><span>+getDailyRate(): double</span>
+            <span class="abs">+rentalCost(days: int): double</span><span>+compareTo(o: Vehicle): int</span><span>+toString(): String</span></div>
+        </div>
+        <div class="ubox" style="left:370px;top:110px;width:270px;height:130px">
+          <div class="nm">Truck</div>
+          <div class="sec"><span>-loadTons: double</span></div>
+          <div class="sec"><span>+Truck(plate: String, dailyRate: double,</span><span class="ind">loadTons: double)</span><span>+rentalCost(days: int): double</span>
+            <span>+insuranceCost(days: int): double</span><span>+toString(): String</span></div>
+        </div>
+        <div class="ubox" style="left:20px;top:340px;width:270px;height:102px">
+          <div class="nm">Car</div>
+          <div class="sec"><span>-seats: int</span></div>
+          <div class="sec"><span>+Car(plate: String, dailyRate: double,</span><span class="ind">seats: int)</span><span>+rentalCost(days: int): double</span></div>
+        </div>
+        <div class="ubox" style="left:370px;top:300px;width:270px;height:130px">
+          <div class="nm">RentalOffice</div>
+          <div class="sec"><span>-city: String</span><span>-fleet: ArrayList&lt;Vehicle&gt;</span></div>
+          <div class="sec"><span>+RentalOffice(city: String)</span><span>+addVehicle(v: Vehicle): void</span><span>+rent(plate: String, days: int): double</span><span>+totalInsurance(days: int): double</span></div>
+        </div>
+        <div class="ubox" style="left:370px;top:490px;width:270px;height:60px">
+          <div class="nm">RentalException</div>
+          <div class="sec" style="flex:0 0 9px;padding:0"></div>
+          <div class="sec"><span>+RentalException(message: String)</span></div>
+        </div>
+        <div class="ubox" style="left:110px;top:506px;width:180px;height:28px">
+          <div class="nm only">Exception</div>
+        </div>
+      </div>
+
+      <table class="need" style="width:100%">
+        <tr><th>Notes</th></tr>
+        <tr><td><code class="inl">Vehicle.toString()</code> returns e.g. <code class="inl">JED-500 (300.0 SAR/day)</code>. <code class="inl">compareTo</code> orders vehicles by <code class="inl">dailyRate</code>, lowest first.</td></tr>
+        <tr><td><code class="inl">Car.rentalCost(days)</code> = dailyRate &times; days, with a <b>10% discount</b> when days &ge; 7.</td></tr>
+        <tr><td><code class="inl">Truck.insuranceCost(days)</code> = <b>40</b> SAR per day if <code class="inl">loadTons &gt; 5</code>, otherwise <b>25</b> SAR per day.
+                <code class="inl">Truck.rentalCost(days)</code> = dailyRate &times; days + insuranceCost(days).
+                <code class="inl">Truck.toString()</code> adds <code class="inl"> [truck 8.0 t]</code> to Vehicle&rsquo;s text.</td></tr>
+        <tr><td><code class="inl">rent(plate, days)</code> throws <code class="inl">RentalException("Invalid days: " + days)</code> if days &lt; 1; otherwise it returns the rental cost of the vehicle with that plate,
+                or throws <code class="inl">RentalException("No vehicle " + plate)</code> if no vehicle has it.</td></tr>
+        <tr><td><code class="inl">totalInsurance(days)</code> returns the sum of <code class="inl">insuranceCost(days)</code> of every <b>insurable</b> vehicle in the fleet.</td></tr>
+      </table>
+      <table class="need" style="width:100%">
+        <tr><th colspan="2">The office&rsquo;s fleet, added in this order (used in (c) and (e))</th></tr>
+        <tr><td class="mono">1. new Truck("JED-500", 300, 8)</td><td class="mono">2. new Car("JED-101", 150, 5)</td></tr>
+        <tr><td class="mono">3. new Truck("JED-777", 250, 3)</td><td class="mono">4. new Car("JED-202", 120, 7)</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- ================= III.a ================= -->
+  <div class="card" data-q="2.5" id="III.a">
+    <div class="card-head">
+      <span class="qno">III (a)</span>
+      <span class="qtitle">Write the Complete Class <code>Truck</code></span>
+      <span class="chips"><span class="chip clo">CLO 11</span><span class="chip so">SO 2</span><span class="chip pts">2.5 marks</span></span>
+    </div>
+    <div class="card-body">
+      <p>Translate <code class="inl">Truck</code> into complete Java code. Write <code class="inl">Truck</code> <b>only</b> &mdash; assume <code class="inl">Vehicle</code> and <code class="inl">Insurable</code> already exist.</p>
+      <div class="answer-space"><div class="codebox" style="min-height:82mm"></div></div>
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; III (a)</div>
+<pre class="code sm">class Truck extends Vehicle implements Insurable {
+    private double loadTons;
+
+    public Truck(String plate, double dailyRate, double loadTons) {
+        super(plate, dailyRate);
+        this.loadTons = loadTons;
+    }
+    @Override
+    public double insuranceCost(int days) {
+        if (loadTons &gt; 5) {
+            return 40 * days;
+        }
+        return 25 * days;
+    }
+    @Override
+    public double rentalCost(int days) {
+        return getDailyRate() * days + insuranceCost(days);
+    }
+    @Override
+    public String toString() {
+        return super.toString() + " [truck " + loadTons + " t]";
+    }
+}</pre>
+        <p class="rub">Header <code class="inl">extends Vehicle implements Insurable</code> (0.5) &middot; private field + constructor with <code class="inl">super(plate, dailyRate)</code> first (0.5) &middot;
+           <code class="inl">insuranceCost</code> (0.5) &middot; <code class="inl">rentalCost</code> using <code class="inl">getDailyRate()</code> and <code class="inl">insuranceCost(days)</code> (0.5) &middot;
+           <code class="inl">toString</code> with <code class="inl">super.toString()</code> (0.5). <code class="inl">dailyRate</code> is private in Vehicle, so writing <code class="inl">dailyRate * days</code> loses that 0.5.
+           Checked: <code class="inl">new Truck("JED-500", 300, 8).rentalCost(2)</code> = <code class="inl" data-check="p3|680.0">680.0</code>.</p>
+      </div>
+    </div>
+  </div><!-- /card -->
+
+  <!-- ================= III.b ================= -->
+  <div class="card" data-q="1" id="III.b">
+    <div class="card-head">
+      <span class="qno">III (b)</span>
+      <span class="qtitle">Name the Relationships</span>
+      <span class="chips"><span class="chip clo">CLO 5</span><span class="chip so">SO 2</span><span class="chip pts">1 mark &middot; 0.25 each</span></span>
+    </div>
+    <div class="card-body">
+      <p>Write <b>Inheritance</b>, <b>Realization</b> (implements an interface), <b>Composition</b>, <b>Aggregation</b> or <b>Dependency</b> for each pair, as shown in the diagram.</p>
+      <table class="fill">
+        <thead><tr><th style="width:24%">Class 1</th><th style="width:24%">Class 2</th><th>Relationship</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">Car</td><td class="mono">Vehicle</td><td class="ans"></td></tr>
+          <tr><td class="mono">Truck</td><td class="mono">Insurable</td><td class="ans"></td></tr>
+          <tr><td class="mono">RentalOffice</td><td class="mono">Vehicle</td><td class="ans"></td></tr>
+          <tr><td class="mono">RentalOffice</td><td class="mono">RentalException</td><td class="ans"></td></tr>
+        </tbody>
+      </table>
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; III (b)</div>
+        <p>Car&ndash;Vehicle: <span class="val">Inheritance</span> &middot; Truck&ndash;Insurable: <span class="val">Realization</span> &middot;
+           RentalOffice&ndash;Vehicle: <span class="val">Aggregation</span> (hollow diamond; vehicles are added from outside) &middot; RentalOffice&ndash;RentalException: <span class="val">Dependency</span> (dashed arrow; only used/thrown in a method).</p>
+      </div>
+    </div>
+  </div><!-- /card -->
+
+  <!-- ================= III.c ================= -->
+  <div class="card" data-q="1" id="III.c">
+    <div class="card-head">
+      <span class="qno">III (c)</span>
+      <span class="qtitle">Comparable &mdash; Write <code>compareTo</code></span>
+      <span class="chips"><span class="chip clo">CLO 10</span><span class="chip so">SO 1</span><span class="chip pts">1 mark</span></span>
+    </div>
+    <div class="card-body">
+      <p>Write the method <code class="inl">compareTo</code> of class <code class="inl">Vehicle</code> (see the notes). <span class="mini" data-sub="0.75">(0.75 mark)</span></p>
+      <div class="answer-space"><div class="codebox" style="min-height:36mm"></div></div>
+      <p>After <code class="inl">Collections.sort(fleet)</code> on the office&rsquo;s fleet, which plate is <b>first</b>? <span class="mini" data-sub="0.25">(0.25 mark)</span></p>
+      <div class="answer-space"><div class="writeline"></div></div>
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; III (c)</div>
+<pre class="code sm">@Override
+public int compareTo(Vehicle other) {
+    if (dailyRate &lt; other.dailyRate) {
+        return -1;
+    } else if (dailyRate &gt; other.dailyRate) {
+        return 1;
+    } else {
+        return 0;
+    }
+}</pre>
+        <p>First plate: <span class="val" data-check="p3|[JED-202 (120.0 SAR/day)">JED-202</span> (120 SAR/day is the lowest rate). Real sorted fleet: <code class="inl">[JED-202 (120.0 SAR/day), JED-101 (150.0 SAR/day), JED-777 (250.0 SAR/day) [truck 3.0 t], JED-500 (300.0 SAR/day) [truck 8.0 t]]</code></p>
+        <p class="rub">Header <code class="inl">public int compareTo(Vehicle other)</code> (0.25) &middot; correct negative / positive / zero results (0.5). Also accept
+           <code class="inl">return Double.compare(dailyRate, other.dailyRate);</code> or the getters. <code class="inl">other.dailyRate</code> is allowed: we are inside class Vehicle.</p>
+      </div>
+    </div>
+  </div><!-- /card -->
+
+  <!-- ================= III.d ================= -->
+  <div class="card" data-q="2" id="III.d">
+    <div class="card-head">
+      <span class="qno">III (d)</span>
+      <span class="qtitle">ArrayList of Objects &mdash; Write <code>rent</code></span>
+      <span class="chips"><span class="chip clo">CLO 9</span><span class="chip so">SO 1</span><span class="chip pts">2 marks</span></span>
+    </div>
+    <div class="card-body">
+      <p>Write the method <code class="inl">rent(String plate, int days)</code> of class <code class="inl">RentalOffice</code> exactly as described in the notes. <code class="inl">RentalException</code> is a <b>checked</b> exception.</p>
+      <div class="answer-space"><div class="codebox" style="min-height:58mm"></div></div>
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; III (d)</div>
+<pre class="code sm">public double rent(String plate, int days) throws RentalException {
+    if (days &lt; 1) {
+        throw new RentalException("Invalid days: " + days);
+    }
+    for (Vehicle v : fleet) {
+        if (v.getPlate().equals(plate)) {
+            return v.rentalCost(days);
+        }
+    }
+    throw new RentalException("No vehicle " + plate);
+}</pre>
+        <p class="rub">Header with <code class="inl">throws RentalException</code> (0.25) &middot; days check + <code class="inl">throw new RentalException(...)</code> (0.5) &middot; loop over the ArrayList comparing plates with <code class="inl">equals</code> (0.5) &middot;
+           return <code class="inl">v.rentalCost(days)</code> &mdash; dynamic binding picks the Car or Truck version (0.5) &middot; throw &ldquo;No vehicle&rdquo; <b>after</b> the loop (0.25). An index loop with <code class="inl">fleet.get(i)</code> and <code class="inl">fleet.size()</code> is equally correct.</p>
+      </div>
+    </div>
+  </div><!-- /card -->
+
+  <!-- ================= III.e ================= -->
+  <div class="card" data-q="1.5" id="III.e">
+    <div class="card-head">
+      <span class="qno">III (e)</span>
+      <span class="qtitle">Custom Exception &mdash; Write It and Trace It</span>
+      <span class="chips"><span class="chip clo">CLO 13</span><span class="chip so">SO 2</span><span class="chip pts">1.5 marks</span></span>
+    </div>
+    <div class="card-body">
+      <p><b>(i)</b> Write the class <code class="inl">RentalException</code> from the diagram. <span class="mini" data-sub="0.5">(0.5 mark)</span></p>
+      <div class="answer-space"><div class="codebox" style="min-height:26mm"></div></div>
+      <div style="break-inside:avoid;page-break-inside:avoid">
+      <p><b>(ii)</b> <code class="inl">office</code> holds the fleet shown under the notes. Write the exact output of this fragment. <span class="mini" data-sub="1">(1 mark)</span></p>
+<div class="two-col">
+<pre class="code sm wide">try {
+    System.out.println(office.rent("JED-500", 2));
+    System.out.println(office.rent("JED-101", 7));
+    System.out.println(office.rent("JED-999", 3));
+    System.out.println("not printed");
+} catch (RentalException e) {
+    System.out.println("Sorry: " + e.getMessage());
+}</pre>
+<div class="narrow"><div class="answer-space"><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div></div></div>
+</div>
+      </div>
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; III (e)</div>
+<div class="two-col">
+<pre class="code sm">class RentalException extends Exception {
+    public RentalException(String message) {
+        super(message);
+    }
+}</pre>
+<pre class="code sm">680.0
+945.0
+Sorry: No vehicle JED-999</pre>
+</div>
+        <p class="rub">(i) <code class="inl">extends Exception</code> (0.25) &middot; constructor passing the message with <code class="inl">super(message)</code> (0.25).
+           (ii) 680.0 = 300 &times; 2 + 40 &times; 2 (0.25); 945.0 = 150 &times; 7 &times; 0.9 (0.25); the third call throws, so <code class="inl">"not printed"</code> is skipped and the catch prints the message (0.5).</p>
+      </div>
+    </div>
+  </div><!-- /card -->
+
+  <!-- ================= III.f ================= -->
+  <div class="card" data-q="1" id="III.f">
+    <div class="card-head">
+      <span class="qno">III (f)</span>
+      <span class="qtitle">Polymorphism with <code>instanceof</code> &mdash; Write <code>totalInsurance</code></span>
+      <span class="chips"><span class="chip clo">CLO 8</span><span class="chip so">SO 1</span><span class="chip pts">1 mark</span></span>
+    </div>
+    <div class="card-body">
+      <p>Write the method <code class="inl">totalInsurance(int days)</code> of class <code class="inl">RentalOffice</code>. Only some vehicles are insurable, and <code class="inl">fleet</code> is declared as <code class="inl">ArrayList&lt;Vehicle&gt;</code>.</p>
+      <div class="answer-space"><div class="codebox" style="min-height:40mm"></div></div>
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; III (f)</div>
+<pre class="code sm">public double totalInsurance(int days) {
+    double total = 0;
+    for (Vehicle v : fleet) {
+        if (v instanceof Insurable) {
+            total += ((Insurable) v).insuranceCost(days);
+        }
+    }
+    return total;
+}</pre>
+        <p class="rub"><code class="inl">instanceof Insurable</code> test (0.5) &middot; cast to <code class="inl">Insurable</code> to call <code class="inl">insuranceCost</code>, sum and return (0.5). Without the cast it does not compile:
+           <code class="inl">Vehicle</code> has no <code class="inl">insuranceCost</code>. Checked: for the fleet above, <code class="inl">totalInsurance(3)</code> = 120 + 75 = <code class="inl" data-check="p3|195.0">195.0</code>.</p>
+      </div>
+    </div>
+  </div><!-- /card -->
+
+  <div class="endmark">&mdash; End of the Exam &mdash; Good Luck &mdash; Bil-Tawfeeq &mdash;</div>
+</section>
+
+<!-- =====================================================================
+     BLUEPRINT
+     ===================================================================== -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II (CPCS203)</span><span>Comprehensive Final Exam (Mock) &middot; Blueprint</span></div>
+  <div class="partbar"><span class="pn">Blueprint</span> CLO Coverage <span class="pm">for students and the exam committee</span></div>
+  <table class="bp">
+    <thead><tr><th style="width:9%">Question</th><th>Topic</th><th style="width:7%">CLO</th><th style="width:7%">SO</th><th style="width:9%">Marks</th></tr></thead>
+    <tbody>
+      <tr class="grp"><td colspan="5">Part I &mdash; Multiple Choice (6 marks)</td></tr>
+      <tr><td>I.1</td><td>Multidimensional arrays (Ch 8) + String &mdash; <code class="inl">length</code> of a 2-D array, <code class="inl">substring</code></td><td class="c">1</td><td class="c">1</td><td class="c" data-bp="0.5">0.5</td></tr>
+      <tr><td>I.2</td><td>Text I/O &mdash; <code class="inl">Scanner(File)</code> and the checked <code class="inl">FileNotFoundException</code></td><td class="c">2</td><td class="c">1</td><td class="c" data-bp="0.5">0.5</td></tr>
+      <tr><td>I.3</td><td>Objects &amp; Classes &mdash; static vs instance variables, aliases</td><td class="c">3</td><td class="c">1</td><td class="c" data-bp="0.5">0.5</td></tr>
+      <tr><td>I.4</td><td>Thinking in Objects &mdash; passing object references to methods</td><td class="c">4</td><td class="c">2</td><td class="c" data-bp="0.5">0.5</td></tr>
+      <tr><td>I.5</td><td>OO analysis &mdash; composition vs aggregation in a real situation</td><td class="c">6</td><td class="c">2</td><td class="c" data-bp="0.5">0.5</td></tr>
+      <tr><td>I.6</td><td>Inheritance &mdash; implicit <code class="inl">super()</code> and the missing no-arg constructor</td><td class="c">7</td><td class="c">2</td><td class="c" data-bp="0.5">0.5</td></tr>
+      <tr><td>I.7</td><td>Polymorphism &mdash; declared type decides which methods compile</td><td class="c">8</td><td class="c">1</td><td class="c" data-bp="0.5">0.5</td></tr>
+      <tr><td>I.8</td><td>Polymorphism &mdash; <code class="inl">==</code> vs <code class="inl">Object.equals</code></td><td class="c">8</td><td class="c">1</td><td class="c" data-bp="0.5">0.5</td></tr>
+      <tr><td>I.9</td><td>ArrayList &mdash; <code class="inl">remove(index)</code> vs <code class="inl">remove(Object)</code>, <code class="inl">add(index, e)</code></td><td class="c">9</td><td class="c">1</td><td class="c" data-bp="0.5">0.5</td></tr>
+      <tr><td>I.10</td><td>Abstract classes &mdash; rules</td><td class="c">10</td><td class="c">1</td><td class="c" data-bp="0.5">0.5</td></tr>
+      <tr><td>I.11</td><td>Generics &mdash; type arguments must be class types</td><td class="c">12</td><td class="c">1</td><td class="c" data-bp="0.5">0.5</td></tr>
+      <tr><td>I.12</td><td>Exceptions &mdash; order of catch blocks</td><td class="c">13</td><td class="c">2</td><td class="c" data-bp="0.5">0.5</td></tr>
+      <tr class="grp"><td colspan="5">Part II &mdash; Code Analysis &amp; Writing (15 marks)</td></tr>
+      <tr><td>II.1</td><td>Text I/O + ragged 2-D array &mdash; complete &amp; trace (<code class="inl">BranchSales</code>)</td><td class="c">2</td><td class="c">1</td><td class="c" data-bp="2">2</td></tr>
+      <tr><td>II.2</td><td>String / StringBuilder &mdash; write <code class="inl">makeUsername</code></td><td class="c">1</td><td class="c">1</td><td class="c" data-bp="2.5">2.5</td></tr>
+      <tr><td>II.3</td><td>Polymorphism &mdash; dynamic binding, overloading, <code class="inl">instanceof</code>, casting (<code class="inl">PayrollTest</code>)</td><td class="c">8</td><td class="c">1</td><td class="c" data-bp="2.5">2.5</td></tr>
+      <tr><td>II.4 (a)</td><td>ArrayList &mdash; trace <code class="inl">add / set / remove / indexOf / contains</code></td><td class="c">9</td><td class="c">1</td><td class="c" data-bp="1">1</td></tr>
+      <tr><td>II.4 (b, c)</td><td>Generics &mdash; write a generic method; benefits of generics</td><td class="c">12</td><td class="c">1</td><td class="c" data-bp="1.5">1.5</td></tr>
+      <tr><td>II.5</td><td>Exception handling &mdash; try / catch / finally, propagation (<code class="inl">FeeSplitter</code>)</td><td class="c">13</td><td class="c">2</td><td class="c" data-bp="2.5">2.5</td></tr>
+      <tr><td>II.6</td><td>Abstract classes &amp; interfaces &mdash; find &amp; fix 3 errors (<code class="inl">Bill</code>)</td><td class="c">10</td><td class="c">1</td><td class="c" data-bp="3">3</td></tr>
+      <tr class="grp"><td colspan="5">Part III &mdash; UML Diagram &amp; Java Implementation (9 marks)</td></tr>
+      <tr><td>III.a</td><td>Class hierarchy &mdash; write <code class="inl">Truck</code> (abstract superclass + interface)</td><td class="c">11</td><td class="c">2</td><td class="c" data-bp="2.5">2.5</td></tr>
+      <tr><td>III.b</td><td>UML relationships</td><td class="c">5</td><td class="c">2</td><td class="c" data-bp="1">1</td></tr>
+      <tr><td>III.c</td><td>Comparable &mdash; write <code class="inl">compareTo</code>, sorting</td><td class="c">10</td><td class="c">1</td><td class="c" data-bp="1">1</td></tr>
+      <tr><td>III.d</td><td>ArrayList of objects &mdash; write <code class="inl">rent</code></td><td class="c">9</td><td class="c">1</td><td class="c" data-bp="2">2</td></tr>
+      <tr><td>III.e</td><td>Custom checked exception &mdash; write it and trace a try/catch</td><td class="c">13</td><td class="c">2</td><td class="c" data-bp="1.5">1.5</td></tr>
+      <tr><td>III.f</td><td>Polymorphism &mdash; <code class="inl">instanceof</code> + cast to an interface</td><td class="c">8</td><td class="c">1</td><td class="c" data-bp="1">1</td></tr>
+      <tr class="sum"><td colspan="4" style="text-align:right">Total</td><td class="c">30</td></tr>
+    </tbody>
+  </table>
+
+  <table class="bp" style="margin-top:12px">
+    <thead><tr><th>CLO</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th><th>11</th><th>12</th><th>13</th><th>Total</th></tr></thead>
+    <tbody>
+      <tr><td><b>Marks</b></td><td class="c">3</td><td class="c">2.5</td><td class="c">0.5</td><td class="c">0.5</td><td class="c">1</td><td class="c">0.5</td><td class="c">0.5</td><td class="c">4.5</td><td class="c">3.5</td><td class="c">4.5</td><td class="c">2.5</td><td class="c">2</td><td class="c">4.5</td><td class="c"><b>30</b></td></tr>
+      <tr><td><b>SO</b></td><td class="c">1</td><td class="c">1</td><td class="c">1</td><td class="c">2</td><td class="c">2</td><td class="c">2</td><td class="c">2</td><td class="c">1</td><td class="c">1</td><td class="c">1</td><td class="c">2</td><td class="c">1</td><td class="c">2</td><td class="c"></td></tr>
+    </tbody>
+  </table>
+  <p class="mini" style="margin-top:8px">Before the midterm (CLO 1&ndash;7, Ch 8, 9, 10, 12 Text I/O, 11.1&ndash;11.6): <b>8.5 marks</b>. After the midterm (CLO 8&ndash;13: polymorphism, ArrayList, abstract classes, interfaces, generics, exceptions): <b>21.5 marks</b>.
+     SO 1: 20.5 marks &middot; SO 2: 9.5 marks. Chapter 8 (multidimensional arrays) has no CLO of its own in the syllabus; it is tested inside I.1 (CLO 1) and II.1 (CLO 2).</p>
+  <p class="mini">CLO 1 String &middot; 2 File I/O &middot; 3 object identity, constructors, encapsulation &middot; 4 program as communicating objects &middot; 5 UML &middot; 6 real-world OO analysis &middot;
+     7 inheritance &middot; 8 polymorphism &middot; 9 ArrayList &middot; 10 interfaces &amp; abstract classes &middot; 11 class hierarchies &middot; 12 generics &middot; 13 exception handling.
+     Every program in this exam and its key was compiled and run with javac / java 21.</p>
+</section>
+
+<script>
+  var btn = document.getElementById('toggleAns');
+  btn.addEventListener('click', function () {
+    var on = document.body.classList.toggle('show-answers');
+    btn.textContent = on ? '🙈 Hide model answers' : '👁 Show model answers';
+    btn.classList.toggle('ghost', !on);
+  });
+</script>
+</body>
+</html>

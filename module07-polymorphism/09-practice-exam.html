@@ -1,0 +1,1210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Polymorphism &amp; ArrayList &mdash; Practice Exam (A4 printable)</title>
+<style>
+/* =======================================================================
+   Programming II — MODULE 7: POLYMORPHISM & ARRAYLIST — practice exam
+   Print-first, A4. Each question is a CARD. Module colour theme (green).
+   A "Show model answers" toggle turns the same file into an answer key.
+   ======================================================================= */
+@page { size: A4; margin: 12mm 15mm 14mm 15mm; }
+
+:root{
+  --em:        #15803d;
+  --em-dark:   #166534;
+  --em-deep:   #14532d;
+  --em-tint:   #f0fdf4;
+  --ink:       #1f2937;
+  --ink-soft:  #4b5563;
+  --rule:      #bbf7d0;
+  --paper:     #ffffff;
+  --code-bg:   #f7fdf9;
+  --code-rule: #d1f2dc;
+  --warn:      #b42318;
+  --tag-easy:  #e7f6ec; --tag-easy-i:#1a7f37;
+  --tag-med:   #fef3e0; --tag-med-i: #9a6212;
+  --tag-hard:  #fdeaea; --tag-hard-i:#b42318;
+}
+
+*{ box-sizing:border-box; }
+html,body{
+  margin:0; padding:0;
+  background:#e5e9f0;
+  color:var(--ink);
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size:11pt; line-height:1.5;
+}
+body{ padding:14mm 0; }
+
+/* ---- A4 sheet ---- */
+.sheet{
+  background:var(--paper);
+  width:210mm; min-height:297mm;
+  margin:0 auto 10mm;
+  padding:15mm 15mm 18mm;
+  box-shadow:0 3px 14px rgba(31,41,55,.18);
+  position:relative;
+}
+
+/* ---- running head ---- */
+.runhead{
+  display:flex; justify-content:space-between; align-items:flex-end;
+  border-bottom:2px solid var(--em-dark);
+  padding-bottom:6px; margin-bottom:14px;
+  font-size:9.5pt; color:var(--em-deep);
+}
+.runhead b{ font-size:10.5pt; }
+
+/* ================= COVER ================= */
+.cover-top{ text-align:center; }
+.cover-rule{ height:2px; background:var(--em-dark); margin:12px 0; }
+.cover-title{ font-size:22pt; font-weight:800; color:var(--em); letter-spacing:.5px; }
+.cover-sub{ font-size:13pt; font-weight:600; margin-top:4px; }
+.cover-tag{
+  display:inline-block; margin-top:10px; padding:4px 16px;
+  background:var(--em-tint); color:var(--em-dark); border:1px solid var(--em);
+  border-radius:999px; font-weight:700; font-size:10.5pt;
+}
+
+.id-grid{ margin:22px 0 4px; width:100%; border-collapse:collapse; font-size:11pt; }
+.id-grid td{ padding:9px 6px; }
+.id-grid .lbl{ width:132px; white-space:nowrap; font-weight:700; color:var(--em-deep); }
+.id-grid .line{ border-bottom:1.4px solid #6b7280; }
+
+.instr{
+  margin-top:16px; border:1px solid var(--rule);
+  border-left:5px solid var(--em); border-radius:8px;
+  background:#f7fdf9; padding:12px 16px;
+}
+.instr h3{ margin:0 0 6px; font-size:11.5pt; color:var(--em-deep); }
+.instr ul{ margin:0; padding-left:18px; }
+.instr li{ margin:3px 0; }
+
+.marks-tbl{ width:100%; border-collapse:collapse; margin-top:18px; font-size:10pt; text-align:center; }
+.marks-tbl th, .marks-tbl td{ border:1px solid var(--rule); padding:6px 4px; }
+.marks-tbl thead th{ background:var(--em-dark); color:#fff; }
+.marks-tbl .tot{ background:var(--em-tint); font-weight:800; }
+.marks-tbl thead th.tot{ background:var(--em-deep); color:#fff; }
+
+/* ================= QUESTION CARD ================= */
+.card{
+  border:1px solid var(--rule); border-radius:10px;
+  margin:0 0 16px; overflow:hidden;
+  break-inside:avoid; page-break-inside:avoid; background:#fff;
+}
+.card-head{
+  display:flex; flex-wrap:wrap; align-items:center; gap:8px;
+  background:linear-gradient(180deg,#f4fcf6,#d9f5e2);
+  border-bottom:1px solid var(--rule); padding:9px 14px;
+}
+.qno{
+  font-weight:800; color:#fff; background:var(--em-dark);
+  border-radius:6px; padding:3px 11px; font-size:11pt; letter-spacing:.3px;
+}
+.qtitle{ font-weight:700; font-size:11.5pt; color:var(--em-deep); flex:1 1 240px; }
+.chips{ display:flex; gap:6px; align-items:center; flex-wrap:wrap; }
+.chip{ font-size:8.5pt; padding:2px 8px; border-radius:999px; font-weight:700; white-space:nowrap; }
+.chip.clo{ background:#dcfce7; color:#166534; border:1px solid #86efac; }
+.chip.so { background:#ecfeff; color:#0e7490; border:1px solid #a5f3fc; }
+.chip.pts{ background:var(--em-deep); color:#fff; }
+.tag-easy{ background:var(--tag-easy); color:var(--tag-easy-i); border:1px solid var(--tag-easy-i); }
+.tag-med { background:var(--tag-med);  color:var(--tag-med-i);  border:1px solid var(--tag-med-i);  }
+.tag-hard{ background:var(--tag-hard); color:var(--tag-hard-i); border:1px solid var(--tag-hard-i); }
+
+.card-body{ padding:12px 16px 14px; }
+.card-body p{ margin:6px 0; }
+.note{ color:var(--warn); font-style:italic; font-weight:600; font-size:10pt; }
+.hint{ color:var(--ink-soft); font-style:italic; font-size:10pt; }
+.mini{ font-size:9pt; color:#6b7280; }
+
+/* ---- code blocks ---- */
+pre.code{
+  background:var(--code-bg); border:1px solid var(--code-rule);
+  border-left:4px solid var(--em); border-radius:6px;
+  padding:10px 12px; margin:10px 0; overflow:auto;
+  font-family:'Consolas','DejaVu Sans Mono',monospace; font-size:10pt; line-height:1.5;
+  white-space:pre;
+}
+pre.code.sm{ font-size:9.3pt; line-height:1.42; }
+code.inl{ background:var(--code-bg); border:1px solid var(--code-rule); border-radius:4px;
+  padding:1px 5px; font-family:'Consolas',monospace; font-size:9.8pt; }
+.dots{ letter-spacing:1px; color:#6b7280; }
+.two-col{ display:flex; gap:12px; }
+.two-col > *{ flex:1 1 0; min-width:0; }
+.two-col > .wide{ flex-grow:1.4; }
+.two-col > .narrow{ flex-grow:.65; }
+.two-col > .snug{ flex:0 0 auto; }
+.opts p{ margin:3px 0; }
+.tight .card-body{ font-size:10.5pt; line-height:1.42; }
+.tight .card-body p{ margin:4px 0; }
+.tight .mcq{ margin-bottom:5px; }
+.tight pre.code{ margin:6px 0; }
+.mcq{ display:grid; grid-template-columns:1fr 1fr; gap:2px 18px; margin:2px 0 8px 14px; }
+.mcq.c4{ grid-template-columns:repeat(4, auto); justify-content:start; column-gap:34px; }
+.mcq.c5{ grid-template-columns:repeat(5, auto); justify-content:start; column-gap:26px; }
+
+/* ---- UML class box ---- */
+.uml{ display:inline-block; border:1.6px solid var(--em-deep); margin:10px 0;
+  font-family:'Consolas','DejaVu Sans Mono',monospace; font-size:10pt; background:#fff; min-width:300px; }
+.uml div{ padding:5px 12px; }
+.uml .uml-name{ text-align:center; font-weight:800; background:var(--em-tint); color:var(--em-deep);
+  border-bottom:1.6px solid var(--em-deep); font-family:'Segoe UI',sans-serif; font-size:11pt; }
+.uml .uml-sec{ border-bottom:1.6px solid var(--em-deep); }
+.uml .uml-sec:last-child{ border-bottom:0; }
+.uml .uml-sec span{ display:block; line-height:1.55; }
+.uml u{ text-decoration-thickness:1.4px; }
+.uml-wrap{ display:flex; gap:16px; align-items:flex-start; }
+.need{ border-collapse:collapse; font-size:9.5pt; margin-top:10px; }
+.need td, .need th{ border:1px solid var(--rule); padding:4px 8px; font-family:'Consolas',monospace; }
+.need th{ background:var(--em-tint); color:var(--em-deep); font-family:'Segoe UI',sans-serif; }
+
+/* ---- answer space ---- */
+.answer-space{ margin-top:10px; }
+.answer-space .lbl{ font-style:italic; color:var(--ink-soft); font-size:10pt; }
+.writeline{ border-bottom:1px solid #9ca3af; height:1.55em; margin-top:.45em; }
+.codebox{ border:1px dashed #9ca3af; border-radius:6px; min-height:120px; margin-top:8px;
+  background:repeating-linear-gradient(#fff,#fff 1.7em,#e3f4e8 1.7em,#e3f4e8 calc(1.7em + 1px)); }
+.drawbox{ border:1px dashed #9ca3af; border-radius:6px; margin-top:8px; position:relative;
+  display:flex; }
+.drawbox .half{ flex:1; padding:6px 10px; font-size:9pt; color:#9ca3af; font-weight:700; letter-spacing:1px; }
+.drawbox .half + .half{ border-left:1px dashed #cbd5e1; }
+
+/* ---- fill-in tables ---- */
+.fill{ width:100%; border-collapse:collapse; margin-top:8px; font-size:10.5pt; }
+.fill td, .fill th{ border:1px solid var(--rule); padding:7px 8px; }
+.fill th{ background:var(--em-tint); color:var(--em-deep); font-size:10pt; }
+.fill td.ans{ background:#fff; width:42%; height:2.6em; }
+.fill td.mono{ font-family:'Consolas',monospace; }
+
+/* ---- model answer block (hidden until toggled) — blue, so it stands out from the green theme ---- */
+.answer-key{ display:none; }
+body.show-answers .answer-key{ display:block; }
+body.show-answers .card{ break-inside:auto; page-break-inside:auto; }
+body.show-answers .answer-key{ break-inside:avoid; page-break-inside:avoid; }
+.answer-key{
+  margin-top:12px; border:1px solid #bfdbfe; border-left:5px solid #2563eb;
+  background:#eff6ff; border-radius:8px; padding:10px 14px;
+}
+.answer-key .akh{ font-weight:800; color:#1d4ed8; font-size:10.5pt; margin-bottom:4px; }
+.answer-key pre.code{ border-left-color:#2563eb; background:#f5f9ff; border-color:#bfdbfe; }
+.answer-key .val{ color:#1e40af; font-weight:800; }
+.answer-key .rub{ color:#0e7490; font-size:9.5pt; font-style:italic; }
+.answer-key table.fill th{ background:#dbeafe; color:#1d4ed8; }
+.answer-key table.fill td, .answer-key table.fill th{ border-color:#bfdbfe; }
+
+/* ---- floating toolbar (screen only) ---- */
+.toolbar{
+  position:fixed; top:14px; right:14px; z-index:50; display:flex; gap:8px;
+  background:#fff; border:1px solid var(--rule); border-radius:10px; padding:8px 10px;
+  box-shadow:0 4px 14px rgba(31,41,55,.18);
+}
+.toolbar button, .toolbar a{
+  font:inherit; font-size:10pt; font-weight:700; cursor:pointer; text-decoration:none;
+  border:1px solid var(--em); border-radius:7px; padding:7px 12px;
+  background:var(--em); color:#fff;
+}
+.toolbar .ghost{ background:#fff; color:var(--em-dark); }
+.toolbar button:active{ transform:translateY(1px); }
+
+.footline{ text-align:center; margin-top:6px; color:var(--ink-soft); font-size:9.5pt; }
+.endmark{ text-align:center; font-weight:800; color:var(--em-deep); margin:18px 0 4px; }
+
+/* ================= PRINT ================= */
+@media print{
+  body{ background:#fff; padding:0; }
+  .toolbar{ display:none !important; }
+  .sheet{ box-shadow:none; margin:0; width:auto; min-height:auto; padding:0; }
+  .sheet + .sheet{ page-break-before:always; }
+  .card{ box-shadow:none; }
+}
+
+/* ---- additions for this exam ---- */
+.fill td.mono{ font-size:9pt; line-height:1.45; }
+.instr .chip{ font-size:8pt; padding:1px 7px; }
+.two-col pre.code.sm{ font-size:8.2pt; line-height:1.4; padding:8px 9px; }
+pre.code{ white-space:pre-wrap; overflow:visible; }   /* never clip code on paper */
+@media print{ html{ background:#fff; } }
+.card.flow{ break-inside:auto; page-break-inside:auto; }
+.uml-wrap{ gap:8px; }
+.uml-wrap .uml{ min-width:0; flex:1 1 0; font-size:9pt; }
+.uml-wrap .uml div{ padding:4px 8px; }
+/* let every card flow across a page break, but keep code blocks and table rows whole */
+.card, body.show-answers .card{ break-inside:auto; page-break-inside:auto; }
+pre.code, .fill tr, .mcq, .uml-wrap, .card-head, .answer-space, .drawbox, .codebox, svg{ break-inside:avoid; page-break-inside:avoid; }
+.card-head{ break-after:avoid; page-break-after:avoid; }
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <a href="08-summary-checklist.html" class="ghost">&#8592; Checklist</a>
+  <button id="toggleAns" class="ghost">&#128065; Show model answers</button>
+  <button onclick="window.print()">&#128424; Print / Save PDF</button>
+</div>
+
+<!-- =====================================================================
+     COVER PAGE
+     ===================================================================== -->
+
+<section class="sheet cover">
+  <div class="cover-rule"></div>
+  <div class="cover-top">
+    <div class="cover-title">Programming II</div>
+    <div class="cover-sub">Module 7: Polymorphism &amp; ArrayList &mdash; Focused Practice Exam</div>
+    <div class="cover-tag">Polymorphism &middot; Declared vs Actual Type &middot; Dynamic Binding &middot; Casting &amp; instanceof &middot; equals() &amp; Aliases &middot; ArrayList &middot; MyStack</div>
+  </div>
+  <div class="cover-rule"></div>
+
+  <table class="id-grid">
+    <tr><td class="lbl">Student Name:</td><td class="line"></td></tr>
+    <tr><td class="lbl">Student ID:</td><td class="line"></td></tr>
+    <tr>
+      <td class="lbl">Section:</td><td class="line" style="width:35%"></td>
+      <td class="lbl" style="text-align:right;padding-right:14px">Instructor:</td><td class="line"></td>
+    </tr>
+  </table>
+
+  <div class="instr">
+    <h3>Instructions</h3>
+    <ul>
+      <li>This booklet contains <b>11 questions</b> on Polymorphism and ArrayList only. <b>Total: 80 marks</b> &middot; Suggested time: <b>90 minutes</b>.</li>
+      <li>Answer <b>all</b> questions in the spaces provided. <b>Place your answers in the boxes provided.</b></li>
+      <li><b>Assume all necessary import statements are present</b> (for example <code class="inl">java.util.ArrayList</code>, <code class="inl">java.util.Arrays</code>, <code class="inl">java.util.Collections</code>).
+          When a question shows several classes together, assume they are in the <b>same package</b>.</li>
+      <li>When asked for output, <b>write the exact output, one line per line</b>. If a piece of code does not compile, write <b>&ldquo;Compilation error&rdquo;</b>;
+          if it compiles but stops while running, write <b>&ldquo;Runtime error&rdquo;</b>. Give the reason in one short sentence.</li>
+      <li>Questions are labelled <span class="chip tag-easy">EASY</span> <span class="chip tag-med">MEDIUM</span> <span class="chip tag-hard">HARD</span>.
+          Write clear Java. Partial (per-line) credit is given.
+          <span class="note">Data fields must be private wherever a question asks you to write a class.</span></li>
+    </ul>
+  </div>
+
+  <table class="marks-tbl">
+    <thead>
+      <tr><th>Question</th><th>Q1</th><th>Q2</th><th>Q3</th><th>Q4</th><th>Q5</th><th>Q6</th><th>Q7</th><th>Q8</th><th>Q9</th><th>Q10</th><th>Q11</th><th class="tot">Total</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><b>Level</b></td><td>E</td><td>E</td><td>M</td><td>M</td><td>M</td><td>M</td><td>H</td><td>M</td><td>M</td><td>H</td><td>H</td><td class="tot"></td></tr>
+      <tr><td><b>Max Mark</b></td><td>8</td><td>6</td><td>8</td><td>6</td><td>6</td><td>8</td><td>8</td><td>6</td><td>8</td><td>8</td><td>8</td><td class="tot">80</td></tr>
+      <tr><td><b>Obtained</b></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class="tot"></td></tr>
+    </tbody>
+  </table>
+
+  <p class="footline">Topics covered: the meaning of polymorphism, subtype and supertype &middot; declared type vs actual type &middot; polymorphic references, arrays and calls &middot;
+     dynamic binding and the C1&hellip;Cn search rule &middot; method matching (compile time) vs binding (run time) &middot; the staff payroll example &middot;
+     upcasting, downcasting, <code class="inl">instanceof</code> and <code class="inl">ClassCastException</code> &middot; <code class="inl">==</code> vs <code class="inl">equals()</code>, overriding <code class="inl">equals(Object)</code>, aliases, the String pool &middot;
+     <code class="inl">ArrayList&lt;E&gt;</code> methods, wrapper types, <code class="inl">Arrays.asList</code>, <code class="inl">Collections</code> &middot; arrays vs ArrayList &middot; <code class="inl">MyStack</code>.</p>
+</section>
+
+<!-- ================= Q1 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 7 &mdash; Polymorphism &amp; ArrayList &mdash; Practice Exam &middot; Question 1 of 11</span></div>
+
+  <div class="card tight">
+    <div class="card-head">
+      <span class="qno">Q1</span>
+      <span class="qtitle">Polymorphism &amp; ArrayList (Multiple Choice)</span>
+      <span class="chips">
+        <span class="chip tag-easy">EASY</span>
+        <span class="chip clo">CLO 8</span><span class="chip clo">CLO 9</span><span class="chip so">SO-a</span>
+        <span class="chip pts">8 marks &middot; 1 each</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p>Circle the <b>single best</b> answer for each item.</p>
+
+      <p><b>1.</b> A method <code class="inl">m(Object x)</code> can be called with <b>any</b> object. Using one method for a wide range of object arguments is known as:</p>
+      <div class="mcq c4"><span>(a) encapsulation</span><span>(b) generic programming</span><span>(c) overloading</span><span>(d) aliasing</span></div>
+
+      <p><b>2.</b> What is printed by the code below?</p>
+<pre class="code sm">ArrayList&lt;String&gt; list = new ArrayList&lt;&gt;();
+list.add("A");  list.add("B");  list.add(0, "C");
+System.out.println(list);</pre>
+      <div class="mcq c4"><span>(a) <code class="inl">[A, B, C]</code></span><span>(b) <code class="inl">[A, C, B]</code></span><span>(c) <code class="inl">[C, A, B]</code></span><span>(d) <code class="inl">[C, B]</code></span></div>
+
+      <p><b>3.</b> What is printed by the code below?</p>
+<pre class="code sm">Integer[] arr = {10, 20, 30};
+ArrayList&lt;Integer&gt; nums = new ArrayList&lt;&gt;(Arrays.asList(arr));
+nums.remove(1);
+System.out.println(nums);</pre>
+      <div class="mcq c4"><span>(a) <code class="inl">[20, 30]</code></span><span>(b) <code class="inl">[10, 20, 30]</code></span><span>(c) <code class="inl">[10, 20]</code></span><span>(d) <code class="inl">[10, 30]</code></span></div>
+
+      <p><b>4.</b> What is printed by: <code class="inl">String s1 = "Riyadh"; String s2 = new String("Riyadh");</code> <code class="inl">System.out.println((s1 == s2) + " " + s1.equals(s2));</code></p>
+      <div class="mcq c4"><span>(a) <code class="inl">true true</code></span><span>(b) <code class="inl">false true</code></span><span>(c) <code class="inl">true false</code></span><span>(d) <code class="inl">false false</code></span></div>
+
+      <p><b>5.</b> For <code class="inl">Animal a = new Cat(); a.sound();</code> the <b>compiler</b> decides which method signature to match by looking at:</p>
+      <div class="mcq c4"><span>(a) the actual type <code class="inl">Cat</code></span><span>(b) the declared type <code class="inl">Animal</code></span><span>(c) the class <code class="inl">Object</code></span><span>(d) the JVM at run time</span></div>
+
+      <p><b>6.</b> What is printed by: <code class="inl">int[] a = {1, 2, 3}; int[] b = {1, 2, 3};</code> <code class="inl">System.out.println(a.equals(b) + " " + Arrays.equals(a, b));</code></p>
+      <div class="mcq c4"><span>(a) <code class="inl">false true</code></span><span>(b) <code class="inl">true true</code></span><span>(c) <code class="inl">true false</code></span><span>(d) <code class="inl">false false</code></span></div>
+
+      <p><b>7.</b> What is printed by the code below?</p>
+<pre class="code sm">Integer[] marks = {4, 9, 1, 7};
+ArrayList&lt;Integer&gt; m = new ArrayList&lt;&gt;(Arrays.asList(marks));
+Collections.sort(m);
+System.out.println(m.get(1) + " " + Collections.max(m));</pre>
+      <div class="mcq c4"><span>(a) <code class="inl">9 9</code></span><span>(b) <code class="inl">1 9</code></span><span>(c) <code class="inl">4 9</code></span><span>(d) <code class="inl">9 1</code></span></div>
+
+      <p><b>8.</b> What happens with the statement <code class="inl">ArrayList&lt;int&gt; list = new ArrayList&lt;&gt;();</code>?</p>
+      <div class="mcq">
+        <span>(a) it creates an empty list of <code class="inl">int</code> values</span>
+        <span>(b) compilation error &mdash; the element type must be an object type such as <code class="inl">Integer</code></span>
+        <span>(c) it compiles, but a runtime error occurs</span>
+        <span>(d) it creates a list of 10 zeros</span>
+      </div>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q1</div>
+        <p>1:&nbsp;<span class="val">(b)</span> &nbsp; 2:&nbsp;<span class="val">(c)</span> &nbsp; 3:&nbsp;<span class="val">(d)</span> &nbsp; 4:&nbsp;<span class="val">(b)</span> &nbsp;
+           5:&nbsp;<span class="val">(b)</span> &nbsp; 6:&nbsp;<span class="val">(a)</span> &nbsp; 7:&nbsp;<span class="val">(c)</span> &nbsp; 8:&nbsp;<span class="val">(b)</span></p>
+        <p class="rub">1 mark each. (2) <code class="inl">add(0, "C")</code> inserts at the front. (3) <code class="inl">remove(1)</code> with an <code class="inl">int</code> removes by <b>index</b>, not the value 1.
+           (4) <code class="inl">new String</code> makes a second object; <code class="inl">equals</code> compares contents. (6) <code class="inl">equals</code> is not overridden for arrays (it acts like <code class="inl">==</code>); use <code class="inl">Arrays.equals</code>.
+           (7) Sorted list is <code class="inl">[1, 4, 7, 9]</code>. (8) javac: &ldquo;unexpected type &mdash; required: reference, found: int&rdquo;. All code items were run with Java 21.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Q2 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 7 &mdash; Polymorphism &amp; ArrayList &mdash; Practice Exam &middot; Question 2 of 11</span></div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="qno">Q2</span>
+      <span class="qtitle">Short Answers &mdash; The Words of Polymorphism</span>
+      <span class="chips">
+        <span class="chip tag-easy">EASY</span>
+        <span class="chip clo">CLO 8</span><span class="chip so">SO-a</span>
+        <span class="chip pts">6 marks &middot; 1 each</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p><b>(a)</b> What do the Greek parts <i>poly</i> and <i>morph</i> mean? Complete: &ldquo;Polymorphism means that a variable of a ________ can refer to a ________ object.&rdquo;</p>
+      <div class="answer-space"><div class="writeline"></div><div class="writeline"></div></div>
+
+      <p><b>(b)</b> For <code class="inl">Object o = new Circle(3);</code> give the <b>declared type</b> and the <b>actual type</b> of <code class="inl">o</code>. Which of the two decides which <code class="inl">toString()</code> runs?</p>
+      <div class="answer-space"><div class="writeline"></div><div class="writeline"></div></div>
+
+      <p><b>(c)</b> For <code class="inl">Animal a = new Cat(); a.sound();</code> explain <b>method matching</b> and <b>method binding</b>: who does each, and when?</p>
+      <div class="answer-space"><div class="writeline"></div><div class="writeline"></div></div>
+
+      <p><b>(d)</b> Which one is automatic, <b>upcasting</b> or <b>downcasting</b>? Which one needs an explicit cast and may fail at run time &mdash; with which exception?</p>
+      <div class="answer-space"><div class="writeline"></div><div class="writeline"></div></div>
+
+      <p><b>(e)</b> Write the <code class="inl">equals</code> method exactly as it is written in the class <code class="inl">Object</code>.</p>
+      <div class="answer-space"><div class="writeline"></div><div class="writeline"></div></div>
+
+      <p><b>(f)</b> After <code class="inl">Circle c1 = new Circle(1); Circle c2 = c1; c2.setRadius(5);</code> what does <code class="inl">c1.getRadius()</code> return? What are <code class="inl">c1</code> and <code class="inl">c2</code> called?</p>
+      <div class="answer-space"><div class="writeline"></div></div>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q2</div>
+        <p>(a) <i>poly</i> = <span class="val">many</span>, <i>morph</i> = <span class="val">shapes / forms</span> (&ldquo;having many forms&rdquo;). A variable of a <span class="val">supertype</span> can refer to a <span class="val">subtype</span> object.</p>
+        <p>(b) Declared type <span class="val">Object</span>; actual type <span class="val">Circle</span>. The <b>actual</b> type decides which <code class="inl">toString()</code> runs (dynamic binding).</p>
+        <p>(c) <b>Matching</b>: the <span class="val">compiler</span>, at <span class="val">compile time</span>, uses the <b>declared</b> type (<code class="inl">Animal</code>) to find a method with matching parameter types, number and order.
+           <b>Binding</b>: the <span class="val">JVM</span>, at <span class="val">run time</span>, picks the implementation from the <b>actual</b> type (<code class="inl">Cat</code>).</p>
+        <p>(d) <span class="val">Upcasting</span> (subclass object &rarr; superclass variable) is automatic. <span class="val">Downcasting</span> needs <code class="inl">(SubclassName)</code> and may throw a <span class="val">ClassCastException</span>.</p>
+        <p>(e) <code class="inl">public boolean equals(Object obj) { return this == obj; }</code> &mdash; it only checks whether the two references point to the same object.</p>
+        <p>(f) <span class="val">5.0</span> &mdash; <code class="inl">c1</code> and <code class="inl">c2</code> are <span class="val">aliases</span>: two references to the same object.</p>
+        <p class="rub">1 mark each; each part needs both pieces for the full mark (&frac12; + &frac12;). (f) was checked with Java 21.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Q3 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 7 &mdash; Polymorphism &amp; ArrayList &mdash; Practice Exam &middot; Question 3 of 11</span></div>
+
+  <div class="card flow">
+    <div class="card-head">
+      <span class="qno">Q3</span>
+      <span class="qtitle">Output Tracing &mdash; Dynamic Binding</span>
+      <span class="chips">
+        <span class="chip tag-med">MEDIUM</span>
+        <span class="chip clo">CLO 8</span><span class="chip so">SO-a</span>
+        <span class="chip pts">8 marks</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p><b>(a)</b> Write the exact output of the program, one line per line. <span class="mini">(6 marks)</span></p>
+<div class="two-col">
+<pre class="code sm" data-java="q3/Main.java">class Animal {
+  public String sound() {
+    return "...";
+  }
+  public String describe() {
+    return "An animal that says "
+           + sound();
+  }
+}
+
+class Camel extends Animal {
+  @Override
+  public String sound() {
+    return "Grunt";
+  }
+}
+
+class BabyCamel extends Camel { }</pre>
+<pre class="code sm" data-java="q3/Main.java">class Falcon extends Animal {
+  @Override
+  public String sound() {
+    return "Screech";
+  }
+  @Override
+  public String describe() {
+    return "Falcon: " + super.describe();
+  }
+}
+
+public class Main {
+  public static void show(Animal a) {
+    System.out.println(a.describe());
+  }
+  public static void main(String[] args) {
+    Animal[] zoo = { new BabyCamel(),
+        new Falcon(), new Animal() };
+    for (Animal a : zoo)
+      System.out.println(a.sound());
+    for (Animal a : zoo)
+      show(a);
+  }
+}</pre>
+</div>
+      <div class="answer-space"><span class="lbl">Output:</span><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div></div>
+
+<div style="break-inside:avoid;page-break-inside:avoid">
+      <p style="margin-top:12px"><b>(b)</b> <code class="inl">C1 extends C2</code>, <code class="inl">C2 extends C3</code>, <code class="inl">C3 extends C4</code>. Only <code class="inl">C4</code> and <code class="inl">C2</code> define <code class="inl">m()</code>; each prints <code class="inl">"m of C4"</code> or <code class="inl">"m of C2"</code>.
+         What does each statement print? <span class="mini">(2 marks)</span></p>
+<div class="two-col">
+<pre class="code sm" data-java="q3b/Main.java">class C4 {
+  public void m() {
+    System.out.println("m of C4");
+  }
+}
+class C3 extends C4 { }
+class C2 extends C3 {
+  public void m() {
+    System.out.println("m of C2");
+  }
+}
+class C1 extends C2 { }</pre>
+<div>
+<pre class="code sm" data-java="q3b/Main.java" data-wrap="main">C3 o = new C1();
+o.m();          // (i)
+C4 p = new C3();
+p.m();          // (ii)</pre>
+<div class="answer-space"><span class="lbl">(i)</span><div class="writeline"></div><span class="lbl">(ii)</span><div class="writeline"></div></div>
+</div>
+</div>
+</div>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q3</div>
+<div class="two-col">
+<pre class="code sm">// (a)
+Grunt
+Screech
+...
+An animal that says Grunt
+Falcon: An animal that says Screech
+An animal that says ...</pre>
+<pre class="code sm">// (b)
+m of C2      // (i)
+m of C4      // (ii)</pre>
+</div>
+        <p class="rub">(a) 1 mark per line. <code class="inl">BabyCamel</code> inherits Camel&rsquo;s <code class="inl">sound()</code>. Inside <code class="inl">describe()</code> (written in Animal) the call <code class="inl">sound()</code> is still bound to the <b>actual</b> object, so a camel says Grunt;
+           Falcon&rsquo;s <code class="inl">describe()</code> adds &ldquo;Falcon: &rdquo; and then calls <code class="inl">super.describe()</code>, which calls Falcon&rsquo;s <code class="inl">sound()</code>.
+           (b) 1 mark each: the JVM searches from the actual class upwards (C1, C2, C3, C4) and runs the <b>first</b> implementation found. (ii) the object is a C3, which has no <code class="inl">m()</code>, so C4&rsquo;s runs.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Q4 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 7 &mdash; Polymorphism &amp; ArrayList &mdash; Practice Exam &middot; Question 4 of 11</span></div>
+
+  <div class="card flow">
+    <div class="card-head">
+      <span class="qno">Q4</span>
+      <span class="qtitle">Output Tracing &mdash; The Staff Payroll</span>
+      <span class="chips">
+        <span class="chip tag-med">MEDIUM</span>
+        <span class="chip clo">CLO 8</span><span class="chip so">SO-a</span>
+        <span class="chip pts">6 marks</span>
+      </span>
+    </div>
+    <div class="card-body">
+<div class="two-col">
+<pre class="code sm" data-java="q4/Main.java">class StaffMember {
+  protected String name;
+  public StaffMember(String name) {
+    this.name = name;
+  }
+  public double pay() { return 0; }
+  public String toString() {
+    return "Name: " + name;
+  }
+}
+class Volunteer extends StaffMember {
+  public Volunteer(String name) {
+    super(name);
+  }
+  public double pay() { return 0.0; }
+}
+class Employee extends StaffMember {
+  protected double payRate;
+  public Employee(String name,
+                  double payRate) {
+    super(name);
+    this.payRate = payRate;
+  }
+  public double pay() { return payRate; }
+}
+class Executive extends Employee {
+  private double bonus;
+  public Executive(String name,
+                   double payRate) {
+    super(name, payRate);
+    bonus = 0;
+  }
+  public void awardBonus(double b) {
+    bonus = b;
+  }
+  public double pay() {
+    double payment = super.pay() + bonus;
+    bonus = 0;
+    return payment;
+  }
+}</pre>
+<pre class="code sm" data-java="q4/Main.java">class Hourly extends Employee {
+  private int hoursWorked;
+  public Hourly(String name,
+                double payRate) {
+    super(name, payRate);
+    hoursWorked = 0;
+  }
+  public void addHours(int h) {
+    hoursWorked += h;
+  }
+  public double pay() {
+    double payment = payRate * hoursWorked;
+    hoursWorked = 0;
+    return payment;
+  }
+  public String toString() {
+    return super.toString()
+      + " (hours: " + hoursWorked + ")";
+  }
+}
+
+public class Main {
+  public static void main(String[] args) {
+    StaffMember[] staff = {
+      new Executive("Sami", 9000),
+      new Hourly("Huda", 50),
+      new Volunteer("Nawaf"),
+      new Employee("Reem", 7000) };
+    ((Executive) staff[0]).awardBonus(1000);
+    ((Hourly) staff[1]).addHours(40);
+
+    for (StaffMember s : staff) {
+      System.out.println(s);
+      double amount = s.pay();
+      if (amount == 0.0)
+        System.out.println("Thanks!");
+      else
+        System.out.println("Paid: "
+                           + amount);
+    }
+    System.out.println("Again: "
+        + staff[0].pay()
+        + " " + staff[1].pay());
+  }
+}</pre>
+</div>
+      <p><b>(a)</b> Write the exact output, one line per line. <span class="mini">(5 marks)</span></p>
+      <div class="two-col">
+        <div class="answer-space"><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div></div>
+        <div class="answer-space"><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div></div>
+      </div>
+      <p><b>(b)</b> Why must the program write <code class="inl">((Hourly) staff[1]).addHours(40);</code> instead of <code class="inl">staff[1].addHours(40);</code>? <span class="mini">(1 mark)</span></p>
+      <div class="answer-space"><div class="writeline"></div><div class="writeline"></div></div>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q4</div>
+<pre class="code sm">Name: Sami
+Paid: 10000.0
+Name: Huda (hours: 40)
+Paid: 2000.0
+Name: Nawaf
+Thanks!
+Name: Reem
+Paid: 7000.0
+Again: 9000.0 0.0</pre>
+        <p>(b) <code class="inl">staff</code> is a <code class="inl">StaffMember[]</code>, and <code class="inl">StaffMember</code> has no <code class="inl">addHours</code>. The compiler matches methods with the <b>declared</b> type, so
+           <code class="inl">staff[1].addHours(40)</code> is a compilation error (&ldquo;cannot find symbol&rdquo;). The cast tells the compiler the object is an <code class="inl">Hourly</code>.</p>
+        <p class="rub">(a) 5 marks: Sami lines (1), Huda lines incl. &ldquo;(hours: 40)&rdquo; and 50 &times; 40 (1), Nawaf + Thanks! (1), Reem (1), the last line (1) &mdash; <code class="inl">pay()</code> reset the bonus and the hours to 0, so the second payday gives 9000.0 and 0.0.
+           (b) 1 mark. Output and the compile error were checked with Java 21.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Q5 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 7 &mdash; Polymorphism &amp; ArrayList &mdash; Practice Exam &middot; Question 5 of 11</span></div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="qno">Q5</span>
+      <span class="qtitle">Find and Fix the Compilation Errors</span>
+      <span class="chips">
+        <span class="chip tag-med">MEDIUM</span>
+        <span class="chip clo">CLO 8</span><span class="chip clo">CLO 9</span><span class="chip so">SO-c</span>
+        <span class="chip pts">6 marks &middot; 2 each</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p>The classes <code class="inl">Shape</code>, <code class="inl">Circle</code> and <code class="inl">Rectangle</code> are correct (summary below). The class <code class="inl">ShapeTest</code> contains <b>exactly three (3) compilation errors</b>.
+         For each, give the line number, the reason, and the corrected line. Do <b>not</b> change the shape classes. Assume all necessary import statements are present.</p>
+<pre class="code sm">Shape     : Shape(String color), getColor(), getArea() returns 0, toString()
+Circle    : extends Shape &mdash; Circle(double radius, String color), getRadius(), getArea()
+Rectangle : extends Shape &mdash; Rectangle(double width, double height, String color), getArea()</pre>
+<pre class="code sm" data-java="q5/ShapeTest.java" data-import="1">public class ShapeTest {                                    // 1
+    public static void main(String[] args) {                // 2
+        ArrayList&lt;Shape&gt; shapes = new ArrayList&lt;&gt;();       // 3
+        shapes.add(new Circle(2.0, "red"));                 // 4
+        shapes.add(new Rectangle(3.0, 4.0, "blue"));        // 5
+        Shape first = shapes.get(0);                        // 6
+        System.out.println(first.getRadius());              // 7
+        Circle c = shapes.get(0);                           // 8
+        ArrayList&lt;double&gt; areas = new ArrayList&lt;&gt;();       // 9
+        for (Shape s : shapes)                              // 10
+            areas.add(s.getArea());                         // 11
+        System.out.println(areas + " " + c.getColor());     // 12
+    }                                                       // 13
+}                                                           // 14</pre>
+      <table class="fill">
+        <thead><tr><th style="width:9%">Line</th><th style="width:38%">Reason</th><th>Correction</th></tr></thead>
+        <tbody>
+          <tr><td style="height:3.2em"></td><td></td><td></td></tr>
+          <tr><td style="height:3.2em"></td><td></td><td></td></tr>
+          <tr><td style="height:3.2em"></td><td></td><td></td></tr>
+        </tbody>
+      </table>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q5</div>
+        <table class="fill">
+          <thead><tr><th>Line</th><th>Reason</th><th>Correction</th></tr></thead>
+          <tbody>
+            <tr><td>7</td><td>The declared type of <code class="inl">first</code> is <code class="inl">Shape</code>, and <code class="inl">Shape</code> has <b>no</b> <code class="inl">getRadius()</code> (javac: &ldquo;cannot find symbol&rdquo;).</td><td><code class="inl">System.out.println(((Circle) first).getRadius());</code></td></tr>
+            <tr><td>8</td><td><code class="inl">get</code> returns a <code class="inl">Shape</code>; a Shape is not necessarily a Circle, so downcasting must be explicit (&ldquo;Shape cannot be converted to Circle&rdquo;).</td><td><code class="inl">Circle c = (Circle) shapes.get(0);</code></td></tr>
+            <tr><td>9</td><td>The element type must be an object type; <code class="inl">double</code> is primitive (&ldquo;unexpected type&rdquo;).</td><td><code class="inl">ArrayList&lt;Double&gt; areas = new ArrayList&lt;&gt;();</code></td></tr>
+          </tbody>
+        </table>
+        <p class="rub">1 mark for the line and reason + 1 mark for a fix that compiles. Line 11 is correct: the <code class="inl">double</code> is autoboxed to <code class="inl">Double</code>. javac 21 reports exactly these three errors;
+           after the fixes the program prints <code class="inl">2.0</code> and <code class="inl">[12.566370614359172, 12.0] red</code>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Q6 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 7 &mdash; Polymorphism &amp; ArrayList &mdash; Practice Exam &middot; Question 6 of 11</span></div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="qno">Q6</span>
+      <span class="qtitle">Output Tracing &mdash; ArrayList Methods</span>
+      <span class="chips">
+        <span class="chip tag-med">MEDIUM</span>
+        <span class="chip clo">CLO 9</span><span class="chip so">SO-a</span>
+        <span class="chip pts">8 marks &middot; 1 each</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p>The statements below are inside <code class="inl">main</code>. Write the exact output, one line per line. Each <code class="inl">println</code> is numbered.</p>
+<div class="two-col">
+<pre class="code sm wide" data-java="q6/Main.java" data-wrap="main">ArrayList&lt;String&gt; cities = new ArrayList&lt;&gt;();
+cities.add("Jeddah");
+cities.add("Riyadh");
+cities.add("Makkah");
+cities.add(1, "Taif");
+System.out.println(cities);                   // 1
+String old = cities.set(2, "Abha");
+System.out.println(old + " " + cities);       // 2
+cities.remove("Jeddah");
+cities.remove(1);
+System.out.println(cities + " "
+                   + cities.size());          // 3
+System.out.println(cities.contains("Abha")
+     + " " + cities.indexOf("Makkah"));       // 4
+
+ArrayList&lt;Integer&gt; nums = new ArrayList&lt;&gt;();
+nums.add(3);  nums.add(1);  nums.add(4);
+nums.add(1);  nums.add(5);
+nums.remove(1);
+System.out.println(nums);                     // 5
+nums.remove(Integer.valueOf(1));
+nums.add(0, 8);
+System.out.println(nums);                     // 6
+System.out.println(Collections.max(nums) + " "
+                   + Collections.min(nums));  // 7
+Collections.sort(nums);
+int sum = 0;
+for (int n : nums)
+    sum += n;
+System.out.println(nums + " sum = " + sum);   // 8</pre>
+<div class="answer-space narrow"><span class="lbl">Output:</span>
+  <div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div>
+  <div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div>
+</div>
+</div>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q6</div>
+<pre class="code sm">[Jeddah, Taif, Riyadh, Makkah]
+Riyadh [Jeddah, Taif, Abha, Makkah]
+[Taif, Makkah] 2
+false 1
+[3, 4, 1, 5]
+[8, 3, 4, 5]
+8 3
+[3, 4, 5, 8] sum = 20</pre>
+        <p class="rub">1 mark per line. (2) <code class="inl">set</code> <b>returns the old element</b>. (3) <code class="inl">remove("Jeddah")</code> removes by value, then <code class="inl">remove(1)</code> removes <b>index 1</b> (Abha).
+           (5) <code class="inl">nums.remove(1)</code> removes index 1 (the first 1); (6) <code class="inl">remove(Integer.valueOf(1))</code> removes the <b>value</b> 1. Output copied from a Java 21 run.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Q7 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 7 &mdash; Polymorphism &amp; ArrayList &mdash; Practice Exam &middot; Question 7 of 11</span></div>
+
+  <div class="card flow">
+    <div class="card-head">
+      <span class="qno">Q7</span>
+      <span class="qtitle">Tricky Tracing &mdash; == , equals() and Aliases</span>
+      <span class="chips">
+        <span class="chip tag-hard">HARD</span>
+        <span class="chip clo">CLO 8</span><span class="chip so">SO-a</span>
+        <span class="chip pts">8 marks</span>
+      </span>
+    </div>
+    <div class="card-body">
+<div class="two-col">
+<pre class="code sm" data-java="q7/Main.java">class Coin {
+  private int value;
+  public Coin(int value) {
+    this.value = value;
+  }
+  public void setValue(int value) {
+    this.value = value;
+  }
+  public boolean equals(Coin c) {
+    return value == c.value;
+  }
+}
+
+class Note {
+  private int value;
+  public Note(int value) {
+    this.value = value;
+  }
+  @Override
+  public boolean equals(Object o) {
+    if (o instanceof Note)
+      return value == ((Note) o).value;
+    else
+      return false;
+  }
+}</pre>
+<pre class="code sm" data-java="q7/Main.java">public class Main {
+  public static void main(String[] args) {
+    Coin c1 = new Coin(5);
+    Coin c2 = new Coin(5);
+    Object o1 = c1;
+    Object o2 = c2;
+    System.out.println(c1.equals(c2)); // 1
+    System.out.println(o1.equals(o2)); // 2
+
+    Note n1 = new Note(10);
+    Note n2 = new Note(10);
+    Object o3 = n1;
+    Object o4 = n2;
+    System.out.println(n1 == n2);      // 3
+    System.out.println(o3.equals(o4)); // 4
+    System.out.println(n1.equals("10")); // 5
+
+    Coin c3 = c1;
+    c3.setValue(9);
+    System.out.println(c1.equals(c2)
+        + " " + (c1 == c3));           // 6
+
+    String s1 = "Abha";
+    String s2 = "Abha";
+    String s3 = new String("Abha");
+    System.out.println((s1 == s2) + " "
+        + (s1 == s3) + " "
+        + s1.equals(s3));              // 7
+  }
+}</pre>
+</div>
+      <p><b>(a)</b> Write the exact output, one line per line. <span class="mini">(7 marks)</span></p>
+      <div class="two-col">
+        <div class="answer-space"><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div></div>
+        <div class="answer-space"><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div></div>
+      </div>
+      <p><b>(b)</b> Lines 1 and 2 compare the <b>same two objects</b>, yet they print different results. Explain why in one or two sentences. <span class="mini">(1 mark)</span></p>
+      <div class="answer-space"><div class="writeline"></div><div class="writeline"></div></div>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q7</div>
+<pre class="code sm">true
+false
+false
+true
+false
+false true
+true false true</pre>
+        <p>(b) <code class="inl">Coin.equals(Coin)</code> <b>overloads</b> <code class="inl">equals</code>; it does not override <code class="inl">equals(Object)</code>. In line 2 the declared type is <code class="inl">Object</code>, so the compiler matches
+           <code class="inl">equals(Object)</code>, and at run time Coin has no overriding version, so Object&rsquo;s <code class="inl">this == obj</code> runs &rarr; two different objects &rarr; <span class="val">false</span>.</p>
+        <p class="rub">(a) 1 mark per line. (3) two distinct objects; (4) <code class="inl">Note</code> <b>overrides</b> <code class="inl">equals(Object)</code>, so dynamic binding runs it &rarr; same value; (5) a String is not a Note &rarr; false;
+           (6) <code class="inl">c3</code> is an <b>alias</b> of <code class="inl">c1</code>, so c1&rsquo;s value became 9; (7) literals share one object in the String pool, <code class="inl">new String</code> does not. (b) 1 mark. Output copied from a Java 21 run.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Q8 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 7 &mdash; Polymorphism &amp; ArrayList &mdash; Practice Exam &middot; Question 8 of 11</span></div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="qno">Q8</span>
+      <span class="qtitle">MyStack and Arrays vs ArrayList</span>
+      <span class="chips">
+        <span class="chip tag-med">MEDIUM</span>
+        <span class="chip clo">CLO 9</span><span class="chip so">SO-a</span>
+        <span class="chip pts">6 marks</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p>The class <code class="inl">MyStack</code> from the lecture stores its elements in an <code class="inl">ArrayList&lt;Object&gt;</code>; the <b>end</b> of the list is the top of the stack.</p>
+<div class="two-col">
+<pre class="code sm" data-java="q8/Main.java">class MyStack {
+  private ArrayList&lt;Object&gt; list =
+      new ArrayList&lt;&gt;();
+
+  public boolean isEmpty() {
+    return list.isEmpty();
+  }
+  public int getSize() {
+    return list.size();
+  }
+  public Object peek() {
+    return list.get(getSize() - 1);
+  }
+  public Object pop() {
+    Object o = list.get(getSize() - 1);
+    list.remove(getSize() - 1);
+    return o;
+  }
+  public void push(Object o) {
+    list.add(o);
+  }
+  @Override
+  public String toString() {
+    return "stack: " + list.toString();
+  }
+}</pre>
+<pre class="code sm" data-java="q8/Main.java">public class Main {
+  public static void main(String[] args) {
+    MyStack st = new MyStack();
+    st.push("Ali");
+    st.push(25);
+    st.push("Sara");
+    System.out.println(st.getSize() + " "
+                       + st.peek());
+    System.out.println(st.pop() + " "
+                       + st.pop());
+    st.push(7.5);
+    System.out.println(st);
+    System.out.println(st.isEmpty() + " "
+                       + st.getSize());
+  }
+}</pre>
+</div>
+      <p><b>(a)</b> Write the exact output, one line per line. <span class="mini">(4 marks)</span></p>
+      <div class="answer-space"><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div></div>
+
+      <p style="margin-top:10px"><b>(b)</b> <code class="inl">list</code> is an <code class="inl">ArrayList&lt;String&gt;</code> and <code class="inl">a</code> is a <code class="inl">String[]</code>. Write the <b>array</b> version of each operation. <span class="mini">(2 marks &middot; &frac12; each)</span></p>
+      <table class="fill">
+        <thead><tr><th style="width:40%">ArrayList</th><th>Array</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">list.get(i)</td><td class="ans" style="width:auto"></td></tr>
+          <tr><td class="mono">list.set(i, "Taif");</td><td class="ans" style="width:auto"></td></tr>
+          <tr><td class="mono">list.size()</td><td class="ans" style="width:auto"></td></tr>
+          <tr><td class="mono">list.add(i, "Taif");</td><td class="ans" style="width:auto"></td></tr>
+        </tbody>
+      </table>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q8</div>
+<pre class="code sm">3 Sara
+Sara 25
+stack: [Ali, 7.5]
+false 2</pre>
+        <p>(b) <code class="inl">a[i]</code> &middot; <code class="inl">a[i] = "Taif";</code> &middot; <code class="inl">a.length</code> &middot; inserting needs a <span class="val">shifting procedure</span> (move the elements from index i one place to the right, then <code class="inl">a[i] = "Taif";</code>) &mdash; and the array may be full.</p>
+        <p class="rub">(a) 1 mark per line: <code class="inl">peek</code> does not remove; the two pops return the top first (Sara, then 25); <code class="inl">25</code> and <code class="inl">7.5</code> are autoboxed to <code class="inl">Integer</code> and <code class="inl">Double</code> objects.
+           (b) &frac12; mark each. Output copied from a Java 21 run.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Q9 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 7 &mdash; Polymorphism &amp; ArrayList &mdash; Practice Exam &middot; Question 9 of 11</span></div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="qno">Q9</span>
+      <span class="qtitle">OK, Compilation Error or Runtime Error? &mdash; Casting &amp; instanceof</span>
+      <span class="chips">
+        <span class="chip tag-med">MEDIUM</span>
+        <span class="chip clo">CLO 8</span><span class="chip so">SO-a</span>
+        <span class="chip pts">8 marks &middot; 1 each</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p>Use the classes below. Each item is placed inside <code class="inl">main</code> on its own. Write <b>OK</b> (compiles and runs), <b>Compilation error</b>, or <b>Runtime error</b>, with a short reason.</p>
+<pre class="code sm">class Vehicle { }
+class Car extends Vehicle {
+    public void openTrunk() { System.out.println("Trunk open"); }
+}
+class Truck extends Vehicle { }
+// and in class Main:  static void printAll(Object[] list) { for (Object o : list) System.out.print(o + " "); }</pre>
+      <table class="fill">
+        <thead><tr><th style="width:5%">#</th><th style="width:55%">Code</th><th>OK / Compilation error / Runtime error + reason</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td class="mono">Vehicle v = new Car();</td><td class="ans"></td></tr>
+          <tr><td>2</td><td class="mono">Car c = new Vehicle();</td><td class="ans"></td></tr>
+          <tr><td>3</td><td class="mono">Vehicle v = new Car();<br>Car c = (Car) v;</td><td class="ans"></td></tr>
+          <tr><td>4</td><td class="mono">Vehicle v = new Car();<br>Truck t = (Truck) v;</td><td class="ans"></td></tr>
+          <tr><td>5</td><td class="mono">Vehicle v = new Car();<br>v.openTrunk();</td><td class="ans"></td></tr>
+          <tr><td>6</td><td class="mono">Object o = new Truck();<br>if (o instanceof Car)<br>&nbsp;&nbsp;&nbsp;&nbsp;((Car) o).openTrunk();</td><td class="ans"></td></tr>
+          <tr><td>7</td><td class="mono">ArrayList list = new ArrayList();&nbsp;&nbsp;// raw type<br>list.add("Jeddah");<br>Integer n = (Integer) list.get(0);</td><td class="ans"></td></tr>
+          <tr><td>8</td><td class="mono">int[] nums = {1, 2, 3};<br>printAll(nums);</td><td class="ans"></td></tr>
+        </tbody>
+      </table>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q9</div>
+        <p>1 <span class="val">OK</span> &mdash; upcasting is automatic: a Car is a Vehicle.<br>
+           2 <span class="val">Compilation error</span> &mdash; a Vehicle is not necessarily a Car (&ldquo;Vehicle cannot be converted to Car&rdquo;).<br>
+           3 <span class="val">OK</span> &mdash; explicit downcast, and the object really is a Car.<br>
+           4 <span class="val">Runtime error</span> &mdash; it compiles, but the object is a Car, not a Truck: <code class="inl">ClassCastException</code>.<br>
+           5 <span class="val">Compilation error</span> &mdash; the declared type <code class="inl">Vehicle</code> has no <code class="inl">openTrunk()</code> (&ldquo;cannot find symbol&rdquo;).<br>
+           6 <span class="val">OK</span> &mdash; <code class="inl">instanceof</code> is false, so the cast is never tried; nothing is printed.<br>
+           7 <span class="val">Runtime error</span> &mdash; the element is a String, so the cast to <code class="inl">Integer</code> throws <code class="inl">ClassCastException</code>.<br>
+           8 <span class="val">Compilation error</span> &mdash; <code class="inl">int[]</code> cannot be passed to <code class="inl">Object[]</code> (<code class="inl">int</code> is primitive; an <code class="inl">Integer[]</code> would be fine).</p>
+        <p class="rub">1 mark each: &frac12; for the verdict, &frac12; for the reason. All eight items were compiled and run with Java 21.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Q10 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 7 &mdash; Polymorphism &amp; ArrayList &mdash; Practice Exam &middot; Question 10 of 11</span></div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="qno">Q10</span>
+      <span class="qtitle">From UML to Code &mdash; Override and equals(Object)</span>
+      <span class="chips">
+        <span class="chip tag-hard">HARD</span>
+        <span class="chip clo">CLO 8</span><span class="chip so">SO-c</span>
+        <span class="chip pts">8 marks</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p>The class <code class="inl">Account</code> is already written. Its <code class="inl">monthlyFee()</code> returns <code class="inl">10.0</code> and its <code class="inl">toString()</code> returns, for example, <code class="inl">"SA-7: 8000.0 SAR"</code>.
+         Write the class <code class="inl">SavingsAccount</code> from the UML diagram.</p>
+      <div class="uml-wrap">
+        <div class="uml">
+          <div class="uml-name">Account</div>
+          <div class="uml-sec"><span>-id: String</span><span>-balance: double</span></div>
+          <div class="uml-sec"><span>+Account(id: String, balance: double)</span><span>+getId(): String</span><span>+getBalance(): double</span>
+            <span>+monthlyFee(): double</span><span>+toString(): String</span></div>
+        </div>
+        <div style="align-self:center;text-align:center;color:var(--em-deep);font-weight:700;font-size:10pt">
+          <svg width="70" height="28" viewBox="0 0 70 28"><line x1="70" y1="14" x2="18" y2="14" stroke="currentColor" stroke-width="1.6"/><path d="M2,14 L18,5 L18,23 Z" fill="#fff" stroke="currentColor" stroke-width="1.6"/></svg>
+          <div>extends</div>
+        </div>
+        <div class="uml">
+          <div class="uml-name">SavingsAccount</div>
+          <div class="uml-sec"><span>-rate: double</span></div>
+          <div class="uml-sec"><span>+SavingsAccount(id: String,</span><span>&nbsp;&nbsp;balance: double, rate: double)</span><span>+getRate(): double</span>
+            <span>+interest(): double</span><span>+monthlyFee(): double</span><span>+toString(): String</span><span>+equals(o: Object): boolean</span></div>
+        </div>
+      </div>
+      <table class="need">
+        <tr><th>Requirement</th></tr>
+        <tr><td>interest() returns balance &times; rate / 100.</td></tr>
+        <tr><td>monthlyFee() overrides Account&rsquo;s: 0.0 if the balance is 5000 or more, otherwise the normal Account fee (reuse it).</td></tr>
+        <tr><td>toString() overrides Account&rsquo;s and returns, e.g., "Savings SA-7: 8000.0 SAR, rate 2.5%"</td></tr>
+        <tr><td>equals(Object) overrides Object&rsquo;s: two savings accounts are equal if they have the same id and the same rate;<br>any other object (or null) is not equal. It must work when the argument&rsquo;s declared type is Object.</td></tr>
+      </table>
+      <div class="answer-space"><span class="lbl">Write the complete class SavingsAccount:</span><div class="codebox" style="min-height:92mm"></div></div>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q10</div>
+<pre class="code sm" data-java="q10/SavingsAccount.java">public class SavingsAccount extends Account {
+    private double rate;
+
+    public SavingsAccount(String id, double balance, double rate) {
+        super(id, balance);                  // id and balance are private in Account
+        this.rate = rate;
+    }
+    public double getRate() {
+        return rate;
+    }
+    public double interest() {
+        return getBalance() * rate / 100;
+    }
+    @Override
+    public double monthlyFee() {
+        if (getBalance() &gt;= 5000)
+            return 0.0;
+        else
+            return super.monthlyFee();       // reuse Account's fee
+    }
+    @Override
+    public String toString() {
+        return "Savings " + super.toString() + ", rate " + rate + "%";
+    }
+    @Override
+    public boolean equals(Object o) {        // parameter type Object = override
+        if (o instanceof SavingsAccount) {
+            SavingsAccount other = (SavingsAccount) o;   // downcast
+            return getId().equals(other.getId()) &amp;&amp; rate == other.rate;
+        }
+        else
+            return false;
+    }
+}
+
+// Test: Account a = new SavingsAccount("SA-7", 8000, 2.5);  Object b = new SavingsAccount("SA-7", 300, 2.5);
+// a                      -&gt; Savings SA-7: 8000.0 SAR, rate 2.5%
+// a.monthlyFee()         -&gt; 0.0      ((Account) b).monthlyFee() -&gt; 10.0
+// a.equals(b)            -&gt; true     a.equals(new Account("CU-1", 300)) -&gt; false     a.equals("SA-7") -&gt; false</pre>
+        <p class="rub">Rubric: <code class="inl">extends Account</code>, private <code class="inl">rate</code>, constructor with <code class="inl">super(id, balance)</code> first, <code class="inl">getRate</code> (2) &middot; <code class="inl">interest</code> using <code class="inl">getBalance()</code> (1) &middot;
+           <code class="inl">monthlyFee</code> overridden, using <code class="inl">super.monthlyFee()</code> (1) &middot; <code class="inl">toString</code> with <code class="inl">super.toString()</code> (1) &middot;
+           <code class="inl">equals(Object o)</code> with <code class="inl">instanceof</code> (1), downcast (1), compares id with <code class="inl">equals</code> and rate (1). Writing <code class="inl">equals(SavingsAccount o)</code> only <b>overloads</b>: lose 1 mark.
+           The test lines were run with Java 21.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Q11 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 7 &mdash; Polymorphism &amp; ArrayList &mdash; Practice Exam &middot; Question 11 of 11</span></div>
+
+  <div class="card flow">
+    <div class="card-head">
+      <span class="qno">Q11</span>
+      <span class="qtitle">Design &mdash; A Polymorphic ArrayList of Shapes</span>
+      <span class="chips">
+        <span class="chip tag-hard">HARD</span>
+        <span class="chip clo">CLO 8</span><span class="chip clo">CLO 9</span><span class="chip so">SO-c</span>
+        <span class="chip pts">8 marks</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p>A drawing app keeps all its shapes in <b>one</b> list: <code class="inl">ArrayList&lt;Shape&gt; shapes</code>. Use the same classes as in Q5:</p>
+<pre class="code sm">Shape     : getColor(), getArea() returns 0, toString()
+Circle    : extends Shape &mdash; getRadius(), getArea() overridden (&pi;r&sup2;)
+Rectangle : extends Shape &mdash; getArea() overridden (width &times; height)</pre>
+      <p><b>(a)</b> Write <code class="inl">public static double totalArea(ArrayList&lt;Shape&gt; list)</code> that returns the sum of the areas of all shapes in the list. <span class="mini">(2 marks)</span></p>
+      <div class="answer-space"><div class="codebox" style="min-height:34mm"></div></div>
+
+      <p><b>(b)</b> Write <code class="inl">public static double largestRadius(ArrayList&lt;Shape&gt; list)</code> that returns the largest radius among the <b>circles</b> in the list,
+         or <code class="inl">0</code> if there is no circle. Your code must never throw a <code class="inl">ClassCastException</code>. <span class="mini">(3 marks)</span></p>
+      <div class="answer-space"><div class="codebox" style="min-height:48mm"></div></div>
+
+      <p><b>(c)</b> In <code class="inl">totalArea</code>, the same statement calls three different <code class="inl">getArea()</code> methods. What is this feature called, and when is the method chosen? <span class="mini">(1 mark)</span></p>
+      <div class="answer-space"><div class="writeline"></div></div>
+
+      <p><b>(d)</b> A student says: &ldquo;Let&rsquo;s add <code class="inl">getRadius()</code> to <code class="inl">Shape</code>, returning 0, so we never need to cast.&rdquo; Is this good design? Explain using the design rule from the lecture. <span class="mini">(2 marks)</span></p>
+      <div class="answer-space"><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div></div>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q11</div>
+<pre class="code sm" data-java="q11/ShapeTools.java" data-import="1">public class ShapeTools {
+    // (a)
+    public static double totalArea(ArrayList&lt;Shape&gt; list) {
+        double total = 0;
+        for (Shape s : list)
+            total += s.getArea();            // dynamic binding: Circle's or Rectangle's getArea
+        return total;
+    }
+
+    // (b)
+    public static double largestRadius(ArrayList&lt;Shape&gt; list) {
+        double largest = 0;
+        for (Shape s : list) {
+            if (s instanceof Circle) {       // check first ...
+                double r = ((Circle) s).getRadius();   // ... then downcast
+                if (r &gt; largest)
+                    largest = r;
+            }
+        }
+        return largest;
+    }
+
+    public static void main(String[] args) {
+        ArrayList&lt;Shape&gt; shapes = new ArrayList&lt;&gt;();
+        shapes.add(new Circle(1.0, "red"));
+        shapes.add(new Rectangle(2.0, 3.0, "green"));
+        shapes.add(new Circle(2.0, "blue"));
+        System.out.println("Total area: " + totalArea(shapes));        // Total area: 21.707963267948966
+        System.out.println("Largest radius: " + largestRadius(shapes)); // Largest radius: 2.0
+    }
+}</pre>
+        <p>(c) <span class="val">Dynamic binding</span> (polymorphism): the JVM chooses the method at <b>run time</b> from the <b>actual</b> type of each object.</p>
+        <p>(d) <span class="val">No.</span> Only put a method in the superclass if it is <b>naturally shared</b> by all (or most) subclasses. A rectangle has no radius, so <code class="inl">getRadius()</code> in <code class="inl">Shape</code> would be
+           a forced, meaningless method (like <code class="inl">addHours()</code> in <code class="inl">StaffMember</code>). Do not push methods up just to reach 100% polymorphism; use <code class="inl">instanceof</code> + downcasting for subclass-only methods.</p>
+        <p class="rub">(a) loop over the list (1), <code class="inl">s.getArea()</code> without casting (1). (b) <code class="inl">instanceof</code> check (1), downcast to reach <code class="inl">getRadius()</code> (1), correct maximum and 0 when there is no circle (1).
+           (c) 1 mark. (d) verdict (1), reason based on the design rule (1). The code was run with Java 21 and prints the values in the comments.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="endmark">&mdash; End of Polymorphism &amp; ArrayList Practice Exam &mdash; Good Luck! &mdash;</div>
+  <p class="footline">Module 7: Polymorphism &amp; ArrayList</p>
+</section>
+
+<script>
+  var btn = document.getElementById('toggleAns');
+  btn.addEventListener('click', function () {
+    var on = document.body.classList.toggle('show-answers');
+    btn.textContent = on ? '🙈 Hide model answers' : '👁 Show model answers';
+    btn.classList.toggle('ghost', !on);
+  });
+</script>
+</body>
+</html>

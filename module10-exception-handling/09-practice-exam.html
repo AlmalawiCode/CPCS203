@@ -1,0 +1,1178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Exception Handling &mdash; Practice Exam (A4 printable)</title>
+<style>
+/* =======================================================================
+   Programming II — MODULE 10: EXCEPTION HANDLING — practice exam
+   Print-first, A4. Each question is a CARD. Module colour theme (dark red).
+   A "Show model answers" toggle turns the same file into an answer key.
+   ======================================================================= */
+@page { size: A4; margin: 12mm 15mm 14mm 15mm; }
+
+:root{
+  --em:        #b91c1c;
+  --em-dark:   #991b1b;
+  --em-deep:   #7f1d1d;
+  --em-tint:   #fef2f2;
+  --ink:       #1f2937;
+  --ink-soft:  #4b5563;
+  --rule:      #fecaca;
+  --paper:     #ffffff;
+  --code-bg:   #fffafa;
+  --code-rule: #fbd5d5;
+  --warn:      #b42318;
+  --tag-easy:  #e7f6ec; --tag-easy-i:#1a7f37;
+  --tag-med:   #fef3e0; --tag-med-i: #9a6212;
+  --tag-hard:  #dc2626; --tag-hard-i:#ffffff;
+}
+
+*{ box-sizing:border-box; }
+html,body{
+  margin:0; padding:0;
+  background:#e5e9f0;
+  color:var(--ink);
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size:11pt; line-height:1.5;
+}
+body{ padding:14mm 0; }
+
+/* ---- A4 sheet ---- */
+.sheet{
+  background:var(--paper);
+  width:210mm; min-height:297mm;
+  margin:0 auto 10mm;
+  padding:15mm 15mm 18mm;
+  box-shadow:0 3px 14px rgba(31,41,55,.18);
+  position:relative;
+}
+
+/* ---- running head ---- */
+.runhead{
+  display:flex; justify-content:space-between; align-items:flex-end;
+  border-bottom:2px solid var(--em-dark);
+  padding-bottom:6px; margin-bottom:14px;
+  font-size:9.5pt; color:var(--em-deep);
+}
+.runhead b{ font-size:10.5pt; }
+
+/* ================= COVER ================= */
+.cover-top{ text-align:center; }
+.cover-rule{ height:2px; background:var(--em-dark); margin:12px 0; }
+.cover-title{ font-size:22pt; font-weight:800; color:var(--em); letter-spacing:.5px; }
+.cover-sub{ font-size:13pt; font-weight:600; margin-top:4px; }
+.cover-tag{
+  display:inline-block; margin-top:10px; padding:4px 16px;
+  background:var(--em-tint); color:var(--em-dark); border:1px solid var(--em);
+  border-radius:999px; font-weight:700; font-size:10.5pt;
+}
+
+.id-grid{ margin:22px 0 4px; width:100%; border-collapse:collapse; font-size:11pt; }
+.id-grid td{ padding:9px 6px; }
+.id-grid .lbl{ width:132px; white-space:nowrap; font-weight:700; color:var(--em-deep); }
+.id-grid .line{ border-bottom:1.4px solid #6b7280; }
+
+.instr{
+  margin-top:16px; border:1px solid var(--rule);
+  border-left:5px solid var(--em); border-radius:8px;
+  background:#fffafa; padding:12px 16px;
+}
+.instr h3{ margin:0 0 6px; font-size:11.5pt; color:var(--em-deep); }
+.instr ul{ margin:0; padding-left:18px; }
+.instr li{ margin:3px 0; }
+
+.marks-tbl{ width:100%; border-collapse:collapse; margin-top:18px; font-size:10pt; text-align:center; }
+.marks-tbl th, .marks-tbl td{ border:1px solid var(--rule); padding:6px 4px; }
+.marks-tbl thead th{ background:var(--em-dark); color:#fff; }
+.marks-tbl .tot{ background:var(--em-tint); font-weight:800; }
+.marks-tbl thead th.tot{ background:var(--em-deep); color:#fff; }
+
+/* ================= QUESTION CARD ================= */
+.card{
+  border:1px solid var(--rule); border-radius:10px;
+  margin:0 0 16px; overflow:hidden;
+  break-inside:avoid; page-break-inside:avoid; background:#fff;
+}
+.card-head{
+  display:flex; flex-wrap:wrap; align-items:center; gap:8px;
+  background:linear-gradient(180deg,#fffafa,#fde0e0);
+  border-bottom:1px solid var(--rule); padding:9px 14px;
+}
+.qno{
+  font-weight:800; color:#fff; background:var(--em-dark);
+  border-radius:6px; padding:3px 11px; font-size:11pt; letter-spacing:.3px;
+}
+.qtitle{ font-weight:700; font-size:11.5pt; color:var(--em-deep); flex:1 1 240px; }
+.chips{ display:flex; gap:6px; align-items:center; flex-wrap:wrap; }
+.chip{ font-size:8.5pt; padding:2px 8px; border-radius:999px; font-weight:700; white-space:nowrap; }
+.chip.clo{ background:#fee2e2; color:#991b1b; border:1px solid #fca5a5; }
+.chip.so { background:#ecfeff; color:#0e7490; border:1px solid #a5f3fc; }
+.chip.pts{ background:var(--em-deep); color:#fff; }
+.tag-easy{ background:var(--tag-easy); color:var(--tag-easy-i); border:1px solid var(--tag-easy-i); }
+.tag-med { background:var(--tag-med);  color:var(--tag-med-i);  border:1px solid var(--tag-med-i);  }
+.tag-hard{ background:var(--tag-hard); color:var(--tag-hard-i); border:1px solid #991b1b; letter-spacing:.4px; }
+
+.card-body{ padding:12px 16px 14px; }
+.card-body p{ margin:6px 0; }
+.note{ color:var(--warn); font-style:italic; font-weight:600; font-size:10pt; }
+.hint{ color:var(--ink-soft); font-style:italic; font-size:10pt; }
+.mini{ font-size:9pt; color:#6b7280; }
+
+/* ---- code blocks ---- */
+pre.code{
+  background:var(--code-bg); border:1px solid var(--code-rule);
+  border-left:4px solid var(--em); border-radius:6px;
+  padding:10px 12px; margin:10px 0; overflow:auto;
+  font-family:'Consolas','DejaVu Sans Mono',monospace; font-size:10pt; line-height:1.5;
+  white-space:pre;
+}
+pre.code.sm{ font-size:9.3pt; line-height:1.42; }
+code.inl{ background:var(--code-bg); border:1px solid var(--code-rule); border-radius:4px;
+  padding:1px 5px; font-family:'Consolas',monospace; font-size:9.8pt; }
+.dots{ letter-spacing:1px; color:#6b7280; }
+.two-col{ display:flex; gap:12px; }
+.two-col > *{ flex:1 1 0; min-width:0; }
+.two-col > .wide{ flex-grow:1.4; }
+.two-col > .narrow{ flex-grow:.65; }
+.two-col > .snug{ flex:0 0 auto; }
+.opts p{ margin:3px 0; }
+.tight .card-body{ font-size:10.5pt; line-height:1.42; }
+.tight .card-body p{ margin:4px 0; }
+.tight .mcq{ margin-bottom:5px; }
+.tight pre.code{ margin:6px 0; }
+.mcq{ display:grid; grid-template-columns:1fr 1fr; gap:2px 18px; margin:2px 0 8px 14px; }
+.mcq.c4{ grid-template-columns:repeat(4, auto); justify-content:start; column-gap:34px; }
+.mcq.c5{ grid-template-columns:repeat(5, auto); justify-content:start; column-gap:26px; }
+
+.need{ border-collapse:collapse; font-size:9.5pt; margin-top:10px; }
+.need td, .need th{ border:1px solid var(--rule); padding:4px 8px; font-family:'Consolas',monospace; }
+.need th{ background:var(--em-tint); color:var(--em-deep); font-family:'Segoe UI',sans-serif; }
+
+/* ---- answer space ---- */
+.answer-space{ margin-top:10px; }
+.answer-space .lbl{ font-style:italic; color:var(--ink-soft); font-size:10pt; }
+.writeline{ border-bottom:1px solid #9ca3af; height:1.55em; margin-top:.45em; }
+.codebox{ border:1px dashed #9ca3af; border-radius:6px; min-height:120px; margin-top:8px;
+  background:repeating-linear-gradient(#fff,#fff 1.7em,#f8e1e1 1.7em,#f8e1e1 calc(1.7em + 1px)); }
+.drawbox{ border:1px dashed #9ca3af; border-radius:6px; margin-top:8px; position:relative;
+  display:flex; }
+.drawbox .half{ flex:1; padding:6px 10px; font-size:9pt; color:#9ca3af; font-weight:700; letter-spacing:1px; }
+.drawbox .half + .half{ border-left:1px dashed #cbd5e1; }
+
+/* ---- fill-in tables ---- */
+.fill{ width:100%; border-collapse:collapse; margin-top:8px; font-size:10.5pt; }
+.fill td, .fill th{ border:1px solid var(--rule); padding:7px 8px; }
+.fill th{ background:var(--em-tint); color:var(--em-deep); font-size:10pt; }
+.fill td.ans{ background:#fff; width:42%; height:2.6em; }
+.fill td.mono{ font-family:'Consolas',monospace; }
+
+/* ---- model answer block (hidden until toggled) ---- */
+.answer-key{ display:none; }
+body.show-answers .answer-key{ display:block; }
+body.show-answers .card{ break-inside:auto; page-break-inside:auto; }
+body.show-answers .answer-key{ break-inside:avoid; page-break-inside:avoid; }
+.answer-key{
+  margin-top:12px; border:1px solid #bbf7d0; border-left:5px solid #16a34a;
+  background:#f0fdf4; border-radius:8px; padding:10px 14px;
+}
+.answer-key .akh{ font-weight:800; color:#15803d; font-size:10.5pt; margin-bottom:4px; }
+.answer-key pre.code{ border-left-color:#16a34a; background:#f6fdf9; border-color:#bbf7d0; }
+.answer-key .val{ color:#166534; font-weight:800; }
+.answer-key .rub{ color:#0e7490; font-size:9.5pt; font-style:italic; }
+.answer-key table.fill th{ background:#dcfce7; color:#15803d; }
+
+/* ---- floating toolbar (screen only) ---- */
+.toolbar{
+  position:fixed; top:14px; right:14px; z-index:50; display:flex; gap:8px;
+  background:#fff; border:1px solid var(--rule); border-radius:10px; padding:8px 10px;
+  box-shadow:0 4px 14px rgba(31,41,55,.18);
+}
+.toolbar button, .toolbar a{
+  font:inherit; font-size:10pt; font-weight:700; cursor:pointer; text-decoration:none;
+  border:1px solid var(--em); border-radius:7px; padding:7px 12px;
+  background:var(--em); color:#fff;
+}
+.toolbar .ghost{ background:#fff; color:var(--em-dark); }
+.toolbar button:active{ transform:translateY(1px); }
+
+.footline{ text-align:center; margin-top:6px; color:var(--ink-soft); font-size:9.5pt; }
+.endmark{ text-align:center; font-weight:800; color:var(--em-deep); margin:18px 0 4px; }
+
+/* ================= PRINT ================= */
+@media print{
+  body{ background:#fff; padding:0; }
+  .toolbar{ display:none !important; }
+  .sheet{ box-shadow:none; margin:0; width:auto; min-height:auto; padding:0; }
+  .sheet + .sheet{ page-break-before:always; }
+  .card{ box-shadow:none; }
+}
+
+/* ---- additions for this exam ---- */
+.fill td.mono{ font-size:9pt; line-height:1.45; }
+.instr .chip{ font-size:8pt; padding:1px 7px; }
+.two-col pre.code.sm{ font-size:8.5pt; line-height:1.4; }
+pre.code{ white-space:pre-wrap; overflow:visible; }   /* never clip code on paper */
+@media print{ html{ background:#fff; } }
+.card.flow{ break-inside:auto; page-break-inside:auto; }
+.four-col{ display:grid; grid-template-columns:repeat(4, 1fr); gap:12px; }
+.four-col .answer-space{ margin-top:4px; }
+.four-col.compact .writeline{ height:1.3em; margin-top:.3em; }
+.four-col.compact p{ margin:2px 0; }
+/* let every card flow across a page break, but keep code blocks and table rows whole */
+.card, body.show-answers .card{ break-inside:auto; page-break-inside:auto; }
+pre.code, .fill tr, .mcq, .card-head, .answer-space, .drawbox, .codebox, .four-col, svg{ break-inside:avoid; page-break-inside:avoid; }
+.card-head{ break-after:avoid; page-break-after:avoid; }
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <a href="08-exercises.html" class="ghost">&#8592; Exercises</a>
+  <button id="toggleAns" class="ghost">&#128065; Show model answers</button>
+  <button onclick="window.print()">&#128424; Print / Save PDF</button>
+</div>
+
+<!-- =====================================================================
+     COVER PAGE
+     ===================================================================== -->
+
+<section class="sheet cover">
+  <div class="cover-rule"></div>
+  <div class="cover-top">
+    <div class="cover-title">Programming II</div>
+    <div class="cover-sub">Module 10: Exception Handling &mdash; Focused Practice Exam</div>
+    <div class="cover-tag">Types of Errors &middot; Exception Hierarchy &middot; Checked vs Unchecked &middot; throw &amp; throws &middot; try-catch-finally &middot; Propagation &middot; Custom Exceptions</div>
+  </div>
+  <div class="cover-rule"></div>
+
+  <table class="id-grid">
+    <tr><td class="lbl">Student Name:</td><td class="line"></td></tr>
+    <tr><td class="lbl">Student ID:</td><td class="line"></td></tr>
+    <tr>
+      <td class="lbl">Section:</td><td class="line" style="width:35%"></td>
+      <td class="lbl" style="text-align:right;padding-right:14px">Instructor:</td><td class="line"></td>
+    </tr>
+  </table>
+
+  <div class="instr">
+    <h3>Instructions</h3>
+    <ul>
+      <li>This booklet contains <b>11 questions</b> on Exception Handling only. <b>Total: 80 marks</b> &middot; Suggested time: <b>90 minutes</b>.</li>
+      <li>Answer <b>all</b> questions in the spaces provided. <b>Place your answers in the boxes provided.</b></li>
+      <li><b>Assume all necessary import statements are present</b> (<code class="inl">java.util.*</code>, <code class="inl">java.io.*</code>).
+          When a question shows several classes, assume each class is saved in its own <code class="inl">.java</code> file.</li>
+      <li>When a question asks for output, <b>write the exact output, one line per line</b>. If the program stops because of an exception that nobody catches,
+          write the lines printed before it, then write <b>&ldquo;Program crashes: <i>ExceptionName</i>&rdquo;</b>.</li>
+      <li>If a piece of code does not compile, write <b>&ldquo;Compilation error&rdquo;</b> and give the reason in one short sentence.</li>
+      <li>Questions are labelled <span class="chip tag-easy">EASY</span> <span class="chip tag-med">MEDIUM</span> <span class="chip tag-hard">HARD</span>.
+          Write clear Java. Partial (per-line) credit is given.
+          <span class="note">Data fields must be private wherever a question asks you to write a class.</span></li>
+    </ul>
+  </div>
+
+  <table class="marks-tbl">
+    <thead>
+      <tr><th>Question</th><th>Q1</th><th>Q2</th><th>Q3</th><th>Q4</th><th>Q5</th><th>Q6</th><th>Q7</th><th>Q8</th><th>Q9</th><th>Q10</th><th>Q11</th><th class="tot">Total</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><b>Level</b></td><td>E</td><td>E</td><td>M</td><td>M</td><td>M</td><td>M</td><td>H</td><td>M</td><td>M</td><td>H</td><td>H</td><td class="tot"></td></tr>
+      <tr><td><b>Max Mark</b></td><td>8</td><td>6</td><td>8</td><td>6</td><td>6</td><td>8</td><td>8</td><td>6</td><td>8</td><td>8</td><td>8</td><td class="tot">80</td></tr>
+      <tr><td><b>Obtained</b></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class="tot"></td></tr>
+    </tbody>
+  </table>
+
+  <p class="footline">Topics covered: syntax, logical and runtime errors &middot; the two goals (graceful termination, continued execution) &middot; Oracle&rsquo;s three advantages &middot;
+     the division problem &middot; <code class="inl">Throwable</code>, <code class="inl">Error</code>, <code class="inl">Exception</code>, <code class="inl">RuntimeException</code> &middot; checked vs unchecked &middot;
+     declaring (<code class="inl">throws</code>), throwing (<code class="inl">throw</code>) and catching &middot; multiple catch blocks and their order &middot; propagation up the call stack &middot;
+     <code class="inl">getMessage()</code>, <code class="inl">toString()</code>, <code class="inl">printStackTrace()</code> &middot; <code class="inl">finally</code> &middot; rethrowing &middot; custom exception classes &middot; exceptions only for unexpected errors.</p>
+</section>
+
+<!-- ================= Q1 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 10 &mdash; Exception Handling &mdash; Practice Exam &middot; Question 1 of 11</span></div>
+
+  <div class="card tight">
+    <div class="card-head">
+      <span class="qno">Q1</span>
+      <span class="qtitle">Exception Basics (Multiple Choice)</span>
+      <span class="chips">
+        <span class="chip tag-easy">EASY</span>
+        <span class="chip clo">CLO 13</span><span class="chip so">SO-a</span>
+        <span class="chip pts">8 marks &middot; 1 each</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p>Circle the <b>single best</b> answer for each item.</p>
+
+      <p><b>1.</b> A Zakah program compiles and runs without crashing, but it prints 100,000 SAR instead of 25,000 SAR. This is a:</p>
+      <div class="mcq c4"><span>(a) syntax error</span><span>(b) runtime error</span><span>(c) logical error</span><span>(d) compile error</span></div>
+
+      <p><b>2.</b> Which class is the <b>root</b> of everything that can be thrown with <code class="inl">throw</code> and caught with <code class="inl">catch</code>?</p>
+      <div class="mcq c4"><span>(a) <code class="inl">Exception</code></span><span>(b) <code class="inl">Error</code></span><span>(c) <code class="inl">Throwable</code></span><span>(d) <code class="inl">RuntimeException</code></span></div>
+
+      <p><b>3.</b> Which one is a <b>checked</b> exception?</p>
+      <div class="mcq"><span>(a) <code class="inl">NullPointerException</code></span><span>(b) <code class="inl">IOException</code></span><span>(c) <code class="inl">ArithmeticException</code></span><span>(d) <code class="inl">ClassCastException</code></span></div>
+
+<div class="two-col">
+<div>
+      <p><b>4.</b> What is printed by this code?</p>
+<pre class="code sm">try {
+    System.out.print("A");
+    int x = 5 / 0;
+    System.out.print("B");
+} catch (ArithmeticException e) {
+    System.out.print("C");
+}
+System.out.println("D");</pre>
+      <div class="mcq"><span>(a) <code class="inl">ABCD</code></span><span>(b) <code class="inl">ACD</code></span><span>(c) <code class="inl">AC</code></span><span>(d) <code class="inl">AD</code></span></div>
+</div>
+<div>
+      <p><b>5.</b> What is printed by this code?</p>
+<pre class="code sm">try {
+    int n = Integer.parseInt("12a");
+    System.out.println(n);
+} catch (NumberFormatException e) {
+    System.out.println(e.getMessage());
+}</pre>
+      <div class="mcq"><span>(a) <code class="inl">12</code></span><span>(b) <code class="inl">For input string: "12a"</code></span><span>(c) <code class="inl">/ by zero</code></span><span>(d) nothing</span></div>
+</div>
+</div>
+
+      <p><b>6.</b> What is printed by <code class="inl">System.out.println(5.0 / 0);</code> ?</p>
+      <div class="mcq c4"><span>(a) <code class="inl">0.0</code></span><span>(b) <code class="inl">Infinity</code></span><span>(c) <code class="inl">NaN</code></span><span>(d) an <code class="inl">ArithmeticException</code> is thrown</span></div>
+
+      <p><b>7.</b> What is printed by this code?</p>
+<div class="two-col"><div class="narrow">
+<pre class="code sm">try {
+    int[] a = new int[2];
+    a[2] = 1;
+} catch (Exception e) {
+    System.out.println(e);
+}</pre>
+</div>
+      <div class="mcq wide" style="grid-template-columns:1fr;align-self:center">
+        <span>(a) <code class="inl">Index 2 out of bounds for length 2</code></span>
+        <span>(b) <code class="inl">java.lang.ArrayIndexOutOfBoundsException: Index 2 out of bounds for length 2</code></span>
+        <span>(c) <code class="inl">Exception</code></span>
+        <span>(d) nothing &mdash; the program crashes</span>
+      </div></div>
+
+      <p><b>8.</b> A <code class="inl">finally</code> block runs:</p>
+      <div class="mcq">
+        <span>(a) only when an exception is thrown</span>
+        <span>(b) only when no exception is thrown</span>
+        <span>(c) always &mdash; even when the <code class="inl">try</code> block executes <code class="inl">return</code></span>
+        <span>(d) only when one of the catch blocks matches</span>
+      </div>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q1</div>
+        <p>1:&nbsp;<span class="val">(c)</span> &nbsp; 2:&nbsp;<span class="val">(c)</span> &nbsp; 3:&nbsp;<span class="val">(b)</span> &nbsp; 4:&nbsp;<span class="val">(b)</span> &nbsp;
+           5:&nbsp;<span class="val">(b)</span> &nbsp; 6:&nbsp;<span class="val">(b)</span> &nbsp; 7:&nbsp;<span class="val">(b)</span> &nbsp; 8:&nbsp;<span class="val">(c)</span></p>
+        <p class="rub">1 mark each. (1) Wrong output with no crash = logical error; only testing finds it. (4) <code class="inl">"B"</code> is skipped because the exception happens on the line before it.
+           (5) <code class="inl">getMessage()</code> returns only the message. (6) Division by zero with a <b>double</b> does not throw; it gives <code class="inl">Infinity</code>.
+           (7) <code class="inl">println(e)</code> calls <code class="inl">toString()</code> = class name + message. All outputs were checked by running the code.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Q2 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 10 &mdash; Exception Handling &mdash; Practice Exam &middot; Question 2 of 11</span></div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="qno">Q2</span>
+      <span class="qtitle">Short Answers &mdash; Why and How We Handle Exceptions</span>
+      <span class="chips">
+        <span class="chip tag-easy">EASY</span>
+        <span class="chip clo">CLO 13</span><span class="chip so">SO-a</span>
+        <span class="chip pts">6 marks &middot; 1 each</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p><b>(a)</b> Name the <b>three</b> types of programming errors. Which one does exception handling deal with?</p>
+      <div class="answer-space"><div class="writeline"></div><div class="writeline"></div></div>
+
+      <p><b>(b)</b> When a runtime error happens, exception handling serves <b>two</b> goals. Name them.</p>
+      <div class="answer-space"><div class="writeline"></div></div>
+
+      <p><b>(c)</b> Oracle lists <b>three</b> advantages of exceptions over error codes. Name them.</p>
+      <div class="answer-space"><div class="writeline"></div></div>
+
+      <p><b>(d)</b> What is the difference between <code class="inl">throw</code> and <code class="inl">throws</code>? Give a one-line example of each.</p>
+      <div class="answer-space"><div class="writeline"></div><div class="writeline"></div></div>
+
+      <p><b>(e)</b> In the division problem, the method <code class="inl">int quotient(int a, int b)</code> must not <b>return -1</b> and must not call
+         <b><code class="inl">System.exit(1)</code></b> when <code class="inl">b</code> is 0. Give one reason for each.</p>
+      <div class="answer-space"><div class="writeline"></div><div class="writeline"></div></div>
+
+      <p><b>(f)</b> Why should your program <b>not</b> try to catch an <code class="inl">OutOfMemoryError</code>?</p>
+      <div class="answer-space"><div class="writeline"></div></div>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q2</div>
+        <p>(a) <span class="val">Syntax (compile-time) errors, logical errors, runtime errors.</span> Exception handling deals with <span class="val">runtime errors</span>.</p>
+        <p>(b) <span class="val">Graceful termination</span> (stop safely: save data, close files, roll back) and <span class="val">continued execution</span> (handle the problem and keep running).</p>
+        <p>(c) <span class="val">Separating</span> error-handling code from regular code &middot; <span class="val">propagating</span> errors up the call stack &middot; <span class="val">grouping and differentiating</span> error types.</p>
+        <p>(d) <code class="inl">throw</code> is a statement in the method <b>body</b> that throws an exception object: <code class="inl">throw new ArithmeticException("Divisor cannot be zero");</code>
+           &middot; <code class="inl">throws</code> is written in the method <b>header</b> to declare what it may throw: <code class="inl">public void read() throws IOException</code>.</p>
+        <p>(e) <b>-1</b> can be a correct answer (e.g. <code class="inl">-4 / 4</code>), so the caller cannot tell an error from a result. &middot;
+           <b>System.exit</b> takes the decision away from the caller; the <b>caller</b> should decide whether to stop or ask for new input.</p>
+        <p>(f) <code class="inl">OutOfMemoryError</code> is an <code class="inl">Error</code>: a serious JVM/system failure that the program cannot fix (like an earthquake). Only <code class="inl">Exception</code>s are recoverable.</p>
+        <p class="rub">1 mark each; (a), (c) and (e) need all parts for the full mark (&frac12; for partly correct).</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Q3 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 10 &mdash; Exception Handling &mdash; Practice Exam &middot; Question 3 of 11</span></div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="qno">Q3</span>
+      <span class="qtitle">Which Exception Is Thrown? &mdash; Checked or Unchecked</span>
+      <span class="chips">
+        <span class="chip tag-med">MEDIUM</span>
+        <span class="chip clo">CLO 13</span><span class="chip so">SO-a</span>
+        <span class="chip pts">8 marks &middot; 1 each</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p>Each row runs on its own. Write the <b>name</b> of the exception that is thrown (write <b>none</b> if no exception is thrown),
+         and say whether that exception is <b>checked</b> or <b>unchecked</b>.</p>
+      <table class="fill">
+        <thead><tr><th style="width:5%">#</th><th style="width:47%">Code</th><th>Exception thrown (or &ldquo;none&rdquo;)</th><th style="width:17%">Checked / Unchecked</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td class="mono">int[] marks = new int[3];<br>marks[3] = 7;</td><td></td><td></td></tr>
+          <tr><td>2</td><td class="mono">String city = null;<br>System.out.println(city.length());</td><td></td><td></td></tr>
+          <tr><td>3</td><td class="mono">Object o = "Riyadh";<br>Integer n = (Integer) o;</td><td></td><td></td></tr>
+          <tr><td>4</td><td class="mono">int qty = Integer.parseInt("3.5");</td><td></td><td></td></tr>
+          <tr><td>5</td><td class="mono">int share = 90 / (3 - 3);</td><td></td><td></td></tr>
+          <tr><td>6</td><td class="mono">Scanner sc = new Scanner(new File("marks.txt"));<br><span style="font-family:'Segoe UI',sans-serif;font-style:italic">(the file marks.txt does not exist)</span></td><td></td><td></td></tr>
+          <tr><td>7</td><td class="mono">Scanner in = new Scanner(System.in);<br>int age = in.nextInt();<br><span style="font-family:'Segoe UI',sans-serif;font-style:italic">(the user types: twenty)</span></td><td></td><td></td></tr>
+          <tr><td>8</td><td class="mono">double avg = 7.0 / 0;<br>System.out.println(avg);</td><td></td><td></td></tr>
+        </tbody>
+      </table>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q3</div>
+        <table class="fill">
+          <thead><tr><th>#</th><th>Exception thrown</th><th>Checked / Unchecked</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td><span class="val">ArrayIndexOutOfBoundsException</span> (valid indexes are 0&ndash;2)</td><td>unchecked</td></tr>
+            <tr><td>2</td><td><span class="val">NullPointerException</span></td><td>unchecked</td></tr>
+            <tr><td>3</td><td><span class="val">ClassCastException</span> (a String is not an Integer)</td><td>unchecked</td></tr>
+            <tr><td>4</td><td><span class="val">NumberFormatException</span> (&ldquo;3.5&rdquo; is not an int)</td><td>unchecked</td></tr>
+            <tr><td>5</td><td><span class="val">ArithmeticException</span> (/ by zero)</td><td>unchecked</td></tr>
+            <tr><td>6</td><td><span class="val">FileNotFoundException</span> (a subclass of IOException)</td><td><span class="val">checked</span></td></tr>
+            <tr><td>7</td><td><span class="val">InputMismatchException</span></td><td>unchecked</td></tr>
+            <tr><td>8</td><td><span class="val">none</span> &mdash; it prints <code class="inl">Infinity</code> (double division)</td><td>&mdash;</td></tr>
+          </tbody>
+        </table>
+        <p class="rub">1 mark per row: &frac12; for the exception name, &frac12; for checked/unchecked (row 8: 1 mark for &ldquo;none&rdquo;).
+           Rule: <code class="inl">RuntimeException</code>, <code class="inl">Error</code> and their subclasses are unchecked; all other exceptions are checked. Every row was run with Java 21.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Q4 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 10 &mdash; Exception Handling &mdash; Practice Exam &middot; Question 4 of 11</span></div>
+
+  <div class="card flow">
+    <div class="card-head">
+      <span class="qno">Q4</span>
+      <span class="qtitle">Output Tracing &mdash; try, catch and finally</span>
+      <span class="chips">
+        <span class="chip tag-med">MEDIUM</span>
+        <span class="chip clo">CLO 13</span><span class="chip so">SO-a</span>
+        <span class="chip pts">6 marks &middot; 2 each</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p>A shop splits a 100 SAR gift card between the people on a coupon. The program is run <b>three separate times</b>.
+         Write the exact output, one line per line, for each input.</p>
+<pre class="code sm">public class Coupon {
+    public static int parse(String code) {
+        try {
+            System.out.println("start " + code);
+            int n = Integer.parseInt(code);
+            System.out.println("share " + 100 / n);
+            return n;
+        } catch (NumberFormatException e) {
+            System.out.println("bad: " + e.getMessage());
+            return -1;
+        } finally {
+            System.out.println("done " + code);
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
+        String code = input.next();
+        try {
+            System.out.println("result " + parse(code));
+        } catch (ArithmeticException e) {
+            System.out.println("main: " + e.getMessage());
+        }
+        System.out.println("end");
+    }
+}</pre>
+<div class="two-col">
+<div>
+      <p><b>(a)</b> The user types <code class="inl">4</code></p>
+      <div class="answer-space"><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div></div>
+</div>
+<div>
+      <p><b>(b)</b> The user types <code class="inl">x7</code></p>
+      <div class="answer-space"><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div></div>
+</div>
+<div>
+      <p><b>(c)</b> The user types <code class="inl">0</code></p>
+      <div class="answer-space"><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div></div>
+</div>
+</div>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q4</div>
+<div class="two-col">
+<pre class="code sm">start 4
+share 25
+done 4
+result 4
+end</pre>
+<pre class="code sm">start x7
+bad: For input string: "x7"
+done x7
+result -1
+end</pre>
+<pre class="code sm">start 0
+done 0
+main: / by zero
+end</pre>
+</div>
+        <p class="rub">(a) No exception: <code class="inl">return n</code> is scheduled, but <code class="inl">finally</code> prints &ldquo;done 4&rdquo; <b>before</b> main prints the result.
+           (b) <code class="inl">parseInt</code> throws <code class="inl">NumberFormatException</code>; the catch returns -1, and finally still runs first.
+           (c) <code class="inl">100 / 0</code> throws <code class="inl">ArithmeticException</code>, which <code class="inl">parse</code> does not catch: finally runs, then the exception propagates to main
+           (&ldquo;result&rdquo; is never printed). 2 marks per part; lose 1 for a missing or misplaced line.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Q5 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 10 &mdash; Exception Handling &mdash; Practice Exam &middot; Question 5 of 11</span></div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="qno">Q5</span>
+      <span class="qtitle">Find and Fix the Compilation Errors</span>
+      <span class="chips">
+        <span class="chip tag-med">MEDIUM</span>
+        <span class="chip clo">CLO 13</span><span class="chip so">SO-c</span>
+        <span class="chip pts">6 marks &middot; 2 each</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p>The code below contains <b>exactly three (3) compilation errors</b>. For each error, give the line number, the reason, and the correction.
+         The method <code class="inl">readTotal</code> (lines 10&ndash;18) is correct.</p>
+<pre class="code sm">import java.io.*;                                            // 1
+import java.util.*;                                          // 2
+
+public class GradeBook {                                     // 4
+    public static double average(int total, int count) {     // 5
+        if (count == 0)                                      // 6
+            throw new Exception("No students");              // 7
+        return (double) total / count;                       // 8
+    }                                                        // 9
+    public static int readTotal(String fileName)             // 10
+                       throws FileNotFoundException {        // 11
+        Scanner in = new Scanner(new File(fileName));        // 12
+        int total = 0;                                       // 13
+        while (in.hasNextInt())                              // 14
+            total += in.nextInt();                           // 15
+        in.close();                                          // 16
+        return total;                                        // 17
+    }                                                        // 18
+    public static void main(String[] args) {                 // 19
+        int total = readTotal("marks.txt");                  // 20
+        try {                                                // 21
+            System.out.println(average(total, 5));           // 22
+        } catch (Exception e) {                              // 23
+            System.out.println("Error: " + e.getMessage());  // 24
+        } catch (ArithmeticException e) {                    // 25
+            System.out.println("Math error");                // 26
+        }                                                    // 27
+    }                                                        // 28
+}                                                            // 29</pre>
+      <table class="fill">
+        <thead><tr><th style="width:9%">Line</th><th style="width:44%">Reason</th><th>Correction</th></tr></thead>
+        <tbody>
+          <tr><td style="height:3.4em"></td><td></td><td></td></tr>
+          <tr><td style="height:3.4em"></td><td></td><td></td></tr>
+          <tr><td style="height:3.4em"></td><td></td><td></td></tr>
+        </tbody>
+      </table>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q5</div>
+        <table class="fill">
+          <thead><tr><th>Line</th><th>Reason</th><th>Correction</th></tr></thead>
+          <tbody>
+            <tr><td>7</td><td><code class="inl">Exception</code> is a <b>checked</b> exception; it is thrown but not caught or declared (&ldquo;unreported exception Exception&rdquo;).</td>
+                <td>Declare it in the header (line 5): <code class="inl">public static double average(int total, int count) throws Exception {</code></td></tr>
+            <tr><td>20</td><td><code class="inl">readTotal</code> declares <code class="inl">throws FileNotFoundException</code> (checked), but <code class="inl">main</code> neither catches nor declares it.</td>
+                <td><code class="inl">public static void main(String[] args) throws FileNotFoundException {</code> &mdash; or move line 20 into a try block with <code class="inl">catch (FileNotFoundException e)</code>.</td></tr>
+            <tr><td>25</td><td>Wrong catch order: <code class="inl">ArithmeticException</code> is a subclass of <code class="inl">Exception</code>, so it is already caught at line 23 (unreachable catch).</td>
+                <td>Put <code class="inl">catch (ArithmeticException e)</code> <b>before</b> <code class="inl">catch (Exception e)</code>.</td></tr>
+          </tbody>
+        </table>
+        <p class="rub">1 mark for the line and reason + 1 mark for a fix that compiles. javac 21 reports exactly these three lines (7, 20, 25); the corrected program compiles.
+           Changing line 7 to an unchecked exception (e.g. <code class="inl">throw new ArithmeticException("No students");</code>) is also accepted.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Q6 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 10 &mdash; Exception Handling &mdash; Practice Exam &middot; Question 6 of 11</span></div>
+
+  <div class="card flow">
+    <div class="card-head">
+      <span class="qno">Q6</span>
+      <span class="qtitle">Which catch Block Runs? &mdash; The Hierarchy at Work</span>
+      <span class="chips">
+        <span class="chip tag-med">MEDIUM</span>
+        <span class="chip clo">CLO 13</span><span class="chip so">SO-a</span>
+        <span class="chip pts">8 marks &middot; 2 each</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p>A checkout program has one try block with three catch blocks and a finally block. The program is run <b>four separate times</b>.
+         Write the exact output for each input.</p>
+<pre class="code sm">public class Checkout {
+    public static void test(int k) {
+        try {
+            System.out.println("k = " + k);
+            if (k == 0) {
+                int perItem = 60 / k;
+            }
+            if (k == 1) {
+                int[] cart = new int[2];
+                cart[k + 1] = 5;
+            }
+            if (k == 2) {
+                throw new IOException("printer offline");
+            }
+            System.out.println("paid");
+        } catch (ArithmeticException e) {
+            System.out.println("A: " + e.getMessage());
+        } catch (RuntimeException e) {
+            System.out.println("R: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("E: " + e);
+        } finally {
+            System.out.println("receipt " + k);
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
+        test(input.nextInt());
+    }
+}</pre>
+<div class="four-col">
+<div>
+      <p><b>(a)</b> Input <code class="inl">0</code></p>
+      <div class="answer-space"><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div></div>
+</div>
+<div>
+      <p><b>(b)</b> Input <code class="inl">1</code></p>
+      <div class="answer-space"><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div></div>
+</div>
+<div>
+      <p><b>(c)</b> Input <code class="inl">2</code></p>
+      <div class="answer-space"><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div></div>
+</div>
+<div>
+      <p><b>(d)</b> Input <code class="inl">3</code></p>
+      <div class="answer-space"><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div></div>
+</div>
+</div>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q6</div>
+<div class="two-col">
+<pre class="code sm">// (a)
+k = 0
+A: / by zero
+receipt 0</pre>
+<pre class="code sm">// (b)
+k = 1
+R: Index 2 out of bounds for length 2
+receipt 1</pre>
+</div>
+<div class="two-col">
+<pre class="code sm">// (c)
+k = 2
+E: java.io.IOException: printer offline
+receipt 2</pre>
+<pre class="code sm">// (d)
+k = 3
+paid
+receipt 3</pre>
+</div>
+        <p class="rub">Catch blocks are checked from top to bottom; the first one whose type is the same class or a <b>superclass</b> of the thrown exception runs.
+           (a) <code class="inl">ArithmeticException</code> &rarr; first catch. (b) <code class="inl">ArrayIndexOutOfBoundsException</code> is a <code class="inl">RuntimeException</code> &rarr; second catch; <code class="inl">getMessage()</code> gives only the message.
+           (c) <code class="inl">IOException</code> is checked, not a RuntimeException &rarr; third catch; printing <code class="inl">e</code> uses <code class="inl">toString()</code> (class name + message).
+           (d) no exception: no catch runs. <code class="inl">finally</code> prints &ldquo;receipt&rdquo; every time. 2 marks per part (1 for the catch line, 1 for the rest).</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Q7 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 10 &mdash; Exception Handling &mdash; Practice Exam &middot; Question 7 of 11</span></div>
+
+  <div class="card flow">
+    <div class="card-head">
+      <span class="qno">Q7</span>
+      <span class="qtitle">Propagation Through Three Methods</span>
+      <span class="chips">
+        <span class="chip tag-hard">HARD</span>
+        <span class="chip clo">CLO 13</span><span class="chip so">SO-a</span>
+        <span class="chip pts">8 marks &middot; 2 each</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p>A delivery app: <code class="inl">main</code> calls <code class="inl">start</code>, <code class="inl">start</code> calls <code class="inl">order</code>, and <code class="inl">order</code> calls <code class="inl">pack</code>.
+         Run <b>four separate times</b>; write the exact output for each input.</p>
+<pre class="code sm" style="font-size:8.8pt;line-height:1.36">public class Delivery {
+    public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
+        start(input.nextInt());
+    }
+    public static void start(int c) {
+        try {
+            order(c);
+            System.out.println("M1");
+        } catch (ArithmeticException e) {
+            System.out.println("M2 " + e.getMessage());
+        }
+        System.out.println("M3");
+    }
+    public static void order(int c) {
+        try {
+            pack(c);
+            System.out.println("O1");
+        } catch (NullPointerException e) {
+            System.out.println("O2 " + e.getMessage());
+            throw new ArithmeticException("order cancelled");
+        } finally {
+            System.out.println("O3");
+        }
+        System.out.println("O4");
+    }
+    public static void pack(int c) {
+        try {
+            if (c == 1) throw new IllegalArgumentException("box too small");
+            if (c == 2) throw new NullPointerException("no address");
+            if (c == 3) throw new ArithmeticException("zero items");
+            System.out.println("P1");
+        } catch (IllegalArgumentException e) {
+            System.out.println("P2 " + e.getMessage());
+        }
+        System.out.println("P3");
+    }
+}</pre>
+<div class="four-col compact">
+<div>
+      <p><b>(a)</b> Input <code class="inl">0</code></p>
+      <div class="answer-space"><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div></div>
+</div>
+<div>
+      <p><b>(b)</b> Input <code class="inl">1</code></p>
+      <div class="answer-space"><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div></div>
+</div>
+<div>
+      <p><b>(c)</b> Input <code class="inl">2</code></p>
+      <div class="answer-space"><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div></div>
+</div>
+<div>
+      <p><b>(d)</b> Input <code class="inl">3</code></p>
+      <div class="answer-space"><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div></div>
+</div>
+</div>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q7</div>
+<div class="four-col">
+<pre class="code sm">// (a)
+P1
+P3
+O1
+O3
+O4
+M1
+M3</pre>
+<pre class="code sm">// (b)
+P2 box too small
+P3
+O1
+O3
+O4
+M1
+M3</pre>
+<pre class="code sm">// (c)
+O2 no address
+O3
+M2 order cancelled
+M3</pre>
+<pre class="code sm">// (d)
+O3
+M2 zero items
+M3</pre>
+</div>
+        <p class="rub">(a) No exception: every method finishes normally. (b) <code class="inl">pack</code> catches its own <code class="inl">IllegalArgumentException</code>, so <code class="inl">order</code> and <code class="inl">start</code> continue normally.
+           (c) <code class="inl">NullPointerException</code> leaves <code class="inl">pack</code> (P1, P3 skipped); <code class="inl">order</code> catches it and <b>throws a new</b> <code class="inl">ArithmeticException</code>;
+           finally prints O3, O4 is skipped, and <code class="inl">start</code> catches the new exception. (d) <code class="inl">ArithmeticException</code> passes through <code class="inl">pack</code> and <code class="inl">order</code>
+           (only O3 from finally) to <code class="inl">start</code>. 2 marks per part; lose 1 for each missing or extra line (minimum 0).</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Q8 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 10 &mdash; Exception Handling &mdash; Practice Exam &middot; Question 8 of 11</span></div>
+
+  <div class="card flow">
+    <div class="card-head">
+      <span class="qno">Q8</span>
+      <span class="qtitle">finally with return &mdash; and a Program That Crashes</span>
+      <span class="chips">
+        <span class="chip tag-med">MEDIUM</span>
+        <span class="chip clo">CLO 13</span><span class="chip so">SO-a</span>
+        <span class="chip pts">6 marks</span>
+      </span>
+    </div>
+    <div class="card-body">
+<pre class="code sm">public class Locker {
+    public static String open(int code) {
+        try {
+            System.out.println("checking " + code);
+            if (code &lt; 0)
+                throw new IllegalArgumentException("negative code");
+            return "opened";
+        } catch (IllegalArgumentException e) {
+            System.out.println("caught: " + e.getMessage());
+            return "refused";
+        } finally {
+            System.out.println("log " + code);
+        }
+    }
+
+    public static void main(String[] args) {
+        System.out.println(open(1234));
+        System.out.println(open(-5));
+        String[] owners = {"Ali", null};
+        System.out.println(owners[1].length());
+        System.out.println("bye");
+    }
+}</pre>
+      <p><b>(a)</b> Write the exact output, one line per line. If the program crashes, end with &ldquo;Program crashes: <i>ExceptionName</i>&rdquo;. <span class="mini">(4 marks)</span></p>
+<div class="two-col">
+      <div class="answer-space"><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div></div>
+      <div class="answer-space"><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div></div>
+</div>
+      <p><b>(b)</b> <code class="inl">"bye"</code> is never printed. Rewrite the line <code class="inl">System.out.println(owners[1].length());</code> so that the program prints
+         <code class="inl">No owner</code> instead of crashing. Do <b>not</b> use try-catch, and say in one sentence why an <code class="inl">if</code> statement is the better choice here. <span class="mini">(2 marks)</span></p>
+      <div class="answer-space"><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div></div>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q8</div>
+<pre class="code sm">checking 1234
+log 1234
+opened
+checking -5
+caught: negative code
+log -5
+refused
+Program crashes: NullPointerException</pre>
+<pre class="code sm">if (owners[1] != null)
+    System.out.println(owners[1].length());
+else
+    System.out.println("No owner");</pre>
+        <p>(b) A <code class="inl">null</code> value can be <b>predicted with a simple check</b>. Exceptions are for <b>unexpected</b> errors: throwing and catching one creates an object,
+           captures the call stack and searches for a handler, so it is slower than an <code class="inl">if</code>. (With this change the program ends with <code class="inl">No owner</code> and <code class="inl">bye</code>.)</p>
+        <p class="rub">(a) lines 1&ndash;3 (1 mark); lines 4&ndash;7, with &ldquo;log -5&rdquo; <b>before</b> &ldquo;refused&rdquo; because finally runs before the return completes (2 marks); the crash with
+           <code class="inl">NullPointerException</code> (1 mark). (b) correct if-else (1), reason (1). Both versions were run.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Q9 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 10 &mdash; Exception Handling &mdash; Practice Exam &middot; Question 9 of 11</span></div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="qno">Q9</span>
+      <span class="qtitle">Compiles or Not? &mdash; try, throw, throws and catch Rules</span>
+      <span class="chips">
+        <span class="chip tag-med">MEDIUM</span>
+        <span class="chip clo">CLO 13</span><span class="chip so">SO-a</span>
+        <span class="chip pts">8 marks &middot; 1 each</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p>For each item write <b>OK</b> if it compiles, or <b>Error</b> with a short reason. Each piece of code is inside a class; <code class="inl">main</code> is a normal <code class="inl">public static void main(String[] args)</code>.</p>
+      <table class="fill">
+        <thead><tr><th style="width:5%">#</th><th style="width:55%">Code</th><th>OK / Error + reason</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td class="mono">// in main<br>try { int x = 1; }<br>System.out.println("after");</td><td class="ans"></td></tr>
+          <tr><td>2</td><td class="mono">// in main<br>try { System.out.println("work"); }<br>finally { System.out.println("clean up"); }</td><td class="ans"></td></tr>
+          <tr><td>3</td><td class="mono">public void check(int age) {<br>&nbsp;&nbsp;if (age &lt; 0)<br>&nbsp;&nbsp;&nbsp;&nbsp;throw new Exception("negative age");<br>}</td><td class="ans"></td></tr>
+          <tr><td>4</td><td class="mono">public void check(int age) {<br>&nbsp;&nbsp;if (age &lt; 0)<br>&nbsp;&nbsp;&nbsp;&nbsp;throw new RuntimeException("negative age");<br>}</td><td class="ans"></td></tr>
+          <tr><td>5</td><td class="mono">public void check(int age) {<br>&nbsp;&nbsp;if (age &lt; 0)<br>&nbsp;&nbsp;&nbsp;&nbsp;throws new IllegalArgumentException("negative age");<br>}</td><td class="ans"></td></tr>
+          <tr><td>6</td><td class="mono">// in main<br>try { int x = 10 / 0; }<br>catch (ArithmeticException | RuntimeException e) {<br>&nbsp;&nbsp;System.out.println("error"); }</td><td class="ans"></td></tr>
+          <tr><td>7</td><td class="mono">// in main<br>int x = 10 / 0;<br>System.out.println(x);</td><td class="ans"></td></tr>
+          <tr><td>8</td><td class="mono">// in main<br>try { int x = 10 / 0; }<br>catch (ArithmeticException e) { System.out.println("math"); }<br>catch (RuntimeException e) { System.out.println("runtime"); }</td><td class="ans"></td></tr>
+        </tbody>
+      </table>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q9</div>
+        <p>1 <span class="val">Error</span> &mdash; a <code class="inl">try</code> must be followed by at least one <code class="inl">catch</code> or a <code class="inl">finally</code>.<br>
+           2 <span class="val">OK</span> &mdash; try-finally is a valid form (no handling, but cleanup is guaranteed).<br>
+           3 <span class="val">Error</span> &mdash; <code class="inl">Exception</code> is checked: the method must declare <code class="inl">throws Exception</code> (or catch it).<br>
+           4 <span class="val">OK</span> &mdash; <code class="inl">RuntimeException</code> is unchecked, so no <code class="inl">throws</code> is required.<br>
+           5 <span class="val">Error</span> &mdash; inside a method body the keyword is <code class="inl">throw</code>; <code class="inl">throws</code> belongs in the header.<br>
+           6 <span class="val">Error</span> &mdash; the types in a multi-catch cannot be related by inheritance (<code class="inl">ArithmeticException</code> is a subclass of <code class="inl">RuntimeException</code>).<br>
+           7 <span class="val">OK</span> &mdash; it compiles (ArithmeticException is unchecked); it only <b>crashes at runtime</b> with <code class="inl">/ by zero</code>.<br>
+           8 <span class="val">OK</span> &mdash; subclass first, superclass second is the correct order; it prints <code class="inl">math</code>.</p>
+        <p class="rub">1 mark each: &frac12; for OK/Error, &frac12; for the reason. All eight items were checked with javac 21.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Q10 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 10 &mdash; Exception Handling &mdash; Practice Exam &middot; Question 10 of 11</span></div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="qno">Q10</span>
+      <span class="qtitle">Write a Custom Exception &mdash; Honor List</span>
+      <span class="chips">
+        <span class="chip tag-hard">HARD</span>
+        <span class="chip clo">CLO 13</span><span class="chip so">SO-c</span>
+        <span class="chip pts">8 marks</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p>The university gives honors from the GPA (scale 0&ndash;5). A GPA outside 0&ndash;5 is a data-entry mistake that the caller can correct, so it must be reported with a <b>checked</b> custom exception.</p>
+      <table class="need" style="width:100%">
+        <tr><th>Requirement</th></tr>
+        <tr><td>(a) Class InvalidGpaException: checked; private field gpa; constructor InvalidGpaException(double gpa)<br>&nbsp;&nbsp;&nbsp;&nbsp;whose message is "Invalid GPA: " + gpa; getter getGpa().  <span style="font-family:'Segoe UI',sans-serif">(3 marks)</span></td></tr>
+        <tr><td>(b) public static String honor(double gpa): throws InvalidGpaException if gpa &lt; 0 or gpa &gt; 5;<br>&nbsp;&nbsp;&nbsp;&nbsp;returns "First Honor" if gpa &gt;= 4.75, "Second Honor" if gpa &gt;= 4.25, else "No Honor".  <span style="font-family:'Segoe UI',sans-serif">(2 marks)</span></td></tr>
+        <tr><td>(c) main: in ONE try block print honor(4.8), honor(5.6), honor(4.3); catch InvalidGpaException and<br>&nbsp;&nbsp;&nbsp;&nbsp;print its message and "Please check GPA " + the gpa; always print "Check finished".  <span style="font-family:'Segoe UI',sans-serif">(2 marks)</span></td></tr>
+        <tr><td>(d) Write the output of your main. Why is honor(4.3) never printed?  <span style="font-family:'Segoe UI',sans-serif">(1 mark)</span></td></tr>
+      </table>
+      <div class="answer-space"><span class="lbl">(a), (b) and (c): write the class InvalidGpaException and the class Honors (with honor and main):</span><div class="codebox" style="min-height:66mm"></div></div>
+      <div style="margin-top:10px"><span class="lbl" style="font-style:italic;color:var(--ink-soft);font-size:10pt">(d) Output and reason:</span><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div></div>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q10</div>
+<div class="two-col">
+<pre class="code sm">public class InvalidGpaException extends Exception {
+    private double gpa;
+
+    public InvalidGpaException(double gpa) {
+        super("Invalid GPA: " + gpa);
+        this.gpa = gpa;
+    }
+
+    public double getGpa() {
+        return gpa;
+    }
+}</pre>
+<pre class="code sm">// (d) output
+First Honor
+Invalid GPA: 5.6
+Please check GPA 5.6
+Check finished</pre>
+</div>
+<pre class="code sm">public class Honors {
+    public static String honor(double gpa) throws InvalidGpaException {
+        if (gpa &lt; 0 || gpa &gt; 5)
+            throw new InvalidGpaException(gpa);
+        if (gpa &gt;= 4.75)
+            return "First Honor";
+        if (gpa &gt;= 4.25)
+            return "Second Honor";
+        return "No Honor";
+    }
+
+    public static void main(String[] args) {
+        try {
+            System.out.println(honor(4.8));
+            System.out.println(honor(5.6));
+            System.out.println(honor(4.3));
+        } catch (InvalidGpaException e) {
+            System.out.println(e.getMessage());
+            System.out.println("Please check GPA " + e.getGpa());
+        } finally {
+            System.out.println("Check finished");
+        }
+    }
+}</pre>
+        <p>(d) <code class="inl">honor(5.6)</code> throws, so the rest of the try block (including <code class="inl">honor(4.3)</code>) is <b>skipped</b>; control jumps to the catch block and then to finally.</p>
+        <p class="rub">(a) <code class="inl">extends Exception</code> (1), <code class="inl">super("Invalid GPA: " + gpa)</code> (1), private field + getter (1).
+           (b) <code class="inl">throws InvalidGpaException</code> in the header and <code class="inl">throw new &hellip;</code> in the body (1), correct honor rules (1).
+           (c) try-catch with the right type and <code class="inl">getMessage()</code>/<code class="inl">getGpa()</code> (1), finally (1). (d) 1 mark. Writing <code class="inl">extends RuntimeException</code> loses the first mark: the question asks for a checked exception.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Q11 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 10 &mdash; Exception Handling &mdash; Practice Exam &middot; Question 11 of 11</span></div>
+
+  <div class="card flow">
+    <div class="card-head">
+      <span class="qno">Q11</span>
+      <span class="qtitle">Design &mdash; A Robust Wallet Program</span>
+      <span class="chips">
+        <span class="chip tag-hard">HARD</span>
+        <span class="chip clo">CLO 13</span><span class="chip so">SO-c</span>
+        <span class="chip pts">8 marks</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p>A mobile wallet must never crash, whatever the user types. The exception class below is already written. <code class="inl">Wallet</code> has a private field
+         <code class="inl">balance</code>, a constructor <code class="inl">Wallet(double balance)</code> and <code class="inl">getBalance()</code>.</p>
+<pre class="code sm">public class InsufficientFundsException extends Exception {
+    private double shortfall;
+
+    public InsufficientFundsException(double shortfall) {
+        super("Short by " + shortfall + " SAR");
+        this.shortfall = shortfall;
+    }
+
+    public double getShortfall() {
+        return shortfall;
+    }
+}</pre>
+      <p><b>(a)</b> <code class="inl">withdraw</code> throws the checked <code class="inl">InsufficientFundsException</code> when the amount is larger than the balance, but an unchecked
+         <code class="inl">IllegalArgumentException("Amount must be positive")</code> when the amount is zero or negative. Explain this choice in one sentence. <span class="mini">(1 mark)</span></p>
+      <div class="answer-space"><div class="writeline"></div><div class="writeline"></div></div>
+      <p><b>(b)</b> Write the method <code class="inl">withdraw(double amount)</code> of class <code class="inl">Wallet</code> as described in (a). <span class="mini">(3 marks)</span></p>
+      <div class="answer-space"><div class="codebox" style="min-height:38mm"></div></div>
+<div style="break-inside:avoid;page-break-inside:avoid">
+      <p><b>(c)</b> Write <code class="inl">main</code>: create a wallet with 500 SAR and keep reading amounts with <code class="inl">nextDouble()</code> until the user enters 0. Handle a non-number,
+         too large an amount and a non-positive amount so the program never crashes. It must produce exactly this sample run (user input in bold): <span class="mini">(4 marks)</span></p>
+<div class="two-col">
+<pre class="code sm snug">Balance: 500.0
+Amount (0 to stop): <b>200</b>
+Withdrawn. Balance: 300.0
+Amount (0 to stop): <b>abc</b>
+Please enter a number.
+Amount (0 to stop): <b>450</b>
+Short by 150.0 SAR
+Amount (0 to stop): <b>-20</b>
+Amount must be positive
+Amount (0 to stop): <b>0</b>
+Goodbye. Final balance: 300.0</pre>
+<div class="answer-space"><div class="codebox" style="min-height:62mm;margin-top:10px"></div></div>
+</div>
+      <div class="answer-space"><div class="codebox" style="min-height:70mm"></div></div>
+</div>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q11</div>
+        <p>(a) Not having enough money is an <b>external, recoverable</b> situation (the user can choose a smaller amount), so the compiler should force every caller to handle it &rarr; <b>checked</b>.
+           A zero or negative amount is a <b>programming/input-checking bug</b> that the caller should have prevented &rarr; <b>unchecked</b>.</p>
+<pre class="code sm">public class Wallet {
+    private double balance;
+
+    public Wallet(double balance) {
+        this.balance = balance;
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+
+    public void withdraw(double amount) throws InsufficientFundsException {
+        if (amount &lt;= 0)
+            throw new IllegalArgumentException("Amount must be positive");
+        if (amount &gt; balance)
+            throw new InsufficientFundsException(amount - balance);
+        balance -= amount;
+    }
+}</pre>
+<pre class="code sm">import java.util.*;
+
+public class WalletApp {
+    public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
+        Wallet w = new Wallet(500);
+        System.out.println("Balance: " + w.getBalance());
+        boolean done = false;
+        while (!done) {
+            System.out.print("Amount (0 to stop): ");
+            try {
+                double amount = input.nextDouble();
+                if (amount == 0) {
+                    done = true;
+                } else {
+                    w.withdraw(amount);
+                    System.out.println("Withdrawn. Balance: " + w.getBalance());
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Please enter a number.");
+                input.nextLine();                 // discard the bad input
+            } catch (InsufficientFundsException e) {
+                System.out.println(e.getMessage());
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        System.out.println("Goodbye. Final balance: " + w.getBalance());
+    }
+}</pre>
+        <p class="rub">(b) <code class="inl">throws InsufficientFundsException</code> in the header (1), the two checks with <code class="inl">throw new &hellip;</code> in the right order (1), subtract only when valid (1).
+           (c) loop until 0 (1); <code class="inl">InputMismatchException</code> caught <b>and</b> the bad token discarded with <code class="inl">nextLine()</code> &mdash; otherwise the loop never ends (1);
+           both other exceptions caught and their messages printed (1); final line (1). Checked by running it with the input 200, abc, 450, -20, 0: the output matches the sample run line by line.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="endmark">&mdash; End of Exception Handling Practice Exam &mdash; Good Luck! &mdash;</div>
+  <p class="footline">Module 10: Exception Handling</p>
+</section>
+
+<script>
+  var btn = document.getElementById('toggleAns');
+  btn.addEventListener('click', function () {
+    var on = document.body.classList.toggle('show-answers');
+    btn.textContent = on ? '🙈 Hide model answers' : '👁 Show model answers';
+    btn.classList.toggle('ghost', !on);
+  });
+</script>
+</body>
+</html>

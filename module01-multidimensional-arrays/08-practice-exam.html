@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Multidimensional Arrays &mdash; Practice Exam (A4 printable)</title>
+<style>
+/* =======================================================================
+   Programming II — MODULE 1: MULTIDIMENSIONAL ARRAYS — practice exam
+   Print-first, A4. Each question is a CARD. Module colour theme (indigo).
+   A "Show model answers" toggle turns the same file into an answer key.
+   ======================================================================= */
+@page { size: A4; margin: 12mm 15mm 14mm 15mm; }
+
+:root{
+  --em:        #4338ca;
+  --em-dark:   #3730a3;
+  --em-deep:   #312e81;
+  --em-tint:   #eef2ff;
+  --ink:       #1f2937;
+  --ink-soft:  #4b5563;
+  --rule:      #c7d2fe;
+  --paper:     #ffffff;
+  --code-bg:   #f8f9ff;
+  --code-rule: #dbe1fd;
+  --warn:      #b42318;
+  --tag-easy:  #e7f6ec; --tag-easy-i:#1a7f37;
+  --tag-med:   #fef3e0; --tag-med-i: #9a6212;
+  --tag-hard:  #fdeaea; --tag-hard-i:#b42318;
+}
+
+*{ box-sizing:border-box; }
+html,body{
+  margin:0; padding:0;
+  background:#e5e9f0;
+  color:var(--ink);
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size:11pt; line-height:1.5;
+}
+body{ padding:14mm 0; }
+
+/* ---- A4 sheet ---- */
+.sheet{
+  background:var(--paper);
+  width:210mm; min-height:297mm;
+  margin:0 auto 10mm;
+  padding:15mm 15mm 18mm;
+  box-shadow:0 3px 14px rgba(31,41,55,.18);
+  position:relative;
+}
+
+/* ---- running head ---- */
+.runhead{
+  display:flex; justify-content:space-between; align-items:flex-end;
+  border-bottom:2px solid var(--em-dark);
+  padding-bottom:6px; margin-bottom:14px;
+  font-size:9.5pt; color:var(--em-deep);
+}
+.runhead b{ font-size:10.5pt; }
+
+/* ================= COVER ================= */
+.cover-top{ text-align:center; }
+.cover-rule{ height:2px; background:var(--em-dark); margin:12px 0; }
+.cover-title{ font-size:22pt; font-weight:800; color:var(--em); letter-spacing:.5px; }
+.cover-sub{ font-size:13pt; font-weight:600; margin-top:4px; }
+.cover-tag{
+  display:inline-block; margin-top:10px; padding:4px 16px;
+  background:var(--em-tint); color:var(--em-dark); border:1px solid var(--em);
+  border-radius:999px; font-weight:700; font-size:10.5pt;
+}
+
+.id-grid{ margin:22px 0 4px; width:100%; border-collapse:collapse; font-size:11pt; }
+.id-grid td{ padding:9px 6px; }
+.id-grid .lbl{ width:132px; white-space:nowrap; font-weight:700; color:var(--em-deep); }
+.id-grid .line{ border-bottom:1.4px solid #6b7280; }
+
+.instr{
+  margin-top:16px; border:1px solid var(--rule);
+  border-left:5px solid var(--em); border-radius:8px;
+  background:#f8f9ff; padding:12px 16px;
+}
+.instr h3{ margin:0 0 6px; font-size:11.5pt; color:var(--em-deep); }
+.instr ul{ margin:0; padding-left:18px; }
+.instr li{ margin:3px 0; }
+
+.marks-tbl{ width:100%; border-collapse:collapse; margin-top:18px; font-size:10pt; text-align:center; }
+.marks-tbl th, .marks-tbl td{ border:1px solid var(--rule); padding:6px 4px; }
+.marks-tbl thead th{ background:var(--em-dark); color:#fff; }
+.marks-tbl .tot{ background:var(--em-tint); font-weight:800; }
+.marks-tbl thead th.tot{ background:var(--em-deep); color:#fff; }
+
+/* ================= QUESTION CARD ================= */
+.card{
+  border:1px solid var(--rule); border-radius:10px;
+  margin:0 0 16px; overflow:hidden;
+  break-inside:avoid; page-break-inside:avoid; background:#fff;
+}
+.card-head{
+  display:flex; flex-wrap:wrap; align-items:center; gap:8px;
+  background:linear-gradient(180deg,#f5f7ff,#e0e7ff);
+  border-bottom:1px solid var(--rule); padding:9px 14px;
+}
+.qno{
+  font-weight:800; color:#fff; background:var(--em-dark);
+  border-radius:6px; padding:3px 11px; font-size:11pt; letter-spacing:.3px;
+}
+.qtitle{ font-weight:700; font-size:11.5pt; color:var(--em-deep); flex:1 1 240px; }
+.chips{ display:flex; gap:6px; align-items:center; flex-wrap:wrap; }
+.chip{ font-size:8.5pt; padding:2px 8px; border-radius:999px; font-weight:700; white-space:nowrap; }
+.chip.clo{ background:#e0e7ff; color:#3730a3; border:1px solid #a5b4fc; }
+.chip.so { background:#ecfeff; color:#0e7490; border:1px solid #a5f3fc; }
+.chip.pts{ background:var(--em-deep); color:#fff; }
+.tag-easy{ background:var(--tag-easy); color:var(--tag-easy-i); border:1px solid var(--tag-easy-i); }
+.tag-med { background:var(--tag-med);  color:var(--tag-med-i);  border:1px solid var(--tag-med-i);  }
+.tag-hard{ background:var(--tag-hard); color:var(--tag-hard-i); border:1px solid var(--tag-hard-i); }
+
+.card-body{ padding:12px 16px 14px; }
+.card-body p{ margin:6px 0; }
+.note{ color:var(--warn); font-style:italic; font-weight:600; font-size:10pt; }
+.hint{ color:var(--ink-soft); font-style:italic; font-size:10pt; }
+.mini{ font-size:9pt; color:#6b7280; }
+
+/* ---- code blocks ---- */
+pre.code{
+  background:var(--code-bg); border:1px solid var(--code-rule);
+  border-left:4px solid var(--em); border-radius:6px;
+  padding:10px 12px; margin:10px 0; overflow:auto;
+  font-family:'Consolas','DejaVu Sans Mono',monospace; font-size:10pt; line-height:1.5;
+  white-space:pre;
+}
+pre.code.sm{ font-size:9.3pt; line-height:1.42; }
+code.inl{ background:var(--code-bg); border:1px solid var(--code-rule); border-radius:4px;
+  padding:1px 5px; font-family:'Consolas',monospace; font-size:9.8pt; }
+.dots{ letter-spacing:1px; color:#6b7280; }
+.two-col{ display:flex; gap:12px; }
+.two-col > *{ flex:1 1 0; min-width:0; }
+.two-col > .wide{ flex-grow:1.4; }
+.two-col > .narrow{ flex-grow:.65; }
+.two-col > .snug{ flex:0 0 auto; }
+.opts p{ margin:3px 0; }
+.tight .card-body{ font-size:10.5pt; line-height:1.42; }
+.tight .card-body p{ margin:4px 0; }
+.tight .mcq{ margin-bottom:5px; }
+.tight pre.code{ margin:6px 0; }
+.mcq{ display:grid; grid-template-columns:1fr 1fr; gap:2px 18px; margin:2px 0 8px 14px; }
+.mcq.c4{ grid-template-columns:repeat(4, auto); justify-content:start; column-gap:34px; }
+.mcq.c5{ grid-template-columns:repeat(5, auto); justify-content:start; column-gap:26px; }
+
+.need{ border-collapse:collapse; font-size:9.5pt; margin-top:10px; }
+.need td, .need th{ border:1px solid var(--rule); padding:4px 8px; font-family:'Consolas',monospace; }
+.need th{ background:var(--em-tint); color:var(--em-deep); font-family:'Segoe UI',sans-serif; }
+
+/* ---- answer space ---- */
+.answer-space{ margin-top:10px; }
+.answer-space .lbl{ font-style:italic; color:var(--ink-soft); font-size:10pt; }
+.writeline{ border-bottom:1px solid #9ca3af; height:1.55em; margin-top:.45em; }
+.codebox{ border:1px dashed #9ca3af; border-radius:6px; min-height:120px; margin-top:8px;
+  background:repeating-linear-gradient(#fff,#fff 1.7em,#e6e9fb 1.7em,#e6e9fb calc(1.7em + 1px)); }
+.drawbox{ border:1px dashed #9ca3af; border-radius:6px; margin-top:8px; position:relative;
+  display:flex; }
+.drawbox .half{ flex:1; padding:6px 10px; font-size:9pt; color:#9ca3af; font-weight:700; letter-spacing:1px; }
+.drawbox .half + .half{ border-left:1px dashed #cbd5e1; }
+
+/* ---- fill-in tables ---- */
+.fill{ width:100%; border-collapse:collapse; margin-top:8px; font-size:10.5pt; }
+.fill td, .fill th{ border:1px solid var(--rule); padding:7px 8px; }
+.fill th{ background:var(--em-tint); color:var(--em-deep); font-size:10pt; }
+.fill td.ans{ background:#fff; width:42%; height:2.6em; }
+.fill td.mono{ font-family:'Consolas',monospace; }
+
+/* ---- model answer block (hidden until toggled) ---- */
+.answer-key{ display:none; }
+body.show-answers .answer-key{ display:block; }
+body.show-answers .card{ break-inside:auto; page-break-inside:auto; }
+body.show-answers .answer-key{ break-inside:avoid; page-break-inside:avoid; }
+.answer-key{
+  margin-top:12px; border:1px solid #bbf7d0; border-left:5px solid #16a34a;
+  background:#f0fdf4; border-radius:8px; padding:10px 14px;
+}
+.answer-key .akh{ font-weight:800; color:#15803d; font-size:10.5pt; margin-bottom:4px; }
+.answer-key pre.code{ border-left-color:#16a34a; background:#f6fdf9; border-color:#bbf7d0; }
+.answer-key .val{ color:#166534; font-weight:800; }
+.answer-key .rub{ color:#0e7490; font-size:9.5pt; font-style:italic; }
+.answer-key table.fill th{ background:#dcfce7; color:#15803d; }
+
+/* ---- floating toolbar (screen only) ---- */
+.toolbar{
+  position:fixed; top:14px; right:14px; z-index:50; display:flex; gap:8px;
+  background:#fff; border:1px solid var(--rule); border-radius:10px; padding:8px 10px;
+  box-shadow:0 4px 14px rgba(31,41,55,.18);
+}
+.toolbar button, .toolbar a{
+  font:inherit; font-size:10pt; font-weight:700; cursor:pointer; text-decoration:none;
+  border:1px solid var(--em); border-radius:7px; padding:7px 12px;
+  background:var(--em); color:#fff;
+}
+.toolbar .ghost{ background:#fff; color:var(--em-dark); }
+.toolbar button:active{ transform:translateY(1px); }
+
+.footline{ text-align:center; margin-top:6px; color:var(--ink-soft); font-size:9.5pt; }
+.endmark{ text-align:center; font-weight:800; color:var(--em-deep); margin:18px 0 4px; }
+
+/* ================= PRINT ================= */
+@media print{
+  body{ background:#fff; padding:0; }
+  .toolbar{ display:none !important; }
+  .sheet{ box-shadow:none; margin:0; width:auto; min-height:auto; padding:0; }
+  .sheet + .sheet{ page-break-before:always; }
+  .card{ box-shadow:none; }
+}
+
+/* ---- additions for this exam ---- */
+.fill td.mono{ font-size:9pt; line-height:1.45; }
+.instr .chip{ font-size:8pt; padding:1px 7px; }
+.two-col pre.code.sm{ font-size:8.5pt; line-height:1.4; }
+pre.code{ white-space:pre-wrap; overflow:visible; }   /* never clip code on paper */
+@media print{ html{ background:#fff; } }
+.card.flow{ break-inside:auto; page-break-inside:auto; }
+/* fill-the-grid tables (matrix cells) */
+.grid{ border-collapse:collapse; margin:8px 0; font-family:'Consolas','DejaVu Sans Mono',monospace; font-size:10.5pt; text-align:center; }
+.grid th{ background:var(--em-tint); color:var(--em-deep); border:1px solid var(--rule); padding:3px 8px;
+  font-family:'Segoe UI',sans-serif; font-size:9pt; }
+.grid td{ border:1.2px solid #6b7280; width:13mm; height:9mm; }
+.grid td.x{ background:repeating-linear-gradient(45deg,#f3f4f6,#f3f4f6 4px,#e5e7eb 4px,#e5e7eb 8px); color:#9ca3af; }
+.answer-key .grid td{ border-color:#86efac; background:#fff; }
+.answer-key .grid th{ background:#dcfce7; color:#15803d; border-color:#bbf7d0; }
+.answer-key .grid td.x{ background:repeating-linear-gradient(45deg,#f3f4f6,#f3f4f6 4px,#e5e7eb 4px,#e5e7eb 8px); }
+.filebox{ display:inline-block; border:1.4px solid var(--em-deep); border-radius:6px; overflow:hidden; margin:8px 0; min-width:62mm; }
+.filebox .fname{ background:var(--em-deep); color:#fff; font-weight:700; font-size:9pt; padding:3px 10px; }
+.filebox pre{ margin:0; padding:8px 12px; font-family:'Consolas','DejaVu Sans Mono',monospace; font-size:10pt; line-height:1.45; background:#fff; }
+/* let every card flow across a page break, but keep code blocks and table rows whole */
+.card, body.show-answers .card{ break-inside:auto; page-break-inside:auto; }
+pre.code, .fill tr, .mcq, .card-head, .answer-space, .drawbox, .codebox, .grid, .filebox, svg{ break-inside:avoid; page-break-inside:avoid; }
+.card-head{ break-after:avoid; page-break-after:avoid; }
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <a href="07-3d-ragged-array-file-reading.html" class="ghost">&#8592; Last lesson</a>
+  <button id="toggleAns" class="ghost">&#128065; Show model answers</button>
+  <button onclick="window.print()">&#128424; Print / Save PDF</button>
+</div>
+
+<!-- =====================================================================
+     COVER PAGE
+     ===================================================================== -->
+
+<section class="sheet cover">
+  <div class="cover-rule"></div>
+  <div class="cover-top">
+    <div class="cover-title">Programming II</div>
+    <div class="cover-sub">Module 1: Multidimensional Arrays &mdash; Focused Practice Exam</div>
+    <div class="cover-tag">1-D Review &middot; Declare / Create / Initialise 2-D &middot; length &middot; Nested Loops &middot; Methods &middot; Ragged Arrays &middot; 3-D Arrays &middot; Reading Arrays from a File</div>
+  </div>
+  <div class="cover-rule"></div>
+
+  <table class="id-grid">
+    <tr><td class="lbl">Student Name:</td><td class="line"></td></tr>
+    <tr><td class="lbl">Student ID:</td><td class="line"></td></tr>
+    <tr>
+      <td class="lbl">Section:</td><td class="line" style="width:35%"></td>
+      <td class="lbl" style="text-align:right;padding-right:14px">Instructor:</td><td class="line"></td>
+    </tr>
+  </table>
+
+  <div class="instr">
+    <h3>Instructions</h3>
+    <ul>
+      <li>This booklet contains <b>11 questions</b> on Multidimensional Arrays only. <b>Total: 80 marks</b> &middot; Suggested time: <b>90 minutes</b>.</li>
+      <li>Answer <b>all</b> questions in the spaces provided. <b>Place your answers in the boxes provided.</b></li>
+      <li>Code shown without a class is part of a <code class="inl">main</code> method. <b>Assume all necessary import statements are present.</b></li>
+      <li>When a question asks for output, <b>write the exact output, one line per line</b>.</li>
+      <li>If a piece of code does not compile, write <b>&ldquo;Compilation error&rdquo;</b> and give the reason in one short sentence.
+          If it compiles but stops while running, write <b>&ldquo;Runtime error&rdquo;</b> and name the exception.</li>
+      <li>Questions are labelled <span class="chip tag-easy">EASY</span> <span class="chip tag-med">MEDIUM</span> <span class="chip tag-hard">HARD</span>.
+          Write clear Java. Partial (per-line) credit is given.
+          <span class="note">In a ragged array every row can have a different length &mdash; always use <code class="inl">a[i].length</code> for the inner loop.</span></li>
+    </ul>
+  </div>
+
+  <table class="marks-tbl">
+    <thead>
+      <tr><th>Question</th><th>Q1</th><th>Q2</th><th>Q3</th><th>Q4</th><th>Q5</th><th>Q6</th><th>Q7</th><th>Q8</th><th>Q9</th><th>Q10</th><th>Q11</th><th class="tot">Total</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><b>Level</b></td><td>E</td><td>E</td><td>M</td><td>M</td><td>M</td><td>M</td><td>H</td><td>M</td><td>M</td><td>H</td><td>H</td><td class="tot"></td></tr>
+      <tr><td><b>Max Mark</b></td><td>8</td><td>6</td><td>8</td><td>6</td><td>6</td><td>8</td><td>8</td><td>6</td><td>8</td><td>8</td><td>8</td><td class="tot">80</td></tr>
+      <tr><td><b>Obtained</b></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class="tot"></td></tr>
+    </tbody>
+  </table>
+
+  <p class="footline">Topics covered: 1-D arrays (default values, references, passing to methods) &middot; declaring, creating and initialising 2-D arrays &middot; initializer lists &middot;
+     <code class="inl">m.length</code> and <code class="inl">m[i].length</code> &middot; nested loops over rows and columns (row/column sums, largest row, diagonals) &middot;
+     2-D arrays as an <i>array of arrays</i> &middot; passing 2-D arrays to methods and returning them &middot; ragged arrays (<code class="inl">new int[n][]</code>, row by row) &middot;
+     3-D arrays and <code class="inl">length</code> at each level &middot; reading ragged arrays from a text file with <code class="inl">Scanner</code>, <code class="inl">nextLine()</code> and <code class="inl">split("\\s+")</code>.</p>
+</section>
+
+<!-- ================= Q1 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 1 &mdash; Multidimensional Arrays &mdash; Practice Exam &middot; Question 1 of 11</span></div>
+
+  <div class="card tight">
+    <div class="card-head">
+      <span class="qno">Q1</span>
+      <span class="qtitle">Reading Array Code (Multiple Choice)</span>
+      <span class="chips">
+        <span class="chip tag-easy">EASY</span>
+        <span class="chip clo">Ch 8 &middot; &sect;8.8</span><span class="chip so">SO-a</span>
+        <span class="chip pts">8 marks &middot; 1 each</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p>Circle the <b>single best</b> answer for each item.</p>
+
+      <p><b>1.</b> What is printed by: <code class="inl">int[][] m = new int[4][6];  System.out.println(m.length + m[0].length);</code></p>
+      <div class="mcq c4"><span>(a) 24</span><span>(b) 10</span><span>(c) 4</span><span>(d) 6</span></div>
+
+      <p><b>2.</b> What is printed by the code below?</p>
+<pre class="code sm">static void reset(int[][] a) { a[1][1] = 0; }
+
+// in main:
+int[][] m = {{5, 6}, {7, 8}};
+reset(m);
+System.out.println(m[1][1] + m[1][0]);</pre>
+      <div class="mcq c4"><span>(a) 15</span><span>(b) 8</span><span>(c) 7</span><span>(d) 0</span></div>
+
+      <p><b>3.</b> <code class="inl">int[][] a = {{3, 8, 1}, {6, 2, 9}, {4, 7, 5}};</code> What is printed by <code class="inl">System.out.println(a[2][0] + a[0][2]);</code></p>
+      <div class="mcq c4"><span>(a) 5</span><span>(b) 41</span><span>(c) 13</span><span>(d) 12</span></div>
+
+      <p><b>4.</b> What is printed by: <code class="inl">String[][] names = new String[2][2];  System.out.println(names[0][1]);</code></p>
+      <div class="mcq c4"><span>(a) an empty line</span><span>(b) <code class="inl">null</code></span><span>(c) <code class="inl">0</code></span><span>(d) NullPointerException</span></div>
+
+      <p><b>5.</b> Which statement creates a <b>ragged</b> array?</p>
+      <div class="mcq">
+        <span>(a) <code class="inl">int[][] r = new int[3][3];</code></span>
+        <span>(b) <code class="inl">int[][] r = {{1, 2}, {3, 4}};</code></span>
+        <span>(c) <code class="inl">int[][] r = {{1, 2, 3}, {4}};</code></span>
+        <span>(d) <code class="inl">int[][] r = new int[2][2];</code></span>
+      </div>
+
+      <p><b>6.</b> <code class="inl">int[][][] c = new int[5][2][3];</code> What is the value of <code class="inl">c[4].length + c[0][1].length</code>?</p>
+      <div class="mcq c4"><span>(a) 30</span><span>(b) 7</span><span>(c) 6</span><span>(d) 5</span></div>
+
+      <p><b>7.</b> <code class="inl">int[][] g = {{1, 2}, {3, 4, 5}, {6}};</code> What is printed by <code class="inl">System.out.println(g[1].length * g.length);</code></p>
+      <div class="mcq c4"><span>(a) 9</span><span>(b) 6</span><span>(c) 12</span><span>(d) 3</span></div>
+
+      <p><b>8.</b> What is printed by the code below?</p>
+<pre class="code sm">int[][] d = {{2, 4, 6}, {1, 3, 5}, {7, 8, 9}};
+int s = 0;
+for (int i = 0; i &lt; d.length; i++) {
+    s += d[i][d.length - 1 - i];
+}
+System.out.println(s);</pre>
+      <div class="mcq c4"><span>(a) 14</span><span>(b) 16</span><span>(c) 15</span><span>(d) 45</span></div>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q1</div>
+        <p>1:&nbsp;<span class="val">(b)</span> &nbsp; 2:&nbsp;<span class="val">(c)</span> &nbsp; 3:&nbsp;<span class="val">(a)</span> &nbsp; 4:&nbsp;<span class="val">(b)</span> &nbsp;
+           5:&nbsp;<span class="val">(c)</span> &nbsp; 6:&nbsp;<span class="val">(d)</span> &nbsp; 7:&nbsp;<span class="val">(a)</span> &nbsp; 8:&nbsp;<span class="val">(b)</span></p>
+        <p class="rub">1 mark each. (1) 4 rows + 6 columns = 10. (2) The method receives a copy of the <b>reference</b>, so it changes the same array: 0 + 7 = 7.
+           (3) 4 + 1 = 5 (both are <code class="inl">int</code>, so <code class="inl">+</code> adds). (4) The default value of a reference type (<code class="inl">String</code>) is <code class="inl">null</code>; printing <code class="inl">null</code> is not an error.
+           (5) Rows of length 3 and 1. (6) <code class="inl">c[4]</code> has 2 rows, <code class="inl">c[0][1]</code> has 3 elements: 2 + 3 = 5.
+           (7) 3 &times; 3 = 9. (8) The <b>other</b> diagonal: <code class="inl">d[0][2] + d[1][1] + d[2][0]</code> = 6 + 3 + 7 = 16.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Q2 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 1 &mdash; Multidimensional Arrays &mdash; Practice Exam &middot; Question 2 of 11</span></div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="qno">Q2</span>
+      <span class="qtitle">Short Answers &mdash; Creating 2-D Arrays</span>
+      <span class="chips">
+        <span class="chip tag-easy">EASY</span>
+        <span class="chip clo">Ch 8 &middot; &sect;8.8</span><span class="chip so">SO-a</span>
+        <span class="chip pts">6 marks &middot; 1 each</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p><b>(a)</b> Write <b>one</b> statement that declares and creates a 2-D array <code class="inl">sales</code> of <code class="inl">double</code> values for <b>4 branches</b> (rows) and <b>12 months</b> (columns).</p>
+      <div class="answer-space"><div class="writeline"></div></div>
+
+      <p><b>(b)</b> Write <b>one</b> statement with an <b>initializer list</b> that creates the array <code class="inl">temp</code> shown below (2 cities &times; 3 days).</p>
+      <table class="grid">
+        <tr><th></th><th>[0]</th><th>[1]</th><th>[2]</th></tr>
+        <tr><th>[0]</th><td>31</td><td>33</td><td>35</td></tr>
+        <tr><th>[1]</th><td>40</td><td>42</td><td>41</td></tr>
+      </table>
+      <div class="answer-space"><div class="writeline"></div></div>
+
+      <p><b>(c)</b> After <code class="inl">int[][] marks = new int[3][];</code> what is stored in <code class="inl">marks[1]</code>? Why?</p>
+      <div class="answer-space"><div class="writeline"></div></div>
+
+      <p><b>(d)</b> How many <b>1-D array objects</b> are created in the heap by <code class="inl">int[][] x = new int[3][4];</code>? Explain briefly.</p>
+      <div class="answer-space"><div class="writeline"></div></div>
+
+      <p><b>(e)</b> Write the two <code class="inl">for</code> headers (outer and inner loop) that visit every element of a <b>ragged</b> array <code class="inl">r</code>, row by row.</p>
+      <div class="answer-space"><div class="writeline"></div><div class="writeline"></div></div>
+
+      <p><b>(f)</b> Write only the <b>method header</b> of a public static method <code class="inl">copyOf</code> that receives a 2-D array of <code class="inl">double</code> and <b>returns</b> a new 2-D array of <code class="inl">double</code>.</p>
+      <div class="answer-space"><div class="writeline"></div></div>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q2</div>
+        <p>(a) <code class="inl">double[][] sales = new double[4][12];</code></p>
+        <p>(b) <code class="inl">int[][] temp = {{31, 33, 35}, {40, 42, 41}};</code></p>
+        <p>(c) <span class="val">null</span> &mdash; only the first dimension (an array of 3 references) was created; no row array exists yet.</p>
+        <p>(d) <span class="val">4</span> &mdash; one array of 3 references (the rows) + three row arrays of 4 <code class="inl">int</code>s each. A 2-D array is an <i>array of arrays</i>.</p>
+        <p>(e) <code class="inl">for (int i = 0; i &lt; r.length; i++)</code> &nbsp; and &nbsp; <code class="inl">for (int j = 0; j &lt; r[i].length; j++)</code></p>
+        <p>(f) <code class="inl">public static double[][] copyOf(double[][] a)</code></p>
+        <p class="rub">1 mark each. (e) The inner limit must be <code class="inl">r[i].length</code>, not <code class="inl">r[0].length</code>, for the mark. (f) Any parameter name is fine; both <code class="inl">double[][]</code> are needed.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Q3 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 1 &mdash; Multidimensional Arrays &mdash; Practice Exam &middot; Question 3 of 11</span></div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="qno">Q3</span>
+      <span class="qtitle">Fill the Grid &mdash; Values After Nested Loops</span>
+      <span class="chips">
+        <span class="chip tag-med">MEDIUM</span>
+        <span class="chip clo">Ch 8 &middot; &sect;8.8</span><span class="chip so">SO-a</span>
+        <span class="chip pts">8 marks</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p>Trace the code below carefully.</p>
+<pre class="code sm">int[][] g = new int[4][5];
+for (int i = 0; i &lt; g.length; i++) {
+    for (int j = 0; j &lt; g[i].length; j++) {
+        if (i == j) {
+            g[i][j] = 1;
+        } else if (j &gt; i) {
+            g[i][j] = j - i;
+        } else {
+            g[i][j] = i + j;
+        }
+    }
+}
+for (int j = 0; j &lt; g[0].length; j++) {
+    g[g.length - 1][j] += g[0][j];
+}
+
+int total = 0;
+for (int i = 0; i &lt; g.length; i++) {
+    total += g[i][2];
+}
+System.out.println(total);</pre>
+      <p><b>(a)</b> Write the value of <b>every</b> element of <code class="inl">g</code> when the code ends (after both loops). <span class="mini">(6 marks)</span></p>
+      <table class="grid">
+        <tr><th></th><th>[0]</th><th>[1]</th><th>[2]</th><th>[3]</th><th>[4]</th></tr>
+        <tr><th>[0]</th><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><th>[1]</th><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><th>[2]</th><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><th>[3]</th><td></td><td></td><td></td><td></td><td></td></tr>
+      </table>
+      <p><b>(b)</b> What is printed by the last statement? <span class="mini">(2 marks)</span></p>
+      <div class="answer-space"><div class="writeline" style="width:45%"></div></div>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q3</div>
+        <table class="grid">
+          <tr><th></th><th>[0]</th><th>[1]</th><th>[2]</th><th>[3]</th><th>[4]</th></tr>
+          <tr><th>[0]</th><td>1</td><td>1</td><td>2</td><td>3</td><td>4</td></tr>
+          <tr><th>[1]</th><td>1</td><td>1</td><td>1</td><td>2</td><td>3</td></tr>
+          <tr><th>[2]</th><td>2</td><td>3</td><td>1</td><td>1</td><td>2</td></tr>
+          <tr><th>[3]</th><td>4</td><td>5</td><td>7</td><td>4</td><td>5</td></tr>
+        </table>
+        <p>(b) <span class="val">11</span> &nbsp;(column 2: 2 + 1 + 1 + 7)</p>
+        <p class="rub">(a) Rows 0&ndash;2 come from the first loop only: 1 on the diagonal, <code class="inl">j - i</code> above it, <code class="inl">i + j</code> below it.
+           Row 3 was <code class="inl">3 4 5 1 1</code> and then gets row 0 added: <code class="inl">4 5 7 4 5</code>. 1&frac12; marks per correct row (lose &frac12; per wrong cell in a row).
+           (b) 2 marks; follow-through from the student&rsquo;s own column 2 earns 1 mark.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Q4 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 1 &mdash; Multidimensional Arrays &mdash; Practice Exam &middot; Question 4 of 11</span></div>
+
+  <div class="card flow">
+    <div class="card-head">
+      <span class="qno">Q4</span>
+      <span class="qtitle">Output Tracing &mdash; Grading a Quiz and Printing by Columns</span>
+      <span class="chips">
+        <span class="chip tag-med">MEDIUM</span>
+        <span class="chip clo">Ch 8 &middot; &sect;8.8</span><span class="chip so">SO-a</span>
+        <span class="chip pts">6 marks &middot; 3 each</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p>Write the exact output, one line per line.</p>
+      <p><b>(a)</b> Three students answered a 4-question multiple-choice quiz.</p>
+<pre class="code sm">char[][] answers = {
+    {'A', 'C', 'B', 'D'},
+    {'A', 'B', 'B', 'C'},
+    {'D', 'C', 'B', 'D'}
+};
+char[] key = {'A', 'C', 'D', 'D'};
+for (int i = 0; i &lt; answers.length; i++) {
+    int correct = 0;
+    for (int j = 0; j &lt; answers[i].length; j++) {
+        if (answers[i][j] == key[j]) {
+            correct++;
+        }
+    }
+    System.out.println("Student " + i + ": " + correct);
+}</pre>
+      <div class="answer-space"><span class="lbl">Output (a):</span><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div></div>
+
+      <p style="margin-top:12px"><b>(b)</b></p>
+<pre class="code sm">int[][] m = {{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12}};
+for (int j = m[0].length - 1; j &gt;= 0; j--) {
+    for (int i = 0; i &lt; m.length; i++) {
+        System.out.print(m[i][j] + " ");
+    }
+    System.out.println();
+}</pre>
+      <div class="answer-space"><span class="lbl">Output (b):</span><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div></div>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q4</div>
+<div class="two-col">
+<pre class="code sm">// (a)
+Student 0: 3
+Student 1: 1
+Student 2: 2</pre>
+<pre class="code sm">// (b)
+4 8 12
+3 7 11
+2 6 10
+1 5 9</pre>
+</div>
+        <p class="rub">(a) 1 mark per line. Student 0 misses only question 2; student 1 matches only question 0; student 2 matches questions 1 and 3.
+           (b) The <b>outer</b> loop is the column, starting from the last one, so each output line is one column read top to bottom. 3 marks: lose 1 per wrong line (minimum 0).
+           Trailing spaces are not marked.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Q5 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 1 &mdash; Multidimensional Arrays &mdash; Practice Exam &middot; Question 5 of 11</span></div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="qno">Q5</span>
+      <span class="qtitle">Find and Fix the Compilation Errors</span>
+      <span class="chips">
+        <span class="chip tag-med">MEDIUM</span>
+        <span class="chip clo">Ch 8 &middot; &sect;8.8</span><span class="chip so">SO-c</span>
+        <span class="chip pts">6 marks &middot; 2 each</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p>The method <code class="inl">branchTotals</code> should return the total sales of every branch (one total per row).
+         The code below contains <b>exactly three (3) compilation errors</b>. For each, give the line number, the reason, and the corrected line.</p>
+<pre class="code sm">public class SalesReport {                                        // 1
+    public static int[] branchTotals(int[][] sales) {             // 2
+        int[] totals = new int[sales.length()];                   // 3
+        for (int b = 0; b &lt; sales.length; b++) {                  // 4
+            for (int m = 0; m &lt; sales[b].length; m++) {           // 5
+                totals[b] += sales[b][m];                         // 6
+            }                                                     // 7
+        }                                                         // 8
+        return totals;                                            // 9
+    }                                                             // 10
+                                                                  // 11
+    public static void main(String[] args) {                      // 12
+        int[][] sales = {{120, 80, 95}, {60, 70}, {150}};         // 13
+        int[] t = branchTotals(sales[0]);                         // 14
+        int firstDay = sales[1];                                  // 15
+        System.out.println(t[0] + " " + firstDay);                // 16
+    }                                                             // 17
+}                                                                 // 18</pre>
+      <table class="fill">
+        <thead><tr><th style="width:9%">Line</th><th style="width:44%">Reason</th><th>Correction</th></tr></thead>
+        <tbody>
+          <tr><td style="height:3.4em"></td><td></td><td></td></tr>
+          <tr><td style="height:3.4em"></td><td></td><td></td></tr>
+          <tr><td style="height:3.4em"></td><td></td><td></td></tr>
+        </tbody>
+      </table>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q5</div>
+        <table class="fill">
+          <thead><tr><th>Line</th><th>Reason</th><th>Correction</th></tr></thead>
+          <tbody>
+            <tr><td>3</td><td><code class="inl">length</code> of an array is a <b>field</b>, not a method (javac: <i>cannot find symbol &ndash; method length()</i>).</td><td><code class="inl">int[] totals = new int[sales.length];</code></td></tr>
+            <tr><td>14</td><td><code class="inl">sales[0]</code> is one row (<code class="inl">int[]</code>), but the method needs an <code class="inl">int[][]</code> (<i>int[] cannot be converted to int[][]</i>).</td><td><code class="inl">int[] t = branchTotals(sales);</code></td></tr>
+            <tr><td>15</td><td><code class="inl">sales[1]</code> is a whole row (<code class="inl">int[]</code>), not an <code class="inl">int</code> (<i>int[] cannot be converted to int</i>).</td><td><code class="inl">int firstDay = sales[1][0];</code></td></tr>
+          </tbody>
+        </table>
+        <p class="rub">1 mark for the line and reason + 1 mark for a fix that compiles. Checked with javac 21: exactly these 3 errors; the fixed program prints <code class="inl">295 60</code>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Q6 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 1 &mdash; Multidimensional Arrays &mdash; Practice Exam &middot; Question 6 of 11</span></div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="qno">Q6</span>
+      <span class="qtitle">Compiles, Runtime Error, or OK?</span>
+      <span class="chips">
+        <span class="chip tag-med">MEDIUM</span>
+        <span class="chip clo">Ch 8 &middot; &sect;8.8</span><span class="chip so">SO-a</span>
+        <span class="chip pts">8 marks &middot; 1 each</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p>Each item is the body of a <code class="inl">main</code> method. Write <b>OK</b> and the output, <b>Compilation error</b> with a short reason,
+         or <b>Runtime error</b> with the name of the exception.</p>
+      <table class="fill">
+        <thead><tr><th style="width:5%">#</th><th style="width:52%">Code</th><th>OK + output / Error + reason</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td class="mono">int[][] a = new int[][3];</td><td class="ans"></td></tr>
+          <tr><td>2</td><td class="mono">int[][] a = {{1, 2}, {3}};<br>System.out.println(a[1][1]);</td><td class="ans"></td></tr>
+          <tr><td>3</td><td class="mono">int[][] a = new int[2][];<br>a[0][0] = 5;</td><td class="ans"></td></tr>
+          <tr><td>4</td><td class="mono">int[][] a = new int[2][3];<br>a[1] = new int[5];<br>System.out.println(a[1].length);</td><td class="ans"></td></tr>
+          <tr><td>5</td><td class="mono">int[][] a = new int[2][2];<br>a[0] = 7;</td><td class="ans"></td></tr>
+          <tr><td>6</td><td class="mono">int[] r = {4, 5};<br>int[][] a = {r, r};<br>a[0][0] = 9;<br>System.out.println(a[1][0]);</td><td class="ans"></td></tr>
+          <tr><td>7</td><td class="mono">int[][][] c = new int[2][3][];<br>System.out.println(c[1][2]);</td><td class="ans"></td></tr>
+          <tr><td>8</td><td class="mono">int[][] a = {{1, 2}, {3.5}};</td><td class="ans"></td></tr>
+        </tbody>
+      </table>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q6</div>
+        <p>1 <span class="val">Compilation error</span> &mdash; the <b>first</b> dimension must be given; only the last ones may be left empty (<code class="inl">new int[3][]</code> is fine).<br>
+           2 <span class="val">Runtime error: ArrayIndexOutOfBoundsException</span> &mdash; row 1 has only one element (index 0).<br>
+           3 <span class="val">Runtime error: NullPointerException</span> &mdash; <code class="inl">a[0]</code> is still <code class="inl">null</code>; no row was created.<br>
+           4 <span class="val">OK &mdash; prints 5</span> &mdash; a row is just a reference; it can point to a new array of another length.<br>
+           5 <span class="val">Compilation error</span> &mdash; <code class="inl">a[0]</code> is an <code class="inl">int[]</code>; an <code class="inl">int</code> cannot be stored there.<br>
+           6 <span class="val">OK &mdash; prints 9</span> &mdash; both rows refer to the <b>same</b> array <code class="inl">r</code>.<br>
+           7 <span class="val">OK &mdash; prints null</span> &mdash; the third level was not created, so <code class="inl">c[1][2]</code> holds its default value <code class="inl">null</code>.<br>
+           8 <span class="val">Compilation error</span> &mdash; <code class="inl">3.5</code> is a <code class="inl">double</code>; possible lossy conversion to <code class="inl">int</code>.</p>
+        <p class="rub">1 mark each: &frac12; for the verdict (and output), &frac12; for the reason or the exception name. All eight items were compiled and run with JDK 21.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Q7 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 1 &mdash; Multidimensional Arrays &mdash; Practice Exam &middot; Question 7 of 11</span></div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="qno">Q7</span>
+      <span class="qtitle">Tricky Tracing &mdash; Rows Are References</span>
+      <span class="chips">
+        <span class="chip tag-hard">HARD</span>
+        <span class="chip clo">Ch 8 &middot; &sect;8.8</span><span class="chip so">SO-a</span>
+        <span class="chip pts">8 marks &middot; 4 each</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p>Write the exact output, one line per line. <span class="hint">Tip: draw the array of references and the row arrays, then follow the arrows.</span></p>
+      <p><b>(a)</b></p>
+<pre class="code sm">int[][] m = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+int[] r = m[0];
+m[0] = m[2];
+m[2] = r;
+r[1] = 0;
+m[0][0] = m[1][2] + m[2][1];
+for (int i = 0; i &lt; m.length; i++) {
+    for (int j = 0; j &lt; m[i].length; j++) {
+        System.out.print(m[i][j] + " ");
+    }
+    System.out.println();
+}</pre>
+      <div class="answer-space"><span class="lbl">Output (a):</span><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div></div>
+
+      <p style="margin-top:12px"><b>(b)</b></p>
+<div class="two-col">
+<pre class="code sm">public static void doubleRow(int[] row) {
+    for (int k = 0; k &lt; row.length; k++) {
+        row[k] *= 2;
+    }
+}
+
+public static int[][] grow(int[][] a) {
+    int[][] b = new int[a.length + 1][];
+    for (int i = 0; i &lt; a.length; i++) {
+        b[i] = a[i];
+    }
+    b[a.length] = new int[] {100};
+    return b;
+}</pre>
+<pre class="code sm">// in main:
+int[][] x = {{1, 2}, {3, 4, 5}};
+int[][] y = grow(x);
+doubleRow(y[1]);
+y[0] = new int[] {7};
+System.out.println(x[0][0] + " " + x[1][2]
+    + " " + y[0][0] + " " + y.length
+    + " " + x.length);
+System.out.println(y[2][0] + y[1][0]);</pre>
+</div>
+      <div class="answer-space"><span class="lbl">Output (b):</span><div class="writeline"></div><div class="writeline"></div></div>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q7</div>
+<div class="two-col">
+<pre class="code sm">// (a)
+6 8 9
+4 5 6
+1 0 3</pre>
+<pre class="code sm">// (b)
+1 10 7 3 2
+106</pre>
+</div>
+        <p class="rub">(a) After the swaps <code class="inl">m[0]</code> is the old row <code class="inl">{7, 8, 9}</code> and <code class="inl">m[2]</code> and <code class="inl">r</code> both point to the old row <code class="inl">{1, 2, 3}</code>.
+           <code class="inl">r[1] = 0</code> changes that row to <code class="inl">{1, 0, 3}</code>; then <code class="inl">m[0][0] = 6 + 0 = 6</code>. 1 + 1 + 2 marks (the first line is the hard one).
+           (b) <code class="inl">grow</code> copies the row <b>references</b>, so <code class="inl">x</code> and <code class="inl">y</code> share rows 0 and 1: doubling <code class="inl">y[1]</code> also changes <code class="inl">x[1]</code> (<code class="inl">x[1][2]</code> = 10).
+           <code class="inl">y[0] = new int[]{7}</code> changes only <code class="inl">y</code>, so <code class="inl">x[0][0]</code> stays 1. Line 2: 100 + 6 = 106. 3 marks for line 1 (&frac12; per value, rounded up), 1 mark for line 2.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Q8 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 1 &mdash; Multidimensional Arrays &mdash; Practice Exam &middot; Question 8 of 11</span></div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="qno">Q8</span>
+      <span class="qtitle">Ragged Arrays &mdash; Build Row by Row, Print Column by Column</span>
+      <span class="chips">
+        <span class="chip tag-med">MEDIUM</span>
+        <span class="chip clo">Ch 8 &middot; &sect;8.8</span><span class="chip so">SO-a</span>
+        <span class="chip pts">6 marks</span>
+      </span>
+    </div>
+    <div class="card-body">
+<pre class="code sm">int[][] t = new int[4][];
+for (int i = 0; i &lt; t.length; i++) {
+    t[i] = new int[t.length - i];
+    for (int j = 0; j &lt; t[i].length; j++) {
+        t[i][j] = (i + 1) * (j + 1);
+    }
+}
+
+for (int c = 0; c &lt; t[0].length; c++) {
+    int sum = 0;
+    for (int r = 0; r &lt; t.length; r++) {
+        if (c &gt;= t[r].length) {
+            continue;
+        }
+        System.out.print(t[r][c] + " ");
+        sum += t[r][c];
+    }
+    System.out.println("| " + sum);
+}</pre>
+      <p><b>(a)</b> Fill in the array <code class="inl">t</code> after the first loop. Write the value in each element that <b>exists</b> and put an <b>X</b> in each cell that does not exist. <span class="mini">(2 marks)</span></p>
+      <table class="grid">
+        <tr><th></th><th>[0]</th><th>[1]</th><th>[2]</th><th>[3]</th></tr>
+        <tr><th>t[0]</th><td></td><td></td><td></td><td></td></tr>
+        <tr><th>t[1]</th><td></td><td></td><td></td><td></td></tr>
+        <tr><th>t[2]</th><td></td><td></td><td></td><td></td></tr>
+        <tr><th>t[3]</th><td></td><td></td><td></td><td></td></tr>
+      </table>
+      <p><b>(b)</b> Write the exact output of the second loop, one line per line. <span class="mini">(3 marks)</span></p>
+      <div class="answer-space"><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div></div>
+      <p><b>(c)</b> What happens if the <code class="inl">if (c &gt;= t[r].length) { continue; }</code> statement is removed? <span class="mini">(1 mark)</span></p>
+      <div class="answer-space"><div class="writeline"></div><div class="writeline"></div></div>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q8</div>
+<div class="two-col">
+<div class="snug">
+        <table class="grid">
+          <tr><th></th><th>[0]</th><th>[1]</th><th>[2]</th><th>[3]</th></tr>
+          <tr><th>t[0]</th><td>1</td><td>2</td><td>3</td><td>4</td></tr>
+          <tr><th>t[1]</th><td>2</td><td>4</td><td>6</td><td class="x">X</td></tr>
+          <tr><th>t[2]</th><td>3</td><td>6</td><td class="x">X</td><td class="x">X</td></tr>
+          <tr><th>t[3]</th><td>4</td><td class="x">X</td><td class="x">X</td><td class="x">X</td></tr>
+        </table>
+</div>
+<pre class="code sm">// (b)
+1 2 3 4 | 10
+2 4 6 | 12
+3 6 | 9
+4 | 4</pre>
+</div>
+        <p>(c) <span class="val">Runtime error: ArrayIndexOutOfBoundsException.</span> The first line is printed, then <code class="inl">2 4 6 </code>, and the program stops at <code class="inl">t[3][1]</code> because row 3 has only one element.</p>
+        <p class="rub">(a) row lengths 4, 3, 2, 1 (1 mark) + correct values (1 mark). (b) 3 marks: lose 1 per wrong line (minimum 0). (c) 1 mark for naming the exception.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Q9 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 1 &mdash; Multidimensional Arrays &mdash; Practice Exam &middot; Question 9 of 11</span></div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="qno">Q9</span>
+      <span class="qtitle">3-D Arrays &mdash; Sales per Branch, Month and Product</span>
+      <span class="chips">
+        <span class="chip tag-med">MEDIUM</span>
+        <span class="chip clo">Ch 8 &middot; &sect;8.8</span><span class="chip so">SO-a</span>
+        <span class="chip pts">8 marks</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p>A shop chain stores the number of items sold in <code class="inl">sales[branch][month][product]</code>: 3 branches, 2 months, 4 products.</p>
+<pre class="code sm">int[][][] sales = {
+    { {5, 3, 0, 2}, {4, 4, 1, 3} },   // branch 0: Jeddah
+    { {7, 1, 2, 0}, {6, 2, 2, 1} },   // branch 1: Riyadh
+    { {3, 3, 3, 3}, {2, 5, 0, 4} }    // branch 2: Dammam
+};
+String[] city = {"Jeddah", "Riyadh", "Dammam"};</pre>
+      <p><b>(a)</b> Give the value of each expression. <span class="mini">(2 marks &middot; &frac12; each)</span></p>
+      <table class="fill" style="text-align:center">
+        <thead><tr><th><code>sales.length</code></th><th><code>sales[0].length</code></th><th><code>sales[1][1].length</code></th><th><code>sales[2][1][3]</code></th></tr></thead>
+        <tbody><tr><td style="height:2.4em"></td><td></td><td></td><td></td></tr></tbody>
+      </table>
+      <p style="margin-top:10px"><b>(b)</b> Write the exact output of the code below. <span class="mini">(3 marks)</span></p>
+<pre class="code sm">for (int b = 0; b &lt; sales.length; b++) {
+    int total = 0;
+    for (int m = 0; m &lt; sales[b].length; m++) {
+        for (int p = 0; p &lt; sales[b][m].length; p++) {
+            total += sales[b][m][p];
+        }
+    }
+    System.out.println(city[b] + ": " + total);
+}</pre>
+      <div class="answer-space"><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div></div>
+      <p><b>(c)</b> Write code that computes and prints the total number of <b>product 1</b> items sold in all branches and all months,
+         in the form <code class="inl">Product 1 total: ?</code>. Use the <code class="inl">length</code> fields, not fixed numbers. <span class="mini">(3 marks)</span></p>
+      <div class="answer-space"><div class="codebox" style="min-height:40mm"></div></div>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q9</div>
+        <p>(a) <code class="inl">sales.length</code> = <span class="val">3</span> &middot; <code class="inl">sales[0].length</code> = <span class="val">2</span> &middot;
+           <code class="inl">sales[1][1].length</code> = <span class="val">4</span> &middot; <code class="inl">sales[2][1][3]</code> = <span class="val">4</span></p>
+<pre class="code sm">// (b)
+Jeddah: 22
+Riyadh: 21
+Dammam: 23</pre>
+<pre class="code sm">// (c)
+int product1 = 0;
+for (int b = 0; b &lt; sales.length; b++) {
+    for (int m = 0; m &lt; sales[b].length; m++) {
+        product1 += sales[b][m][1];
+    }
+}
+System.out.println("Product 1 total: " + product1);
+// prints: Product 1 total: 18</pre>
+        <p class="rub">(b) 1 mark per line. (c) two loops over branch and month (1), the fixed third index <code class="inl">[1]</code> (1), correct total and print (1). A third loop with <code class="inl">if (p == 1)</code> is also accepted.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Q10 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 1 &mdash; Multidimensional Arrays &mdash; Practice Exam &middot; Question 10 of 11</span></div>
+
+  <div class="card flow">
+    <div class="card-head">
+      <span class="qno">Q10</span>
+      <span class="qtitle">Write Methods on a 2-D Array &mdash; City Temperatures</span>
+      <span class="chips">
+        <span class="chip tag-hard">HARD</span>
+        <span class="chip clo">Ch 8 &middot; &sect;8.8</span><span class="chip so">SO-c</span>
+        <span class="chip pts">8 marks &middot; 4 each</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p><code class="inl">temp[city][day]</code> holds the noon temperature of each city on each day. All rows have the <b>same</b> length. Example data and the program that uses your methods:</p>
+<div class="two-col">
+<pre class="code sm wide">String[] cities = {"Jeddah", "Riyadh", "Abha"};
+double[][] temp = {
+    {34.0, 36.5, 35.0, 33.5},   // Jeddah
+    {41.0, 42.5, 41.0, 39.5},   // Riyadh
+    {24.0, 21.5, 26.0, 23.0}    // Abha
+};
+double[] avg = dailyAverage(temp);
+for (int d = 0; d &lt; avg.length; d++) {
+    System.out.println("Day " + d + ": " + avg[d]);
+}
+System.out.println("Hottest city: "
+                   + cities[hottestCity(temp)]);</pre>
+<div class="narrow"><p class="lbl" style="margin:10px 0 4px"><i>Expected output:</i></p>
+<pre class="code sm">Day 0: 33.0
+Day 1: 33.5
+Day 2: 34.0
+Day 3: 32.0
+Hottest city: Riyadh</pre></div>
+</div>
+      <p><b>(a)</b> Write <code class="inl">public static double[] dailyAverage(double[][] temp)</code>. It returns a new array with the <b>average of each column</b> (each day, over all cities). <span class="mini">(4 marks)</span></p>
+      <div class="answer-space"><div class="codebox" style="min-height:57mm"></div></div>
+      <p><b>(b)</b> Write <code class="inl">public static int hottestCity(double[][] temp)</code>. It returns the <b>row index</b> of the city whose temperatures have the <b>largest sum</b>.
+         If two rows have the same sum, return the smaller index. <span class="mini">(4 marks)</span></p>
+      <div class="answer-space"><div class="codebox" style="min-height:58mm"></div></div>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q10</div>
+<pre class="code sm">public static double[] dailyAverage(double[][] temp) {
+    double[] avg = new double[temp[0].length];   // one per day
+    for (int day = 0; day &lt; temp[0].length; day++) {
+        double total = 0;
+        for (int city = 0; city &lt; temp.length; city++) {
+            total += temp[city][day];
+        }
+        avg[day] = total / temp.length;
+    }
+    return avg;
+}
+
+public static int hottestCity(double[][] temp) {
+    int best = 0;
+    double bestTotal = 0;
+    for (int j = 0; j &lt; temp[0].length; j++) {   // row 0 first
+        bestTotal += temp[0][j];
+    }
+    for (int i = 1; i &lt; temp.length; i++) {
+        double total = 0;
+        for (int j = 0; j &lt; temp[i].length; j++) {
+            total += temp[i][j];
+        }
+        if (total &gt; bestTotal) {    // &gt; keeps the smaller index
+            bestTotal = total;
+            best = i;
+        }
+    }
+    return best;
+}</pre>
+        <p class="rub">(a) result array of size <code class="inl">temp[0].length</code> (1) &middot; outer loop over columns, inner over rows (1) &middot; correct sum (1) &middot; divide by <code class="inl">temp.length</code> and return (1).
+           (b) start from row 0&rsquo;s sum (1) &middot; sum of each row (1) &middot; compare with <code class="inl">&gt;</code> and keep the index (1) &middot; return the index, not the sum (1).
+           Tested with the data above: it prints exactly the expected output.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Q11 ================= -->
+<section class="sheet">
+  <div class="runhead"><span>Programming II</span><span>Module 1 &mdash; Multidimensional Arrays &mdash; Practice Exam &middot; Question 11 of 11</span></div>
+
+  <div class="card flow">
+    <div class="card-head">
+      <span class="qno">Q11</span>
+      <span class="qtitle">Read a Ragged Array from a File &mdash; Caf&eacute; Sales</span>
+      <span class="chips">
+        <span class="chip tag-hard">HARD</span>
+        <span class="chip clo">Ch 8 &middot; &sect;8.8</span><span class="chip so">SO-c</span>
+        <span class="chip pts">8 marks</span>
+      </span>
+    </div>
+    <div class="card-body">
+      <p>A caf&eacute; chain in Jeddah saves its sales in the text file <code class="inl">sales.txt</code>. The <b>first line</b> is the number of branches.
+         Each following line holds the daily sales (in riyals) of <b>one branch</b> for the days it was open this week, so the lines have different lengths.
+         Assume all necessary import statements are present.</p>
+<div class="two-col">
+<div class="snug"><div class="filebox"><div class="fname">sales.txt</div><pre>4
+120 95 130
+80 60 75 90 110
+200
+70 85</pre></div></div>
+<div><p class="lbl" style="margin:8px 0 4px"><i>Required output of the program:</i></p>
+<pre class="code sm">Branch 0: total 345 in 3 day(s)
+Branch 1: total 415 in 5 day(s)
+Branch 2: total 200 in 1 day(s)
+Branch 3: total 155 in 2 day(s)
+Best daily average: branch 2 (200.0)</pre></div>
+</div>
+      <p><b>(a)</b> After the file is read into <code class="inl">int[][] sales</code>, what are <code class="inl">sales.length</code>, <code class="inl">sales[1].length</code> and <code class="inl">sales[3][1]</code>? <span class="mini">(1 mark)</span></p>
+      <div class="answer-space"><div class="writeline"></div></div>
+      <p><b>(b)</b> Write <code class="inl">public static int[][] readSales(String fileName) throws FileNotFoundException</code>.
+         It reads the file into a <b>ragged</b> array: create only the first dimension, then create each row with the exact size of its line
+         (use <code class="inl">nextLine()</code>, <code class="inl">split("\\s+")</code> and <code class="inl">Integer.parseInt</code>). <span class="mini">(4 marks)</span></p>
+      <div class="answer-space"><div class="codebox" style="min-height:92mm"></div></div>
+      <div style="break-inside:avoid;page-break-inside:avoid">
+      <p><b>(c)</b> Write the <code class="inl">main</code> method. It calls <code class="inl">readSales("sales.txt")</code>, prints one line per branch as shown,
+         then prints the branch with the <b>largest daily average</b> (total &divide; number of days). <span class="mini">(3 marks)</span></p>
+      <div class="answer-space"><div class="codebox" style="min-height:105mm"></div></div>
+      </div>
+
+      <div class="answer-key">
+        <div class="akh">Model Answer &mdash; Q11</div>
+        <p>(a) <code class="inl">sales.length</code> = <span class="val">4</span> &middot; <code class="inl">sales[1].length</code> = <span class="val">5</span> &middot; <code class="inl">sales[3][1]</code> = <span class="val">85</span></p>
+<pre class="code sm">public static int[][] readSales(String fileName)
+                                throws FileNotFoundException {
+    Scanner in = new Scanner(new File(fileName));
+    int n = Integer.parseInt(in.nextLine().trim());  // line 1
+    int[][] sales = new int[n][];          // rows are null for now
+    for (int i = 0; i &lt; n; i++) {
+        String[] tokens = in.nextLine().trim().split("\\s+");
+        sales[i] = new int[tokens.length]; // exact row size
+        for (int j = 0; j &lt; tokens.length; j++) {
+            sales[i][j] = Integer.parseInt(tokens[j]);
+        }
+    }
+    in.close();
+    return sales;
+}
+
+public static void main(String[] args)
+                        throws FileNotFoundException {
+    int[][] sales = readSales("sales.txt");
+    int best = 0;
+    double bestAvg = -1;
+    for (int i = 0; i &lt; sales.length; i++) {
+        int total = 0;
+        for (int j = 0; j &lt; sales[i].length; j++) {
+            total += sales[i][j];
+        }
+        System.out.println("Branch " + i + ": total " + total
+                           + " in " + sales[i].length + " day(s)");
+        double avg = (double) total / sales[i].length;
+        if (avg &gt; bestAvg) {
+            bestAvg = avg;
+            best = i;
+        }
+    }
+    System.out.println("Best daily average: branch " + best
+                       + " (" + bestAvg + ")");
+}</pre>
+        <p class="rub">(a) 1 mark for all three. (b) open the file with <code class="inl">new Scanner(new File(fileName))</code> and read the count (1) &middot; <code class="inl">new int[n][]</code> (1) &middot;
+           split each line and create the row with <code class="inl">tokens.length</code> (1) &middot; <code class="inl">parseInt</code> into the row and return (1). A <code class="inl">try</code>/<code class="inl">catch</code> as in the lesson is also accepted.
+           (c) per-branch total with <code class="inl">sales[i].length</code> (1) &middot; correct print line (1) &middot; average with a <code class="inl">(double)</code> cast and the best branch (1).
+           Compiled and run with <code class="inl">sales.txt</code> above: it prints exactly the required output (branch 2: 200 &divide; 1 = 200.0 is larger than 115.0, 83.0 and 77.5).</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="endmark" style="margin-top:8px">&mdash; End of Multidimensional Arrays Practice Exam &mdash; Good Luck! &mdash;</div>
+  <p class="footline">Module 1: Multidimensional Arrays</p>
+</section>
+
+<script>
+  var btn = document.getElementById('toggleAns');
+  btn.addEventListener('click', function () {
+    var on = document.body.classList.toggle('show-answers');
+    btn.textContent = on ? '🙈 Hide model answers' : '👁 Show model answers';
+    btn.classList.toggle('ghost', !on);
+  });
+</script>
+</body>
+</html>
